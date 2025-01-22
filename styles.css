@@ -1,0 +1,373 @@
+/* RESET & BASE */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  font-family: 'Montserrat', sans-serif;
+  color: #333;
+  line-height: 1.6;
+  background-color: #fff;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* GLOBAL CONTAINER */
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* HEADER / NAV */
+.site-header {
+  background: linear-gradient(90deg, #f8a470, #d62d20);
+  color: #fff;
+  width: 100%;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.navbar {
+  height: 70px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar-logo img {
+  width: 12%;
+  min-width: 60px;
+  height: auto;
+}
+
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  cursor: pointer;
+  gap: 5px;
+}
+
+.hamburger span {
+  width: 25px;
+  height: 3px;
+  background-color: #333;
+  border-radius: 2px;
+}
+
+.nav-menu {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  transition: transform 0.3s ease;
+}
+
+.nav-menu li a {
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.nav-menu li a:hover {
+  color: #2c72ff;
+}
+
+.nav-menu.active {
+  transform: translateX(0);
+}
+
+/* HERO (BANNER) SECTION */
+.hero-section {
+  background: url('images/hero-banner.jpg') center/cover no-repeat;
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  color: #fff;
+  padding: 0 1rem;
+}
+
+.hero-section::before {
+  content: "";
+  position: absolute;
+  top: 0; 
+  left: 0;
+  width: 100%; 
+  height: 100%;
+  background: rgba(0, 0, 0, 0.35);
+  z-index: 1;
+}
+
+.hero-content {
+  z-index: 2;
+  max-width: 700px;
+}
+
+.hero-content h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+.hero-content p {
+  font-size: 1.125rem;
+  margin-bottom: 2rem;
+}
+
+.btn-primary {
+  display: inline-block;
+  background: orange;
+  color: #000000;
+  margin: 4rem;
+  padding:2rem;
+  border-radius: 5px;
+  font-weight: 600;
+  transition: background 0.3s ease-in-out;
+}
+
+.btn-primary:hover {
+  background: #6f97ed;
+}
+
+/* ABOUT SECTION */
+.about-section {
+  padding: 4rem 1rem;
+  background: #f9f9f9;
+  text-align: center;
+}
+
+.about-section h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.about-section p {
+  max-width: 800px;
+  margin: 1rem auto;
+  font-weight: 300;
+}
+
+/* SERVICES SECTION */
+.services-section {
+  padding: 4rem 1rem;
+  text-align: center;
+}
+
+.services-section h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 2rem;
+  align-items: start;
+  margin-top: 2rem;
+}
+
+.service-card {
+  background-color: #fff;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.service-card h3 {
+  margin-top: 1rem;
+  font-size: 1.25rem;
+  color: #2c72ff;
+}
+
+/* CLIENTS SECTION */
+.clients-section {
+  padding: 4rem 1rem;
+  text-align: center;
+  background-color: #fff;
+}
+
+.clients-section h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.clients-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8rem;
+  justify-content: center;
+  align-items: center;
+  margin-top: 12rem;
+  margin-bottom: 12rem;
+}
+
+.client-logo {
+  width: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.client-logo img {
+  width: 100%;
+  object-fit: contain;
+}
+
+/* CONTACT SECTION */
+.contact-section {
+  padding: 4rem 1rem;
+  background: #f9f9f9;
+  text-align: center;
+}
+
+.contact-container {
+  max-width: 800px;
+  margin: 6 auto;
+}
+
+.contact-form-wrapper {
+  margin-top: 6rem;
+}
+
+.contact-form-wrapper form {
+  display: grid;
+  gap: 4rem;
+}
+
+.form-group {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.form-group input,
+.form-group textarea {
+  padding: 1rem;
+  font: inherit;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #2c72ff;
+}
+
+/* FOOTER */
+.site-footer {
+  background: linear-gradient(90deg, #d62d20, #ff8c42);
+  color: #fff;
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.footer-left, .footer-right {
+  margin: 0.5rem 0;
+}
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 992px) {
+  .hero-content h1 {
+    font-size: 2rem;
+  }
+  
+  .hero-content p {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .hamburger {
+    display: flex;
+  }
+  
+  .nav-menu {
+    position: absolute;
+    top: 70px;
+    right: 0;
+    width: 200px;
+    background-color: #fff;
+    flex-direction: column;
+    padding: 1rem;
+    transform: translateX(100%);
+    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .nav-menu.active {
+    transform: translateX(0);
+  }
+  
+  .nav-menu li {
+    margin-bottom: 1rem;
+  }
+  
+  .footer-content {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .about-section,
+  .services-section,
+  .clients-section,
+  .contact-section {
+    padding: 2rem 1rem;
+  }
+  
+  .navbar-logo img {
+    min-width: 50px;
+  }
+  
+  .client-logo {
+    width: 120px;
+  }
+}
+
+
+.section {
+  padding-top: 120px; /* Adjust this value based on your header height */
+  padding-bottom: 120px;
+  margin-top: -80px; /* Adjust this value based on your header height */
+}
+
+
+
+
+.image-container {
+  background-color: #000000; /* Change to your desired background color */
+  padding: 10px; /* Optional: Add padding if needed */
+  display: inline-block; /* Ensure the container fits the image */
+}
+
+.image-container img {
+  display: block; /* Remove any default inline spacing */
+}
