@@ -1,4 +1,69 @@
-/* RESET & BASE */
+/* =========================================
+   AJNACS Core Reset & Utilities (2025 Spec)
+   ========================================= */
+
+/* 1. Box Sizing & Default Margins */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body, h1, h2, h3, h4, p, figure, blockquote, dl, dd {
+  margin: 0;
+  padding: 0;
+}
+
+/* 2. Base Typography & Reading Flow */
+html {
+  scroll-behavior: smooth;
+  font-size: 16px; /* Base rem unit */
+}
+
+body {
+  min-height: 100vh;
+  text-rendering: optimizeLegibility;
+  font-family: var(--font-body);
+  background-color: var(--bg-body); /* #0f172a */
+  color: var(--text-main);          /* #f8fafc */
+  line-height: 1.6;
+}
+
+/* 3. Image Handling */
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* 4. Utility: Gradient Text */
+.text-gradient {
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-glow));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  display: inline-block; /* Fix for some browsers */
+}
+
+/* 5. Utility: Flex Center */
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 6. Utility: Screen Reader Only (Accessibility) */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+
+/* RESET & BASE 
 * {
   margin: 0;
   padding: 0;
@@ -23,14 +88,14 @@ img {
   height: auto;
 }
 
-/* GLOBAL CONTAINER */
+/* GLOBAL CONTAINER 
 .container {
   width: 90%;
   max-width: 1200px;
   margin: 0 auto;
 }
 
-/* HEADER / NAV */
+/* HEADER / NAV 
 .site-header {
   background: linear-gradient(90deg, white,white, #f8a470, #d62d20);
   color: #fff;
@@ -91,7 +156,7 @@ img {
   transform: translateX(0);
 }
 
-/* HERO (BANNER) SECTION */
+/* HERO (BANNER) SECTION 
 .hero-section {
   background: url('images/hero-banner.jpg') center/cover no-repeat;
   min-height: 80vh;
@@ -147,7 +212,7 @@ img {
   background: tomato;
 }
 
-/* ABOUT SECTION */
+/* ABOUT SECTION 
 .about-section {
   padding: 4rem 1rem;
   background: #f9f9f9;
@@ -165,7 +230,7 @@ img {
   font-weight: 300;
 }
 
-/* SERVICES SECTION */
+/* SERVICES SECTION 
 .services-section {
   padding: 4rem 1rem;
   text-align: center;
@@ -197,7 +262,7 @@ img {
   color: #2c72ff;
 }
 
-/* CLIENTS SECTION */
+/* CLIENTS SECTION 
 .clients-section {
   padding: 4rem 1rem;
   text-align: center;
@@ -231,7 +296,7 @@ img {
   object-fit: contain;
 }
 
-/* CONTACT SECTION */
+/* CONTACT SECTION 
 .contact-section {
   padding: 4rem 1rem;
   background: #f9f9f9;
@@ -277,7 +342,7 @@ img {
   border-color: #2c72ff;
 }
 
-/* FOOTER */
+/* FOOTER 
 .site-footer {
   background: linear-gradient(90deg, #d62d20, #ff8c42, white);
   color: #fff;
@@ -296,7 +361,7 @@ img {
   margin: 0.5rem 0;
 }
 
-/* RESPONSIVE DESIGN */
+/* RESPONSIVE DESIGN 
 @media (max-width: 992px) {
   .hero-content h1 {
     font-size: 2rem;
@@ -356,20 +421,20 @@ img {
 
 
 .section {
-  padding-top: 120px; /* Adjust this value based on your header height */
+  padding-top: 120px; // Adjust this value based on your header height 
   padding-bottom: 120px;
-  margin-top: -80px; /* Adjust this value based on your header height */
+  margin-top: -80px; // Adjust this value based on your header height 
 }
 
 
 
 
 .image-container {
-  background-color: #000000; /* Change to your desired background color */
-  padding: 10px; /* Optional: Add padding if needed */
-  display: inline-block; /* Ensure the container fits the image */
+  background-color: #000000; // Change to your desired background color 
+  padding: 10px; // Optional: Add padding if needed 
+  display: inline-block; // Ensure the container fits the image 
 }
 
 .image-container img {
-  display: block; /* Remove any default inline spacing */
-}
+  display: block; //Remove any default inline spacing 
+}*/
