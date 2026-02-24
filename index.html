@@ -1,675 +1,544 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AJNACS | Enterprise Architecture & Cloud Transformation</title>
-    <link rel="preconnect" href="[https://fonts.googleapis.com](https://fonts.googleapis.com)">
-    <link rel="preconnect" href="[https://fonts.gstatic.com](https://fonts.gstatic.com)" crossorigin>
-    <link href="[https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Space+Grotesk:wght@500;700&display=swap](https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Space+Grotesk:wght@500;700&display=swap)" rel="stylesheet">
-    <link rel="stylesheet" href="[https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css](https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css)">
+    <title>Ajna Consulting Services | Enterprise IT & Training</title>
     
+    <!-- Tailwind CSS for rapid modern styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts for body text -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Montserrat', 'sans-serif'],
+                        brand: ['"Apple Chancery"', '"URW Chancery L"', 'cursive'], // Requested Font
+                    },
+                    colors: {
+                        ajna: {
+                            blue: '#0F265C',
+                            red: '#E1251B',
+                            yellow: '#F3A92A',
+                            green: '#7CC242'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
     <style>
-        /* =========================================
-           1. CORE VARIABLES & RESET
-           ========================================= */
-        :root {
-            /* Palette: Cyber-Professional */
-            --bg-void: #0f172a;       /* Slate 900 */
-            --bg-glass: rgba(255, 255, 255, 0.03);
-            --bg-glass-hover: rgba(255, 255, 255, 0.07);
-            
-            --text-primary: #f8fafc;  /* Slate 50 */
-            --text-secondary: #94a3b8; /* Slate 400 */
-            
-            --accent-cyan: #06b6d4;   /* Cyan 500 */
-            --accent-blue: #3b82f6;   /* Blue 500 */
-            --accent-amber: #f59e0b;  /* Amber 500 */
-            
-            --border-glass: 1px solid rgba(255, 255, 255, 0.08);
-            --glow-primary: 0 0 20px rgba(6, 182, 212, 0.3);
-            
-            /* Typography */
-            --font-head: 'Space Grotesk', sans-serif;
-            --font-body: 'Inter', sans-serif;
-            
-            /* Spacing */
-            --container-width: 1280px;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
+        /* Custom Animations & Overrides */
         body {
-            background-color: var(--bg-void);
-            color: var(--text-primary);
-            font-family: var(--font-body);
-            line-height: 1.6;
-            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
-        a { text-decoration: none; color: inherit; transition: 0.3s; }
-        ul { list-style: none; }
-
-        /* =========================================
-           2. UTILITIES & ANIMATIONS
-           ========================================= */
-       .container {
-            max-width: var(--container-width);
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-
-        /* Text Gradients */
-       .text-gradient {
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        /* Buttons */
-       .btn {
-            display: inline-block;
-            padding: 1rem 2rem;
-            border-radius: 8px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-family: var(--font-head);
-        }
-
-       .btn-primary {
-            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-blue));
-            color: #fff;
-            box-shadow: 0 4px 15px rgba(6, 182, 212, 0.4);
-            border: none;
-        }
-
-       .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(6, 182, 212, 0.6);
-        }
-
-       .btn-glass {
-            background: rgba(255, 255, 255, 0.05);
-            border: var(--border-glass);
-            color: var(--text-primary);
+        .glass-header {
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
         }
 
-       .btn-glass:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: var(--accent-cyan);
-        }
-
-        /* Glassmorphism Card */
-       .glass-card {
-            background: var(--bg-glass);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: var(--border-glass);
-            border-radius: 16px;
-            padding: 2rem;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        .hero-gradient {
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
             position: relative;
             overflow: hidden;
         }
 
-       .glass-card:hover {
-            transform: translateY(-8px);
-            border-color: rgba(6, 182, 212, 0.3);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4), inset 0 0 0 1px rgba(255,255,255,0.05);
-            background: var(--bg-glass-hover);
-        }
-
-        /* Section Spacing */
-        section {
-            padding: 6rem 0;
-            position: relative;
-        }
-
-       .section-title {
-            font-family: var(--font-head);
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            text-align: center;
-        }
-
-       .section-subtitle {
-            text-align: center;
-            color: var(--text-secondary);
-            margin-bottom: 4rem;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        /* =========================================
-           3. NAVIGATION (Mega Menu)
-           ========================================= */
-       .navbar {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-            background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            padding: 1rem 0;
-        }
-
-       .nav-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-       .logo {
-            font-family: var(--font-head);
-            font-size: 1.5rem;
-            font-weight: 800;
-            letter-spacing: -1px;
-        }
-
-       .logo span { color: var(--accent-cyan); }
-
-       .nav-menu {
-            display: flex;
-            gap: 2rem;
-        }
-
-       .nav-link {
-            font-size: 0.95rem;
-            font-weight: 500;
-            color: var(--text-secondary);
-            position: relative;
-        }
-
-       .nav-link:hover { color: var(--accent-cyan); }
-
-        /* =========================================
-           4. HERO SECTION
-           ========================================= */
-       .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            position: relative;
-            overflow: hidden;
-            padding-top: 80px; /* Offset for fixed nav */
-        }
-
-        /* Ambient Glow Background */
-       .hero::before {
+        /* Subtle animated background shapes for the Hero */
+        .hero-gradient::before, .hero-gradient::after {
             content: '';
             position: absolute;
-            top: -20%;
-            right: -10%;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(6, 182, 212, 0.15) 0%, rgba(15, 23, 42, 0) 70%);
             border-radius: 50%;
-            z-index: -1;
-            animation: pulseGlow 10s infinite alternate;
-        }
-
-        @keyframes pulseGlow {
-            0% { transform: scale(1); opacity: 0.5; }
-            100% { transform: scale(1.2); opacity: 0.8; }
-        }
-
-       .hero-grid {
-            display: grid;
-            grid-template-columns: 1.2fr 0.8fr;
-            gap: 4rem;
-            align-items: center;
-        }
-
-       .hero-badge {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            background: rgba(6, 182, 212, 0.1);
-            border: 1px solid rgba(6, 182, 212, 0.3);
-            border-radius: 50px;
-            color: var(--accent-cyan);
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-        }
-
-       .hero-title {
-            font-family: var(--font-head);
-            font-size: 4rem;
-            line-height: 1.1;
-            margin-bottom: 1.5rem;
-        }
-
-       .hero-desc {
-            font-size: 1.25rem;
-            color: var(--text-secondary);
-            margin-bottom: 2.5rem;
-            max-width: 90%;
-        }
-
-       .hero-visual {
-            position: relative;
-        }
-
-        /* Abstract Code Floater */
-       .code-floater {
-            background: rgba(15, 23, 42, 0.8);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 12px;
-            padding: 1.5rem;
-            font-family: 'Fira Code', monospace;
-            font-size: 0.9rem;
-            position: relative;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-            animation: float 6s ease-in-out infinite;
+            filter: blur(80px);
+            opacity: 0.3;
+            animation: float 10s infinite ease-in-out alternate;
         }
         
-       .code-line { display: block; margin-bottom: 0.5rem; }
-       .cl-1 { color: #c084fc; }
-       .cl-2 { color: var(--accent-cyan); }
-       .cl-3 { color: #4ade80; }
+        .hero-gradient::before {
+            width: 400px;
+            height: 400px;
+            background: #E1251B; /* Ajna Red */
+            top: -100px;
+            right: -100px;
+        }
+
+        .hero-gradient::after {
+            width: 500px;
+            height: 500px;
+            background: #0F265C; /* Ajna Blue */
+            bottom: -150px;
+            left: -150px;
+            animation-delay: -5s;
+        }
 
         @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(30px, 50px) scale(1.1); }
         }
 
-        /* =========================================
-           5. TRUST SIGNALS
-           ========================================= */
-       .trust-section {
-            padding: 2rem 0;
-            background: rgba(255,255,255,0.02);
-            border-top: 1px solid rgba(255,255,255,0.05);
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-
-       .trust-label {
-            text-align: center;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: var(--text-secondary);
-            margin-bottom: 1.5rem;
-        }
-
-       .logos-grid {
-            display: flex;
-            justify-content: center;
-            gap: 4rem;
-            flex-wrap: wrap;
-            opacity: 0.6;
+        .service-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
-       .partner-logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--text-secondary);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        /* =========================================
-           6. SERVICES GRID (Glassmorphism)
-           ========================================= */
-       .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-
-       .service-icon {
-            width: 60px;
-            height: 60px;
-            background: rgba(255,255,255,0.05);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            color: var(--accent-cyan);
-            margin-bottom: 1.5rem;
-            transition: 0.3s;
-        }
-
-       .glass-card:hover.service-icon {
-            background: var(--accent-cyan);
-            color: #fff;
-            box-shadow: 0 0 15px var(--accent-cyan);
-        }
-
-       .service-title {
-            font-family: var(--font-head);
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-       .service-desc {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            margin-bottom: 1.5rem;
-        }
-
-       .service-link {
-            color: var(--accent-cyan);
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-       .service-link i { transition: transform 0.3s; }
-       .service-link:hover i { transform: translateX(5px); }
-
-        /* =========================================
-           7. TECH STACK VISUALIZER
-           ========================================= */
-       .tech-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 1.5rem;
-        }
-
-       .tech-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem;
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 12px;
-            transition: 0.3s;
-        }
-
-       .tech-item:hover {
-            border-color: var(--accent-blue);
+        .service-card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         }
 
-       .tech-icon {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            color: var(--text-secondary);
+        /* Modal Styles */
+        #leadModal {
+            transition: opacity 0.3s ease;
         }
-        
-       .tech-item:hover.tech-icon { color: #fff; }
-
-        /* =========================================
-           8. CTA / FOOTER
-           ========================================= */
-       .cta-section {
-            background: linear-gradient(rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.9)), url('[https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80](https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80)');
-            background-size: cover;
-            background-position: center;
-            text-align: center;
+        #leadModal.hidden {
+            opacity: 0;
+            pointer-events: none;
         }
 
-        footer {
-            background: #020617;
-            padding: 4rem 0 2rem;
-            border-top: 1px solid rgba(255,255,255,0.05);
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-        }
-
-       .footer-grid {
-            display: grid;
-            grid-template-columns: 1.5fr 1fr 1fr 1fr;
-            gap: 3rem;
-            margin-bottom: 3rem;
-        }
-
-       .footer-brand h3 {
-            color: #fff;
-            font-family: var(--font-head);
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-       .footer-links h4 {
-            color: #fff;
-            margin-bottom: 1.2rem;
-        }
-
-       .footer-links li { margin-bottom: 0.8rem; }
-       .footer-links a:hover { color: var(--accent-cyan); }
-
-        /* =========================================
-           9. RESPONSIVE
-           ========================================= */
-        @media (max-width: 992px) {
-           .hero-grid { grid-template-columns: 1fr; text-align: center; }
-           .hero-title { font-size: 3rem; }
-           .hero-visual { display: none; } /* Simplify for tablet */
-           .footer-grid { grid-template-columns: 1fr 1fr; }
-        }
-
-        @media (max-width: 768px) {
-           .nav-menu { display: none; } /* Need hamburger in JS for production */
-           .hero-title { font-size: 2.5rem; }
-           .container { padding: 0 1.5rem; }
-           .footer-grid { grid-template-columns: 1fr; }
+        /* Experience Badge Gradient */
+        .exp-gradient {
+            background: linear-gradient(90deg, #E1251B, #F3A92A);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
     </style>
 </head>
-<body>
+<body class="text-gray-800 bg-gray-50">
 
-    <nav class="navbar">
-        <div class="container nav-container">
-            <a href="#" class="logo">AJNACS<span>.</span></a>
-            <ul class="nav-menu">
-                <li><a href="#services" class="nav-link">Architecture</a></li>
-                <li><a href="#cloud" class="nav-link">Cloud Training</a></li>
-                <li><a href="#consulting" class="nav-link">Consulting</a></li>
-                <li><a href="#insights" class="nav-link">Insights</a></li>
-            </ul>
-            <a href="#contact" class="btn btn-primary" style="padding: 0.6rem 1.2rem; font-size: 0.9rem;">Book Strategy Call</a>
-        </div>
-    </nav>
+    <!-- STICKY HEADER -->
+    <header class="fixed w-full top-0 z-50 glass-header transition-all duration-300" id="header">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                
+                <!-- Logo & Brand -->
+                <a href="#" class="flex items-center gap-3 group">
+                    <img src="Logo_V3.png" alt="Ajna Logo" class="w-14 h-14 object-contain transition-transform group-hover:scale-105" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'48\' height=\'48\' viewBox=\'0 0 48 48\' fill=\'none\' stroke=\'%23E1251B\' stroke-width=\'2\'><rect width=\'40\' height=\'40\' x=\'4\' y=\'4\' rx=\'4\'/><path d=\'M12 24l12-12 12 12-12 12z\'/></svg>'">
+                    <div class="flex flex-col">
+                        <!-- Red entire name in Apple Chancery -->
+                        <span class="font-brand text-2xl md:text-3xl text-ajna-red font-bold leading-tight">Ajna Consulting Services</span>
+                    </div>
+                </a>
 
-    <header class="hero" id="home">
-        <div class="container hero-grid">
-            <div class="hero-content">
-                <span class="hero-badge">🚀 New: Enterprise AI Architecture 2026</span>
-                <h1 class="hero-title">Architecting the <br><span class="text-gradient">Digital Future</span></h1>
-                <p class="hero-desc">
-                    We forge the leaders of the cognitive economy. High-precision training and consulting in Enterprise Architecture, Cloud Computing, and Zero-Trust Security.
-                </p>
-                <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-                    <a href="#courses" class="btn btn-primary">Explore Catalog</a>
-                    <a href="#consulting" class="btn btn-glass">Corporate Solutions</a>
-                </div>
+                <!-- Desktop Nav -->
+                <nav class="hidden md:flex items-center gap-8">
+                    <a href="#consulting" class="text-sm font-semibold text-gray-600 hover:text-ajna-red transition-colors">Consulting</a>
+                    <a href="#training" class="text-sm font-semibold text-gray-600 hover:text-ajna-red transition-colors">Training</a>
+                    <a href="#about" class="text-sm font-semibold text-gray-600 hover:text-ajna-red transition-colors">About</a>
+                    <button onclick="openModal()" class="bg-ajna-red text-white px-6 py-2.5 rounded-full text-sm font-semibold hover:bg-red-800 transition-colors shadow-lg shadow-red-900/20">
+                        Start your journey
+                    </button>
+                </nav>
+
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden flex flex-col gap-1.5 p-2" onclick="toggleMobileMenu()">
+                    <span class="w-6 h-0.5 bg-gray-800 rounded-full transition-transform" id="line1"></span>
+                    <span class="w-6 h-0.5 bg-gray-800 rounded-full transition-opacity" id="line2"></span>
+                    <span class="w-6 h-0.5 bg-gray-800 rounded-full transition-transform" id="line3"></span>
+                </button>
             </div>
-            
-            <div class="hero-visual">
-                <div class="code-floater">
-                    <span class="code-line cl-1">import</span> <span class="cl-2">CloudArchitecture</span> <span class="cl-1">from</span> <span class="cl-3">'@ajnacs/core'</span>;
-                    <br>
-                    <span class="code-line"><span class="cl-1">class</span> <span class="cl-2">Enterprise</span> <span class="cl-1">extends</span> <span class="cl-2">Future</span> {</span>
-                    <span class="code-line" style="padding-left: 1rem;">constructor() {</span>
-                    <span class="code-line" style="padding-left: 2rem;">this.scalability = <span class="cl-3">Infinity</span>;</span>
-                    <span class="code-line" style="padding-left: 2rem;">this.security = <span class="cl-3">'ZeroTrust'</span>;</span>
-                    <span class="code-line" style="padding-left: 1rem;">}</span>
-                    <span class="code-line">}</span>
-                    <br>
-                    <span class="cl-2">const</span> <span class="cl-1">success</span> = <span class="cl-1">new</span> <span class="cl-2">Enterprise</span>();
-                </div>
+        </div>
+
+        <!-- Mobile Nav Dropdown -->
+        <div id="mobileMenu" class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full shadow-xl">
+            <div class="flex flex-col px-4 py-6 gap-4">
+                <a href="#consulting" class="text-base font-medium text-gray-800 p-2 hover:bg-gray-50 rounded" onclick="toggleMobileMenu()">Consulting</a>
+                <a href="#training" class="text-base font-medium text-gray-800 p-2 hover:bg-gray-50 rounded" onclick="toggleMobileMenu()">Training</a>
+                <a href="#about" class="text-base font-medium text-gray-800 p-2 hover:bg-gray-50 rounded" onclick="toggleMobileMenu()">About</a>
+                <button onclick="openModal(); toggleMobileMenu();" class="w-full mt-2 bg-ajna-red text-white px-6 py-3 rounded-md text-center font-semibold">
+                    Start your journey
+                </button>
             </div>
         </div>
     </header>
 
-    <section class="trust-section">
-        <div class="container">
-            <p class="trust-label">Trusted by Engineering Teams At</p>
-            <div class="logos-grid">
-                <div class="partner-logo"><i class="fab fa-aws"></i> Damco </div>
-                <div class="partner-logo"><i class="fab fa-microsoft"></i> Maersk </div>
-                <div class="partner-logo"><i class="fab fa-linux"></i> NTUC LearningHub </div>
-                <div class="partner-logo"><i class="fas fa-shield-alt"></i> Royal Malaysian Air Force </div>
-                <div class="partner-logo"><i class="fab fa-google"></i> Infosyte </div>
+    <!-- HERO SECTION -->
+    <section class="hero-gradient min-h-[90vh] flex items-center pt-20 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+            <div class="max-w-3xl">
+                <div class="inline-block border border-ajna-yellow/30 bg-ajna-yellow/10 px-4 py-1.5 rounded-full text-ajna-yellow text-xs font-bold tracking-wider uppercase mb-6 backdrop-blur-sm">
+                    Enterprise IT Strategy & Modernization
+                </div>
+                <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-6">
+                    Architecting the <span class="text-transparent bg-clip-text bg-gradient-to-r from-ajna-yellow to-ajna-red">Self-Healing</span> Enterprise.
+                </h1>
+                <p class="text-lg md:text-xl text-gray-300 mb-10 max-w-2xl leading-relaxed font-light">
+                    Transformational technology consulting and high-impact training. We build highly scalable, zero-trust cloud native systems and empower your workforce through elite, instructor-led knowledge transfer.
+                </p>
+                <div class="flex flex-wrap gap-4">
+                    <button onclick="openModal()" class="bg-ajna-red text-white px-8 py-4 rounded-full font-bold hover:bg-red-800 transition-colors shadow-xl flex items-center gap-2 group">
+                        Let's Talk Strategy
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transform group-hover:translate-x-1 transition-transform" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                    <a href="#consulting" class="border border-white/30 text-white px-8 py-4 rounded-full font-semibold hover:bg-white/10 transition-colors backdrop-blur-sm">
+                        Discover Our Solutions
+                    </a>
+                </div>
             </div>
         </div>
     </section>
 
-    <section id="services">
-        <div class="container">
-            <h2 class="section-title">Executive-Grade <span class="text-gradient">Capabilities</span></h2>
-            <p class="section-subtitle">
-                Move beyond commodity coding. Our curriculum is designed for architects, technical leads, and CTOs who build at scale.
-            </p>
+    <!-- LOGO STRIP (Tech Stack) -->
+    <div class="border-b border-gray-200 bg-white py-8">
+        <div class="max-w-7xl mx-auto px-4 overflow-hidden flex flex-col items-center">
+            <p class="text-sm font-semibold text-gray-400 mb-6 uppercase tracking-widest text-center">Multi-Cloud & Enterprise Frameworks</p>
+            <div class="flex flex-wrap justify-center gap-8 md:gap-16 opacity-70 hover:opacity-100 transition-all duration-500">
+                <span class="text-xl font-bold text-gray-700">AWS</span>
+                <span class="text-xl font-bold text-gray-700">Azure</span>
+                <span class="text-xl font-bold text-gray-700">Google Cloud</span>
+                <span class="text-xl font-bold text-gray-700">Oracle OCI</span>
+                <span class="text-xl font-bold text-gray-700">Kubernetes</span>
+                <span class="text-xl font-bold text-gray-700">Oracle Fusion</span>
+            </div>
+        </div>
+    </div>
 
-            <div class="services-grid">
-                <article class="glass-card">
-                    <div class="service-icon">
-                        <i class="fas fa-project-diagram"></i>
-                    </div>
-                    <h3 class="service-title">Enterprise Architecture</h3>
-                    <p class="service-desc">
-                        Master the TOGAF Standard and Zachman Framework. Learn to align IT strategy with business goals to drive digital transformation.
-                    </p>
-                    <a href="#" class="service-link">View Syllabus <i class="fas fa-arrow-right"></i></a>
-                </article>
+    <!-- CONSULTING SERVICES SECTION (Deep Expansion) -->
+    <section id="consulting" class="py-24 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-ajna-red font-bold tracking-wide uppercase text-sm mb-2">Executive Advisory & Engineering</h2>
+                <h3 class="text-4xl font-bold text-gray-900 mb-4">Enterprise Consulting Excellence</h3>
+                <p class="text-gray-600 text-lg">Trusted advisors to C-suite stakeholders. We specialize in decoupling legacy assets, building resilient infrastructure, and enforcing financial and AI governance at global scale.</p>
+            </div>
 
-                <article class="glass-card">
-                    <div class="service-icon">
-                        <i class="fas fa-cloud"></i>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Consulting Card 1: Cloud & Microservices -->
+                <div class="service-card bg-white p-10 rounded-2xl border border-gray-100 shadow-sm flex flex-col">
+                    <div class="w-14 h-14 bg-blue-50 rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-7 h-7 text-ajna-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
                     </div>
-                    <h3 class="service-title">Cloud Computing</h3>
-                    <p class="service-desc">
-                        Multi-cloud mastery across AWS, Azure, and GCP. From serverless microservices to hybrid cloud networking patterns.
-                    </p>
-                    <a href="#" class="service-link">View Syllabus <i class="fas fa-arrow-right"></i></a>
-                </article>
+                    <h4 class="text-2xl font-bold text-gray-900 mb-3">Cloud Modernization & Architecture</h4>
+                    <p class="text-gray-600 mb-6 flex-grow">We direct multi-regional digital transformation programs. By decoupling monolithic legacy assets into scalable, event-driven microservices, we dramatically accelerate product release cycles.</p>
+                    <ul class="space-y-3">
+                        <li class="flex items-start text-sm text-gray-700"><span class="text-ajna-red mr-3 mt-0.5">■</span> Serverless & Kubernetes Orchestration</li>
+                        <li class="flex items-start text-sm text-gray-700"><span class="text-ajna-red mr-3 mt-0.5">■</span> DevOps: CI/CD Pipeline Automation</li>
+                        <li class="flex items-start text-sm text-gray-700"><span class="text-ajna-red mr-3 mt-0.5">■</span> Multi-Cloud Strategy (AWS, Azure, GCP, OCI)</li>
+                    </ul>
+                </div>
 
-                <article class="glass-card">
-                    <div class="service-icon">
-                        <i class="fas fa-layer-group"></i>
+                <!-- Consulting Card 2: Self-Healing & Observability -->
+                <div class="service-card bg-white p-10 rounded-2xl border border-gray-100 shadow-sm flex flex-col">
+                    <div class="w-14 h-14 bg-green-50 rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-7 h-7 text-ajna-green" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
                     </div>
-                    <h3 class="service-title">Full Stack Engineering</h3>
-                    <p class="service-desc">
-                        Modern stack development with React, Node.js, and GraphQL. Build resilient, scalable distributed systems.
-                    </p>
-                    <a href="#" class="service-link">View Syllabus <i class="fas fa-arrow-right"></i></a>
-                </article>
+                    <h4 class="text-2xl font-bold text-gray-900 mb-3">The "Self-Healing" Enterprise</h4>
+                    <p class="text-gray-600 mb-6 flex-grow">Safeguard mission-critical transaction continuity. We build AI-driven observability control planes for predictive incident detection and automated remediation to secure 99.9% availability.</p>
+                    <ul class="space-y-3">
+                        <li class="flex items-start text-sm text-gray-700"><span class="text-ajna-red mr-3 mt-0.5">■</span> Up to 45% MTTR Reduction</li>
+                        <li class="flex items-start text-sm text-gray-700"><span class="text-ajna-red mr-3 mt-0.5">■</span> OpenTelemetry, Prometheus & Grafana</li>
+                        <li class="flex items-start text-sm text-gray-700"><span class="text-ajna-red mr-3 mt-0.5">■</span> Automated Incident Remediation Workflows</li>
+                    </ul>
+                </div>
 
-                 <article class="glass-card">
-                    <div class="service-icon">
-                        <i class="fab fa-linux"></i>
+                <!-- Consulting Card 3: FinOps -->
+                <div class="service-card bg-white p-10 rounded-2xl border border-gray-100 shadow-sm flex flex-col">
+                    <div class="w-14 h-14 bg-yellow-50 rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-7 h-7 text-ajna-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                     </div>
-                    <h3 class="service-title">Linux & DevOps</h3>
-                    <p class="service-desc">
-                        Deep dive into RHEL, Kernel tuning, Kubernetes orchestration, and CI/CD pipelines for automated delivery.
-                    </p>
-                    <a href="#" class="service-link">View Syllabus <i class="fas fa-arrow-right"></i></a>
-                </article>
+                    <h4 class="text-2xl font-bold text-gray-900 mb-3">FinOps & Capital Efficiency</h4>
+                    <p class="text-gray-600 mb-6 flex-grow">Institutionalizing financial discipline in the cloud. We align engineering resource consumption with business value streams to recapture capital for high-growth innovation pilots.</p>
+                    <ul class="space-y-3">
+                        <li class="flex items-start text-sm text-gray-700"><span class="text-ajna-red mr-3 mt-0.5">■</span> Cloud Cost Diagnostics & Optimization</li>
+                        <li class="flex items-start text-sm text-gray-700"><span class="text-ajna-red mr-3 mt-0.5">■</span> Infrastructure OpEx Reduction (Avg 25%)</li>
+                        <li class="flex items-start text-sm text-gray-700"><span class="text-ajna-red mr-3 mt-0.5">■</span> Resource Consumption Governance</li>
+                    </ul>
+                </div>
+
+                <!-- Consulting Card 4: AI Governance -->
+                <div class="service-card bg-white p-10 rounded-2xl border border-gray-100 shadow-sm flex flex-col">
+                    <div class="w-14 h-14 bg-red-50 rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-7 h-7 text-ajna-red" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                    </div>
+                    <h4 class="text-2xl font-bold text-gray-900 mb-3">AI & Zero-Trust Governance</h4>
+                    <p class="text-gray-600 mb-6 flex-grow">Architecting secure GenAI enterprise adoption. We embed policy enforcement and model risk assessments directly into your MLOps pipelines.</p>
+                    <ul class="space-y-3">
+                        <li class="flex items-start text-sm text-gray-700"><span class="text-ajna-red mr-3 mt-0.5">■</span> Enterprise GenAI Risk Management</li>
+                        <li class="flex items-start text-sm text-gray-700"><span class="text-ajna-red mr-3 mt-0.5">■</span> Zero-Trust Architecture & IAM</li>
+                        <li class="flex items-start text-sm text-gray-700"><span class="text-ajna-red mr-3 mt-0.5">■</span> Data Governance & Compliance Logging</li>
+                    </ul>
+                </div>
             </div>
         </div>
     </section>
 
-    <section id="tech-stack" style="background: rgba(0,0,0,0.2);">
-        <div class="container">
-            <h2 class="section-title">The <span class="text-gradient">Modern Stack</span></h2>
-            <p class="section-subtitle">We don't just teach theory. We train on the tools that run the Fortune 500.</p>
+    <!-- TRAINING SERVICES SECTION (Deep Expansion) -->
+    <section id="training" class="py-24 bg-white relative overflow-hidden border-t border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             
-            <div class="tech-grid">
-                <div class="tech-item">
-                    <i class="fab fa-docker tech-icon"></i>
-                    <span>Docker</span>
-                </div>
-                <div class="tech-item">
-                    <i class="fas fa-cubes tech-icon"></i>
-                    <span>Kubernetes</span>
-                </div>
-                <div class="tech-item">
-                    <i class="fab fa-python tech-icon"></i>
-                    <span>Python</span>
-                </div>
-                <div class="tech-item">
-                    <i class="fab fa-java tech-icon"></i>
-                    <span>Java</span>
-                </div>
-                <div class="tech-item">
-                    <i class="fab fa-react tech-icon"></i>
-                    <span>React</span>
-                </div>
-                <div class="tech-item">
-                    <i class="fas fa-database tech-icon"></i>
-                    <span>SQL/NoSQL</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="cta-section">
-        <div class="container">
-            <h2 class="section-title">Ready to Architect Your Legacy?</h2>
-            <p class="section-subtitle" style="color: #e2e8f0;">
-                Join 5,000+ professionals who have accelerated their careers with AJNACS.
-            </p>
-            <a href="#" class="btn btn-primary">Start Your Journey</a>
-        </div>
-    </section>
-
-    <footer id="contact">
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-brand">
-                    <h3>AJNACS<span>.</span></h3>
-                    <p>
-                        The premier destination for Enterprise Architecture and Cloud Transformation training. Building the digital backbone of tomorrow's enterprises.
+            <!-- Massive Highlight Badge -->
+            <div class="bg-gray-900 rounded-3xl p-8 md:p-12 mb-16 shadow-2xl flex flex-col md:flex-row items-center justify-between gap-8 border-l-8 border-ajna-red">
+                <div class="max-w-2xl">
+                    <h3 class="text-3xl md:text-4xl font-bold text-white mb-4">World-Class Tech Training</h3>
+                    <p class="text-gray-300 text-lg leading-relaxed">
+                        Led by industry veterans holding an unparalleled <strong class="exp-gradient font-black text-xl">50+ Years of Combined Experience</strong>. 
+                        Our trainers are not just educators; they are enterprise architects actively solving global IT challenges.
                     </p>
                 </div>
-                
-                <div class="footer-links">
-                    <h4>Company</h4>
-                    <ul>
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Careers</a></li>
-                        <li><a href="#">Partners</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
+                <div class="grid grid-cols-2 gap-4 flex-shrink-0">
+                    <div class="bg-gray-800 p-4 rounded-xl text-center">
+                        <div class="text-ajna-yellow font-bold text-xl mb-1">Certified</div>
+                        <div class="text-xs text-gray-400 uppercase tracking-wider">Oracle / AWS / Azure</div>
+                    </div>
+                    <div class="bg-gray-800 p-4 rounded-xl text-center">
+                        <div class="text-ajna-yellow font-bold text-xl mb-1">Hands-On</div>
+                        <div class="text-xs text-gray-400 uppercase tracking-wider">Real-World Labs</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-ajna-blue font-bold tracking-wide uppercase text-sm mb-2">Corporate & Individual Skill Development</h2>
+                <h3 class="text-3xl font-bold text-gray-900 mb-4">Specialized Knowledge Domains</h3>
+                <p class="text-gray-600">We provide highly praised, customized training across Aviation, Logistics, Banking, and Telco sectors. From legacy migration to bleeding-edge cloud technologies.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Training Track 1 -->
+                <div class="group border border-gray-200 p-8 rounded-2xl hover:border-ajna-red transition-all duration-300">
+                    <h4 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-ajna-red transition-colors">Enterprise Middleware</h4>
+                    <p class="text-sm text-gray-600 mb-4">Deep dive into enterprise integration, systems management, and Oracle stacks.</p>
+                    <ul class="text-sm text-gray-500 space-y-2 font-medium">
+                        <li>• Oracle WebLogic 12c Admin & Tuning</li>
+                        <li>• Oracle SOA, OSB & BPM Suite</li>
+                        <li>• Oracle Exalogic Elastic Cloud</li>
                     </ul>
                 </div>
 
-                <div class="footer-links">
-                    <h4>Training</h4>
-                    <ul>
-                        <li><a href="#">Enterprise Architecture</a></li>
-                        <li><a href="#">Cloud Security</a></li>
-                        <li><a href="#">Full Stack Dev</a></li>
-                        <li><a href="#">Data Science</a></li>
+                <!-- Training Track 2 -->
+                <div class="group border border-gray-200 p-8 rounded-2xl hover:border-ajna-red transition-all duration-300">
+                    <h4 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-ajna-red transition-colors">Cloud & Architecture</h4>
+                    <p class="text-sm text-gray-600 mb-4">Master modern infrastructure deployment, scalability, and cloud vendor specifics.</p>
+                    <ul class="text-sm text-gray-500 space-y-2 font-medium">
+                        <li>• OCI, AWS, Azure, GCP Foundations</li>
+                        <li>• Docker & Kubernetes Orchestration</li>
+                        <li>• Enterprise Manager Cloud Control</li>
                     </ul>
                 </div>
 
-                <div class="footer-links">
-                    <h4>Contact</h4>
-                    <ul>
-                        <li><i class="fas fa-envelope"></i> hello@ajnacs.com</li>
-                        <li><i class="fas fa-phone"></i> +1 (555) 123-4567</li>
-                        <li><i class="fas fa-map-marker-alt"></i> Tech Valley, CA</li>
+                <!-- Training Track 3 -->
+                <div class="group border border-gray-200 p-8 rounded-2xl hover:border-ajna-red transition-all duration-300">
+                    <h4 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-ajna-red transition-colors">Java & Full Stack Dev</h4>
+                    <p class="text-sm text-gray-600 mb-4">End-to-end application development, from UI frameworks to heavy backend logic.</p>
+                    <ul class="text-sm text-gray-500 space-y-2 font-medium">
+                        <li>• Java EE (EJB, JMS, JAX-WS/RS)</li>
+                        <li>• Oracle ADF & WebCenter</li>
+                        <li>• Modern JS (React/Angular/Node)</li>
                     </ul>
                 </div>
             </div>
             
-            <div style="text-align: center; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.05);">
-                <p>&copy; 2026 AJNACS Portal. All rights reserved.</p>
+            <div class="mt-12 text-center">
+                <button onclick="openModal()" class="inline-flex items-center gap-2 bg-gray-900 text-white px-8 py-4 rounded-full font-bold hover:bg-gray-800 transition-colors shadow-lg">
+                    Request a Custom Training Syllabus &rarr;
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIALS / PROOF -->
+    <section class="py-20 bg-gray-50 border-t border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <h2 class="font-brand text-3xl md:text-4xl text-ajna-blue mb-10">Client Acclaim</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 text-left">
+                <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
+                    <p class="text-gray-600 italic mb-4">"Chandra approaches assignments with a great deal of enthusiasm and ensures customer satisfaction. The project was completed successfully and we look forward to more."</p>
+                    <p class="font-bold text-gray-900 text-sm uppercase tracking-wide">— Head of Pro Services, Software Corp</p>
+                </div>
+                <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
+                    <p class="text-gray-600 italic mb-4">"Absolutely professional in providing solutions and working in tandem with our development team. Spot on in providing solutions for very critical phases of migration."</p>
+                    <p class="font-bold text-gray-900 text-sm uppercase tracking-wide">— Project Manager, Financial Institution</p>
+                </div>
+                <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-100 md:col-span-2 lg:col-span-1">
+                    <p class="text-gray-600 italic mb-4">"Great. Really knowledgeable about the product, flexible with the training approach, friendly, responsive. Explains architecture using real life examples."</p>
+                    <p class="font-bold text-gray-900 text-sm uppercase tracking-wide">— Corporate Trainee</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-black text-gray-400 py-12 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center gap-2 mb-4">
+                        <!-- Red entire name in Apple Chancery -->
+                        <span class="font-brand text-2xl md:text-3xl text-ajna-red font-bold">Ajna Consulting Services</span>
+                    </div>
+                    <p class="text-sm max-w-xs mt-2">Empowering digital transformation through elite consulting and professional IT engineering training.</p>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-4 uppercase text-sm tracking-wider">Solutions</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#consulting" class="hover:text-white transition-colors">Cloud Architecture</a></li>
+                        <li><a href="#consulting" class="hover:text-white transition-colors">FinOps & Observability</a></li>
+                        <li><a href="#training" class="hover:text-white transition-colors">Corporate Training</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-4 uppercase text-sm tracking-wider">Contact</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                            info@ajnacs.com
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="pt-8 border-t border-gray-800 text-sm text-center flex flex-col sm:flex-row justify-between items-center">
+                <p>&copy; <script>document.write(new Date().getFullYear())</script> Ajna Consulting Services. All rights reserved.</p>
+                <div class="mt-4 sm:mt-0 space-x-4">
+                    <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+                    <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
+                </div>
             </div>
         </div>
     </footer>
 
+    <!-- LEAD CAPTURE MODAL -->
+    <div id="leadModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-gray-900/60 backdrop-blur-sm p-4">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden transform transition-all">
+            <!-- Modal Header -->
+            <div class="bg-gray-50 px-6 py-4 border-b border-gray-100 flex justify-between items-center">
+                <h3 class="text-xl font-bold text-gray-900">Start Your Journey</h3>
+                <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600 focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            
+            <!-- Modal Body (Form) -->
+            <div class="p-6">
+                <p class="text-sm text-gray-600 mb-6">Leave your details below and our experts will reach out to discuss your architectural or training needs.</p>
+                
+                <form id="contactForm" onsubmit="handleFormSubmit(event)" class="space-y-4">
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Full Name *</label>
+                        <input type="text" id="name" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ajna-red focus:border-ajna-red outline-none transition-all" placeholder="John Doe">
+                    </div>
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address *</label>
+                        <input type="email" id="email" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ajna-red focus:border-ajna-red outline-none transition-all" placeholder="john@company.com">
+                    </div>
+                    <div>
+                        <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                        <input type="tel" id="phone" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ajna-red focus:border-ajna-red outline-none transition-all" placeholder="+1 (555) 000-0000">
+                    </div>
+                    <div>
+                        <label for="interest" class="block text-sm font-medium text-gray-700 mb-1">Primary Interest</label>
+                        <select id="interest" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ajna-red focus:border-ajna-red outline-none transition-all bg-white">
+                            <option value="Enterprise Consulting">Enterprise Consulting & Cloud</option>
+                            <option value="FinOps & Governance">FinOps & AI Governance</option>
+                            <option value="Corporate Training">Corporate Tech Training</option>
+                            <option value="Other">Other Inquiry</option>
+                        </select>
+                    </div>
+                    <div class="pt-2">
+                        <button type="submit" class="w-full bg-ajna-red text-white font-bold py-3 px-4 rounded-lg hover:bg-red-800 transition-colors focus:ring-4 focus:ring-red-900/30">
+                            Submit Request
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Success Message (Hidden by default) -->
+                <div id="successMessage" class="hidden text-center py-8">
+                    <div class="w-16 h-16 bg-green-100 text-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-900 mb-2">Request Received!</h4>
+                    <p class="text-gray-600 text-sm mb-6">Thank you. We will contact you shortly at <span id="confirmEmail" class="font-medium text-gray-900"></span>.</p>
+                    <button onclick="closeModal()" class="text-ajna-red font-semibold hover:underline">Close Window</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application Logic -->
+    <script>
+        // Header scroll effect
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('header');
+            if (window.scrollY > 10) {
+                header.classList.add('shadow-md');
+            } else {
+                header.classList.remove('shadow-md');
+            }
+        });
+
+        // Mobile Menu Toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            const l1 = document.getElementById('line1');
+            const l2 = document.getElementById('line2');
+            const l3 = document.getElementById('line3');
+            
+            menu.classList.toggle('hidden');
+            
+            // Simple hamburger animation
+            if(!menu.classList.contains('hidden')) {
+                l1.style.transform = 'translateY(8px) rotate(45deg)';
+                l2.style.opacity = '0';
+                l3.style.transform = 'translateY(-8px) rotate(-45deg)';
+            } else {
+                l1.style.transform = 'none';
+                l2.style.opacity = '1';
+                l3.style.transform = 'none';
+            }
+        }
+
+        // Modal Logic
+        const modal = document.getElementById('leadModal');
+        const form = document.getElementById('contactForm');
+        const successMsg = document.getElementById('successMessage');
+
+        function openModal() {
+            modal.classList.remove('hidden');
+            // Reset form state if reopened
+            form.classList.remove('hidden');
+            successMsg.classList.add('hidden');
+            form.reset();
+        }
+
+        function closeModal() {
+            modal.classList.add('hidden');
+        }
+
+        // Close modal on outside click
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        // Form Submit Handler
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const interest = document.getElementById('interest').value;
+
+            // Trigger Mailto link
+            const subject = encodeURIComponent(`New Inquiry from ${name} - ${interest}`);
+            const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nPhone: ${phone}\nInterest: ${interest}\n\nPlease reach out to me regarding...`);
+            
+            window.location.href = `mailto:info@ajnacs.com?subject=${subject}&body=${body}`;
+
+            // Show dynamic SPA success message
+            document.getElementById('confirmEmail').innerText = email;
+            form.classList.add('hidden');
+            successMsg.classList.remove('hidden');
+        }
+    </script>
 </body>
 </html>
