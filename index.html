@@ -23,11 +23,16 @@
                         brand: ['"Quintessential"', '"Apple Chancery"', 'cursive'],
                     },
                     colors: {
+                        // The 4 Core Google-Inspired Logo Colors
+                        gblue: '#4285F4',
+                        gred: '#EA4335',
+                        gyellow: '#FBBC05',
+                        ggreen: '#34A853',
+                        // Corporate Anchor Color
                         ajna: {
+                            dark: '#0F265C',
                             blue: '#0F265C',
-                            red: '#E1251B',
-                            yellow: '#F3A92A',
-                            green: '#7CC242'
+                            red: '#E1251B'
                         },
                         social: {
                             youtube: '#FF0000',
@@ -35,16 +40,12 @@
                             medium: '#000000',
                             instagram: '#E1306C',
                             substack: '#FF6719',
-                            bluesky: '#0085ff',
-                            discord: '#5865F2',
-                            podcast: '#8B5CF6'
+                            bluesky: '#0085ff'
                         }
-                    },
-                    backgroundImage: {
-                        'grid-pattern': "url('data:image/svg+xml,%3Csvg width=\\'40\\' height=\\'40\\' viewBox=\\'0 0 40 40\\' xmlns=\\'http://www.w3.org/2000/svg\\'%3E%3Cpath d=\\'M0 0h40v40H0V0zm1 1h38v38H1V1z\\' fill=\\'%23e2e8f0\\' fill-opacity=\\'0.6\\' fill-rule=\\'evenodd\\'/%3E%3C/svg%3E')",
                     },
                     animation: {
                         'blob': 'blob 10s infinite',
+                        'scroll-fast': 'scroll 35s linear infinite',
                     },
                     keyframes: {
                         blob: {
@@ -52,6 +53,10 @@
                             '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
                             '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
                             '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        },
+                        scroll: {
+                            '0%': { transform: 'translateX(0)' },
+                            '100%': { transform: 'translateX(-50%)' },
                         }
                     }
                 }
@@ -63,25 +68,54 @@
         body {
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
-            background-color: #f8fafc; /* Light slate 50 */
-            color: #475569; /* Slate 600 */
+            background-color: #ffffff; 
+            color: #475569;
+        }
+
+        /* --- 4-COLOR GRADIENT UTILITIES --- */
+        .bg-google-gradient {
+            background: linear-gradient(90deg, #4285F4, #EA4335, #FBBC05, #34A853);
+        }
+        .text-google-gradient {
+            background: linear-gradient(90deg, #4285F4, #EA4335, #FBBC05, #34A853);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* --- CSS BACKGROUND PATTERNS --- */
+        .bg-pattern-grid {
+            background-image: url('data:image/svg+xml,%3Csvg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath d="M0 0h40v40H0V0zm1 1h38v38H1V1z" fill="%23e2e8f0" fill-opacity="0.6" fill-rule="evenodd"/%3E%3C/svg%3E');
+        }
+        .bg-pattern-dots {
+            background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+            background-size: 24px 24px;
+            background-color: #f8fafc;
+        }
+        .bg-pattern-stripes {
+            background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(15, 38, 92, 0.02) 10px, rgba(15, 38, 92, 0.02) 20px);
+            background-color: #ffffff;
         }
 
         /* Light Glassmorphism Header */
         .glass-header {
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(16px);
             border-bottom: 1px solid rgba(0, 0, 0, 0.05);
         }
 
-        /* Nav Link Underline Animation */
+        /* Hot Red Brand Glow */
+        .text-glow-hot {
+            text-shadow: 0 0 20px rgba(225, 37, 27, 0.4);
+        }
+
+        /* Nav Link Underline */
         .nav-link { position: relative; }
         .nav-link::after {
-            content: '';
-            position: absolute;
+            content: ''; position: absolute;
             width: 0; height: 2px;
             bottom: -4px; left: 0;
-            background-color: #E1251B;
+            background: linear-gradient(90deg, #4285F4, #EA4335);
             transition: width 0.3s ease-in-out;
             border-radius: 2px;
         }
@@ -96,19 +130,21 @@
         }
         .tech-card:hover {
             transform: translateY(-5px);
-            border-color: rgba(225, 37, 27, 0.2);
-            box-shadow: 0 20px 25px -5px rgba(225, 37, 27, 0.1), 0 10px 10px -5px rgba(225, 37, 27, 0.04);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
         }
 
-        /* Social Card Hover Effects */
-        .social-card {
-            transition: all 0.3s ease;
-        }
-        .social-card:hover {
-            transform: translateY(-4px);
+        /* Dark Blue Tech Marquee Pill Hover */
+        .tech-pill { transition: all 0.3s ease; }
+        .tech-pill:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
         }
 
-        /* Image Carousel Styles */
+        /* Social Card */
+        .social-card { transition: all 0.3s ease; }
+        .social-card:hover { transform: translateY(-4px); }
+
+        /* Carousels */
         .carousel-container { position: relative; overflow: hidden; }
         .carousel-slide {
             position: absolute; top: 0; left: 0;
@@ -118,10 +154,7 @@
         }
         .carousel-slide.active { opacity: 1; z-index: 10; }
 
-        /* Content Carousel Styles (Grid Stacking Technique) */
-        .content-carousel-container {
-            display: grid;
-        }
+        .content-carousel-container { display: grid; }
         .content-slide {
             grid-area: 1 / 1;
             opacity: 0;
@@ -131,29 +164,17 @@
             z-index: 0;
         }
         .content-slide.active {
-            opacity: 1;
-            transform: translateY(0);
-            pointer-events: auto;
-            z-index: 10;
+            opacity: 1; transform: translateY(0);
+            pointer-events: auto; z-index: 10;
         }
 
-        /* Infinite Scrolling Marquee */
+        /* Infinite Scrolling (With padding to prevent hover cutoff) */
         .scrolling-wrapper {
-            overflow: hidden;
-            white-space: nowrap;
-            display: flex;
-            align-items: center;
-            width: 100%;
+            overflow: hidden; white-space: nowrap;
+            display: flex; align-items: center; width: 100%;
+            padding: 1rem 0;
         }
-        .scrolling-content {
-            display: flex;
-            animation: scroll 40s linear infinite;
-        }
-        @keyframes scroll {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
-        .scrolling-wrapper:hover .scrolling-content {
+        .scrolling-wrapper:hover .animate-scroll-fast {
             animation-play-state: paused;
         }
 
@@ -171,36 +192,36 @@
 
         .animation-delay-2000 { animation-delay: 2s; }
         .animation-delay-4000 { animation-delay: 4s; }
+        .animation-delay-6000 { animation-delay: 6s; }
 
         #leadModal { transition: opacity 0.3s ease; }
         #leadModal.hidden { opacity: 0; pointer-events: none; }
     </style>
 </head>
-<body class="bg-slate-50 bg-grid-pattern font-sans selection:bg-ajna-red selection:text-white">
+<body class="bg-slate-50 font-sans selection:bg-gblue selection:text-white">
 
     <!-- DYNAMIC STICKY HEADER -->
     <header class="fixed w-full top-0 z-50 transition-all duration-500 ease-in-out bg-transparent py-4 border-b border-transparent" id="header">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center transition-all duration-500" id="header-container">
                 
-                <!-- Logo & Brand -->
+                <!-- Logo & Brand (Super-Hot Red restored) -->
                 <a href="#" class="flex items-center gap-3 sm:gap-4 group">
                     <div class="bg-white p-2 rounded-xl border border-slate-200 group-hover:border-ajna-red/40 transition-colors shadow-sm">
                         <img src="images/ajna-logo.png" alt="Ajna Consulting Services" class="w-10 h-10 md:w-14 md:h-14 object-contain transition-transform duration-300 group-hover:scale-105" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'48\' height=\'48\' viewBox=\'0 0 48 48\' fill=\'none\' stroke=\'%23E1251B\' stroke-width=\'2\'><rect width=\'40\' height=\'40\' x=\'4\' y=\'4\' rx=\'4\'/><path d=\'M12 24l12-12 12 12-12 12z\'/></svg>'">
                     </div>
                     <div class="flex flex-col justify-center">
-                        <span class="font-brand text-2xl md:text-3xl lg:text-4xl text-ajna-red font-bold leading-none tracking-tight transition-all duration-300">Ajna Consulting Services</span>
+                        <span class="font-brand text-2xl md:text-3xl lg:text-4xl text-ajna-red font-bold leading-none tracking-tight transition-all duration-300 text-glow-hot">Ajna Consulting Services</span>
                     </div>
                 </a>
 
                 <!-- Desktop Nav -->
                 <nav class="hidden lg:flex items-center gap-5 xl:gap-8">
-                    <a href="#about" class="nav-link font-heading text-sm font-semibold text-slate-700 hover:text-ajna-red transition-colors">Our DNA</a>
-                    <a href="#consulting" class="nav-link font-heading text-sm font-semibold text-slate-700 hover:text-ajna-red transition-colors">Consulting</a>
-                    <a href="#ai-world" class="nav-link font-heading text-sm font-semibold text-slate-700 hover:text-ajna-red transition-colors">AI World</a>
-                    <a href="#training" class="nav-link font-heading text-sm font-semibold text-slate-700 hover:text-ajna-red transition-colors">Training</a>
-                    <a href="#community" class="nav-link font-heading text-sm font-semibold text-slate-700 hover:text-ajna-red transition-colors">Community</a>
-                    <button onclick="openModal()" class="font-heading bg-gradient-to-r from-ajna-red to-red-700 text-white px-6 xl:px-7 py-2.5 rounded-lg text-sm font-bold hover:from-red-600 hover:to-red-800 transition-all shadow-md hover:shadow-lg hover:shadow-red-500/30 transform hover:-translate-y-0.5">
+                    <a href="#about" class="nav-link font-heading text-sm font-semibold text-slate-700 hover:text-gblue transition-colors">Our DNA</a>
+                    <a href="#consulting" class="nav-link font-heading text-sm font-semibold text-slate-700 hover:text-gred transition-colors">Consulting</a>
+                    <a href="#ai-world" class="nav-link font-heading text-sm font-semibold text-slate-700 hover:text-gyellow transition-colors">AI World</a>
+                    <a href="#training" class="nav-link font-heading text-sm font-semibold text-slate-700 hover:text-ggreen transition-colors">Training</a>
+                    <button onclick="openModal()" class="font-heading bg-gblue text-white px-6 xl:px-7 py-2.5 rounded-lg text-sm font-bold hover:bg-blue-600 transition-all shadow-md hover:shadow-lg hover:shadow-gblue/30 transform hover:-translate-y-0.5">
                         Engage Our Team
                     </button>
                 </nav>
@@ -217,99 +238,100 @@
         <!-- Mobile Nav Dropdown -->
         <div id="mobileMenu" class="hidden lg:hidden bg-white/95 backdrop-blur-xl border-t border-slate-100 absolute w-full shadow-2xl mt-4 pb-4">
             <div class="flex flex-col px-4 py-4 gap-2">
-                <a href="#about" class="font-heading text-base font-semibold text-slate-700 p-3 hover:bg-slate-50 hover:text-ajna-red rounded-lg transition-colors" onclick="toggleMobileMenu()">Our DNA</a>
-                <a href="#consulting" class="font-heading text-base font-semibold text-slate-700 p-3 hover:bg-slate-50 hover:text-ajna-red rounded-lg transition-colors" onclick="toggleMobileMenu()">Enterprise Consulting</a>
-                <a href="#ai-world" class="font-heading text-base font-semibold text-slate-700 p-3 hover:bg-slate-50 hover:text-ajna-red rounded-lg transition-colors" onclick="toggleMobileMenu()">AI World</a>
-                <a href="#training" class="font-heading text-base font-semibold text-slate-700 p-3 hover:bg-slate-50 hover:text-ajna-red rounded-lg transition-colors" onclick="toggleMobileMenu()">Corporate Training</a>
-                <a href="#community" class="font-heading text-base font-semibold text-slate-700 p-3 hover:bg-slate-50 hover:text-ajna-red rounded-lg transition-colors" onclick="toggleMobileMenu()">Knowledge Sharing</a>
-                <button onclick="openModal(); toggleMobileMenu();" class="w-full mt-2 font-heading bg-gradient-to-r from-ajna-red to-red-700 text-white px-6 py-4 rounded-lg text-center font-bold shadow-md">
+                <a href="#about" class="font-heading text-base font-semibold text-slate-700 p-3 hover:bg-slate-50 hover:text-gblue rounded-lg transition-colors" onclick="toggleMobileMenu()">Our DNA</a>
+                <a href="#consulting" class="font-heading text-base font-semibold text-slate-700 p-3 hover:bg-slate-50 hover:text-gred rounded-lg transition-colors" onclick="toggleMobileMenu()">Enterprise Consulting</a>
+                <a href="#ai-world" class="font-heading text-base font-semibold text-slate-700 p-3 hover:bg-slate-50 hover:text-gyellow rounded-lg transition-colors" onclick="toggleMobileMenu()">AI World</a>
+                <a href="#training" class="font-heading text-base font-semibold text-slate-700 p-3 hover:bg-slate-50 hover:text-ggreen rounded-lg transition-colors" onclick="toggleMobileMenu()">Corporate Training</a>
+                <a href="#community" class="font-heading text-base font-semibold text-slate-700 p-3 hover:bg-slate-50 hover:text-gblue rounded-lg transition-colors" onclick="toggleMobileMenu()">Knowledge Sharing</a>
+                <button onclick="openModal(); toggleMobileMenu();" class="w-full mt-2 font-heading bg-gblue text-white px-6 py-4 rounded-lg text-center font-bold shadow-md">
                     Engage Our Team
                 </button>
             </div>
         </div>
     </header>
 
-    <!-- CLEAN, MODERN HERO SECTION (With 3-Slide Content Carousel) -->
-    <section class="relative min-h-[90vh] flex items-center pt-24 overflow-hidden bg-slate-50">
-        <!-- Abstract CSS Background -->
+    <!-- HERO SECTION (With 4-Color Blobs & Carousel) -->
+    <section class="relative min-h-[90vh] flex items-center pt-24 overflow-hidden bg-slate-50 bg-pattern-grid">
+        <!-- 4-Color Animated Background Blobs -->
         <div class="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0">
-            <div class="absolute top-0 -left-4 w-72 h-72 bg-ajna-blue/10 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob"></div>
-            <div class="absolute top-0 -right-4 w-72 h-72 bg-ajna-red/10 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-2000"></div>
-            <div class="absolute -bottom-8 left-20 w-72 h-72 bg-ajna-yellow/10 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-4000"></div>
-            <div class="absolute inset-0 bg-white/40 backdrop-blur-[2px]"></div>
+            <div class="absolute top-10 -left-10 w-72 h-72 bg-gblue rounded-full mix-blend-multiply filter blur-[100px] opacity-20 animate-blob"></div>
+            <div class="absolute top-0 -right-4 w-72 h-72 bg-gred rounded-full mix-blend-multiply filter blur-[100px] opacity-20 animate-blob animation-delay-2000"></div>
+            <div class="absolute -bottom-8 left-20 w-72 h-72 bg-gyellow rounded-full mix-blend-multiply filter blur-[100px] opacity-20 animate-blob animation-delay-4000"></div>
+            <div class="absolute -bottom-10 right-20 w-72 h-72 bg-ggreen rounded-full mix-blend-multiply filter blur-[100px] opacity-20 animate-blob animation-delay-6000"></div>
+            <div class="absolute inset-0 bg-white/40 backdrop-blur-[1px]"></div>
         </div>
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full py-20">
             <!-- Content Carousel Container -->
             <div class="content-carousel-container max-w-4xl" id="heroContentCarousel">
                 
-                <!-- Hero Slide 1: Enterprise Architecture -->
+                <!-- Hero Slide 1: Enterprise Architecture (Blue Theme) -->
                 <div class="content-slide active">
-                    <div class="inline-flex items-center gap-2 border border-ajna-red/20 bg-ajna-red/5 px-4 py-2 rounded-full text-ajna-red text-xs font-bold tracking-widest uppercase mb-8 backdrop-blur-md">
-                        <span class="w-2 h-2 rounded-full bg-ajna-red animate-pulse"></span>
+                    <div class="inline-flex items-center gap-2 border border-gblue/20 bg-gblue/5 px-4 py-2 rounded-full text-gblue text-xs font-bold tracking-widest uppercase mb-8 backdrop-blur-md shadow-sm">
+                        <span class="w-2 h-2 rounded-full bg-gblue animate-pulse"></span>
                         Next-Gen Enterprise Architecture
                     </div>
-                    <h1 class="font-heading text-5xl md:text-6xl lg:text-7xl font-extrabold text-slate-900 leading-[1.15] mb-8 tracking-tight">
+                    <h1 class="font-heading text-5xl md:text-6xl lg:text-7xl font-extrabold text-slate-900 leading-[1.15] mb-8 tracking-tight drop-shadow-sm">
                         Engineering the <br>
-                        <span class="gradient-text">Self-Healing</span> Enterprise.
+                        <span class="text-google-gradient">Self-Healing</span> Enterprise.
                     </h1>
                     <p class="text-lg md:text-xl text-slate-600 mb-10 max-w-2xl leading-relaxed font-normal">
                         Ajna Consulting Services is an elite collective of cloud architects and technical educators. We decouple legacy constraints, enforce zero-trust governance, and empower your workforce to scale systems globally.
                     </p>
                     <div class="flex flex-col sm:flex-row gap-4">
-                        <a href="#consulting" class="font-heading bg-gradient-to-r from-ajna-red to-red-700 text-white px-8 py-4 rounded-lg font-bold hover:from-red-600 hover:to-red-800 transition-all shadow-lg hover:shadow-xl hover:shadow-red-500/30 flex justify-center items-center gap-2 group transform hover:-translate-y-0.5">
+                        <a href="#consulting" class="font-heading bg-gblue text-white px-8 py-4 rounded-lg font-bold hover:bg-blue-600 transition-all shadow-lg hover:shadow-xl hover:shadow-gblue/30 flex justify-center items-center gap-2 group transform hover:-translate-y-0.5">
                             Explore Architecture
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transform group-hover:translate-x-1 transition-transform" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
                         </a>
-                        <button onclick="openModal()" class="font-heading border border-slate-300 bg-white text-slate-700 px-8 py-4 rounded-lg font-semibold hover:bg-slate-50 hover:border-ajna-blue hover:text-ajna-blue transition-colors text-center shadow-sm">
+                        <button onclick="openModal()" class="font-heading border border-slate-300 bg-white text-slate-700 px-8 py-4 rounded-lg font-semibold hover:bg-slate-50 hover:border-gblue hover:text-gblue transition-colors text-center shadow-sm">
                             Engage Our Team
                         </button>
                     </div>
                 </div>
 
-                <!-- Hero Slide 2: AI World -->
+                <!-- Hero Slide 2: AI World (Red Theme) -->
                 <div class="content-slide">
-                    <div class="inline-flex items-center gap-2 border border-ajna-blue/30 bg-ajna-blue/10 px-4 py-2 rounded-full text-ajna-blue text-xs font-bold tracking-widest uppercase mb-8 backdrop-blur-md">
-                        <span class="w-2 h-2 rounded-full bg-ajna-blue animate-pulse"></span>
+                    <div class="inline-flex items-center gap-2 border border-gred/20 bg-gred/5 px-4 py-2 rounded-full text-gred text-xs font-bold tracking-widest uppercase mb-8 backdrop-blur-md shadow-sm">
+                        <span class="w-2 h-2 rounded-full bg-gred animate-pulse"></span>
                         AI World & Machine Learning
                     </div>
-                    <h1 class="font-heading text-5xl md:text-6xl lg:text-7xl font-extrabold text-slate-900 leading-[1.15] mb-8 tracking-tight">
+                    <h1 class="font-heading text-5xl md:text-6xl lg:text-7xl font-extrabold text-slate-900 leading-[1.15] mb-8 tracking-tight drop-shadow-sm">
                         Pioneering the <br>
-                        <span class="gradient-text-alt">AI World.</span>
+                        <span class="text-google-gradient">AI World.</span>
                     </h1>
                     <p class="text-lg md:text-xl text-slate-600 mb-10 max-w-2xl leading-relaxed font-normal">
                         Seamlessly embed Agentic AI frameworks, robust MLOps, and predictive machine learning models into your enterprise systems. We bridge the gap between AI experimentation and production-grade ROI.
                     </p>
                     <div class="flex flex-col sm:flex-row gap-4">
-                        <a href="#ai-world" class="font-heading bg-gradient-to-r from-ajna-blue to-blue-800 text-white px-8 py-4 rounded-lg font-bold hover:from-blue-700 hover:to-blue-900 transition-all shadow-lg hover:shadow-xl hover:shadow-blue-500/30 flex justify-center items-center gap-2 group transform hover:-translate-y-0.5">
+                        <a href="#ai-world" class="font-heading bg-gred text-white px-8 py-4 rounded-lg font-bold hover:bg-red-600 transition-all shadow-lg hover:shadow-xl hover:shadow-gred/30 flex justify-center items-center gap-2 group transform hover:-translate-y-0.5">
                             Explore AI Integration
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transform group-hover:translate-x-1 transition-transform" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
                         </a>
-                        <button onclick="openModal()" class="font-heading border border-slate-300 bg-white text-slate-700 px-8 py-4 rounded-lg font-semibold hover:bg-slate-50 hover:border-ajna-yellow hover:text-ajna-yellow transition-colors text-center shadow-sm">
+                        <button onclick="openModal()" class="font-heading border border-slate-300 bg-white text-slate-700 px-8 py-4 rounded-lg font-semibold hover:bg-slate-50 hover:border-gred hover:text-gred transition-colors text-center shadow-sm">
                             Engage Our Team
                         </button>
                     </div>
                 </div>
 
-                <!-- Hero Slide 3: Expert-Led Training -->
+                <!-- Hero Slide 3: Expert-Led Training (Green Theme) -->
                 <div class="content-slide">
-                    <div class="inline-flex items-center gap-2 border border-ajna-yellow/40 bg-ajna-yellow/10 px-4 py-2 rounded-full text-yellow-600 text-xs font-bold tracking-widest uppercase mb-8 backdrop-blur-md">
-                        <span class="w-2 h-2 rounded-full bg-ajna-yellow animate-pulse"></span>
+                    <div class="inline-flex items-center gap-2 border border-ggreen/30 bg-ggreen/5 px-4 py-2 rounded-full text-ggreen text-xs font-bold tracking-widest uppercase mb-8 backdrop-blur-md shadow-sm">
+                        <span class="w-2 h-2 rounded-full bg-ggreen animate-pulse"></span>
                         Expert-Led Enablement
                     </div>
-                    <h1 class="font-heading text-5xl md:text-6xl lg:text-7xl font-extrabold text-slate-900 leading-[1.15] mb-8 tracking-tight">
+                    <h1 class="font-heading text-5xl md:text-6xl lg:text-7xl font-extrabold text-slate-900 leading-[1.15] mb-8 tracking-tight drop-shadow-sm">
                         World-Class Enterprise <br>
-                        <span class="gradient-text">IT Training.</span>
+                        <span class="text-google-gradient">IT Training.</span>
                     </h1>
                     <p class="text-lg md:text-xl text-slate-600 mb-10 max-w-2xl leading-relaxed font-normal">
                         Empower your workforce with immersive, hands-on technical training. AjnaCS delivers custom-tailored curriculums across Cloud Native architectures, modern data ecosystems, and core Oracle stacks.
                     </p>
                     <div class="flex flex-col sm:flex-row gap-4">
-                        <a href="#training" class="font-heading bg-gradient-to-r from-ajna-yellow to-yellow-600 text-white px-8 py-4 rounded-lg font-bold hover:from-yellow-500 hover:to-yellow-700 transition-all shadow-lg hover:shadow-xl hover:shadow-yellow-500/30 flex justify-center items-center gap-2 group transform hover:-translate-y-0.5">
+                        <a href="#training" class="font-heading bg-ggreen text-white px-8 py-4 rounded-lg font-bold hover:bg-green-600 transition-all shadow-lg hover:shadow-xl hover:shadow-ggreen/30 flex justify-center items-center gap-2 group transform hover:-translate-y-0.5">
                             Explore Training
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transform group-hover:translate-x-1 transition-transform" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
                         </a>
-                        <button onclick="openModal()" class="font-heading border border-slate-300 bg-white text-slate-700 px-8 py-4 rounded-lg font-semibold hover:bg-slate-50 hover:border-ajna-red hover:text-ajna-red transition-colors text-center shadow-sm">
+                        <button onclick="openModal()" class="font-heading border border-slate-300 bg-white text-slate-700 px-8 py-4 rounded-lg font-semibold hover:bg-slate-50 hover:border-ggreen hover:text-ggreen transition-colors text-center shadow-sm">
                             Engage Our Team
                         </button>
                     </div>
@@ -319,57 +341,78 @@
         </div>
     </section>
 
-    <!-- WIDE SPECTRUM TECH STACK MARQUEE -->
-    <div class="border-y border-slate-200 bg-white/80 backdrop-blur-md py-6 relative z-10 shadow-sm overflow-hidden">
-        <div class="scrolling-wrapper">
-            <div class="scrolling-content gap-12 px-6 items-center">
-                <!-- Set 1 -->
-                <span class="font-heading text-lg font-bold text-slate-700">AWS</span>
-                <span class="font-heading text-lg font-bold text-slate-700">Azure</span>
-                <span class="font-heading text-lg font-bold text-slate-700">Google Cloud</span>
-                <span class="font-heading text-lg font-bold text-slate-700">Oracle OCI</span>
-                <span class="font-heading text-lg font-bold text-slate-700">Kubernetes</span>
-                <span class="font-heading text-lg font-bold text-slate-700">Docker</span>
-                <span class="font-heading text-lg font-bold text-slate-700">WebLogic</span>
-                <span class="font-heading text-lg font-bold text-slate-700">Oracle FMW</span>
-                <span class="font-heading text-lg font-bold text-slate-700">Java EE</span>
-                <span class="font-heading text-lg font-bold text-slate-700">Spring Boot</span>
-                <span class="font-heading text-lg font-bold text-slate-700">Python</span>
-                <span class="font-heading text-lg font-bold text-slate-700">React</span>
-                <span class="font-heading text-lg font-bold text-slate-700">Hadoop</span>
-                <span class="font-heading text-lg font-bold text-slate-700">Apache Spark</span>
-                <span class="font-heading text-lg font-bold text-slate-700">OpenTelemetry</span>
-                <span class="font-heading text-lg font-bold text-slate-700">Prometheus</span>
-                <span class="font-heading text-lg font-bold text-slate-700">Zero-Trust IAM</span>
-                
-                <!-- Duplicate Set 1 for seamless scroll -->
-                <span class="font-heading text-lg font-bold text-slate-700">AWS</span>
-                <span class="font-heading text-lg font-bold text-slate-700">Azure</span>
-                <span class="font-heading text-lg font-bold text-slate-700">Google Cloud</span>
-                <span class="font-heading text-lg font-bold text-slate-700">Oracle OCI</span>
-                <span class="font-heading text-lg font-bold text-slate-700">Kubernetes</span>
-                <span class="font-heading text-lg font-bold text-slate-700">Docker</span>
-                <span class="font-heading text-lg font-bold text-slate-700">WebLogic</span>
-                <span class="font-heading text-lg font-bold text-slate-700">Oracle FMW</span>
-                <span class="font-heading text-lg font-bold text-slate-700">Java EE</span>
-                <span class="font-heading text-lg font-bold text-slate-700">Spring Boot</span>
-                <span class="font-heading text-lg font-bold text-slate-700">Python</span>
-                <span class="font-heading text-lg font-bold text-slate-700">React</span>
-                <span class="font-heading text-lg font-bold text-slate-700">Hadoop</span>
-                <span class="font-heading text-lg font-bold text-slate-700">Apache Spark</span>
-                <span class="font-heading text-lg font-bold text-slate-700">OpenTelemetry</span>
-                <span class="font-heading text-lg font-bold text-slate-700">Prometheus</span>
-                <span class="font-heading text-lg font-bold text-slate-700">Zero-Trust IAM</span>
+    <!-- ELEVATED WIDE SPECTRUM TECH STACK MARQUEE (Deep Blue Vibrant Background) -->
+    <div class="relative z-20 shadow-[0_10px_30px_-10px_rgba(15,38,92,0.6)] overflow-hidden border-b border-ajna-dark">
+        <div class="h-1 w-full bg-google-gradient"></div> <!-- 4-Color Highlight Bar -->
+        <div class="bg-gradient-to-r from-ajna-blue via-[#17387d] to-ajna-blue py-6">
+            <div class="scrolling-wrapper">
+                <div class="scrolling-content animate-scroll-fast gap-6 px-6 items-center flex">
+                    
+                    <!-- Tech Pill Array - Glass Effect with Google Color Hovers -->
+                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gblue">Generative AI</div>
+                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gred">AWS</div>
+                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gyellow">Azure</div>
+                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-ggreen">Google Cloud</div>
+                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gblue">Kubernetes</div>
+                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gred">Docker</div>
+                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gyellow">Terraform</div>
+                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-ggreen">Ansible</div>
+                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gblue">LLMs</div>
+                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gred">PyTorch</div>
+                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gyellow">Apache Kafka</div>
+                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-ggreen">Snowflake</div>
+                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gblue">WebLogic</div>
+                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gred">Oracle FMW</div>
+                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gyellow">Java EE</div>
+                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-ggreen">Spring Boot</div>
+                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gblue">Python</div>
+                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gred">React</div>
+                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gyellow">PostgreSQL</div>
+                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-ggreen">Redis</div>
+                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gblue">Hadoop</div>
+                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gred">Apache Spark</div>
+                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gyellow">OpenTelemetry</div>
+                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-ggreen">Zero-Trust IAM</div>
+                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gblue">FinOps</div>
+
+                    <!-- Duplicate for seamless scroll -->
+                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gblue">Generative AI</div>
+                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gred">AWS</div>
+                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gyellow">Azure</div>
+                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-ggreen">Google Cloud</div>
+                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gblue">Kubernetes</div>
+                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gred">Docker</div>
+                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gyellow">Terraform</div>
+                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-ggreen">Ansible</div>
+                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gblue">LLMs</div>
+                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gred">PyTorch</div>
+                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gyellow">Apache Kafka</div>
+                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-ggreen">Snowflake</div>
+                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gblue">WebLogic</div>
+                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gred">Oracle FMW</div>
+                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gyellow">Java EE</div>
+                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-ggreen">Spring Boot</div>
+                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gblue">Python</div>
+                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gred">React</div>
+                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gyellow">PostgreSQL</div>
+                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-ggreen">Redis</div>
+                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gblue">Hadoop</div>
+                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gred">Apache Spark</div>
+                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gyellow">OpenTelemetry</div>
+                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-ggreen">Zero-Trust IAM</div>
+                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gblue">FinOps</div>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- ABOUT / TEAM DNA SECTION WITH SLAs -->
-    <section id="about" class="py-24 relative z-10 bg-slate-50 border-b border-slate-200">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- COMBINED DNA & WHY US SECTION -->
+    <section id="about" class="bg-pattern-dots relative z-10 border-b border-slate-200">
+        <!-- Part 1: DNA -->
+        <div class="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                 <div>
-                    <h2 class="font-heading text-ajna-red font-bold tracking-widest uppercase text-sm mb-3">Our DNA</h2>
+                    <h2 class="font-heading text-gblue font-bold tracking-widest uppercase text-sm mb-3">Our DNA</h2>
                     <h3 class="font-heading text-3xl md:text-4xl font-bold text-slate-900 mb-6">A Collective of Elite Systems Engineers.</h3>
                     <p class="text-slate-600 text-lg mb-6 leading-relaxed">
                         Ajna Consulting Services isn't just an advisory firm; we are a specialized engineering organization. Our team comprises industry veterans who have spent decades architecting, securing, and recovering mission-critical infrastructure for the world's largest financial, telecommunications, and aviation enterprises.
@@ -377,52 +420,43 @@
                     <p class="text-slate-600 text-lg mb-8 leading-relaxed">
                         We operate at the bleeding edge of the cloud ecosystem, transitioning complex legacy monolithic applications into highly distributed, event-driven microservices. We don't just hand over a strategy document—we embed with your teams to execute the code, configure the clusters, and enforce the governance.
                     </p>
-                    
-                    <!-- Updated Metrics Grid -->
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-8 border-t border-slate-200 pt-8">
-                        <div>
-                            <div class="font-heading text-4xl font-black text-slate-900 mb-2">35<span class="text-ajna-red">%</span></div>
-                            <div class="font-heading text-xs text-slate-500 font-bold uppercase tracking-wider">Faster Releases</div>
-                        </div>
-                        <div>
-                            <div class="font-heading text-4xl font-black text-slate-900 mb-2">45<span class="text-ajna-red">%</span></div>
-                            <div class="font-heading text-xs text-slate-500 font-bold uppercase tracking-wider">MTTR Reduction</div>
-                        </div>
-                        <div>
-                            <div class="font-heading text-4xl font-black text-slate-900 mb-2">25<span class="text-ajna-red">%</span></div>
-                            <div class="font-heading text-xs text-slate-500 font-bold uppercase tracking-wider">OpEx Savings</div>
-                        </div>
-                        <div>
-                            <div class="font-heading text-4xl font-black text-slate-900 mb-2">99.9<span class="text-ajna-red">%</span></div>
-                            <div class="font-heading text-xs text-slate-500 font-bold uppercase tracking-wider">Availability</div>
-                        </div>
-                    </div>
                 </div>
                 
                 <div class="relative">
-                    <div class="absolute -inset-4 bg-gradient-to-r from-ajna-blue/10 to-ajna-red/10 blur-2xl rounded-full"></div>
+                    <div class="absolute -inset-4 bg-gradient-to-r from-gblue/10 to-gred/10 blur-2xl rounded-full"></div>
                     <div class="relative bg-white border border-slate-100 rounded-2xl p-8 lg:p-10 shadow-xl">
                         <h4 class="font-heading text-2xl font-bold text-slate-900 mb-6 border-b border-slate-100 pb-4">The AjnaCS Methodology</h4>
                         <ul class="space-y-6">
+                            <!-- Color 1: Blue -->
                             <li class="flex gap-4">
-                                <div class="w-10 h-10 rounded-full bg-ajna-blue/10 flex items-center justify-center flex-shrink-0 border border-ajna-blue/20 text-ajna-blue font-bold">1</div>
+                                <div class="w-10 h-10 rounded-full bg-gblue/10 border border-gblue/20 text-gblue flex items-center justify-center flex-shrink-0 font-bold">1</div>
                                 <div>
                                     <h5 class="font-heading text-slate-900 font-bold mb-1">Assess & Audit</h5>
                                     <p class="text-sm text-slate-600">Deep-dive technical audits of existing middleware, cloud spend, and systemic bottlenecks.</p>
                                 </div>
                             </li>
+                            <!-- Color 2: Red -->
                             <li class="flex gap-4">
-                                <div class="w-10 h-10 rounded-full bg-ajna-yellow/10 flex items-center justify-center flex-shrink-0 border border-ajna-yellow/20 text-ajna-yellow font-bold">2</div>
+                                <div class="w-10 h-10 rounded-full bg-gred/10 border border-gred/20 text-gred flex items-center justify-center flex-shrink-0 font-bold">2</div>
                                 <div>
                                     <h5 class="font-heading text-slate-900 font-bold mb-1">Architect & Modernize</h5>
                                     <p class="text-sm text-slate-600">Designing highly resilient, decoupled cloud-native architectures using Kubernetes and Serverless.</p>
                                 </div>
                             </li>
+                            <!-- Color 3: Yellow -->
                             <li class="flex gap-4">
-                                <div class="w-10 h-10 rounded-full bg-ajna-green/10 flex items-center justify-center flex-shrink-0 border border-ajna-green/20 text-ajna-green font-bold">3</div>
+                                <div class="w-10 h-10 rounded-full bg-gyellow/10 border border-gyellow/20 text-gyellow flex items-center justify-center flex-shrink-0 font-bold">3</div>
                                 <div>
                                     <h5 class="font-heading text-slate-900 font-bold mb-1">Automate & Govern</h5>
                                     <p class="text-sm text-slate-600">Implementing CI/CD, MLOps, and FinOps pipelines to ensure self-sustaining operational excellence.</p>
+                                </div>
+                            </li>
+                            <!-- Color 4: Green -->
+                            <li class="flex gap-4">
+                                <div class="w-10 h-10 rounded-full bg-ggreen/10 border border-ggreen/20 text-ggreen flex items-center justify-center flex-shrink-0 font-bold">4</div>
+                                <div>
+                                    <h5 class="font-heading text-slate-900 font-bold mb-1">Educate & Empower</h5>
+                                    <p class="text-sm text-slate-600">Upskilling your workforce through expert-led training to ensure long-term operational independence.</p>
                                 </div>
                             </li>
                         </ul>
@@ -430,25 +464,88 @@
                 </div>
             </div>
         </div>
+
+        <!-- Part 2: SLA Bridge -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+            <div class="bg-white rounded-2xl shadow-xl p-8 md:p-12 relative overflow-hidden border border-slate-100">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-8 relative z-10 text-center divide-x divide-slate-100">
+                    <div>
+                        <div class="font-heading text-4xl md:text-5xl font-black text-slate-900 mb-2">35<span class="text-gblue">%</span></div>
+                        <div class="font-heading text-xs text-slate-500 font-bold uppercase tracking-wider">Faster Releases</div>
+                    </div>
+                    <div>
+                        <div class="font-heading text-4xl md:text-5xl font-black text-slate-900 mb-2">45<span class="text-gred">%</span></div>
+                        <div class="font-heading text-xs text-slate-500 font-bold uppercase tracking-wider">MTTR Reduction</div>
+                    </div>
+                    <div>
+                        <div class="font-heading text-4xl md:text-5xl font-black text-slate-900 mb-2">25<span class="text-gyellow">%</span></div>
+                        <div class="font-heading text-xs text-slate-500 font-bold uppercase tracking-wider">OpEx Savings</div>
+                    </div>
+                    <div>
+                        <div class="font-heading text-4xl md:text-5xl font-black text-slate-900 mb-2">99.9<span class="text-ggreen">%</span></div>
+                        <div class="font-heading text-xs text-slate-500 font-bold uppercase tracking-wider">Availability</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Part 3: Why Us Flow (With Cutting-Edge SVGs) -->
+        <div class="pb-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-4xl mx-auto mb-12">
+                <h2 class="font-heading text-gred font-bold tracking-widest uppercase text-sm mb-3">Why Us</h2>
+                <h3 class="font-heading text-3xl md:text-4xl font-bold text-slate-900 mb-6">Delivering Resilient, Self-Healing Enterprises.</h3>
+                <p class="text-slate-600 text-lg leading-relaxed">We combine deep technical expertise, hands-on execution, and transformational methodologies to reduce downtime, optimize costs, and empower your teams with actionable insights.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <div class="tech-card p-8 rounded-2xl text-center hover:border-gblue">
+                    <div class="w-16 h-16 mx-auto bg-gblue/10 text-gblue rounded-full flex items-center justify-center mb-6 border border-gblue/20">
+                        <!-- Modern Lightning/Flash Icon -->
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                    </div>
+                    <h4 class="font-heading text-xl font-bold text-slate-900 mb-2">Rapid Modernization</h4>
+                    <p class="text-slate-600 text-sm">Accelerating legacy transformation and cloud migration across multi-region deployments.</p>
+                </div>
+                
+                <div class="tech-card p-8 rounded-2xl text-center hover:border-gred">
+                    <div class="w-16 h-16 mx-auto bg-gred/10 text-gred rounded-full flex items-center justify-center mb-6 border border-gred/20">
+                        <!-- Modern Shield Icon -->
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+                    </div>
+                    <h4 class="font-heading text-xl font-bold text-slate-900 mb-2">Zero-Trust Security</h4>
+                    <p class="text-slate-600 text-sm">Implementing rigorous IAM and governance policies to protect critical assets.</p>
+                </div>
+                
+                <div class="tech-card p-8 rounded-2xl text-center hover:border-gyellow">
+                    <div class="w-16 h-16 mx-auto bg-gyellow/10 text-gyellow rounded-full flex items-center justify-center mb-6 border border-gyellow/20">
+                        <!-- Modern Radar/Observability Icon -->
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                    </div>
+                    <h4 class="font-heading text-xl font-bold text-slate-900 mb-2">AI Observability</h4>
+                    <p class="text-slate-600 text-sm">Proactive monitoring with predictive insights to reduce MTTR and ensure uptime.</p>
+                </div>
+
+            </div>
+        </div>
     </section>
 
     <!-- SECTION 1: CONSULTING SERVICES -->
-    <section id="consulting" class="py-24 bg-white relative border-b border-slate-200">
+    <section id="consulting" class="py-24 bg-pattern-stripes relative border-b border-slate-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
             <div class="text-center max-w-3xl mx-auto mb-16">
-                <h2 class="font-heading text-ajna-red font-bold tracking-widest uppercase text-sm mb-3">Enterprise Architecture</h2>
+                <h2 class="font-heading text-gyellow font-bold tracking-widest uppercase text-sm mb-3">Enterprise Architecture</h2>
                 <h3 class="font-heading text-3xl md:text-4xl font-bold text-slate-900 mb-6">Strategic Technology Execution.</h3>
-                <p class="text-slate-600 text-lg">We bridge the gap between business vision and technical reality. Our consulting pillars are designed to reduce technical debt, optimize capital expenditure, and drastically improve system reliability.</p>
+                <p class="text-slate-600 text-lg bg-white/80 backdrop-blur px-4 py-2 rounded-lg inline-block shadow-sm">We bridge the gap between business vision and technical reality. Our consulting pillars are designed to reduce technical debt, optimize capital expenditure, and drastically improve system reliability.</p>
             </div>
 
             <!-- Service Image Banner Carousel -->
-            <div class="w-full h-64 md:h-80 rounded-2xl overflow-hidden mb-16 relative shadow-lg group">
+            <div class="w-full h-64 md:h-80 rounded-2xl overflow-hidden mb-16 relative shadow-lg group bg-white border border-slate-200">
                 <div id="consultingCarousel" class="absolute inset-0">
                     <div class="carousel-slide active" style="background-image: url('images/service1.jpg');"></div>
                     <div class="carousel-slide" style="background-image: url('images/service2.png');"></div>
                     <div class="carousel-slide" style="background-image: url('images/service3.jpg');"></div>
-                    <div class="absolute inset-0 bg-ajna-blue mix-blend-multiply opacity-20"></div>
+                    <div class="absolute inset-0 bg-ajna-dark mix-blend-multiply opacity-20"></div>
                 </div>
                 <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
                     <span class="font-heading text-white font-bold tracking-widest uppercase text-xl md:text-2xl backdrop-blur-md bg-black/30 px-8 py-3 rounded-xl border border-white/30 shadow-lg">Architecture in Motion</span>
@@ -458,48 +555,48 @@
             <!-- Consulting Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <!-- Card 1 -->
-                <div class="tech-card p-8 rounded-2xl flex flex-col h-full relative overflow-hidden group bg-slate-50">
-                    <div class="absolute top-0 right-0 p-6 opacity-5 text-ajna-blue transform group-hover:scale-110 transition-transform">
-                        <svg class="w-32 h-32" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                <div class="tech-card p-8 rounded-2xl flex flex-col h-full relative overflow-hidden group hover:border-gblue">
+                    <div class="absolute top-0 right-0 p-6 opacity-5 text-gblue transform group-hover:scale-110 transition-transform">
+                        <svg class="w-32 h-32" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>
                     </div>
-                    <div class="w-14 h-14 bg-ajna-blue/10 rounded-xl flex items-center justify-center mb-6 border border-ajna-blue/20">
-                        <svg class="w-7 h-7 text-ajna-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7"></path></svg>
+                    <div class="w-14 h-14 bg-gblue/10 rounded-xl flex items-center justify-center mb-6 border border-gblue/20">
+                        <svg class="w-7 h-7 text-gblue" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>
                     </div>
                     <h4 class="font-heading text-2xl font-bold text-slate-900 mb-3 relative z-10">Cloud Modernization</h4>
                     <p class="text-slate-600 mb-6 flex-grow leading-relaxed relative z-10">We orchestrate multi-regional digital transformations. By decoupling monolithic legacy assets into scalable, event-driven microservices, we accelerate product release cycles by up to 35%.</p>
                 </div>
 
                 <!-- Card 2 -->
-                <div class="tech-card p-8 rounded-2xl flex flex-col h-full relative overflow-hidden group bg-slate-50">
-                    <div class="absolute top-0 right-0 p-6 opacity-5 text-ajna-green transform group-hover:scale-110 transition-transform">
-                        <svg class="w-32 h-32" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                <div class="tech-card p-8 rounded-2xl flex flex-col h-full relative overflow-hidden group hover:border-gred">
+                    <div class="absolute top-0 right-0 p-6 opacity-5 text-gred transform group-hover:scale-110 transition-transform">
+                        <svg class="w-32 h-32" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
                     </div>
-                    <div class="w-14 h-14 bg-ajna-green/10 rounded-xl flex items-center justify-center mb-6 border border-ajna-green/20">
-                        <svg class="w-7 h-7 text-ajna-green" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    <div class="w-14 h-14 bg-gred/10 rounded-xl flex items-center justify-center mb-6 border border-gred/20">
+                        <svg class="w-7 h-7 text-gred" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
                     </div>
                     <h4 class="font-heading text-2xl font-bold text-slate-900 mb-3 relative z-10">Self-Healing Systems</h4>
                     <p class="text-slate-600 mb-6 flex-grow leading-relaxed relative z-10">We build proactive systems. By deploying AI-driven observability control planes using OpenTelemetry and Prometheus, we implement predictive incident detection—securing 99.9% uptime.</p>
                 </div>
 
                 <!-- Card 3 -->
-                <div class="tech-card p-8 rounded-2xl flex flex-col h-full relative overflow-hidden group bg-slate-50">
-                    <div class="absolute top-0 right-0 p-6 opacity-5 text-ajna-yellow transform group-hover:scale-110 transition-transform">
-                         <svg class="w-32 h-32" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <div class="tech-card p-8 rounded-2xl flex flex-col h-full relative overflow-hidden group hover:border-gyellow">
+                    <div class="absolute top-0 right-0 p-6 opacity-5 text-gyellow transform group-hover:scale-110 transition-transform">
+                         <svg class="w-32 h-32" fill="none" stroke="currentColor" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
                     </div>
-                    <div class="w-14 h-14 bg-ajna-yellow/10 rounded-xl flex items-center justify-center mb-6 border border-ajna-yellow/20">
-                        <svg class="w-7 h-7 text-ajna-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <div class="w-14 h-14 bg-gyellow/10 rounded-xl flex items-center justify-center mb-6 border border-gyellow/20">
+                        <svg class="w-7 h-7 text-gyellow" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
                     </div>
                     <h4 class="font-heading text-2xl font-bold text-slate-900 mb-3 relative z-10">FinOps & Capital Efficiency</h4>
                     <p class="text-slate-600 mb-6 flex-grow leading-relaxed relative z-10">Cloud sprawl is expensive. We institutionalize FinOps frameworks to align engineering resources with business value, consistently delivering 25% year-over-year infrastructure savings.</p>
                 </div>
 
                 <!-- Card 4 -->
-                <div class="tech-card p-8 rounded-2xl flex flex-col h-full relative overflow-hidden group bg-slate-50">
-                     <div class="absolute top-0 right-0 p-6 opacity-5 text-ajna-red transform group-hover:scale-110 transition-transform">
-                         <svg class="w-32 h-32" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 12l2 2 4-4m10 0l-2-2-4 4"></path></svg>
+                <div class="tech-card p-8 rounded-2xl flex flex-col h-full relative overflow-hidden group hover:border-ggreen">
+                     <div class="absolute top-0 right-0 p-6 opacity-5 text-ggreen transform group-hover:scale-110 transition-transform">
+                         <svg class="w-32 h-32" fill="none" stroke="currentColor" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
                     </div>
-                    <div class="w-14 h-14 bg-ajna-red/10 rounded-xl flex items-center justify-center mb-6 border border-ajna-red/20">
-                        <svg class="w-7 h-7 text-ajna-red" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m10 0l-2-2-4 4"></path></svg>
+                    <div class="w-14 h-14 bg-ggreen/10 rounded-xl flex items-center justify-center mb-6 border border-ggreen/20">
+                        <svg class="w-7 h-7 text-ggreen" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
                     </div>
                     <h4 class="font-heading text-2xl font-bold text-slate-900 mb-3 relative z-10">DevOps Automation</h4>
                     <p class="text-slate-600 mb-6 flex-grow leading-relaxed relative z-10">We automate everything from infrastructure provisioning to CI/CD pipelines, enabling your engineering teams to deploy faster, safer, and with complete traceability.</p>
@@ -509,22 +606,22 @@
     </section>
 
     <!-- SECTION 2: AI WORLD -->
-    <section id="ai-world" class="py-24 bg-slate-50 relative border-b border-slate-200">
+    <section id="ai-world" class="py-24 bg-pattern-grid relative border-b border-slate-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
             <div class="text-center max-w-3xl mx-auto mb-16">
-                <h2 class="font-heading text-ajna-blue font-bold tracking-widest uppercase text-sm mb-3">AI World Integration</h2>
+                <h2 class="font-heading text-ggreen font-bold tracking-widest uppercase text-sm mb-3">AI World Integration</h2>
                 <h3 class="font-heading text-3xl md:text-4xl font-bold text-slate-900 mb-6">Accelerate Your Generative AI Journey.</h3>
-                <p class="text-slate-600 text-lg">Seamlessly embed Agentic AI frameworks, robust MLOps, and predictive machine learning models into your enterprise systems. We bridge the gap between AI experimentation and production-grade ROI.</p>
+                <p class="text-slate-600 text-lg bg-white/80 backdrop-blur px-4 py-2 rounded-lg inline-block shadow-sm">Seamlessly embed Agentic AI frameworks, robust MLOps, and predictive machine learning models into your enterprise systems. We bridge the gap between AI experimentation and production-grade ROI.</p>
             </div>
 
             <!-- Service Image Banner Carousel -->
-            <div class="w-full h-64 md:h-80 rounded-2xl overflow-hidden mb-16 relative shadow-lg group">
+            <div class="w-full h-64 md:h-80 rounded-2xl overflow-hidden mb-16 relative shadow-lg group bg-white border border-slate-200">
                 <div id="aiCarousel" class="absolute inset-0">
                     <div class="carousel-slide active" style="background-image: url('images/pexels-googledeepmind-25626446.jpg');"></div>
                     <div class="carousel-slide" style="background-image: url('images/service5.png');"></div>
                     <div class="carousel-slide" style="background-image: url('images/service7.png');"></div>
-                    <div class="absolute inset-0 bg-ajna-blue mix-blend-multiply opacity-10"></div>
+                    <div class="absolute inset-0 bg-ajna-dark mix-blend-multiply opacity-10"></div>
                 </div>
                 <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
                     <span class="font-heading text-white font-bold tracking-widest uppercase text-xl md:text-2xl backdrop-blur-md bg-black/40 px-8 py-3 rounded-xl border border-white/30 shadow-lg">Intelligence at Scale</span>
@@ -533,23 +630,31 @@
 
             <!-- AI Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- AI Card 1 -->
-                <div class="tech-card p-6 rounded-2xl flex flex-col h-full bg-white">
+                <div class="tech-card p-6 rounded-2xl flex flex-col h-full hover:border-gblue">
+                    <div class="w-10 h-10 bg-gblue/10 text-gblue rounded-lg flex items-center justify-center mb-4 border border-gblue/20">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>
+                    </div>
                     <h4 class="font-heading text-lg font-bold text-slate-900 mb-3">Agentic AI & Automation</h4>
                     <p class="text-sm text-slate-600">Deploy autonomous AI agents capable of complex decision-making and dynamic workflow automation across your business units.</p>
                 </div>
-                <!-- AI Card 2 -->
-                <div class="tech-card p-6 rounded-2xl flex flex-col h-full bg-white">
+                <div class="tech-card p-6 rounded-2xl flex flex-col h-full hover:border-gred">
+                    <div class="w-10 h-10 bg-gred/10 text-gred rounded-lg flex items-center justify-center mb-4 border border-gred/20">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7-4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+                    </div>
                     <h4 class="font-heading text-lg font-bold text-slate-900 mb-3">MLOps & Data Pipelines</h4>
                     <p class="text-sm text-slate-600">Streamline your machine learning lifecycles with robust CI/CD pipelines, version control, and stringent model tracking.</p>
                 </div>
-                <!-- AI Card 3 -->
-                <div class="tech-card p-6 rounded-2xl flex flex-col h-full bg-white">
+                <div class="tech-card p-6 rounded-2xl flex flex-col h-full hover:border-gyellow">
+                    <div class="w-10 h-10 bg-gyellow/10 text-gyellow rounded-lg flex items-center justify-center mb-4 border border-gyellow/20">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                    </div>
                     <h4 class="font-heading text-lg font-bold text-slate-900 mb-3">Predictive Analytics</h4>
                     <p class="text-sm text-slate-600">Leverage your big data using Apache Spark, Hadoop, and modern data ecosystems to anticipate market trends.</p>
                 </div>
-                <!-- AI Card 4 -->
-                <div class="tech-card p-6 rounded-2xl flex flex-col h-full bg-white border-b-4 border-b-ajna-red">
+                <div class="tech-card p-6 rounded-2xl flex flex-col h-full hover:border-ggreen">
+                    <div class="w-10 h-10 bg-ggreen/10 text-ggreen rounded-lg flex items-center justify-center mb-4 border border-ggreen/20">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    </div>
                     <h4 class="font-heading text-lg font-bold text-slate-900 mb-3">AI Governance & Trust</h4>
                     <p class="text-sm text-slate-600">Ensure your AI models and data lakes comply with industry regulations through strict data classification and IAM policies.</p>
                 </div>
@@ -558,26 +663,26 @@
     </section>
 
     <!-- SECTION 3: TRAINING SERVICES -->
-    <section id="training" class="py-24 bg-white relative border-b border-slate-200">
+    <section id="training" class="py-24 bg-pattern-stripes relative border-b border-slate-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
             <div class="flex flex-col lg:flex-row justify-between items-end mb-12 gap-8">
                 <div class="max-w-3xl">
-                    <h2 class="font-heading text-ajna-yellow font-bold tracking-widest uppercase text-sm mb-3">Corporate & Individual Enablement</h2>
+                    <h2 class="font-heading text-gblue font-bold tracking-widest uppercase text-sm mb-3">Corporate & Individual Enablement</h2>
                     <h3 class="font-heading text-3xl md:text-4xl font-bold text-slate-900 mb-6">World-Class Tech Training.</h3>
-                    <p class="text-slate-600 text-lg">Knowledge transfer is our passion. We deliver highly-praised, custom syllabuses across Aviation, Banking, and Telco domains. Our instructors teach from active experience, not just textbooks.</p>
+                    <p class="text-slate-600 text-lg bg-white/80 backdrop-blur px-4 py-2 rounded-lg inline-block shadow-sm">Knowledge transfer is our passion. We deliver highly-praised, custom syllabuses across Aviation, Banking, and Telco domains. Our instructors teach from active experience, not just textbooks.</p>
                 </div>
-                <button onclick="openModal()" class="font-heading flex-shrink-0 bg-transparent border-2 border-ajna-red text-ajna-red hover:bg-ajna-red hover:text-white px-8 py-3 rounded-lg font-bold transition-all shadow-sm hover:shadow-md">
+                <button onclick="openModal()" class="font-heading flex-shrink-0 bg-white border-2 border-gblue text-gblue hover:bg-gblue hover:text-white px-8 py-3 rounded-lg font-bold transition-all shadow-sm hover:shadow-md">
                     Request Syllabus
                 </button>
             </div>
 
             <!-- Training Image Banner Carousel -->
-            <div class="w-full h-48 md:h-64 rounded-2xl overflow-hidden mb-16 relative shadow-lg group border border-slate-100">
+            <div class="w-full h-48 md:h-64 rounded-2xl overflow-hidden mb-16 relative shadow-lg group bg-white border border-slate-200">
                 <div id="trainingCarousel" class="absolute inset-0">
                     <div class="carousel-slide active" style="background-image: url('images/service4.jpg');"></div>
                     <div class="carousel-slide" style="background-image: url('images/service4.png');"></div>
-                    <div class="absolute inset-0 bg-ajna-red mix-blend-multiply opacity-10"></div>
+                    <div class="absolute inset-0 bg-ajna-dark mix-blend-multiply opacity-10"></div>
                 </div>
                 <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
                     <span class="font-heading text-white font-bold tracking-widest uppercase text-xl md:text-2xl backdrop-blur-md bg-black/30 px-8 py-3 rounded-xl border border-white/40 shadow-lg">Hands-on Lab Environments</span>
@@ -586,125 +691,177 @@
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <!-- Track 1 -->
-                <div class="bg-slate-50 p-8 rounded-2xl border border-slate-200 hover:border-ajna-yellow hover:shadow-md transition-all duration-300">
+                <div class="tech-card p-8 rounded-2xl flex flex-col h-full hover:border-gred">
                     <h4 class="font-heading text-xl font-bold text-slate-900 mb-4">Enterprise Middleware</h4>
                     <p class="text-sm text-slate-600 mb-6 line-clamp-3">Comprehensive deep dives into enterprise integration, high-availability setups, and core Oracle stacks.</p>
                     <ul class="text-sm text-slate-700 space-y-3 font-medium">
-                        <li class="flex items-center gap-3"><div class="w-2 h-2 rounded-full bg-ajna-yellow"></div> WebLogic 12c Admin & Tuning</li>
-                        <li class="flex items-center gap-3"><div class="w-2 h-2 rounded-full bg-ajna-yellow"></div> SOA, OSB & BPM Suite Integration</li>
-                        <li class="flex items-center gap-3"><div class="w-2 h-2 rounded-full bg-ajna-yellow"></div> Exalogic Elastic Cloud Architecture</li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-4 h-4 text-gred" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg> 
+                            WebLogic 12c Admin & Tuning
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-4 h-4 text-gred" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                            SOA, OSB & BPM Suite
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-4 h-4 text-gred" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                            Exalogic Elastic Cloud
+                        </li>
                     </ul>
                 </div>
 
                 <!-- Track 2 -->
-                <div class="bg-slate-50 p-8 rounded-2xl border border-slate-200 hover:border-ajna-blue hover:shadow-md transition-all duration-300 relative overflow-hidden">
-                    <div class="absolute top-0 right-0 bg-ajna-blue text-white text-xs font-bold px-4 py-1.5 rounded-bl-lg shadow-sm">POPULAR</div>
+                <div class="tech-card p-8 rounded-2xl flex flex-col h-full hover:border-gyellow relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-gyellow text-white text-xs font-bold px-4 py-1.5 rounded-bl-lg shadow-sm">POPULAR</div>
                     <h4 class="font-heading text-xl font-bold text-slate-900 mb-4">Cloud Native & Infra</h4>
                     <p class="text-sm text-slate-600 mb-6 line-clamp-3">Master modern deployment scalability. We teach the realities of cloud economics, networking, and containers.</p>
                     <ul class="text-sm text-slate-700 space-y-3 font-medium">
-                        <li class="flex items-center gap-3"><div class="w-2 h-2 rounded-full bg-ajna-blue"></div> AWS, Azure, GCP Foundations</li>
-                        <li class="flex items-center gap-3"><div class="w-2 h-2 rounded-full bg-ajna-blue"></div> Docker & Kubernetes (CKA Prep)</li>
-                        <li class="flex items-center gap-3"><div class="w-2 h-2 rounded-full bg-ajna-blue"></div> Enterprise Linux Administration</li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-4 h-4 text-gyellow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg> 
+                            AWS, Azure, GCP Foundations
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-4 h-4 text-gyellow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                            Docker & Kubernetes (CKA)
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-4 h-4 text-gyellow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                            Enterprise Linux Admin
+                        </li>
                     </ul>
                 </div>
 
                 <!-- Track 3 -->
-                <div class="bg-slate-50 p-8 rounded-2xl border border-slate-200 hover:border-ajna-green hover:shadow-md transition-all duration-300">
+                <div class="tech-card p-8 rounded-2xl flex flex-col h-full hover:border-ggreen">
                     <h4 class="font-heading text-xl font-bold text-slate-900 mb-4">Java EE & Full Stack</h4>
                     <p class="text-sm text-slate-600 mb-6 line-clamp-3">End-to-end software engineering. Build resilient backends and connect them to modern frontend UI frameworks.</p>
                     <ul class="text-sm text-slate-700 space-y-3 font-medium">
-                        <li class="flex items-center gap-3"><div class="w-2 h-2 rounded-full bg-ajna-green"></div> Advanced Java EE (EJB, JAX-RS)</li>
-                        <li class="flex items-center gap-3"><div class="w-2 h-2 rounded-full bg-ajna-green"></div> Spring Boot Microservices</li>
-                        <li class="flex items-center gap-3"><div class="w-2 h-2 rounded-full bg-ajna-green"></div> Modern Frontend (React/Node.js)</li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-4 h-4 text-ggreen" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg> 
+                            Advanced Java EE (EJB, JAX-RS)
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-4 h-4 text-ggreen" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                            Spring Boot Microservices
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-4 h-4 text-ggreen" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                            Modern Frontend (React/Node)
+                        </li>
                     </ul>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- INDUSTRY ACCLAIM / TESTIMONIALS (Content Carousel) -->
-    <section class="py-24 bg-slate-50 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-white to-slate-100 relative border-b border-slate-200">
-        <div class="max-w-7xl mx-auto px-4">
+    <!-- INDUSTRY ACCLAIM / TESTIMONIALS (Dark Blue Theme) -->
+    <section class="py-24 relative overflow-hidden bg-ajna-dark text-white border-b border-blue-900 bg-grid-pattern-dark">
+        <div class="max-w-7xl mx-auto px-4 relative z-10">
             <div class="text-center max-w-3xl mx-auto mb-16">
-                <h2 class="font-heading text-ajna-blue font-bold tracking-widest uppercase text-sm mb-3">Industry Acclaim</h2>
-                <h3 class="font-heading text-3xl md:text-4xl font-bold text-slate-900 mb-6">Trusted by Global Enterprises.</h3>
-                <p class="text-slate-600 text-lg">Read what our clients have to say about our consulting, migration, and training engagements.</p>
+                <h2 class="font-heading text-gred font-bold tracking-widest uppercase text-sm mb-3">Industry Acclaim</h2>
+                <h3 class="font-heading text-3xl md:text-4xl font-bold text-white mb-6">Trusted by Global Enterprises.</h3>
+                <p class="text-blue-200 text-lg">Read what our clients have to say about our consulting, migration, and training engagements.</p>
             </div>
 
             <!-- Acclaim Carousel -->
-            <div class="content-carousel-container max-w-4xl mx-auto relative h-[320px] md:h-56">
+            <div class="content-carousel-container max-w-5xl mx-auto relative h-[380px] md:h-72">
                 
                 <!-- Testimonial 1 -->
-                <div class="carousel-slide active bg-white p-8 md:p-12 rounded-2xl border border-slate-200 shadow-lg flex flex-col justify-center text-center">
-                    <div class="font-brand text-7xl md:text-8xl text-ajna-blue/10 absolute top-4 left-6 leading-none">"</div>
-                    <p class="text-slate-700 text-base md:text-lg italic mb-6 relative z-10 pt-4 leading-relaxed">"We continually receive very positive feedback about the work AjnaCS delivers. They approach every assignment with enthusiasm and deep technical expertise, ensuring flawless execution on complex enterprise architectures."</p>
+                <div class="carousel-slide active bg-slate-900/60 backdrop-blur-md p-8 md:p-12 rounded-2xl border border-white/10 shadow-2xl flex flex-col justify-center text-center">
+                    <div class="font-brand text-7xl md:text-8xl text-white/5 absolute top-4 left-6 leading-none">"</div>
+                    <p class="text-blue-100 text-base md:text-xl italic mb-6 relative z-10 pt-4 leading-relaxed">"Consistently received outstanding feedback from enterprise clients for delivering high-impact architecture solutions and exceptional technical leadership."</p>
                     <div class="flex flex-col items-center">
-                        <p class="font-heading font-bold text-slate-900 text-sm uppercase tracking-wide">Global Services Executive</p>
-                        <p class="text-xs text-slate-500 font-medium">Leading Tech Provider</p>
+                        <p class="font-heading font-bold text-white text-sm uppercase tracking-wide">Enterprise Client</p>
+                        <p class="text-xs text-gblue font-medium mt-1">Global Operations</p>
                     </div>
                 </div>
 
                 <!-- Testimonial 2 -->
-                <div class="carousel-slide bg-white p-8 md:p-12 rounded-2xl border border-slate-200 shadow-lg flex flex-col justify-center text-center">
-                    <div class="font-brand text-7xl md:text-8xl text-ajna-red/10 absolute top-4 left-6 leading-none">"</div>
-                    <p class="text-slate-700 text-base md:text-lg italic mb-6 relative z-10 pt-4 leading-relaxed">"Absolutely professional in providing solutions and working in tandem with our development team. AjnaCS was spot on in providing architectural clarity during very critical phases of our cloud migration."</p>
+                <div class="carousel-slide bg-slate-900/60 backdrop-blur-md p-8 md:p-12 rounded-2xl border border-white/10 shadow-2xl flex flex-col justify-center text-center">
+                    <div class="font-brand text-7xl md:text-8xl text-white/5 absolute top-4 left-6 leading-none">"</div>
+                    <p class="text-blue-100 text-base md:text-xl italic mb-6 relative z-10 pt-4 leading-relaxed">"Recognized for driving successful enterprise platform migrations, resolving complex technical challenges, and maintaining exceptional stakeholder confidence."</p>
                     <div class="flex flex-col items-center">
-                        <p class="font-heading font-bold text-slate-900 text-sm uppercase tracking-wide">Project Manager</p>
-                        <p class="text-xs text-slate-500 font-medium">Major Financial Institution</p>
+                        <p class="font-heading font-bold text-white text-sm uppercase tracking-wide">Project Sponsor</p>
+                        <p class="text-xs text-gred font-medium mt-1">Financial Institution</p>
                     </div>
                 </div>
 
                 <!-- Testimonial 3 -->
-                <div class="carousel-slide bg-white p-8 md:p-12 rounded-2xl border border-slate-200 shadow-lg flex flex-col justify-center text-center">
-                    <div class="font-brand text-7xl md:text-8xl text-ajna-yellow/20 absolute top-4 left-6 leading-none">"</div>
-                    <p class="text-slate-700 text-base md:text-lg italic mb-6 relative z-10 pt-4 leading-relaxed">"I highly recommend AjnaCS for enterprise courses. They have in-depth knowledge and provide profound insights into complex concepts. It was indeed a great learning experience for our entire team."</p>
+                <div class="carousel-slide bg-slate-900/60 backdrop-blur-md p-8 md:p-12 rounded-2xl border border-white/10 shadow-2xl flex flex-col justify-center text-center">
+                    <div class="font-brand text-7xl md:text-8xl text-white/5 absolute top-4 left-6 leading-none">"</div>
+                    <p class="text-blue-100 text-base md:text-xl italic mb-6 relative z-10 pt-4 leading-relaxed">"Instrumental in achieving consulting and delivery targets through strong customer engagement, hands-on execution, and relentless ownership."</p>
                     <div class="flex flex-col items-center">
-                        <p class="font-heading font-bold text-slate-900 text-sm uppercase tracking-wide">Lead Systems Engineer</p>
-                        <p class="text-xs text-slate-500 font-medium">Technology Firm</p>
+                        <p class="font-heading font-bold text-white text-sm uppercase tracking-wide">Delivery Director</p>
+                        <p class="text-xs text-gyellow font-medium mt-1">Technology Provider</p>
                     </div>
                 </div>
 
                 <!-- Testimonial 4 -->
-                <div class="carousel-slide bg-white p-8 md:p-12 rounded-2xl border border-slate-200 shadow-lg flex flex-col justify-center text-center">
-                    <div class="font-brand text-7xl md:text-8xl text-ajna-green/20 absolute top-4 left-6 leading-none">"</div>
-                    <p class="text-slate-700 text-base md:text-lg italic mb-6 relative z-10 pt-4 leading-relaxed">"The presentation skills and technical depth of the AjnaCS team are outstanding. Their training consistently exceeds expectations and thoroughly prepares teams for real-world execution."</p>
+                <div class="carousel-slide bg-slate-900/60 backdrop-blur-md p-8 md:p-12 rounded-2xl border border-white/10 shadow-2xl flex flex-col justify-center text-center">
+                    <div class="font-brand text-7xl md:text-8xl text-white/5 absolute top-4 left-6 leading-none">"</div>
+                    <p class="text-blue-100 text-base md:text-xl italic mb-6 relative z-10 pt-4 leading-relaxed">"Praised for professionalism, collaborative approach, and the ability to translate complex architecture concepts into actionable outcomes."</p>
                     <div class="flex flex-col items-center">
-                        <p class="font-heading font-bold text-slate-900 text-sm uppercase tracking-wide">Technical Director</p>
-                        <p class="text-xs text-slate-500 font-medium">Logistics Corporation</p>
+                        <p class="font-heading font-bold text-white text-sm uppercase tracking-wide">Enterprise Architect</p>
+                        <p class="text-xs text-ggreen font-medium mt-1">Cloud Infrastructure</p>
                     </div>
                 </div>
 
                 <!-- Testimonial 5 -->
-                <div class="carousel-slide bg-white p-8 md:p-12 rounded-2xl border border-slate-200 shadow-lg flex flex-col justify-center text-center">
-                    <div class="font-brand text-7xl md:text-8xl text-ajna-blue/10 absolute top-4 left-6 leading-none">"</div>
-                    <p class="text-slate-700 text-base md:text-lg italic mb-6 relative z-10 pt-4 leading-relaxed">"AjnaCS instructors are highly cooperative and excel at explaining complex distributed architectures using brilliant, real-life enterprise examples rather than just relying on textbook theory."</p>
+                <div class="carousel-slide bg-slate-900/60 backdrop-blur-md p-8 md:p-12 rounded-2xl border border-white/10 shadow-2xl flex flex-col justify-center text-center">
+                    <div class="font-brand text-7xl md:text-8xl text-white/5 absolute top-4 left-6 leading-none">"</div>
+                    <p class="text-blue-100 text-base md:text-xl italic mb-6 relative z-10 pt-4 leading-relaxed">"Highly regarded enterprise instructor with deep domain expertise, real-world architectural insights, and an engaging teaching style."</p>
                     <div class="flex flex-col items-center">
-                        <p class="font-heading font-bold text-slate-900 text-sm uppercase tracking-wide">Enterprise Architect</p>
-                        <p class="text-xs text-slate-500 font-medium">Aviation Sector</p>
+                        <p class="font-heading font-bold text-white text-sm uppercase tracking-wide">Senior Developer</p>
+                        <p class="text-xs text-gblue font-medium mt-1">Corporate Training</p>
                     </div>
                 </div>
 
                 <!-- Testimonial 6 -->
-                <div class="carousel-slide bg-white p-8 md:p-12 rounded-2xl border border-slate-200 shadow-lg flex flex-col justify-center text-center">
-                    <div class="font-brand text-7xl md:text-8xl text-ajna-red/10 absolute top-4 left-6 leading-none">"</div>
-                    <p class="text-slate-700 text-base md:text-lg italic mb-6 relative z-10 pt-4 leading-relaxed">"Excellent training delivery. The team is technically very strong and articulate in communicating complex ideas. We look forward to many more strategic engagements with Ajna Consulting Services."</p>
+                <div class="carousel-slide bg-slate-900/60 backdrop-blur-md p-8 md:p-12 rounded-2xl border border-white/10 shadow-2xl flex flex-col justify-center text-center">
+                    <div class="font-brand text-7xl md:text-8xl text-white/5 absolute top-4 left-6 leading-none">"</div>
+                    <p class="text-blue-100 text-base md:text-xl italic mb-6 relative z-10 pt-4 leading-relaxed">"Known for clear architectural explanations using real-world scenarios, significantly improving team understanding and operational readiness."</p>
                     <div class="flex flex-col items-center">
-                        <p class="font-heading font-bold text-slate-900 text-sm uppercase tracking-wide">Software Engineering Manager</p>
-                        <p class="text-xs text-slate-500 font-medium">Telecommunications</p>
+                        <p class="font-heading font-bold text-white text-sm uppercase tracking-wide">Engineering Lead</p>
+                        <p class="text-xs text-gred font-medium mt-1">Logistics Sector</p>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 7 -->
+                <div class="carousel-slide bg-slate-900/60 backdrop-blur-md p-8 md:p-12 rounded-2xl border border-white/10 shadow-2xl flex flex-col justify-center text-center">
+                    <div class="font-brand text-7xl md:text-8xl text-white/5 absolute top-4 left-6 leading-none">"</div>
+                    <p class="text-blue-100 text-base md:text-xl italic mb-6 relative z-10 pt-4 leading-relaxed">"Recognized for exceptional troubleshooting skills, practical architectural guidance, and delivering beyond the training curriculum with industry best practices."</p>
+                    <div class="flex flex-col items-center">
+                        <p class="font-heading font-bold text-white text-sm uppercase tracking-wide">Technical Director</p>
+                        <p class="text-xs text-gyellow font-medium mt-1">Aviation IT</p>
                     </div>
                 </div>
 
+                <!-- Testimonial 8 -->
+                <div class="carousel-slide bg-slate-900/60 backdrop-blur-md p-8 md:p-12 rounded-2xl border border-white/10 shadow-2xl flex flex-col justify-center text-center">
+                    <div class="font-brand text-7xl md:text-8xl text-white/5 absolute top-4 left-6 leading-none">"</div>
+                    <p class="text-blue-100 text-base md:text-xl italic mb-6 relative z-10 pt-4 leading-relaxed">"Charismatic technical leader and educator with strong communication skills, consistently rated highly by enterprise teams and professionals."</p>
+                    <div class="flex flex-col items-center">
+                        <p class="font-heading font-bold text-white text-sm uppercase tracking-wide">Training Manager</p>
+                        <p class="text-xs text-ggreen font-medium mt-1">Telecom Group</p>
+                    </div>
+                </div>
+
+            </div>
+            
+            <!-- Carousel Navigation Dots -->
+            <div class="flex justify-center gap-2 mt-8" id="acclaimDots">
+                <!-- Dots are injected via JS -->
             </div>
         </div>
     </section>
 
     <!-- KNOWLEDGE SHARING / COMMUNITY SECTION -->
-    <section id="community" class="py-24 bg-white relative border-b border-slate-200">
+    <section id="community" class="py-24 bg-pattern-grid relative">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center max-w-3xl mx-auto mb-16">
-                <h2 class="font-heading text-ajna-yellow font-bold tracking-widest uppercase text-sm mb-3">Tech Knowledge Sharing</h2>
+                <h2 class="font-heading text-gyellow font-bold tracking-widest uppercase text-sm mb-3">Tech Knowledge Sharing</h2>
                 <h3 class="font-heading text-3xl md:text-4xl font-bold text-slate-900 mb-6">Giving Back to the Community.</h3>
-                <p class="text-slate-600 text-lg">We believe that a rising tide lifts all boats. Our architects and engineers actively share technical deep-dives, tutorials, and architectural patterns across multiple platforms to empower the next generation of IT leaders.</p>
+                <p class="text-slate-600 text-lg bg-white/80 backdrop-blur px-4 py-2 rounded-lg inline-block shadow-sm">We believe that a rising tide lifts all boats. Our architects and engineers actively share technical deep-dives, tutorials, and architectural patterns across multiple platforms to empower the next generation of IT leaders.</p>
             </div>
 
             <!-- Social/Community Grid -->
@@ -775,58 +932,72 @@
                     <h4 class="font-heading text-lg font-bold text-slate-500 mb-2">Discord</h4>
                     <p class="text-sm text-slate-500">Interactive engineering community server.</p>
                 </div>
-                
-                <!-- Podcasts (Coming Soon) -->
-                <div class="bg-slate-50 border border-slate-200 p-6 rounded-2xl flex flex-col opacity-60 cursor-not-allowed relative">
-                    <div class="absolute top-4 right-4 text-[0.65rem] font-bold tracking-wider uppercase text-slate-500 bg-slate-200 px-2 py-1 rounded">Soon</div>
-                    <div class="w-10 h-10 bg-slate-200 text-slate-400 rounded-lg flex items-center justify-center mb-4">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="22"></line></svg>
-                    </div>
-                    <h4 class="font-heading text-lg font-bold text-slate-500 mb-2">Podcasts</h4>
-                    <p class="text-sm text-slate-500">Audio interviews with tech industry leaders.</p>
-                </div>
 
             </div>
         </div>
     </section>
 
-    <!-- FOOTER (Corporate Deep Blue) -->
-    <footer class="bg-ajna-blue text-blue-100 py-16 border-t border-blue-900">
+    <!-- DYNAMIC FOOTER (Connect & Engage) -->
+    <div class="h-2 w-full bg-google-gradient"></div>
+    <footer class="bg-ajna-dark text-blue-100 py-16">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
-                <div class="md:col-span-2">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 mb-12">
+                
+                <!-- Brand & Brief -->
+                <div>
                     <div class="flex items-center gap-4 mb-6">
                         <div class="bg-white p-2 rounded-lg">
-                            <img src="images/ajna-logo.png" alt="AjnaCS Logo" class="w-10 h-10" onerror="this.style.display='none'">
+                            <img src="images/ajna-logo.png" alt="AjnaCS Logo" class="w-8 h-8" onerror="this.style.display='none'">
                         </div>
                         <span class="font-brand text-2xl md:text-3xl text-white font-bold tracking-tight">AjnaCS</span>
                     </div>
-                    <p class="text-sm max-w-md leading-relaxed text-blue-200">
-                        Architecting the future of enterprise technology. We deliver elite digital transformation consulting and rigorous IT training to build self-healing, highly scalable systems for the world's leading organizations.
+                    <p class="text-sm leading-relaxed text-slate-300 mb-6 max-w-sm">
+                        Architecting the future of enterprise technology. We deliver elite digital transformation consulting and rigorous IT training to build self-healing, highly scalable systems.
                     </p>
                 </div>
+
+                <!-- Connect Info -->
                 <div>
-                    <h4 class="font-heading text-white font-bold mb-6 uppercase text-sm tracking-wider">Expertise</h4>
-                    <ul class="space-y-3 text-sm">
-                        <li><a href="#consulting" class="hover:text-ajna-yellow transition-colors">Enterprise Architecture</a></li>
-                        <li><a href="#ai-world" class="hover:text-ajna-yellow transition-colors">AI World & MLOps</a></li>
-                        <li><a href="#consulting" class="hover:text-ajna-yellow transition-colors">FinOps & Observability</a></li>
-                        <li><a href="#training" class="hover:text-ajna-yellow transition-colors">Tech Training</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="font-heading text-white font-bold mb-6 uppercase text-sm tracking-wider">Contact</h4>
-                    <ul class="space-y-3 text-sm">
+                    <h4 class="font-heading text-white font-bold mb-6 uppercase text-sm tracking-wider">Connect With Us</h4>
+                    <ul class="space-y-4 text-sm text-slate-300">
                         <li class="flex items-center gap-3">
-                            <div class="w-8 h-8 rounded-full bg-blue-900 flex items-center justify-center border border-blue-800">
-                                <svg class="w-4 h-4 text-ajna-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                            </div>
-                            <a href="mailto:info@ajnacs.com" class="hover:text-ajna-yellow transition-colors">info@ajnacs.com</a>
+                            <svg class="w-5 h-5 text-gyellow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                            <a href="mailto:info@ajnacs.com" class="hover:text-white transition-colors">info@ajnacs.com</a>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-gred" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                            <span>Apex, NC, United States</span>
                         </li>
                     </ul>
+                    
+                    <!-- Footer Social Dock -->
+                    <div class="flex gap-4 mt-6">
+                        <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-gred transition-colors text-white" aria-label="YouTube">
+                            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-gblue transition-colors text-white" aria-label="X (Twitter)">
+                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 22.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                        </a>
+                        <a href="https://techknowen.com" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-gyellow transition-colors text-white" aria-label="Substack">
+                            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M22.539 8.242H1.46V5.406h21.08v2.836zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46zM22.54 0H1.46v2.836h21.08V0z"/></svg>
+                        </a>
+                    </div>
                 </div>
+
+                <!-- Newsletter -->
+                <div>
+                    <h4 class="font-heading text-white font-bold mb-6 uppercase text-sm tracking-wider">Join Techknowen</h4>
+                    <p class="text-sm text-slate-300 mb-4">Get the latest architectural blueprints and tech tutorials straight to your inbox.</p>
+                    <form class="flex flex-col sm:flex-row gap-2" onsubmit="event.preventDefault(); window.open('https://techknowen.com', '_blank');">
+                        <input type="email" placeholder="Email address" required class="bg-slate-800/50 border border-slate-700 text-white px-4 py-2.5 rounded-lg focus:outline-none focus:border-gblue flex-grow text-sm">
+                        <button type="submit" class="bg-gblue text-white font-bold px-4 py-2.5 rounded-lg hover:bg-blue-600 transition-colors text-sm whitespace-nowrap">Subscribe</button>
+                    </form>
+                </div>
+
             </div>
-            <div class="pt-8 border-t border-blue-800/50 text-sm text-center flex flex-col md:flex-row justify-between items-center text-blue-300">
+
+            <!-- Copyright -->
+            <div class="pt-8 border-t border-slate-800 text-sm flex flex-col md:flex-row justify-between items-center text-slate-400">
                 <p>&copy; <script>document.write(new Date().getFullYear())</script> Ajna Consulting Services. All rights reserved.</p>
                 <div class="mt-4 md:mt-0 space-x-6">
                     <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
@@ -843,7 +1014,7 @@
             <!-- Modal Header -->
             <div class="bg-slate-50 px-6 py-5 border-b border-slate-200 flex justify-between items-center">
                 <h3 class="font-heading text-xl font-bold text-slate-900">Engage Our Team</h3>
-                <button onclick="closeModal()" class="text-slate-400 hover:text-ajna-red focus:outline-none transition-colors">
+                <button onclick="closeModal()" class="text-slate-400 hover:text-gred focus:outline-none transition-colors">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
             </div>
@@ -855,19 +1026,19 @@
                 <form id="contactForm" onsubmit="handleFormSubmit(event)" class="space-y-5">
                     <div>
                         <label for="name" class="block text-sm font-medium text-slate-700 mb-1.5">Full Name *</label>
-                        <input type="text" id="name" required class="w-full px-4 py-3 bg-white border border-slate-300 text-slate-900 rounded-lg focus:ring-2 focus:ring-ajna-red focus:border-ajna-red outline-none transition-all placeholder-slate-400 shadow-sm" placeholder="John Doe">
+                        <input type="text" id="name" required class="w-full px-4 py-3 bg-white border border-slate-300 text-slate-900 rounded-lg focus:ring-2 focus:ring-gblue focus:border-gblue outline-none transition-all placeholder-slate-400 shadow-sm" placeholder="John Doe">
                     </div>
                     <div>
                         <label for="email" class="block text-sm font-medium text-slate-700 mb-1.5">Email Address *</label>
-                        <input type="email" id="email" required class="w-full px-4 py-3 bg-white border border-slate-300 text-slate-900 rounded-lg focus:ring-2 focus:ring-ajna-red focus:border-ajna-red outline-none transition-all placeholder-slate-400 shadow-sm" placeholder="john@company.com">
+                        <input type="email" id="email" required class="w-full px-4 py-3 bg-white border border-slate-300 text-slate-900 rounded-lg focus:ring-2 focus:ring-gblue focus:border-gblue outline-none transition-all placeholder-slate-400 shadow-sm" placeholder="john@company.com">
                     </div>
                     <div>
                         <label for="phone" class="block text-sm font-medium text-slate-700 mb-1.5">Phone Number</label>
-                        <input type="tel" id="phone" class="w-full px-4 py-3 bg-white border border-slate-300 text-slate-900 rounded-lg focus:ring-2 focus:ring-ajna-red focus:border-ajna-red outline-none transition-all placeholder-slate-400 shadow-sm" placeholder="+1 (555) 000-0000">
+                        <input type="tel" id="phone" class="w-full px-4 py-3 bg-white border border-slate-300 text-slate-900 rounded-lg focus:ring-2 focus:ring-gblue focus:border-gblue outline-none transition-all placeholder-slate-400 shadow-sm" placeholder="+1 (555) 000-0000">
                     </div>
                     <div>
                         <label for="interest" class="block text-sm font-medium text-slate-700 mb-1.5">Primary Interest</label>
-                        <select id="interest" class="w-full px-4 py-3 bg-white border border-slate-300 text-slate-900 rounded-lg focus:ring-2 focus:ring-ajna-red focus:border-ajna-red outline-none transition-all appearance-none shadow-sm cursor-pointer">
+                        <select id="interest" class="w-full px-4 py-3 bg-white border border-slate-300 text-slate-900 rounded-lg focus:ring-2 focus:ring-gblue focus:border-gblue outline-none transition-all appearance-none shadow-sm cursor-pointer">
                             <option value="Enterprise Architecture Consulting">Enterprise Architecture Consulting</option>
                             <option value="AI World Integration">AI World & MLOps Integration</option>
                             <option value="Corporate IT Training">Corporate IT Training</option>
@@ -875,20 +1046,19 @@
                         </select>
                     </div>
                     <div class="pt-4">
-                        <button type="submit" class="font-heading w-full bg-gradient-to-r from-ajna-red to-red-700 text-white font-bold py-3.5 px-4 rounded-lg hover:from-red-600 hover:to-red-800 transition-colors shadow-[0_4px_14px_rgba(225,37,27,0.3)] focus:ring-4 focus:ring-red-500/30">
+                        <button type="submit" class="font-heading w-full bg-google-gradient text-white font-bold py-3.5 px-4 rounded-lg hover:opacity-90 transition-opacity shadow-lg focus:ring-4 focus:ring-gblue/30">
                             Submit Request
                         </button>
                     </div>
                 </form>
 
-                <!-- Success Message -->
                 <div id="successMessage" class="hidden text-center py-8">
-                    <div class="w-16 h-16 bg-green-100 border border-green-200 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <div class="w-16 h-16 bg-ggreen/20 border border-ggreen/50 text-ggreen rounded-full flex items-center justify-center mx-auto mb-6">
                         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                     </div>
                     <h4 class="font-heading text-2xl font-bold text-slate-900 mb-2">Request Received</h4>
                     <p class="text-slate-600 text-sm mb-8">Thank you. We will contact you shortly at <br><span id="confirmEmail" class="font-bold text-slate-900"></span>.</p>
-                    <button onclick="closeModal()" class="font-heading text-ajna-red font-semibold hover:text-white transition-colors border-2 border-ajna-red hover:bg-ajna-red px-6 py-2 rounded-lg">Close Window</button>
+                    <button onclick="closeModal()" class="font-heading text-gblue font-semibold hover:text-white transition-colors border-2 border-gblue hover:bg-gblue px-6 py-2 rounded-lg">Close Window</button>
                 </div>
             </div>
         </div>
@@ -896,19 +1066,17 @@
 
     <!-- APPLICATION LOGIC -->
     <script>
-        // Dynamic Header scroll effect (Shrink & Frost)
+        // Dynamic Header scroll effect
         window.addEventListener('scroll', () => {
             const header = document.getElementById('header');
             const headerContainer = document.getElementById('header-container');
             
             if (window.scrollY > 50) {
-                // Scrolled state
                 header.classList.add('bg-white/95', 'backdrop-blur-xl', 'border-slate-200', 'shadow-md');
                 header.classList.remove('bg-transparent', 'border-transparent');
                 headerContainer.classList.add('h-16');
                 headerContainer.classList.remove('h-24');
             } else {
-                // Top state
                 header.classList.remove('bg-white/95', 'backdrop-blur-xl', 'border-slate-200', 'shadow-md');
                 header.classList.add('bg-transparent', 'border-transparent');
                 headerContainer.classList.add('h-24');
@@ -936,28 +1104,45 @@
             }
         }
 
-        // Generic Carousel Function (Handles both Image & Content Grid-Stacking Carousels)
-        function initCarousel(containerId, intervalTime = 5000, slideClass = '.carousel-slide') {
+        // Generic Carousel Function
+        function initCarousel(containerId, intervalTime = 5000, slideClass = '.carousel-slide', createDots = false) {
             const container = document.getElementById(containerId);
             if (!container) return;
             
-            // Allows passing a custom slide class, defaults to '.carousel-slide'
             const slides = container.querySelectorAll(slideClass);
             if (slides.length <= 1) return;
 
             let currentIndex = 0;
+            let dotsContainer = null;
+            const dotColors = ['bg-gblue', 'bg-gred', 'bg-gyellow', 'bg-ggreen', 'bg-gblue', 'bg-gred', 'bg-gyellow', 'bg-ggreen'];
+
+            // Create navigation dots for acclaim carousel
+            if(createDots) {
+                dotsContainer = document.getElementById(containerId.replace('Carousel', 'Dots'));
+                if(dotsContainer) {
+                    slides.forEach((_, i) => {
+                        const dot = document.createElement('div');
+                        dot.className = `w-2.5 h-2.5 rounded-full transition-all duration-300 ${i === 0 ? dotColors[0] + ' w-6' : 'bg-white/20'}`;
+                        dotsContainer.appendChild(dot);
+                    });
+                }
+            }
 
             setInterval(() => {
                 slides[currentIndex].classList.remove('active');
+                if(dotsContainer) dotsContainer.children[currentIndex].className = 'w-2.5 h-2.5 rounded-full bg-white/20 transition-all duration-300';
+                
                 currentIndex = (currentIndex + 1) % slides.length;
+                
                 slides[currentIndex].classList.add('active');
+                if(dotsContainer) dotsContainer.children[currentIndex].className = `w-6 h-2.5 rounded-full ${dotColors[currentIndex]} transition-all duration-300`;
             }, intervalTime);
         }
 
         // Initialize carousels
         document.addEventListener('DOMContentLoaded', () => {
-            initCarousel('heroContentCarousel', 8000, '.content-slide'); // 8 seconds for hero text
-            initCarousel('acclaimCarousel', 6000, '.carousel-slide'); // 6 seconds for testimonials
+            initCarousel('heroContentCarousel', 8000, '.content-slide'); 
+            initCarousel('acclaimCarousel', 7000, '.carousel-slide', true); 
             initCarousel('consultingCarousel', 4000); 
             initCarousel('aiCarousel', 4200); 
             initCarousel('trainingCarousel', 4500); 
