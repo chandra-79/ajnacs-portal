@@ -5,13 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ajna Consulting Services | Enterprise IT Architecture, AI & Training</title>
     
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-
     <link rel="icon" type="image/png" sizes="32x32" href="images/favicon.ico">
-
     
-    <!-- Google Fonts: Inter (Body), Montserrat (Headings), Quintessential (Apple Chancery Alternative) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700;800&family=Quintessential&display=swap" rel="stylesheet">
@@ -26,12 +22,10 @@
                         brand: ['"Quintessential"', '"Apple Chancery"', 'cursive'],
                     },
                     colors: {
-                        // The 4 Core Google-Inspired Logo Colors
                         gblue: '#4285F4',
                         gred: '#EA4335',
                         gyellow: '#FBBC05',
                         ggreen: '#34A853',
-                        // Corporate Anchor Color
                         ajna: {
                             dark: '#0F265C',
                             blue: '#0F265C',
@@ -75,7 +69,6 @@
             color: #475569;
         }
 
-        /* --- 4-COLOR GRADIENT UTILITIES --- */
         .bg-google-gradient {
             background: linear-gradient(90deg, #4285F4, #EA4335, #FBBC05, #34A853);
         }
@@ -86,7 +79,6 @@
             background-clip: text;
         }
 
-        /* --- CSS BACKGROUND PATTERNS --- */
         .bg-pattern-grid {
             background-image: url('data:image/svg+xml,%3Csvg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath d="M0 0h40v40H0V0zm1 1h38v38H1V1z" fill="%23e2e8f0" fill-opacity="0.6" fill-rule="evenodd"/%3E%3C/svg%3E');
         }
@@ -100,19 +92,16 @@
             background-color: #ffffff;
         }
 
-        /* Light Glassmorphism Header */
         .glass-header {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(16px);
             border-bottom: 1px solid rgba(0, 0, 0, 0.05);
         }
 
-        /* Hot Red Brand Glow */
         .text-glow-hot {
             text-shadow: 0 0 20px rgba(225, 37, 27, 0.4);
         }
 
-        /* Nav Link Underline */
         .nav-link { position: relative; }
         .nav-link::after {
             content: ''; position: absolute;
@@ -124,7 +113,6 @@
         }
         .nav-link:hover::after { width: 100%; }
 
-        /* Bright Custom Cards */
         .tech-card {
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             background: #ffffff;
@@ -136,18 +124,15 @@
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
         }
 
-        /* Dark Blue Tech Marquee Pill Hover */
         .tech-pill { transition: all 0.3s ease; }
         .tech-pill:hover {
             transform: translateY(-3px);
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
         }
 
-        /* Social Card */
         .social-card { transition: all 0.3s ease; }
         .social-card:hover { transform: translateY(-4px); }
 
-        /* Carousels */
         .carousel-container { position: relative; overflow: hidden; }
         .carousel-slide {
             position: absolute; top: 0; left: 0;
@@ -171,7 +156,6 @@
             pointer-events: auto; z-index: 10;
         }
 
-        /* Infinite Scrolling (With padding to prevent hover cutoff) */
         .scrolling-wrapper {
             overflow: hidden; white-space: nowrap;
             display: flex; align-items: center; width: 100%;
@@ -181,7 +165,6 @@
             animation-play-state: paused;
         }
 
-        /* Gradient Text */
         .gradient-text {
             background: linear-gradient(90deg, #E1251B, #F3A92A);
             -webkit-background-clip: text;
@@ -203,12 +186,10 @@
 </head>
 <body class="bg-slate-50 font-sans selection:bg-gblue selection:text-white">
 
-    <!-- DYNAMIC STICKY HEADER -->
     <header class="fixed w-full top-0 z-50 transition-all duration-500 ease-in-out bg-transparent py-4 border-b border-transparent" id="header">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center transition-all duration-500" id="header-container">
                 
-                <!-- Logo & Brand (Super-Hot Red restored) -->
                 <a href="#" class="flex items-center gap-3 sm:gap-4 group">
                     <div class="bg-white p-2 rounded-xl border border-slate-200 group-hover:border-ajna-red/40 transition-colors shadow-sm">
                         <img src="images/ajna-logo.png" alt="Ajna Consulting Services" class="w-10 h-10 md:w-14 md:h-14 object-contain transition-transform duration-300 group-hover:scale-105" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'48\' height=\'48\' viewBox=\'0 0 48 48\' fill=\'none\' stroke=\'%23E1251B\' stroke-width=\'2\'><rect width=\'40\' height=\'40\' x=\'4\' y=\'4\' rx=\'4\'/><path d=\'M12 24l12-12 12 12-12 12z\'/></svg>'">
@@ -218,7 +199,6 @@
                     </div>
                 </a>
 
-                <!-- Desktop Nav -->
                 <nav class="hidden lg:flex items-center gap-5 xl:gap-8">
                     <a href="#about" class="nav-link font-heading text-sm font-semibold text-slate-700 hover:text-gblue transition-colors">Our DNA</a>
                     <a href="#consulting" class="nav-link font-heading text-sm font-semibold text-slate-700 hover:text-gred transition-colors">Consulting</a>
@@ -229,7 +209,6 @@
                     </button>
                 </nav>
 
-                <!-- Mobile Menu Button -->
                 <button class="lg:hidden flex flex-col gap-1.5 p-2 focus:outline-none" onclick="toggleMobileMenu()">
                     <span class="w-6 h-0.5 bg-slate-800 rounded-full transition-transform duration-300" id="line1"></span>
                     <span class="w-6 h-0.5 bg-slate-800 rounded-full transition-opacity duration-300" id="line2"></span>
@@ -238,7 +217,6 @@
             </div>
         </div>
 
-        <!-- Mobile Nav Dropdown -->
         <div id="mobileMenu" class="hidden lg:hidden bg-white/95 backdrop-blur-xl border-t border-slate-100 absolute w-full shadow-2xl mt-4 pb-4">
             <div class="flex flex-col px-4 py-4 gap-2">
                 <a href="#about" class="font-heading text-base font-semibold text-slate-700 p-3 hover:bg-slate-50 hover:text-gblue rounded-lg transition-colors" onclick="toggleMobileMenu()">Our DNA</a>
@@ -253,9 +231,7 @@
         </div>
     </header>
 
-    <!-- HERO SECTION (With 4-Color Blobs & Carousel) -->
     <section class="relative min-h-[90vh] flex items-center pt-24 overflow-hidden bg-slate-50 bg-pattern-grid">
-        <!-- 4-Color Animated Background Blobs -->
         <div class="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0">
             <div class="absolute top-10 -left-10 w-72 h-72 bg-gblue rounded-full mix-blend-multiply filter blur-[100px] opacity-20 animate-blob"></div>
             <div class="absolute top-0 -right-4 w-72 h-72 bg-gred rounded-full mix-blend-multiply filter blur-[100px] opacity-20 animate-blob animation-delay-2000"></div>
@@ -265,10 +241,8 @@
         </div>
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full py-20">
-            <!-- Content Carousel Container -->
             <div class="content-carousel-container max-w-4xl" id="heroContentCarousel">
                 
-                <!-- Hero Slide 1: Enterprise Architecture (Blue Theme) -->
                 <div class="content-slide active">
                     <div class="inline-flex items-center gap-2 border border-gblue/20 bg-gblue/5 px-4 py-2 rounded-full text-gblue text-xs font-bold tracking-widest uppercase mb-8 backdrop-blur-md shadow-sm">
                         <span class="w-2 h-2 rounded-full bg-gblue animate-pulse"></span>
@@ -292,7 +266,6 @@
                     </div>
                 </div>
 
-                <!-- Hero Slide 2: AI World (Red Theme) -->
                 <div class="content-slide">
                     <div class="inline-flex items-center gap-2 border border-gred/20 bg-gred/5 px-4 py-2 rounded-full text-gred text-xs font-bold tracking-widest uppercase mb-8 backdrop-blur-md shadow-sm">
                         <span class="w-2 h-2 rounded-full bg-gred animate-pulse"></span>
@@ -316,7 +289,6 @@
                     </div>
                 </div>
 
-                <!-- Hero Slide 3: Expert-Led Training (Green Theme) -->
                 <div class="content-slide">
                     <div class="inline-flex items-center gap-2 border border-ggreen/30 bg-ggreen/5 px-4 py-2 rounded-full text-ggreen text-xs font-bold tracking-widest uppercase mb-8 backdrop-blur-md shadow-sm">
                         <span class="w-2 h-2 rounded-full bg-ggreen animate-pulse"></span>
@@ -344,14 +316,12 @@
         </div>
     </section>
 
-    <!-- ELEVATED WIDE SPECTRUM TECH STACK MARQUEE (Deep Blue Vibrant Background) -->
     <div class="relative z-20 shadow-[0_10px_30px_-10px_rgba(15,38,92,0.6)] overflow-hidden border-b border-ajna-dark">
-        <div class="h-1 w-full bg-google-gradient"></div> <!-- 4-Color Highlight Bar -->
+        <div class="h-1 w-full bg-google-gradient"></div>
         <div class="bg-gradient-to-r from-ajna-blue via-[#17387d] to-ajna-blue py-6">
             <div class="scrolling-wrapper">
                 <div class="scrolling-content animate-scroll-fast gap-6 px-6 items-center flex">
                     
-                    <!-- Tech Pill Array - Glass Effect with Google Color Hovers -->
                     <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gblue">Generative AI</div>
                     <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gred">AWS</div>
                     <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gyellow">Azure</div>
@@ -378,7 +348,6 @@
                     <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-ggreen">Zero-Trust IAM</div>
                     <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gblue">FinOps</div>
 
-                    <!-- Duplicate for seamless scroll -->
                     <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gblue">Generative AI</div>
                     <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gred">AWS</div>
                     <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gyellow">Azure</div>
@@ -409,9 +378,7 @@
         </div>
     </div>
 
-    <!-- COMBINED DNA & WHY US SECTION -->
     <section id="about" class="bg-pattern-dots relative z-10 border-b border-slate-200">
-        <!-- Part 1: DNA -->
         <div class="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                 <div>
@@ -430,7 +397,6 @@
                     <div class="relative bg-white border border-slate-100 rounded-2xl p-8 lg:p-10 shadow-xl">
                         <h4 class="font-heading text-2xl font-bold text-slate-900 mb-6 border-b border-slate-100 pb-4">The Ajna Methodology</h4>
                         <ul class="space-y-6">
-                            <!-- Color 1: Blue -->
                             <li class="flex gap-4">
                                 <div class="w-10 h-10 rounded-full bg-gblue/10 border border-gblue/20 text-gblue flex items-center justify-center flex-shrink-0 font-bold">1</div>
                                 <div>
@@ -438,7 +404,6 @@
                                     <p class="text-sm text-slate-600">Deep-dive technical audits of existing middleware, cloud spend, and systemic bottlenecks.</p>
                                 </div>
                             </li>
-                            <!-- Color 2: Red -->
                             <li class="flex gap-4">
                                 <div class="w-10 h-10 rounded-full bg-gred/10 border border-gred/20 text-gred flex items-center justify-center flex-shrink-0 font-bold">2</div>
                                 <div>
@@ -446,7 +411,6 @@
                                     <p class="text-sm text-slate-600">Designing highly resilient, decoupled cloud-native architectures using Kubernetes and Serverless.</p>
                                 </div>
                             </li>
-                            <!-- Color 3: Yellow -->
                             <li class="flex gap-4">
                                 <div class="w-10 h-10 rounded-full bg-gyellow/10 border border-gyellow/20 text-gyellow flex items-center justify-center flex-shrink-0 font-bold">3</div>
                                 <div>
@@ -454,7 +418,6 @@
                                     <p class="text-sm text-slate-600">Implementing CI/CD, MLOps, and FinOps pipelines to ensure self-sustaining operational excellence.</p>
                                 </div>
                             </li>
-                            <!-- Color 4: Green -->
                             <li class="flex gap-4">
                                 <div class="w-10 h-10 rounded-full bg-ggreen/10 border border-ggreen/20 text-ggreen flex items-center justify-center flex-shrink-0 font-bold">4</div>
                                 <div>
@@ -468,7 +431,6 @@
             </div>
         </div>
 
-        <!-- Part 2: SLA Bridge -->
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
             <div class="bg-white rounded-2xl shadow-xl p-8 md:p-12 relative overflow-hidden border border-slate-100">
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-8 relative z-10 text-center divide-x divide-slate-100">
@@ -492,7 +454,6 @@
             </div>
         </div>
 
-        <!-- Part 3: Why Us Flow (With Cutting-Edge SVGs) -->
         <div class="pb-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center max-w-4xl mx-auto mb-12">
                 <h2 class="font-heading text-gred font-bold tracking-widest uppercase text-sm mb-3">Why Us</h2>
@@ -503,7 +464,6 @@
                 
                 <div class="tech-card p-8 rounded-2xl text-center hover:border-gblue">
                     <div class="w-16 h-16 mx-auto bg-gblue/10 text-gblue rounded-full flex items-center justify-center mb-6 border border-gblue/20">
-                        <!-- Modern Lightning/Flash Icon -->
                         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
                     </div>
                     <h4 class="font-heading text-xl font-bold text-slate-900 mb-2">Rapid Modernization</h4>
@@ -512,7 +472,6 @@
                 
                 <div class="tech-card p-8 rounded-2xl text-center hover:border-gred">
                     <div class="w-16 h-16 mx-auto bg-gred/10 text-gred rounded-full flex items-center justify-center mb-6 border border-gred/20">
-                        <!-- Modern Shield Icon -->
                         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
                     </div>
                     <h4 class="font-heading text-xl font-bold text-slate-900 mb-2">Zero-Trust Security</h4>
@@ -521,7 +480,6 @@
                 
                 <div class="tech-card p-8 rounded-2xl text-center hover:border-gyellow">
                     <div class="w-16 h-16 mx-auto bg-gyellow/10 text-gyellow rounded-full flex items-center justify-center mb-6 border border-gyellow/20">
-                        <!-- Modern Radar/Observability Icon -->
                         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
                     </div>
                     <h4 class="font-heading text-xl font-bold text-slate-900 mb-2">AI Observability</h4>
@@ -532,7 +490,6 @@
         </div>
     </section>
 
-    <!-- SECTION 1: CONSULTING SERVICES -->
     <section id="consulting" class="py-24 bg-pattern-stripes relative border-b border-slate-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
@@ -542,7 +499,6 @@
                 <p class="text-slate-600 text-lg bg-white/80 backdrop-blur px-4 py-2 rounded-lg inline-block shadow-sm">We bridge the gap between business vision and technical reality. Our consulting pillars are designed to reduce technical debt, optimize capital expenditure, and drastically improve system reliability.</p>
             </div>
 
-            <!-- Service Image Banner Carousel -->
             <div class="w-full h-64 md:h-80 rounded-2xl overflow-hidden mb-16 relative shadow-lg group bg-white border border-slate-200">
                 <div id="consultingCarousel" class="absolute inset-0">
                     <div class="carousel-slide active" style="background-image: url('images/service1.jpg');"></div>
@@ -555,9 +511,7 @@
                 </div>
             </div>
 
-            <!-- Consulting Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <!-- Card 1 -->
                 <div class="tech-card p-8 rounded-2xl flex flex-col h-full relative overflow-hidden group hover:border-gblue">
                     <div class="absolute top-0 right-0 p-6 opacity-5 text-gblue transform group-hover:scale-110 transition-transform">
                         <svg class="w-32 h-32" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>
@@ -569,7 +523,6 @@
                     <p class="text-slate-600 mb-6 flex-grow leading-relaxed relative z-10">We orchestrate multi-regional digital transformations. By decoupling monolithic legacy assets into scalable, event-driven microservices, we accelerate product release cycles by up to 35%.</p>
                 </div>
 
-                <!-- Card 2 -->
                 <div class="tech-card p-8 rounded-2xl flex flex-col h-full relative overflow-hidden group hover:border-gred">
                     <div class="absolute top-0 right-0 p-6 opacity-5 text-gred transform group-hover:scale-110 transition-transform">
                         <svg class="w-32 h-32" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
@@ -581,7 +534,6 @@
                     <p class="text-slate-600 mb-6 flex-grow leading-relaxed relative z-10">We build proactive systems. By deploying AI-driven observability control planes using OpenTelemetry and Prometheus, we implement predictive incident detection—securing 99.9% uptime.</p>
                 </div>
 
-                <!-- Card 3 -->
                 <div class="tech-card p-8 rounded-2xl flex flex-col h-full relative overflow-hidden group hover:border-gyellow">
                     <div class="absolute top-0 right-0 p-6 opacity-5 text-gyellow transform group-hover:scale-110 transition-transform">
                          <svg class="w-32 h-32" fill="none" stroke="currentColor" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
@@ -593,7 +545,6 @@
                     <p class="text-slate-600 mb-6 flex-grow leading-relaxed relative z-10">Cloud sprawl is expensive. We institutionalize FinOps frameworks to align engineering resources with business value, consistently delivering 25% year-over-year infrastructure savings.</p>
                 </div>
 
-                <!-- Card 4 -->
                 <div class="tech-card p-8 rounded-2xl flex flex-col h-full relative overflow-hidden group hover:border-ggreen">
                      <div class="absolute top-0 right-0 p-6 opacity-5 text-ggreen transform group-hover:scale-110 transition-transform">
                          <svg class="w-32 h-32" fill="none" stroke="currentColor" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
@@ -608,7 +559,6 @@
         </div>
     </section>
 
-    <!-- SECTION 2: AI WORLD -->
     <section id="ai-world" class="py-24 bg-pattern-grid relative border-b border-slate-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
@@ -618,7 +568,6 @@
                 <p class="text-slate-600 text-lg bg-white/80 backdrop-blur px-4 py-2 rounded-lg inline-block shadow-sm">Seamlessly embed Agentic AI frameworks, robust MLOps, and predictive machine learning models into your enterprise systems. We bridge the gap between AI experimentation and production-grade ROI.</p>
             </div>
 
-            <!-- Service Image Banner Carousel -->
             <div class="w-full h-64 md:h-80 rounded-2xl overflow-hidden mb-16 relative shadow-lg group bg-white border border-slate-200">
                 <div id="aiCarousel" class="absolute inset-0">
                     <div class="carousel-slide active" style="background-image: url('images/pexels-googledeepmind-25626446.jpg');"></div>
@@ -631,7 +580,6 @@
                 </div>
             </div>
 
-            <!-- AI Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <div class="tech-card p-6 rounded-2xl flex flex-col h-full hover:border-gblue">
                     <div class="w-10 h-10 bg-gblue/10 text-gblue rounded-lg flex items-center justify-center mb-4 border border-gblue/20">
@@ -665,7 +613,6 @@
         </div>
     </section>
 
-    <!-- SECTION 3: TRAINING SERVICES -->
     <section id="training" class="py-24 bg-pattern-stripes relative border-b border-slate-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
@@ -680,7 +627,6 @@
                 </button>
             </div>
 
-            <!-- Training Image Banner Carousel -->
             <div class="w-full h-48 md:h-64 rounded-2xl overflow-hidden mb-16 relative shadow-lg group bg-white border border-slate-200">
                 <div id="trainingCarousel" class="absolute inset-0">
                     <div class="carousel-slide active" style="background-image: url('images/service4.jpg');"></div>
@@ -693,7 +639,6 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- Track 1 -->
                 <div class="tech-card p-8 rounded-2xl flex flex-col h-full hover:border-gred">
                     <h4 class="font-heading text-xl font-bold text-slate-900 mb-4">Enterprise Middleware</h4>
                     <p class="text-sm text-slate-600 mb-6 line-clamp-3">Comprehensive deep dives into enterprise integration, high-availability setups, and core Oracle stacks.</p>
@@ -713,7 +658,6 @@
                     </ul>
                 </div>
 
-                <!-- Track 2 -->
                 <div class="tech-card p-8 rounded-2xl flex flex-col h-full hover:border-gyellow relative overflow-hidden">
                     <div class="absolute top-0 right-0 bg-gyellow text-white text-xs font-bold px-4 py-1.5 rounded-bl-lg shadow-sm">POPULAR</div>
                     <h4 class="font-heading text-xl font-bold text-slate-900 mb-4">Cloud Native & Infra</h4>
@@ -734,7 +678,6 @@
                     </ul>
                 </div>
 
-                <!-- Track 3 -->
                 <div class="tech-card p-8 rounded-2xl flex flex-col h-full hover:border-ggreen">
                     <h4 class="font-heading text-xl font-bold text-slate-900 mb-4">Java EE & Full Stack</h4>
                     <p class="text-sm text-slate-600 mb-6 line-clamp-3">End-to-end software engineering. Build resilient backends and connect them to modern frontend UI frameworks.</p>
@@ -757,7 +700,6 @@
         </div>
     </section>
 
-    <!-- INDUSTRY ACCLAIM / TESTIMONIALS (Dark Blue Theme) -->
     <section class="py-24 relative overflow-hidden bg-ajna-dark text-white border-b border-blue-900 bg-grid-pattern-dark">
         <div class="max-w-7xl mx-auto px-4 relative z-10">
             <div class="text-center max-w-3xl mx-auto mb-16">
@@ -766,10 +708,8 @@
                 <p class="text-blue-200 text-lg">Read what our clients have to say about our consulting, migration, and training engagements.</p>
             </div>
 
-            <!-- Acclaim Carousel -->
             <div class="content-carousel-container max-w-5xl mx-auto relative h-[380px] md:h-72">
                 
-                <!-- Testimonial 1 -->
                 <div class="carousel-slide active bg-slate-900/60 backdrop-blur-md p-8 md:p-12 rounded-2xl border border-white/10 shadow-2xl flex flex-col justify-center text-center">
                     <div class="font-brand text-7xl md:text-8xl text-white/5 absolute top-4 left-6 leading-none">"</div>
                     <p class="text-blue-100 text-base md:text-xl italic mb-6 relative z-10 pt-4 leading-relaxed">"Consistently received outstanding feedback from enterprise clients for delivering high-impact architecture solutions and exceptional technical leadership."</p>
@@ -779,7 +719,6 @@
                     </div>
                 </div>
 
-                <!-- Testimonial 2 -->
                 <div class="carousel-slide bg-slate-900/60 backdrop-blur-md p-8 md:p-12 rounded-2xl border border-white/10 shadow-2xl flex flex-col justify-center text-center">
                     <div class="font-brand text-7xl md:text-8xl text-white/5 absolute top-4 left-6 leading-none">"</div>
                     <p class="text-blue-100 text-base md:text-xl italic mb-6 relative z-10 pt-4 leading-relaxed">"Recognized for driving successful enterprise platform migrations, resolving complex technical challenges, and maintaining exceptional stakeholder confidence."</p>
@@ -789,7 +728,6 @@
                     </div>
                 </div>
 
-                <!-- Testimonial 3 -->
                 <div class="carousel-slide bg-slate-900/60 backdrop-blur-md p-8 md:p-12 rounded-2xl border border-white/10 shadow-2xl flex flex-col justify-center text-center">
                     <div class="font-brand text-7xl md:text-8xl text-white/5 absolute top-4 left-6 leading-none">"</div>
                     <p class="text-blue-100 text-base md:text-xl italic mb-6 relative z-10 pt-4 leading-relaxed">"Instrumental in achieving consulting and delivery targets through strong customer engagement, hands-on execution, and relentless ownership."</p>
@@ -799,7 +737,6 @@
                     </div>
                 </div>
 
-                <!-- Testimonial 4 -->
                 <div class="carousel-slide bg-slate-900/60 backdrop-blur-md p-8 md:p-12 rounded-2xl border border-white/10 shadow-2xl flex flex-col justify-center text-center">
                     <div class="font-brand text-7xl md:text-8xl text-white/5 absolute top-4 left-6 leading-none">"</div>
                     <p class="text-blue-100 text-base md:text-xl italic mb-6 relative z-10 pt-4 leading-relaxed">"Praised for professionalism, collaborative approach, and the ability to translate complex architecture concepts into actionable outcomes."</p>
@@ -809,7 +746,6 @@
                     </div>
                 </div>
 
-                <!-- Testimonial 5 -->
                 <div class="carousel-slide bg-slate-900/60 backdrop-blur-md p-8 md:p-12 rounded-2xl border border-white/10 shadow-2xl flex flex-col justify-center text-center">
                     <div class="font-brand text-7xl md:text-8xl text-white/5 absolute top-4 left-6 leading-none">"</div>
                     <p class="text-blue-100 text-base md:text-xl italic mb-6 relative z-10 pt-4 leading-relaxed">"Highly regarded enterprise instructor with deep domain expertise, real-world architectural insights, and an engaging teaching style."</p>
@@ -819,7 +755,6 @@
                     </div>
                 </div>
 
-                <!-- Testimonial 6 -->
                 <div class="carousel-slide bg-slate-900/60 backdrop-blur-md p-8 md:p-12 rounded-2xl border border-white/10 shadow-2xl flex flex-col justify-center text-center">
                     <div class="font-brand text-7xl md:text-8xl text-white/5 absolute top-4 left-6 leading-none">"</div>
                     <p class="text-blue-100 text-base md:text-xl italic mb-6 relative z-10 pt-4 leading-relaxed">"Known for clear architectural explanations using real-world scenarios, significantly improving team understanding and operational readiness."</p>
@@ -829,7 +764,6 @@
                     </div>
                 </div>
                 
-                <!-- Testimonial 7 -->
                 <div class="carousel-slide bg-slate-900/60 backdrop-blur-md p-8 md:p-12 rounded-2xl border border-white/10 shadow-2xl flex flex-col justify-center text-center">
                     <div class="font-brand text-7xl md:text-8xl text-white/5 absolute top-4 left-6 leading-none">"</div>
                     <p class="text-blue-100 text-base md:text-xl italic mb-6 relative z-10 pt-4 leading-relaxed">"Recognized for exceptional troubleshooting skills, practical architectural guidance, and delivering beyond the training curriculum with industry best practices."</p>
@@ -839,7 +773,6 @@
                     </div>
                 </div>
 
-                <!-- Testimonial 8 -->
                 <div class="carousel-slide bg-slate-900/60 backdrop-blur-md p-8 md:p-12 rounded-2xl border border-white/10 shadow-2xl flex flex-col justify-center text-center">
                     <div class="font-brand text-7xl md:text-8xl text-white/5 absolute top-4 left-6 leading-none">"</div>
                     <p class="text-blue-100 text-base md:text-xl italic mb-6 relative z-10 pt-4 leading-relaxed">"Charismatic technical leader and educator with strong communication skills, consistently rated highly by enterprise teams and professionals."</p>
@@ -851,14 +784,11 @@
 
             </div>
             
-            <!-- Carousel Navigation Dots -->
             <div class="flex justify-center gap-2 mt-8" id="acclaimDots">
-                <!-- Dots are injected via JS -->
             </div>
         </div>
     </section>
 
-    <!-- KNOWLEDGE SHARING / COMMUNITY SECTION -->
     <section id="community" class="py-24 bg-pattern-grid relative">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center max-w-3xl mx-auto mb-16">
@@ -867,10 +797,8 @@
                 <p class="text-slate-600 text-lg bg-white/80 backdrop-blur px-4 py-2 rounded-lg inline-block shadow-sm">We believe that a rising tide lifts all boats. Our architects and engineers actively share technical deep-dives, tutorials, and architectural patterns across multiple platforms to empower the next generation of IT leaders.</p>
             </div>
 
-            <!-- Social/Community Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 
-                <!-- Hero Item: Substack (Spans 2 columns on desktop) -->
                 <a href="https://techknowen.com" target="_blank" rel="noopener noreferrer" class="social-card md:col-span-2 lg:col-span-2 bg-gradient-to-br from-white to-orange-50 border-2 border-social-substack/20 hover:border-social-substack p-8 rounded-2xl flex flex-col justify-center shadow-sm hover:shadow-lg">
                     <div class="flex items-center gap-4 mb-4">
                         <div class="w-12 h-12 bg-social-substack text-white rounded-xl flex items-center justify-center shadow-md">
@@ -881,7 +809,6 @@
                     <p class="text-slate-600 font-medium">Read our flagship newsletter and architectural deep-dives. Hosted natively on our community domain, techknowen.com.</p>
                 </a>
 
-                <!-- YouTube -->
                 <a href="#" target="_blank" rel="noopener noreferrer" class="social-card bg-white border border-slate-200 hover:border-social-youtube p-6 rounded-2xl flex flex-col shadow-sm hover:shadow-md">
                     <div class="w-10 h-10 bg-social-youtube/10 text-social-youtube rounded-lg flex items-center justify-center mb-4">
                         <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
@@ -890,7 +817,6 @@
                     <p class="text-sm text-slate-600">Watch hands-on labs, coding sessions, and tech tutorials.</p>
                 </a>
 
-                <!-- X (Twitter) -->
                 <a href="#" target="_blank" rel="noopener noreferrer" class="social-card bg-white border border-slate-200 hover:border-social-x p-6 rounded-2xl flex flex-col shadow-sm hover:shadow-md">
                     <div class="w-10 h-10 bg-slate-100 text-social-x rounded-lg flex items-center justify-center mb-4">
                         <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 22.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
@@ -899,7 +825,6 @@
                     <p class="text-sm text-slate-600">Follow us for real-time tech updates and industry thoughts.</p>
                 </a>
 
-                <!-- Medium -->
                 <a href="#" target="_blank" rel="noopener noreferrer" class="social-card bg-white border border-slate-200 hover:border-social-medium p-6 rounded-2xl flex flex-col shadow-sm hover:shadow-md">
                     <div class="w-10 h-10 bg-slate-100 text-social-medium rounded-lg flex items-center justify-center mb-4">
                         <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M13.54 12a6.8 6.8 0 01-6.77 6.82A6.8 6.8 0 010 12a6.8 6.8 0 016.77-6.82A6.8 6.8 0 0113.54 12zM20.96 12c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z"/></svg>
@@ -908,7 +833,6 @@
                     <p class="text-sm text-slate-600">Explore our long-form engineering essays and case studies.</p>
                 </a>
 
-                <!-- Bluesky -->
                 <a href="#" target="_blank" rel="noopener noreferrer" class="social-card bg-white border border-slate-200 hover:border-social-bluesky p-6 rounded-2xl flex flex-col shadow-sm hover:shadow-md">
                     <div class="w-10 h-10 bg-social-bluesky/10 text-social-bluesky rounded-lg flex items-center justify-center mb-4">
                         <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.905C2.566 1.075-.246 2.448.016 5.617c.231 2.784.975 6.784 1.258 7.37.79 1.638 2.822 2.063 4.887 1.638-2.616.713-5.32 2.21-4.708 5.438.563 2.97 4.148 2.83 6.945.05L12 16.5l3.602 3.613c2.797 2.78 6.382 2.92 6.945-.05.612-3.228-2.092-4.725-4.708-5.438 2.065.425 4.097 0 4.887-1.638.283-.586 1.027-4.586 1.258-7.37.262-3.17-2.55-4.542-5.186-2.722C16.046 4.747 13.087 8.686 12 10.8z"/></svg>
@@ -917,7 +841,6 @@
                     <p class="text-sm text-slate-600">Join our decentralized tech community discussions.</p>
                 </a>
 
-                <!-- Instagram -->
                 <a href="#" target="_blank" rel="noopener noreferrer" class="social-card bg-white border border-slate-200 hover:border-social-instagram p-6 rounded-2xl flex flex-col shadow-sm hover:shadow-md">
                     <div class="w-10 h-10 bg-social-instagram/10 text-social-instagram rounded-lg flex items-center justify-center mb-4">
                         <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
@@ -926,7 +849,6 @@
                     <p class="text-sm text-slate-600">See the behind-the-scenes of our engineering team.</p>
                 </a>
 
-                <!-- Discord (Coming Soon) -->
                 <div class="bg-slate-50 border border-slate-200 p-6 rounded-2xl flex flex-col opacity-60 cursor-not-allowed relative">
                     <div class="absolute top-4 right-4 text-[0.65rem] font-bold tracking-wider uppercase text-slate-500 bg-slate-200 px-2 py-1 rounded">Soon</div>
                     <div class="w-10 h-10 bg-slate-200 text-slate-400 rounded-lg flex items-center justify-center mb-4">
@@ -940,13 +862,11 @@
         </div>
     </section>
 
-    <!-- DYNAMIC FOOTER (Connect & Engage) -->
     <div class="h-2 w-full bg-google-gradient"></div>
     <footer class="bg-ajna-dark text-blue-100 py-16">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 mb-12">
                 
-                <!-- Brand & Brief -->
                 <div>
                     <div class="flex items-center gap-4 mb-6">
                         <div class="bg-white p-2 rounded-lg">
@@ -955,11 +875,10 @@
                         <span class="font-brand text-2xl md:text-3xl text-white font-bold tracking-tight">Ajna CS</span>
                     </div>
                     <p class="text-sm leading-relaxed text-slate-300 mb-6 max-w-sm">
-                        Architecting the future of enterprise technology. We deliver elite digital transformation consulting and rigorous IT training to build self-healing, highly scalable systems.
+                        We develop enterprise leaders through precision training and consulting in Enterprise Architecture, Cloud Computing, and Zero-Trust Security
                     </p>
                 </div>
 
-                <!-- Connect Info -->
                 <div>
                     <h4 class="font-heading text-white font-bold mb-6 uppercase text-sm tracking-wider">Connect With Us</h4>
                     <ul class="space-y-4 text-sm text-slate-300">
@@ -969,7 +888,6 @@
                         </li>
                     </ul>
                     
-                    <!-- Footer Social Dock -->
                     <div class="flex gap-4 mt-6">
                         <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-gred transition-colors text-white" aria-label="YouTube">
                             <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
@@ -983,7 +901,6 @@
                     </div>
                 </div>
 
-                <!-- Newsletter -->
                 <div>
                     <h4 class="font-heading text-white font-bold mb-6 uppercase text-sm tracking-wider">Join Techknowen</h4>
                     <p class="text-sm text-slate-300 mb-4">Get the latest architectural blueprints and tech tutorials straight to your inbox.</p>
@@ -995,7 +912,6 @@
 
             </div>
 
-            <!-- Copyright -->
             <div class="pt-8 border-t border-slate-800 text-sm flex flex-col md:flex-row justify-between items-center text-slate-400">
                 <p>&copy; <script>document.write(new Date().getFullYear())</script> Ajna Consulting Services. All rights reserved.</p>
                 <div class="mt-4 md:mt-0 space-x-6">
@@ -1006,11 +922,9 @@
         </div>
     </footer>
 
-    <!-- LEAD CAPTURE MODAL -->
     <div id="leadModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
         <div class="bg-white border border-slate-200 rounded-2xl shadow-2xl w-full max-w-md overflow-hidden transform transition-all">
             
-            <!-- Modal Header -->
             <div class="bg-slate-50 px-6 py-5 border-b border-slate-200 flex justify-between items-center">
                 <h3 class="font-heading text-xl font-bold text-slate-900">Engage Our Team</h3>
                 <button onclick="closeModal()" class="text-slate-400 hover:text-gred focus:outline-none transition-colors">
@@ -1018,7 +932,6 @@
                 </button>
             </div>
             
-            <!-- Modal Body (Form) -->
             <div class="p-6">
                 <p class="text-sm text-slate-600 mb-6">Leave your details below and an Enterprise Architect will reach out to discuss your requirements.</p>
                 
@@ -1063,9 +976,7 @@
         </div>
     </div>
 
-    <!-- APPLICATION LOGIC -->
     <script>
-        // Dynamic Header scroll effect
         window.addEventListener('scroll', () => {
             const header = document.getElementById('header');
             const headerContainer = document.getElementById('header-container');
@@ -1083,7 +994,6 @@
             }
         });
 
-        // Mobile Menu Toggle
         function toggleMobileMenu() {
             const menu = document.getElementById('mobileMenu');
             const l1 = document.getElementById('line1');
@@ -1103,7 +1013,6 @@
             }
         }
 
-        // Generic Carousel Function
         function initCarousel(containerId, intervalTime = 5000, slideClass = '.carousel-slide', createDots = false) {
             const container = document.getElementById(containerId);
             if (!container) return;
@@ -1115,7 +1024,6 @@
             let dotsContainer = null;
             const dotColors = ['bg-gblue', 'bg-gred', 'bg-gyellow', 'bg-ggreen', 'bg-gblue', 'bg-gred', 'bg-gyellow', 'bg-ggreen'];
 
-            // Create navigation dots for acclaim carousel
             if(createDots) {
                 dotsContainer = document.getElementById(containerId.replace('Carousel', 'Dots'));
                 if(dotsContainer) {
@@ -1138,7 +1046,6 @@
             }, intervalTime);
         }
 
-        // Initialize carousels
         document.addEventListener('DOMContentLoaded', () => {
             initCarousel('heroContentCarousel', 8000, '.content-slide'); 
             initCarousel('acclaimCarousel', 7000, '.carousel-slide', true); 
@@ -1147,7 +1054,6 @@
             initCarousel('trainingCarousel', 4500); 
         });
 
-        // Modal Logic
         const modal = document.getElementById('leadModal');
         const form = document.getElementById('contactForm');
         const successMsg = document.getElementById('successMessage');
@@ -1167,7 +1073,6 @@
             if (e.target === modal) closeModal();
         });
 
-        // Form Submit Handler
         function handleFormSubmit(e) {
             e.preventDefault();
             
@@ -1176,13 +1081,11 @@
             const phone = document.getElementById('phone').value;
             const interest = document.getElementById('interest').value;
 
-            // Trigger Mailto link
             const subject = encodeURIComponent(`New Inquiry from ${name} - ${interest}`);
             const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nPhone: ${phone}\nInterest: ${interest}\n\nPlease reach out to me regarding...`);
             
             window.location.href = `mailto:info@ajnacs.com?subject=${subject}&body=${body}`;
 
-            // Show UI success
             document.getElementById('confirmEmail').innerText = email;
             form.classList.add('hidden');
             successMsg.classList.remove('hidden');
