@@ -30,7 +30,7 @@ spec:
   policyTypes:
   - Ingress
   - Egress
----
+
 ## Allow the order service to receive traffic from the API gateway only
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy

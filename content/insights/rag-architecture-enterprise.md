@@ -10,8 +10,6 @@ RAG — Retrieval-Augmented Generation — has become the go-to architecture for
 
 The basic concept is genuinely simple. The implementation that actually works in production is less so.
 
----
-
 ## The basic architecture and where people assume it's simpler than it is
 
 ```
@@ -27,8 +25,6 @@ In a weekend prototype, this works reasonably well. In a production system with 
 
 **Gap 3: Retrieval is a ranking problem.** The top-k chunks retrieved by cosine similarity aren't necessarily the top-k chunks a human would select as most relevant. Hybrid search (combining dense vector similarity with sparse keyword matching via BM25) consistently outperforms pure vector search on mixed query types. This is worth implementing from the start.
 
----
-
 ## Document processing: the part that breaks first
 
 Before anything reaches the vector store, documents need to be processed. This sounds like a solved problem. It isn't.
@@ -38,8 +34,6 @@ Before anything reaches the vector store, documents need to be processed. This s
 **Different document types need different handling.** A legal contract, a technical specification, and an FAQ have different semantic structures. A FAQ is a list of question-answer pairs — chunking it as continuous text loses the pairing. A contract has sections, clauses, and cross-references that matter for retrieval. Treating all document types identically degrades quality.
 
 **Metadata matters.** Each chunk should carry metadata: source document, section, date created, author, document type. This metadata enables filtered retrieval (only search documents from the last 12 months, only search the legal category) and source citation in responses.
-
----
 
 ## The vector store decision
 
@@ -57,8 +51,6 @@ The main options in enterprise context:
 
 For most enterprise starting points: pgvector if you're on Postgres, cloud-native option if you're not. Introduce a purpose-built vector database when you have a specific reason to.
 
----
-
 ## What makes responses actually reliable
 
 The gap between a demo that impresses and a system that users trust is mostly about two things: answer quality and attribution.
@@ -68,8 +60,6 @@ The gap between a demo that impresses and a system that users trust is mostly ab
 **Citation is non-negotiable for enterprise use.** If the system says "the policy on X is Y," users need to be able to verify that against the source document. Return citations with every answer — document name, section, and ideally a link to the source. Without citations, users either trust blindly or don't trust at all. Neither is useful.
 
 **Handle "I don't know" gracefully.** When retrieved context doesn't contain relevant information for a query, the LLM should say so — not hallucinate an answer. This requires explicit instruction in the system prompt and testing on queries you expect to fail. The failure mode where the system confidently generates an answer not supported by the retrieved context is the one that damages user trust irreparably.
-
----
 
 ## A production-ready pipeline
 
@@ -85,8 +75,6 @@ What I'd suggest as a starting architecture that's actually robust:
 8. **Monitoring**: tracking answer quality signals (user feedback, citation accuracy checks)
 
 Steps 7 and 8 are what most implementations skip. They're why most implementations degrade undetected over time.
-
----
 
 RAG is genuinely one of the most useful patterns for making LLMs work on enterprise knowledge — but the gap between a prototype and a production system that users actually rely on is significant. The architecture is the easy part. The document processing, evaluation discipline, and monitoring are where the real work is.
 

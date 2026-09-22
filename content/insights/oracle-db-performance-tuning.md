@@ -96,6 +96,4 @@ Every performance problem manifests as wait events. `db file sequential read` is
 
 The wait event profile tells you where to look. Everything else is detective work in that direction.
 
----
-
 *Working on Oracle DB performance challenges or planning a migration? [Happy to discuss.](/contact)*

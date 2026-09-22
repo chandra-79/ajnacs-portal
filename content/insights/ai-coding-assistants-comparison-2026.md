@@ -10,8 +10,6 @@ There are now more than ten AI coding assistants worth evaluating seriously. The
 
 This is a working comparison based on what I've seen teams actually use and benefit from, not benchmarks run in isolation.
 
----
-
 ## The tools in this comparison
 
 | Tool | By | Best known for |
@@ -28,8 +26,6 @@ This is a working comparison based on what I've seen teams actually use and bene
 | **Watsonx Code Assistant** | IBM | Enterprise Java modernisation |
 | **Tencent Cloud AI Code** | Tencent | Strong in Chinese enterprise contexts |
 
----
-
 ## GitHub Copilot
 
 The one that defined the category in 2021 and has been playing defence ever since. Copilot's advantage is breadth — it works everywhere (VS Code, JetBrains, Vim, Neovim, Xcode, Visual Studio), the completions are good, and the chat interface handles a wide range of tasks competently.
@@ -38,8 +34,6 @@ The Business and Enterprise tiers add content exclusion (your code doesn't train
 
 **Good for:** General-purpose completion, teams already on GitHub, breadth of language support  
 **Watch for:** Cost adds up quickly at team scale; less specialised than some alternatives for specific domains
-
----
 
 ## Amazon Q Developer
 
@@ -50,8 +44,6 @@ The free tier is generous (no limits on inline suggestions). The Pro tier adds c
 **Good for:** AWS-heavy teams, Java modernisation, infrastructure-as-code  
 **Watch for:** Advantage shrinks on non-AWS workloads
 
----
-
 ## Codeium
 
 The strongest free-tier option. Unlimited completions, multi-IDE support, and quality that competes with Copilot's paid tier for most everyday tasks. Teams with tight budgets or individuals who want quality without commitment start here.
@@ -60,8 +52,6 @@ The Enterprise tier adds SSO, audit logs, and the ability to fine-tune on privat
 
 **Good for:** Individual developers, cost-conscious teams, getting started  
 **Watch for:** Enterprise features are less mature than Copilot's
-
----
 
 ## Tabnine
 
@@ -72,8 +62,6 @@ The completion quality is solid, and the local model options mean it can run wit
 **Good for:** Privacy-sensitive environments, regulated industries, teams that can't send code to external APIs  
 **Watch for:** Requires more infrastructure investment to set up private deployments
 
----
-
 ## Cody (Sourcegraph)
 
 Cody's differentiator is codebase context. Where most assistants work with the current file or a sliding window of recent files, Cody uses Sourcegraph's code search to pull relevant context from across the entire repository.
@@ -82,8 +70,6 @@ This matters more than it sounds. When you ask "how does our authentication syst
 
 **Good for:** Large codebases, codebase understanding/navigation, developer onboarding  
 **Watch for:** Sourcegraph licencing required for full features
-
----
 
 ## Refact.ai
 
@@ -94,16 +80,12 @@ The privacy and customisation story is strong. The integration and polish are le
 **Good for:** Teams that want full control over the model, data, and infrastructure; ML-savvy teams who want to fine-tune  
 **Watch for:** Requires more technical investment to run well
 
----
-
 ## Duo (GitLab)
 
 GitLab's native AI assistant, integrated across the full DevSecOps lifecycle — not just the editor. It can explain pipelines, summarise merge requests, suggest security fixes, generate tests, and assist in CI/CD debugging. The advantage is tight integration with GitLab's platform.
 
 **Good for:** Teams heavily invested in GitLab platform  
 **Watch for:** Less compelling if you're not already on GitLab
-
----
 
 ## Qodo (formerly CodiumAI)
 
@@ -114,16 +96,12 @@ This is a genuinely undervalued capability. Most teams don't have enough tests, 
 **Good for:** Improving test coverage, teams building testing culture, finding edge cases  
 **Watch for:** More specialised — use alongside a general-purpose assistant
 
----
-
 ## Watsonx Code Assistant
 
 IBM's enterprise play, with a specific focus on Java application modernisation (COBOL → Java, Java EE to Liberty, etc.). If your organization has significant legacy Java estate, Watsonx Code Assistant can automate parts of the modernisation process that would otherwise require deep manual effort.
 
 **Good for:** Enterprise Java shops, COBOL migration, IBM-invested organizations  
 **Watch for:** Specialist tool — overkill for greenfield development
-
----
 
 ## How to choose
 
@@ -142,7 +120,5 @@ A few questions that usually cut to the answer quickly:
 **Is GitHub already central to your workflow?** → Copilot's deep GitHub integration is its strongest advantage — if that's already your stack, the case for it is straightforward.
 
 One thing I'd caution against: choosing based on benchmarks alone. AI coding assistants need to work in your context — your languages, your codebase patterns, your team workflows. The best approach is to trial two or three candidates with real work for a few weeks. The productivity impact becomes obvious quickly when it's real.
-
----
 
 *Which AI coding assistant has worked well for your team? Genuinely curious — [reach out](/about).*

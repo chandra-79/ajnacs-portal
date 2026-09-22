@@ -69,6 +69,4 @@ Spring Boot Actuator's `/actuator/health` endpoint is a good starting point and 
 
 Use `@ReadinessStateHealthIndicator` and `@LivenessStateHealthIndicator` explicitly in your Spring Boot 3+ configuration. The default combined health endpoint conflates two things with different operational implications.
 
----
-
 *Building or scaling Spring Boot microservices for enterprise? [Happy to get into specifics.](/contact)*

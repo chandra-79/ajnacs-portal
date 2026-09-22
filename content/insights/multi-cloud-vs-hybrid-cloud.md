@@ -8,8 +8,6 @@ format: article
 
 I've sat in enough architecture reviews to know that "multi-cloud" and "hybrid cloud" get used interchangeably by people who mean completely different things. It's worth being precise, because the choice between them is actually a significant architectural commitment.
 
----
-
 ## What they actually mean
 
 **Hybrid cloud** is about connecting on-premises infrastructure with cloud infrastructure. The on-prem side stays on-prem — data centre, private cloud, colocated hardware — and the cloud side extends it. The two environments are connected, usually via a dedicated network link (ExpressRoute on Azure, Direct Connect on AWS, FastConnect on OCI).
@@ -19,8 +17,6 @@ The driving reasons are usually: regulatory requirements that mandate certain da
 **Multi-cloud** is running workloads across two or more public cloud providers — Azure and AWS, or AWS and GCP, or all three. No on-premises component required. The complexity is in connecting and managing cloud environments that were each designed to be self-contained.
 
 You can run both simultaneously — hybrid multi-cloud — which is what most large enterprises actually do once you look closely. But the architectural challenges of each are different, so treating them as one thing leads to confused planning.
-
----
 
 ## Why organizations choose multi-cloud
 
@@ -36,8 +32,6 @@ The reasons I hear most often, in rough order of how often they're real vs. poli
 
 **Negotiating leverage.** Real but rarely admitted publicly. Having an active relationship with multiple providers gives you better pricing discussions.
 
----
-
 ## The cost of multi-cloud that doesn't get modelled
 
 When teams advocate for multi-cloud, the benefits get modelled. The costs often don't.
@@ -50,8 +44,6 @@ When teams advocate for multi-cloud, the benefits get modelled. The costs often 
 
 **Skill fragmentation.** Your engineers can go deep on one cloud or shallow on many. Expertise compounds — teams who go deep on AWS build institutional knowledge that makes the next AWS problem faster to solve. That compounding doesn't happen if you spread attention.
 
----
-
 ## When hybrid cloud is the right call
 
 Hybrid cloud makes sense when:
@@ -62,8 +54,6 @@ Hybrid cloud makes sense when:
 - **Gradual migration** — hybrid is often the transitional state, not the destination
 
 The most common mistake with hybrid is treating it as the destination rather than the journey. I've seen organizations maintain hybrid architectures for years past the point where a full cloud migration would have been cheaper and simpler — because the decision to "finish the migration" never gets made.
-
----
 
 ## Practical guidance
 

@@ -13,8 +13,6 @@ Network fabric decisions don't get talked about enough in enterprise architectur
 Here's how I think about the Ethernet vs. InfiniBand question in 2026.
 
 
----
-
 ## The short version
 
 **Ethernet** is the right default for almost everything: enterprise IT, cloud infrastructure, general-purpose workloads, internet-facing systems. It's mature, widely understood, cost-effective, and the ecosystem is enormous.
@@ -22,8 +20,6 @@ Here's how I think about the Ethernet vs. InfiniBand question in 2026.
 **InfiniBand** is purpose-built for scenarios where latency below 1 microsecond and maximum bandwidth actually change the outcome: AI/ML cluster training, HPC research, supercomputing. It's not a general-purpose fabric — it's a specialist tool.
 
 Most teams building on Azure, AWS, or GCP never need to think about InfiniBand directly — the cloud providers abstract it at the right layer. Where this decision surfaces is when you're designing on-premises AI clusters, research infrastructure, or evaluating managed HPC services.
-
----
 
 ## Key metrics side by side (2026)
 
@@ -35,8 +31,6 @@ Most teams building on Azure, AWS, or GCP never need to think about InfiniBand d
 | **Network topology** | Switch-based, hierarchical | Fabric, fat-tree / torus |
 | **TCO** | Lower | Higher — specialised hardware |
 | **Ecosystem** | Immense, mature | Specialised but strong |
-
----
 
 ## What each one is actually good at
 
@@ -54,8 +48,6 @@ Seven things work reliably well with Ethernet:
 
 **Best fit:** General enterprise IT, public and private clouds, internet infrastructure, and the vast majority of use cases.
 
----
-
 ### InfiniBand — the precision specialist
 
 Where InfiniBand earns its higher cost:
@@ -68,8 +60,6 @@ Where InfiniBand earns its higher cost:
 
 **Best fit:** AI and ML model training, HPC research clusters, supercomputing, extreme-scale scientific computing.
 
----
-
 ## The AI training case specifically
 
 This is where I see the most confusion in architecture conversations right now.
@@ -80,15 +70,11 @@ If you're doing distributed AI training — gradient synchronisation, all-reduce
 
 The question for most enterprise teams isn't "which should I buy" — it's "when I choose a cloud instance type for AI training, do I know whether it uses InfiniBand or Ethernet under the hood?" The answer affects cost, performance, and how you structure your training jobs.
 
----
-
 ## RDMA on Ethernet — closing the gap?
 
 RoCE (RDMA over Converged Ethernet) has matured significantly. For workloads where InfiniBand's full capabilities are overkill but you still need low-latency, high-bandwidth RDMA — RoCE v2 on 100G+ Ethernet is a reasonable middle ground.
 
 The caveats: RoCE requires a lossless network (Priority Flow Control), careful QoS configuration, and discipline in how you design the fabric. It's achievable but it adds operational complexity that native InfiniBand doesn't have.
-
----
 
 ## How I'd approach the decision
 
@@ -104,12 +90,8 @@ A quick framework:
 
 5. **Factor in operational team capability.** InfiniBand fabric management is specialist knowledge. The hardware advantage can evaporate if your team isn't equipped to operate it well.
 
----
-
 There's genuinely no universal right answer here — it depends on workload characteristics, scale, team skills, and budget. What I've found useful is having a clear mental model of where each fabric was designed to operate, and then mapping your actual requirements against that rather than chasing the higher headline number.
 
 Happy to go deeper on any of the specific decision points — drop a comment or [get in touch](/about).
-
----
 
 *Tagged: Networking · Infrastructure · AI · Cloud Architecture · HPC*

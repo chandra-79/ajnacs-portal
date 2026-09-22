@@ -10,8 +10,6 @@ GenAI project proposals tend to fall into two categories. Ones where you can art
 
 The first category tends to succeed. The second tends to produce demos that don't make it to production, or projects that ship but don't get adopted.
 
----
-
 ## The patterns that reliably deliver
 
 **Document processing and extraction.** Taking unstructured documents — contracts, reports, invoices, emails — and extracting structured information is where LLMs deliver the most consistent, measurable value. The task is well-defined, the output is verifiable, and the alternative (manual extraction) is slow and error-prone. This pattern works: a human still reviews the output, but the volume they can handle in a day increases significantly.
@@ -24,8 +22,6 @@ The first category tends to succeed. The second tends to produce demos that don'
 
 **Classification and routing.** Using LLMs to classify incoming content (support tickets, emails, feedback) and route it to the right team or workflow. Well-defined categories, measurable accuracy, clear fallback when confidence is low. This pattern works at scale and is easy to evaluate.
 
----
-
 ## The patterns that struggle
 
 **Open-ended insight generation.** "Ask the AI what insights we should take from this data." The problem: insights require context, judgment, and knowledge of what's already known that an LLM doesn't have. You get plausible-sounding outputs that require significant domain expertise to evaluate — which means the people doing the evaluation are doing most of the actual work.
@@ -36,8 +32,6 @@ The first category tends to succeed. The second tends to produce demos that don'
 
 **Replacing complex knowledge worker judgment.** "Use AI to evaluate vendor contracts and make recommendations." Vendor contract evaluation involves regulatory context, organizational priorities, negotiation history, and risk tolerance — knowledge that isn't in the document. LLMs can assist in reading and summarizing contracts (document processing pattern — it works). Replacing the evaluation is different.
 
----
-
 ## The evaluation question that cuts through proposals
 
 When someone presents a GenAI project proposal, the question I've found most useful:
@@ -47,8 +41,6 @@ When someone presents a GenAI project proposal, the question I've found most use
 If the answer involves specific, measurable changes to how long something takes, what the error rate is, or what volume a person can handle — that's a project worth evaluating seriously. If the answer involves general statements about productivity, satisfaction, or insight quality that can't be measured — that's a signal to probe further before committing.
 
 GenAI projects that succeed have defined success criteria before they start. This sounds obvious. In practice, teams more often start building before defining how they'll evaluate.
-
----
 
 ## Governance isn't what slows you down
 

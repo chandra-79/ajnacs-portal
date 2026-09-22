@@ -10,8 +10,6 @@ There's a version of ML engineering that stops at model accuracy. Build the mode
 
 MLOps exists to close that loop. Here's what the loop actually looks like when it's working.
 
----
-
 ## The five components that matter
 
 Before getting into platform specifics: the components of a working MLOps pipeline don't change much regardless of what platform you're on.
@@ -23,8 +21,6 @@ Before getting into platform specifics: the components of a working MLOps pipeli
 5. **Monitoring** — tracking model performance in production, detecting drift, alerting when intervention is needed.
 
 Most teams have 1 and 2. Teams with mature MLOps have all five.
-
----
 
 ## Azure ML: what it does well
 
@@ -40,8 +36,6 @@ Azure ML is a complete MLOps platform with deep integration into the Azure ecosy
 
 **Where it gets complicated:** Azure ML's compute configuration can be opaque, and debugging failures in remote training jobs is harder than it should be. Local development that mirrors cloud behavior requires careful setup. The SDK has also changed significantly across versions — documentation sometimes reflects older patterns.
 
----
-
 ## SageMaker: what it does well
 
 AWS SageMaker is broader — it encompasses everything from data labelling to model training to inference. The parts I've found most useful in production:
@@ -56,8 +50,6 @@ AWS SageMaker is broader — it encompasses everything from data labelling to mo
 
 **Where it gets complicated:** SageMaker's breadth is also its complexity. There are multiple ways to do most things, and the right path isn't always obvious. The IAM configuration is genuinely intricate — getting permissions right across SageMaker, S3, ECR, and KMS takes more effort than it should. The local SageMaker runtime helps but doesn't fully mirror the cloud environment.
 
----
-
 ## What neither platform handles well out of the box
 
 **Feature stores across training and inference.** Both platforms have feature store offerings (Azure ML feature store, SageMaker Feature Store), but in my experience they require significant investment to use effectively and the consistency guarantees between training-time and inference-time features are something you have to think through carefully.
@@ -68,8 +60,6 @@ AWS SageMaker is broader — it encompasses everything from data labelling to mo
 
 **Cross-team governance.** Who can promote a model to production? What approvals are needed? What happens when a model in production needs to be rolled back? These governance questions aren't answered by the platforms — you need to build processes and tooling around them.
 
----
-
 ## The monitoring gap that bites everyone
 
 The most common MLOps failure mode I've encountered: teams invest in training pipelines and deployment pipelines, and then treat production as "done". The model is deployed. It's generating predictions. End of story.
@@ -79,8 +69,6 @@ What's not being tracked: whether the distribution of incoming data has changed 
 Model drift is quiet. It doesn't throw exceptions. It generates subtly wrong answers that only become visible when a business metric eventually degrades or a user complains.
 
 At a minimum: log a sample of inputs and predictions to a durable store, compute drift metrics on a schedule, and alert when drift metrics cross a threshold. The implementation doesn't need to be sophisticated — but it does need to exist.
-
----
 
 ## The practical recommendation
 

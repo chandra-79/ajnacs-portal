@@ -36,6 +36,7 @@ const NOT_OURS = new Set([
   "/images/ethernet-vs-infiniband.png",
 ]);
 let strippedImages = 0;
+let strippedRules = 0;
 
 /* Three figures the author drew themselves, but whose generator clipped the
    outer labels off both edges and ran the bottom row past the canvas. They
@@ -204,6 +205,13 @@ for (const a of kept) {
   let body = a.body;
   // A body-level H1 duplicates the page title and breaks heading order.
   if (/^#\s/m.test(body)) { body = body.replace(/^#\s+(.*)$/gm, "## $1"); fixedH1++; }
+  /* Horizontal rules. Every one of the 139 in the corpus sat immediately
+     before a heading, where the heading already makes the break — they add
+     nothing but a tell. Stripped at ingest so the queued articles are
+     covered too, not just the ones already published. */
+  body = body.replace(/^[ \t]*(?:-{3,}|\*{3,}|_{3,})[ \t]*$/gm, () => (strippedRules++, "\u0000RULE\u0000"));
+  body = body.replace(/\n*\u0000RULE\u0000\n*/g, "\n\n");
+
   body = body.replace(/^!\[[^\]]*\]\((\/[^)\s]+)\)\s*$/gm, (whole, href) => {
     if (NOT_OURS.has(href)) { strippedImages++; return ""; }
     if (REDRAWN.has(href)) { redrawnRefs++; return whole.replace(href, REDRAWN.get(href)); }
@@ -281,6 +289,7 @@ const byFormat = manifest.reduce((m, r) => (m[r.format] = (m[r.format] || 0) + 1
 const tagCount = new Set(manifest.flatMap(r => r.tags)).size;
 console.log("ingested:", manifest.length, bySection, byFormat);
 console.log("schedule preserved for:", keptDates, "of", manifest.length, "articles");
+console.log("horizontal rules removed:", strippedRules);
 console.log("third-party images stripped:", strippedImages, "| figures repointed to redraws:", redrawnRefs);
 console.log("held drafts:", heldDrafts.length, "| phd excluded:", (await collect("phd")).length);
 console.log("descriptions derived:", wroteDesc, "| H1s demoted:", fixedH1);

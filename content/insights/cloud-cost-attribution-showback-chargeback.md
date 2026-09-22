@@ -58,6 +58,4 @@ Enforce at the infrastructure provisioning layer (Azure Policy, AWS SCPs, OCI Go
 
 The tagging problem is worth solving once, properly, before any showback or chargeback model is implemented. Everything downstream depends on it.
 
----
-
 *Building a cost ownership model for your engineering organization? [I'd like to hear where you're at.](/contact)*

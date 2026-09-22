@@ -75,6 +75,4 @@ The question to ask explicitly in every DR review: what is the cost of this reco
 
 The business case for DR investment is almost always framed wrong: it focuses on the probability of a disaster, which feels low. It should be framed as the cost of inadequate DR per incident — downtime cost, data loss cost, regulatory penalty cost, customer trust cost. Those numbers are usually large enough to justify meaningful investment.
 
----
-
 *Designing or reviewing a cloud DR architecture? [Happy to think through the patterns.](/contact)*

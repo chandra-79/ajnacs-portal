@@ -53,6 +53,4 @@ The teams that skip that sequencing in the name of speed tend to have the incide
 
 The technology is rarely the constraint. The readiness to operate it is.
 
----
-
 *Questions about building your enterprise AI governance framework? [Start a conversation.](/contact)*

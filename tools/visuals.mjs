@@ -2,6 +2,7 @@
    Every article gets its own picture, drawn from its slug so the same article
    always looks the same, and coloured by its topic. These are inline SVG:
    no photo stock, no external requests, and they follow light/dark themes. */
+import { primaryTopic } from "./lib.mjs";
 
 export const TOPIC_COLOR = {
   "Architecture":            ["#2f6fed", "#1b4fc4"],
@@ -110,15 +111,75 @@ function motifBars(r, c1, c2) {
   return out;
 }
 
-const MOTIFS = [motifNodes, motifLayers, motifFlow, motifWave, motifGrid, motifBars];
+/* Nothing diagrammatic: soft overlapping fields. For writing that is not
+   about a system, where a node graph or a bar chart is just decoration
+   wearing a lab coat. */
+function motifField(r, c1, c2) {
+  let out = "";
+  for (let i = 0; i < 5; i++) {
+    const cx = 90 + r() * (W - 180), cy = 60 + r() * (H - 120);
+    const rx = 90 + r() * 150, ry = 50 + r() * 90;
+    out += `<ellipse cx="${cx.toFixed(0)}" cy="${cy.toFixed(0)}" rx="${rx.toFixed(0)}" ry="${ry.toFixed(0)}"
+      fill="${i % 2 ? c2 : c1}" fill-opacity="${(0.07 + r() * 0.09).toFixed(3)}"
+      transform="rotate(${(r() * 60 - 30).toFixed(1)} ${cx.toFixed(0)} ${cy.toFixed(0)})"/>`;
+  }
+  for (let k = 0; k < 3; k++) {
+    const off = 90 + k * 90, amp = 14 + r() * 18, ph = r() * 6.28;
+    let d = `M0 ${off}`;
+    for (let x = 0; x <= W; x += 22) d += ` L${x} ${(off + Math.sin(x / 150 + ph) * amp).toFixed(1)}`;
+    out += `<path d="${d}" fill="none" stroke="${c1}" stroke-opacity="${(0.16 - k * 0.04).toFixed(2)}" stroke-width="1.6"/>`;
+  }
+  return out;
+}
+
+/* The motif is chosen by subject, not by seed. A seeded pick gave a personal
+   essay about saying no a four-stage pipeline diagram, which is decoration
+   pretending to be information. The seed still varies the drawing within a
+   motif, so two articles on one topic do not look identical. */
+const MOTIF_FOR_TOPIC = {
+  "Architecture": motifNodes,
+  "Distributed Systems": motifNodes,
+  "Enterprise AI": motifNodes,
+  "AI & MLOps": motifNodes,
+  "Cloud Architecture": motifGrid,
+  "Infrastructure": motifGrid,
+  "Security": motifGrid,
+  "DevSecOps": motifFlow,
+  "Data Engineering": motifFlow,
+  "Platform Engineering": motifFlow,
+  "Engineering Practice": motifFlow,
+  "API Design": motifFlow,
+  "Containers": motifLayers,
+  "Fundamentals": motifLayers,
+  "Programming": motifLayers,
+  "Observability": motifWave,
+  "Reliability": motifWave,
+  "Performance": motifWave,
+  "FinOps": motifBars,
+  // Writing about people and practice, not about a system.
+  "Engineering Leadership": motifField,
+  "Quantum Computing": motifNodes,
+};
+
+function motifFor(tags, calm) {
+  if (calm) return motifField;
+  const primary = primaryTopic(tags);
+  return MOTIF_FOR_TOPIC[primary]
+    || (tags || []).map(t => MOTIF_FOR_TOPIC[t]).find(Boolean)
+    || motifField;
+}
+
+/* Exposed so the build can audit that no article gets an irrelevant figure. */
+export const motifNameFor = (tags, calm) =>
+  motifFor(tags, calm).name.replace(/^motif/, "").toLowerCase();
 
 export function artwork(slug, tags, { w = W, h = H, calm = false } = {}) {
   const r = seeded(slug);
   const [c1, c2] = colorFor(tags);
-  // Personal essays get the quieter motifs; charts and grids read as data and
-  // sit oddly above reflective writing.
-  const pool = calm ? [motifWave, motifLayers] : MOTIFS;
-  const motif = pool[Math.floor(r() * pool.length)];
+  // A personal note never gets a diagram; a technical article gets the one
+  // that matches its subject, and anything unmapped falls back to the field
+  // rather than to a diagram chosen at random.
+  const motif = motifFor(tags, calm);
   const id = slug.replace(/[^a-z0-9]/g, "").slice(0, 12) || "a";
   return `<svg viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
   <defs>

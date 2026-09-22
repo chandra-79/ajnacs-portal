@@ -55,6 +55,4 @@ The technical work is tractable. The harder problem is cultural: persuading engi
 
 That argument is easiest to make when you can show what over-provisioned infrastructure actually delays: deployment speed, incident response, architectural flexibility. Cost efficiency and operational excellence are usually the same conversation.
 
----
-
 *Questions about building a FinOps practice that sticks? [Let's talk.](/contact)*

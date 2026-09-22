@@ -29,6 +29,4 @@ For me, the practice has been mostly about the end of the day being a genuine en
 
 The other thing that helps: doing things in the evenings that are genuinely restorative. Not just differently productive. Music, walking, reading things unrelated to technology. The brain needs inputs that have nothing to do with the outputs it's being asked to produce.
 
----
-
 *Worth discussing, if this resonates: what does recovery actually look like in your context?*

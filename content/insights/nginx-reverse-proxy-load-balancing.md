@@ -10,8 +10,6 @@ NGINX is one of those tools that shows up in almost every production system but 
 
 This is a practical walkthrough of what NGINX actually does and how to configure it for the two most common use cases: reverse proxy and load balancing.
 
----
-
 ## What NGINX is doing
 
 At its core, NGINX is a web server with a non-blocking, event-driven architecture. Unlike older web servers that spawned a new thread or process per connection, NGINX handles thousands of concurrent connections with a small, fixed number of worker processes.
@@ -27,8 +25,6 @@ The two roles it plays most often:
 **Load balancer** — when you have multiple backend servers, NGINX distributes incoming requests across them, preventing any single server from being overwhelmed.
 
 ![NGINX Load Balancing Architecture](/images/nginx-load-balancing.svg)
-
----
 
 ## Setting up NGINX as a reverse proxy
 
@@ -59,8 +55,6 @@ A few things worth understanding in this config:
 `X-Real-IP` and `X-Forwarded-For` — your backend application will see NGINX's IP as the client IP without these headers. These headers pass along the actual client IP so your app can log it correctly, do rate limiting, or geo-restrict.
 
 `X-Forwarded-Proto` — tells your backend whether the original client connection was HTTP or HTTPS, so it can generate correct redirect URLs.
-
----
 
 ## Adding SSL termination
 
@@ -98,8 +92,6 @@ server {
 
 In practice, most teams use Certbot with Let's Encrypt to manage certificates. Certbot can write this config for you — but understanding what it generates helps when things break.
 
----
-
 ## Load balancing configuration
 
 ![NGINX Architecture: Reverse Proxy & Load Balancing](/images/nginx-architecture.svg)
@@ -127,8 +119,6 @@ server {
 ```
 
 By default, NGINX uses round-robin — each request goes to the next server in the list in order.
-
----
 
 ## Load balancing algorithms
 
@@ -166,8 +156,6 @@ upstream backend_servers {
 }
 ```
 
----
-
 ## Health checks and failover
 
 NGINX Open Source does passive health checking — it marks a server as down when requests to it fail, and stops sending traffic there. The parameters:
@@ -185,8 +173,6 @@ upstream backend_servers {
 `backup` — standby server, only receives traffic when all primary servers are down
 
 Active health checks (proactively hitting a `/health` endpoint) require NGINX Plus (the commercial version). For open source NGINX, passive checking is what you have.
-
----
 
 ## Rate limiting
 
@@ -206,8 +192,6 @@ server {
 
 `burst=20` — allows a burst of up to 20 requests above the rate limit before returning 429  
 `nodelay` — processes burst requests immediately rather than queuing them
-
----
 
 ## Things that trip people up
 
@@ -234,8 +218,6 @@ proxy_busy_buffers_size 32k;
 location /api/ { proxy_pass http://backend/; }   # /api/users → /users
 location /api/ { proxy_pass http://backend; }     # /api/users → /api/users
 ```
-
----
 
 NGINX rewards investment in understanding it. The configuration is declarative and logical once you have the mental model, and a well-configured NGINX is remarkably stable — it's one of those tools where you set it up correctly once and it quietly keeps working.
 

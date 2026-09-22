@@ -70,6 +70,4 @@ From multiple landing zone implementations, the sequence that works:
 
 Step 5 is where most implementations learn the most, fastest. The pilot workload surfaces all the gaps in the design that weren't apparent on paper.
 
----
-
 *Designing or implementing an Azure landing zone for enterprise? [Happy to compare notes.](/contact)*

@@ -56,8 +56,6 @@ The WAF security pillar covers identity, data protection, network security, and 
 
 **Autoscaling**: VMSS with metric-based scaling rules, App Service plan autoscaling, AKS cluster autoscaler and KEDA for event-driven workload scaling. The risk: autoscaling without tested scale-up behavior. Test that scale-out events complete before traffic exceeds capacity.
 
----
-
 The WAF Review (available in the Azure portal and via the Well-Architected Review assessment tool) is useful for structured evaluation of existing architectures against these pillars. The output is a prioritized list of recommendations with effort estimates — a starting point for technical debt backlog, not a definitive audit.
 
 *Reviewing an Azure architecture against the WAF pillars or preparing for an enterprise cloud assessment? [Happy to compare notes on the high-impact areas.](/contact)*

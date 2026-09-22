@@ -227,20 +227,21 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:800;line-height:1.12;
    full company name overpower the nav. */
 .brand{display:flex;align-items:center;gap:.6rem;text-decoration:none;color:var(--text);line-height:1}
 .brand svg{width:40px;height:40px;flex:none;display:block}
-.brand-name{display:flex;align-items:flex-end;gap:.45rem}
-.brand-name em{font-family:'Quintessential',Georgia,serif;font-style:normal;font-size:1.5rem;line-height:.92;letter-spacing:0}
+.brand-name{display:flex;align-items:baseline;gap:.34em;white-space:nowrap}
+.brand-name em,
 .brand-name b{
-  font-family:var(--font-display);font-weight:700;font-size:.8rem;letter-spacing:.035em;
-  color:var(--text-2);padding-bottom:.16rem;white-space:nowrap;
+  font-family:'Quintessential',Georgia,'Iowan Old Style',serif;
+  font-style:normal;font-weight:400;font-size:1.32rem;line-height:1;
+  letter-spacing:0;color:inherit;
 }
 .site-footer .brand{color:#fff}
-.site-footer .brand-name b{color:rgba(255,255,255,.66)}
+
 /* Below the nav breakpoint the descriptor is the first thing to go. */
-@media (max-width:760px){
+@media (max-width:860px){
   .brand svg{width:34px;height:34px}
-  .brand-name em{font-size:1.36rem}
-  .brand-name b{display:none}
+  .brand-name em,.brand-name b{font-size:1.2rem}
 }
+@media (max-width:640px){.brand-name b{display:none}}
 .nav{display:flex;align-items:center;gap:.1rem;margin-left:auto}
 .nav a{
   padding:.5rem .8rem;border-radius:8px;text-decoration:none;font-size:.9rem;font-weight:550;
@@ -898,6 +899,83 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:800;line-height:1.12;
 }
 [data-focus="on"] .focus-exit{display:flex}
 .focus-exit:hover{border-color:var(--accent);color:var(--accent-ink)}
+
+@media print{.reader-tools,.reader-panel,.chapter-bar,.focus-exit,.read-bar{display:none!important}}
+@media (prefers-reduced-motion:reduce){.chapter-bar{transition:none}}
+
+/* ---------- reader typography ----------
+   The text-size and typeface controls govern the whole article, not the body
+   paragraphs alone. Multiplying the existing clamps by --art-scale keeps the
+   responsive behaviour these sizes already had. */
+.article .article-head .h1{font-family:var(--font-read-head);font-size:calc(clamp(2rem,4.6vw,3.1rem) * var(--art-scale))}
+.article .article-head .lede{font-size:calc(clamp(1.05rem,1.55vw,1.22rem) * var(--art-scale))}
+.article .prose h2,
+.article .prose h3,
+.article .prose h4{font-family:var(--font-read-head)}
+.article .prose h2{font-size:calc(clamp(1.35rem,2.4vw,1.78rem) * var(--art-scale))}
+.article .prose h3{font-size:calc(clamp(1.08rem,1.7vw,1.28rem) * var(--art-scale))}
+.article .keyfig-text{font-family:var(--font-read);font-size:calc(1.06rem * var(--art-scale))}
+/* Everything inside the article that carried a fixed rem size is restated in
+   em, so it rides the reader's choice instead of standing still while the
+   text around it grows. */
+.article .prose>p:first-of-type{font-size:1.086em}
+.article .prose code{font-size:.86em}
+.article .prose pre{font-size:.88em}
+.article .prose pre code{font-size:1em}
+.article .prose table{font-size:.85em}
+.article .prose th{font-size:.73em}
+.article .prose figcaption{font-size:.76em}
+.article .prose blockquote{font-size:.95em}
+/* A serif reading face wants a little more leading than the sans does. */
+[data-rface="serif"] .article .prose{line-height:calc(var(--art-lh) + .04)}
+.article .article-head .lede{font-family:var(--font-read)}
+
+/* ---------- the mark blooms ----------
+   At rest it is the flat cut mark. On hover or keyboard focus the diamond
+   draws down into a bud and eight leaves unfold from behind it.
+
+   An earlier version prised the four petals apart instead. That opens a hole
+   in the middle of a symmetric shape and closes it again, which reads as a
+   mouth rather than a flower. Nothing gapes here: the silhouette is a
+   diamond, then a diamond inside a rosette.
+
+   Each leaf composes its own angle (--a) with the shared growth, which is
+   why the angle is a custom property and not a transform attribute — a CSS
+   transform overwrites the attribute outright. */
+.ajna-mark{overflow:visible}
+.ajna-mark .am-bud,
+.ajna-mark .am-leaf,
+.ajna-mark .am-core{transform-box:view-box;transform-origin:50px 50px}
+.ajna-mark .am-bud{transition:transform .55s var(--ease)}
+.ajna-mark .am-leaf{
+  transform:rotate(var(--a)) scale(.16);opacity:0;
+  transition:transform .55s var(--ease),opacity .3s var(--ease);
+}
+.ajna-mark .am-leaf-b{transition-delay:.06s}
+.ajna-mark .am-core{transition:transform .5s var(--ease)}
+
+.brand:hover .ajna-mark .am-bud,
+.brand:focus-visible .ajna-mark .am-bud,
+.ajna-mark.is-open .am-bud{transform:scale(.5) rotate(45deg)}
+.brand:hover .ajna-mark .am-leaf,
+.brand:focus-visible .ajna-mark .am-leaf,
+.ajna-mark.is-open .am-leaf{transform:rotate(var(--a)) scale(1);opacity:1}
+.brand:hover .ajna-mark .am-core,
+.brand:focus-visible .ajna-mark .am-core,
+.ajna-mark.is-open .am-core{transform:scale(.55)}
+
+/* One unfolding on arrival, then it settles. Header mark only.
+   "backwards" not "both": a filled animation outranks normal declarations,
+   so "both" would pin the petals and hover could never move them. */
+@keyframes am-arrive{
+  0%{transform:scale(.5) rotate(45deg)}
+  100%{transform:none}
+}
+.site-header .ajna-mark .am-bud{animation:am-arrive .9s var(--ease) backwards}
+@media (prefers-reduced-motion:reduce){
+  .ajna-mark .am-bud,.ajna-mark .am-leaf,.ajna-mark .am-core{transition:none}
+  .site-header .ajna-mark .am-bud{animation:none}
+}
 
 @media print{.reader-tools,.reader-panel,.chapter-bar,.focus-exit,.read-bar{display:none!important}}
 @media (prefers-reduced-motion:reduce){.chapter-bar{transition:none}}

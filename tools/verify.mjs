@@ -239,6 +239,43 @@ console.log("\nAssets");
   if (!/favicon\.ico\?v=[0-9a-f]{8}/.test(home)) fail("icon links lost their cache-busting version");
   else ok("icon links are versioned by content");
 
+  // Artwork has to belong to its subject. A seeded pick once gave a personal
+  // essay about saying no a four-stage pipeline diagram.
+  {
+    const { motifNameFor } = await import("./visuals.mjs");
+    const { primaryTopic: pt } = await import("./lib.mjs");
+    const byTopic = new Map();
+    let noteDiagrams = 0;
+    for (const m of manifest) {
+      const calm = m.section === "notes";
+      const name = motifNameFor(m.tags, calm);
+      if (calm && name !== "field") noteDiagrams++;
+      const t = pt(m.tags) || "(none)";
+      if (!byTopic.has(t)) byTopic.set(t, new Set());
+      byTopic.get(t).add(name);
+    }
+    const mixed = [...byTopic].filter(([, set]) => set.size > 1);
+    if (noteDiagrams) fail(`${noteDiagrams} personal note(s) carrying a systems diagram`);
+    else ok("personal notes carry no diagram");
+    if (mixed.length) fail(`${mixed.length} topic(s) with inconsistent artwork: ${mixed.map(([t]) => t).join(", ")}`);
+    else ok(`artwork matches subject across ${byTopic.size} topics`);
+  }
+
+  // Horizontal rules: every one in the corpus sat before a heading that
+  // already made the break.
+  {
+    const { readdir: rd2 } = await import("node:fs/promises");
+    let rules = 0;
+    for (const sec of ["insights", "notes"]) {
+      for (const f of await rd2(`content/${sec}`)) {
+        const body = (await readFile(`content/${sec}/${f}`, "utf8")).split(/^---$/m).slice(2).join("---");
+        rules += (body.match(/^[ \t]*(?:-{3,}|\*{3,}|_{3,})[ \t]*$/gm) || []).length;
+      }
+    }
+    if (rules) fail(`${rules} horizontal rule(s) back in the corpus`);
+    else ok("no horizontal rules in any article");
+  }
+
   const ingest = await readFile("tools/ingest.mjs", "utf8");
   if (!/const NOT_OURS = new Set\(/.test(ingest))
     fail("the third-party image blocklist is gone; a re-ingest will pull vendor press photos back in");

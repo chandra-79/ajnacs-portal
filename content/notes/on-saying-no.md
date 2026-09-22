@@ -13,13 +13,9 @@ The default professional posture is availability: responsive, accommodating, wil
 
 At some point this becomes a problem.
 
----
-
 The problem is not that saying yes is wrong. It is that unconditional yes-saying removes discretion from your schedule. When you cannot say no, other people are effectively setting your priorities for you. You work on what arrives rather than what matters.
 
 This becomes more visible as the career progresses. Junior roles have relatively bounded responsibilities. Senior roles — especially leadership roles — involve a theoretically unbounded set of things that could be worked on. The constraint is always time and attention. What you say yes to determines what you have the capacity to do well.
-
----
 
 The specific things I've noticed I say no to more readily now:
 
@@ -29,13 +25,9 @@ Requests that create urgency for someone else but have no genuine deadline. "Can
 
 Work that I am not the right person to do, where saying yes means someone more capable doesn't get assigned. Saying yes to everything is not generosity — it is a failure to direct work to where it will be done best.
 
----
-
 The harder cases are the ones that involve disappointment. A colleague who genuinely needs help. A senior leader who asks directly. A project that is interesting but not the right priority.
 
 These require the more effortful version of no — specific, explained, offered with an alternative where one exists. "I can't take that on this quarter, but have you considered X?" is more work than a bare no but produces better outcomes.
-
----
 
 What I've found is that saying no more consistently does not damage professional relationships as much as I expected when I started doing it. Most people respect clear, explained decisions more than vague availability that ultimately doesn't deliver. The colleagues who react badly to a clear no are often the same ones who would have been unhappy with the result of an overwhelmed yes.
 

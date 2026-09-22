@@ -10,8 +10,6 @@ Application observability for AI models is a different problem from infrastructu
 
 That's the monitoring gap that matters for AI systems, and it requires a different approach.
 
----
-
 ## The three things you actually need to monitor
 
 **1. Input distribution drift**  
@@ -26,8 +24,6 @@ The distribution of model predictions should also stay relatively stable. If you
 For many business use cases, you can get ground truth eventually — just not in real time. Fraud predictions can be evaluated against confirmed fraud outcomes (days later). Churn predictions can be evaluated against actual churn (weeks later). Recommendation predictions can be evaluated against click and conversion data (hours later).
 
 Build pipelines that join predictions to delayed ground truth and compute quality metrics on a regular schedule. This is the most direct measure of whether your model is actually performing — and it's what most teams skip.
-
----
 
 ## Practical instrumentation
 
@@ -60,8 +56,6 @@ The key decisions:
 - **Sampling rate:** logging every prediction at high volume is expensive. Sample at 5-10% for routine monitoring; log 100% for model evaluation cohorts.
 - **Prediction metadata:** always log model version, confidence/probability, and a request ID that can be joined to application logs and ground truth.
 
----
-
 ## Tools worth knowing
 
 **Evidently AI** — open source library for generating data drift reports and model quality reports. Can be run as a batch job comparing inference data to a baseline. Generates HTML reports and integrates with monitoring systems. Good starting point.
@@ -76,8 +70,6 @@ The key decisions:
 
 None of these are complete solutions. They're building blocks that need to be wired together into a monitoring pipeline. The work is in the integration, not the tool selection.
 
----
-
 ## What to do when you detect drift
 
 Detection without a response plan isn't useful. Before you deploy a model to production, define:
@@ -88,8 +80,6 @@ Detection without a response plan isn't useful. Before you deploy a model to pro
 - **Retraining triggers** — what conditions trigger model retraining? Who approves the new model before it replaces the current one?
 
 The teams that handle model drift well are the ones where these questions were answered before the first incident, not during one.
-
----
 
 Monitoring AI models in production is not glamorous work. Nobody talks about it the way they talk about model architectures or training techniques. But it's what determines whether your model is actually delivering value three months after deployment or quietly becoming a liability.
 

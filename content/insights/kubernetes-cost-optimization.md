@@ -86,6 +86,4 @@ Outcome: 31% reduction in cluster cost without a single service incident.
 
 The technology was straightforward. The time was spent on change management — convincing service owners that reducing their resource requests wouldn't cause instability.
 
----
-
 *Running Kubernetes at scale and struggling with cost visibility? [Worth a conversation.](/contact)*

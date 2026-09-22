@@ -10,8 +10,6 @@ Something shifts in how you think about system design after you've been in enoug
 
 Here are the patterns I've found worth investing in, and a few that sound better in theory than they perform under pressure.
 
----
-
 ## The circuit breaker — useful, but often implemented wrong
 
 The circuit breaker pattern (from Michael Nygard's *Release It!*) is one of the most widely referenced resilience patterns, and one of the most frequently misconfigured.
@@ -24,8 +22,6 @@ A circuit breaker that opens without alerting is worse than no circuit breaker �
 
 **What makes it work:** aggressive thresholds, tested fallback paths, and monitoring on circuit state. If your circuit breaker has never opened in production, you probably haven't tested it.
 
----
-
 ## Bulkheads — the most underused pattern
 
 Named after the watertight compartments in a ship's hull. If one compartment floods, the others remain intact.
@@ -37,8 +33,6 @@ The most common failure mode I've seen: a single shared database connection pool
 Bulkheads fix this by giving critical paths their own resource pools. Your user authentication endpoint has its own connection pool. Your analytics queries have theirs. When analytics are slow, authentication keeps working.
 
 This requires more configuration upfront and more resource allocation. It's worth it for anything on a critical path.
-
----
 
 ## Retry logic — helpful and dangerous
 
@@ -65,8 +59,6 @@ def retry_with_backoff(func, max_retries=3, base_delay=1.0):
 
 Also: retries are only safe for idempotent operations. Don't retry a payment initiation. Do retry a GET request or an idempotent PUT.
 
----
-
 ## Timeouts — the most basic thing that's most often misconfigured
 
 Every external call your application makes should have a timeout. This sounds obvious. In practice, I've found database connections without timeouts, HTTP clients using default settings that allow indefinite waits, and third-party SDK calls that can block a thread forever.
@@ -76,8 +68,6 @@ A hung thread waiting for a timeout that never comes is a resource leak. Enough 
 **Default timeouts are almost always wrong.** Cloud SDKs often default to no timeout or to very long timeouts. Set explicit values based on your SLO requirements and what's operationally acceptable. A user waiting more than 5 seconds for a response is already having a bad experience — there's no reason for your database timeout to be 30 seconds.
 
 The tricky part: timeouts need to be set at every layer. A 5-second HTTP timeout at the load balancer doesn't help if your application server waits 30 seconds for a database response before responding to the load balancer. Model the full call chain.
-
----
 
 ## Graceful degradation — the gap between theory and practice
 
@@ -92,8 +82,6 @@ Graceful degradation requires treating the degraded path as a first-class concer
 
 The systems that handle failures elegantly aren't the ones with the most sophisticated patterns — they're the ones where the degraded paths are actually used in drills and tested regularly.
 
----
-
 ## Chaos engineering — valuable, but start small
 
 Netflix's Chaos Monkey made chaos engineering famous, and the concept is sound: intentionally introduce failures in controlled ways to verify your resilience assumptions before production does it for you.
@@ -103,8 +91,6 @@ Where teams go wrong: they either don't do it at all ("we'll do it when things a
 A better starting point: chaos in staging, against known failure modes. Kill one instance and verify load balancing redistributes correctly. Delay one dependency and verify circuit breakers trip and fallbacks engage. Fill a disk and verify log rotation is working. These simple experiments surface surprising gaps.
 
 Grow to production experiments only when your monitoring is good enough to detect anomalies quickly and your team has practiced the response.
-
----
 
 ## What actually moves the needle on MTTR
 

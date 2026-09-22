@@ -10,15 +10,11 @@ The serverless vs containers debate has been running long enough that both sides
 
 Here's how I think about it.
 
----
-
 ## What each one actually is
 
 **Containers** (Docker, deployed on Kubernetes, ECS, Cloud Run, etc.) give you a packaged, portable runtime environment. Your application runs in a defined environment with defined resources. You pay for those resources whether the application is actively processing requests or idle.
 
 **Serverless** (AWS Lambda, Azure Functions, GCP Cloud Functions) gives you functions that execute on demand. You don't manage the runtime environment, you don't allocate persistent resources, and you pay only for execution time — down to milliseconds. The tradeoff is you give up control over the execution environment and accept the platform's constraints.
-
----
 
 ## Where containers win
 
@@ -32,8 +28,6 @@ Here's how I think about it.
 
 **Specific runtime requirements.** If you need a particular OS configuration, specific native libraries, custom runtimes, or GPU access — containers give you control that serverless doesn't.
 
----
-
 ## Where serverless wins
 
 **Bursty, unpredictable traffic.** Event-driven workloads that might handle zero requests for an hour and then process 10,000 in a minute are perfect for serverless. You don't pay for idle capacity, and scaling happens automatically without provisioning decisions.
@@ -46,8 +40,6 @@ Here's how I think about it.
 
 **True pay-per-use at low volume.** If you're running a service with intermittent usage (a nightly job, an internal tool used by 50 people, a webhook handler) — serverless is almost always cheaper than keeping a container running for the 95% of time nothing is happening.
 
----
-
 ## The cold start problem, honestly
 
 Cold starts are the most common objection to serverless, and they're real but often overstated.
@@ -58,8 +50,6 @@ Mitigations: provisioned concurrency (pay to keep execution environments warm), 
 
 If your workload has strict p99 latency requirements (below 100ms end-to-end), serverless cold starts require careful management. For most web API workloads, it's manageable. For synchronous, latency-sensitive services under steady load, containers avoid the problem entirely.
 
----
-
 ## The architecture pattern I see working most often
 
 Not serverless everywhere, not containers everywhere — a mixture based on workload profile:
@@ -69,8 +59,6 @@ Not serverless everywhere, not containers everywhere — a mixture based on work
 - **Scheduled tasks**: serverless (cron-triggered Lambda is simpler than a scheduled container)
 - **Webhooks and integrations**: serverless (low-volume, event-driven, simple logic)
 - **Data processing pipelines**: depends on volume and duration — serverless for short ETL steps, containers for long-running batch jobs
-
----
 
 ## The question that cuts through most debates
 

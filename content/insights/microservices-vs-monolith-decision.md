@@ -73,6 +73,4 @@ Extraction is surgical — you identify the service boundary, extract the code, 
 
 If you're making this decision for a new system: default to a well-structured monolith. Extract services when you can articulate a specific reason that justifies the operational cost. The system will be easier to build, easier to operate, and easier to evolve.
 
----
-
 *Working through a microservices architecture decision or a monolith migration? [I've been on both sides of this.](/contact)*

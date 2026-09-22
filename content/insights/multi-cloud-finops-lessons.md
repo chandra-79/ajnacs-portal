@@ -64,6 +64,4 @@ Every time I've worked through a FinOps programme properly — meaning: tagging 
 
 The technical work is straightforward. The organizational change — getting engineering teams to own cost as a first-class metric rather than someone else's problem — is where most programmes either succeed or quietly stall.
 
----
-
 *Building a multi-cloud strategy or FinOps program? [Let's discuss.](/contact)*

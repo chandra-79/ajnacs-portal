@@ -65,6 +65,4 @@ When infrastructure policies are enforced as code and auditable, the answer to "
 
 That's the argument that gets budget. Build toward it explicitly.
 
----
-
 *Evaluating OPA/Rego for your platform, or struggling with adoption? [Happy to share more detail from what I've seen work.](/contact)*

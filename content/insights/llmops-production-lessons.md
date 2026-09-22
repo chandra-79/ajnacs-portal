@@ -77,6 +77,4 @@ LLM operating costs are different from traditional compute costs. A few things t
 
 Build a unit economics model for your LLM features before production launch. Cost per request × expected request volume should be a number your engineering and product leads have seen and agreed to.
 
----
-
 *Building LLM-integrated features for enterprise production? [Happy to compare notes on what's worked.](/contact)*

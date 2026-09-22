@@ -53,6 +53,4 @@ For organizations that do invest in a feature store, the implementation challeng
 
 The teams that get the most value from feature stores are the ones who introduced them in response to a concrete pain point, not the ones who built them as part of a "mature ML platform" initiative before the pain arrived.
 
----
-
 *Evaluating feature store options for your ML platform, or dealing with training-serving skew? [Happy to share what I've seen work.](/contact)*

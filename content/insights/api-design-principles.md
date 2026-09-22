@@ -67,6 +67,4 @@ API documentation gets read when something is broken. Design it for that context
 
 The documentation that doesn't get read: long descriptive paragraphs about what the API does. Developers skip directly to the example. Start with the example.
 
----
-
 *Building an internal or external API and thinking through the design? [Happy to workshop it.](/contact)*

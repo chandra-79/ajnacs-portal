@@ -77,6 +77,4 @@ For sequential automation scripts, synchronous code is simpler and almost always
 
 The engineering investment pays off most clearly when you're writing tools you'll ship and maintain, not quick one-offs. Know the difference before you architect the solution.
 
----
-
 *Questions about building Python tooling for cloud automation? [Happy to share more.](/contact)*

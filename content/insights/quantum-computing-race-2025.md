@@ -11,8 +11,6 @@ Quantum computing gets announced every few months as "a breakthrough" — and ea
 Here's what's actually happened in the past six years and what to make of it.
 
 
----
-
 ## The milestones, in plain language
 
 ### Google Sycamore — October 2019
@@ -24,8 +22,6 @@ IBM disputed the claim (they argued a classical system could do it in 2.5 days w
 
 What it actually proved: you can build a 53-qubit system where quantum effects are stable enough to compute something, and the results hold up under measurement.
 
----
-
 ### D-Wave Advantage2 — June 2022
 
 
@@ -35,16 +31,12 @@ The nuance most coverage misses: **more qubits doesn't automatically mean more p
 
 D-Wave's approach is actually closer to commercial application for specific domains than the headline qubit counts suggest.
 
----
-
 ### IBM Heron — December 2023
 
 
 IBM's Heron processor (133 qubits) was notable less for qubit count and more for architecture improvements — specifically, reduced cross-talk between qubits and improved gate fidelity. In quantum computing, **error rates matter more than qubit counts**.
 
 A 100-qubit system with 99.9% gate fidelity is vastly more useful than a 1000-qubit system with 99% gate fidelity. IBM's sustained focus on error reduction is one of the reasons they remain relevant despite not having the splashiest announcements.
-
----
 
 ### Google Willow — December 2024
 
@@ -55,8 +47,6 @@ Previous systems saw errors compound as you scaled up. Willow showed that with t
 
 Willow also ran a benchmark that Google claimed would take a classical supercomputer 10 septillion years. The usual caveats about benchmark selectivity apply — but the error correction result is the more meaningful milestone.
 
----
-
 ### Amazon Ocelot — February 2025
 
 
@@ -64,16 +54,12 @@ Amazon's Ocelot takes a different physical approach: **cat qubits**. The name co
 
 The claim: 90% reduction in resources needed for error correction compared to conventional approaches. AWS's bet is that the overhead of quantum error correction is one of the biggest practical barriers to useful quantum computing, and cat qubits reduce it fundamentally.
 
----
-
 ### PsiQuantum Omega — February 2025
 
 
 PsiQuantum's approach is photonic — using photons rather than superconducting circuits or trapped ions as the physical qubit substrate. The advantage: photons don't require the extreme cooling (near absolute zero) that most other approaches need.
 
 Omega is a manufacturing milestone as much as a science one — PsiQuantum is fabricating chips using standard semiconductor foundry processes, which has significant implications for scale. The constraint has historically been that quantum chips needed custom fabrication. If you can use existing chip fabs, the path to large-scale production changes.
-
----
 
 ### Microsoft Majorana-1 — February 2025
 
@@ -83,8 +69,6 @@ The most talked-about of the 2025 announcements, and the most technically distin
 The theoretical advantage: topological qubits are inherently more stable because quantum information is encoded in the topology of the system rather than in a specific physical state. Errors that would flip a conventional qubit don't necessarily affect a topological qubit.
 
 Microsoft has been working on this approach for over a decade. The February 2025 announcement was that they'd demonstrated the underlying physics works — the chip can create and measure Majorana zero modes reliably. Commercial-grade topological qubits still require more development, but the physics no longer blocks the path.
-
----
 
 ## What this means for enterprise technology leaders
 
@@ -97,8 +81,6 @@ A few things worth keeping in mind as you follow this space:
 **Near-term quantum advantage.** The more realistic near-term applications are in molecular simulation (drug discovery, materials science), optimization (logistics, portfolio management), and certain machine learning kernels. These don't require fault-tolerant quantum computers — just quantum systems that outperform classical approaches on specific problems.
 
 **Cloud access is already here.** IBM Quantum Network, AWS Braket, Azure Quantum, and Google's Quantum AI programme all offer cloud access to real quantum hardware. If you're curious about where quantum might apply to your domain, experimental access exists today.
-
----
 
 The quantum computing race is genuinely interesting — not because it's about to change everything next year, but because multiple fundamentally different physical approaches are converging on the same goal from completely different directions. That's unusual in technology, and it means we don't yet know which approach will dominate. That uncertainty is part of what makes it worth watching.
 

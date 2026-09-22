@@ -74,6 +74,4 @@ Great Expectations, dbt tests, or custom validation logic embedded in the pipeli
 
 The contracts with downstream consumers are only as trustworthy as your validation coverage. Building that validation into the pipeline, rather than bolting it on as a monitoring afterthought, is what makes downstream consumers able to rely on the data.
 
----
-
 *Building or scaling data pipelines in Azure or AWS? [Worth a conversation.](/contact)*

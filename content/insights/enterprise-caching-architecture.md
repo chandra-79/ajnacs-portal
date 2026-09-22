@@ -10,8 +10,6 @@ In most enterprise systems I've worked on, the database is the first thing that 
 
 Caching is the answer, but "add Redis" isn't a strategy. Here's how to think about multi-tier caching properly, and what actually matters in production.
 
----
-
 ## Why caching matters more than most people plan for
 
 The numbers are stark:
@@ -23,8 +21,6 @@ The numbers are stark:
 - **CDN/Edge cache:** 15ms (but only for cacheable content)
 
 That's a 50x difference between a Redis hit and a cold DB call. At scale, that gap determines whether your system survives a traffic spike or buckles.
-
----
 
 ## The multi-tier caching model
 
@@ -43,8 +39,6 @@ Each layer has a specific job:
 | **Database** | Query cache, buffer pool | Index pages, frequently accessed rows |
 
 The key insight: the distributed cache layer (Redis) is your most important investment. It sits between your application and your database and absorbs the volume that would otherwise hammer disk I/O.
-
----
 
 ## OLTP vs OLAP — different workloads, different strategies
 
@@ -81,8 +75,6 @@ Store the output of expensive `GROUP BY` and aggregation queries. A monthly reve
 
 The temptation in OLAP is to cache everything forever. Resist it — stale analytical data causes trust problems that are harder to fix than latency.
 
----
-
 ## The Thundering Herd problem
 
 This is the failure mode that takes down systems at scale.
@@ -95,8 +87,6 @@ With a Read-Through cache strategy:
 - Even at 5x normal traffic, the database stays in the safe zone
 
 The data: in a simulated traffic spike from 500 req/s to 4800 req/s, a properly cached system kept database CPU below 25%. Without caching, the same spike would push it past 100%.
-
----
 
 ## The metric that matters: Cache Hit Ratio
 
@@ -115,8 +105,6 @@ Below 80%, your caching strategy probably needs rethinking. The most common caus
 
 Monitor this metric in production. It's a leading indicator — a dropping hit ratio often predicts an upcoming incident before anything else does.
 
----
-
 ## Hot data and the Pareto Principle
 
 In almost every system I've looked at, roughly 20% of the data accounts for 80% of the access requests. This is the "hot data" segment.
@@ -131,8 +119,6 @@ Practical approach:
 
 This is how you get from a 70% hit ratio to 92%+.
 
----
-
 ## Things I've learned from production issues
 
 **Don't cache without a TTL.** Memory fills up, the cache becomes stale, and you'll have a confusing incident where users see outdated data for hours.
@@ -142,8 +128,6 @@ This is how you get from a 70% hit ratio to 92%+.
 **Redis isn't free.** Memory is finite. Get your eviction policy right (`allkeys-lru` is usually the right default for a cache-only Redis instance). Monitor memory usage. Set `maxmemory`.
 
 **Cache invalidation is still hard.** The classic joke exists for a reason. When your source data changes, your cache needs to know. Write-through helps. Event-driven invalidation (publishing a cache-bust event on data changes) is more robust at scale.
-
----
 
 The 95% database load reduction that caching enables isn't magic — it's the compound effect of designing the right layers, choosing the right strategies per workload type, and monitoring the hit ratio religiously. The architecture isn't complicated. The discipline is.
 

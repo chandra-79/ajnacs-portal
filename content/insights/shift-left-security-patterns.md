@@ -70,6 +70,4 @@ Shift-left is the cost-of-entry layer. What it enables, when implemented properl
 
 That's the actual goal: move the noise out so the signal can be heard.
 
----
-
 *Building a DevSecOps programme from the ground up, or trying to mature an existing one? [I'd find this conversation useful.](/contact)*

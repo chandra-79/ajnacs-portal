@@ -68,6 +68,4 @@ If your Falco alerts fire but nobody knows what to do, they create noise rather 
 
 Build the detection and the response together. That's the part of container security that vendors don't sell you.
 
----
-
 *Evaluating your container security posture or building a Kubernetes security programme? [Happy to dig into specifics.](/contact)*

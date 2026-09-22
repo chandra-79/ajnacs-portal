@@ -10,8 +10,6 @@ Platform engineering is having a moment. The term is everywhere, and like most t
 
 Here's what I've observed works, what doesn't, and what the conversation is really about underneath.
 
----
-
 ## What platform engineering actually is
 
 At its core, platform engineering is about treating your internal infrastructure as a product — with a team responsible for it, users (your developers) who are customers of it, and an ongoing commitment to improving the developer experience it delivers.
@@ -19,8 +17,6 @@ At its core, platform engineering is about treating your internal infrastructure
 The alternative is what most organizations have: infrastructure as a set of tickets, tribal knowledge, and manual processes that developers navigate themselves, with varying success.
 
 The shift isn't primarily technical. It's organizational. The technical parts — Kubernetes, Terraform, CI/CD pipelines, service templates — are the implementation. The actual change is deciding that developer productivity is worth a dedicated team's attention, and that infrastructure should serve developers rather than the other way around.
-
----
 
 ## What a good internal developer platform actually looks like
 
@@ -34,8 +30,6 @@ The platforms that work share a few consistent characteristics:
 
 **Documentation that's current.** The most common platform failure isn't technical. It's that the docs describe a system that existed 18 months ago. Keeping documentation current with the actual platform requires treating it with the same discipline as the code.
 
----
-
 ## What organizations get wrong
 
 **Building a platform team that becomes a bottleneck.** The whole point is self-service. If your platform team is still the one who runs Terraform for every new environment, or who has to approve every CI/CD change, you've just created a different queue. The test: can a new engineer provision a complete service environment without talking to the platform team?
@@ -46,8 +40,6 @@ The platforms that work share a few consistent characteristics:
 
 **Treating the platform as infrastructure, not a product.** Product teams do user research, prioritize features, measure adoption, and iterate based on feedback. Platform teams that operate like infrastructure teams — reactive, ticket-driven, no roadmap — build platforms that developers route around.
 
----
-
 ## The metrics worth tracking
 
 If you're trying to understand whether your internal platform is working:
@@ -56,8 +48,6 @@ If you're trying to understand whether your internal platform is working:
 - **Self-service rate** — what percentage of infrastructure provisioning happens without a platform team ticket?
 - **Change lead time** — how long from a code commit to running in production? Platforms that improve this have demonstrably improved engineering velocity.
 - **Developer satisfaction** — regular surveys, not just incident counts. Platform teams that don't measure this often discover accumulated frustration too late.
-
----
 
 ## Where to start if you don't have one yet
 

@@ -99,6 +99,4 @@ Frequent checkpoints manifest as I/O spikes and elevated write latency. Monitor 
 
 The same logic applies here as Oracle redo log sizing: if your database is pausing because it's checkpointing too frequently, the fix is giving it more headroom, not tuning the query that triggered it.
 
----
-
 *Running PostgreSQL at scale or planning a migration? [Happy to discuss what you're working through.](/contact)*

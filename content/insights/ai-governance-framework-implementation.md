@@ -70,6 +70,4 @@ Track:
 
 If exception rates are high and shadow adoption is increasing, the framework is too restrictive. If compliance incidents are occurring, it's not restrictive enough. The metrics tell you which way to adjust.
 
----
-
 *Building an AI governance programme for an enterprise organization? [This conversation is worth having before the first incident.](/contact)*
