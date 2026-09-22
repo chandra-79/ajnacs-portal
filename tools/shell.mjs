@@ -49,7 +49,7 @@ export function page({
 <meta name="twitter:description" content="${esc(metaShort)}">
 <meta name="twitter:image" content="${esc(SITE.url + ogImage)}">
 
-<link rel="icon" href="/favicon.ico?v=${MARK_V}" sizes="32x32">
+<link rel="icon" href="/favicon.ico?v=${MARK_V}" sizes="any">
 <link rel="icon" href="/images/ajna-mark.svg?v=${MARK_V}" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/images/apple-touch-icon.png?v=${MARK_V}">
 <meta name="theme-color" content="#0a1020">
