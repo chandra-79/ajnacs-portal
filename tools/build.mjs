@@ -442,6 +442,11 @@ Sitemap: ${SITE.url}/sitemap.xml
 
 
 
+await (async () => {
+  const { copyFile } = await import("node:fs/promises");
+  await copyFile("images/favicon.ico", "favicon.ico");
+})();
+
 console.log(`built ${built} article pages`);
 console.log(`  insights live: ${insights.length} | notes live: ${notes.length} | series: ${seriesMap.size}`);
 console.log(`  topics: ${topicList.length} | sitemap urls: ${urls.length}`);

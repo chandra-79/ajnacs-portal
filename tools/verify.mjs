@@ -218,6 +218,27 @@ console.log("\nAssets");
   if (svgCards.length) fail(`${svgCards.length} social card(s) still SVG; no platform renders those`);
   else ok("social cards are a raster format");
 
+  // Browsers ask for /favicon.ico at the root whatever the link tags say.
+  try {
+    await access("favicon.ico", constants.R_OK);
+    const [root, src] = await Promise.all([readFile("favicon.ico"), readFile("images/favicon.ico")]);
+    if (!root.equals(src)) fail("the root favicon.ico has drifted from images/favicon.ico");
+    else ok("root favicon.ico present and in sync");
+  } catch { fail("no favicon.ico at the site root"); }
+
+  // The mark must actually be four petals. It renders from a CSS custom
+  // property inside the page and from a baked transform outside it; when the
+  // still variant lost its transforms, every standalone render collapsed to
+  // one triangle and nothing noticed.
+  const markSvg = await readFile("images/ajna-mark.svg", "utf8");
+  const spins = (markSvg.match(/rotate\(\d+ 50 50\)/g) || []).length;
+  if (spins !== 4) fail(`ajna-mark.svg has ${spins} baked rotations, expected 4 — the mark will render as one petal`);
+  else ok("standalone mark carries its own rotations");
+
+  const home = await readFile("index.html", "utf8");
+  if (!/favicon\.ico\?v=[0-9a-f]{8}/.test(home)) fail("icon links lost their cache-busting version");
+  else ok("icon links are versioned by content");
+
   const ingest = await readFile("tools/ingest.mjs", "utf8");
   if (!/const NOT_OURS = new Set\(/.test(ingest))
     fail("the third-party image blocklist is gone; a re-ingest will pull vendor press photos back in");
