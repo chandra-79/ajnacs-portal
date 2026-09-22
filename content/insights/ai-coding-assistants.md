@@ -4,6 +4,7 @@ description: "There are now 10+ serious AI coding assistants. The one that helps
 date: 2026-02-20
 tags: ["Enterprise AI", "Developer Tools", "Programming"]
 format: note
+derived: true
 ---
 
 There are now 10+ serious AI coding assistants. The one that helps your team most probably isn't the one with the highest benchmark score.

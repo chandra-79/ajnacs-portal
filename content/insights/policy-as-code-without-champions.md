@@ -4,6 +4,7 @@ description: "OPA, Sentinel, Azure Policy, and similar tools are genuinely usefu
 date: 2026-05-06
 tags: ["DevSecOps", "Policy-as-Code", "Engineering Leadership"]
 format: note
+derived: true
 ---
 
 OPA, Sentinel, Azure Policy, and similar tools are genuinely useful for expressing security, compliance, and operational constraints as code. They're also remarkably easy to deploy in ways that have no practical effect.

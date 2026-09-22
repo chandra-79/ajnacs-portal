@@ -4,6 +4,7 @@ description: "The anti-lock-in argument is intuitively appealing and frequently 
 date: 2025-06-24
 tags: ["Cloud Architecture", "Architecture", "Engineering Leadership"]
 format: note
+derived: true
 ---
 
 The anti-lock-in argument is intuitively appealing and frequently overstated.

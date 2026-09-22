@@ -4,6 +4,7 @@ description: "The shift-left security movement produced a generation of security
 date: 2026-06-09
 tags: ["DevSecOps", "Engineering Leadership"]
 format: article
+derived: true
 ---
 
 The shift-left security movement produced a generation of security tooling embedded in developer workflows — static analysis, dependency vulnerability scanning, secrets detection, infrastructure-as-code linting. The tooling is genuinely useful. It catches known vulnerability patterns before code reaches production. The cost of finding and fixing a vulnerability in development is a fraction of the cost of finding it in production.

@@ -4,6 +4,7 @@ description: "The migration to microservices is often proposed as modernisation 
 date: 2025-06-30
 tags: ["Architecture", "Engineering Leadership"]
 format: note
+derived: true
 ---
 
 The migration to microservices is often proposed as modernisation rather than as a solution to a specific problem. These are different things, and the distinction matters when you are deciding whether to invest significant engineering effort in rearchitecting something that works.

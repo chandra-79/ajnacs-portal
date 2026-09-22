@@ -4,6 +4,7 @@ description: "Technical debt has been given a vocabulary, tooling, and a legitim
 date: 2026-01-14
 tags: ["Engineering Leadership"]
 format: article
+derived: true
 ---
 
 Technical debt has been given a vocabulary, tooling, and a legitimate place in engineering planning conversations. The analogy to financial debt — borrowed time that accrues interest in the form of maintenance cost and decreased velocity — is useful and widely understood. Teams backlog technical debt. They dedicate sprint capacity to it. They write ADRs explaining the trade-offs.

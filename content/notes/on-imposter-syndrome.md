@@ -4,6 +4,7 @@ description: "I spent a lot of my early career waiting for someone to notice I d
 date: 2026-01-19
 tags: ["Career", "Reflection", "Tech"]
 format: article
+derived: true
 ---
 
 I spent a lot of my early career waiting for someone to notice I didn't know what I was doing.

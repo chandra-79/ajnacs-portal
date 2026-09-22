@@ -4,6 +4,7 @@ description: "Multi-cloud and multi-region solve different problems. Confusing t
 date: 2025-10-16
 tags: ["Cloud Architecture"]
 format: note
+derived: true
 ---
 
 Multi-cloud and multi-region solve different problems. Confusing them means your architecture review is evaluating the wrong risks.

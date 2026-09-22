@@ -4,6 +4,7 @@ description: "The month-end cloud cost review is the wrong time to discover a co
 date: 2025-08-05
 tags: ["FinOps", "Cloud Architecture"]
 format: note
+derived: true
 ---
 
 The month-end cloud cost review is the wrong time to discover a cost anomaly. By then the anomaly has been running for weeks, the engineer who made the change that caused it may have moved on to other work, and the context needed to diagnose it has faded.

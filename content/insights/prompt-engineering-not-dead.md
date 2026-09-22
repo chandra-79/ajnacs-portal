@@ -4,6 +4,7 @@ description: "The lifecycle of \"prompt engineering is dead\" as a claim tracks 
 date: 2026-03-10
 tags: ["AI & MLOps", "Enterprise AI"]
 format: note
+derived: true
 ---
 
 The lifecycle of "prompt engineering is dead" as a claim tracks closely with major model capability releases. GPT-4 improved instruction following significantly — prompt engineering is dead. Claude Opus improved reasoning — prompt engineering is dead. Each release makes simple prompt manipulation less necessary and leaves the more sophisticated parts of the discipline untouched.

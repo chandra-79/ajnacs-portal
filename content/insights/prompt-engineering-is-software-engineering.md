@@ -4,6 +4,7 @@ description: "Writing prompts for LLMs is software engineering. The feedback loo
 date: 2025-11-17
 tags: ["Enterprise AI"]
 format: note
+derived: true
 ---
 
 Writing prompts for LLMs is software engineering. The feedback loops are worse, the determinism is lower, and the testing practices are less mature — but the discipline is the same.

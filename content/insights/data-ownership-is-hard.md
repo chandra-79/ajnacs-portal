@@ -4,6 +4,7 @@ description: "Every data governance programme eventually arrives at the ownershi
 date: 2026-05-19
 tags: ["Data Engineering", "Engineering Leadership"]
 format: article
+derived: true
 ---
 
 Every data governance programme eventually arrives at the ownership question. The cataloguing, the lineage tooling, the quality monitoring — these are solvable. Ownership is the problem that outlasts the tools.

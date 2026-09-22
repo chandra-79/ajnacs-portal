@@ -4,6 +4,7 @@ description: "Good offline evaluation metrics are necessary for a production-rea
 date: 2026-03-31
 tags: ["Enterprise AI", "AI & MLOps"]
 format: article
+derived: true
 ---
 
 Good offline evaluation metrics are necessary for a production-ready ML model. They are not sufficient. The gap between an evaluation score and production behavior is where most ML projects encounter their most expensive surprises.

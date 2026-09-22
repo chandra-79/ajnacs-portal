@@ -4,6 +4,7 @@ description: "Software engineering has decades of practice around automated test
 date: 2025-08-08
 tags: ["AI & MLOps", "Enterprise AI"]
 format: article
+derived: true
 ---
 
 Software engineering has decades of practice around automated testing. The discipline is imperfect, inconsistently applied, and still the most reliable mechanism for catching regressions before users do. AI systems need an equivalent discipline, and most production deployments do not have it.

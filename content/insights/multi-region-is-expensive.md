@@ -4,6 +4,7 @@ description: "Multi-region architecture is presented as a natural evolution from
 date: 2025-09-03
 tags: ["Cloud Architecture"]
 format: article
+derived: true
 ---
 
 Multi-region architecture is presented as a natural evolution from single-region deployment, the logical next step in a reliability maturity model. In practice, it is a different operational category with requirements that do not exist in single-region deployments and costs that compound across every component of the system.

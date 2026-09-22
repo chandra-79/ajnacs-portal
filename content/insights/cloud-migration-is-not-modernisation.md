@@ -4,6 +4,7 @@ description: "Lift-and-shift is a legitimate cloud migration strategy. But when 
 date: 2025-10-20
 tags: ["Cloud Architecture", "Infrastructure"]
 format: note
+derived: true
 ---
 
 Lift-and-shift is a legitimate cloud migration strategy. But when organizations call it "cloud transformation," they're setting expectations that a server relocation cannot meet.

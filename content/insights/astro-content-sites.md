@@ -4,6 +4,7 @@ description: "js is a well-designed framework for building web applications."
 date: 2026-06-01
 tags: ["Programming", "Software Engineering", "Developer Tools"]
 format: article
+derived: true
 ---
 
 Next.js is a well-designed framework for building web applications. Reaching for it to build a content site is the equivalent of hiring a full software architecture team to publish a blog — the capability is there, but the problem doesn't require it.

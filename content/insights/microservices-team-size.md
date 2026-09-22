@@ -4,6 +4,7 @@ description: "The microservices debate has produced more opinion than clarity, l
 date: 2026-03-23
 tags: ["Architecture", "Engineering Leadership"]
 format: article
+derived: true
 ---
 
 The microservices debate has produced more opinion than clarity, largely because the participants are arguing from different team sizes and different ownership models without acknowledging the difference.

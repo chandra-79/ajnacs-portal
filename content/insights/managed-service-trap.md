@@ -4,6 +4,7 @@ description: "Managed services are genuinely valuable. Handing off database patc
 date: 2025-11-10
 tags: ["Cloud Architecture", "Infrastructure"]
 format: note
+derived: true
 ---
 
 Managed services are genuinely valuable. Handing off database patching, engine upgrades, and hardware failures to a cloud provider eliminates a significant operational burden. This is worth paying for.

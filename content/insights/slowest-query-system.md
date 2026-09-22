@@ -4,6 +4,7 @@ description: "The query everyone knows about is usually not mysterious."
 date: 2025-07-15
 tags: ["Data Engineering", "Architecture"]
 format: note
+derived: true
 ---
 
 The query everyone knows about is usually not mysterious. It is a full table scan that runs on every page load, a report query that aggregates three years of data without a partition key, or a join between tables that grew to millions of rows after the query was written when they had thousands.

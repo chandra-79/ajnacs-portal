@@ -4,6 +4,7 @@ description: "Compliance audits feel like external events imposed on engineering
 date: 2025-08-21
 tags: ["DevSecOps", "Engineering Leadership"]
 format: note
+derived: true
 ---
 
 Compliance audits feel like external events imposed on engineering teams. In reality, they are diagnostic tools that surface what already exists in the architecture — gaps in access control, undocumented data flows, inconsistent logging, drift between design assumptions and operational reality.

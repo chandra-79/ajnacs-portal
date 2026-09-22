@@ -4,6 +4,7 @@ description: "Staging environment drift is one of those problems that announces 
 date: 2026-02-02
 tags: ["DevSecOps", "Infrastructure", "Software Engineering"]
 format: note
+derived: true
 ---
 
 Staging environment drift is one of those problems that announces itself only during production incidents. "But it worked in staging" is a statement that reveals the staging environment was no longer testing what production runs.

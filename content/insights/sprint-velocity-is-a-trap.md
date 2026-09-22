@@ -4,6 +4,7 @@ description: "Sprint velocity became ubiquitous in software engineering planning
 date: 2025-09-17
 tags: ["Engineering Leadership"]
 format: article
+derived: true
 ---
 
 Sprint velocity became ubiquitous in software engineering planning because it answered a real question — how much can this team deliver in a sprint — with a number that could be plotted over time. The appeal is legitimate. Planning requires some model of throughput. The problem is that velocity measures what teams do, not what teams achieve, and the difference matters enormously.

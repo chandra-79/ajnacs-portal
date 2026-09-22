@@ -4,6 +4,7 @@ description: "Before adopting a technology, I've started asking two questions se
 date: 2025-11-04
 tags: ["Cloud Architecture", "Engineering Leadership"]
 format: note
+derived: true
 ---
 
 Before adopting a technology, I've started asking two questions separately.

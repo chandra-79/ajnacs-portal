@@ -4,6 +4,7 @@ description: "A demo works. You show it, it impresses, people want to deploy it.
 date: 2026-02-25
 tags: ["Enterprise AI", "Observability"]
 format: note
+derived: true
 ---
 
 A demo works. You show it, it impresses, people want to deploy it. What a demo doesn't tell you is how the model behaves across the full distribution of real user inputs — including the inputs you didn't think to test.

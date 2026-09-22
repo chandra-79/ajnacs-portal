@@ -4,6 +4,7 @@ description: "The senior infrastructure engineers who managed physical data cent
 date: 2025-10-01
 tags: ["Cloud Architecture", "Engineering Leadership"]
 format: article
+derived: true
 ---
 
 The senior infrastructure engineers who managed physical data centres for fifteen years have a specific set of experiences that shape how they evaluate cloud. They knew their utilisation. They could walk to the rack. They could predict next quarter's hardware cost from current capacity planning. The change management process was slow, but a failed change had a bounded blast radius because the systems were not deeply interdependent.

@@ -4,6 +4,7 @@ description: "Private cloud cost justifications usually compare hardware acquisi
 date: 2026-04-29
 tags: ["Cloud Architecture", "FinOps", "Infrastructure"]
 format: note
+derived: true
 ---
 
 Private cloud cost justifications usually compare hardware acquisition cost plus data centre expenses against public cloud on-demand pricing. This comparison consistently underestimates the total cost of private cloud and overestimates the savings.

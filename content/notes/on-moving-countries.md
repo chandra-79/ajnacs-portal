@@ -4,6 +4,7 @@ description: "You spend weeks deciding what furniture to sell and what to ship. 
 date: 2026-04-01
 tags: ["Moving", "Life", "Reflection"]
 format: article
+derived: true
 ---
 
 You spend weeks deciding what furniture to sell and what to ship. You agonise over boxes, cubic feet, insurance riders. And then you arrive and realise the things that cost you nothing to carry — habits, assumptions, the particular way you read a room — are the ones that need the most unpacking.

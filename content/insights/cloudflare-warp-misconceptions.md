@@ -4,6 +4,7 @@ description: "Cloudflare WARP is a useful tool that is frequently deployed for t
 date: 2026-05-18
 tags: ["Systems", "Security", "DevSecOps"]
 format: note
+derived: true
 ---
 
 Cloudflare WARP is a useful tool that is frequently deployed for the wrong reasons and therefore configured to deliver a fraction of its potential security value.

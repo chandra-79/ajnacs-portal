@@ -4,6 +4,7 @@ description: "At some point in a long career, your relationship with learning ch
 date: 2025-06-23
 tags: ["Personal", "Career", "Learning"]
 format: article
+derived: true
 ---
 
 At some point in a long career, your relationship with learning changes.

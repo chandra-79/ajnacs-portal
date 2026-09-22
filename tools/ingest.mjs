@@ -155,13 +155,15 @@ for (const a of kept) {
   // A body-level H1 duplicates the page title and breaks heading order.
   if (/^#\s/m.test(body)) { body = body.replace(/^#\s+(.*)$/gm, "## $1"); fixedH1++; }
   let description = (a.fm.description || "").trim();
-  if (!description) { description = deriveDescription(body); wroteDesc++; }
+  let derived = false;
+  if (!description) { description = deriveDescription(body); derived = true; wroteDesc++; }
   const tags = [...new Set((a.fm.tags || []).map(normTag))];
   const slug = slugify(a.file.replace(/\.mdx?$/, ""));
   const rec = {
     slug, section,
     title: a.fm.title || "",
     description,
+    derived,
     date: a.newDate,
     originalDate: a.fm.pubDate,
     tags,
@@ -180,6 +182,7 @@ for (const a of kept) {
     rec.series ? `series: ${JSON.stringify(rec.series)}` : null,
     rec.seriesOrder ? `seriesOrder: ${rec.seriesOrder}` : null,
     `format: ${rec.format}`,
+    rec.derived ? "derived: true" : null,
     "---",
   ].filter(Boolean).join("\n");
   await mkdir(path.join(OUT, section), { recursive: true });

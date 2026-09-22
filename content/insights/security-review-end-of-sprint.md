@@ -4,6 +4,7 @@ description: "When a security review happens at the end of a sprint, the finding
 date: 2025-12-10
 tags: ["DevSecOps", "Security"]
 format: note
+derived: true
 ---
 
 When a security review happens at the end of a sprint, the findings that require architectural changes are almost guaranteed to get deferred. The code is written. The tests pass. The team is ready to ship. A finding that says "the authentication design needs to change" means rework measured in days — and rework at ship time is rework that gets pushed to the next sprint, which means it doesn't happen before the next sprint's pressure arrives.

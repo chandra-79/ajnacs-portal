@@ -4,6 +4,7 @@ description: "The post-mortem format exists to drive system improvement."
 date: 2026-01-22
 tags: ["Engineering Leadership", "Observability", "Resilience"]
 format: article
+derived: true
 ---
 
 The post-mortem format exists to drive system improvement. A well-run post-mortem produces a clear understanding of what happened, why it happened, what made it worse, and — most importantly — what changes as a result. The last item is the only one with lasting value.

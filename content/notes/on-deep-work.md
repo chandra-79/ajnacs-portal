@@ -4,6 +4,7 @@ description: "The kind of work I find most valuable — designing something genu
 date: 2025-10-31
 tags: ["Personal", "Productivity", "Career"]
 format: article
+derived: true
 ---
 
 The kind of work I find most valuable — designing something genuinely difficult, thinking through an architectural problem, writing something that requires sustained attention — does not happen in fragments. It happens in stretches of uninterrupted time where the problem can be held in working memory and turned over until the shape of it becomes clear.

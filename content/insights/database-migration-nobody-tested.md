@@ -4,6 +4,7 @@ description: "The most common pattern in database migration incidents: the migra
 date: 2025-09-01
 tags: ["Data Engineering", "Engineering Leadership"]
 format: note
+derived: true
 ---
 
 The most common pattern in database migration incidents: the migration worked perfectly in every environment that was not production. Development databases are small, have uniform data, and lack the index cardinality and row distribution that drives migration performance at scale. Staging databases are production architecture with test data that doesn't reflect production data shapes.

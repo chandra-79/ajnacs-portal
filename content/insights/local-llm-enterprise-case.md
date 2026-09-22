@@ -4,6 +4,7 @@ description: "The default assumption in enterprise AI conversations is that infe
 date: 2026-04-27
 tags: ["Enterprise AI", "Emerging Technology"]
 format: note
+derived: true
 ---
 
 The default assumption in enterprise AI conversations is that inference runs against cloud APIs. The case for local inference gets dismissed as enthusiast territory — useful for developers running experiments, not for enterprise workloads.

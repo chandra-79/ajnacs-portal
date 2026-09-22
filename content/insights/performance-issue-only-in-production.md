@@ -4,6 +4,7 @@ description: "When a performance issue only appears in production, the most like
 date: 2026-04-22
 tags: ["Software Engineering", "Data Engineering", "Observability"]
 format: note
+derived: true
 ---
 
 When a performance issue only appears in production, the most likely explanation isn't a bug that was accidentally introduced — it's an assumption about scale that holds in development and breaks in production.

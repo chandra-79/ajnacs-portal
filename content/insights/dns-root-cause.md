@@ -4,6 +4,7 @@ description: "DNS failures are underrepresented in post-mortems because DNS fail
 date: 2025-06-19
 tags: ["Systems", "Infrastructure", "Observability"]
 format: note
+derived: true
 ---
 
 DNS failures are underrepresented in post-mortems because DNS failures often don't look like DNS failures. They look like intermittent application errors, connection timeouts, or "it worked and then it stopped working for some users but not others."

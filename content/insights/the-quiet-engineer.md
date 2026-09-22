@@ -4,6 +4,7 @@ description: "Engineering recognition systems have a structural bias toward reac
 date: 2025-08-26
 tags: ["Engineering Leadership"]
 format: article
+derived: true
 ---
 
 Engineering recognition systems have a structural bias toward reactive work. An incident that causes customer impact, is resolved through skilled technical work, and results in a postmortem with action items is visible, measurable, and narratively compelling. The engineer who resolves it is named, thanked, and remembered.

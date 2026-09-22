@@ -112,10 +112,13 @@ function motifBars(r, c1, c2) {
 
 const MOTIFS = [motifNodes, motifLayers, motifFlow, motifWave, motifGrid, motifBars];
 
-export function artwork(slug, tags, { w = W, h = H } = {}) {
+export function artwork(slug, tags, { w = W, h = H, calm = false } = {}) {
   const r = seeded(slug);
   const [c1, c2] = colorFor(tags);
-  const motif = MOTIFS[Math.floor(r() * MOTIFS.length)];
+  // Personal essays get the quieter motifs; charts and grids read as data and
+  // sit oddly above reflective writing.
+  const pool = calm ? [motifWave, motifLayers] : MOTIFS;
+  const motif = pool[Math.floor(r() * pool.length)];
   const id = slug.replace(/[^a-z0-9]/g, "").slice(0, 12) || "a";
   return `<svg viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
   <defs>

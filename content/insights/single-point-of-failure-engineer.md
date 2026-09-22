@@ -4,6 +4,7 @@ description: "The most dangerous kind of technical dependency in an organization
 date: 2026-03-25
 tags: ["Engineering Leadership"]
 format: note
+derived: true
 ---
 
 The most dangerous kind of technical dependency in an organization isn't a legacy system or an undocumented API. It's the engineer who is the only person who understands the legacy system, wrote the undocumented API, and gets paged for every incident in their domain because they're the only one who can resolve it reliably.

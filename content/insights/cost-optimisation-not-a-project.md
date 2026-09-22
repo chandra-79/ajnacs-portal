@@ -4,6 +4,7 @@ description: "The most common cloud cost optimisation story: the bill gets uncom
 date: 2026-02-16
 tags: ["FinOps", "Engineering Leadership"]
 format: note
+derived: true
 ---
 
 The most common cloud cost optimisation story: the bill gets uncomfortably large, leadership forms a taskforce, the taskforce has a productive three months, the bill drops 30%, the taskforce celebrates and disbands. Eighteen months later, the bill is approaching its previous level and leadership is forming another taskforce.

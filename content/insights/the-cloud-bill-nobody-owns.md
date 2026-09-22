@@ -4,6 +4,7 @@ description: "Cloud spend without a named owner follows a predictable arc. In th
 date: 2026-05-13
 tags: ["FinOps", "Engineering Leadership"]
 format: note
+derived: true
 ---
 
 Cloud spend without a named owner follows a predictable arc. In the early months it's small enough that nobody prioritises it. Then it's growing but the growth is attributed to scaling — reasonable, expected, not worth interrupting the team over. Then it's large and the technical debt of accumulated waste (ghost VMs, over-provisioned instances, forgotten dev environments, duplicate resources) is significant to address. By the time leadership asks why the cloud bill is three times the original projection, the archaeology is daunting.

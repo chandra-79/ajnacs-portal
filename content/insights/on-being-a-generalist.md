@@ -4,6 +4,7 @@ description: "The specialist-generalist tension in engineering careers is often 
 date: 2025-10-09
 tags: ["Engineering Leadership"]
 format: article
+derived: true
 ---
 
 The specialist-generalist tension in engineering careers is often framed as a choice between depth and breadth, as though one person cannot have both. The most useful senior technical people I have worked with have genuine depth in at least two or three domains and broad enough exposure to reason credibly about the rest. The generalist framing undersells what they actually bring.

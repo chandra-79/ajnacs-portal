@@ -4,6 +4,7 @@ description: "We reduced MTTR by 45% on a logistics platform — not by throwing
 date: 2026-04-02
 tags: ["Observability", "Engineering Leadership", "Resilience"]
 format: note
+derived: true
 ---
 
 MTTR is a leadership metric, not just an engineering metric.

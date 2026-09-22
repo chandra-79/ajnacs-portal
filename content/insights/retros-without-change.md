@@ -4,6 +4,7 @@ description: "The retrospective is one of the most widely adopted engineering pr
 date: 2025-08-19
 tags: ["Engineering Leadership"]
 format: article
+derived: true
 ---
 
 The retrospective is one of the most widely adopted engineering practices and one of the least consistently effective. The format is well-understood. The facilitation patterns are documented. The output format — what went well, what could be better, what actions to take — is standard. The gap is between action items generated and action items completed.

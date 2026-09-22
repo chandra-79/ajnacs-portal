@@ -4,6 +4,7 @@ description: "Every deployment is a production test."
 date: 2025-11-28
 tags: ["DevSecOps", "Cloud Architecture"]
 format: note
+derived: true
 ---
 
 Every deployment is a production test. The question is whether it is a structured test with defined success criteria and rollback triggers, or an unstructured release where the first indicator of a problem is a spike in the error rate.

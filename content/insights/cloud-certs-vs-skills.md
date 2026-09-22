@@ -4,6 +4,7 @@ description: "Cloud certifications get you the interview. Architecture judgment 
 date: 2026-02-13
 tags: ["Career", "Cloud Architecture", "Architecture"]
 format: note
+derived: true
 ---
 
 Cloud certifications get you the interview. Architecture judgment gets you the offer.

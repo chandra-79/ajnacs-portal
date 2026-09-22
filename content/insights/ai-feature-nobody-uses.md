@@ -4,6 +4,7 @@ description: "AI adoption inside enterprise products fails in predictable ways, 
 date: 2025-07-07
 tags: ["Enterprise AI", "Engineering Leadership"]
 format: note
+derived: true
 ---
 
 AI adoption inside enterprise products fails in predictable ways, and the failure pattern is almost never about the underlying model capability.

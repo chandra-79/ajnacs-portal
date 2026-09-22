@@ -4,6 +4,7 @@ description: "Architecture decisions are regularly made by examining the technic
 date: 2025-06-16
 tags: ["Architecture", "Engineering Leadership"]
 format: article
+derived: true
 ---
 
 Architecture decisions are regularly made by examining the technical requirements of the system: expected throughput, latency targets, consistency requirements, failure tolerance, scaling dimensions. These are necessary inputs. They are not sufficient ones.

@@ -4,6 +4,7 @@ description: "Platform engineering only works if it's easier than the alternativ
 date: 2026-03-02
 tags: ["Platform Engineering", "Engineering Leadership"]
 format: note
+derived: true
 ---
 
 Platform engineering only works if it's easier than the alternative.

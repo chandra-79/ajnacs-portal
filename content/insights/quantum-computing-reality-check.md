@@ -4,6 +4,7 @@ description: "In 6 months in 2025, four companies announced quantum computing br
 date: 2026-04-06
 tags: ["Quantum Computing", "Emerging Technology"]
 format: note
+derived: true
 ---
 
 In 6 months in 2025, four companies announced quantum computing breakthroughs — from four completely different physical approaches:

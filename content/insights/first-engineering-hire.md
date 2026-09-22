@@ -4,6 +4,7 @@ description: "Every subsequent engineering hire is evaluated against the standar
 date: 2025-10-13
 tags: ["Engineering Leadership"]
 format: note
+derived: true
 ---
 
 Every subsequent engineering hire is evaluated against the standard the first hire established. The practices they introduced, the patterns they chose, the corners they cut — these become the baseline that the team normalises. Engineers three through ten inherit the architecture the first engineer built, the testing practices they established, and the on-call culture they modelled.

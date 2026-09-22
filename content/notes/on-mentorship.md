@@ -4,6 +4,7 @@ description: "Not malicious — inattentive. I gave advice generously, answered 
 date: 2025-10-06
 tags: ["Mentorship", "Career", "Reflection"]
 format: article
+derived: true
 ---
 
 I was a bad mentor for a long time without knowing it.

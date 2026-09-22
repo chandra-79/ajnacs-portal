@@ -4,6 +4,7 @@ description: "The mental model that shapes most cloud security investment: sophi
 date: 2025-06-17
 tags: ["DevSecOps", "Cloud Architecture"]
 format: article
+derived: true
 ---
 
 The mental model that shapes most cloud security investment: sophisticated external adversaries employing novel attack techniques that require advanced threat detection capabilities to identify. The reality that shapes most cloud security incidents: misconfigured resources and overly permissive access controls that make the sophisticated attack technique unnecessary.

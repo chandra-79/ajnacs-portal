@@ -4,6 +4,7 @@ description: "The API versioning decision you make before you ship v1 will affec
 date: 2025-12-31
 tags: ["API Design", "Software Engineering", "Programming"]
 format: note
+derived: true
 ---
 
 The API versioning decision you make before you ship v1 will affect your engineering priorities five years later. It's worth slowing down to get right.

@@ -4,6 +4,7 @@ description: "The job titles proliferated faster than the practices they implied
 date: 2025-10-27
 tags: ["DevSecOps", "Engineering Leadership"]
 format: note
+derived: true
 ---
 
 The job titles proliferated faster than the practices they implied. Site Reliability Engineer became a hiring signal for candidates who expected Google-style SRE programs. DevOps Engineer became a catch-all for anyone who touched CI/CD pipelines. The debate about which model a given organisation was implementing consumed meeting time that could have been spent implementing SLOs.

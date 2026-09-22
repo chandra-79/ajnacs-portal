@@ -4,6 +4,7 @@ description: "People ask about productivity systems and I want to talk about mus
 date: 2025-12-25
 tags: ["Music", "Focus", "Work"]
 format: article
+derived: true
 ---
 
 People ask about productivity systems and I want to talk about music instead.

@@ -4,6 +4,7 @@ description: "Distributed tracing has a specific adoption dynamic that different
 date: 2025-07-10
 tags: ["DevSecOps", "Cloud Architecture"]
 format: article
+derived: true
 ---
 
 Distributed tracing has a specific adoption dynamic that differentiates it from most observability investments. Metrics and logging provide value proportional to their deployment — instrument one service, get one service's worth of insight. Tracing provides value proportional to coverage across service boundaries. A trace that shows 60% of a request's path tells you that something went wrong somewhere in the other 40%, which is marginally better than not having the trace.

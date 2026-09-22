@@ -4,6 +4,7 @@ description: "There is a particular moment that happens to people who have lived
 date: 2026-03-03
 tags: ["Personal", "Migration", "Identity"]
 format: article
+derived: true
 ---
 
 There is a particular moment that happens to people who have lived far from where they grew up for a long time. You are at a dinner table, or on the phone with your parents, and you reach for a word or a reference and you realize the other person does not have the same frame of reference for it. Not because they are uninformed — because the shared context that you once assumed now has gaps in it.

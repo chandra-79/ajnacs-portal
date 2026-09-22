@@ -102,7 +102,7 @@ const contactForm = (id, compact = false) => `
 </form>`;
 
 export function staticPages({ insights, notes, seriesMap, topicList, cardFor }) {
-  const featured = insights.slice(0, 6);
+  const featured = insights.slice(0, 7);
   const pages = {};
 
   /* ---------------- home ---------------- */
@@ -111,7 +111,7 @@ export function staticPages({ insights, notes, seriesMap, topicList, cardFor }) 
     description: "Ajna Consulting Services is a specialised engineering partner for enterprise architecture, AI and MLOps, and corporate technical enablement.",
     path: "/",
     body: `
-<section class="hero mesh">
+<section class="hero band band-deep">
   <div class="grid-bg" aria-hidden="true"></div>
   <div class="wrap hero-inner">
     <p class="eyebrow">Specialised engineering partner</p>
@@ -127,7 +127,7 @@ export function staticPages({ insights, notes, seriesMap, topicList, cardFor }) 
     <div class="stat-strip" style="margin-top:3.4rem">
       ${STATS.map(([v, l]) => `<div class="stat"><div class="stat-val">${v}</div><div class="stat-lbl">${l}</div></div>`).join("")}
     </div>
-    <p class="small muted center" style="margin-top:.9rem">Typical results across modernisation engagements.</p>
+    <p class="small center" style="margin-top:.9rem;color:#8fa0c4">Typical results across modernisation engagements.</p>
   </div>
 </section>
 
@@ -160,7 +160,7 @@ export function staticPages({ insights, notes, seriesMap, topicList, cardFor }) 
   </div>
 </section>
 
-<section class="section surface hair">
+<section class="section band band-deep">
   <div class="wrap">
     <p class="eyebrow">The Ajna methodology</p>
     <h2 class="h1" style="margin-top:.8rem;max-width:22ch">How an engagement actually runs.</h2>
@@ -177,15 +177,24 @@ export function staticPages({ insights, notes, seriesMap, topicList, cardFor }) 
         <p class="eyebrow">Insights</p>
         <h2 class="h1" style="margin-top:.8rem;max-width:20ch">We write down what we learn.</h2>
       </div>
-      <a class="link-arrow" href="/insights/">All ${insights.length} articles ${icon.arrow}</a>
+      <a class="link-arrow" href="/insights/">Further reading ${icon.arrow}</a>
     </div>
-    <div class="grid g-3" style="margin-top:2.6rem">
-      ${featured.map(m => cardFor(m, "/insights")).join("\n")}
+    ${featured.length ? `<a class="feature-post" data-topic="${esc(primaryTopic(featured[0].tags))}" href="/insights/${featured[0].slug}/" style="margin-top:2.6rem">
+      <span class="art">${artwork(featured[0].slug, featured[0].tags, { w: 760, h: 560 })}</span>
+      <span class="body">
+        <span class="chip" style="align-self:flex-start">${esc(primaryTopic(featured[0].tags))}</span>
+        <h3>${esc(featured[0].title)}</h3>
+        <p>${esc(featured[0].description)}</p>
+        <span class="link-arrow">Read it ${icon.arrow}</span>
+      </span>
+    </a>` : ""}
+    <div class="grid g-3" style="margin-top:1.4rem">
+      ${featured.slice(1).map(m => cardFor(m, "/insights")).join("\n")}
     </div>
   </div>
 </section>
 
-${seriesMap.size ? `<section class="section surface hair">
+${seriesMap.size ? `<section class="section band band-warm">
   <div class="wrap">
     <p class="eyebrow">Series</p>
     <h2 class="h1" style="margin-top:.8rem;max-width:22ch">Longer arcs, in order.</h2>
@@ -198,7 +207,7 @@ ${seriesMap.size ? `<section class="section surface hair">
   </div>
 </section>` : ""}
 
-<section class="section">
+<section class="section band band-deep">
   <div class="wrap">
     <p class="eyebrow">Industry acclaim</p>
     <h2 class="h1" style="margin-top:.8rem;max-width:24ch">What stakeholders say.</h2>
@@ -212,18 +221,18 @@ ${seriesMap.size ? `<section class="section surface hair">
         <figcaption><strong>${esc(who)}</strong><span>${esc(org)}</span></figcaption>
       </figure>`).join("\n")}
     </div>
-    <p class="small muted" style="margin-top:1.2rem">Feedback from engagement stakeholders. Names withheld under client confidentiality.</p>
+    <p class="small" style="margin-top:1.2rem;color:#8fa0c4">Feedback from engagement stakeholders. Names withheld under client confidentiality.</p>
   </div>
 </section>
 
 <section class="section">
-  <div class="wrap cta-panel cta-wide">
+  <div class="wrap"><div class="cta-field">
     <div>
       <h2 class="h1" style="max-width:18ch">Tell us what is breaking.</h2>
       <p class="lede" style="margin-top:1rem;max-width:48ch">Architecture review, migration, AI in production, or training your team to run it. Start with the constraint you actually have.</p>
     </div>
     <a class="btn btn-lg" href="/contact/">Engage engineering ${icon.arrow}</a>
-  </div>
+  </div></div>
 </section>`,
     jsonld: [{
       "@context": "https://schema.org", "@type": "Organization",

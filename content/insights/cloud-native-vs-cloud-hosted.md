@@ -4,6 +4,7 @@ description: "The language around cloud adoption conflates two genuinely differe
 date: 2025-09-22
 tags: ["Cloud Architecture"]
 format: note
+derived: true
 ---
 
 The language around cloud adoption conflates two genuinely different things, and the conflation produces unrealistic expectations that erode confidence in cloud programs.

@@ -4,6 +4,7 @@ description: "Cloud migrations are consistently evaluated against infrastructure
 date: 2026-03-30
 tags: ["Cloud Architecture", "Engineering Leadership"]
 format: article
+derived: true
 ---
 
 Cloud migrations are consistently evaluated against infrastructure and application checklists. Compute is provisioned, application is running, data is migrated, traffic is routing. These are correct criteria for measuring whether the migration technical work is complete. They are insufficient criteria for measuring whether the migration is done.

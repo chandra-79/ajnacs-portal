@@ -4,6 +4,7 @@ description: "The technical response to a production incident gets most of the e
 date: 2026-04-13
 tags: ["Engineering Leadership", "DevSecOps"]
 format: article
+derived: true
 ---
 
 The technical response to a production incident gets most of the engineering attention. Runbooks, incident tooling, on-call rotation design, escalation policies, chaos engineering — these are well-documented practices that most mature engineering organisations invest in. The communication dimension of incident response gets a fraction of that attention and causes a disproportionate fraction of the organisational damage when incidents occur.

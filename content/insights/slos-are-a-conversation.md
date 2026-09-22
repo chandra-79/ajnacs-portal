@@ -4,6 +4,7 @@ description: "An SLO programme that only engineering reads is not an SLO program
 date: 2026-03-09
 tags: ["DevSecOps", "Observability", "Engineering Leadership"]
 format: note
+derived: true
 ---
 
 An SLO programme that only engineering reads is not an SLO programme. It's a set of internal metrics dressed in SLO terminology.

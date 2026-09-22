@@ -4,6 +4,7 @@ description: "Docker is an excellent tool for application-layer portability.…"
 date: 2026-05-25
 tags: ["Developer Tools", "Infrastructure", "Cloud Architecture"]
 format: note
+derived: true
 ---
 
 Docker is an excellent tool for application-layer portability. It reliably closes the gap between "it runs locally" and "it runs in a container in the cloud." The gap it doesn't close is the gap between a container and a full Ubuntu virtual machine.

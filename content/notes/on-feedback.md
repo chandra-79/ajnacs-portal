@@ -4,6 +4,7 @@ description: "The feedback conversation is one of the most consistently handled 
 date: 2025-08-11
 tags: ["Personal", "Career", "Engineering Leadership"]
 format: article
+derived: true
 ---
 
 The feedback conversation is one of the most consistently handled poorly in professional settings. Both directions: feedback given too softly to be useful, feedback received as an attack rather than information.

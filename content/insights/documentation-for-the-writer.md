@@ -4,6 +4,7 @@ description: "The person who writes documentation has the system fully loaded in
 date: 2026-01-05
 tags: ["Software Engineering", "Engineering Leadership"]
 format: article
+derived: true
 ---
 
 The person who writes documentation has the system fully loaded in their working memory. They know which step is a prerequisite for which other step. They know what the error message means. They know which configuration value matters and which ones can be safely ignored.

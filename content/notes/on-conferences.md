@@ -4,6 +4,7 @@ description: "I have attended a lot of technology conferences. KubeCon, AWS re:I
 date: 2025-09-08
 tags: ["Personal", "Career", "Community"]
 format: article
+derived: true
 ---
 
 I have attended a lot of technology conferences. KubeCon, AWS re:Invent, Google Cloud Next, a number of smaller specialist events. The pattern I've noticed is that the value of a conference correlates weakly with its size and strongly with the people you are already going to talk to when you arrive.

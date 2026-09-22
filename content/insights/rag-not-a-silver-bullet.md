@@ -4,6 +4,7 @@ description: "…"
 date: 2025-11-21
 tags: ["Enterprise AI", "Emerging Technology"]
 format: note
+derived: true
 ---
 
 RAG is the right architecture when your problem is "the model doesn't have access to your proprietary data." It is not a solution for every AI quality problem, and treating it as one leads to architectures that are complex without being better.

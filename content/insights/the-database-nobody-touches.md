@@ -4,6 +4,7 @@ description: "The database that nobody wants to touch is a recognisable archetyp
 date: 2026-03-16
 tags: ["Data Engineering", "Engineering Leadership"]
 format: article
+derived: true
 ---
 
 The database that nobody wants to touch is a recognisable archetype in every enterprise I've worked in. It's old. It has stored procedures that reach into systems whose original developers have long since moved on. The schema has no documentation, or documentation that was accurate in 2017 and hasn't been touched since. It runs on hardware that's been in "extended support" for years.

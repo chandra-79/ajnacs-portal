@@ -4,6 +4,7 @@ description: "Zero trust is a security architecture principle: assume no implici
 date: 2025-12-15
 tags: ["DevSecOps", "Security", "Systems"]
 format: note
+derived: true
 ---
 
 Zero trust is a security architecture principle: assume no implicit trust based on network location, authenticate and authorise every access request regardless of origin, and verify continuously rather than once at the perimeter.

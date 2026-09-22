@@ -4,6 +4,7 @@ description: "Data quality problems are solved where data is produced, not where
 date: 2025-09-15
 tags: ["Data Engineering", "Engineering Leadership"]
 format: article
+derived: true
 ---
 
 Data quality problems are solved where data is produced, not where it is consumed. This is a statement that most data engineering teams would agree with in principle and contradict in practice, because the team that feels the data quality problem most acutely is the consumer team, and the team with the authority and context to fix it is the producer team, and those are usually different people.

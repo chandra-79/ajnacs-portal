@@ -4,6 +4,7 @@ description: "The gap between staging and production is well understood and cons
 date: 2025-07-14
 tags: ["DevSecOps", "Engineering Leadership"]
 format: note
+derived: true
 ---
 
 The gap between staging and production is well understood and consistently underestimated. Every engineering team knows their staging environment isn't production-faithful. Most have developed a cultural acceptance of this gap and adjusted their expectations accordingly — which means they've also accepted that some class of bugs will only be discovered by production users.

@@ -4,6 +4,7 @@ description: "The pattern is consistent enough that I now treat \"we should rewr
 date: 2026-04-09
 tags: ["Software Engineering", "Engineering Leadership"]
 format: article
+derived: true
 ---
 
 The pattern is consistent enough that I now treat "we should rewrite this properly" as a proposal that requires significant justification before any planning begins.

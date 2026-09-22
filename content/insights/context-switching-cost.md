@@ -4,6 +4,7 @@ description: "The cognitive cost of context switching in knowledge work is well-
 date: 2025-09-11
 tags: ["Engineering Leadership"]
 format: article
+derived: true
 ---
 
 The cognitive cost of context switching in knowledge work is well-documented and consistently underweighted in how engineering teams structure their days. The estimate that full context recovery after an interruption takes approximately 20 minutes is conservative for complex technical work. Rebuilding the mental model of a system design under active development, or recovering the specific reasoning thread of a debugging session, takes longer when the problem is novel and the context is deep.

@@ -4,6 +4,7 @@ description: "Infrastructure as code is widely adopted and frequently misunderst
 date: 2025-07-16
 tags: ["DevSecOps", "Cloud Architecture"]
 format: article
+derived: true
 ---
 
 Infrastructure as code is widely adopted and frequently misunderstood in terms of what it provides. The adoption creates a genuine improvement: infrastructure changes are reviewed, versioned, and repeatable. It does not automatically create infrastructure control.

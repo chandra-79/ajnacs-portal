@@ -4,6 +4,7 @@ description: "Saying no is a skill that most people in professional settings are
 date: 2025-07-11
 tags: ["Personal", "Career", "Reflection"]
 format: article
+derived: true
 ---
 
 Saying no is a skill that most people in professional settings are systematically trained against.

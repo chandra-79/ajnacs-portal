@@ -4,6 +4,7 @@ description: "Engineering management career tracks create a gravitational pull t
 date: 2025-07-01
 tags: ["Engineering Leadership"]
 format: article
+derived: true
 ---
 
 Engineering management career tracks create a gravitational pull toward abstraction. As scope increases, direct involvement in technical work decreases. This is rational — a leader managing ten teams cannot be deeply involved in the technical decisions of each. The question is not whether to step back from some technical involvement, but how far back is too far.

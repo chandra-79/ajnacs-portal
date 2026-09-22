@@ -4,6 +4,7 @@ description: "On-call burnout has a specific texture."
 date: 2026-01-16
 tags: ["Engineering Leadership", "Observability"]
 format: article
+derived: true
 ---
 
 On-call burnout has a specific texture. It doesn't arrive as a dramatic crisis — it accumulates in the gap between the sleep that was interrupted and the work that still starts at the same time the next morning. Engineers carry it quietly, and by the time it's visible in attrition or performance, the erosion has been happening for months.

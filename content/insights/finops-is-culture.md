@@ -4,6 +4,7 @@ description: "The FinOps tool procurement conversation happens at a recognisable
 date: 2025-06-20
 tags: ["FinOps", "Engineering Leadership"]
 format: note
+derived: true
 ---
 
 The FinOps tool procurement conversation happens at a recognisable moment in most cloud programs. The cloud bill has grown faster than expected. Tagging is inconsistent. Teams are not sure what they own. Finance is asking questions engineering cannot answer with precision. The natural response is to purchase a platform that promises visibility.

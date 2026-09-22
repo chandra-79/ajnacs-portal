@@ -4,6 +4,7 @@ description: "I read a lot — always have. But for most of my career, I read in
 date: 2026-02-10
 tags: ["Learning", "Reflection", "Books"]
 format: article
+derived: true
 ---
 
 I read a lot — always have. But for most of my career, I read in the same way I approached most things: with efficiency as the primary goal. Get through the book, extract the relevant ideas, move on.

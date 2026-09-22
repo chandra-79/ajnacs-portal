@@ -4,6 +4,7 @@ description: "The productivity claims for AI coding tools are plausible but rout
 date: 2025-11-11
 tags: ["AI & MLOps", "Enterprise AI", "Engineering Leadership"]
 format: article
+derived: true
 ---
 
 The productivity claims for AI coding tools are plausible but routinely measured at the wrong scope. Controlled studies that measure individual task completion time for isolated programming tasks find meaningful improvements. These studies tell you something real about a narrow slice of the software development process.

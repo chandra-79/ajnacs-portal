@@ -4,6 +4,7 @@ description: "Engineering process design focuses on the scheduled meetings becau
 date: 2026-05-04
 tags: ["Engineering Leadership"]
 format: article
+derived: true
 ---
 
 Engineering process design focuses on the scheduled meetings because those are legible. Sprint planning has a defined agenda, a cadence, and measurable outputs. The daily standup has a format and a time limit. Design reviews have a template and participants. These are the meetings that appear in process documentation and team retrospectives.

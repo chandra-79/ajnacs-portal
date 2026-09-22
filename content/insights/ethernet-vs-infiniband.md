@@ -4,6 +4,7 @@ description: "Most AI teams spend months optimizing compute and storage. The net
 date: 2026-06-08
 tags: ["Systems", "Enterprise AI", "Infrastructure"]
 format: note
+derived: true
 ---
 
 Most AI teams spend months optimizing compute and storage. The network fabric is an afterthought — until distributed training grinds to a halt.

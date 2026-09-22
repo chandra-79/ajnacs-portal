@@ -4,6 +4,7 @@ description: "Infrastructure as code drift — the gap between your IaC state an
 date: 2025-10-24
 tags: ["Cloud Architecture", "Infrastructure", "DevSecOps"]
 format: note
+derived: true
 ---
 
 Infrastructure as code drift — the gap between your IaC state and your actual cloud environment — gets discussed as a technical problem. The solutions offered are usually technical: drift detection pipelines, automated remediation, CI enforcement.

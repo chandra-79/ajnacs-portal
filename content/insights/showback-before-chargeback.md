@@ -4,6 +4,7 @@ description: "Chargeback programmes create the most friction when teams encounte
 date: 2025-12-08
 tags: ["FinOps", "Engineering Leadership"]
 format: note
+derived: true
 ---
 
 Chargeback programmes create the most friction when teams encounter them without context. A team that has never seen their cloud costs presented clearly will respond to an internal bill with confusion and defensiveness, not cost accountability.

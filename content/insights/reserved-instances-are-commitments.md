@@ -4,6 +4,7 @@ description: "The \"discount\" framing for reserved instances creates bad purcha
 date: 2025-12-01
 tags: ["FinOps"]
 format: note
+derived: true
 ---
 
 The "discount" framing for reserved instances creates bad purchasing decisions. A discount is unambiguously good — you pay less for the same thing. A commitment is different: it requires that the thing you're committing to remains stable for the duration of the commitment.

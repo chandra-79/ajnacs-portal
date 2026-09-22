@@ -4,6 +4,7 @@ description: "Architecture decision records are only valuable if they're consult
 date: 2026-03-18
 tags: ["Software Engineering", "Engineering Leadership"]
 format: article
+derived: true
 ---
 
 Architecture decision records are only valuable if they're consulted when new decisions are being made in the same domain. A well-written ADR that nobody reads when designing a new system is archival documentation, not institutional knowledge.

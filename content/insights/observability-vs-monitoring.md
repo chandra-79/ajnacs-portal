@@ -4,6 +4,7 @@ description: "Monitoring tells you something is wrong. Observability tells you w
 date: 2026-04-20
 tags: ["Observability", "Engineering Leadership", "Cloud Architecture"]
 format: note
+derived: true
 ---
 
 Monitoring tells you something is wrong. Observability tells you why.

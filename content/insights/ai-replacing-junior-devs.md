@@ -4,6 +4,7 @@ description: "AI coding assistants have demonstrably changed what a junior devel
 date: 2025-08-27
 tags: ["AI & MLOps", "Engineering Leadership"]
 format: note
+derived: true
 ---
 
 AI coding assistants have demonstrably changed what a junior developer's first six months looks like. The mechanical parts of programming — boilerplate, standard patterns, documentation lookup, basic refactoring — are now significantly accelerated. A junior developer with good AI tooling can produce output volumes that would have taken two or three years to reach previously.

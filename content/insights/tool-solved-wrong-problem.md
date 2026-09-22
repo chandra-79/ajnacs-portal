@@ -4,6 +4,7 @@ description: "The pattern appears in most engineering organisations: a tool is e
 date: 2025-12-16
 tags: ["Engineering Leadership", "Architecture"]
 format: article
+derived: true
 ---
 
 The pattern appears in most engineering organisations: a tool is evaluated, selected through a structured process, adopted with engineering investment, and then delivers minimal value or requires replacement within two years. The tool was not the problem. The problem definition was.

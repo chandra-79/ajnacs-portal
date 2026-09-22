@@ -4,6 +4,7 @@ description: "The business case for hiring experienced candidates who have alrea
 date: 2025-07-25
 tags: ["Engineering Leadership"]
 format: article
+derived: true
 ---
 
 The business case for hiring experienced candidates who have already done the specific job is straightforward: shorter ramp time, immediate contribution, lower risk of mis-hire. The business case is real and limited. It does not account for availability, retention, or the compounding that comes from developing people.

@@ -91,7 +91,12 @@
           cards[i].hidden = true;
         }
       }
-      if (countEl) countEl.textContent = n + (n === 1 ? " article" : " articles");
+      // Only report a count while the reader is actually filtering; the total
+      // is not something to advertise.
+      if (countEl) {
+        const filtering = !!(activeTopic || query);
+        countEl.textContent = filtering ? (n === 1 ? "1 match" : n + " matches") : "";
+      }
       if (emptyEl) emptyEl.hidden = n !== 0;
       if (moreBtn) moreBtn.hidden = n <= visible ? true : false;
     }

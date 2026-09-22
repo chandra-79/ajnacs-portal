@@ -4,6 +4,7 @@ description: "Every data pipeline was built with implicit assumptions about the 
 date: 2026-03-13
 tags: ["Data Engineering", "Infrastructure"]
 format: article
+derived: true
 ---
 
 Every data pipeline was built with implicit assumptions about the data it processes. The format of date fields. The cardinality of enumerated values. The maximum size of a payload. The nullability of fields that are always populated today. Whether a field contains the numeric value 1 or the string "1".

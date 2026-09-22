@@ -4,6 +4,7 @@ description: "DORA metrics provided the engineering industry with a credible, re
 date: 2025-10-03
 tags: ["Engineering Leadership", "Architecture"]
 format: article
+derived: true
 ---
 
 DORA metrics provided the engineering industry with a credible, research-backed set of measures for delivery performance. Deployment frequency, lead time for changes, change failure rate, and mean time to recovery are genuinely useful. They are also exclusively pipeline metrics — they measure the efficiency of the delivery process, not the effectiveness of what gets delivered.

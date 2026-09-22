@@ -4,6 +4,7 @@ description: "Most enterprises have a tagging standard. Most enterprises also ha
 date: 2025-12-05
 tags: ["FinOps", "Cloud Architecture", "Engineering Leadership"]
 format: note
+derived: true
 ---
 
 Most enterprises have a tagging standard. Most enterprises also have significant tagging gaps. The standard exists; the compliance doesn't. This isn't a tooling problem — every major cloud provider has comprehensive tagging capabilities. It's an accountability problem.

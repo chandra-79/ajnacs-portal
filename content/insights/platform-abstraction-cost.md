@@ -4,6 +4,7 @@ description: "Platform engineering abstractions solve a real problem at a real c
 date: 2025-08-01
 tags: ["Engineering Leadership", "Architecture"]
 format: article
+derived: true
 ---
 
 Platform engineering abstractions solve a real problem at a real cost. The problem: application teams should not need to understand the operational complexity of every infrastructure component they consume. The cost: the abstraction layer must be maintained, evolved, and kept current with the underlying technology it wraps. That cost is ongoing, compounding, and easy to underestimate.

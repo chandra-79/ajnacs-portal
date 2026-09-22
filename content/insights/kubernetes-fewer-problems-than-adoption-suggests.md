@@ -4,6 +4,7 @@ description: "Kubernetes is genuinely impressive engineering."
 date: 2026-02-09
 tags: ["Cloud Architecture", "Infrastructure", "DevSecOps"]
 format: note
+derived: true
 ---
 
 Kubernetes is genuinely impressive engineering. The abstractions it provides for container orchestration, service discovery, storage, and network policy are powerful and, at sufficient scale, essential. This is not an argument against Kubernetes.

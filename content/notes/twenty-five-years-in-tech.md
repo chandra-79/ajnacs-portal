@@ -4,6 +4,7 @@ description: "The resume version is clean. A line of titles, a cascade of techno
 date: 2025-06-23
 tags: ["Career", "Reflection", "Tech"]
 format: article
+derived: true
 ---
 
 The resume version is clean. A line of titles, a cascade of technologies, a set of outcomes expressed as percentages. It gives you a shape.

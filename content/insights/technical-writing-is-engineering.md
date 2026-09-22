@@ -4,6 +4,7 @@ description: "The framing of writing as a \"soft skill\" in engineering has prod
 date: 2025-09-24
 tags: ["Engineering Leadership"]
 format: article
+derived: true
 ---
 
 The framing of writing as a "soft skill" in engineering has produced decades of engineers who regard documentation as an obligation to be minimised and clear communication as optional. The framing is wrong and the consequences are expensive.

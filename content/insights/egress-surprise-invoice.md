@@ -4,6 +4,7 @@ description: "Cloud egress pricing works differently from most cloud cost catego
 date: 2026-01-26
 tags: ["FinOps", "Cloud Architecture"]
 format: article
+derived: true
 ---
 
 Cloud egress pricing works differently from most cloud cost categories. Compute and storage costs scale roughly linearly with usage in ways that are easy to estimate. Egress costs are invisible until they are not, because the pricing model creates dramatic differences based on where data goes, not just how much of it moves.

@@ -4,6 +4,7 @@ description: "There's a version of the work-life balance conversation that stays
 date: 2025-11-25
 tags: ["Work", "Life", "Reflection"]
 format: article
+derived: true
 ---
 
 ![Work-life balance](/images/work-life-balance.gif)

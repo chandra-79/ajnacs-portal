@@ -4,6 +4,7 @@ description: "The decision to create an abstraction is a prediction."
 date: 2026-02-17
 tags: ["Architecture", "Engineering Leadership"]
 format: article
+derived: true
 ---
 
 The decision to create an abstraction is a prediction. It predicts that the underlying complexity being abstracted will change in ways the abstraction can accommodate, and that the interface the abstraction exposes will remain stable even as the implementation behind it evolves. When that prediction is correct, the abstraction reduces complexity for its consumers. When it is wrong, it creates a layer of indirection between the consumer and what they actually need.

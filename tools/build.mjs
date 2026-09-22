@@ -55,6 +55,7 @@ for (const m of live) {
     html = injectAfterFirstH2(html, chart || statStrip(stats));
   }
 
+  const tocHtml = tableOfContents(headings);
   const refsHtml = m.section === "insights" ? referencesBlock(referencesFor(body)) : "";
 
   const ogPath = `/assets/og/${m.section}-${m.slug}.svg`;
@@ -83,7 +84,7 @@ for (const m of live) {
         <span>${esc(topic)}</span>
       </nav>
       <h1 class="h1">${esc(m.title)}</h1>
-      <p class="lede" style="margin-top:1rem">${esc(m.description)}</p>
+      ${m.derived ? "" : `<p class="lede" style="margin-top:1rem">${esc(m.description)}</p>`}
       <div class="article-meta">
         <span class="chip">${esc(topic)}</span>
         <time datetime="${m.date}">${fmtDate(m.date)}</time>
@@ -93,10 +94,10 @@ for (const m of live) {
     </div>
   </header>
 
-  <div class="article-hero wrap-narrow" data-topic="${esc(topic)}">${artwork(m.slug, m.tags, { w: 1200, h: 420 })}</div>
+  <div class="article-hero wrap-narrow" data-topic="${esc(topic)}">${artwork(m.slug, m.tags, { w: 1200, h: 380, calm: m.section === "notes" })}</div>
 
-  <div class="wrap-narrow article-grid">
-    ${tableOfContents(headings)}
+  <div class="wrap-narrow article-grid${tocHtml ? " has-toc" : ""}">
+    ${tocHtml}
     <div class="prose">
 ${html}
     </div>
@@ -197,9 +198,9 @@ await out("insights", page({
     <div class="search-field">
       ${icon.search}
       <label class="sr-only" for="postSearch">Search articles</label>
-      <input type="search" id="postSearch" placeholder="Search ${insights.length} articles…" autocomplete="off">
+      <input type="search" id="postSearch" placeholder="Search the archive…" autocomplete="off">
     </div>
-    <p class="small muted" id="postCount" role="status" aria-live="polite">${insights.length} articles</p>
+    <p class="small muted" id="postCount" role="status" aria-live="polite"></p>
   </div>
 
   <div class="chip-row" role="group" aria-label="Filter by topic">

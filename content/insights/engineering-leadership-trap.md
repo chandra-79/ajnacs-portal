@@ -4,6 +4,7 @@ description: "Most first-time engineering managers manage the way their best man
 date: 2025-12-22
 tags: ["Engineering Leadership", "Career"]
 format: note
+derived: true
 ---
 
 The trap of managing the way you were managed.

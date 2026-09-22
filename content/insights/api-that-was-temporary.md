@@ -4,6 +4,7 @@ description: "There is no such thing as a temporary API in production. There is 
 date: 2025-09-08
 tags: ["Architecture", "Engineering Leadership"]
 format: article
+derived: true
 ---
 
 There is no such thing as a temporary API in production. There is only an API whose permanent status has not yet been acknowledged.

@@ -4,6 +4,7 @@ description: "Every DR plan has an RTO and an RPO. Most of them are estimates ba
 date: 2025-10-21
 tags: ["Cloud Architecture", "Disaster Recovery", "Resilience"]
 format: note
+derived: true
 ---
 
 Every DR plan has an RTO and an RPO. Most of them are estimates based on theory, not measurements based on practice.

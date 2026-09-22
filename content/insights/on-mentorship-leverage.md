@@ -4,6 +4,7 @@ description: "The most experienced engineers in any organisation have accumulate
 date: 2025-06-27
 tags: ["Engineering Leadership"]
 format: article
+derived: true
 ---
 
 The most experienced engineers in any organisation have accumulated something that is difficult to reproduce from documentation: the pattern recognition that comes from having been wrong in specific ways and corrected over time. They know why a particular architectural choice fails under a particular load pattern because they watched it fail. They know why a particular organisational intervention backfires because they tried it. That knowledge is the most valuable thing they can transmit.

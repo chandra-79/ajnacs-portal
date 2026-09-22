@@ -4,6 +4,7 @@ description: "The question is not whether Kubernetes is technically capable of r
 date: 2025-08-13
 tags: ["Cloud Architecture", "Engineering Leadership"]
 format: note
+derived: true
 ---
 
 The question is not whether Kubernetes is technically capable of running your workload. It is. The question is what operating Kubernetes costs a team that does not have a dedicated platform function.

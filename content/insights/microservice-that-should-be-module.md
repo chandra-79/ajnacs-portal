@@ -4,6 +4,7 @@ description: "Microservices solve genuine problems: independent deployability, t
 date: 2025-12-29
 tags: ["Software Engineering", "Distributed Systems", "Architecture"]
 format: note
+derived: true
 ---
 
 Microservices solve genuine problems: independent deployability, technology heterogeneity, team autonomy at scale, and the ability to scale specific components independently. For organizations with large engineering teams where different services have genuinely different operational and technical requirements, the architecture makes sense.
