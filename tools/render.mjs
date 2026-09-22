@@ -2,6 +2,13 @@
 import { Marked } from "marked";
 import { esc } from "./lib.mjs";
 
+/* parseInline hands back HTML, so its text is already entity-encoded. The
+   contents list escapes again on the way out, which turned &quot; into a
+   literal &quot; on the page — so decode before storing the plain text. */
+const unescapeEntities = (s) => s
+  .replace(/&lt;/g, "<").replace(/&gt;/g, ">")
+  .replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, "&");
+
 const slugifyHeading = (s) => s.toLowerCase().replace(/<[^>]+>/g, "")
   .replace(/[^a-z0-9\s-]/g, "").trim().replace(/\s+/g, "-").slice(0, 60);
 
@@ -13,7 +20,7 @@ export function makeRenderer() {
       heading({ tokens, depth }) {
         const text = this.parser.parseInline(tokens);
         const id = slugifyHeading(text);
-        if (depth === 2) headings.push({ id, text: text.replace(/<[^>]+>/g, "") });
+        if (depth === 2) headings.push({ id, text: unescapeEntities(text.replace(/<[^>]+>/g, "")) });
         return `<h${depth} id="${id}">${text}</h${depth}>\n`;
       },
       table(token) {

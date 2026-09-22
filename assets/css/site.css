@@ -69,20 +69,32 @@
    Set on <html> by the viewer settings panel and replayed before first paint.
    Each one only redefines a token the article layout already reads, so no
    component needs to know these exist. */
-:root{--art-fs:1.105rem;--art-lh:1.8;--font-read:var(--font-body)}
-[data-rsize="s"]{--art-fs:1rem;--art-lh:1.75}
-[data-rsize="m"]{--art-fs:1.105rem;--art-lh:1.8}
-[data-rsize="l"]{--art-fs:1.24rem;--art-lh:1.82}
-[data-rsize="xl"]{--art-fs:1.38rem;--art-lh:1.85}
+:root{
+  --art-scale:1;
+  --art-fs:calc(1.105rem * var(--art-scale));
+  --art-lh:1.8;
+  --font-read:var(--font-body);
+  --font-read-head:var(--font-display);
+}
+[data-rsize="s"]{--art-scale:.92;--art-lh:1.75}
+[data-rsize="m"]{--art-scale:1;--art-lh:1.8}
+[data-rsize="l"]{--art-scale:1.13;--art-lh:1.82}
+[data-rsize="xl"]{--art-scale:1.26;--art-lh:1.85}
 [data-rwidth="s"]{--art-col:600px}
 [data-rwidth="m"]{--art-col:700px}
 [data-rwidth="l"]{--art-col:820px}
 [data-rwidth="xl"]{--art-col:940px}
-[data-rface="sans"]{--font-read:var(--font-body)}
-[data-rface="serif"]{--font-read:'Newsreader',Georgia,'Iowan Old Style',serif}
+[data-rface="sans"]{--font-read:var(--font-body);--font-read-head:var(--font-display)}
+[data-rface="serif"]{
+  --font-read:'Newsreader',Georgia,'Iowan Old Style',serif;
+  --font-read-head:'Newsreader',Georgia,'Iowan Old Style',serif;
+}
 
 /* ---------- reset ---------- */
 *,*::before,*::after{box-sizing:border-box}
+/* Component display rules out-specify the UA's [hidden]{display:none};
+   without this every filtered card keeps painting. */
+[hidden]{display:none!important}
 html{-webkit-text-size-adjust:100%}
 body{margin:0}
 img,svg,video{max-width:100%;height:auto;display:block}
@@ -203,20 +215,20 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:800;line-height:1.12;
 /* The lockup: the name is set in the cursive the old site used, the
    descriptor in the display face. Keeps the mark 40px without letting the
    full company name overpower the nav. */
-.brand{display:flex;align-items:flex-end;gap:.6rem;text-decoration:none;color:var(--text);line-height:1}
+.brand{display:flex;align-items:center;gap:.6rem;text-decoration:none;color:var(--text);line-height:1}
 .brand svg{width:40px;height:40px;flex:none;display:block}
 .brand-name{display:flex;align-items:flex-end;gap:.45rem}
-.brand-name em{font-family:'Quintessential',Georgia,serif;font-style:normal;font-size:1.68rem;line-height:.92;letter-spacing:0}
+.brand-name em{font-family:'Quintessential',Georgia,serif;font-style:normal;font-size:1.5rem;line-height:.92;letter-spacing:0}
 .brand-name b{
-  font-family:var(--font-display);font-weight:700;font-size:.78rem;letter-spacing:.035em;
-  color:var(--text-2);padding-bottom:.2rem;white-space:nowrap;
+  font-family:var(--font-display);font-weight:700;font-size:.8rem;letter-spacing:.035em;
+  color:var(--text-2);padding-bottom:.16rem;white-space:nowrap;
 }
 .site-footer .brand{color:#fff}
 .site-footer .brand-name b{color:rgba(255,255,255,.66)}
 /* Below the nav breakpoint the descriptor is the first thing to go. */
 @media (max-width:760px){
   .brand svg{width:34px;height:34px}
-  .brand-name em{font-size:1.42rem}
+  .brand-name em{font-size:1.36rem}
   .brand-name b{display:none}
 }
 .nav{display:flex;align-items:center;gap:.1rem;margin-left:auto}
@@ -226,12 +238,14 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:800;line-height:1.12;
 }
 .nav a:hover{color:var(--text);background:var(--paper-2)}
 .nav a[aria-current="page"]{color:var(--accent-ink);background:var(--accent-soft)}
-/* the nav CTA is a .btn; .nav a must not win over its own colours */
-.nav a.btn{color:var(--fg);background:var(--bg)}
+/* The nav CTA is a .btn, and .nav a (0-1-1) beats .btn-sm (0-1-0) on both
+   colour and size — so the CTA has to restate both here. */
+.nav a.btn{color:var(--fg);background:var(--bg);font-size:.84rem;padding:0 1.1rem;height:40px}
 .nav a.btn:hover{color:var(--fg);background:var(--accent-ink)}
+.nav a:not(.btn){display:inline-flex;align-items:center;height:40px}
 .nav-actions{display:flex;align-items:center;gap:.5rem;margin-left:.6rem}
 .icon-btn{
-  width:38px;height:38px;display:grid;place-items:center;border-radius:9px;
+  width:40px;height:40px;display:grid;place-items:center;border-radius:9px;
   background:transparent;border:1px solid var(--line);cursor:pointer;color:var(--text-2);
   transition:background .15s,color .15s,border-color .15s;
 }
@@ -871,3 +885,75 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:800;line-height:1.12;
 
 @media print{.reader-tools,.reader-panel,.chapter-bar,.focus-exit,.read-bar{display:none!important}}
 @media (prefers-reduced-motion:reduce){.chapter-bar{transition:none}}
+
+/* ---------- reader typography ----------
+   The text-size and typeface controls govern the whole article, not the body
+   paragraphs alone. Multiplying the existing clamps by --art-scale keeps the
+   responsive behaviour these sizes already had. */
+.article .article-head .h1{font-family:var(--font-read-head);font-size:calc(clamp(2rem,4.6vw,3.1rem) * var(--art-scale))}
+.article .article-head .lede{font-size:calc(clamp(1.05rem,1.55vw,1.22rem) * var(--art-scale))}
+.article .prose h2,
+.article .prose h3,
+.article .prose h4{font-family:var(--font-read-head)}
+.article .prose h2{font-size:calc(clamp(1.35rem,2.4vw,1.78rem) * var(--art-scale))}
+.article .prose h3{font-size:calc(clamp(1.08rem,1.7vw,1.28rem) * var(--art-scale))}
+.article .keyfig-text{font-family:var(--font-read);font-size:calc(1.06rem * var(--art-scale))}
+/* Everything inside the article that carried a fixed rem size is restated in
+   em, so it rides the reader's choice instead of standing still while the
+   text around it grows. */
+.article .prose>p:first-of-type{font-size:1.086em}
+.article .prose code{font-size:.86em}
+.article .prose pre{font-size:.88em}
+.article .prose pre code{font-size:1em}
+.article .prose table{font-size:.85em}
+.article .prose th{font-size:.73em}
+.article .prose figcaption{font-size:.76em}
+.article .prose blockquote{font-size:.95em}
+/* A serif reading face wants a little more leading than the sans does. */
+[data-rface="serif"] .article .prose{line-height:calc(var(--art-lh) + .04)}
+.article .article-head .lede{font-family:var(--font-read)}
+
+/* ---------- the mark blooms ----------
+   At rest it is the flat cut mark. On hover or keyboard focus the four petals
+   push out along their diagonals, four leaves unfold into the gap that
+   opens on the axes, and an amber heart is revealed at the centre — paper
+   unfolding to show what is inside. Each petal composes its own angle (--a)
+   with the shared push, which is why the angle is a custom property and not
+   a transform attribute: a CSS transform would overwrite the attribute. */
+.ajna-mark{overflow:visible}
+.ajna-mark .am-petal,
+.ajna-mark .am-leaf,
+.ajna-mark .am-core,
+.ajna-mark .am-heart{transform-box:view-box;transform-origin:50px 50px}
+.ajna-mark .am-petal{transform:rotate(var(--a));transition:transform .6s var(--ease)}
+.ajna-mark .am-leaf{
+  transform:rotate(var(--a)) scale(.1);opacity:0;
+  transition:transform .6s var(--ease),opacity .35s var(--ease);
+}
+.ajna-mark .am-heart{transform:scale(0);opacity:0;transition:transform .6s var(--ease),opacity .4s var(--ease)}
+.ajna-mark .am-core{transition:transform .5s var(--ease)}
+
+.brand:hover .ajna-mark .am-petal,
+.brand:focus-visible .ajna-mark .am-petal,
+.ajna-mark.is-open .am-petal{transform:rotate(var(--a)) translate(9px,-9px)}
+.brand:hover .ajna-mark .am-leaf,
+.brand:focus-visible .ajna-mark .am-leaf,
+.ajna-mark.is-open .am-leaf{transform:rotate(var(--a)) scale(1);opacity:1}
+.brand:hover .ajna-mark .am-heart,
+.brand:focus-visible .ajna-mark .am-heart,
+.ajna-mark.is-open .am-heart{transform:scale(1);opacity:1}
+.brand:hover .ajna-mark .am-core,
+.brand:focus-visible .ajna-mark .am-core,
+.ajna-mark.is-open .am-core{transform:scale(.62)}
+
+/* One bloom on arrival, then it settles. Header mark only. */
+@keyframes am-arrive{
+  0%{transform:rotate(var(--a)) translate(9px,-9px)}
+  100%{transform:rotate(var(--a))}
+}
+.site-header .ajna-mark .am-petal{animation:am-arrive 1s var(--ease) both}
+@media (prefers-reduced-motion:reduce){
+  .ajna-mark .am-petal,.ajna-mark .am-leaf,.ajna-mark .am-core,
+  .ajna-mark .am-heart{transition:none}
+  .site-header .ajna-mark .am-petal{animation:none}
+}

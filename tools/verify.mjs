@@ -133,6 +133,25 @@ console.log("\nBrand & reader");
   else ok("chapter bar only on long-form");
   if (!/\[data-theme="sepia"\]/.test(css)) fail("the sepia ground is gone");
   else ok("three reading grounds defined");
+
+  // .card{display:flex} out-specifies the UA's [hidden] rule. Without an
+  // !important reset the insights filters set the attribute on every
+  // non-matching card and nothing disappears.
+  if (!/\[hidden\]\{display:none!important\}/.test(css)) fail("[hidden] reset is gone; the filters will look inert");
+  else ok("hidden elements actually hide");
+  if (!/--art-scale/.test(css)) fail("--art-scale is gone; headings stop following the text-size control");
+  else ok("article type scales as one");
+
+  // parseInline already entity-encodes, so escaping again on the way into the
+  // contents list printed a literal &quot; on the page.
+  let doubled = 0;
+  for (const d of dirs.slice(0, 20)) {
+    const h = await readFile(`insights/${d.name}/index.html`, "utf8");
+    const m = h.match(/<nav class="toc"[\s\S]*?<\/nav>/);
+    if (m && /&amp;(quot|amp|lt|gt|#39);/.test(m[0])) doubled++;
+  }
+  if (doubled) fail(`${doubled} contents list(s) with double-escaped entities`);
+  else ok("contents lists are not double-escaped");
 }
 
 console.log("\nAccessibility");
