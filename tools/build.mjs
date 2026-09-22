@@ -35,7 +35,7 @@ const out = async (rel, html) => {
 const cardFor = (m, base) => {
   const topic = primaryTopic(m.tags);
   return `<a class="card" data-card data-topics="|${esc(m.tags.join("|"))}|" data-search="${esc((m.title + " " + m.description + " " + m.tags.join(" ")).toLowerCase())}" data-topic="${esc(topic)}" href="${base}/${m.slug}/">
-  <div class="card-art">${artwork(m.slug, m.tags)}</div>
+  <div class="card-art">${artwork(m.slug, m.tags, { title: m.title })}</div>
   <div class="card-body">
     <span class="chip">${esc(topic)}</span>
     <h3 class="card-title">${esc(m.title)}</h3>
@@ -165,7 +165,7 @@ ${longForm ? `<div class="chapter-bar" id="chapterBar">
     </div>
   </header>
 
-  <div class="art-wrap"><div class="article-hero" data-topic="${esc(topic)}">${artwork(m.slug, m.tags, { w: 1200, h: 380, calm: m.section === "notes" })}</div></div>
+  <div class="art-wrap"><div class="article-hero" data-topic="${esc(topic)}">${artwork(m.slug, m.tags, { w: 1200, h: 380, calm: m.section === "notes", title: m.title })}</div></div>
 
   <div class="art-wrap article-grid">
     ${asideHtml}
@@ -364,7 +364,7 @@ await out("series", page({
     ${[...seriesMap].map(([name, items]) => {
       const t = primaryTopic(items[0].tags);
       return `<a class="card" data-topic="${esc(t)}" href="/series/${seriesSlug(name)}/">
-      <div class="card-art">${artwork(seriesSlug(name), items[0].tags)}</div>
+      <div class="card-art">${artwork(seriesSlug(name), items[0].tags, { title: name })}</div>
       <div class="card-body">
         <span class="chip">${items.length} parts</span>
         <h2 class="card-title">${esc(name)}</h2>

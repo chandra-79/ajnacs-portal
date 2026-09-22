@@ -41,10 +41,10 @@ const SERVICES = [
 ];
 
 const METHOD = [
-  ["Assess & audit", "Technical audits of existing middleware, cloud expenditure and systemic bottlenecks."],
-  ["Architect & modernise", "Resilient, decoupled cloud-native architecture on Kubernetes and serverless frameworks."],
-  ["Automate & govern", "CI/CD, MLOps and FinOps pipelines that keep operational excellence self-sustaining."],
-  ["Educate & empower", "Upskilling internal teams so the capability stays after we leave."],
+  ["Assess & Audit", "Technical audits of existing middleware, cloud expenditure and systemic bottlenecks."],
+  ["Architect & Modernise", "Resilient, decoupled cloud-native architecture on Kubernetes and serverless frameworks."],
+  ["Automate & Govern", "CI/CD, MLOps and FinOps pipelines that keep operational excellence self-sustaining."],
+  ["Educate & Empower", "Upskilling internal teams so the capability stays after we leave."],
 ];
 
 const STATS = [

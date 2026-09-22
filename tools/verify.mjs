@@ -241,24 +241,28 @@ console.log("\nAssets");
 
   // Artwork has to belong to its subject. A seeded pick once gave a personal
   // essay about saying no a four-stage pipeline diagram.
+  //
+  // One topic no longer means one figure, deliberately: a Cloud Architecture
+  // piece about spend wants a bar chart and one about latency wants a trace.
+  // What has to hold is narrower — a note never gets a diagram, and an
+  // article with a systemic subject always does.
   {
-    const { motifNameFor } = await import("./visuals.mjs");
-    const { primaryTopic: pt } = await import("./lib.mjs");
-    const byTopic = new Map();
+    const { motifReason, SPECIFIC_TOPICS } = await import("./visuals.mjs");
+    const specific = new Set(SPECIFIC_TOPICS);
     let noteDiagrams = 0;
+    const missing = [];
+    const why = {};
     for (const m of manifest) {
       const calm = m.section === "notes";
-      const name = motifNameFor(m.tags, calm);
+      const { name, why: reason } = motifReason(m.tags, calm, m.title);
+      why[reason.split(":")[0]] = (why[reason.split(":")[0]] || 0) + 1;
       if (calm && name !== "field") noteDiagrams++;
-      const t = pt(m.tags) || "(none)";
-      if (!byTopic.has(t)) byTopic.set(t, new Set());
-      byTopic.get(t).add(name);
+      if (!calm && name === "field" && (m.tags || []).some(t => specific.has(t))) missing.push(m.slug);
     }
-    const mixed = [...byTopic].filter(([, set]) => set.size > 1);
     if (noteDiagrams) fail(`${noteDiagrams} personal note(s) carrying a systems diagram`);
     else ok("personal notes carry no diagram");
-    if (mixed.length) fail(`${mixed.length} topic(s) with inconsistent artwork: ${mixed.map(([t]) => t).join(", ")}`);
-    else ok(`artwork matches subject across ${byTopic.size} topics`);
+    if (missing.length) fail(`${missing.length} article(s) with a technical subject and no figure: ${missing.slice(0, 3).join(", ")}`);
+    else ok(`every technical article has a figure (by title ${why.title || 0}, by tag ${why.tag || 0}, none ${why["no systemic subject"] || 0})`);
   }
 
   // Horizontal rules: every one in the corpus sat before a heading that

@@ -135,51 +135,94 @@ function motifField(r, c1, c2) {
 /* The motif is chosen by subject, not by seed. A seeded pick gave a personal
    essay about saying no a four-stage pipeline diagram, which is decoration
    pretending to be information. The seed still varies the drawing within a
-   motif, so two articles on one topic do not look identical. */
-const MOTIF_FOR_TOPIC = {
-  "Architecture": motifNodes,
-  "Distributed Systems": motifNodes,
-  "Enterprise AI": motifNodes,
-  "AI & MLOps": motifNodes,
-  "Cloud Architecture": motifGrid,
-  "Infrastructure": motifGrid,
-  "Security": motifGrid,
-  "DevSecOps": motifFlow,
-  "Data Engineering": motifFlow,
-  "Platform Engineering": motifFlow,
-  "Engineering Practice": motifFlow,
-  "API Design": motifFlow,
-  "Containers": motifLayers,
-  "Fundamentals": motifLayers,
-  "Programming": motifLayers,
-  "Observability": motifWave,
-  "Reliability": motifWave,
-  "Performance": motifWave,
-  "FinOps": motifBars,
-  // Writing about people and practice, not about a system.
-  "Engineering Leadership": motifField,
-  "Quantum Computing": motifNodes,
-};
+   motif, so two articles on one topic do not look identical.
 
-function motifFor(tags, calm) {
+   Resolution is by specificity, not by the article's primary tag. "Engineering
+   Leadership" sits on 72 articles, plenty of which are as technical as
+   anything on the site — a piece on self-service infrastructure and approval
+   workflows is filed under it, and picking on the primary tag handed that a
+   blank colour field. The most specific technical tag wins wherever there is
+   one; the broad organisational labels never select a motif by themselves. */
+/* Two passes, because tags alone are too blunt. "DevSecOps" sits on both a
+   piece about Dockerfile layer caching and one about container networking,
+   and those want different pictures. So read what the article is actually
+   called first, then fall back to its tags.
+
+   This is a heuristic and is meant to read as one: the point is that every
+   figure has a defensible reason to be the figure it is. */
+const SUBJECT_HINTS = [
+  [/\b(cost|costs|spend|spending|billing|pricing|budget|finops|savings|invoice|economics|chargeback)\b/, motifBars],
+  [/\b(latency|throughput|metrics?|monitor\w*|observab\w+|tracing|traces?|p99|slo|slos|uptime|benchmark\w*|profil\w+|performance)\b/, motifWave],
+  [/\b(network\w*|mesh|topolog\w+|distributed|consensus|replicat\w+|clusters?|graph|dependenc\w+|microservices?)\b/, motifNodes],
+  [/\b(pipelines?|workflows?|ci\/cd|cicd|deploy\w*|releases?|etl|streaming|queues?|orchestrat\w+|approval\w*|rollout\w*|migrations?)\b/, motifFlow],
+  [/\b(containers?|images?|dockerfiles?|layers?|kernel|namespaces?|cgroups?|stack|abstraction\w*|runtime|filesystem)\b/, motifLayers],
+  [/\b(inventor\w+|catalog\w*|tagging|taxonom\w+|polic\w+|governance|audit\w*|complian\w+|permissions?|hardening)\b/, motifGrid],
+];
+
+/* Tag fallback, most characteristic first. Containers outranks DevSecOps
+   because a piece about image layers filed under both is about the layers. */
+const MOTIF_PRIORITY = [
+  ["FinOps", motifBars],
+  ["Observability", motifWave],
+  ["Reliability", motifWave],
+  ["Performance", motifWave],
+  ["Containers", motifLayers],
+  ["Data Engineering", motifFlow],
+  ["Platform Engineering", motifFlow],
+  ["API Design", motifFlow],
+  ["DevSecOps", motifFlow],
+  ["Programming", motifLayers],
+  ["Cloud Architecture", motifGrid],
+  ["Infrastructure", motifGrid],
+  ["Security", motifGrid],
+  ["Distributed Systems", motifNodes],
+  ["AI & MLOps", motifNodes],
+  ["Enterprise AI", motifNodes],
+  ["Quantum Computing", motifNodes],
+  ["Architecture", motifNodes],
+];
+
+/* Broad or human labels. An article carrying only these, and saying nothing
+   in its title about a system, gets the field rather than a diagram about
+   nothing. */
+const BROAD = new Set([
+  "Engineering Leadership", "Engineering Practice", "Fundamentals",
+  "Personal", "Career", "Learning", "Mentorship", "Moving", "Music", "Work",
+]);
+
+function motifFor(tags, calm, title = "") {
   if (calm) return motifField;
-  const primary = primaryTopic(tags);
-  return MOTIF_FOR_TOPIC[primary]
-    || (tags || []).map(t => MOTIF_FOR_TOPIC[t]).find(Boolean)
-    || motifField;
+  const text = String(title).toLowerCase();
+  for (const [re, fn] of SUBJECT_HINTS) if (re.test(text)) return fn;
+  const has = new Set(tags || []);
+  for (const [topic, fn] of MOTIF_PRIORITY) if (has.has(topic)) return fn;
+  return motifField;
 }
 
-/* Exposed so the build can audit that no article gets an irrelevant figure. */
-export const motifNameFor = (tags, calm) =>
-  motifFor(tags, calm).name.replace(/^motif/, "").toLowerCase();
+const motifName = (fn) => fn.name.replace(/^motif/, "").toLowerCase();
 
-export function artwork(slug, tags, { w = W, h = H, calm = false } = {}) {
+export const motifNameFor = (tags, calm, title) => motifName(motifFor(tags, calm, title));
+
+/* Says which rule chose the figure, so the build can check that a figure is
+   only ever absent because there was nothing systemic to draw. */
+export function motifReason(tags, calm, title = "") {
+  if (calm) return { name: "field", why: "note" };
+  const text = String(title).toLowerCase();
+  for (const [re, fn] of SUBJECT_HINTS) if (re.test(text)) return { name: motifName(fn), why: "title" };
+  const has = new Set(tags || []);
+  for (const [topic, fn] of MOTIF_PRIORITY) if (has.has(topic)) return { name: motifName(fn), why: "tag:" + topic };
+  return { name: "field", why: "no systemic subject" };
+}
+
+export const SPECIFIC_TOPICS = MOTIF_PRIORITY.map(([t]) => t);
+
+export function artwork(slug, tags, { w = W, h = H, calm = false, title = "" } = {}) {
   const r = seeded(slug);
   const [c1, c2] = colorFor(tags);
   // A personal note never gets a diagram; a technical article gets the one
   // that matches its subject, and anything unmapped falls back to the field
   // rather than to a diagram chosen at random.
-  const motif = motifFor(tags, calm);
+  const motif = motifFor(tags, calm, title);
   const id = slug.replace(/[^a-z0-9]/g, "").slice(0, 12) || "a";
   return `<svg viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
   <defs>
