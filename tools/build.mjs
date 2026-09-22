@@ -343,7 +343,7 @@ await out("feed.xml", `<?xml version="1.0" encoding="UTF-8"?>
   <atom:link href="${SITE.url}/feed.xml" rel="self" type="application/rss+xml"/>
   <description>Enterprise architecture, cloud, AI and MLOps writing from Ajna Consulting Services.</description>
   <language>en</language>
-  <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
+  <lastBuildDate>${new Date((insights[0]?.date || TODAY) + "T09:00:00Z").toUTCString()}</lastBuildDate>
 ${feedItems}
 </channel>
 </rss>`);
