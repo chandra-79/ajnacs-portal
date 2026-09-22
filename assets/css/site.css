@@ -6,12 +6,14 @@
 /* ---------- tokens ---------- */
 :root {
   color-scheme: light dark;
+  --lift:none;
 
   /* neutrals — warm, not clinical */
   --ink-900:#0a1020; --ink-800:#111a2e; --ink-700:#1b263f; --ink-600:#2a355a;
+  --page:#ffffff;
   --paper:#ffffff; --paper-2:#f7f8fb; --paper-3:#eef1f7;
   --line:#e2e7f0;
-  --text:#16203a; --text-2:#4b5772; --text-3:#6e7b96;
+  --text:#16203a; --text-2:#4b5772; --text-3:#5f6b86;
 
   /* brand accents — kept from the existing identity, used as topic colours */
   --blue:#2f6fed; --red:#e0473a; --amber:#e8a317; --green:#1e9e63;
@@ -42,22 +44,30 @@
 }
 
 [data-theme="dark"] {
-  --paper:#0a1020; --paper-2:#0f1728; --paper-3:#16203a;
-  --line:#22304f;
-  --text:#e9eef8; --text-2:#a8b4cc; --text-3:#7c8aa8;
-  --accent:#6f9bff; --accent-ink:#8fb2ff; --accent-soft:rgba(111,155,255,.14);
-  --shadow-1:0 1px 2px rgba(0,0,0,.4);
-  --shadow-2:0 6px 18px rgba(0,0,0,.45);
-  --shadow-3:0 16px 44px rgba(0,0,0,.55);
+  /* The ground sits well below the surfaces. Dark interfaces need a bigger
+     step between levels than light ones do — at 2% apart every card reads as
+     a hole rather than a panel. */
+  --page:#060a14;
+  --paper:#0f1728; --paper-2:#151f38; --paper-3:#1d294a;
+  --line:#28344f;
+  --text:#e9eef8; --text-2:#aab6ce; --text-3:#808ead;
+  --accent:#6f9bff; --accent-ink:#9dbaff; --accent-soft:rgba(111,155,255,.16);
+  --shadow-1:0 1px 2px rgba(0,0,0,.5);
+  --shadow-2:0 6px 20px rgba(0,0,0,.55);
+  --shadow-3:0 18px 50px rgba(0,0,0,.66);
+  /* Shadows barely read on a dark ground; a lit top edge is what gives a
+     panel its lift. */
+  --lift:inset 0 1px 0 rgba(255,255,255,.07);
 }
 
 /* Sepia: a third ground for long reads. Warmer than paper, easier than
    white under lamplight, and it has to define the whole token set — not a
    filter over the light theme, or the accents go muddy. */
 [data-theme="sepia"] {
-  --paper:#f6efe1; --paper-2:#f0e7d5; --paper-3:#e7dcc6;
+  --page:#f2eadb;
+  --paper:#f9f3e7; --paper-2:#f0e7d5; --paper-3:#e7dcc6;
   --line:#ddd0b6;
-  --text:#2f2718; --text-2:#5c5039; --text-3:#7d7059;
+  --text:#2f2718; --text-2:#5c5039; --text-3:#6a5e46;
   --accent:#9a5b1e; --accent-ink:#7d4715; --accent-soft:rgba(154,91,30,.12);
   --shadow-1:0 1px 2px rgba(80,62,30,.09);
   --shadow-2:0 6px 18px rgba(80,62,30,.12);
@@ -106,7 +116,7 @@ a{color:inherit}
 html{scroll-behavior:smooth;scroll-padding-top:calc(var(--nav-h) + 1.25rem)}
 body{
   font-family:var(--font-body);
-  background:var(--paper);
+  background:var(--page);
   color:var(--text);
   line-height:1.65;
   -webkit-font-smoothing:antialiased;
@@ -300,6 +310,13 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:800;line-height:1.12;
 [data-topic="Engineering Leadership"]{--accent:#0e7490;--accent-ink:#0b5f77;--accent-soft:rgba(14,116,144,.10)}
 [data-topic="Reliability"],[data-topic="Observability"]{--accent:var(--green);--accent-ink:#157a4c;--accent-soft:rgba(30,158,99,.11)}
 [data-theme="dark"] [data-topic]{--accent-ink:color-mix(in srgb,var(--accent) 62%,#ffffff)}
+/* Sepia keeps the topic's hue — it is how a reader tells one section of the
+   site from another — but pulls it toward the ground's warmth and darkens
+   the ink, because the light-theme inks were picked against white. */
+[data-theme="sepia"] [data-topic]{
+  --accent-ink:color-mix(in srgb,var(--accent) 58%,#2f2718);
+  --accent-soft:color-mix(in srgb,var(--accent) 12%,transparent);
+}
 
 /* ---------- prose (articles) ---------- */
 .prose{max-width:var(--measure);margin-inline:auto;font-size:1.105rem;line-height:1.8;color:var(--text)}
@@ -957,3 +974,98 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:800;line-height:1.12;
   .ajna-mark .am-heart{transition:none}
   .site-header .ajna-mark .am-petal{animation:none}
 }
+
+/* ============================================================
+   Dark
+   The light page is structured by alternating a white ground against
+   tinted and deep bands. Reuse that verbatim in dark and every band lands
+   within a few percent of the ground: the structure disappears and the page
+   becomes one wall. So in dark the relationship inverts — the ground is the
+   darkest thing on the page and every band rises out of it, each with its
+   own hue, so scrolling still moves through rooms.
+   ============================================================ */
+
+/* ---- surfaces lift off the ground ---- */
+[data-theme="dark"] .card,
+[data-theme="dark"] .svc-card,
+[data-theme="dark"] .topic-tile,
+[data-theme="dark"] .series-box,
+[data-theme="dark"] .cta-panel,
+[data-theme="dark"] .keyfig,
+[data-theme="dark"] .reader-panel,
+[data-theme="dark"] .search-field{box-shadow:var(--lift),var(--shadow-1)}
+[data-theme="dark"] .card:hover,
+[data-theme="dark"] .topic-tile:hover{box-shadow:var(--lift),var(--shadow-2)}
+
+/* ---- the deep band rises instead of sinking ---- */
+[data-theme="dark"] .band-deep{
+  background:
+    radial-gradient(58rem 32rem at 80% -8%, rgba(124,92,255,.40), transparent 62%),
+    radial-gradient(50rem 30rem at 4% 106%, rgba(16,178,164,.30), transparent 64%),
+    radial-gradient(44rem 26rem at 46% 48%, rgba(64,124,255,.26), transparent 68%),
+    linear-gradient(168deg,#141d42 0%,#101835 54%,#18214a 100%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08),inset 0 -1px 0 rgba(255,255,255,.05);
+}
+[data-theme="dark"] .band-deep .grid-bg{opacity:.7}
+
+/* ---- the warm band keeps its warmth instead of going grey ---- */
+[data-theme="dark"] .band-warm{
+  background:
+    radial-gradient(46rem 26rem at 8% 0%, rgba(214,146,38,.20), transparent 62%),
+    radial-gradient(40rem 24rem at 92% 100%, rgba(200,72,58,.16), transparent 64%),
+    linear-gradient(180deg,#1b1a2c 0%,#171728 100%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06),inset 0 -1px 0 rgba(255,255,255,.04);
+}
+
+/* ---- a plain section still needs an edge to sit against ---- */
+[data-theme="dark"] .surface{
+  background:linear-gradient(180deg,var(--paper-2) 0%,color-mix(in srgb,var(--paper-2) 82%,var(--page)) 100%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.055);
+}
+[data-theme="dark"] .hair{border-block-color:rgba(255,255,255,.07)}
+
+/* ---- the closing field carries the most colour on the page ---- */
+[data-theme="dark"] .cta-field{
+  background:
+    radial-gradient(38rem 20rem at 88% 8%, rgba(132,98,255,.55), transparent 62%),
+    radial-gradient(30rem 18rem at 4% 96%, rgba(16,178,164,.46), transparent 62%),
+    linear-gradient(140deg,#16204a 0%,#101835 60%,#1b2556 100%);
+  background-color:#101835;
+  border-color:rgba(255,255,255,.16);
+  box-shadow:0 0 0 1px rgba(124,92,255,.14),0 24px 70px rgba(10,6,40,.6);
+}
+
+/* ---- the header floats rather than merging with the hero ---- */
+[data-theme="dark"] .site-header{background:color-mix(in srgb,var(--page) 76%,transparent)}
+[data-theme="dark"] .site-header.is-stuck{
+  background:color-mix(in srgb,var(--paper) 90%,transparent);
+  border-bottom-color:rgba(255,255,255,.09);
+}
+
+/* ---- topic colour survives the dark ground ---- */
+[data-theme="dark"] [data-topic] .card-meta .chip,
+[data-theme="dark"] .chip{background:color-mix(in srgb,var(--accent) 17%,transparent);border-color:color-mix(in srgb,var(--accent) 34%,transparent)}
+[data-theme="dark"] .card{border-color:color-mix(in srgb,var(--line) 82%,var(--accent))}
+
+/* ---- the article column gets its own page, not the site ground ---- */
+[data-theme="dark"] .article-hero{border-color:rgba(255,255,255,.09)}
+[data-theme="dark"] .prose pre{box-shadow:var(--lift)}
+
+/* ---- ambience ----
+   Measured down the left gutter, the dark page held a 2,400px run at exactly
+   one value: the insights section, flat between two lit bands, reading as a
+   hole rather than a room. A fixed field behind the content means no stretch
+   of the page is ever dead flat, and it costs nothing to scroll because it
+   never moves. */
+[data-theme="dark"] body::before{
+  content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:
+    radial-gradient(70rem 44rem at 84% 6%, rgba(124,92,255,.13), transparent 58%),
+    radial-gradient(60rem 42rem at 6% 40%, rgba(16,178,164,.09), transparent 60%),
+    radial-gradient(64rem 46rem at 74% 84%, rgba(64,124,255,.10), transparent 60%);
+}
+/* A plain section between two bands still needs to be a surface of its own. */
+[data-theme="dark"] .section:not(.band):not(.mesh){
+  background:linear-gradient(180deg,rgba(255,255,255,.022) 0%,transparent 42%,rgba(255,255,255,.016) 100%);
+}
+[data-theme="dark"] .section + .section{border-top:1px solid rgba(255,255,255,.045)}

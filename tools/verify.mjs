@@ -142,6 +142,16 @@ console.log("\nBrand & reader");
   if (!/--art-scale/.test(css)) fail("--art-scale is gone; headings stop following the text-size control");
   else ok("article type scales as one");
 
+  // A mistyped unit makes the browser drop the whole gradient silently, and
+  // the section just renders flat. Nothing else in the build catches it.
+  const badAngle = (css.match(/(?:linear|conic)-gradient\(\s*-?[\d.]+(?!deg|grad|rad|turn|%)[a-z]+/gi) || []);
+  if (badAngle.length) fail(`${badAngle.length} gradient(s) with a bad angle unit: ${badAngle.slice(0, 3).join(", ")}`);
+  else ok("gradient angles are well formed");
+  for (const t of ["--page", "--lift"]) {
+    if (!css.includes(t + ":")) fail(`${t} is gone; dark surfaces stop lifting off the ground`);
+  }
+  if (/--page:/.test(css) && /--lift:/.test(css)) ok("dark elevation tokens present");
+
   // parseInline already entity-encodes, so escaping again on the way into the
   // contents list printed a literal &quot; on the page.
   let doubled = 0;
