@@ -22,20 +22,33 @@
 <meta name="twitter:description" content="Admin servers, managed servers, clusters, machines, and Node Manager — the WebLogic domain model explained for people who have to run it, not just pass the…">
 <meta name="twitter:image" content="https://ajnacs.com/assets/og/insights-weblogic-domains-clusters-explained.svg">
 
-<link rel="icon" href="/images/favicon.ico" sizes="any">
-<link rel="apple-touch-icon" href="/images/ajna-logo.png">
+<link rel="icon" href="/images/favicon.ico" sizes="32x32">
+<link rel="icon" href="/images/ajna-mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
 <meta name="theme-color" content="#0a1020">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Quintessential&display=swap">
 <link rel="stylesheet" href="/assets/css/site.css">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
 <script>
-/* Set the theme before first paint so the page never flashes the wrong one. */
-(function(){try{var t=localStorage.getItem('acs-theme');
-if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
-document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+/* Theme and reading preferences are applied before first paint, so the page
+   never flashes the wrong ground or resets someone's text size mid-read. */
+(function(){try{
+var d=document.documentElement,t=localStorage.getItem('acs-theme');
+if(t!=='dark'&&t!=='light'&&t!=='sepia')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+d.setAttribute('data-theme',t);
+['rsize','rwidth','rface'].forEach(function(k){
+  var v=localStorage.getItem('acs-'+k);
+  if(v&&/^[a-z]{1,5}$/.test(v))d.setAttribute('data-'+k,v);
+});
+if(d.getAttribute('data-rface')==='serif'){
+  var l=document.createElement('link');l.rel='stylesheet';
+  l.href='https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600&display=swap';
+  document.head.appendChild(l);
+}
+}catch(e){}})();
 </script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"WebLogic Domains, Clusters, and Managed Servers: The Architecture Explained","description":"Admin servers, managed servers, clusters, machines, and Node Manager — the WebLogic domain model explained for people who have to run it, not just pass the exam. What each piece does, how they fit together, and where production deployments go wrong.","datePublished":"2025-09-09","dateModified":"2025-09-09","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/weblogic-domains-clusters-explained/","image":"https://ajnacs.com/assets/og/insights-weblogic-domains-clusters-explained.svg","keywords":"Java, WebLogic, Middleware, Architecture","articleSection":"Architecture","wordCount":1473}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"WebLogic Domains, Clusters, and Managed Servers: The Architecture Explained"}]}</script>
@@ -45,9 +58,9 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 
 <header class="site-header" id="siteHeader">
   <div class="wrap" style="display:flex;align-items:center;width:min(1220px,100% - var(--gutter)*2)">
-    <a class="brand" href="/">
-      <img src="/images/ajna-logo.png" alt="" width="32" height="32">
-      <span class="brand-name">Ajna<span>CS</span></span>
+    <a class="brand" href="/" aria-label="Ajna Consulting Services — home">
+      <svg viewBox="0 0 100 100" width="40" height="40" fill="none" aria-hidden="true" focusable="false"><defs><linearGradient id="lit-hdr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".30"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".32"/></linearGradient></defs><g transform="rotate(0 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#E8402A"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#F5A623"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#17A05E"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#2B57E8"/></g><path d="M 50 4 L 96 50 L 50 96 L 4 50 Z" fill="url(#lit-hdr)"/><g transform="rotate(0 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><circle cx="50" cy="50" r="6" fill="currentColor"/></svg>
+      <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
     </a>
     <nav class="nav" id="nav" aria-label="Primary">
       <a href="/services/">Services</a>
@@ -101,14 +114,14 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 </svg></div></div>
 
   <div class="art-wrap article-grid">
-    <nav class="toc" aria-label="On this page">
+    <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#the-domain-is-the-unit-of-administration">The domain is the unit of administration</a></li><li><a href="#admin-server-the-control-plane-not-the-data-plane">Admin server: the control plane, not the data plane</a></li><li><a href="#managed-servers-where-applications-actually-run">Managed servers: where applications actually run</a></li><li><a href="#clusters-replication-and-failover-not-just-load-balancing">Clusters: replication and failover, not just load balancing</a></li><li><a href="#machines-and-node-manager-process-supervision">Machines and Node Manager: process supervision</a></li><li><a href="#configuration-management-the-part-everyone-gets-wrong">Configuration management: the part everyone gets wrong</a></li><li><a href="#the-mental-model-that-makes-it-all-cohere">The mental model that makes it all cohere</a></li></ol>
-</nav>
+</nav></div>
     <div class="prose">
 <p>WebLogic Server has been running critical workloads in banks, telcos, insurers, and government systems for over twenty-five years, and it isn&#39;t going anywhere soon — there is simply too much revenue-generating code deployed on it. Yet most engineers who inherit a WebLogic estate learn it by archaeology: poking at a domain someone built in 2014, guessing at why there are eleven managed servers and a cluster named <code>cluster1_NEW_final</code>.</p>
 <p>This post is the explainer I wish those engineers had. Not exam trivia — the domain model as it actually matters in production.</p>
-<h2 id="the-domain-is-the-unit-of-administration">The domain is the unit of administration</h2>
+<h2 id="the-domain-is-the-unit-of-administration"><a class="h-anchor" href="#the-domain-is-the-unit-of-administration" aria-label="Link to this section">#</a>The domain is the unit of administration</h2>
 <p>Everything in WebLogic lives inside a <strong>domain</strong>: a logically related group of server instances managed as a single unit. One domain, one configuration repository (<code>config.xml</code> plus the config directory tree), one administrative boundary, one security realm by default.</p>
 <p>The practical implication that trips people up: <strong>resources don&#39;t cross domains</strong>. A JDBC data source, a JMS server, a security provider — all are defined at domain scope. If two applications need to share a JMS destination, they either live in the same domain or you bridge domains explicitly (SAF agents, foreign JMS providers, messaging bridges). This is why domain design is the first architectural decision, not an afterthought.</p>
 <p>How many domains should you have? The pattern I recommend, and the one that survives audits well:</p>
@@ -118,12 +131,12 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 <li><strong>Regulated workloads get their own domain.</strong> Sharing a security realm between a PCI-scoped application and everything else drags everything else into scope.</li>
 </ul>
 <p>The anti-pattern is the mega-domain: forty applications, one domain, because &quot;it&#39;s easier to manage.&quot; It&#39;s easier right up until a configuration change requires a restart and you need sign-off from eight application owners.</p>
-<h2 id="admin-server-the-control-plane-not-the-data-plane">Admin server: the control plane, not the data plane</h2>
+<h2 id="admin-server-the-control-plane-not-the-data-plane"><a class="h-anchor" href="#admin-server-the-control-plane-not-the-data-plane" aria-label="Link to this section">#</a>Admin server: the control plane, not the data plane</h2>
 <p>Each domain has exactly one <strong>Administration Server</strong>. It hosts the administration console, the WLST management endpoints, and the authoritative copy of the domain configuration. Managed servers contact it at startup to retrieve configuration.</p>
 <p>Two rules that should be non-negotiable in production:</p>
 <p><strong>Never deploy applications to the admin server.</strong> The admin server is a control plane. Deploying business applications to it couples your ability to administer the domain to the health of application code. When that application leaks memory and the JVM stalls, you lose the console and WLST access exactly when you need them most.</p>
 <p><strong>The admin server being down does not take down your applications.</strong> Managed servers can start without the admin server using Managed Server Independence (MSI) mode — they boot from their locally cached copy of the configuration (<code>msi-config.xml</code>). Running applications continue serving traffic regardless. What you lose while the admin server is down is the ability to make configuration changes and deploy. This is why the admin server usually doesn&#39;t need to be clustered or highly available in an active sense; a documented restart procedure and a monitored process are typically sufficient.</p>
-<h2 id="managed-servers-where-applications-actually-run">Managed servers: where applications actually run</h2>
+<h2 id="managed-servers-where-applications-actually-run"><a class="h-anchor" href="#managed-servers-where-applications-actually-run" aria-label="Link to this section">#</a>Managed servers: where applications actually run</h2>
 <p><strong>Managed servers</strong> are the JVM instances that host your applications, data sources, and JMS resources. Each is a full WebLogic Server instance with its own listen address, port, JVM arguments, and logs.</p>
 <p>Sizing guidance from years of tuning these things:</p>
 <ul>
@@ -131,14 +144,14 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 <li><strong>One managed server per application group, not per application.</strong> Twelve applications each in their own managed server on the same host is operational overhead without isolation benefit — they still share the host. Group by resource profile and criticality.</li>
 <li><strong>Pin JVM arguments in the domain configuration, not in scattered shell scripts.</strong> Server start arguments belong in the console/WLST-managed configuration so they survive rebuilds and are visible to auditors.</li>
 </ul>
-<h2 id="clusters-replication-and-failover-not-just-load-balancing">Clusters: replication and failover, not just load balancing</h2>
+<h2 id="clusters-replication-and-failover-not-just-load-balancing"><a class="h-anchor" href="#clusters-replication-and-failover-not-just-load-balancing" aria-label="Link to this section">#</a>Clusters: replication and failover, not just load balancing</h2>
 <p>A <strong>cluster</strong> is a group of managed servers working together to provide scalability and high availability. This is the piece people half-understand, because a load balancer in front of two independent servers looks the same from the outside — until a failover happens.</p>
 <p>What clustering actually gives you:</p>
 <p><strong>HTTP session replication.</strong> In-memory session state is replicated to a secondary server (the default is async replication to one secondary, chosen by the replication group rules). When a server dies, the load balancer or the WebLogic plug-in routes the user to the server holding the replica, and the session survives. Without clustering, a server failure logs out every user on it. Note the discipline this imposes on application code: session attributes must be serializable, and replication triggers on <code>setAttribute</code> — mutating an object already in the session without calling <code>setAttribute</code> again means the change never replicates. This is the root cause of a whole genus of &quot;session randomly loses data during failover&quot; bugs.</p>
 <p><strong>Cluster-aware JNDI and RMI.</strong> EJB and RMI clients get cluster-aware stubs that fail over and load-balance calls across members.</p>
 <p><strong>Service migration.</strong> Singleton services — JMS servers, JTA transaction recovery — can migrate automatically from a failed server to a survivor. If you run JMS in a cluster and haven&#39;t configured service migration (or JMS store high availability), your queues stop when their host server does, cluster or no cluster.</p>
 <p>Communication between cluster members uses either <strong>unicast</strong> (the default and correct choice since 10.3.6) or multicast (legacy; requires network support that most modern data centres and every cloud provider make painful). If you&#39;re still on multicast, moving to unicast is one of the cheapest reliability wins available.</p>
-<h2 id="machines-and-node-manager-process-supervision">Machines and Node Manager: process supervision</h2>
+<h2 id="machines-and-node-manager-process-supervision"><a class="h-anchor" href="#machines-and-node-manager-process-supervision" aria-label="Link to this section">#</a>Machines and Node Manager: process supervision</h2>
 <p>A <strong>machine</strong> in WebLogic terms is the definition of a physical or virtual host, and its main purpose is to associate managed servers with a <strong>Node Manager</strong> — the per-host daemon that starts, stops, monitors, and automatically restarts server processes.</p>
 <p>Node Manager is what separates a production-grade domain from a laptop setup. It gives you:</p>
 <ul>
@@ -147,7 +160,7 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 <li>Whole Server Migration support, where a failed server is restarted on a different machine.</li>
 </ul>
 <p>Run Node Manager as a system service (systemd unit on Linux), one per host, and let it own the lifecycle of every managed server on that host. Domains where servers are started by hand-rolled nohup scripts inevitably drift: different JVM args per host, orphaned processes, servers that don&#39;t come back after a reboot.</p>
-<h2 id="configuration-management-the-part-everyone-gets-wrong">Configuration management: the part everyone gets wrong</h2>
+<h2 id="configuration-management-the-part-everyone-gets-wrong"><a class="h-anchor" href="#configuration-management-the-part-everyone-gets-wrong" aria-label="Link to this section">#</a>Configuration management: the part everyone gets wrong</h2>
 <p>WebLogic configuration changes flow through a lock-and-edit / activate cycle against the admin server, and the changes land in <code>config.xml</code>. The failure mode in most estates is that this configuration exists only in the running domain — no version control, no reproducibility, rebuilt from memory when disaster strikes.</p>
 <p>The fix is to treat the domain as a build artifact:</p>
 <ul>
@@ -155,7 +168,7 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 <li><strong>No console changes in production.</strong> Every change is a scripted WLST/WDT change, reviewed and applied through the same pipeline discipline as application code. The console is for reading, not writing.</li>
 <li><strong>Keep secrets out of the model.</strong> WDT supports variable and encrypted credential injection; use it rather than committing datasource passwords to Git, encrypted or otherwise.</li>
 </ul>
-<h2 id="the-mental-model-that-makes-it-all-cohere">The mental model that makes it all cohere</h2>
+<h2 id="the-mental-model-that-makes-it-all-cohere"><a class="h-anchor" href="#the-mental-model-that-makes-it-all-cohere" aria-label="Link to this section">#</a>The mental model that makes it all cohere</h2>
 <p>If you retain one thing, retain this layering:</p>
 <ol>
 <li><strong>Domain</strong> — the administrative and security boundary. Resources live here.</li>
@@ -278,15 +291,57 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
     </div></div>
   </section>
 </article>
+
+<div class="reader-tools">
+  <button class="icon-btn" id="readerBtn" type="button" aria-expanded="false" aria-controls="readerPanel" title="Reading settings" aria-label="Reading settings"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2.2"/><circle cx="10" cy="17" r="2.2"/></svg></button>
+  <button class="icon-btn" id="focusBtn" type="button" aria-pressed="false" title="Focus mode" aria-label="Enter focus mode"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></button>
+</div>
+<div class="reader-panel" id="readerPanel" role="dialog" aria-label="Reading settings" hidden>
+  <fieldset><legend>Text size</legend>
+    <div class="seg" data-pref="rsize">
+      <button type="button" data-val="s" aria-pressed="false"><span class="sample s">Aa</span>Small</button><button type="button" data-val="m" aria-pressed="false"><span class="sample ">Aa</span>Default</button><button type="button" data-val="l" aria-pressed="false"><span class="sample l">Aa</span>Large</button><button type="button" data-val="xl" aria-pressed="false"><span class="sample l">Aa</span>Largest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Ground</legend>
+    <div class="seg" data-pref="theme">
+      <button type="button" data-val="light" aria-pressed="false"><span class="swatch light"></span>Light</button><button type="button" data-val="sepia" aria-pressed="false"><span class="swatch sepia"></span>Sepia</button><button type="button" data-val="dark" aria-pressed="false"><span class="swatch dark"></span>Dark</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Column width</legend>
+    <div class="seg" data-pref="rwidth">
+      <button type="button" data-val="s" aria-pressed="false">Narrow</button><button type="button" data-val="m" aria-pressed="false">Default</button><button type="button" data-val="l" aria-pressed="false">Wide</button><button type="button" data-val="xl" aria-pressed="false">Widest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Typeface</legend>
+    <div class="seg" data-pref="rface">
+      <button type="button" data-val="sans" aria-pressed="false"><span class="sample">Aa</span>Sans</button>
+      <button type="button" data-val="serif" aria-pressed="false"><span class="sample serif">Aa</span>Serif</button>
+    </div>
+  </fieldset>
+  <button class="reader-reset" id="readerReset" type="button">Reset to defaults</button>
+  <p class="reader-note">Saved in this browser only — these settings do not follow you to another device.</p>
+</div>
+<button class="focus-exit" id="focusExit" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h6V3M21 9h-6V3M3 15h6v6M21 15h-6v6"/></svg> Exit focus</button>
+<div class="chapter-bar" id="chapterBar">
+  <div class="chapter-where">
+    <b>WebLogic Domains, Clusters, and Managed Servers: The Architecture Explained</b>
+    <span>Architecture</span>
+  </div>
+  <span class="chapter-left" id="chapterLeft"></span>
+  <nav class="chapter-step" aria-label="Article navigation">
+    <a href="/insights/weblogic-jms-production-configuration/" aria-label="Previous: WebLogic JMS in Production: Servers, Stores, and the Configuration That Survives Failover"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a>
+    <a href="/insights/trace-sampling-strategies/" aria-label="Next: Trace Sampling: Keeping the Traces That Matter When You Can&#39;t Keep Them All"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
+  </nav>
+</div>
 </main>
 
 <footer class="site-footer">
   <div class="wrap">
     <div class="grid g-4" style="gap:2rem">
       <div>
-        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem">
-          <img src="/images/ajna-logo.png" alt="" width="32" height="32">
-          <span class="brand-name">Ajna<span style="color:#6f9bff">CS</span></span>
+        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem" aria-label="Ajna Consulting Services — home">
+          <svg viewBox="0 0 100 100" width="36" height="36" fill="none" aria-hidden="true" focusable="false"><defs><linearGradient id="lit-ftr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".30"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".32"/></linearGradient></defs><g transform="rotate(0 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#E8402A"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#F5A623"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#17A05E"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#2B57E8"/></g><path d="M 50 4 L 96 50 L 50 96 L 4 50 Z" fill="url(#lit-ftr)"/><g transform="rotate(0 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><circle cx="50" cy="50" r="6" fill="currentColor"/></svg>
+          <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
         </a>
         <p style="font-size:.88rem;line-height:1.65;color:#9fb0d0;max-width:30ch">
           Specialised engineering partner for enterprise architecture, AI &amp; MLOps, and technical enablement.

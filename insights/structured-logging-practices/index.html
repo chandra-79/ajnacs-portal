@@ -22,20 +22,33 @@
 <meta name="twitter:description" content="Logs are the most expensive telemetry most organizations run and the least designed. Event schemas, correlation context, level discipline, sampling, and th…">
 <meta name="twitter:image" content="https://ajnacs.com/assets/og/insights-structured-logging-practices.svg">
 
-<link rel="icon" href="/images/favicon.ico" sizes="any">
-<link rel="apple-touch-icon" href="/images/ajna-logo.png">
+<link rel="icon" href="/images/favicon.ico" sizes="32x32">
+<link rel="icon" href="/images/ajna-mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
 <meta name="theme-color" content="#0a1020">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Quintessential&display=swap">
 <link rel="stylesheet" href="/assets/css/site.css">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
 <script>
-/* Set the theme before first paint so the page never flashes the wrong one. */
-(function(){try{var t=localStorage.getItem('acs-theme');
-if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
-document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+/* Theme and reading preferences are applied before first paint, so the page
+   never flashes the wrong ground or resets someone's text size mid-read. */
+(function(){try{
+var d=document.documentElement,t=localStorage.getItem('acs-theme');
+if(t!=='dark'&&t!=='light'&&t!=='sepia')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+d.setAttribute('data-theme',t);
+['rsize','rwidth','rface'].forEach(function(k){
+  var v=localStorage.getItem('acs-'+k);
+  if(v&&/^[a-z]{1,5}$/.test(v))d.setAttribute('data-'+k,v);
+});
+if(d.getAttribute('data-rface')==='serif'){
+  var l=document.createElement('link');l.rel='stylesheet';
+  l.href='https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600&display=swap';
+  document.head.appendChild(l);
+}
+}catch(e){}})();
 </script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Structured Logging That Pays for Itself: Schema, Context, and Cost Discipline","description":"Logs are the most expensive telemetry most organizations run and the least designed. Event schemas, correlation context, level discipline, sampling, and the cost engineering that keeps the logging bill from becoming the observability program's obituary.","datePublished":"2025-10-03","dateModified":"2025-10-03","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/structured-logging-practices/","image":"https://ajnacs.com/assets/og/insights-structured-logging-practices.svg","keywords":"Observability, Programming, Platform Engineering, Reliability, Cloud Architecture","articleSection":"Observability","wordCount":984}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Structured Logging That Pays for Itself: Schema, Context, and Cost Discipline"}]}</script>
@@ -45,9 +58,9 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 
 <header class="site-header" id="siteHeader">
   <div class="wrap" style="display:flex;align-items:center;width:min(1220px,100% - var(--gutter)*2)">
-    <a class="brand" href="/">
-      <img src="/images/ajna-logo.png" alt="" width="32" height="32">
-      <span class="brand-name">Ajna<span>CS</span></span>
+    <a class="brand" href="/" aria-label="Ajna Consulting Services — home">
+      <svg viewBox="0 0 100 100" width="40" height="40" fill="none" aria-hidden="true" focusable="false"><defs><linearGradient id="lit-hdr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".30"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".32"/></linearGradient></defs><g transform="rotate(0 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#E8402A"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#F5A623"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#17A05E"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#2B57E8"/></g><path d="M 50 4 L 96 50 L 50 96 L 4 50 Z" fill="url(#lit-hdr)"/><g transform="rotate(0 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><circle cx="50" cy="50" r="6" fill="currentColor"/></svg>
+      <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
     </a>
     <nav class="nav" id="nav" aria-label="Primary">
       <a href="/services/">Services</a>
@@ -101,23 +114,23 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 </svg></div></div>
 
   <div class="art-wrap article-grid">
-    <nav class="toc" aria-label="On this page">
+    <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#events-not-sentences">Events, not sentences</a></li><li><a href="#context-is-what-makes-logs-debuggable">Context is what makes logs debuggable</a></li><li><a href="#levels-sampling-and-the-cost-model">Levels, sampling, and the cost model</a></li><li><a href="#the-summary-schema">The summary schema</a></li></ol>
-</nav>
+</nav></div>
     <div class="prose">
 <p>Logging is the telemetry everyone has and almost nobody designs. Metrics get dashboards reviews and traces get instrumentation sprints, while logs just… accumulate — printf archaeology wrapped in an ingestion bill that grows 40% annually until finance asks why the observability vendor costs more than the compute. The waste and the weakness have the same root: logs treated as <em>text a developer emits</em> rather than what production logging actually is — <strong>a stream of structured events, designed for machines to filter and humans to trust, with an explicit cost model.</strong> Here&#39;s the design.</p>
-<h2 id="events-not-sentences">Events, not sentences</h2>
+<h2 id="events-not-sentences"><a class="h-anchor" href="#events-not-sentences" aria-label="Link to this section">#</a>Events, not sentences</h2>
 <p>The foundational shift: a log line is a <strong>JSON event with a schema</strong>, not a sentence with variables interpolated into it. <code>&quot;Payment failed for order 12345 after 3 retries&quot;</code> is a sentence — grep-able if you remember the phrasing, aggregatable never. The event version carries <code>event: payment_failed</code>, <code>order_id</code>, <code>retry_count</code>, <code>failure_reason</code>, <code>duration_ms</code> — and now &quot;failure rate by reason over time&quot; is a query instead of a regex safari.</p>
 <p>The schema disciplines that make event streams queryable at estate scale: <strong>a small set of standard fields on every event</strong> (timestamp, severity, service, version, environment, plus the correlation set below) — adopt an existing convention (OpenTelemetry&#39;s semantic conventions or the ECS-class schemas) rather than inventing one, because the payoff of shared field names compounds across every service and every dashboard; <strong>stable event names</strong> treated like API surface (renaming <code>payment_failed</code> breaks every alert and saved query downstream — version and deprecate, don&#39;t mutate); <strong>consistent types per field</strong> (an <code>order_id</code> that&#39;s a string here and a number there breaks indexing in ways discovered at query time); and <strong>one event per logical occurrence</strong>, not a narrative of five lines that must be mentally reassembled — the request-summary event (one rich line per request with outcome, duration, and key attributes — the classic &quot;canonical log line&quot; pattern) is worth more than fifty step-by-step murmurs, and costs less.</p>
-<h2 id="context-is-what-makes-logs-debuggable">Context is what makes logs debuggable</h2>
+<h2 id="context-is-what-makes-logs-debuggable"><a class="h-anchor" href="#context-is-what-makes-logs-debuggable" aria-label="Link to this section">#</a>Context is what makes logs debuggable</h2>
 <p>A log line&#39;s value is mostly its <em>joinability</em>. The non-negotiable correlation set: <strong>trace and request IDs</strong> (propagated via OpenTelemetry context — the integration that transforms logs from standalone artifacts into the detail layer of distributed traces: find the slow trace, jump to its logs, done), <strong>principal context</strong> (tenant/user identifiers — pseudonymous where privacy demands), and <strong>causal context</strong> where it exists (job ID, message ID, saga/workflow ID — the threads that let you follow one business transaction across services and hours). Inject these once at the boundary (middleware, contextvars/MDC — the async-safe variants covered in the respective stack discussions) so every log line in the request&#39;s lifetime carries them without per-callsite effort. A codebase where engineers manually remember to include the request ID is a codebase where a third of the lines don&#39;t have it — and that third is always where the incident is.</p>
 <p>The counterpart discipline is <strong>what must never be in logs</strong>: secrets, tokens, passwords (redaction at the logging-library layer, plus scanners in CI and on the stream — because one debug line logging full request headers is a credential leak with retention), and unminimized personal data (logs are the compliance surface nobody maps — data-protection rules apply to them fully, deletion requests included, and &quot;it&#39;s just logs&quot; is not a defense anyone enjoys presenting).</p>
-<h2 id="levels-sampling-and-the-cost-model">Levels, sampling, and the cost model</h2>
+<h2 id="levels-sampling-and-the-cost-model"><a class="h-anchor" href="#levels-sampling-and-the-cost-model" aria-label="Link to this section">#</a>Levels, sampling, and the cost model</h2>
 <p>Level discipline, stripped of folklore: <strong>ERROR</strong> means something requiring action failed (and should be alarm-worthy in aggregate — an ERROR that&#39;s routine is mislabeled); <strong>WARN</strong> means degraded-but-handled (retries that succeeded, fallbacks taken — the early-warning band); <strong>INFO</strong> carries the business-and-request events that tell the system&#39;s story (the canonical lines); <strong>DEBUG</strong> exists for humans actively investigating and is <em>off</em> in production by default — with the crucial modern amendment that it should be <strong>dynamically enable-able</strong> (per service, per tenant, per request-percentage, at runtime, without deploys) because &quot;redeploy with debug logging&quot; is a 45-minute incident tax that runtime toggles reduce to seconds.</p>
 <p>Then the economics, because logging is priced per byte and emitted per request: <strong>not every event deserves 100% capture.</strong> The sane defaults — keep all ERROR/WARN, keep 100% of request summaries for errored/slow requests, <em>sample</em> the happy-path INFO stream (1–10% preserves statistical visibility at a tenth of the bill), always-keep anything tied to a sampled trace (consistency with your tracing decisions, or the join breaks), and let high-volume DEBUG-adjacent events earn their retention explicitly. Add <strong>tiered retention</strong> — hot searchable days, warm queryable weeks, cold object-storage archive for the compliance horizon — and the bill drops from &quot;growth-limiting&quot; to &quot;proportionate,&quot; which is the actual goal: the organizations that log everything forever at full index eventually respond by logging <em>nothing</em> useful, and the pendulum&#39;s both ends lose.</p>
 <p>The operating loop that keeps it healthy: a monthly look at ingestion by service and event (the top ten events are reliably 80% of volume, and half of them serve no query anyone has run — delete or sample them), alerts on log-volume anomalies (a 10× spike is either an incident or an accidental debug-loop, both worth knowing), and the standing question in code review — <em>who queries this line, and what decision does it inform?</em> — which is the logging version of the test-value question, and prunes with the same efficiency.</p>
-<h2 id="the-summary-schema">The summary schema</h2>
+<h2 id="the-summary-schema"><a class="h-anchor" href="#the-summary-schema" aria-label="Link to this section">#</a>The summary schema</h2>
 <p>Structured events against a shared convention; stable names treated as API; one rich canonical line per request; correlation IDs injected at boundaries and present everywhere; secrets and PII engineered out at the library layer; levels that mean things, with DEBUG dynamically switchable; sampling and tiered retention as designed policy rather than vendor-bill archaeology; and a review loop that deletes what nobody queries. None of it is glamorous, all of it compounds — because logs are where every incident investigation actually ends up at 3 AM, and the difference between fifteen minutes and three hours of that investigation was decided months earlier, by whether someone designed the events or just let the printfs accumulate.</p>
 
     </div>
@@ -231,15 +244,47 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
     </div></div>
   </section>
 </article>
+
+<div class="reader-tools">
+  <button class="icon-btn" id="readerBtn" type="button" aria-expanded="false" aria-controls="readerPanel" title="Reading settings" aria-label="Reading settings"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2.2"/><circle cx="10" cy="17" r="2.2"/></svg></button>
+  <button class="icon-btn" id="focusBtn" type="button" aria-pressed="false" title="Focus mode" aria-label="Enter focus mode"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></button>
+</div>
+<div class="reader-panel" id="readerPanel" role="dialog" aria-label="Reading settings" hidden>
+  <fieldset><legend>Text size</legend>
+    <div class="seg" data-pref="rsize">
+      <button type="button" data-val="s" aria-pressed="false"><span class="sample s">Aa</span>Small</button><button type="button" data-val="m" aria-pressed="false"><span class="sample ">Aa</span>Default</button><button type="button" data-val="l" aria-pressed="false"><span class="sample l">Aa</span>Large</button><button type="button" data-val="xl" aria-pressed="false"><span class="sample l">Aa</span>Largest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Ground</legend>
+    <div class="seg" data-pref="theme">
+      <button type="button" data-val="light" aria-pressed="false"><span class="swatch light"></span>Light</button><button type="button" data-val="sepia" aria-pressed="false"><span class="swatch sepia"></span>Sepia</button><button type="button" data-val="dark" aria-pressed="false"><span class="swatch dark"></span>Dark</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Column width</legend>
+    <div class="seg" data-pref="rwidth">
+      <button type="button" data-val="s" aria-pressed="false">Narrow</button><button type="button" data-val="m" aria-pressed="false">Default</button><button type="button" data-val="l" aria-pressed="false">Wide</button><button type="button" data-val="xl" aria-pressed="false">Widest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Typeface</legend>
+    <div class="seg" data-pref="rface">
+      <button type="button" data-val="sans" aria-pressed="false"><span class="sample">Aa</span>Sans</button>
+      <button type="button" data-val="serif" aria-pressed="false"><span class="sample serif">Aa</span>Serif</button>
+    </div>
+  </fieldset>
+  <button class="reader-reset" id="readerReset" type="button">Reset to defaults</button>
+  <p class="reader-note">Saved in this browser only — these settings do not follow you to another device.</p>
+</div>
+<button class="focus-exit" id="focusExit" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h6V3M21 9h-6V3M3 15h6v6M21 15h-6v6"/></svg> Exit focus</button>
+
 </main>
 
 <footer class="site-footer">
   <div class="wrap">
     <div class="grid g-4" style="gap:2rem">
       <div>
-        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem">
-          <img src="/images/ajna-logo.png" alt="" width="32" height="32">
-          <span class="brand-name">Ajna<span style="color:#6f9bff">CS</span></span>
+        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem" aria-label="Ajna Consulting Services — home">
+          <svg viewBox="0 0 100 100" width="36" height="36" fill="none" aria-hidden="true" focusable="false"><defs><linearGradient id="lit-ftr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".30"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".32"/></linearGradient></defs><g transform="rotate(0 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#E8402A"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#F5A623"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#17A05E"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#2B57E8"/></g><path d="M 50 4 L 96 50 L 50 96 L 4 50 Z" fill="url(#lit-ftr)"/><g transform="rotate(0 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><circle cx="50" cy="50" r="6" fill="currentColor"/></svg>
+          <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
         </a>
         <p style="font-size:.88rem;line-height:1.65;color:#9fb0d0;max-width:30ch">
           Specialised engineering partner for enterprise architecture, AI &amp; MLOps, and technical enablement.

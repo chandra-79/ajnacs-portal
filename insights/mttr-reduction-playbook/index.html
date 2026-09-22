@@ -22,20 +22,33 @@
 <meta name="twitter:description" content="Mean Time to Recover is a lagging indicator — improving it requires leading investments in observability, runbooks, team practice, and architecture. Here&#39;s…">
 <meta name="twitter:image" content="https://ajnacs.com/assets/og/insights-mttr-reduction-playbook.svg">
 
-<link rel="icon" href="/images/favicon.ico" sizes="any">
-<link rel="apple-touch-icon" href="/images/ajna-logo.png">
+<link rel="icon" href="/images/favicon.ico" sizes="32x32">
+<link rel="icon" href="/images/ajna-mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
 <meta name="theme-color" content="#0a1020">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Quintessential&display=swap">
 <link rel="stylesheet" href="/assets/css/site.css">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
 <script>
-/* Set the theme before first paint so the page never flashes the wrong one. */
-(function(){try{var t=localStorage.getItem('acs-theme');
-if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
-document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+/* Theme and reading preferences are applied before first paint, so the page
+   never flashes the wrong ground or resets someone's text size mid-read. */
+(function(){try{
+var d=document.documentElement,t=localStorage.getItem('acs-theme');
+if(t!=='dark'&&t!=='light'&&t!=='sepia')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+d.setAttribute('data-theme',t);
+['rsize','rwidth','rface'].forEach(function(k){
+  var v=localStorage.getItem('acs-'+k);
+  if(v&&/^[a-z]{1,5}$/.test(v))d.setAttribute('data-'+k,v);
+});
+if(d.getAttribute('data-rface')==='serif'){
+  var l=document.createElement('link');l.rel='stylesheet';
+  l.href='https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600&display=swap';
+  document.head.appendChild(l);
+}
+}catch(e){}})();
 </script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"The MTTR Reduction Playbook: Investments That Actually Move the Needle","description":"Mean Time to Recover is a lagging indicator — improving it requires leading investments in observability, runbooks, team practice, and architecture. Here's how to structure those investments and measure whether they're working.","datePublished":"2025-06-17","dateModified":"2025-06-17","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/mttr-reduction-playbook/","image":"https://ajnacs.com/assets/og/insights-mttr-reduction-playbook.svg","keywords":"Engineering Leadership, Observability, DevSecOps","articleSection":"Engineering Leadership","wordCount":1091}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"The MTTR Reduction Playbook: Investments That Actually Move the Needle"}]}</script>
@@ -45,9 +58,9 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 
 <header class="site-header" id="siteHeader">
   <div class="wrap" style="display:flex;align-items:center;width:min(1220px,100% - var(--gutter)*2)">
-    <a class="brand" href="/">
-      <img src="/images/ajna-logo.png" alt="" width="32" height="32">
-      <span class="brand-name">Ajna<span>CS</span></span>
+    <a class="brand" href="/" aria-label="Ajna Consulting Services — home">
+      <svg viewBox="0 0 100 100" width="40" height="40" fill="none" aria-hidden="true" focusable="false"><defs><linearGradient id="lit-hdr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".30"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".32"/></linearGradient></defs><g transform="rotate(0 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#E8402A"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#F5A623"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#17A05E"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#2B57E8"/></g><path d="M 50 4 L 96 50 L 50 96 L 4 50 Z" fill="url(#lit-hdr)"/><g transform="rotate(0 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><circle cx="50" cy="50" r="6" fill="currentColor"/></svg>
+      <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
     </a>
     <nav class="nav" id="nav" aria-label="Primary">
       <a href="/services/">Services</a>
@@ -101,14 +114,14 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 </svg></div></div>
 
   <div class="art-wrap article-grid">
-    <nav class="toc" aria-label="On this page">
+    <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#decompose-mttr-before-trying-to-reduce-it">Decompose MTTR before trying to reduce it</a></li><li><a href="#detection-alerting-that-finds-real-problems-quickly">Detection: alerting that finds real problems quickly</a></li><li><a href="#diagnosis-distributed-tracing-and-correlated-observability">Diagnosis: distributed tracing and correlated observability</a></li><li><a href="#runbooks-the-most-underinvested-asset">Runbooks: the most underinvested asset</a></li><li><a href="#game-days-and-chaos-engineering-practising-recovery">Game days and chaos engineering: practising recovery</a></li><li><a href="#architecture-changes-that-reduce-remediation-time">Architecture changes that reduce remediation time</a></li><li><a href="#measuring-improvement">Measuring improvement</a></li></ol>
-</nav>
+</nav></div>
     <div class="prose">
 <p>MTTR (Mean Time to Recover or Mean Time to Resolve, depending on who you ask) measures how long it takes your organization to recover from an incident. It&#39;s one of the four DORA metrics for software delivery performance, and it&#39;s the one most directly connected to user impact.</p>
 <p>Reducing MTTR is deceptively hard to target directly. You can&#39;t improve MTTR by trying harder during incidents — you improve it by investing in capabilities before incidents happen. This playbook focuses on those leading investments.</p>
-<h2 id="decompose-mttr-before-trying-to-reduce-it">Decompose MTTR before trying to reduce it</h2>
+<h2 id="decompose-mttr-before-trying-to-reduce-it"><a class="h-anchor" href="#decompose-mttr-before-trying-to-reduce-it" aria-label="Link to this section">#</a>Decompose MTTR before trying to reduce it</h2>
 <aside class="keyfig">
   <p class="keyfig-label">Key figure</p>
   <p class="keyfig-text">A P1 MTTR of <b>30 minutes</b> and a P3 MTTR of 4 days both matter, and the investments to improve them are different.</p>
@@ -121,12 +134,12 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 <li><strong>Validation time</strong>: how long between deployment and confirming the incident is resolved</li>
 </ol>
 <p>Each has different causes and different investments. Before any intervention, measure each component for your recent incidents. Most teams find that diagnosis time dominates — not because their engineers are slow, but because the tooling and data to diagnose quickly aren&#39;t in place.</p>
-<h2 id="detection-alerting-that-finds-real-problems-quickly">Detection: alerting that finds real problems quickly</h2>
+<h2 id="detection-alerting-that-finds-real-problems-quickly"><a class="h-anchor" href="#detection-alerting-that-finds-real-problems-quickly" aria-label="Link to this section">#</a>Detection: alerting that finds real problems quickly</h2>
 <p>Detection time depends on your monitoring and alerting strategy. The investments:</p>
 <p><strong>Symptom-based alerting over cause-based alerting</strong>: alert on user-visible symptoms (error rate &gt; 1%, latency P99 &gt; 2s, success rate &lt; 99%) rather than on infrastructure metrics alone (CPU &gt; 80%). A CPU spike that doesn&#39;t affect users doesn&#39;t need a 3am page. An error rate spike does.</p>
 <p><strong>Service Level Objectives (SLOs)</strong>: define the user experience you&#39;re committing to, measure it, and alert when you&#39;re burning error budget too fast. SLO-based alerting is more meaningful than threshold-based alerting on arbitrary metrics.</p>
 <p><strong>Anomaly detection with context</strong>: an alert that fires and points you to the relevant logs, traces, and recent deployments is faster to act on than an alert that fires and leaves you with a metric graph and no context. Invest in alert enrichment — dashboards that open automatically from alert links, runbook links embedded in alert messages, recent deploys shown alongside the anomaly.</p>
-<h2 id="diagnosis-distributed-tracing-and-correlated-observability">Diagnosis: distributed tracing and correlated observability</h2>
+<h2 id="diagnosis-distributed-tracing-and-correlated-observability"><a class="h-anchor" href="#diagnosis-distributed-tracing-and-correlated-observability" aria-label="Link to this section">#</a>Diagnosis: distributed tracing and correlated observability</h2>
 <p>Distributed tracing is the most impactful single investment for diagnosis time in microservice architectures. A trace that shows the full request path across services — which service was slow, which query timed out, which dependency returned an error — compresses what would otherwise be hours of log correlation into minutes.</p>
 <p><strong>The minimum observability stack</strong>:</p>
 <ul>
@@ -136,7 +149,7 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 </ul>
 <p>The correlation between these three is what reduces diagnosis time. When an alert fires, you should be able to go from the alerting metric to the relevant traces and logs in a few clicks.</p>
 <p><strong>Service dependency maps</strong>: knowing which services depend on which other services, and seeing health status overlaid on that map, helps the person diagnosing narrow the scope quickly. A failing downstream service is easier to identify when you can see the dependency graph.</p>
-<h2 id="runbooks-the-most-underinvested-asset">Runbooks: the most underinvested asset</h2>
+<h2 id="runbooks-the-most-underinvested-asset"><a class="h-anchor" href="#runbooks-the-most-underinvested-asset" aria-label="Link to this section">#</a>Runbooks: the most underinvested asset</h2>
 <p>A runbook for an incident type is a tested procedure for the engineer who responds. When a P1 fires at 3am and the responder has never seen this type of incident, a good runbook is the difference between a 20-minute resolution and a 2-hour investigation.</p>
 <p>The runbooks worth having first:</p>
 <ul>
@@ -148,7 +161,7 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 </ul>
 <p>What makes a runbook good: specific commands to run (not &quot;check the logs&quot; but <code>kubectl logs -n payments deployment/payments-api --since=15m | grep ERROR</code>), decision trees (if metric X shows Y, then do Z), success criteria (the incident is resolved when alert A is green and metric B returns to normal).</p>
 <p>Runbooks rot. Assign ownership, review every quarter, and update them when they&#39;re used — the person who resolved the incident should update the runbook before closing it.</p>
-<h2 id="game-days-and-chaos-engineering-practising-recovery">Game days and chaos engineering: practising recovery</h2>
+<h2 id="game-days-and-chaos-engineering-practising-recovery"><a class="h-anchor" href="#game-days-and-chaos-engineering-practising-recovery" aria-label="Link to this section">#</a>Game days and chaos engineering: practising recovery</h2>
 <p>The failure mode runbooks are designed to address is &quot;engineer who has never seen this before is trying to diagnose in real time.&quot; Game days invert this — you schedule a controlled failure and have the team respond, using their tools and runbooks.</p>
 <p>A simple game day:</p>
 <ol>
@@ -159,11 +172,11 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 </ol>
 <p>The debrief outputs become improvements: new alerts, updated runbooks, new observability coverage.</p>
 <p>Chaos engineering (Chaos Monkey, Gremlin, AWS Fault Injection Simulator) automates this in production, introducing random failures to verify that resilience mechanisms work as designed. Start in staging; move to production only when monitoring is good enough to detect anomalies within minutes.</p>
-<h2 id="architecture-changes-that-reduce-remediation-time">Architecture changes that reduce remediation time</h2>
+<h2 id="architecture-changes-that-reduce-remediation-time"><a class="h-anchor" href="#architecture-changes-that-reduce-remediation-time" aria-label="Link to this section">#</a>Architecture changes that reduce remediation time</h2>
 <p><strong>Deployment rollback speed</strong>: if a bad deployment requires 20 minutes to roll back, your MTTR has a floor of 20 minutes for deployment-caused incidents. Blue/green deployments and canary releases allow instant cutover back to the known-good version. This alone reduces median MTTR significantly for deployment-related incidents.</p>
 <p><strong>Feature flags</strong>: the ability to disable a problematic feature in production without a deployment means some incidents resolve in minutes (disable the flag) rather than the full deployment cycle.</p>
 <p><strong>Database migration safety</strong>: blue/green deployment doesn&#39;t work if your deployment includes a destructive database migration. Backwards-compatible migration practices (add columns before dropping them, keep old code working during migration) allow rollback to be fast.</p>
-<h2 id="measuring-improvement">Measuring improvement</h2>
+<h2 id="measuring-improvement"><a class="h-anchor" href="#measuring-improvement" aria-label="Link to this section">#</a>Measuring improvement</h2>
 <p>Track MTTR per incident severity, not as a single average. A P1 MTTR of 30 minutes and a P3 MTTR of 4 days both matter, and the investments to improve them are different.</p>
 <p>Track each MTTR component (detection, diagnosis, remediation, validation) separately. An improvement in overall MTTR that comes entirely from faster detection is different from one that comes from faster diagnosis — the investment implications are different.</p>
 <p>Set targets: what would &quot;good&quot; look like for each severity level, for each component? Work backward from those targets to the investments that would get you there.</p>
@@ -282,15 +295,47 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
     </div></div>
   </section>
 </article>
+
+<div class="reader-tools">
+  <button class="icon-btn" id="readerBtn" type="button" aria-expanded="false" aria-controls="readerPanel" title="Reading settings" aria-label="Reading settings"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2.2"/><circle cx="10" cy="17" r="2.2"/></svg></button>
+  <button class="icon-btn" id="focusBtn" type="button" aria-pressed="false" title="Focus mode" aria-label="Enter focus mode"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></button>
+</div>
+<div class="reader-panel" id="readerPanel" role="dialog" aria-label="Reading settings" hidden>
+  <fieldset><legend>Text size</legend>
+    <div class="seg" data-pref="rsize">
+      <button type="button" data-val="s" aria-pressed="false"><span class="sample s">Aa</span>Small</button><button type="button" data-val="m" aria-pressed="false"><span class="sample ">Aa</span>Default</button><button type="button" data-val="l" aria-pressed="false"><span class="sample l">Aa</span>Large</button><button type="button" data-val="xl" aria-pressed="false"><span class="sample l">Aa</span>Largest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Ground</legend>
+    <div class="seg" data-pref="theme">
+      <button type="button" data-val="light" aria-pressed="false"><span class="swatch light"></span>Light</button><button type="button" data-val="sepia" aria-pressed="false"><span class="swatch sepia"></span>Sepia</button><button type="button" data-val="dark" aria-pressed="false"><span class="swatch dark"></span>Dark</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Column width</legend>
+    <div class="seg" data-pref="rwidth">
+      <button type="button" data-val="s" aria-pressed="false">Narrow</button><button type="button" data-val="m" aria-pressed="false">Default</button><button type="button" data-val="l" aria-pressed="false">Wide</button><button type="button" data-val="xl" aria-pressed="false">Widest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Typeface</legend>
+    <div class="seg" data-pref="rface">
+      <button type="button" data-val="sans" aria-pressed="false"><span class="sample">Aa</span>Sans</button>
+      <button type="button" data-val="serif" aria-pressed="false"><span class="sample serif">Aa</span>Serif</button>
+    </div>
+  </fieldset>
+  <button class="reader-reset" id="readerReset" type="button">Reset to defaults</button>
+  <p class="reader-note">Saved in this browser only — these settings do not follow you to another device.</p>
+</div>
+<button class="focus-exit" id="focusExit" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h6V3M21 9h-6V3M3 15h6v6M21 15h-6v6"/></svg> Exit focus</button>
+
 </main>
 
 <footer class="site-footer">
   <div class="wrap">
     <div class="grid g-4" style="gap:2rem">
       <div>
-        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem">
-          <img src="/images/ajna-logo.png" alt="" width="32" height="32">
-          <span class="brand-name">Ajna<span style="color:#6f9bff">CS</span></span>
+        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem" aria-label="Ajna Consulting Services — home">
+          <svg viewBox="0 0 100 100" width="36" height="36" fill="none" aria-hidden="true" focusable="false"><defs><linearGradient id="lit-ftr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".30"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".32"/></linearGradient></defs><g transform="rotate(0 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#E8402A"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#F5A623"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#17A05E"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#2B57E8"/></g><path d="M 50 4 L 96 50 L 50 96 L 4 50 Z" fill="url(#lit-ftr)"/><g transform="rotate(0 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><circle cx="50" cy="50" r="6" fill="currentColor"/></svg>
+          <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
         </a>
         <p style="font-size:.88rem;line-height:1.65;color:#9fb0d0;max-width:30ch">
           Specialised engineering partner for enterprise architecture, AI &amp; MLOps, and technical enablement.

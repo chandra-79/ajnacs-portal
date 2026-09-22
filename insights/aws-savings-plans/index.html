@@ -22,20 +22,33 @@
 <meta name="twitter:description" content="Savings Plans replaced most Reserved Instance use cases but not all of them. Understanding the difference determines whether you leave money on the table o…">
 <meta name="twitter:image" content="https://ajnacs.com/assets/og/insights-aws-savings-plans.svg">
 
-<link rel="icon" href="/images/favicon.ico" sizes="any">
-<link rel="apple-touch-icon" href="/images/ajna-logo.png">
+<link rel="icon" href="/images/favicon.ico" sizes="32x32">
+<link rel="icon" href="/images/ajna-mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
 <meta name="theme-color" content="#0a1020">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Quintessential&display=swap">
 <link rel="stylesheet" href="/assets/css/site.css">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
 <script>
-/* Set the theme before first paint so the page never flashes the wrong one. */
-(function(){try{var t=localStorage.getItem('acs-theme');
-if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
-document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+/* Theme and reading preferences are applied before first paint, so the page
+   never flashes the wrong ground or resets someone's text size mid-read. */
+(function(){try{
+var d=document.documentElement,t=localStorage.getItem('acs-theme');
+if(t!=='dark'&&t!=='light'&&t!=='sepia')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+d.setAttribute('data-theme',t);
+['rsize','rwidth','rface'].forEach(function(k){
+  var v=localStorage.getItem('acs-'+k);
+  if(v&&/^[a-z]{1,5}$/.test(v))d.setAttribute('data-'+k,v);
+});
+if(d.getAttribute('data-rface')==='serif'){
+  var l=document.createElement('link');l.rel='stylesheet';
+  l.href='https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600&display=swap';
+  document.head.appendChild(l);
+}
+}catch(e){}})();
 </script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"AWS Savings Plans vs Reserved Instances: Making the Commitment Decision","description":"Savings Plans replaced most Reserved Instance use cases but not all of them. Understanding the difference determines whether you leave money on the table or over-commit to an inflexible discount structure.","datePublished":"2025-05-27","dateModified":"2025-05-27","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/aws-savings-plans/","image":"https://ajnacs.com/assets/og/insights-aws-savings-plans.svg","keywords":"FinOps, Cloud Architecture","articleSection":"FinOps","wordCount":711}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"AWS Savings Plans vs Reserved Instances: Making the Commitment Decision"}]}</script>
@@ -45,9 +58,9 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 
 <header class="site-header" id="siteHeader">
   <div class="wrap" style="display:flex;align-items:center;width:min(1220px,100% - var(--gutter)*2)">
-    <a class="brand" href="/">
-      <img src="/images/ajna-logo.png" alt="" width="32" height="32">
-      <span class="brand-name">Ajna<span>CS</span></span>
+    <a class="brand" href="/" aria-label="Ajna Consulting Services — home">
+      <svg viewBox="0 0 100 100" width="40" height="40" fill="none" aria-hidden="true" focusable="false"><defs><linearGradient id="lit-hdr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".30"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".32"/></linearGradient></defs><g transform="rotate(0 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#E8402A"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#F5A623"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#17A05E"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#2B57E8"/></g><path d="M 50 4 L 96 50 L 50 96 L 4 50 Z" fill="url(#lit-hdr)"/><g transform="rotate(0 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><circle cx="50" cy="50" r="6" fill="currentColor"/></svg>
+      <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
     </a>
     <nav class="nav" id="nav" aria-label="Primary">
       <a href="/services/">Services</a>
@@ -101,13 +114,13 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 </svg></div></div>
 
   <div class="art-wrap article-grid">
-    <nav class="toc" aria-label="On this page">
+    <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#how-savings-plans-work">How Savings Plans work</a></li><li><a href="#how-reserved-instances-work">How Reserved Instances work</a></li><li><a href="#the-analysis-workflow">The analysis workflow</a></li><li><a href="#term-length-1-year-vs-3-year">Term length: 1-year vs. 3-year</a></li><li><a href="#payment-options">Payment options</a></li></ol>
-</nav>
+</nav></div>
     <div class="prose">
 <p>AWS introduced Savings Plans in 2019 as a more flexible alternative to EC2 Reserved Instances. For most workloads, they are now the better choice. For some specific workloads, Reserved Instances still offer a price advantage. Understanding when each applies is the core FinOps decision for reducing AWS compute costs.</p>
-<h2 id="how-savings-plans-work">How Savings Plans work</h2>
+<h2 id="how-savings-plans-work"><a class="h-anchor" href="#how-savings-plans-work" aria-label="Link to this section">#</a>How Savings Plans work</h2>
 <aside class="keyfig">
   <p class="keyfig-label">Key figure</p>
   <p class="keyfig-text">Higher discount than Compute Savings Plans (up to <b>72%</b>) in exchange for the commitment to a specific instance family and region.</p>
@@ -117,7 +130,7 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 <p><strong>Compute Savings Plans</strong>: apply to EC2, Fargate, and Lambda. No restrictions on instance family, size, region, OS, or tenancy. The most flexible type. Discount: up to 66% vs. on-demand.</p>
 <p><strong>EC2 Instance Savings Plans</strong>: apply to EC2 in a specific instance family within a specific region (e.g., M5 in us-east-1). Higher discount than Compute Savings Plans (up to 72%) in exchange for the commitment to a specific instance family and region.</p>
 <p><strong>SageMaker Savings Plans</strong>: apply to SageMaker instance usage. Relevant if SageMaker is a significant cost driver.</p>
-<h2 id="how-reserved-instances-work">How Reserved Instances work</h2>
+<h2 id="how-reserved-instances-work"><a class="h-anchor" href="#how-reserved-instances-work" aria-label="Link to this section">#</a>How Reserved Instances work</h2>
 <p>Reserved Instances reserve capacity for a specific instance type in a specific region (or Availability Zone). Standard RIs offer up to 72% off on-demand; Convertible RIs offer up to 66% with the ability to change instance type within the RI term.</p>
 <p><strong>Where RIs still have an advantage</strong>:</p>
 <ul>
@@ -128,7 +141,7 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 <li><p><strong>Specific instance family + region commitment with maximum discount</strong>: EC2 Instance Savings Plans and Standard RIs offer similar discounts for committed usage in a specific family/region, but RIs are slightly more flexible in instance size flexibility within the family.</p>
 </li>
 </ul>
-<h2 id="the-analysis-workflow">The analysis workflow</h2>
+<h2 id="the-analysis-workflow"><a class="h-anchor" href="#the-analysis-workflow" aria-label="Link to this section">#</a>The analysis workflow</h2>
 <p>Before purchasing, analyze the past 3-6 months of compute usage:</p>
 <ol>
 <li>Pull EC2, Fargate, and Lambda usage from AWS Cost Explorer, filtered to on-demand (exclude already-discounted usage)</li>
@@ -137,11 +150,11 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 <li>Apply Compute Savings Plans to the flexible baseline; consider EC2 Instance Savings Plans or RIs for the committed portion</li>
 </ol>
 <p><strong>The floor principle</strong>: commit to the amount you are confident you will use every hour for the term. Unused Savings Plans commitment is wasted. Better to under-commit initially, verify usage, and purchase more.</p>
-<h2 id="term-length-1-year-vs-3-year">Term length: 1-year vs. 3-year</h2>
+<h2 id="term-length-1-year-vs-3-year"><a class="h-anchor" href="#term-length-1-year-vs-3-year" aria-label="Link to this section">#</a>Term length: 1-year vs. 3-year</h2>
 <p>1-year term: 30-40% discount depending on payment option. Lower commitment risk; good for workloads with uncertain future trajectory.</p>
 <p>3-year term: 50-66% discount. Better economics for stable, long-running workloads. Higher commitment risk — technology changes; workloads migrate; the AWS pricing landscape evolves.</p>
 <p>The 3-year term makes most sense for: core infrastructure workloads that have been running for 2+ years without significant change, workloads anchored to a specific cloud provider for regulatory or architectural reasons, and instance types that are unlikely to be displaced by a new generation within the term.</p>
-<h2 id="payment-options">Payment options</h2>
+<h2 id="payment-options"><a class="h-anchor" href="#payment-options" aria-label="Link to this section">#</a>Payment options</h2>
 <ul>
 <li><strong>No upfront</strong>: no upfront cost; monthly charges at discounted rate. No cash flow impact; slightly lower discount.</li>
 <li><strong>Partial upfront</strong>: upfront payment for some of the term; monthly charges for the remainder. Better discount.</li>
@@ -269,15 +282,47 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
     </div></div>
   </section>
 </article>
+
+<div class="reader-tools">
+  <button class="icon-btn" id="readerBtn" type="button" aria-expanded="false" aria-controls="readerPanel" title="Reading settings" aria-label="Reading settings"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2.2"/><circle cx="10" cy="17" r="2.2"/></svg></button>
+  <button class="icon-btn" id="focusBtn" type="button" aria-pressed="false" title="Focus mode" aria-label="Enter focus mode"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></button>
+</div>
+<div class="reader-panel" id="readerPanel" role="dialog" aria-label="Reading settings" hidden>
+  <fieldset><legend>Text size</legend>
+    <div class="seg" data-pref="rsize">
+      <button type="button" data-val="s" aria-pressed="false"><span class="sample s">Aa</span>Small</button><button type="button" data-val="m" aria-pressed="false"><span class="sample ">Aa</span>Default</button><button type="button" data-val="l" aria-pressed="false"><span class="sample l">Aa</span>Large</button><button type="button" data-val="xl" aria-pressed="false"><span class="sample l">Aa</span>Largest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Ground</legend>
+    <div class="seg" data-pref="theme">
+      <button type="button" data-val="light" aria-pressed="false"><span class="swatch light"></span>Light</button><button type="button" data-val="sepia" aria-pressed="false"><span class="swatch sepia"></span>Sepia</button><button type="button" data-val="dark" aria-pressed="false"><span class="swatch dark"></span>Dark</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Column width</legend>
+    <div class="seg" data-pref="rwidth">
+      <button type="button" data-val="s" aria-pressed="false">Narrow</button><button type="button" data-val="m" aria-pressed="false">Default</button><button type="button" data-val="l" aria-pressed="false">Wide</button><button type="button" data-val="xl" aria-pressed="false">Widest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Typeface</legend>
+    <div class="seg" data-pref="rface">
+      <button type="button" data-val="sans" aria-pressed="false"><span class="sample">Aa</span>Sans</button>
+      <button type="button" data-val="serif" aria-pressed="false"><span class="sample serif">Aa</span>Serif</button>
+    </div>
+  </fieldset>
+  <button class="reader-reset" id="readerReset" type="button">Reset to defaults</button>
+  <p class="reader-note">Saved in this browser only — these settings do not follow you to another device.</p>
+</div>
+<button class="focus-exit" id="focusExit" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h6V3M21 9h-6V3M3 15h6v6M21 15h-6v6"/></svg> Exit focus</button>
+
 </main>
 
 <footer class="site-footer">
   <div class="wrap">
     <div class="grid g-4" style="gap:2rem">
       <div>
-        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem">
-          <img src="/images/ajna-logo.png" alt="" width="32" height="32">
-          <span class="brand-name">Ajna<span style="color:#6f9bff">CS</span></span>
+        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem" aria-label="Ajna Consulting Services — home">
+          <svg viewBox="0 0 100 100" width="36" height="36" fill="none" aria-hidden="true" focusable="false"><defs><linearGradient id="lit-ftr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".30"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".32"/></linearGradient></defs><g transform="rotate(0 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#E8402A"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#F5A623"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#17A05E"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#2B57E8"/></g><path d="M 50 4 L 96 50 L 50 96 L 4 50 Z" fill="url(#lit-ftr)"/><g transform="rotate(0 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><circle cx="50" cy="50" r="6" fill="currentColor"/></svg>
+          <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
         </a>
         <p style="font-size:.88rem;line-height:1.65;color:#9fb0d0;max-width:30ch">
           Specialised engineering partner for enterprise architecture, AI &amp; MLOps, and technical enablement.

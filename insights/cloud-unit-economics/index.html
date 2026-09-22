@@ -22,20 +22,33 @@
 <meta name="twitter:description" content="Talking about cloud spend in absolute dollars rarely leads anywhere useful. Unit economics — cost per transaction, cost per user, cost per GB processed — c…">
 <meta name="twitter:image" content="https://ajnacs.com/assets/og/insights-cloud-unit-economics.svg">
 
-<link rel="icon" href="/images/favicon.ico" sizes="any">
-<link rel="apple-touch-icon" href="/images/ajna-logo.png">
+<link rel="icon" href="/images/favicon.ico" sizes="32x32">
+<link rel="icon" href="/images/ajna-mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
 <meta name="theme-color" content="#0a1020">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Quintessential&display=swap">
 <link rel="stylesheet" href="/assets/css/site.css">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
 <script>
-/* Set the theme before first paint so the page never flashes the wrong one. */
-(function(){try{var t=localStorage.getItem('acs-theme');
-if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
-document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+/* Theme and reading preferences are applied before first paint, so the page
+   never flashes the wrong ground or resets someone's text size mid-read. */
+(function(){try{
+var d=document.documentElement,t=localStorage.getItem('acs-theme');
+if(t!=='dark'&&t!=='light'&&t!=='sepia')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+d.setAttribute('data-theme',t);
+['rsize','rwidth','rface'].forEach(function(k){
+  var v=localStorage.getItem('acs-'+k);
+  if(v&&/^[a-z]{1,5}$/.test(v))d.setAttribute('data-'+k,v);
+});
+if(d.getAttribute('data-rface')==='serif'){
+  var l=document.createElement('link');l.rel='stylesheet';
+  l.href='https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600&display=swap';
+  document.head.appendChild(l);
+}
+}catch(e){}})();
 </script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Cloud Unit Economics: The Metric That Makes Cloud Spend Conversations Productive","description":"Talking about cloud spend in absolute dollars rarely leads anywhere useful. Unit economics — cost per transaction, cost per user, cost per GB processed — creates the context that turns 'we spend too much on cloud' into an actionable conversation.","datePublished":"2025-10-15","dateModified":"2025-10-15","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/cloud-unit-economics/","image":"https://ajnacs.com/assets/og/insights-cloud-unit-economics.svg","keywords":"FinOps, Cost Optimisation, Engineering Leadership","articleSection":"FinOps","wordCount":740}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Cloud Unit Economics: The Metric That Makes Cloud Spend Conversations Productive"}]}</script>
@@ -45,9 +58,9 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 
 <header class="site-header" id="siteHeader">
   <div class="wrap" style="display:flex;align-items:center;width:min(1220px,100% - var(--gutter)*2)">
-    <a class="brand" href="/">
-      <img src="/images/ajna-logo.png" alt="" width="32" height="32">
-      <span class="brand-name">Ajna<span>CS</span></span>
+    <a class="brand" href="/" aria-label="Ajna Consulting Services — home">
+      <svg viewBox="0 0 100 100" width="40" height="40" fill="none" aria-hidden="true" focusable="false"><defs><linearGradient id="lit-hdr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".30"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".32"/></linearGradient></defs><g transform="rotate(0 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#E8402A"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#F5A623"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#17A05E"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#2B57E8"/></g><path d="M 50 4 L 96 50 L 50 96 L 4 50 Z" fill="url(#lit-hdr)"/><g transform="rotate(0 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><circle cx="50" cy="50" r="6" fill="currentColor"/></svg>
+      <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
     </a>
     <nav class="nav" id="nav" aria-label="Primary">
       <a href="/services/">Services</a>
@@ -101,14 +114,17 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 </svg></div></div>
 
   <div class="art-wrap article-grid">
-    <nav class="toc" aria-label="On this page">
+    <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#why-absolute-spend-is-the-wrong-metric">Why absolute spend is the wrong metric</a></li><li><a href="#defining-the-right-unit">Defining the right unit</a></li><li><a href="#how-to-calculate-it">How to calculate it</a></li><li><a href="#benchmarks-and-thresholds">Benchmarks and thresholds</a></li><li><a href="#the-conversation-unit-economics-enables">The conversation unit economics enables</a></li></ol>
-</nav>
+</nav><nav class="chapters" aria-label="Articles in this series">
+      <p class="chapters-title">FinOps from Zero to Production</p>
+      <ol><li><a href="/insights/finops-tagging-policy/">Cloud Tagging Policy Template: The Foundation FinOps Actually Requires</a></li><li><a href="/insights/reserved-instance-rationalization/">Reserved Instance Rationalisation: How to Commit to the Right Resources</a></li><li aria-current="true"><a href="/insights/cloud-unit-economics/">Cloud Unit Economics: The Metric That Makes Cloud Spend Conversations Productive</a></li><li><a href="/insights/finops-anomaly-detection/">Cloud Cost Anomaly Detection: Catching Runaway Spend Before It Becomes a Bill</a></li></ol>
+    </nav></div>
     <div class="prose">
 <p>Most cloud cost conversations go in circles because they&#39;re comparing the wrong things. &quot;Our AWS bill went up 20% this quarter&quot; is a statement that could mean we&#39;re growing efficiently, we&#39;re scaling poorly, or someone left a cluster running — and you can&#39;t tell which from the number alone.</p>
 <p>Unit economics cuts through this. Cost per unit of business output — per active user, per transaction, per API call, per GB of data processed — contextualises spend against the business it&#39;s supporting.</p>
-<h2 id="why-absolute-spend-is-the-wrong-metric">Why absolute spend is the wrong metric</h2>
+<h2 id="why-absolute-spend-is-the-wrong-metric"><a class="h-anchor" href="#why-absolute-spend-is-the-wrong-metric" aria-label="Link to this section">#</a>Why absolute spend is the wrong metric</h2>
 <aside class="keyfig">
   <p class="keyfig-label">Key figure</p>
   <p class="keyfig-text">&quot;Our AWS bill went up <b>20%</b> this quarter&quot; is a statement that could mean we&#39;re growing efficiently, we&#39;re scaling poorly, or someone left a cluster running — and you can&#39;t tell which from the number alone.</p>
@@ -121,7 +137,7 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 </ul>
 <p>The absolute number doesn&#39;t tell you which scenario you&#39;re in. The unit cost does.</p>
 <p>Unit economics doesn&#39;t make the cost conversation easier — it makes it more honest. When a business leader asks &quot;why is our cloud bill so high?&quot;, the unit cost answer is either: &quot;it isn&#39;t, we&#39;re running at $0.003 per transaction and the market rate is $0.005&quot; or &quot;you&#39;re right, our cost per user has increased since Q3 and here&#39;s why.&quot; Both answers are useful. &quot;Our bill is $200k a month&quot; isn&#39;t.</p>
-<h2 id="defining-the-right-unit">Defining the right unit</h2>
+<h2 id="defining-the-right-unit"><a class="h-anchor" href="#defining-the-right-unit" aria-label="Link to this section">#</a>Defining the right unit</h2>
 <p>The unit should be something the business already tracks and cares about. Common options:</p>
 <ul>
 <li><strong>SaaS products</strong>: cost per monthly active user (MAU)</li>
@@ -132,7 +148,7 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 </ul>
 <p>The unit has to be consistent — use the same definition across teams and time periods. If &quot;transaction&quot; means one thing to the payments team and another to the analytics team, the comparisons won&#39;t be useful.</p>
 <p>For complex products that do many different things, start with the unit that most directly connects cloud spend to revenue. Optimise for clarity first.</p>
-<h2 id="how-to-calculate-it">How to calculate it</h2>
+<h2 id="how-to-calculate-it"><a class="h-anchor" href="#how-to-calculate-it" aria-label="Link to this section">#</a>How to calculate it</h2>
 <p>Unit cost calculation:</p>
 <pre><code>unit_cost = total_infrastructure_cost / unit_count
 </code></pre>
@@ -144,7 +160,7 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 <li><strong>Flat allocation</strong>: divide shared infrastructure equally across workloads</li>
 </ul>
 <p>Each approach is a simplification. The goal is consistent, good-enough allocation rather than perfect attribution.</p>
-<h2 id="benchmarks-and-thresholds">Benchmarks and thresholds</h2>
+<h2 id="benchmarks-and-thresholds"><a class="h-anchor" href="#benchmarks-and-thresholds" aria-label="Link to this section">#</a>Benchmarks and thresholds</h2>
 <p>Unit costs become most useful when you have a target to compare against.</p>
 <p>Setting targets:</p>
 <ul>
@@ -153,7 +169,7 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 <li><strong>Industry context</strong>: broad industry benchmarks exist for some workload types (SaaS infrastructure spend as a percentage of revenue is a common one; 8-12% is a rough marker, though it varies widely by stage). These are signals, not targets.</li>
 </ul>
 <p>Threshold alerts: if unit cost increases by more than X% quarter-over-quarter without a corresponding product change or growth inflection, that&#39;s a signal to investigate. Growth in spend is expected; disproportionate growth in unit cost is an efficiency signal.</p>
-<h2 id="the-conversation-unit-economics-enables">The conversation unit economics enables</h2>
+<h2 id="the-conversation-unit-economics-enables"><a class="h-anchor" href="#the-conversation-unit-economics-enables" aria-label="Link to this section">#</a>The conversation unit economics enables</h2>
 <p>With unit economics, the cloud spend conversation becomes:</p>
 <p>&quot;Our cost per MAU has stayed flat at $0.42 despite 30% user growth, which tells us our architecture is scaling efficiently. However, the data processing cost per GB has increased from $0.18 to $0.31 — that&#39;s the area worth investigating before we grow the data pipeline further.&quot;</p>
 <p>This is the conversation FinOps aims to enable: context-rich, actionable, connected to the business. It requires the underlying data (tagging, cost allocation, unit tracking) to be in good shape, which is the infrastructure that takes time to build.</p>
@@ -172,18 +188,7 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
   </ul>
 </aside></div>
 
-  <div class="art-wrap" style="margin-top:3rem">
-    <aside class="series-box">
-      <p class="eyebrow">Series</p>
-      <h2 class="h3" style="margin:.5rem 0 1rem">FinOps from Zero to Production</h2>
-      <ol class="series-list">
-        <li><a href="/insights/finops-tagging-policy/">Cloud Tagging Policy Template: The Foundation FinOps Actually Requires</a></li>
-        <li><a href="/insights/reserved-instance-rationalization/">Reserved Instance Rationalisation: How to Commit to the Right Resources</a></li>
-        <li aria-current="true"><a href="/insights/cloud-unit-economics/">Cloud Unit Economics: The Metric That Makes Cloud Spend Conversations Productive</a></li>
-        <li><a href="/insights/finops-anomaly-detection/">Cloud Cost Anomaly Detection: Catching Runaway Spend Before It Becomes a Bill</a></li>
-      </ol>
-    </aside>
-  </div>
+  
 
   <div class="art-wrap article-foot">
     <div class="row" style="gap:.4rem">
@@ -291,15 +296,57 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
     </div></div>
   </section>
 </article>
+
+<div class="reader-tools">
+  <button class="icon-btn" id="readerBtn" type="button" aria-expanded="false" aria-controls="readerPanel" title="Reading settings" aria-label="Reading settings"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2.2"/><circle cx="10" cy="17" r="2.2"/></svg></button>
+  <button class="icon-btn" id="focusBtn" type="button" aria-pressed="false" title="Focus mode" aria-label="Enter focus mode"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></button>
+</div>
+<div class="reader-panel" id="readerPanel" role="dialog" aria-label="Reading settings" hidden>
+  <fieldset><legend>Text size</legend>
+    <div class="seg" data-pref="rsize">
+      <button type="button" data-val="s" aria-pressed="false"><span class="sample s">Aa</span>Small</button><button type="button" data-val="m" aria-pressed="false"><span class="sample ">Aa</span>Default</button><button type="button" data-val="l" aria-pressed="false"><span class="sample l">Aa</span>Large</button><button type="button" data-val="xl" aria-pressed="false"><span class="sample l">Aa</span>Largest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Ground</legend>
+    <div class="seg" data-pref="theme">
+      <button type="button" data-val="light" aria-pressed="false"><span class="swatch light"></span>Light</button><button type="button" data-val="sepia" aria-pressed="false"><span class="swatch sepia"></span>Sepia</button><button type="button" data-val="dark" aria-pressed="false"><span class="swatch dark"></span>Dark</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Column width</legend>
+    <div class="seg" data-pref="rwidth">
+      <button type="button" data-val="s" aria-pressed="false">Narrow</button><button type="button" data-val="m" aria-pressed="false">Default</button><button type="button" data-val="l" aria-pressed="false">Wide</button><button type="button" data-val="xl" aria-pressed="false">Widest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Typeface</legend>
+    <div class="seg" data-pref="rface">
+      <button type="button" data-val="sans" aria-pressed="false"><span class="sample">Aa</span>Sans</button>
+      <button type="button" data-val="serif" aria-pressed="false"><span class="sample serif">Aa</span>Serif</button>
+    </div>
+  </fieldset>
+  <button class="reader-reset" id="readerReset" type="button">Reset to defaults</button>
+  <p class="reader-note">Saved in this browser only — these settings do not follow you to another device.</p>
+</div>
+<button class="focus-exit" id="focusExit" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h6V3M21 9h-6V3M3 15h6v6M21 15h-6v6"/></svg> Exit focus</button>
+<div class="chapter-bar" id="chapterBar">
+  <div class="chapter-where">
+    <b>Cloud Unit Economics: The Metric That Makes Cloud Spend Conversations Productive</b>
+    <span>FinOps from Zero to Production</span>
+  </div>
+  <span class="chapter-left" id="chapterLeft"></span>
+  <nav class="chapter-step" aria-label="Article navigation">
+    <a href="/insights/structured-logging-practices/" aria-label="Previous: Structured Logging That Pays for Itself: Schema, Context, and Cost Discipline"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a>
+    <a href="/insights/supply-chain-security-sbom/" aria-label="Next: Software Supply Chain Security: SBOM, Dependency Auditing, and What Actually Reduces Risk"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
+  </nav>
+</div>
 </main>
 
 <footer class="site-footer">
   <div class="wrap">
     <div class="grid g-4" style="gap:2rem">
       <div>
-        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem">
-          <img src="/images/ajna-logo.png" alt="" width="32" height="32">
-          <span class="brand-name">Ajna<span style="color:#6f9bff">CS</span></span>
+        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem" aria-label="Ajna Consulting Services — home">
+          <svg viewBox="0 0 100 100" width="36" height="36" fill="none" aria-hidden="true" focusable="false"><defs><linearGradient id="lit-ftr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".30"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".32"/></linearGradient></defs><g transform="rotate(0 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#E8402A"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#F5A623"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#17A05E"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#2B57E8"/></g><path d="M 50 4 L 96 50 L 50 96 L 4 50 Z" fill="url(#lit-ftr)"/><g transform="rotate(0 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><circle cx="50" cy="50" r="6" fill="currentColor"/></svg>
+          <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
         </a>
         <p style="font-size:.88rem;line-height:1.65;color:#9fb0d0;max-width:30ch">
           Specialised engineering partner for enterprise architecture, AI &amp; MLOps, and technical enablement.

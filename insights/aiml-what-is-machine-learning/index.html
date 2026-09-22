@@ -22,20 +22,33 @@
 <meta name="twitter:description" content="A precise definition of machine learning, the difference between supervised, unsupervised, and reinforcement learning, and why understanding the category m…">
 <meta name="twitter:image" content="https://ajnacs.com/assets/og/insights-aiml-what-is-machine-learning.svg">
 
-<link rel="icon" href="/images/favicon.ico" sizes="any">
-<link rel="apple-touch-icon" href="/images/ajna-logo.png">
+<link rel="icon" href="/images/favicon.ico" sizes="32x32">
+<link rel="icon" href="/images/ajna-mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
 <meta name="theme-color" content="#0a1020">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Quintessential&display=swap">
 <link rel="stylesheet" href="/assets/css/site.css">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
 <script>
-/* Set the theme before first paint so the page never flashes the wrong one. */
-(function(){try{var t=localStorage.getItem('acs-theme');
-if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
-document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+/* Theme and reading preferences are applied before first paint, so the page
+   never flashes the wrong ground or resets someone's text size mid-read. */
+(function(){try{
+var d=document.documentElement,t=localStorage.getItem('acs-theme');
+if(t!=='dark'&&t!=='light'&&t!=='sepia')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+d.setAttribute('data-theme',t);
+['rsize','rwidth','rface'].forEach(function(k){
+  var v=localStorage.getItem('acs-'+k);
+  if(v&&/^[a-z]{1,5}$/.test(v))d.setAttribute('data-'+k,v);
+});
+if(d.getAttribute('data-rface')==='serif'){
+  var l=document.createElement('link');l.rel='stylesheet';
+  l.href='https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600&display=swap';
+  document.head.appendChild(l);
+}
+}catch(e){}})();
 </script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"What Machine Learning Actually Is — Before the Hype and After the Buzzwords","description":"A precise definition of machine learning, the difference between supervised, unsupervised, and reinforcement learning, and why understanding the category matters before choosing an approach.","datePublished":"2025-07-23","dateModified":"2025-07-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/aiml-what-is-machine-learning/","image":"https://ajnacs.com/assets/og/insights-aiml-what-is-machine-learning.svg","keywords":"AI & MLOps, Fundamentals","articleSection":"AI & MLOps","wordCount":726}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"What Machine Learning Actually Is — Before the Hype and After the Buzzwords"}]}</script>
@@ -45,9 +58,9 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 
 <header class="site-header" id="siteHeader">
   <div class="wrap" style="display:flex;align-items:center;width:min(1220px,100% - var(--gutter)*2)">
-    <a class="brand" href="/">
-      <img src="/images/ajna-logo.png" alt="" width="32" height="32">
-      <span class="brand-name">Ajna<span>CS</span></span>
+    <a class="brand" href="/" aria-label="Ajna Consulting Services — home">
+      <svg viewBox="0 0 100 100" width="40" height="40" fill="none" aria-hidden="true" focusable="false"><defs><linearGradient id="lit-hdr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".30"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".32"/></linearGradient></defs><g transform="rotate(0 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#E8402A"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#F5A623"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#17A05E"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#2B57E8"/></g><path d="M 50 4 L 96 50 L 50 96 L 4 50 Z" fill="url(#lit-hdr)"/><g transform="rotate(0 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><circle cx="50" cy="50" r="6" fill="currentColor"/></svg>
+      <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
     </a>
     <nav class="nav" id="nav" aria-label="Primary">
       <a href="/services/">Services</a>
@@ -101,13 +114,16 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 </svg></div></div>
 
   <div class="art-wrap article-grid">
-    <nav class="toc" aria-label="On this page">
+    <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#the-fundamental-distinction-rules-vs-learning">The Fundamental Distinction: Rules vs Learning</a></li><li><a href="#the-three-categories">The Three Categories</a></li><li><a href="#key-terminology">Key Terminology</a></li><li><a href="#when-machine-learning-is-and-is-not-the-right-tool">When Machine Learning Is and Is Not the Right Tool</a></li></ol>
-</nav>
+</nav><nav class="chapters" aria-label="Articles in this series">
+      <p class="chapters-title">AI, ML, LLMs, and Neural Networks: A Practitioner&#39;s Introduction</p>
+      <ol><li aria-current="true"><a href="/insights/aiml-what-is-machine-learning/">What Machine Learning Actually Is — Before the Hype and After the Buzzwords</a></li><li><a href="/insights/aiml-neural-networks/">Neural Networks Explained: What They Are, How They Learn, and Why They Work</a></li><li><a href="/insights/aiml-rag-and-prompting/">RAG, Prompting, and Building Applications on LLMs: The Practitioner&#39;s Guide</a></li><li><a href="/insights/aiml-production-ai/">Putting AI in Production: What Enterprise AI Deployment Actually Requires</a></li></ol>
+    </nav></div>
     <div class="prose">
 <p>Machine learning is a method for building programs that improve with experience — specifically, programs that adjust their behaviour based on data rather than being explicitly programmed with rules. That definition is precise enough to be useful and broad enough to cover a wide range of techniques. Before diving into neural networks and large language models, understanding the broader landscape of ML prevents the category errors that lead to picking the wrong approach for a given problem.</p>
-<h2 id="the-fundamental-distinction-rules-vs-learning">The Fundamental Distinction: Rules vs Learning</h2>
+<h2 id="the-fundamental-distinction-rules-vs-learning"><a class="h-anchor" href="#the-fundamental-distinction-rules-vs-learning" aria-label="Link to this section">#</a>The Fundamental Distinction: Rules vs Learning</h2>
 <p>Traditional programming: a developer writes rules. Data goes in, the rules process it, output comes out.</p>
 <pre><code>Data + Rules → Output
 </code></pre>
@@ -116,7 +132,7 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 Rules (model) + New Data → Predicted Output
 </code></pre>
 <p>The learned rules are encoded in a <strong>model</strong> — a mathematical function with parameters that were adjusted during training to produce correct outputs for the training data. The trained model is then used to make predictions on new data it has not seen before.</p>
-<h2 id="the-three-categories">The Three Categories</h2>
+<h2 id="the-three-categories"><a class="h-anchor" href="#the-three-categories" aria-label="Link to this section">#</a>The Three Categories</h2>
 <p><strong>Supervised Learning</strong>: the training data contains both inputs and correct outputs. The algorithm learns to map inputs to outputs.</p>
 <p>Examples:</p>
 <ul>
@@ -140,14 +156,14 @@ Rules (model) + New Data → Predicted Output
 <li>Robotic control</li>
 <li>RLHF (Reinforcement Learning from Human Feedback) — the technique used to align LLMs with human preferences</li>
 </ul>
-<h2 id="key-terminology">Key Terminology</h2>
+<h2 id="key-terminology"><a class="h-anchor" href="#key-terminology" aria-label="Link to this section">#</a>Key Terminology</h2>
 <p><strong>Training</strong>: the process of adjusting model parameters to minimise prediction error on the training dataset.</p>
 <p><strong>Inference</strong>: using the trained model to make predictions on new data. In production, inference is what your application does on every request.</p>
 <p><strong>Overfitting</strong>: the model has learned the training data too precisely, including its noise, and performs poorly on new data. The model has memorised rather than generalised.</p>
 <p><strong>Underfitting</strong>: the model is too simple to capture the underlying pattern. High error on both training and new data.</p>
 <p><strong>Generalisation</strong>: the ability to perform well on data the model was not trained on. The actual goal.</p>
 <p><strong>Feature</strong>: an input variable used by the model. For a house price model: square footage, number of bedrooms, location, age. Feature engineering — selecting and transforming raw data into meaningful features — is often the most impactful work in a supervised learning project.</p>
-<h2 id="when-machine-learning-is-and-is-not-the-right-tool">When Machine Learning Is and Is Not the Right Tool</h2>
+<h2 id="when-machine-learning-is-and-is-not-the-right-tool"><a class="h-anchor" href="#when-machine-learning-is-and-is-not-the-right-tool" aria-label="Link to this section">#</a>When Machine Learning Is and Is Not the Right Tool</h2>
 <p>Machine learning is appropriate when:</p>
 <ul>
 <li>The rules are too complex to write explicitly (image recognition, language understanding)</li>
@@ -170,18 +186,7 @@ Rules (model) + New Data → Predicted Output
 
   
 
-  <div class="art-wrap" style="margin-top:3rem">
-    <aside class="series-box">
-      <p class="eyebrow">Series</p>
-      <h2 class="h3" style="margin:.5rem 0 1rem">AI, ML, LLMs, and Neural Networks: A Practitioner&#39;s Introduction</h2>
-      <ol class="series-list">
-        <li aria-current="true"><a href="/insights/aiml-what-is-machine-learning/">What Machine Learning Actually Is — Before the Hype and After the Buzzwords</a></li>
-        <li><a href="/insights/aiml-neural-networks/">Neural Networks Explained: What They Are, How They Learn, and Why They Work</a></li>
-        <li><a href="/insights/aiml-rag-and-prompting/">RAG, Prompting, and Building Applications on LLMs: The Practitioner&#39;s Guide</a></li>
-        <li><a href="/insights/aiml-production-ai/">Putting AI in Production: What Enterprise AI Deployment Actually Requires</a></li>
-      </ol>
-    </aside>
-  </div>
+  
 
   <div class="art-wrap article-foot">
     <div class="row" style="gap:.4rem">
@@ -273,15 +278,57 @@ Rules (model) + New Data → Predicted Output
     </div></div>
   </section>
 </article>
+
+<div class="reader-tools">
+  <button class="icon-btn" id="readerBtn" type="button" aria-expanded="false" aria-controls="readerPanel" title="Reading settings" aria-label="Reading settings"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2.2"/><circle cx="10" cy="17" r="2.2"/></svg></button>
+  <button class="icon-btn" id="focusBtn" type="button" aria-pressed="false" title="Focus mode" aria-label="Enter focus mode"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></button>
+</div>
+<div class="reader-panel" id="readerPanel" role="dialog" aria-label="Reading settings" hidden>
+  <fieldset><legend>Text size</legend>
+    <div class="seg" data-pref="rsize">
+      <button type="button" data-val="s" aria-pressed="false"><span class="sample s">Aa</span>Small</button><button type="button" data-val="m" aria-pressed="false"><span class="sample ">Aa</span>Default</button><button type="button" data-val="l" aria-pressed="false"><span class="sample l">Aa</span>Large</button><button type="button" data-val="xl" aria-pressed="false"><span class="sample l">Aa</span>Largest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Ground</legend>
+    <div class="seg" data-pref="theme">
+      <button type="button" data-val="light" aria-pressed="false"><span class="swatch light"></span>Light</button><button type="button" data-val="sepia" aria-pressed="false"><span class="swatch sepia"></span>Sepia</button><button type="button" data-val="dark" aria-pressed="false"><span class="swatch dark"></span>Dark</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Column width</legend>
+    <div class="seg" data-pref="rwidth">
+      <button type="button" data-val="s" aria-pressed="false">Narrow</button><button type="button" data-val="m" aria-pressed="false">Default</button><button type="button" data-val="l" aria-pressed="false">Wide</button><button type="button" data-val="xl" aria-pressed="false">Widest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Typeface</legend>
+    <div class="seg" data-pref="rface">
+      <button type="button" data-val="sans" aria-pressed="false"><span class="sample">Aa</span>Sans</button>
+      <button type="button" data-val="serif" aria-pressed="false"><span class="sample serif">Aa</span>Serif</button>
+    </div>
+  </fieldset>
+  <button class="reader-reset" id="readerReset" type="button">Reset to defaults</button>
+  <p class="reader-note">Saved in this browser only — these settings do not follow you to another device.</p>
+</div>
+<button class="focus-exit" id="focusExit" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h6V3M21 9h-6V3M3 15h6v6M21 15h-6v6"/></svg> Exit focus</button>
+<div class="chapter-bar" id="chapterBar">
+  <div class="chapter-where">
+    <b>What Machine Learning Actually Is — Before the Hype and After the Buzzwords</b>
+    <span>AI, ML, LLMs, and Neural Networks: A Practitioner&#39;s Introduction</span>
+  </div>
+  <span class="chapter-left" id="chapterLeft"></span>
+  <nav class="chapter-step" aria-label="Article navigation">
+    <a href="/insights/cloud-migration-common-failures/" aria-label="Previous: Why Cloud Migrations Fail: The Pattern Behind the Common Failures"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a>
+    <a href="/insights/database-replication-patterns/" aria-label="Next: Database Replication Patterns: Read Replicas, Multi-Primary, and When Each Applies"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
+  </nav>
+</div>
 </main>
 
 <footer class="site-footer">
   <div class="wrap">
     <div class="grid g-4" style="gap:2rem">
       <div>
-        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem">
-          <img src="/images/ajna-logo.png" alt="" width="32" height="32">
-          <span class="brand-name">Ajna<span style="color:#6f9bff">CS</span></span>
+        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem" aria-label="Ajna Consulting Services — home">
+          <svg viewBox="0 0 100 100" width="36" height="36" fill="none" aria-hidden="true" focusable="false"><defs><linearGradient id="lit-ftr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".30"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".32"/></linearGradient></defs><g transform="rotate(0 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#E8402A"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#F5A623"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#17A05E"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#2B57E8"/></g><path d="M 50 4 L 96 50 L 50 96 L 4 50 Z" fill="url(#lit-ftr)"/><g transform="rotate(0 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><circle cx="50" cy="50" r="6" fill="currentColor"/></svg>
+          <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
         </a>
         <p style="font-size:.88rem;line-height:1.65;color:#9fb0d0;max-width:30ch">
           Specialised engineering partner for enterprise architecture, AI &amp; MLOps, and technical enablement.

@@ -51,6 +51,36 @@
   --shadow-3:0 16px 44px rgba(0,0,0,.55);
 }
 
+/* Sepia: a third ground for long reads. Warmer than paper, easier than
+   white under lamplight, and it has to define the whole token set — not a
+   filter over the light theme, or the accents go muddy. */
+[data-theme="sepia"] {
+  --paper:#f6efe1; --paper-2:#f0e7d5; --paper-3:#e7dcc6;
+  --line:#ddd0b6;
+  --text:#2f2718; --text-2:#5c5039; --text-3:#7d7059;
+  --accent:#9a5b1e; --accent-ink:#7d4715; --accent-soft:rgba(154,91,30,.12);
+  --shadow-1:0 1px 2px rgba(80,62,30,.09);
+  --shadow-2:0 6px 18px rgba(80,62,30,.12);
+  --shadow-3:0 16px 44px rgba(80,62,30,.16);
+  color-scheme: light;
+}
+
+/* ---------- reader preferences ----------
+   Set on <html> by the viewer settings panel and replayed before first paint.
+   Each one only redefines a token the article layout already reads, so no
+   component needs to know these exist. */
+:root{--art-fs:1.105rem;--art-lh:1.8;--font-read:var(--font-body)}
+[data-rsize="s"]{--art-fs:1rem;--art-lh:1.75}
+[data-rsize="m"]{--art-fs:1.105rem;--art-lh:1.8}
+[data-rsize="l"]{--art-fs:1.24rem;--art-lh:1.82}
+[data-rsize="xl"]{--art-fs:1.38rem;--art-lh:1.85}
+[data-rwidth="s"]{--art-col:600px}
+[data-rwidth="m"]{--art-col:700px}
+[data-rwidth="l"]{--art-col:820px}
+[data-rwidth="xl"]{--art-col:940px}
+[data-rface="sans"]{--font-read:var(--font-body)}
+[data-rface="serif"]{--font-read:'Newsreader',Georgia,'Iowan Old Style',serif}
+
 /* ---------- reset ---------- */
 *,*::before,*::after{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
@@ -170,11 +200,26 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:800;line-height:1.12;
   transition:border-color .25s var(--ease),background .25s var(--ease);
 }
 .site-header.is-stuck{border-bottom-color:var(--line);box-shadow:var(--shadow-1)}
-.brand{display:flex;align-items:center;gap:.65rem;text-decoration:none;font-family:var(--font-display);font-weight:800;letter-spacing:-.02em}
-.brand img{width:32px;height:32px;border-radius:7px}
-.brand-name{font-size:1.02rem}
-.brand-name span{color:var(--accent-ink)}
-.nav{display:flex;align-items:center;gap:.15rem;margin-left:auto}
+/* The lockup: the name is set in the cursive the old site used, the
+   descriptor in the display face. Keeps the mark 40px without letting the
+   full company name overpower the nav. */
+.brand{display:flex;align-items:flex-end;gap:.6rem;text-decoration:none;color:var(--text);line-height:1}
+.brand svg{width:40px;height:40px;flex:none;display:block}
+.brand-name{display:flex;align-items:flex-end;gap:.45rem}
+.brand-name em{font-family:'Quintessential',Georgia,serif;font-style:normal;font-size:1.68rem;line-height:.92;letter-spacing:0}
+.brand-name b{
+  font-family:var(--font-display);font-weight:700;font-size:.78rem;letter-spacing:.035em;
+  color:var(--text-2);padding-bottom:.2rem;white-space:nowrap;
+}
+.site-footer .brand{color:#fff}
+.site-footer .brand-name b{color:rgba(255,255,255,.66)}
+/* Below the nav breakpoint the descriptor is the first thing to go. */
+@media (max-width:760px){
+  .brand svg{width:34px;height:34px}
+  .brand-name em{font-size:1.42rem}
+  .brand-name b{display:none}
+}
+.nav{display:flex;align-items:center;gap:.1rem;margin-left:auto}
 .nav a{
   padding:.5rem .8rem;border-radius:8px;text-decoration:none;font-size:.9rem;font-weight:550;
   color:var(--text-2);transition:color .15s,background .15s;
@@ -439,7 +484,7 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:800;line-height:1.12;
    --art-col, so nothing shifts sideways as you scroll. The contents list is
    the only thing that sits outside it, in its own track on wide screens. */
 .art-wrap{width:min(var(--art-col),100% - var(--gutter)*2);margin-inline:auto}
-.article .prose{max-width:none;margin-inline:0}
+.article .prose{max-width:none;margin-inline:0;font-family:var(--font-read);font-size:var(--art-fs);line-height:var(--art-lh)}
 .article-grid{display:block}
 .toc{
   margin:0 0 2.2rem;padding:1.1rem 1.3rem;background:var(--paper-2);
@@ -464,11 +509,15 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:800;line-height:1.12;
     gap:var(--art-gap);align-items:start;
   }
   .article.with-toc .article-grid > *{max-width:none}
-  .article.with-toc .toc{
-    order:2;position:sticky;top:calc(var(--nav-h) + 1.4rem);margin:0;
-    background:none;border:0;border-left:1px solid var(--line);border-radius:0;padding:.15rem 0 .15rem 1.2rem;
-  }
+  /* The aside is the grid child, not the contents list inside it, so the
+     order and the sticky both belong here. */
+  .article.with-toc .reader-aside{order:2;position:sticky;top:calc(var(--nav-h) + 1.4rem);margin-bottom:0}
   .article.with-toc .prose{order:1}
+  .article.with-toc .toc,
+  .article.with-toc .chapters{
+    margin:0;background:none;border:0;border-left:1px solid var(--line);border-radius:0;
+    padding:.15rem 0 .15rem 1.2rem;
+  }
 }
 .table-wrap{overflow-x:auto;margin-block:1.6em;border:1px solid var(--line);border-radius:var(--radius)}
 .table-wrap table{margin:0}
@@ -692,3 +741,133 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:800;line-height:1.12;
   .feature-post{grid-template-columns:1fr}
   .feature-post .art{min-height:190px}
 }
+
+/* ============================================================
+   Reader
+   ============================================================ */
+
+/* ---------- heading anchors ---------- */
+.prose h2,.prose h3{position:relative}
+.h-anchor{
+  position:absolute;left:-1.5rem;top:.12em;width:1.2rem;
+  font-family:var(--font-mono);font-size:.8em;font-weight:400;
+  color:var(--text-3);text-decoration:none;opacity:0;transition:opacity .13s;
+}
+.prose h2:hover .h-anchor,.prose h3:hover .h-anchor,.h-anchor:focus-visible{opacity:1}
+.h-anchor:hover{color:var(--accent-ink)}
+@media (max-width:900px){.h-anchor{display:none}}
+
+/* ---------- viewer settings ---------- */
+.reader-tools{
+  position:fixed;right:max(1rem,env(safe-area-inset-right,0px));bottom:5.2rem;z-index:90;
+  display:flex;flex-direction:column;gap:.5rem;
+}
+.reader-tools .icon-btn{
+  background:var(--paper);box-shadow:var(--shadow-2);width:42px;height:42px;
+}
+.reader-panel{
+  /* Sits above the two tool buttons rather than on top of them, so the
+     control that opened it stays visible and clickable. */
+  position:fixed;right:max(1rem,env(safe-area-inset-right,0px));bottom:calc(5.2rem + 96px);z-index:95;
+  width:min(292px,calc(100vw - 2rem));padding:1.05rem 1.15rem;
+  max-height:calc(100vh - 12rem);overflow-y:auto;
+  background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);
+  box-shadow:var(--shadow-3);
+}
+.reader-panel[hidden]{display:none}
+.reader-panel fieldset{border:0;padding:0;margin:0 0 1.05rem}
+.reader-panel fieldset:last-of-type{margin-bottom:0}
+.reader-panel legend{
+  font-family:var(--font-display);font-size:.64rem;font-weight:800;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--text-3);padding:0;margin-bottom:.5rem;
+}
+.seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:.3rem}
+.seg button{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.16rem;
+  padding:.5rem .3rem;min-height:46px;cursor:pointer;
+  background:var(--paper-2);border:1px solid var(--line);border-radius:var(--radius-sm);
+  color:var(--text-2);font-size:.66rem;line-height:1;transition:background .13s,border-color .13s,color .13s;
+}
+.seg button:hover{border-color:var(--accent);color:var(--text)}
+.seg button[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);color:var(--accent-ink);font-weight:650}
+.seg .sample{font-size:1.02rem;line-height:1}
+.seg .sample.s{font-size:.8rem}.seg .sample.l{font-size:1.25rem}
+.seg .swatch{width:100%;height:15px;border-radius:3px;border:1px solid var(--line)}
+.seg .swatch.light{background:#ffffff}
+.seg .swatch.sepia{background:#f6efe1}
+.seg .swatch.dark{background:#0a1020}
+.seg .serif{font-family:Georgia,serif}
+.reader-reset{
+  margin-top:1rem;width:100%;padding:.45rem;cursor:pointer;font-size:.74rem;
+  background:none;border:1px dashed var(--line);border-radius:var(--radius-sm);color:var(--text-3);
+}
+.reader-reset:hover{border-color:var(--accent);color:var(--accent-ink)}
+.reader-note{margin-top:.75rem;font-size:.68rem;color:var(--text-3);line-height:1.45}
+
+/* ---------- chapter bar ---------- */
+.chapter-bar{
+  position:fixed;left:0;right:0;bottom:0;z-index:88;
+  display:flex;align-items:center;gap:1rem;
+  padding:.55rem var(--gutter);padding-bottom:calc(.55rem + env(safe-area-inset-bottom,0px));
+  background:color-mix(in srgb,var(--paper) 88%,transparent);
+  border-top:1px solid var(--line);backdrop-filter:blur(12px);
+  transform:translateY(105%);transition:transform .22s var(--ease);
+}
+.chapter-bar.is-on{transform:none}
+.chapter-where{flex:1;min-width:0}
+.chapter-where b{
+  display:block;font-family:var(--font-display);font-size:.84rem;font-weight:700;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.chapter-where span{display:block;font-size:.7rem;color:var(--text-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chapter-left{
+  font-family:var(--font-mono);font-size:.7rem;color:var(--text-3);
+  font-variant-numeric:tabular-nums;white-space:nowrap;
+}
+.chapter-step{display:flex;gap:.35rem}
+.chapter-step a{
+  width:36px;height:36px;display:grid;place-items:center;border-radius:9px;
+  border:1px solid var(--line);color:var(--text-2);text-decoration:none;
+}
+.chapter-step a:hover{border-color:var(--accent);color:var(--accent-ink)}
+.chapter-step a[aria-disabled="true"]{opacity:.32;pointer-events:none}
+@media (max-width:620px){.chapter-left{display:none}}
+
+/* ---------- contents panel ---------- */
+.reader-aside{display:flex;flex-direction:column;gap:1.6rem;margin-bottom:2.2rem}
+.reader-aside .toc{margin:0}
+.chapters{margin-top:.2rem}
+.chapters-title{
+  font-family:var(--font-display);font-size:.72rem;font-weight:800;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--text-3);margin-bottom:.7rem;
+}
+.chapters ol{counter-reset:ch;list-style:none;padding:0;display:flex;flex-direction:column;gap:.45rem}
+.chapters li{counter-increment:ch}
+.chapters a{display:block;font-size:.86rem;color:var(--text-2);text-decoration:none;line-height:1.4}
+.chapters a::before{
+  content:counter(ch,decimal-leading-zero);font-family:var(--font-mono);font-size:.7rem;
+  color:var(--accent);margin-right:.55rem;
+}
+.chapters a:hover{color:var(--accent-ink)}
+.chapters li[aria-current="true"] a{color:var(--text);font-weight:650}
+
+/* ---------- focus mode ---------- */
+[data-focus="on"] .site-header,
+[data-focus="on"] .site-footer,
+[data-focus="on"] .article-foot,
+[data-focus="on"] .article > .section,
+[data-focus="on"] .crumbs,
+[data-focus="on"] .chapter-bar{display:none}
+[data-focus="on"] .article-head{padding-top:2.4rem}
+[data-focus="on"] #readBar{background:var(--accent)}
+.focus-exit{
+  position:fixed;top:1rem;right:1rem;z-index:96;display:none;
+  align-items:center;gap:.4rem;padding:.42rem .8rem;cursor:pointer;font-size:.76rem;
+  background:var(--paper);border:1px solid var(--line);border-radius:999px;
+  color:var(--text-2);box-shadow:var(--shadow-2);
+}
+[data-focus="on"] .focus-exit{display:flex}
+.focus-exit:hover{border-color:var(--accent);color:var(--accent-ink)}
+
+@media print{.reader-tools,.reader-panel,.chapter-bar,.focus-exit,.read-bar{display:none!important}}
+@media (prefers-reduced-motion:reduce){.chapter-bar{transition:none}}

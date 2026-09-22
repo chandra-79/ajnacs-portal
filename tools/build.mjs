@@ -6,7 +6,7 @@ import path from "node:path";
 import { SITE, esc, fmtDate, readingTime, seriesSlug, primaryTopic, PRIMARY_TOPICS, icon, parseFront } from "./lib.mjs";
 import { page } from "./shell.mjs";
 import { artwork, ogCard, colorFor } from "./visuals.mjs";
-import { makeRenderer, extractStats, statStrip, barChart, injectAfterFirstH2, tableOfContents } from "./render.mjs";
+import { makeRenderer, extractStats, statStrip, barChart, injectAfterFirstH2, tableOfContents, headingAnchors } from "./render.mjs";
 import { staticPages } from "./pages.mjs";
 import { referencesFor, referencesBlock } from "./references.mjs";
 
@@ -55,6 +55,8 @@ for (const m of live) {
     html = injectAfterFirstH2(html, chart || statStrip(stats));
   }
 
+  html = headingAnchors(html);
+
   const tocHtml = tableOfContents(headings);
   const refsHtml = m.section === "insights" ? referencesBlock(referencesFor(body)) : "";
 
@@ -68,14 +70,76 @@ for (const m of live) {
   const seriesItems = m.series ? live.filter(x => x.series === m.series)
     .sort((a, b) => (a.seriesOrder || 0) - (b.seriesOrder || 0)) : [];
 
+  const longForm = Boolean(m.series) || m.words > 1200;
   const base = m.section === "notes" ? "/notes" : "/insights";
   const related = live.filter(x => x.section === m.section && x.slug !== m.slug &&
       x.tags.some(t => m.tags.includes(t)))
     .slice(0, 3);
 
+  /* A series is this site's version of a book: the chapter list belongs
+     beside the text, not buried at the foot of the article. */
+  const chaptersHtml = longForm && seriesItems.length > 1 ? `<nav class="chapters" aria-label="Articles in this series">
+      <p class="chapters-title">${esc(m.series)}</p>
+      <ol>${seriesItems.map(x => `<li${x.slug === m.slug ? ' aria-current="true"' : ""}><a href="/insights/${x.slug}/">${esc(x.title)}</a></li>`).join("")}</ol>
+    </nav>` : "";
+
+  const asideHtml = tocHtml || chaptersHtml
+    ? `<div class="reader-aside">${tocHtml}${chaptersHtml}</div>`
+    : "";
+
+  /* Reading preferences are offered on every article; the chapter bar only
+     where there is enough article to navigate. */
+  const readerChrome = `
+<div class="reader-tools">
+  <button class="icon-btn" id="readerBtn" type="button" aria-expanded="false" aria-controls="readerPanel" title="Reading settings" aria-label="Reading settings">${icon.sliders}</button>
+  <button class="icon-btn" id="focusBtn" type="button" aria-pressed="false" title="Focus mode" aria-label="Enter focus mode">${icon.expand}</button>
+</div>
+<div class="reader-panel" id="readerPanel" role="dialog" aria-label="Reading settings" hidden>
+  <fieldset><legend>Text size</legend>
+    <div class="seg" data-pref="rsize">
+      ${[["s","Small","s"],["m","Default",""],["l","Large","l"],["xl","Largest","l"]]
+        .map(([v,label,cls]) => `<button type="button" data-val="${v}" aria-pressed="false"><span class="sample ${cls}">Aa</span>${label}</button>`).join("")}
+    </div>
+  </fieldset>
+  <fieldset><legend>Ground</legend>
+    <div class="seg" data-pref="theme">
+      ${[["light","Light"],["sepia","Sepia"],["dark","Dark"]]
+        .map(([v,label]) => `<button type="button" data-val="${v}" aria-pressed="false"><span class="swatch ${v}"></span>${label}</button>`).join("")}
+    </div>
+  </fieldset>
+  <fieldset><legend>Column width</legend>
+    <div class="seg" data-pref="rwidth">
+      ${[["s","Narrow"],["m","Default"],["l","Wide"],["xl","Widest"]]
+        .map(([v,label]) => `<button type="button" data-val="${v}" aria-pressed="false">${label}</button>`).join("")}
+    </div>
+  </fieldset>
+  <fieldset><legend>Typeface</legend>
+    <div class="seg" data-pref="rface">
+      <button type="button" data-val="sans" aria-pressed="false"><span class="sample">Aa</span>Sans</button>
+      <button type="button" data-val="serif" aria-pressed="false"><span class="sample serif">Aa</span>Serif</button>
+    </div>
+  </fieldset>
+  <button class="reader-reset" id="readerReset" type="button">Reset to defaults</button>
+  <p class="reader-note">Saved in this browser only — these settings do not follow you to another device.</p>
+</div>
+<button class="focus-exit" id="focusExit" type="button">${icon.collapse} Exit focus</button>
+${longForm ? `<div class="chapter-bar" id="chapterBar">
+  <div class="chapter-where">
+    <b>${esc(m.title)}</b>
+    <span>${esc(m.series || topic)}</span>
+  </div>
+  <span class="chapter-left" id="chapterLeft"></span>
+  <nav class="chapter-step" aria-label="Article navigation">
+    ${older ? `<a href="${base}/${older.slug}/" aria-label="Previous: ${esc(older.title)}">${icon.prev}</a>`
+            : `<a aria-disabled="true" aria-label="No previous article">${icon.prev}</a>`}
+    ${newer ? `<a href="${base}/${newer.slug}/" aria-label="Next: ${esc(newer.title)}">${icon.next}</a>`
+            : `<a aria-disabled="true" aria-label="No next article">${icon.next}</a>`}
+  </nav>
+</div>` : ""}`;
+
   const body_ = `
 <div class="read-bar" aria-hidden="true"><span id="readBar"></span></div>
-<article class="article${tocHtml ? " with-toc" : ""}">
+<article class="article${asideHtml ? " with-toc" : ""}">
   <header class="article-head">
     <div class="art-wrap">
       <nav class="crumbs" aria-label="Breadcrumb">
@@ -97,7 +161,7 @@ for (const m of live) {
   <div class="art-wrap"><div class="article-hero" data-topic="${esc(topic)}">${artwork(m.slug, m.tags, { w: 1200, h: 380, calm: m.section === "notes" })}</div></div>
 
   <div class="art-wrap article-grid">
-    ${tocHtml}
+    ${asideHtml}
     <div class="prose">
 ${html}
     </div>
@@ -105,7 +169,7 @@ ${html}
 
   ${refsHtml ? `<div class="art-wrap">${refsHtml}</div>` : ""}
 
-  ${seriesItems.length > 1 ? `<div class="art-wrap" style="margin-top:3rem">
+  ${seriesItems.length > 1 && !chaptersHtml ? `<div class="art-wrap" style="margin-top:3rem">
     <aside class="series-box">
       <p class="eyebrow">Series</p>
       <h2 class="h3" style="margin:.5rem 0 1rem">${esc(m.series)}</h2>
@@ -142,7 +206,8 @@ ${html}
       </div>
     </div></div>
   </section>
-</article>`;
+</article>
+${readerChrome}`;
 
   await out(`${m.section === "notes" ? "notes" : "insights"}/${m.slug}`, page({
     title: m.title,

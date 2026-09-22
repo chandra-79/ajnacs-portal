@@ -22,20 +22,33 @@
 <meta name="twitter:description" content="How platform teams build and operate the metrics, logging, and tracing infrastructure that application teams consume without configuring — and what good pl…">
 <meta name="twitter:image" content="https://ajnacs.com/assets/og/insights-platform-eng-observability.svg">
 
-<link rel="icon" href="/images/favicon.ico" sizes="any">
-<link rel="apple-touch-icon" href="/images/ajna-logo.png">
+<link rel="icon" href="/images/favicon.ico" sizes="32x32">
+<link rel="icon" href="/images/ajna-mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
 <meta name="theme-color" content="#0a1020">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Quintessential&display=swap">
 <link rel="stylesheet" href="/assets/css/site.css">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
 <script>
-/* Set the theme before first paint so the page never flashes the wrong one. */
-(function(){try{var t=localStorage.getItem('acs-theme');
-if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
-document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+/* Theme and reading preferences are applied before first paint, so the page
+   never flashes the wrong ground or resets someone's text size mid-read. */
+(function(){try{
+var d=document.documentElement,t=localStorage.getItem('acs-theme');
+if(t!=='dark'&&t!=='light'&&t!=='sepia')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+d.setAttribute('data-theme',t);
+['rsize','rwidth','rface'].forEach(function(k){
+  var v=localStorage.getItem('acs-'+k);
+  if(v&&/^[a-z]{1,5}$/.test(v))d.setAttribute('data-'+k,v);
+});
+if(d.getAttribute('data-rface')==='serif'){
+  var l=document.createElement('link');l.rel='stylesheet';
+  l.href='https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600&display=swap';
+  document.head.appendChild(l);
+}
+}catch(e){}})();
 </script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Platform Observability: Building the Visibility Layer Every Application Team Gets Automatically","description":"How platform teams build and operate the metrics, logging, and tracing infrastructure that application teams consume without configuring — and what good platform observability coverage actually looks like.","datePublished":"2026-09-16","dateModified":"2026-09-16","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/platform-eng-observability/","image":"https://ajnacs.com/assets/og/insights-platform-eng-observability.svg","keywords":"DevSecOps, Architecture, Fundamentals","articleSection":"DevSecOps","wordCount":779}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Platform Observability: Building the Visibility Layer Every Application Team Gets Automatically"}]}</script>
@@ -45,9 +58,9 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 
 <header class="site-header" id="siteHeader">
   <div class="wrap" style="display:flex;align-items:center;width:min(1220px,100% - var(--gutter)*2)">
-    <a class="brand" href="/">
-      <img src="/images/ajna-logo.png" alt="" width="32" height="32">
-      <span class="brand-name">Ajna<span>CS</span></span>
+    <a class="brand" href="/" aria-label="Ajna Consulting Services — home">
+      <svg viewBox="0 0 100 100" width="40" height="40" fill="none" aria-hidden="true" focusable="false"><defs><linearGradient id="lit-hdr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".30"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".32"/></linearGradient></defs><g transform="rotate(0 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#E8402A"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#F5A623"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#17A05E"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#2B57E8"/></g><path d="M 50 4 L 96 50 L 50 96 L 4 50 Z" fill="url(#lit-hdr)"/><g transform="rotate(0 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><circle cx="50" cy="50" r="6" fill="currentColor"/></svg>
+      <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
     </a>
     <nav class="nav" id="nav" aria-label="Primary">
       <a href="/services/">Services</a>
@@ -101,14 +114,17 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 </svg></div></div>
 
   <div class="art-wrap article-grid">
-    <nav class="toc" aria-label="On this page">
+    <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#the-three-pillars-and-how-to-automate-them">The Three Pillars and How to Automate Them</a></li><li><a href="#the-default-dashboard">The Default Dashboard</a></li><li><a href="#default-alerting-rules">Default Alerting Rules</a></li><li><a href="#observability-slos-at-the-platform-layer">Observability SLOs at the Platform Layer</a></li><li><a href="#what-good-platform-observability-coverage-looks-like">What Good Platform Observability Coverage Looks Like</a></li></ol>
-</nav>
+</nav><nav class="chapters" aria-label="Articles in this series">
+      <p class="chapters-title">Platform Engineering: From Concept to Internal Developer Platform</p>
+      <ol><li><a href="/insights/platform-eng-idp-design/">Designing an Internal Developer Platform: Abstraction Layers, Golden Paths, and the Governance Balance</a></li><li><a href="/insights/platform-eng-self-service/">Self-Service Infrastructure: How to Build It Without Losing Operational Control</a></li><li aria-current="true"><a href="/insights/platform-eng-observability/">Platform Observability: Building the Visibility Layer Every Application Team Gets Automatically</a></li><li><a href="/insights/platform-eng-measuring-success/">Measuring Platform Engineering Success: The Metrics That Actually Matter</a></li></ol>
+    </nav></div>
     <div class="prose">
 <p>One of the highest-value things a platform team can provide: every service deployed through the platform is observable from day one without the developer writing a single line of observability configuration. Logs flow to the central system, RED metrics (rate, errors, duration) are collected and displayed, distributed traces connect requests across services, and default alerts fire before issues become incidents.</p>
 <p>This is achievable. Here is how to build it.</p>
-<h2 id="the-three-pillars-and-how-to-automate-them">The Three Pillars and How to Automate Them</h2>
+<h2 id="the-three-pillars-and-how-to-automate-them"><a class="h-anchor" href="#the-three-pillars-and-how-to-automate-them" aria-label="Link to this section">#</a>The Three Pillars and How to Automate Them</h2>
 <aside class="keyfig">
   <p class="keyfig-label">Key figure</p>
   <p class="keyfig-text">RED metrics are visible in a pre-built dashboard within <b>5 minutes</b> of the first request 3.</p>
@@ -156,7 +172,7 @@ metadata:
     instrumentation.opentelemetry.io/inject-python: &quot;true&quot;
 </code></pre>
 <p><strong>Traces</strong>: the same OpenTelemetry auto-instrumentation that collects metrics also injects distributed tracing. HTTP clients and servers, database drivers, and message queue clients are instrumented automatically. Traces flow to Jaeger, Tempo, or a managed tracing backend.</p>
-<h2 id="the-default-dashboard">The Default Dashboard</h2>
+<h2 id="the-default-dashboard"><a class="h-anchor" href="#the-default-dashboard" aria-label="Link to this section">#</a>The Default Dashboard</h2>
 <p>Every service deployed through the platform should have a working dashboard without the developer building one. The platform pre-builds dashboard templates for common service types:</p>
 <ul>
 <li><strong>API service dashboard</strong>: request rate, error rate, p50/p95/p99 latency, pod count, CPU/memory usage, saturation indicators</li>
@@ -176,7 +192,7 @@ resource &quot;grafana_dashboard&quot; &quot;api_service_template&quot; {
   folder = grafana_folder.teams[each.value.team].id
 }
 </code></pre>
-<h2 id="default-alerting-rules">Default Alerting Rules</h2>
+<h2 id="default-alerting-rules"><a class="h-anchor" href="#default-alerting-rules" aria-label="Link to this section">#</a>Default Alerting Rules</h2>
 <p>Auto-provisioned alerting rules for every service:</p>
 <pre><code class="language-yaml">## Prometheus rules auto-applied to all services via the platform
 groups:
@@ -204,7 +220,7 @@ groups:
       summary: &quot;{{ $labels.pod }} is crash looping&quot;
 </code></pre>
 <p>Teams receive these default alerts automatically. They can override thresholds or add additional alerts specific to their service&#39;s business metrics.</p>
-<h2 id="observability-slos-at-the-platform-layer">Observability SLOs at the Platform Layer</h2>
+<h2 id="observability-slos-at-the-platform-layer"><a class="h-anchor" href="#observability-slos-at-the-platform-layer" aria-label="Link to this section">#</a>Observability SLOs at the Platform Layer</h2>
 <p>Beyond individual service alerts, the platform maintains SLOs for its own services — the CI/CD pipeline, the secrets manager, the service registry. Application teams depend on these; their reliability is the platform team&#39;s operational responsibility.</p>
 <pre><code class="language-yaml">## Platform team SLOs
 - service: ci-pipeline
@@ -219,7 +235,7 @@ groups:
   slo: 99.9% availability for image pulls
 </code></pre>
 <p>The platform team is on-call for its own infrastructure. Application team reliability cannot be bottlenecked by platform infrastructure that is not reliably operated.</p>
-<h2 id="what-good-platform-observability-coverage-looks-like">What Good Platform Observability Coverage Looks Like</h2>
+<h2 id="what-good-platform-observability-coverage-looks-like"><a class="h-anchor" href="#what-good-platform-observability-coverage-looks-like" aria-label="Link to this section">#</a>What Good Platform Observability Coverage Looks Like</h2>
 <p>A platform observability implementation is complete when:</p>
 <ol>
 <li>Any service deployed through the platform has logs in the central log system within 60 seconds of deployment</li>
@@ -244,18 +260,7 @@ groups:
   </ul>
 </aside></div>
 
-  <div class="art-wrap" style="margin-top:3rem">
-    <aside class="series-box">
-      <p class="eyebrow">Series</p>
-      <h2 class="h3" style="margin:.5rem 0 1rem">Platform Engineering: From Concept to Internal Developer Platform</h2>
-      <ol class="series-list">
-        <li><a href="/insights/platform-eng-idp-design/">Designing an Internal Developer Platform: Abstraction Layers, Golden Paths, and the Governance Balance</a></li>
-        <li><a href="/insights/platform-eng-self-service/">Self-Service Infrastructure: How to Build It Without Losing Operational Control</a></li>
-        <li aria-current="true"><a href="/insights/platform-eng-observability/">Platform Observability: Building the Visibility Layer Every Application Team Gets Automatically</a></li>
-        <li><a href="/insights/platform-eng-measuring-success/">Measuring Platform Engineering Success: The Metrics That Actually Matter</a></li>
-      </ol>
-    </aside>
-  </div>
+  
 
   <div class="art-wrap article-foot">
     <div class="row" style="gap:.4rem">
@@ -347,15 +352,57 @@ groups:
     </div></div>
   </section>
 </article>
+
+<div class="reader-tools">
+  <button class="icon-btn" id="readerBtn" type="button" aria-expanded="false" aria-controls="readerPanel" title="Reading settings" aria-label="Reading settings"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2.2"/><circle cx="10" cy="17" r="2.2"/></svg></button>
+  <button class="icon-btn" id="focusBtn" type="button" aria-pressed="false" title="Focus mode" aria-label="Enter focus mode"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></button>
+</div>
+<div class="reader-panel" id="readerPanel" role="dialog" aria-label="Reading settings" hidden>
+  <fieldset><legend>Text size</legend>
+    <div class="seg" data-pref="rsize">
+      <button type="button" data-val="s" aria-pressed="false"><span class="sample s">Aa</span>Small</button><button type="button" data-val="m" aria-pressed="false"><span class="sample ">Aa</span>Default</button><button type="button" data-val="l" aria-pressed="false"><span class="sample l">Aa</span>Large</button><button type="button" data-val="xl" aria-pressed="false"><span class="sample l">Aa</span>Largest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Ground</legend>
+    <div class="seg" data-pref="theme">
+      <button type="button" data-val="light" aria-pressed="false"><span class="swatch light"></span>Light</button><button type="button" data-val="sepia" aria-pressed="false"><span class="swatch sepia"></span>Sepia</button><button type="button" data-val="dark" aria-pressed="false"><span class="swatch dark"></span>Dark</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Column width</legend>
+    <div class="seg" data-pref="rwidth">
+      <button type="button" data-val="s" aria-pressed="false">Narrow</button><button type="button" data-val="m" aria-pressed="false">Default</button><button type="button" data-val="l" aria-pressed="false">Wide</button><button type="button" data-val="xl" aria-pressed="false">Widest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Typeface</legend>
+    <div class="seg" data-pref="rface">
+      <button type="button" data-val="sans" aria-pressed="false"><span class="sample">Aa</span>Sans</button>
+      <button type="button" data-val="serif" aria-pressed="false"><span class="sample serif">Aa</span>Serif</button>
+    </div>
+  </fieldset>
+  <button class="reader-reset" id="readerReset" type="button">Reset to defaults</button>
+  <p class="reader-note">Saved in this browser only — these settings do not follow you to another device.</p>
+</div>
+<button class="focus-exit" id="focusExit" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h6V3M21 9h-6V3M3 15h6v6M21 15h-6v6"/></svg> Exit focus</button>
+<div class="chapter-bar" id="chapterBar">
+  <div class="chapter-where">
+    <b>Platform Observability: Building the Visibility Layer Every Application Team Gets Automatically</b>
+    <span>Platform Engineering: From Concept to Internal Developer Platform</span>
+  </div>
+  <span class="chapter-left" id="chapterLeft"></span>
+  <nav class="chapter-step" aria-label="Article navigation">
+    <a href="/insights/aiml-neural-networks/" aria-label="Previous: Neural Networks Explained: What They Are, How They Learn, and Why They Work"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a>
+    <a aria-disabled="true" aria-label="No next article"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
+  </nav>
+</div>
 </main>
 
 <footer class="site-footer">
   <div class="wrap">
     <div class="grid g-4" style="gap:2rem">
       <div>
-        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem">
-          <img src="/images/ajna-logo.png" alt="" width="32" height="32">
-          <span class="brand-name">Ajna<span style="color:#6f9bff">CS</span></span>
+        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem" aria-label="Ajna Consulting Services — home">
+          <svg viewBox="0 0 100 100" width="36" height="36" fill="none" aria-hidden="true" focusable="false"><defs><linearGradient id="lit-ftr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".30"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".32"/></linearGradient></defs><g transform="rotate(0 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#E8402A"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#F5A623"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#17A05E"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#2B57E8"/></g><path d="M 50 4 L 96 50 L 50 96 L 4 50 Z" fill="url(#lit-ftr)"/><g transform="rotate(0 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><circle cx="50" cy="50" r="6" fill="currentColor"/></svg>
+          <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
         </a>
         <p style="font-size:.88rem;line-height:1.65;color:#9fb0d0;max-width:30ch">
           Specialised engineering partner for enterprise architecture, AI &amp; MLOps, and technical enablement.

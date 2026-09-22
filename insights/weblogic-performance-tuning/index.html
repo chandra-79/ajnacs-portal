@@ -22,20 +22,33 @@
 <meta name="twitter:description" content="A field guide to tuning WebLogic Server in production — the self-tuning thread pool, work managers, JDBC connection pools, JVM settings, and the diagnostic…">
 <meta name="twitter:image" content="https://ajnacs.com/assets/og/insights-weblogic-performance-tuning.svg">
 
-<link rel="icon" href="/images/favicon.ico" sizes="any">
-<link rel="apple-touch-icon" href="/images/ajna-logo.png">
+<link rel="icon" href="/images/favicon.ico" sizes="32x32">
+<link rel="icon" href="/images/ajna-mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
 <meta name="theme-color" content="#0a1020">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Quintessential&display=swap">
 <link rel="stylesheet" href="/assets/css/site.css">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
 <script>
-/* Set the theme before first paint so the page never flashes the wrong one. */
-(function(){try{var t=localStorage.getItem('acs-theme');
-if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
-document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+/* Theme and reading preferences are applied before first paint, so the page
+   never flashes the wrong ground or resets someone's text size mid-read. */
+(function(){try{
+var d=document.documentElement,t=localStorage.getItem('acs-theme');
+if(t!=='dark'&&t!=='light'&&t!=='sepia')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+d.setAttribute('data-theme',t);
+['rsize','rwidth','rface'].forEach(function(k){
+  var v=localStorage.getItem('acs-'+k);
+  if(v&&/^[a-z]{1,5}$/.test(v))d.setAttribute('data-'+k,v);
+});
+if(d.getAttribute('data-rface')==='serif'){
+  var l=document.createElement('link');l.rel='stylesheet';
+  l.href='https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600&display=swap';
+  document.head.appendChild(l);
+}
+}catch(e){}})();
 </script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"WebLogic Performance Tuning: Work Managers, Connection Pools, and the Knobs That Actually Matter","description":"A field guide to tuning WebLogic Server in production — the self-tuning thread pool, work managers, JDBC connection pools, JVM settings, and the diagnostic tools that tell you which knob to turn.","datePublished":"2025-08-19","dateModified":"2025-08-19","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/weblogic-performance-tuning/","image":"https://ajnacs.com/assets/og/insights-weblogic-performance-tuning.svg","keywords":"Java, WebLogic, Middleware, Performance, Architecture","articleSection":"Performance","wordCount":1253}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"WebLogic Performance Tuning: Work Managers, Connection Pools, and the Knobs That Actually Matter"}]}</script>
@@ -45,9 +58,9 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 
 <header class="site-header" id="siteHeader">
   <div class="wrap" style="display:flex;align-items:center;width:min(1220px,100% - var(--gutter)*2)">
-    <a class="brand" href="/">
-      <img src="/images/ajna-logo.png" alt="" width="32" height="32">
-      <span class="brand-name">Ajna<span>CS</span></span>
+    <a class="brand" href="/" aria-label="Ajna Consulting Services — home">
+      <svg viewBox="0 0 100 100" width="40" height="40" fill="none" aria-hidden="true" focusable="false"><defs><linearGradient id="lit-hdr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".30"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".32"/></linearGradient></defs><g transform="rotate(0 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#E8402A"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#F5A623"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#17A05E"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#2B57E8"/></g><path d="M 50 4 L 96 50 L 50 96 L 4 50 Z" fill="url(#lit-hdr)"/><g transform="rotate(0 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><circle cx="50" cy="50" r="6" fill="currentColor"/></svg>
+      <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
     </a>
     <nav class="nav" id="nav" aria-label="Primary">
       <a href="/services/">Services</a>
@@ -109,21 +122,21 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 </svg></div></div>
 
   <div class="art-wrap article-grid">
-    <nav class="toc" aria-label="On this page">
+    <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#first-principle-weblogic-manages-its-own-threads">First principle: WebLogic manages its own threads</a></li><li><a href="#work-managers-protecting-the-work-that-matters">Work managers: protecting the work that matters</a></li><li><a href="#jdbc-connection-pools-where-most-quotweblogicquot-problems-l">JDBC connection pools: where most &amp;quot;WebLogic&amp;quot; problems live</a></li><li><a href="#the-jvm-where-the-biggest-wins-hide">The JVM: where the biggest wins hide</a></li><li><a href="#server-level-settings-worth-checking-once">Server-level settings worth checking once</a></li><li><a href="#the-diagnostic-loop">The diagnostic loop</a></li></ol>
-</nav>
+</nav></div>
     <div class="prose">
 <p>WebLogic tuning advice on the internet is mostly cargo cult: lists of parameters copied from a 2011 forum post, applied wholesale, with no measurement before or after. Meanwhile the actual levers that govern throughput in a WebLogic estate — thread management, connection pool sizing, and the JVM underneath — go untouched because the defaults &quot;seem fine.&quot;</p>
 <p>Here&#39;s the short list of what matters, why, and how to know when to change it.</p>
-<h2 id="first-principle-weblogic-manages-its-own-threads">First principle: WebLogic manages its own threads</h2>
+<h2 id="first-principle-weblogic-manages-its-own-threads"><a class="h-anchor" href="#first-principle-weblogic-manages-its-own-threads" aria-label="Link to this section">#</a>First principle: WebLogic manages its own threads</h2>
 <aside class="keyfig">
   <p class="keyfig-label">Key figure</p>
   <p class="keyfig-text">Response time request class — declare a goal (say <b>500 ms</b>) and WebLogic prioritizes to meet it.</p>
 </aside>
 <p>Modern WebLogic uses a <strong>single self-tuning thread pool</strong> per server. There is no servlet thread pool to size, no execute queue count to guess (those died with WebLogic 8.1). The pool grows and shrinks based on measured throughput: WebLogic samples how throughput responds to thread count and adjusts.</p>
 <p>The tuning surface is therefore not &quot;how many threads&quot; but &quot;which work gets threads when there aren&#39;t enough&quot; — and that&#39;s what <strong>work managers</strong> are for.</p>
-<h2 id="work-managers-protecting-the-work-that-matters">Work managers: protecting the work that matters</h2>
+<h2 id="work-managers-protecting-the-work-that-matters"><a class="h-anchor" href="#work-managers-protecting-the-work-that-matters" aria-label="Link to this section">#</a>Work managers: protecting the work that matters</h2>
 <p>By default every application shares the default work manager, with equal fair shares. That means a batch endpoint someone hits with 10,000 requests competes on equal terms with your revenue-critical checkout service, on the same JVM.</p>
 <p>Work managers apply policy to thread allocation:</p>
 <ul>
@@ -135,7 +148,7 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 </ul>
 <p>Minimum viable setup for a shared JVM: one work manager per criticality tier, a max threads constraint on anything that calls a backend capable of stalling, and a capacity constraint on the default work manager so overload produces fast 503s rather than a queue of doomed requests.</p>
 <p><strong>The metric to watch</strong> is stuck threads — threads working one request longer than the stuck threshold (600 s default). Stuck threads are almost never a WebLogic problem; they&#39;re your application waiting on something that stopped answering. Configure stuck thread handling per work manager, alert on the count, and treat any nonzero steady-state value as an incident in progress.</p>
-<h2 id="jdbc-connection-pools-where-most-quotweblogicquot-problems-l">JDBC connection pools: where most &quot;WebLogic&quot; problems live</h2>
+<h2 id="jdbc-connection-pools-where-most-quotweblogicquot-problems-l"><a class="h-anchor" href="#jdbc-connection-pools-where-most-quotweblogicquot-problems-l" aria-label="Link to this section">#</a>JDBC connection pools: where most &quot;WebLogic&quot; problems live</h2>
 <p>A decade of WebLogic incident reviews compresses to: it was usually the connection pool, and the pool was usually the messenger, not the culprit.</p>
 <p><strong>Size pools deliberately, not generously.</strong> Little&#39;s Law is the guide: connections needed ≈ request rate × mean time holding a connection. A service doing 200 req/s holding connections 50 ms needs ~10 connections, not 200. Oversized pools push contention into the database, where it&#39;s more expensive. Set initial = min = max in steady-state production systems to avoid connection-storm dynamics during recovery — growing a pool under load is work the database does at the worst possible moment.</p>
 <p><strong>Set these five, always:</strong></p>
@@ -148,15 +161,15 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 </ul>
 <p>And measure <code>Active Connections Current</code>, <code>Waiting For Connection Current</code>, and wait time. Waiters mean the pool is a bottleneck; whether the fix is a bigger pool or a faster query is what the SQL monitoring tells you.</p>
 <p><strong>XA pools</strong> get one extra rule: keep the transaction timeout hierarchy sane — statement timeout inside JTA timeout inside anything the client enforces — so timeouts fire innermost-first and produce clean rollbacks instead of in-doubt transactions to resolve by hand.</p>
-<h2 id="the-jvm-where-the-biggest-wins-hide">The JVM: where the biggest wins hide</h2>
+<h2 id="the-jvm-where-the-biggest-wins-hide"><a class="h-anchor" href="#the-jvm-where-the-biggest-wins-hide" aria-label="Link to this section">#</a>The JVM: where the biggest wins hide</h2>
 <p>WebLogic inherits everything true of JVM tuning generally, with a few estate-specific notes:</p>
 <p><strong>Heap:</strong> 4–8 GB per managed server remains the sweet spot for G1 on JDK 11/17. Set <code>-Xms</code> equal to <code>-Xmx</code>. If an application needs 24 GB of heap to survive, that&#39;s usually a caching architecture question, not a tuning question.</p>
 <p><strong>Collector:</strong> G1 is the right default. Set a pause goal (<code>-XX:MaxGCPauseMillis=200</code>) and stop there; stacking G1 micro-flags from blog posts is how estates end up with configurations nobody can explain. If pause-sensitive and on JDK 17+, ZGC is worth a proper benchmark.</p>
 <p><strong>Always on:</strong> GC logging (<code>-Xlog:gc*</code> to a rotating file), heap dump on OOM, and JFR enabled or one flag away. When the 2 AM incident comes, the difference between having and not having GC logs is the difference between a diagnosis and a guess.</p>
 <p><strong>Native memory:</strong> managed servers dying without heap OOMs are often being OOM-killed by the OS — heap plus metaspace plus threads plus direct buffers exceeded the machine. Size the <em>process</em>, not just the heap, especially in containers and VMs sized to &quot;fit exactly.&quot;</p>
-<h2 id="server-level-settings-worth-checking-once">Server-level settings worth checking once</h2>
+<h2 id="server-level-settings-worth-checking-once"><a class="h-anchor" href="#server-level-settings-worth-checking-once" aria-label="Link to this section">#</a>Server-level settings worth checking once</h2>
 <p>A handful of defaults deserve a deliberate decision per estate: <strong>domain-wide administration port</strong> enabled (separates admin traffic and enables admin-mode testing); HTTP <strong>keep-alive and duration</strong> aligned with your load balancer&#39;s idle timeout (mismatches produce sporadic 502s that get blamed on everything else); <strong>logging</strong> — rotate by size, cap retained files, and drop the default stdout verbosity, because synchronous logging to a slow disk shows up as mysterious latency; and <strong>native I/O (muxer)</strong> enabled, which it is by default on supported platforms — verify rather than assume, since falling back to Java muxer costs real throughput.</p>
-<h2 id="the-diagnostic-loop">The diagnostic loop</h2>
+<h2 id="the-diagnostic-loop"><a class="h-anchor" href="#the-diagnostic-loop" aria-label="Link to this section">#</a>The diagnostic loop</h2>
 <p>Tuning without measurement is redecorating. The tools that close the loop are all built in. WLDF (the diagnostic framework) harvests MBean metrics — thread pool throughput, pending requests, pool waiters, stuck counts — into archives you can chart; pair it with dashboards before incidents, not during. Thread dumps remain the highest-value-per-effort diagnostic in existence: three dumps ten seconds apart during a slowdown nearly always show the pattern — fifty threads parked in the same JDBC call is a database problem wearing a WebLogic costume. JFR flight recordings answer the questions thread dumps can&#39;t, with production-safe overhead.</p>
 <p>The order of operations for any WebLogic performance complaint: thread dumps first (where is time going?), pool metrics second (are we waiting on connections?), GC log third (are we pausing?), and only then — with evidence — turn a knob. One knob. Then measure again.</p>
 <p>The estates that run fast aren&#39;t the ones with the longest <code>java</code> command lines. They&#39;re the ones where every parameter that differs from default has a sentence of justification, a date, and a measurement attached.</p>
@@ -272,15 +285,57 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
     </div></div>
   </section>
 </article>
+
+<div class="reader-tools">
+  <button class="icon-btn" id="readerBtn" type="button" aria-expanded="false" aria-controls="readerPanel" title="Reading settings" aria-label="Reading settings"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2.2"/><circle cx="10" cy="17" r="2.2"/></svg></button>
+  <button class="icon-btn" id="focusBtn" type="button" aria-pressed="false" title="Focus mode" aria-label="Enter focus mode"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></button>
+</div>
+<div class="reader-panel" id="readerPanel" role="dialog" aria-label="Reading settings" hidden>
+  <fieldset><legend>Text size</legend>
+    <div class="seg" data-pref="rsize">
+      <button type="button" data-val="s" aria-pressed="false"><span class="sample s">Aa</span>Small</button><button type="button" data-val="m" aria-pressed="false"><span class="sample ">Aa</span>Default</button><button type="button" data-val="l" aria-pressed="false"><span class="sample l">Aa</span>Large</button><button type="button" data-val="xl" aria-pressed="false"><span class="sample l">Aa</span>Largest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Ground</legend>
+    <div class="seg" data-pref="theme">
+      <button type="button" data-val="light" aria-pressed="false"><span class="swatch light"></span>Light</button><button type="button" data-val="sepia" aria-pressed="false"><span class="swatch sepia"></span>Sepia</button><button type="button" data-val="dark" aria-pressed="false"><span class="swatch dark"></span>Dark</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Column width</legend>
+    <div class="seg" data-pref="rwidth">
+      <button type="button" data-val="s" aria-pressed="false">Narrow</button><button type="button" data-val="m" aria-pressed="false">Default</button><button type="button" data-val="l" aria-pressed="false">Wide</button><button type="button" data-val="xl" aria-pressed="false">Widest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Typeface</legend>
+    <div class="seg" data-pref="rface">
+      <button type="button" data-val="sans" aria-pressed="false"><span class="sample">Aa</span>Sans</button>
+      <button type="button" data-val="serif" aria-pressed="false"><span class="sample serif">Aa</span>Serif</button>
+    </div>
+  </fieldset>
+  <button class="reader-reset" id="readerReset" type="button">Reset to defaults</button>
+  <p class="reader-note">Saved in this browser only — these settings do not follow you to another device.</p>
+</div>
+<button class="focus-exit" id="focusExit" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h6V3M21 9h-6V3M3 15h6v6M21 15h-6v6"/></svg> Exit focus</button>
+<div class="chapter-bar" id="chapterBar">
+  <div class="chapter-where">
+    <b>WebLogic Performance Tuning: Work Managers, Connection Pools, and the Knobs That Actually Matter</b>
+    <span>Performance</span>
+  </div>
+  <span class="chapter-left" id="chapterLeft"></span>
+  <nav class="chapter-step" aria-label="Article navigation">
+    <a href="/insights/database-replication-patterns/" aria-label="Previous: Database Replication Patterns: Read Replicas, Multi-Primary, and When Each Applies"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a>
+    <a href="/insights/weblogic-jms-production-configuration/" aria-label="Next: WebLogic JMS in Production: Servers, Stores, and the Configuration That Survives Failover"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
+  </nav>
+</div>
 </main>
 
 <footer class="site-footer">
   <div class="wrap">
     <div class="grid g-4" style="gap:2rem">
       <div>
-        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem">
-          <img src="/images/ajna-logo.png" alt="" width="32" height="32">
-          <span class="brand-name">Ajna<span style="color:#6f9bff">CS</span></span>
+        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem" aria-label="Ajna Consulting Services — home">
+          <svg viewBox="0 0 100 100" width="36" height="36" fill="none" aria-hidden="true" focusable="false"><defs><linearGradient id="lit-ftr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".30"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".32"/></linearGradient></defs><g transform="rotate(0 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#E8402A"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#F5A623"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#17A05E"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#2B57E8"/></g><path d="M 50 4 L 96 50 L 50 96 L 4 50 Z" fill="url(#lit-ftr)"/><g transform="rotate(0 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><circle cx="50" cy="50" r="6" fill="currentColor"/></svg>
+          <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
         </a>
         <p style="font-size:.88rem;line-height:1.65;color:#9fb0d0;max-width:30ch">
           Specialised engineering partner for enterprise architecture, AI &amp; MLOps, and technical enablement.

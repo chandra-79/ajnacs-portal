@@ -22,20 +22,33 @@
 <meta name="twitter:description" content="Database replication serves two distinct goals — high availability (survive a primary failure) and read scaling (distribute read traffic). The configuratio…">
 <meta name="twitter:image" content="https://ajnacs.com/assets/og/insights-database-replication-patterns.svg">
 
-<link rel="icon" href="/images/favicon.ico" sizes="any">
-<link rel="apple-touch-icon" href="/images/ajna-logo.png">
+<link rel="icon" href="/images/favicon.ico" sizes="32x32">
+<link rel="icon" href="/images/ajna-mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
 <meta name="theme-color" content="#0a1020">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Quintessential&display=swap">
 <link rel="stylesheet" href="/assets/css/site.css">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
 <script>
-/* Set the theme before first paint so the page never flashes the wrong one. */
-(function(){try{var t=localStorage.getItem('acs-theme');
-if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
-document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+/* Theme and reading preferences are applied before first paint, so the page
+   never flashes the wrong ground or resets someone's text size mid-read. */
+(function(){try{
+var d=document.documentElement,t=localStorage.getItem('acs-theme');
+if(t!=='dark'&&t!=='light'&&t!=='sepia')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+d.setAttribute('data-theme',t);
+['rsize','rwidth','rface'].forEach(function(k){
+  var v=localStorage.getItem('acs-'+k);
+  if(v&&/^[a-z]{1,5}$/.test(v))d.setAttribute('data-'+k,v);
+});
+if(d.getAttribute('data-rface')==='serif'){
+  var l=document.createElement('link');l.rel='stylesheet';
+  l.href='https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600&display=swap';
+  document.head.appendChild(l);
+}
+}catch(e){}})();
 </script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Database Replication Patterns: Read Replicas, Multi-Primary, and When Each Applies","description":"Database replication serves two distinct goals — high availability (survive a primary failure) and read scaling (distribute read traffic). The configuration that optimizes for one is often wrong for the other.","datePublished":"2025-08-04","dateModified":"2025-08-04","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/database-replication-patterns/","image":"https://ajnacs.com/assets/og/insights-database-replication-patterns.svg","keywords":"Data Engineering, Cloud Architecture","articleSection":"Data Engineering","wordCount":841}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Database Replication Patterns: Read Replicas, Multi-Primary, and When Each Applies"}]}</script>
@@ -45,9 +58,9 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 
 <header class="site-header" id="siteHeader">
   <div class="wrap" style="display:flex;align-items:center;width:min(1220px,100% - var(--gutter)*2)">
-    <a class="brand" href="/">
-      <img src="/images/ajna-logo.png" alt="" width="32" height="32">
-      <span class="brand-name">Ajna<span>CS</span></span>
+    <a class="brand" href="/" aria-label="Ajna Consulting Services — home">
+      <svg viewBox="0 0 100 100" width="40" height="40" fill="none" aria-hidden="true" focusable="false"><defs><linearGradient id="lit-hdr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".30"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".32"/></linearGradient></defs><g transform="rotate(0 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#E8402A"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#F5A623"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#17A05E"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#2B57E8"/></g><path d="M 50 4 L 96 50 L 50 96 L 4 50 Z" fill="url(#lit-hdr)"/><g transform="rotate(0 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><circle cx="50" cy="50" r="6" fill="currentColor"/></svg>
+      <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
     </a>
     <nav class="nav" id="nav" aria-label="Primary">
       <a href="/services/">Services</a>
@@ -101,13 +114,13 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 </svg></div></div>
 
   <div class="art-wrap article-grid">
-    <nav class="toc" aria-label="On this page">
+    <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#read-replicas-for-read-scaling">Read replicas for read scaling</a></li><li><a href="#synchronous-vs-asynchronous-replication">Synchronous vs. asynchronous replication</a></li><li><a href="#multi-primary-or-active-active-replication">Multi-primary (or active-active) replication</a></li><li><a href="#managed-database-replication-in-cloud">Managed database replication in cloud</a></li><li><a href="#choosing-the-right-configuration">Choosing the right configuration</a></li></ol>
-</nav>
+</nav></div>
     <div class="prose">
 <p>Database replication is often configured with a default setup — one primary, one replica — without clear thinking about whether the goal is availability, read scaling, geographic distribution, or disaster recovery. Different goals require different configurations, and the default is frequently suboptimal for the actual need.</p>
-<h2 id="read-replicas-for-read-scaling">Read replicas for read scaling</h2>
+<h2 id="read-replicas-for-read-scaling"><a class="h-anchor" href="#read-replicas-for-read-scaling" aria-label="Link to this section">#</a>Read replicas for read scaling</h2>
 <aside class="keyfig">
   <p class="keyfig-label">Key figure</p>
   <p class="keyfig-text">An application with <b>95%</b> reads and 5% writes can serve most traffic from replicas while writes go to the primary.</p>
@@ -117,7 +130,7 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 <p><strong>What read replicas do not solve</strong>: write throughput bottlenecks. All writes still go to a single primary. If your bottleneck is write volume, read replicas don&#39;t help.</p>
 <p><strong>Replication lag</strong>: read replicas are eventually consistent — they may lag behind the primary by milliseconds to seconds depending on write volume and replica load. Applications that read data immediately after writing it must either read from the primary for those operations or account for the possibility of stale reads. This is the most common operational surprise with read replicas.</p>
 <p><strong>Promotion time</strong>: if the primary fails, promoting a replica to primary takes time — typically 30-60 seconds for cloud managed databases (AWS RDS, Azure Database for PostgreSQL) with automated failover. During this window, writes fail. This is the availability cost of a primary-replica architecture.</p>
-<h2 id="synchronous-vs-asynchronous-replication">Synchronous vs. asynchronous replication</h2>
+<h2 id="synchronous-vs-asynchronous-replication"><a class="h-anchor" href="#synchronous-vs-asynchronous-replication" aria-label="Link to this section">#</a>Synchronous vs. asynchronous replication</h2>
 <p>Asynchronous replication (the default for most databases): the primary acknowledges a write as soon as it is committed locally. The replica receives the changes shortly after. In a primary failure, the most recent writes (those not yet replicated) may be lost.</p>
 <p>Synchronous replication: the primary waits for at least one replica to confirm it has received and written the transaction before acknowledging success to the client. Writes are more expensive (higher latency); in exchange, no data loss on failover to a synchronous replica.</p>
 <p><strong>PostgreSQL synchronous replication</strong>:</p>
@@ -126,7 +139,7 @@ ALTER SYSTEM SET synchronous_standby_names = &#39;FIRST 1 (replica1, replica2)&#
 SELECT pg_reload_conf();
 </code></pre>
 <p>Synchronous replication to a standby in the same availability zone adds approximately 1-2ms to write latency. Synchronous replication to a cross-region standby adds the cross-region round-trip latency (potentially 60-100ms), which is unacceptable for most transactional workloads.</p>
-<h2 id="multi-primary-or-active-active-replication">Multi-primary (or active-active) replication</h2>
+<h2 id="multi-primary-or-active-active-replication"><a class="h-anchor" href="#multi-primary-or-active-active-replication" aria-label="Link to this section">#</a>Multi-primary (or active-active) replication</h2>
 <p>Multi-primary replication allows writes to multiple nodes simultaneously, with changes replicated across all nodes. This solves two specific problems: geographic write distribution (each region writes to its local node) and write availability during a primary failure.</p>
 <p><strong>The conflict problem</strong>: if two nodes accept writes to the same row simultaneously, a conflict occurs. Conflict resolution strategies:</p>
 <ul>
@@ -135,14 +148,14 @@ SELECT pg_reload_conf();
 <li><strong>Avoid conflicts by design</strong>: route writes for a given entity to a specific node (based on sharding key). No two nodes ever accept writes to the same entity. This is the most reliable approach but requires application-level routing logic.</li>
 </ul>
 <p>Systems like Vitess (MySQL sharding), CockroachDB, and Cassandra are designed for multi-primary operation. Standard PostgreSQL multi-primary is implemented with tools like pglogical or BDR (Bi-Directional Replication) but requires careful conflict management.</p>
-<h2 id="managed-database-replication-in-cloud">Managed database replication in cloud</h2>
+<h2 id="managed-database-replication-in-cloud"><a class="h-anchor" href="#managed-database-replication-in-cloud" aria-label="Link to this section">#</a>Managed database replication in cloud</h2>
 <p>Cloud-managed databases abstract much of the replication complexity:</p>
 <p><strong>AWS RDS Multi-AZ</strong>: synchronous replication to a standby in a different availability zone. Automatic failover in 30-60 seconds. Zero data loss on failover. Higher cost (you pay for the standby even though it serves no read traffic).</p>
 <p><strong>AWS Aurora</strong>: six-way replication across three availability zones, with up to 15 read replicas. Failover in under 30 seconds (typically 10-15 seconds). The storage layer is multi-AZ by default; what fails over is the writer endpoint, not storage.</p>
 <p><strong>Azure Database for PostgreSQL — Flexible Server</strong> with high availability: standby server in the same or a different availability zone. 120-second failover SLA with zone-redundant HA.</p>
 <p><strong>GCP Cloud SQL</strong>: similar primary-standby configuration with automatic failover within a region.</p>
 <p>For most production workloads, cloud-managed replication is the right choice: it removes the operational complexity of managing replication manually and provides well-defined RPO/RTO guarantees.</p>
-<h2 id="choosing-the-right-configuration">Choosing the right configuration</h2>
+<h2 id="choosing-the-right-configuration"><a class="h-anchor" href="#choosing-the-right-configuration" aria-label="Link to this section">#</a>Choosing the right configuration</h2>
 <p>Questions to answer before configuring replication:</p>
 <ul>
 <li>Is the bottleneck reads, writes, or availability?</li>
@@ -273,15 +286,47 @@ SELECT pg_reload_conf();
     </div></div>
   </section>
 </article>
+
+<div class="reader-tools">
+  <button class="icon-btn" id="readerBtn" type="button" aria-expanded="false" aria-controls="readerPanel" title="Reading settings" aria-label="Reading settings"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2.2"/><circle cx="10" cy="17" r="2.2"/></svg></button>
+  <button class="icon-btn" id="focusBtn" type="button" aria-pressed="false" title="Focus mode" aria-label="Enter focus mode"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></button>
+</div>
+<div class="reader-panel" id="readerPanel" role="dialog" aria-label="Reading settings" hidden>
+  <fieldset><legend>Text size</legend>
+    <div class="seg" data-pref="rsize">
+      <button type="button" data-val="s" aria-pressed="false"><span class="sample s">Aa</span>Small</button><button type="button" data-val="m" aria-pressed="false"><span class="sample ">Aa</span>Default</button><button type="button" data-val="l" aria-pressed="false"><span class="sample l">Aa</span>Large</button><button type="button" data-val="xl" aria-pressed="false"><span class="sample l">Aa</span>Largest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Ground</legend>
+    <div class="seg" data-pref="theme">
+      <button type="button" data-val="light" aria-pressed="false"><span class="swatch light"></span>Light</button><button type="button" data-val="sepia" aria-pressed="false"><span class="swatch sepia"></span>Sepia</button><button type="button" data-val="dark" aria-pressed="false"><span class="swatch dark"></span>Dark</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Column width</legend>
+    <div class="seg" data-pref="rwidth">
+      <button type="button" data-val="s" aria-pressed="false">Narrow</button><button type="button" data-val="m" aria-pressed="false">Default</button><button type="button" data-val="l" aria-pressed="false">Wide</button><button type="button" data-val="xl" aria-pressed="false">Widest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Typeface</legend>
+    <div class="seg" data-pref="rface">
+      <button type="button" data-val="sans" aria-pressed="false"><span class="sample">Aa</span>Sans</button>
+      <button type="button" data-val="serif" aria-pressed="false"><span class="sample serif">Aa</span>Serif</button>
+    </div>
+  </fieldset>
+  <button class="reader-reset" id="readerReset" type="button">Reset to defaults</button>
+  <p class="reader-note">Saved in this browser only — these settings do not follow you to another device.</p>
+</div>
+<button class="focus-exit" id="focusExit" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h6V3M21 9h-6V3M3 15h6v6M21 15h-6v6"/></svg> Exit focus</button>
+
 </main>
 
 <footer class="site-footer">
   <div class="wrap">
     <div class="grid g-4" style="gap:2rem">
       <div>
-        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem">
-          <img src="/images/ajna-logo.png" alt="" width="32" height="32">
-          <span class="brand-name">Ajna<span style="color:#6f9bff">CS</span></span>
+        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem" aria-label="Ajna Consulting Services — home">
+          <svg viewBox="0 0 100 100" width="36" height="36" fill="none" aria-hidden="true" focusable="false"><defs><linearGradient id="lit-ftr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".30"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".32"/></linearGradient></defs><g transform="rotate(0 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#E8402A"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#F5A623"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#17A05E"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#2B57E8"/></g><path d="M 50 4 L 96 50 L 50 96 L 4 50 Z" fill="url(#lit-ftr)"/><g transform="rotate(0 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><circle cx="50" cy="50" r="6" fill="currentColor"/></svg>
+          <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
         </a>
         <p style="font-size:.88rem;line-height:1.65;color:#9fb0d0;max-width:30ch">
           Specialised engineering partner for enterprise architecture, AI &amp; MLOps, and technical enablement.

@@ -22,20 +22,33 @@
 <meta name="twitter:description" content="Java 21&#39;s virtual threads promise massive concurrency without reactive complexity. Here&#39;s what actually changes in enterprise services — thread pool math…">
 <meta name="twitter:image" content="https://ajnacs.com/assets/og/insights-java-virtual-threads-enterprise.svg">
 
-<link rel="icon" href="/images/favicon.ico" sizes="any">
-<link rel="apple-touch-icon" href="/images/ajna-logo.png">
+<link rel="icon" href="/images/favicon.ico" sizes="32x32">
+<link rel="icon" href="/images/ajna-mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
 <meta name="theme-color" content="#0a1020">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Quintessential&display=swap">
 <link rel="stylesheet" href="/assets/css/site.css">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
 <script>
-/* Set the theme before first paint so the page never flashes the wrong one. */
-(function(){try{var t=localStorage.getItem('acs-theme');
-if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
-document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+/* Theme and reading preferences are applied before first paint, so the page
+   never flashes the wrong ground or resets someone's text size mid-read. */
+(function(){try{
+var d=document.documentElement,t=localStorage.getItem('acs-theme');
+if(t!=='dark'&&t!=='light'&&t!=='sepia')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+d.setAttribute('data-theme',t);
+['rsize','rwidth','rface'].forEach(function(k){
+  var v=localStorage.getItem('acs-'+k);
+  if(v&&/^[a-z]{1,5}$/.test(v))d.setAttribute('data-'+k,v);
+});
+if(d.getAttribute('data-rface')==='serif'){
+  var l=document.createElement('link');l.rel='stylesheet';
+  l.href='https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600&display=swap';
+  document.head.appendChild(l);
+}
+}catch(e){}})();
 </script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Virtual Threads in the Enterprise: What Changes, What Doesn't, and What Breaks","description":"Java 21's virtual threads promise massive concurrency without reactive complexity. Here's what actually changes in enterprise services — thread pool math, pinning pitfalls, connection pools as the new bottleneck, and when reactive still wins.","datePublished":"2026-02-24","dateModified":"2026-02-24","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/java-virtual-threads-enterprise/","image":"https://ajnacs.com/assets/og/insights-java-virtual-threads-enterprise.svg","keywords":"Java, JVM, Concurrency, Performance, Architecture","articleSection":"Performance","wordCount":1116}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Virtual Threads in the Enterprise: What Changes, What Doesn't, and What Breaks"}]}</script>
@@ -45,9 +58,9 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 
 <header class="site-header" id="siteHeader">
   <div class="wrap" style="display:flex;align-items:center;width:min(1220px,100% - var(--gutter)*2)">
-    <a class="brand" href="/">
-      <img src="/images/ajna-logo.png" alt="" width="32" height="32">
-      <span class="brand-name">Ajna<span>CS</span></span>
+    <a class="brand" href="/" aria-label="Ajna Consulting Services — home">
+      <svg viewBox="0 0 100 100" width="40" height="40" fill="none" aria-hidden="true" focusable="false"><defs><linearGradient id="lit-hdr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".30"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".32"/></linearGradient></defs><g transform="rotate(0 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#E8402A"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#F5A623"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#17A05E"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#2B57E8"/></g><path d="M 50 4 L 96 50 L 50 96 L 4 50 Z" fill="url(#lit-hdr)"/><g transform="rotate(0 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><circle cx="50" cy="50" r="6" fill="currentColor"/></svg>
+      <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
     </a>
     <nav class="nav" id="nav" aria-label="Primary">
       <a href="/services/">Services</a>
@@ -101,38 +114,38 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 </svg></div></div>
 
   <div class="art-wrap article-grid">
-    <nav class="toc" aria-label="On this page">
+    <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#the-core-idea-in-one-paragraph">The core idea in one paragraph</a></li><li><a href="#what-changes-in-practice">What changes in practice</a></li><li><a href="#what-doesn39t-change">What doesn&amp;#39;t change</a></li><li><a href="#the-failure-modes-to-design-against">The failure modes to design against</a></li><li><a href="#structured-concurrency-the-other-half">Structured concurrency: the other half</a></li><li><a href="#so-is-reactive-dead">So is reactive dead?</a></li><li><a href="#an-adoption-sequence-that-works">An adoption sequence that works</a></li></ol>
-</nav>
+</nav></div>
     <div class="prose">
 <p>Virtual threads are the biggest change to Java&#39;s concurrency model since the language shipped, and they arrived with an unusual property for a big-ticket feature: the migration story is mostly <em>deleting</em> things. Thread pools, reactive adapters, callback chains — the machinery we built to work around expensive threads becomes optional.</p>
 <p>But &quot;mostly deleting things&quot; is not &quot;free.&quot; Two years into mainstream adoption, the patterns — and the failure modes — are clear. Here&#39;s the enterprise field guide.</p>
-<h2 id="the-core-idea-in-one-paragraph">The core idea in one paragraph</h2>
+<h2 id="the-core-idea-in-one-paragraph"><a class="h-anchor" href="#the-core-idea-in-one-paragraph" aria-label="Link to this section">#</a>The core idea in one paragraph</h2>
 <aside class="keyfig">
   <p class="keyfig-label">Key figure</p>
   <p class="keyfig-text">Thread-per-request stops being a scalability ceiling. The classic sizing exercise — &quot;200 Tomcat threads, so 200 concurrent requests, so at <b>500 ms</b> per downstream call we saturate at 400 req/s&quot; — evaporates.</p>
 </aside>
 <p>Platform threads map 1:1 to OS threads: expensive to create (~1 MB stack), capped in the low thousands per host. Virtual threads are JVM-managed: cheap (bytes of initial footprint), scheduled onto a small pool of OS carrier threads, and <em>unmounted</em> from the carrier whenever they block on I/O. A million virtual threads waiting on HTTP responses costs almost nothing; the carriers stay busy running whichever threads are actually runnable. The result: you write plain, blocking, debuggable code and get the concurrency scaling that previously required reactive frameworks.</p>
-<h2 id="what-changes-in-practice">What changes in practice</h2>
+<h2 id="what-changes-in-practice"><a class="h-anchor" href="#what-changes-in-practice" aria-label="Link to this section">#</a>What changes in practice</h2>
 <p><strong>Thread-per-request stops being a scalability ceiling.</strong> The classic sizing exercise — &quot;200 Tomcat threads, so 200 concurrent requests, so at 500 ms per downstream call we saturate at 400 req/s&quot; — evaporates. With virtual threads (one property in Spring Boot 3.2+: <code>spring.threads.virtual.enabled=true</code>; similar switches in Helidon, Quarkus, and modern Tomcat/Jetty), concurrent requests are bounded by memory and downstream capacity, not thread count.</p>
 <p><strong>Don&#39;t pool virtual threads.</strong> Pooling exists to amortize thread creation cost; virtual threads have none. <code>Executors.newVirtualThreadPerTaskExecutor()</code> and create one per task. Pools of virtual threads are a category error — and where you previously used a pool <em>as a concurrency limiter</em>, replace it with an explicit <code>Semaphore</code>, which says what it means.</p>
 <p><strong>Blocking code stops being a sin.</strong> The JDBC call, the <code>RestClient</code> call, <code>Thread.sleep</code> in a retry loop — all fine. The years of contorting business logic into reactive pipelines to avoid blocking a precious thread are over for the standard CRUD-and-call-things service. Stack traces are readable again, debuggers step normally, and the intern can understand the codebase.</p>
-<h2 id="what-doesn39t-change">What doesn&#39;t change</h2>
+<h2 id="what-doesn39t-change"><a class="h-anchor" href="#what-doesn39t-change" aria-label="Link to this section">#</a>What doesn&#39;t change</h2>
 <p><strong>The database doesn&#39;t get faster.</strong> Virtual threads move the bottleneck; they don&#39;t remove it. Your service that could previously exert 200 concurrent requests of pressure can now exert 50,000 — straight at a connection pool of 30 and a database that was sized for the old world. Concurrency limits, timeouts, and backpressure move from &quot;implicit in the thread pool size&quot; to &quot;your explicit job.&quot; Services that flipped the virtual-threads switch and immediately fell over didn&#39;t hit a virtual thread bug; they removed a governor they&#39;d forgotten was load-bearing.</p>
 <p><strong>CPU-bound work gains nothing.</strong> Virtual threads shine when threads <em>wait</em>. Image encoding, crypto, big serialization jobs still belong on a bounded platform-thread executor sized to cores.</p>
 <p><strong>Memory per request still matters.</strong> A million concurrent requests each holding a 2 MB object graph is still 2 TB. The thread stack stopped being the constraint; your allocations didn&#39;t.</p>
-<h2 id="the-failure-modes-to-design-against">The failure modes to design against</h2>
+<h2 id="the-failure-modes-to-design-against"><a class="h-anchor" href="#the-failure-modes-to-design-against" aria-label="Link to this section">#</a>The failure modes to design against</h2>
 <p><strong>Pinning.</strong> A virtual thread that blocks while it cannot unmount <em>pins</em> its carrier, and enough pinned carriers starve the whole scheduler. The historical big one — blocking inside a <code>synchronized</code> block — was fixed in <strong>JDK 24</strong> (synchronized no longer pins), but two sources remain relevant: blocking inside native/JNI calls, and older JDKs where the synchronized fix hasn&#39;t arrived; on JDK 21 LTS, pinning via synchronized-around-I/O is still the top production issue. Detect it with <code>-Djdk.tracePinnedThreads=full</code> or JFR&#39;s <code>jdk.VirtualThreadPinned</code> event; fix it by replacing synchronized-around-I/O with <code>ReentrantLock</code> or upgrading. Audit third-party libraries — connection pools and drivers were the usual offenders; current HikariCP, JDBC drivers, and Apache HttpClient are fine, but that ancient SOAP client in the corner of the estate may not be.</p>
 <p><strong>ThreadLocal abuse.</strong> ThreadLocals <em>work</em> on virtual threads, but patterns that assume few, long-lived threads — caching a 50 KB buffer per thread, say — turn into a memory bomb across a million short-lived ones. The replacement is <strong>ScopedValues (final in JDK 25)</strong> for request context, or just passing context explicitly. Audit anything stashing expensive state in ThreadLocals, including frameworks doing it on your behalf.</p>
 <p><strong>Unbounded spawn.</strong> <code>virtualThreadPerTaskExecutor</code> will happily create ten million threads if your queue feeds it that many. Every ingress point needs an explicit concurrency bound — semaphore, rate limiter, or bounded queue — because the thread pool is no longer accidentally providing one.</p>
 <p><strong>Observability drift.</strong> Dashboards that counted platform threads, thread-pool utilization alerts, APM agents that assumed thread identity equals request identity — all need revisiting. JFR has first-class virtual thread events; make sure your APM version does too.</p>
-<h2 id="structured-concurrency-the-other-half">Structured concurrency: the other half</h2>
+<h2 id="structured-concurrency-the-other-half"><a class="h-anchor" href="#structured-concurrency-the-other-half" aria-label="Link to this section">#</a>Structured concurrency: the other half</h2>
 <p><code>StructuredTaskScope</code> (finalized in the JDK 25 era) is what makes mass concurrency <em>manageable</em>: fork subtasks, join with a policy (fail-fast on first error, race for first success), and cancellation propagates automatically when the scope exits. It replaces the sprawl of <code>CompletableFuture</code> graphs whose error and cancellation semantics nobody could state confidently. The fan-out call — query three services, take all results or fail together within a deadline — collapses into a dozen readable lines. If virtual threads make blocking cheap, structured concurrency makes <em>coordinated</em> blocking correct.</p>
-<h2 id="so-is-reactive-dead">So is reactive dead?</h2>
+<h2 id="so-is-reactive-dead"><a class="h-anchor" href="#so-is-reactive-dead" aria-label="Link to this section">#</a>So is reactive dead?</h2>
 <p>Mostly, for the median enterprise service — the REST API that calls databases and other services. Thread-per-request on virtual threads matches its throughput with a fraction of its complexity, and complexity is a cost paid by every engineer forever.</p>
 <p>Reactive retains real ground where its model is the point rather than a workaround: streaming with sophisticated backpressure and windowing (Kafka Streams, Flux-based pipelines), and codebases already fluent in it where a rewrite has no payback. Choose per workload, but the default has flipped: reactive now needs the justification, not blocking.</p>
-<h2 id="an-adoption-sequence-that-works">An adoption sequence that works</h2>
+<h2 id="an-adoption-sequence-that-works"><a class="h-anchor" href="#an-adoption-sequence-that-works" aria-label="Link to this section">#</a>An adoption sequence that works</h2>
 <p>Upgrade to a current JDK first — 21 LTS minimum, 25 LTS ideally, since the synchronized-pinning fix and ScopedValues remove the two biggest sharp edges. Then: enable virtual threads for the request-handling path in one low-risk service; add explicit concurrency limits at ingress and verify connection pool sizing against the new concurrency reality; load-test past saturation and watch JFR for pinning; audit ThreadLocal usage; then roll outward service by service. Retire custom thread-pool tuning as you go — every deleted <code>ThreadPoolExecutor</code> configuration block is a small monument to a constraint that no longer exists.</p>
 <p>The strategic summary for the architecture review: virtual threads let enterprises write the simple code again at the scale that used to require the complicated code. The catches are real but enumerable — pinning on older JDKs, missing backpressure, downstream systems meeting unthrottled concurrency. Handle those three, and this is the rare platform upgrade that reduces both latency <em>and</em> codebase complexity.</p>
 
@@ -247,15 +260,47 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
     </div></div>
   </section>
 </article>
+
+<div class="reader-tools">
+  <button class="icon-btn" id="readerBtn" type="button" aria-expanded="false" aria-controls="readerPanel" title="Reading settings" aria-label="Reading settings"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2.2"/><circle cx="10" cy="17" r="2.2"/></svg></button>
+  <button class="icon-btn" id="focusBtn" type="button" aria-pressed="false" title="Focus mode" aria-label="Enter focus mode"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></button>
+</div>
+<div class="reader-panel" id="readerPanel" role="dialog" aria-label="Reading settings" hidden>
+  <fieldset><legend>Text size</legend>
+    <div class="seg" data-pref="rsize">
+      <button type="button" data-val="s" aria-pressed="false"><span class="sample s">Aa</span>Small</button><button type="button" data-val="m" aria-pressed="false"><span class="sample ">Aa</span>Default</button><button type="button" data-val="l" aria-pressed="false"><span class="sample l">Aa</span>Large</button><button type="button" data-val="xl" aria-pressed="false"><span class="sample l">Aa</span>Largest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Ground</legend>
+    <div class="seg" data-pref="theme">
+      <button type="button" data-val="light" aria-pressed="false"><span class="swatch light"></span>Light</button><button type="button" data-val="sepia" aria-pressed="false"><span class="swatch sepia"></span>Sepia</button><button type="button" data-val="dark" aria-pressed="false"><span class="swatch dark"></span>Dark</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Column width</legend>
+    <div class="seg" data-pref="rwidth">
+      <button type="button" data-val="s" aria-pressed="false">Narrow</button><button type="button" data-val="m" aria-pressed="false">Default</button><button type="button" data-val="l" aria-pressed="false">Wide</button><button type="button" data-val="xl" aria-pressed="false">Widest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Typeface</legend>
+    <div class="seg" data-pref="rface">
+      <button type="button" data-val="sans" aria-pressed="false"><span class="sample">Aa</span>Sans</button>
+      <button type="button" data-val="serif" aria-pressed="false"><span class="sample serif">Aa</span>Serif</button>
+    </div>
+  </fieldset>
+  <button class="reader-reset" id="readerReset" type="button">Reset to defaults</button>
+  <p class="reader-note">Saved in this browser only — these settings do not follow you to another device.</p>
+</div>
+<button class="focus-exit" id="focusExit" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h6V3M21 9h-6V3M3 15h6v6M21 15h-6v6"/></svg> Exit focus</button>
+
 </main>
 
 <footer class="site-footer">
   <div class="wrap">
     <div class="grid g-4" style="gap:2rem">
       <div>
-        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem">
-          <img src="/images/ajna-logo.png" alt="" width="32" height="32">
-          <span class="brand-name">Ajna<span style="color:#6f9bff">CS</span></span>
+        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem" aria-label="Ajna Consulting Services — home">
+          <svg viewBox="0 0 100 100" width="36" height="36" fill="none" aria-hidden="true" focusable="false"><defs><linearGradient id="lit-ftr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".30"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".32"/></linearGradient></defs><g transform="rotate(0 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#E8402A"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#F5A623"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#17A05E"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#2B57E8"/></g><path d="M 50 4 L 96 50 L 50 96 L 4 50 Z" fill="url(#lit-ftr)"/><g transform="rotate(0 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><circle cx="50" cy="50" r="6" fill="currentColor"/></svg>
+          <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
         </a>
         <p style="font-size:.88rem;line-height:1.65;color:#9fb0d0;max-width:30ch">
           Specialised engineering partner for enterprise architecture, AI &amp; MLOps, and technical enablement.

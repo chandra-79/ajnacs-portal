@@ -22,20 +22,33 @@
 <meta name="twitter:description" content="JMS servers, persistent stores, distributed destinations, and connection factories — how WebLogic messaging actually fits together, and the configuration d…">
 <meta name="twitter:image" content="https://ajnacs.com/assets/og/insights-weblogic-jms-production-configuration.svg">
 
-<link rel="icon" href="/images/favicon.ico" sizes="any">
-<link rel="apple-touch-icon" href="/images/ajna-logo.png">
+<link rel="icon" href="/images/favicon.ico" sizes="32x32">
+<link rel="icon" href="/images/ajna-mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
 <meta name="theme-color" content="#0a1020">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Quintessential&display=swap">
 <link rel="stylesheet" href="/assets/css/site.css">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
 <script>
-/* Set the theme before first paint so the page never flashes the wrong one. */
-(function(){try{var t=localStorage.getItem('acs-theme');
-if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
-document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+/* Theme and reading preferences are applied before first paint, so the page
+   never flashes the wrong ground or resets someone's text size mid-read. */
+(function(){try{
+var d=document.documentElement,t=localStorage.getItem('acs-theme');
+if(t!=='dark'&&t!=='light'&&t!=='sepia')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+d.setAttribute('data-theme',t);
+['rsize','rwidth','rface'].forEach(function(k){
+  var v=localStorage.getItem('acs-'+k);
+  if(v&&/^[a-z]{1,5}$/.test(v))d.setAttribute('data-'+k,v);
+});
+if(d.getAttribute('data-rface')==='serif'){
+  var l=document.createElement('link');l.rel='stylesheet';
+  l.href='https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600&display=swap';
+  document.head.appendChild(l);
+}
+}catch(e){}})();
 </script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"WebLogic JMS in Production: Servers, Stores, and the Configuration That Survives Failover","description":"JMS servers, persistent stores, distributed destinations, and connection factories — how WebLogic messaging actually fits together, and the configuration decisions that determine whether your queues survive a server failure.","datePublished":"2025-08-28","dateModified":"2025-08-28","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/weblogic-jms-production-configuration/","image":"https://ajnacs.com/assets/og/insights-weblogic-jms-production-configuration.svg","keywords":"Java, WebLogic, Middleware, Messaging, Architecture","articleSection":"Architecture","wordCount":1369}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"WebLogic JMS in Production: Servers, Stores, and the Configuration That Survives Failover"}]}</script>
@@ -45,9 +58,9 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 
 <header class="site-header" id="siteHeader">
   <div class="wrap" style="display:flex;align-items:center;width:min(1220px,100% - var(--gutter)*2)">
-    <a class="brand" href="/">
-      <img src="/images/ajna-logo.png" alt="" width="32" height="32">
-      <span class="brand-name">Ajna<span>CS</span></span>
+    <a class="brand" href="/" aria-label="Ajna Consulting Services — home">
+      <svg viewBox="0 0 100 100" width="40" height="40" fill="none" aria-hidden="true" focusable="false"><defs><linearGradient id="lit-hdr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".30"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".32"/></linearGradient></defs><g transform="rotate(0 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#E8402A"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#F5A623"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#17A05E"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#2B57E8"/></g><path d="M 50 4 L 96 50 L 50 96 L 4 50 Z" fill="url(#lit-hdr)"/><g transform="rotate(0 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><circle cx="50" cy="50" r="6" fill="currentColor"/></svg>
+      <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
     </a>
     <nav class="nav" id="nav" aria-label="Primary">
       <a href="/services/">Services</a>
@@ -101,14 +114,14 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 </svg></div></div>
 
   <div class="art-wrap article-grid">
-    <nav class="toc" aria-label="On this page">
+    <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#the-object-model-who-owns-what">The object model: who owns what</a></li><li><a href="#uniform-distributed-destinations-the-default-you-should-use">Uniform distributed destinations: the default you should use</a></li><li><a href="#service-migration-the-part-everyone-skips">Service migration: the part everyone skips</a></li><li><a href="#persistent-stores-file-vs-jdbc">Persistent stores: file vs JDBC</a></li><li><a href="#quotas-paging-and-flow-control-surviving-the-flood">Quotas, paging, and flow control: surviving the flood</a></li><li><a href="#connection-factories-the-client-side-settings-that-matter">Connection factories: the client-side settings that matter</a></li><li><a href="#mdbs-consuming-correctly">MDBs: consuming correctly</a></li><li><a href="#the-checklist">The checklist</a></li></ol>
-</nav>
+</nav></div>
     <div class="prose">
 <p>WebLogic JMS is one of the most battle-tested message brokers in existence, and also one of the most misconfigured. The domain model gives you a lot of knobs — JMS servers, persistent stores, modules, subdeployments, distributed destinations — and the relationships between them are where production incidents are born.</p>
 <p>This is the explainer for people who have to keep messages flowing at 2 AM, not pass a certification exam.</p>
-<h2 id="the-object-model-who-owns-what">The object model: who owns what</h2>
+<h2 id="the-object-model-who-owns-what"><a class="h-anchor" href="#the-object-model-who-owns-what" aria-label="Link to this section">#</a>The object model: who owns what</h2>
 <aside class="keyfig">
   <p class="keyfig-label">Key figure</p>
   <p class="keyfig-text">Enable it with thresholds around 30–<b>50%</b> of quota.</p>
@@ -119,12 +132,12 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 <p><strong>JMS module.</strong> The configuration bundle holding destinations, connection factories, quotas, and destination keys. Modules are targeted to clusters or servers, and <strong>subdeployments</strong> within a module pin specific resources to specific JMS servers.</p>
 <p><strong>Connection factory.</strong> What applications look up to create connections. Target these to the whole cluster — clients should be able to connect anywhere.</p>
 <p>The mental model: connection factories are cluster-wide entry points; destinations are pinned to specific JMS servers via subdeployments; JMS servers are pinned to specific managed servers with their own persistent stores.</p>
-<h2 id="uniform-distributed-destinations-the-default-you-should-use">Uniform distributed destinations: the default you should use</h2>
+<h2 id="uniform-distributed-destinations-the-default-you-should-use"><a class="h-anchor" href="#uniform-distributed-destinations-the-default-you-should-use" aria-label="Link to this section">#</a>Uniform distributed destinations: the default you should use</h2>
 <p>A queue pinned to one JMS server is a single point of failure. The answer is the <strong>uniform distributed destination (UDD)</strong>: one logical queue name backed by a physical member queue on each JMS server in the cluster.</p>
 <p>Producers send to the logical name and WebLogic load-balances messages across members. Consumers connect and get pinned to a member. This is where the classic operational surprises live:</p>
 <p><strong>Messages don&#39;t magically move between members.</strong> If a consumer is connected to member A and messages land on member B, they sit on B until a consumer arrives there. Fix this by leaving <strong>forward delay</strong> disabled (the default of -1 means messages wait) only when every member always has consumers — an MDB targeted to the cluster guarantees this. If consumers are external and sporadic, set a forward delay so unconsumed members forward messages to members with consumers.</p>
 <p><strong>A downed member&#39;s messages are unavailable until it returns.</strong> Distribution is not replication. If the managed server hosting member B dies, B&#39;s messages are locked in its persistent store until that JMS server comes back — either the server restarts, or the JMS server <em>migrates</em>.</p>
-<h2 id="service-migration-the-part-everyone-skips">Service migration: the part everyone skips</h2>
+<h2 id="service-migration-the-part-everyone-skips"><a class="h-anchor" href="#service-migration-the-part-everyone-skips" aria-label="Link to this section">#</a>Service migration: the part everyone skips</h2>
 <p>Because a JMS server runs on exactly one managed server, high availability requires the JMS server (and its store) to move when its host dies. WebLogic offers two mechanisms:</p>
 <p><strong>Whole server migration</strong> — the entire managed server, IP address included, restarts on another machine. Heavyweight, requires Node Manager and network configuration, but conceptually simple.</p>
 <p><strong>Automatic service migration</strong> — just the JMS server and its persistent store migrate to another cluster member. This is usually the right choice. Requirements that must all be true for it to work:</p>
@@ -134,18 +147,18 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 <li>Cluster leasing is configured — database leasing (a <code>LEASING</code> table via a non-XA data source) is the dependable option; consensus leasing avoids the database but requires Node Manager everywhere.</li>
 </ul>
 <p>Test the failover before production does it for you: kill the process hosting a migratable JMS server and time how long until messages flow again. If nobody has ever run that test, the honest assumption is that migration doesn&#39;t work.</p>
-<h2 id="persistent-stores-file-vs-jdbc">Persistent stores: file vs JDBC</h2>
+<h2 id="persistent-stores-file-vs-jdbc"><a class="h-anchor" href="#persistent-stores-file-vs-jdbc" aria-label="Link to this section">#</a>Persistent stores: file vs JDBC</h2>
 <p><strong>File stores</strong> are faster — often dramatically so, since messages hit local or SAN disk without a database round trip. Use them when you have shared storage that all candidate servers can mount and your ops team is comfortable managing it.</p>
 <p><strong>JDBC stores</strong> put messages in a database table (one store per table). Slower per message, but migration and disaster recovery become database problems, which most enterprises already know how to solve — the store follows the database&#39;s backup, replication, and DR posture. In cloud deployments where shared file storage is awkward, JDBC stores are frequently the pragmatic pick.</p>
 <p>Whichever you choose: <strong>one store per JMS server</strong>, never shared, and monitor store size. An unconsumed queue grows without bound until quota or disk stops it, and you want quota to get there first.</p>
-<h2 id="quotas-paging-and-flow-control-surviving-the-flood">Quotas, paging, and flow control: surviving the flood</h2>
+<h2 id="quotas-paging-and-flow-control-surviving-the-flood"><a class="h-anchor" href="#quotas-paging-and-flow-control-surviving-the-flood" aria-label="Link to this section">#</a>Quotas, paging, and flow control: surviving the flood</h2>
 <p>The failure mode that takes down JVMs isn&#39;t message loss — it&#39;s message <em>pileup</em>. A downstream consumer stalls, messages accumulate, heap fills, and the managed server hosting the JMS server dies, taking every other application on it along.</p>
 <p>Three layers of defence, all off or too generous by default:</p>
 <p><strong>Quotas.</strong> Set bytes and message quotas at the JMS server level, sized so that a full JMS server fits comfortably in heap alongside everything else. When quota is reached, producers get an exception or block (configurable via send timeout). A producer receiving <code>ResourceAllocationException</code> is a much better outcome than an OutOfMemoryError.</p>
 <p><strong>Message paging.</strong> Above a threshold, message bodies are swapped out of heap to the paging directory. Enable it with thresholds around 30–50% of quota. Paging saves the JVM, not the disk — quotas still matter.</p>
 <p><strong>Flow control.</strong> Connection factories can throttle producers as destinations approach thresholds, degrading gracefully instead of hitting a wall.</p>
 <p>Size all three together, then load-test the stall scenario: stop consumers, run producers at production rate, and verify the system degrades in the order you designed — flow control first, then paging, then quota exceptions — with no JVM casualties.</p>
-<h2 id="connection-factories-the-client-side-settings-that-matter">Connection factories: the client-side settings that matter</h2>
+<h2 id="connection-factories-the-client-side-settings-that-matter"><a class="h-anchor" href="#connection-factories-the-client-side-settings-that-matter" aria-label="Link to this section">#</a>Connection factories: the client-side settings that matter</h2>
 <p>A handful of connection factory settings account for most client-side incidents:</p>
 <ul>
 <li><strong>XA enabled</strong> only where the workload genuinely participates in distributed transactions. XA adds two-phase-commit overhead to every operation; don&#39;t pay it for fire-and-forget telemetry.</li>
@@ -153,11 +166,11 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 <li><strong>Load balancing enabled, server affinity disabled</strong> if you want producers spread across UDD members; affinity on means a producer sticks to the member on the server it connected to — sometimes desirable, rarely deliberate.</li>
 <li><strong>Default delivery params</strong>: set a sensible default time-to-live for queues where stale messages are worse than no messages. Nothing ages like a two-week-old &quot;cache invalidation&quot; event delivered after the restore.</li>
 </ul>
-<h2 id="mdbs-consuming-correctly">MDBs: consuming correctly</h2>
+<h2 id="mdbs-consuming-correctly"><a class="h-anchor" href="#mdbs-consuming-correctly" aria-label="Link to this section">#</a>MDBs: consuming correctly</h2>
 <p>Most WebLogic message consumption happens through message-driven beans, and two settings drive their behavior:</p>
 <p><strong>Target MDBs to the cluster</strong>, so each UDD member has local consumers and message forwarding never has to fire.</p>
 <p><strong>Bound the retry loop.</strong> A message that throws on every delivery attempt becomes a poison message: redelivered forever, burning a thread each cycle. Configure a redelivery limit on the destination and an <strong>error destination</strong> where exhausted messages land. Then monitor the error destination — it&#39;s the dead-letter queue nobody looks at until an auditor asks where four thousand payment events went.</p>
-<h2 id="the-checklist">The checklist</h2>
+<h2 id="the-checklist"><a class="h-anchor" href="#the-checklist" aria-label="Link to this section">#</a>The checklist</h2>
 <p>For a production-ready WebLogic JMS estate: dedicated persistent store per JMS server on shared-accessible storage, uniform distributed destinations with subdeployments pinning members correctly, automatic service migration configured with database leasing and actually tested, quotas plus paging plus flow control sized against heap, MDBs targeted at the cluster with redelivery limits and error destinations, and monitoring on queue depth, store size, and error destinations.</p>
 <p>None of it is exotic. All of it is the difference between &quot;a server failed and nobody noticed&quot; and &quot;a server failed and we spent the weekend replaying messages from database backups.&quot;</p>
 
@@ -272,15 +285,57 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
     </div></div>
   </section>
 </article>
+
+<div class="reader-tools">
+  <button class="icon-btn" id="readerBtn" type="button" aria-expanded="false" aria-controls="readerPanel" title="Reading settings" aria-label="Reading settings"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2.2"/><circle cx="10" cy="17" r="2.2"/></svg></button>
+  <button class="icon-btn" id="focusBtn" type="button" aria-pressed="false" title="Focus mode" aria-label="Enter focus mode"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></button>
+</div>
+<div class="reader-panel" id="readerPanel" role="dialog" aria-label="Reading settings" hidden>
+  <fieldset><legend>Text size</legend>
+    <div class="seg" data-pref="rsize">
+      <button type="button" data-val="s" aria-pressed="false"><span class="sample s">Aa</span>Small</button><button type="button" data-val="m" aria-pressed="false"><span class="sample ">Aa</span>Default</button><button type="button" data-val="l" aria-pressed="false"><span class="sample l">Aa</span>Large</button><button type="button" data-val="xl" aria-pressed="false"><span class="sample l">Aa</span>Largest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Ground</legend>
+    <div class="seg" data-pref="theme">
+      <button type="button" data-val="light" aria-pressed="false"><span class="swatch light"></span>Light</button><button type="button" data-val="sepia" aria-pressed="false"><span class="swatch sepia"></span>Sepia</button><button type="button" data-val="dark" aria-pressed="false"><span class="swatch dark"></span>Dark</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Column width</legend>
+    <div class="seg" data-pref="rwidth">
+      <button type="button" data-val="s" aria-pressed="false">Narrow</button><button type="button" data-val="m" aria-pressed="false">Default</button><button type="button" data-val="l" aria-pressed="false">Wide</button><button type="button" data-val="xl" aria-pressed="false">Widest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Typeface</legend>
+    <div class="seg" data-pref="rface">
+      <button type="button" data-val="sans" aria-pressed="false"><span class="sample">Aa</span>Sans</button>
+      <button type="button" data-val="serif" aria-pressed="false"><span class="sample serif">Aa</span>Serif</button>
+    </div>
+  </fieldset>
+  <button class="reader-reset" id="readerReset" type="button">Reset to defaults</button>
+  <p class="reader-note">Saved in this browser only — these settings do not follow you to another device.</p>
+</div>
+<button class="focus-exit" id="focusExit" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h6V3M21 9h-6V3M3 15h6v6M21 15h-6v6"/></svg> Exit focus</button>
+<div class="chapter-bar" id="chapterBar">
+  <div class="chapter-where">
+    <b>WebLogic JMS in Production: Servers, Stores, and the Configuration That Survives Failover</b>
+    <span>Architecture</span>
+  </div>
+  <span class="chapter-left" id="chapterLeft"></span>
+  <nav class="chapter-step" aria-label="Article navigation">
+    <a href="/insights/weblogic-performance-tuning/" aria-label="Previous: WebLogic Performance Tuning: Work Managers, Connection Pools, and the Knobs That Actually Matter"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a>
+    <a href="/insights/weblogic-domains-clusters-explained/" aria-label="Next: WebLogic Domains, Clusters, and Managed Servers: The Architecture Explained"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
+  </nav>
+</div>
 </main>
 
 <footer class="site-footer">
   <div class="wrap">
     <div class="grid g-4" style="gap:2rem">
       <div>
-        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem">
-          <img src="/images/ajna-logo.png" alt="" width="32" height="32">
-          <span class="brand-name">Ajna<span style="color:#6f9bff">CS</span></span>
+        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem" aria-label="Ajna Consulting Services — home">
+          <svg viewBox="0 0 100 100" width="36" height="36" fill="none" aria-hidden="true" focusable="false"><defs><linearGradient id="lit-ftr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".30"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".32"/></linearGradient></defs><g transform="rotate(0 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#E8402A"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#F5A623"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#17A05E"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#2B57E8"/></g><path d="M 50 4 L 96 50 L 50 96 L 4 50 Z" fill="url(#lit-ftr)"/><g transform="rotate(0 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><circle cx="50" cy="50" r="6" fill="currentColor"/></svg>
+          <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
         </a>
         <p style="font-size:.88rem;line-height:1.65;color:#9fb0d0;max-width:30ch">
           Specialised engineering partner for enterprise architecture, AI &amp; MLOps, and technical enablement.

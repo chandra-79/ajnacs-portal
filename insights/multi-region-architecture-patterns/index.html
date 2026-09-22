@@ -22,20 +22,33 @@
 <meta name="twitter:description" content="Active-passive, pilot light, active-active, and the data problem underneath them all. A tiered framework for multi-region design that matches architecture…">
 <meta name="twitter:image" content="https://ajnacs.com/assets/og/insights-multi-region-architecture-patterns.svg">
 
-<link rel="icon" href="/images/favicon.ico" sizes="any">
-<link rel="apple-touch-icon" href="/images/ajna-logo.png">
+<link rel="icon" href="/images/favicon.ico" sizes="32x32">
+<link rel="icon" href="/images/ajna-mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
 <meta name="theme-color" content="#0a1020">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Quintessential&display=swap">
 <link rel="stylesheet" href="/assets/css/site.css">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
 <script>
-/* Set the theme before first paint so the page never flashes the wrong one. */
-(function(){try{var t=localStorage.getItem('acs-theme');
-if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
-document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+/* Theme and reading preferences are applied before first paint, so the page
+   never flashes the wrong ground or resets someone's text size mid-read. */
+(function(){try{
+var d=document.documentElement,t=localStorage.getItem('acs-theme');
+if(t!=='dark'&&t!=='light'&&t!=='sepia')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+d.setAttribute('data-theme',t);
+['rsize','rwidth','rface'].forEach(function(k){
+  var v=localStorage.getItem('acs-'+k);
+  if(v&&/^[a-z]{1,5}$/.test(v))d.setAttribute('data-'+k,v);
+});
+if(d.getAttribute('data-rface')==='serif'){
+  var l=document.createElement('link');l.rel='stylesheet';
+  l.href='https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600&display=swap';
+  document.head.appendChild(l);
+}
+}catch(e){}})();
 </script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Multi-Region Architecture Patterns: What You're Actually Buying at Each Tier","description":"Active-passive, pilot light, active-active, and the data problem underneath them all. A tiered framework for multi-region design that matches architecture to actual availability requirements — and prices the tiers honestly.","datePublished":"2026-02-12","dateModified":"2026-02-12","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/multi-region-architecture-patterns/","image":"https://ajnacs.com/assets/og/insights-multi-region-architecture-patterns.svg","keywords":"Cloud Architecture, Architecture, Reliability, Disaster Recovery, Distributed Systems","articleSection":"Cloud Architecture","wordCount":1147}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Multi-Region Architecture Patterns: What You're Actually Buying at Each Tier"}]}</script>
@@ -45,9 +58,9 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 
 <header class="site-header" id="siteHeader">
   <div class="wrap" style="display:flex;align-items:center;width:min(1220px,100% - var(--gutter)*2)">
-    <a class="brand" href="/">
-      <img src="/images/ajna-logo.png" alt="" width="32" height="32">
-      <span class="brand-name">Ajna<span>CS</span></span>
+    <a class="brand" href="/" aria-label="Ajna Consulting Services — home">
+      <svg viewBox="0 0 100 100" width="40" height="40" fill="none" aria-hidden="true" focusable="false"><defs><linearGradient id="lit-hdr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".30"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".32"/></linearGradient></defs><g transform="rotate(0 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#E8402A"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#F5A623"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#17A05E"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#2B57E8"/></g><path d="M 50 4 L 96 50 L 50 96 L 4 50 Z" fill="url(#lit-hdr)"/><g transform="rotate(0 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><circle cx="50" cy="50" r="6" fill="currentColor"/></svg>
+      <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
     </a>
     <nav class="nav" id="nav" aria-label="Primary">
       <a href="/services/">Services</a>
@@ -109,32 +122,32 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 </svg></div></div>
 
   <div class="art-wrap article-grid">
-    <nav class="toc" aria-label="On this page">
+    <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#first-the-two-numbers-that-decide-everything">First, the two numbers that decide everything</a></li><li><a href="#the-tiers-priced-honestly">The tiers, priced honestly</a></li><li><a href="#the-data-layer-is-the-architecture">The data layer is the architecture</a></li><li><a href="#failover-mechanics-the-details-that-decide-whether-it-works">Failover mechanics: the details that decide whether it works</a></li><li><a href="#the-test-is-the-architecture">The test is the architecture</a></li></ol>
-</nav>
+</nav></div>
     <div class="prose">
 <p>Multi-region is where cloud architecture conversations most reliably outrun their requirements. A team that has never tested a backup restore declares a need for active-active across three regions; a workload with a four-hour RTO tolerance gets an architecture priced for four seconds. The corrective isn&#39;t cynicism about multi-region — regional outages are real, and the big ones are always a surprise — it&#39;s a tiered model where each tier has a price, a promise, and a test, and workloads are placed by their <em>written</em> recovery requirements rather than their owners&#39; anxiety.</p>
 <p>Here&#39;s that model, and the data-layer truths that dominate it.</p>
-<h2 id="first-the-two-numbers-that-decide-everything">First, the two numbers that decide everything</h2>
+<h2 id="first-the-two-numbers-that-decide-everything"><a class="h-anchor" href="#first-the-two-numbers-that-decide-everything" aria-label="Link to this section">#</a>First, the two numbers that decide everything</h2>
 <p><strong>RTO</strong> (how long can this be down?) and <strong>RPO</strong> (how much data can we lose?) — per workload, written down, signed by the business owner. Everything else in this article is a lookup table against those two numbers. The conversation that produces them is more valuable than any diagram: when an owner sees the cost curve, &quot;zero downtime, zero loss&quot; reliably becomes &quot;an hour and five minutes of data is fine&quot; for all but a handful of systems. Corollary: a <em>portfolio</em> has tiers — the payment path and the reporting warehouse do not deserve the same architecture, and pretending otherwise funds the warehouse&#39;s redundancy with the payment path&#39;s budget.</p>
-<h2 id="the-tiers-priced-honestly">The tiers, priced honestly</h2>
+<h2 id="the-tiers-priced-honestly"><a class="h-anchor" href="#the-tiers-priced-honestly" aria-label="Link to this section">#</a>The tiers, priced honestly</h2>
 <p><strong>Tier 0 — Backup and restore (RTO: hours-to-day, RPO: hours).</strong> Cross-region backup copies, infrastructure-as-code capable of rebuilding the stack in a second region, and a <em>tested</em> restore runbook. Cost: storage plus rehearsal time. This is the floor every workload should stand on, and — the perennially skipped part — the restore test is the product; an untested backup is a hope with a retention policy.</p>
 <p><strong>Tier 1 — Pilot light (RTO: tens of minutes-to-hours, RPO: minutes).</strong> Data replicates continuously to the standby region (database read replicas, object storage replication); compute exists as templates and minimal always-on cores, inflated on declaration of disaster. This tier is the workhorse of enterprise DR — most &quot;we need multi-region&quot; requirements are satisfied here at a fraction of active-active cost. The failure mode: config and secrets drift between regions, discovered at inflation time. The countermeasure: the standby region is deployed by the <em>same</em> pipeline as primary, always, and inflated quarterly as a drill.</p>
 <p><strong>Tier 2 — Warm standby (RTO: minutes, RPO: seconds-to-minutes).</strong> A scaled-down but fully running copy takes a trickle of traffic (or synthetic traffic) continuously — which is the point: a standby that serves <em>some</em> real requests all the time is a standby whose brokenness announces itself early. Failover is scale-up plus traffic shift.</p>
 <p><strong>Tier 3 — Active-active (RTO: ~zero, RPO: ~zero-ish).</strong> All regions serve simultaneously; failover is traffic reweighting. This is what everyone asks for and few need, because its cost is not primarily the duplicate infrastructure — it&#39;s the <em>engineering permanently added to every feature</em>: every service and every data write must be designed for multi-writer reality, forever. Which brings us to the actual boss fight.</p>
-<h2 id="the-data-layer-is-the-architecture">The data layer is the architecture</h2>
+<h2 id="the-data-layer-is-the-architecture"><a class="h-anchor" href="#the-data-layer-is-the-architecture" aria-label="Link to this section">#</a>The data layer is the architecture</h2>
 <p>Stateless compute is trivially multi-region; your architecture tier is decided by your data strategy, and physics votes: cross-region round trips run tens of milliseconds, so <strong>synchronous replication across distant regions taxes every single write with user-visible latency</strong>. The workable patterns:</p>
 <p><strong>Single-writer, regional readers</strong> — one region owns writes; others serve reads from async replicas and forward writes. Simple, honest, fits Tier 1–2; the failover story (promote a replica, accept the RPO gap of unreplicated seconds) must be rehearsed, and <em>fail-back</em> rehearsed harder, because un-promoting is where the data-divergence dragons live.</p>
 <p><strong>Partitioned writers (&quot;home region&quot; model)</strong> — each tenant/user/account homes to one region that owns its writes; cross-region traffic only on relocation or failover. This is how much of the industry actually does &quot;active-active&quot; — every region is active, but no <em>datum</em> has two writers. It demands a routing layer that knows the homing map, and it converts the global-conflict problem into a per-partition failover problem, which is vastly easier.</p>
 <p><strong>True multi-writer</strong> — the same data writable everywhere, via either conflict resolution (CRDTs, last-writer-wins with all its lost-update honesty, application-level merge — fine for carts and profiles, alarming for ledgers) or consensus-based globally-distributed databases (Spanner-class systems and their peers), which deliver real multi-region serializability at the price of write latencies bounded by quorum distance, plus a database bill that makes the earlier tiers look free. Legitimate at genuine global scale; a luxury import everywhere else.</p>
 <p>The uncomfortable rule of thumb: if a workload&#39;s team cannot articulate its conflict story in two sentences, that workload is not ready for multi-writer anything.</p>
-<h2 id="failover-mechanics-the-details-that-decide-whether-it-works">Failover mechanics: the details that decide whether it works</h2>
+<h2 id="failover-mechanics-the-details-that-decide-whether-it-works"><a class="h-anchor" href="#failover-mechanics-the-details-that-decide-whether-it-works" aria-label="Link to this section">#</a>Failover mechanics: the details that decide whether it works</h2>
 <p><strong>Traffic steering:</strong> DNS-based failover is universal and slow-ish (TTLs lie in both directions — clients cache long, resolvers ignore); anycast/global load balancers (and their cloud equivalents) shift in seconds and health-check natively. Use the fast layer where RTO demands it, and keep TTLs honest everywhere.</p>
 <p><strong>Decide with a human, execute with a machine.</strong> Fully automatic region failover trips on gray failures — the region that&#39;s 80% healthy, the network that flaps — and a false-positive failover of a stateful system is often worse than the outage. The mature pattern for stateful tiers: automated detection, paged human decision, one-command scripted execution. (Stateless tiers can and should fail over automatically.)</p>
 <p><strong>Beware the dependencies that quietly re-couple you:</strong> the single-region identity provider, the control-plane API you need <em>during</em> the failover, the secrets manager, the container registry, the CI system that deploys the fix — a multi-region application on single-region operational tooling has single-region availability. Map the <em>recovery-path</em> dependencies, not just the request-path ones.</p>
 <p><strong>And capacity is not guaranteed:</strong> a regional outage sends every customer of that region shopping for the same instances in the neighbor. Reserve or pre-provision the failover floor; discovering spot-market physics mid-disaster is a genre of postmortem you don&#39;t want to write.</p>
-<h2 id="the-test-is-the-architecture">The test is the architecture</h2>
+<h2 id="the-test-is-the-architecture"><a class="h-anchor" href="#the-test-is-the-architecture" aria-label="Link to this section">#</a>The test is the architecture</h2>
 <p>An untested failover path is a diagram, and diagrams don&#39;t serve traffic. The practice ladder: quarterly restore tests (Tier 0), standby inflation drills (Tier 1), scheduled <em>real</em> traffic shifts for Tier 2–3 — the organizations that trust their multi-region posture are the ones that fail over <em>routinely, on purpose, during business hours</em>, because a failover that only happens under adrenaline is a different, worse procedure. Game days that sever a region&#39;s database replication or its identity provider find the re-coupling dependencies before the outage does.</p>
 <p>The executive summary: buy the tier your written RTO/RPO requires, put the engineering into the data-layer decision (single-writer and home-region models cover far more of the world than their marketing budget suggests), rehearse until failover is boring — and let the handful of workloads that genuinely need Tier 3 pay for it knowingly, rather than letting the whole portfolio drift there by prestige. Regional resilience is a product you buy with discipline, not a property you declare with architecture slides.</p>
 
@@ -243,15 +256,47 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
     </div></div>
   </section>
 </article>
+
+<div class="reader-tools">
+  <button class="icon-btn" id="readerBtn" type="button" aria-expanded="false" aria-controls="readerPanel" title="Reading settings" aria-label="Reading settings"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2.2"/><circle cx="10" cy="17" r="2.2"/></svg></button>
+  <button class="icon-btn" id="focusBtn" type="button" aria-pressed="false" title="Focus mode" aria-label="Enter focus mode"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></button>
+</div>
+<div class="reader-panel" id="readerPanel" role="dialog" aria-label="Reading settings" hidden>
+  <fieldset><legend>Text size</legend>
+    <div class="seg" data-pref="rsize">
+      <button type="button" data-val="s" aria-pressed="false"><span class="sample s">Aa</span>Small</button><button type="button" data-val="m" aria-pressed="false"><span class="sample ">Aa</span>Default</button><button type="button" data-val="l" aria-pressed="false"><span class="sample l">Aa</span>Large</button><button type="button" data-val="xl" aria-pressed="false"><span class="sample l">Aa</span>Largest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Ground</legend>
+    <div class="seg" data-pref="theme">
+      <button type="button" data-val="light" aria-pressed="false"><span class="swatch light"></span>Light</button><button type="button" data-val="sepia" aria-pressed="false"><span class="swatch sepia"></span>Sepia</button><button type="button" data-val="dark" aria-pressed="false"><span class="swatch dark"></span>Dark</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Column width</legend>
+    <div class="seg" data-pref="rwidth">
+      <button type="button" data-val="s" aria-pressed="false">Narrow</button><button type="button" data-val="m" aria-pressed="false">Default</button><button type="button" data-val="l" aria-pressed="false">Wide</button><button type="button" data-val="xl" aria-pressed="false">Widest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Typeface</legend>
+    <div class="seg" data-pref="rface">
+      <button type="button" data-val="sans" aria-pressed="false"><span class="sample">Aa</span>Sans</button>
+      <button type="button" data-val="serif" aria-pressed="false"><span class="sample serif">Aa</span>Serif</button>
+    </div>
+  </fieldset>
+  <button class="reader-reset" id="readerReset" type="button">Reset to defaults</button>
+  <p class="reader-note">Saved in this browser only — these settings do not follow you to another device.</p>
+</div>
+<button class="focus-exit" id="focusExit" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h6V3M21 9h-6V3M3 15h6v6M21 15h-6v6"/></svg> Exit focus</button>
+
 </main>
 
 <footer class="site-footer">
   <div class="wrap">
     <div class="grid g-4" style="gap:2rem">
       <div>
-        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem">
-          <img src="/images/ajna-logo.png" alt="" width="32" height="32">
-          <span class="brand-name">Ajna<span style="color:#6f9bff">CS</span></span>
+        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem" aria-label="Ajna Consulting Services — home">
+          <svg viewBox="0 0 100 100" width="36" height="36" fill="none" aria-hidden="true" focusable="false"><defs><linearGradient id="lit-ftr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".30"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".32"/></linearGradient></defs><g transform="rotate(0 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#E8402A"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#F5A623"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#17A05E"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#2B57E8"/></g><path d="M 50 4 L 96 50 L 50 96 L 4 50 Z" fill="url(#lit-ftr)"/><g transform="rotate(0 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><circle cx="50" cy="50" r="6" fill="currentColor"/></svg>
+          <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
         </a>
         <p style="font-size:.88rem;line-height:1.65;color:#9fb0d0;max-width:30ch">
           Specialised engineering partner for enterprise architecture, AI &amp; MLOps, and technical enablement.

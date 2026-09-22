@@ -100,6 +100,14 @@ export function injectAfterFirstH2(html, block) {
   return html.slice(0, i + 5) + "\n" + block + html.slice(i + 5);
 }
 
+/* A copyable link on every heading. Generated rather than scripted so it
+   still works with JavaScript off, and hidden until hover so it stays out of
+   the way of reading. */
+export function headingAnchors(html) {
+  return html.replace(/<(h[23]) id="([^"]+)">/g,
+    (m, tag, id) => `<${tag} id="${id}"><a class="h-anchor" href="#${id}" aria-label="Link to this section">#</a>`);
+}
+
 export function tableOfContents(headings) {
   if (headings.length < 3) return "";
   return `<nav class="toc" aria-label="On this page">

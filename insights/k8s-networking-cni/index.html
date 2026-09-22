@@ -22,20 +22,33 @@
 <meta name="twitter:description" content="Kubernetes networking is abstract by design, which means the security implications are often underappreciated. The CNI plugin, network policy implementatio…">
 <meta name="twitter:image" content="https://ajnacs.com/assets/og/insights-k8s-networking-cni.svg">
 
-<link rel="icon" href="/images/favicon.ico" sizes="any">
-<link rel="apple-touch-icon" href="/images/ajna-logo.png">
+<link rel="icon" href="/images/favicon.ico" sizes="32x32">
+<link rel="icon" href="/images/ajna-mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
 <meta name="theme-color" content="#0a1020">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Quintessential&display=swap">
 <link rel="stylesheet" href="/assets/css/site.css">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
 <script>
-/* Set the theme before first paint so the page never flashes the wrong one. */
-(function(){try{var t=localStorage.getItem('acs-theme');
-if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
-document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+/* Theme and reading preferences are applied before first paint, so the page
+   never flashes the wrong ground or resets someone's text size mid-read. */
+(function(){try{
+var d=document.documentElement,t=localStorage.getItem('acs-theme');
+if(t!=='dark'&&t!=='light'&&t!=='sepia')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+d.setAttribute('data-theme',t);
+['rsize','rwidth','rface'].forEach(function(k){
+  var v=localStorage.getItem('acs-'+k);
+  if(v&&/^[a-z]{1,5}$/.test(v))d.setAttribute('data-'+k,v);
+});
+if(d.getAttribute('data-rface')==='serif'){
+  var l=document.createElement('link');l.rel='stylesheet';
+  l.href='https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600&display=swap';
+  document.head.appendChild(l);
+}
+}catch(e){}})();
 </script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Kubernetes Networking: CNI Plugins, Network Policies, and Why It Matters for Security","description":"Kubernetes networking is abstract by design, which means the security implications are often underappreciated. The CNI plugin, network policy implementation, and pod-to-pod communication model together determine what your cluster's security posture actually is.","datePublished":"2025-05-12","dateModified":"2025-05-12","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/k8s-networking-cni/","image":"https://ajnacs.com/assets/og/insights-k8s-networking-cni.svg","keywords":"DevSecOps, Cloud Architecture","articleSection":"DevSecOps","wordCount":737}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Kubernetes Networking: CNI Plugins, Network Policies, and Why It Matters for Security"}]}</script>
@@ -45,9 +58,9 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 
 <header class="site-header" id="siteHeader">
   <div class="wrap" style="display:flex;align-items:center;width:min(1220px,100% - var(--gutter)*2)">
-    <a class="brand" href="/">
-      <img src="/images/ajna-logo.png" alt="" width="32" height="32">
-      <span class="brand-name">Ajna<span>CS</span></span>
+    <a class="brand" href="/" aria-label="Ajna Consulting Services — home">
+      <svg viewBox="0 0 100 100" width="40" height="40" fill="none" aria-hidden="true" focusable="false"><defs><linearGradient id="lit-hdr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".30"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".32"/></linearGradient></defs><g transform="rotate(0 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#E8402A"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#F5A623"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#17A05E"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#2B57E8"/></g><path d="M 50 4 L 96 50 L 50 96 L 4 50 Z" fill="url(#lit-hdr)"/><g transform="rotate(0 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><circle cx="50" cy="50" r="6" fill="currentColor"/></svg>
+      <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
     </a>
     <nav class="nav" id="nav" aria-label="Primary">
       <a href="/services/">Services</a>
@@ -109,16 +122,16 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 </svg></div></div>
 
   <div class="art-wrap article-grid">
-    <nav class="toc" aria-label="On this page">
+    <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#the-default-no-isolation">The default: no isolation</a></li><li><a href="#network-policies">Network Policies</a></li><li><a href="#cni-plugin-selection">CNI plugin selection</a></li><li><a href="#the-east-west-traffic-concern">The east-west traffic concern</a></li><li><a href="#dns-based-communication-and-its-security-implications">DNS-based communication and its security implications</a></li></ol>
-</nav>
+</nav></div>
     <div class="prose">
 <p>Kubernetes networking has three layers that interact: the pod network (how pods communicate), service networking (how services are discovered and load-balanced), and the external network (how traffic enters and leaves the cluster). Understanding all three — and the CNI plugin that implements the pod network — is necessary for reasoning about cluster security.</p>
-<h2 id="the-default-no-isolation">The default: no isolation</h2>
+<h2 id="the-default-no-isolation"><a class="h-anchor" href="#the-default-no-isolation" aria-label="Link to this section">#</a>The default: no isolation</h2>
 <p>By default, every pod in a Kubernetes cluster can communicate with every other pod, across namespaces. There are no firewall rules between pods. A compromised pod in the <code>dev</code> namespace can reach pods in the <code>production</code> namespace on any port. This is the default, and it is not appropriate for most production environments.</p>
 <p>Network Policies change this by defining allow-rules for pod-to-pod traffic. The default-deny-all policy, combined with explicit allow rules for required communication, is the correct posture for production clusters.</p>
-<h2 id="network-policies">Network Policies</h2>
+<h2 id="network-policies"><a class="h-anchor" href="#network-policies" aria-label="Link to this section">#</a>Network Policies</h2>
 <p>Network Policies are Kubernetes resources that specify which traffic is allowed to or from a set of pods. They work at the IP and port level.</p>
 <pre><code class="language-yaml">## Default deny all ingress and egress for the production namespace
 apiVersion: networking.k8s.io/v1
@@ -154,18 +167,18 @@ spec:
       port: 8080
 </code></pre>
 <p>The critical detail: Network Policies are only enforced if the CNI plugin supports them. The default Kubernetes networking does not enforce Network Policies without a supporting CNI.</p>
-<h2 id="cni-plugin-selection">CNI plugin selection</h2>
+<h2 id="cni-plugin-selection"><a class="h-anchor" href="#cni-plugin-selection" aria-label="Link to this section">#</a>CNI plugin selection</h2>
 <p>The Container Network Interface (CNI) plugin is the network implementation for your cluster. It provides pod networking (IP address assignment, routing) and, for some plugins, Network Policy enforcement.</p>
 <p><strong>Flannel</strong>: simple, widely used, only provides basic pod networking. Does not enforce Network Policies. Appropriate for development clusters where network segmentation is not required.</p>
 <p><strong>Calico</strong>: full-featured network plugin with Network Policy enforcement plus extended network policies (GlobalNetworkPolicy covering cluster-wide rules, policies that can reference hostnames and CIDR ranges). Strong performance. The default for many production Kubernetes deployments.</p>
 <p><strong>Cilium</strong>: eBPF-based networking. Instead of modifying iptables rules (as most CNIs do), Cilium uses eBPF programs loaded into the Linux kernel. Benefits: significantly better performance at scale, L7 policy (allow specific HTTP paths and methods, not just ports), identity-based policy (using Kubernetes labels, not just IPs). Increasingly common in large-scale production deployments.</p>
 <p><strong>AWS VPC CNI</strong> (for EKS): assigns VPC IP addresses directly to pods. Pods are on the VPC network, not an overlay network. Network policies require Calico or Cilium to be installed alongside the VPC CNI for enforcement.</p>
 <p>For new clusters, Cilium is the forward-looking choice. For existing clusters with Calico, the upgrade is possible but non-trivial. The important thing is that whatever CNI you choose, verify it enforces Network Policies — this is not universally supported and is non-obvious from documentation.</p>
-<h2 id="the-east-west-traffic-concern">The east-west traffic concern</h2>
+<h2 id="the-east-west-traffic-concern"><a class="h-anchor" href="#the-east-west-traffic-concern" aria-label="Link to this section">#</a>The east-west traffic concern</h2>
 <p>In a microservices cluster, most traffic is east-west: service-to-service within the cluster. This traffic is often unencrypted by default, even in production. A network-layer attacker (compromised node, misconfigured routing) can observe plain-text traffic between services.</p>
 <p>Service meshes (Istio, Linkerd, Cilium&#39;s service mesh mode) address this with mutual TLS (mTLS): each service gets a cryptographic identity, and all service-to-service communication is encrypted and authenticated. The overhead is non-zero (latency, compute for TLS operations) but acceptable for most workloads and significant for security posture.</p>
 <p>The alternative — application-level TLS on every service-to-service call — achieves the same security outcome but requires explicit TLS configuration in every service. Service meshes make this automatic.</p>
-<h2 id="dns-based-communication-and-its-security-implications">DNS-based communication and its security implications</h2>
+<h2 id="dns-based-communication-and-its-security-implications"><a class="h-anchor" href="#dns-based-communication-and-its-security-implications" aria-label="Link to this section">#</a>DNS-based communication and its security implications</h2>
 <p>Services in Kubernetes are reached by DNS names (<code>order-service.production.svc.cluster.local</code>). The cluster DNS resolver (CoreDNS) answers these queries. A compromised pod could attempt DNS poisoning or query internal service names to enumerate the cluster topology.</p>
 <p>Network policies can restrict DNS egress to CoreDNS only:</p>
 <pre><code class="language-yaml">## Allow DNS to CoreDNS, nothing else, for production pods
@@ -284,15 +297,47 @@ egress:
     </div></div>
   </section>
 </article>
+
+<div class="reader-tools">
+  <button class="icon-btn" id="readerBtn" type="button" aria-expanded="false" aria-controls="readerPanel" title="Reading settings" aria-label="Reading settings"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2.2"/><circle cx="10" cy="17" r="2.2"/></svg></button>
+  <button class="icon-btn" id="focusBtn" type="button" aria-pressed="false" title="Focus mode" aria-label="Enter focus mode"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></button>
+</div>
+<div class="reader-panel" id="readerPanel" role="dialog" aria-label="Reading settings" hidden>
+  <fieldset><legend>Text size</legend>
+    <div class="seg" data-pref="rsize">
+      <button type="button" data-val="s" aria-pressed="false"><span class="sample s">Aa</span>Small</button><button type="button" data-val="m" aria-pressed="false"><span class="sample ">Aa</span>Default</button><button type="button" data-val="l" aria-pressed="false"><span class="sample l">Aa</span>Large</button><button type="button" data-val="xl" aria-pressed="false"><span class="sample l">Aa</span>Largest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Ground</legend>
+    <div class="seg" data-pref="theme">
+      <button type="button" data-val="light" aria-pressed="false"><span class="swatch light"></span>Light</button><button type="button" data-val="sepia" aria-pressed="false"><span class="swatch sepia"></span>Sepia</button><button type="button" data-val="dark" aria-pressed="false"><span class="swatch dark"></span>Dark</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Column width</legend>
+    <div class="seg" data-pref="rwidth">
+      <button type="button" data-val="s" aria-pressed="false">Narrow</button><button type="button" data-val="m" aria-pressed="false">Default</button><button type="button" data-val="l" aria-pressed="false">Wide</button><button type="button" data-val="xl" aria-pressed="false">Widest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Typeface</legend>
+    <div class="seg" data-pref="rface">
+      <button type="button" data-val="sans" aria-pressed="false"><span class="sample">Aa</span>Sans</button>
+      <button type="button" data-val="serif" aria-pressed="false"><span class="sample serif">Aa</span>Serif</button>
+    </div>
+  </fieldset>
+  <button class="reader-reset" id="readerReset" type="button">Reset to defaults</button>
+  <p class="reader-note">Saved in this browser only — these settings do not follow you to another device.</p>
+</div>
+<button class="focus-exit" id="focusExit" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h6V3M21 9h-6V3M3 15h6v6M21 15h-6v6"/></svg> Exit focus</button>
+
 </main>
 
 <footer class="site-footer">
   <div class="wrap">
     <div class="grid g-4" style="gap:2rem">
       <div>
-        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem">
-          <img src="/images/ajna-logo.png" alt="" width="32" height="32">
-          <span class="brand-name">Ajna<span style="color:#6f9bff">CS</span></span>
+        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem" aria-label="Ajna Consulting Services — home">
+          <svg viewBox="0 0 100 100" width="36" height="36" fill="none" aria-hidden="true" focusable="false"><defs><linearGradient id="lit-ftr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".30"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".32"/></linearGradient></defs><g transform="rotate(0 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#E8402A"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#F5A623"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#17A05E"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#2B57E8"/></g><path d="M 50 4 L 96 50 L 50 96 L 4 50 Z" fill="url(#lit-ftr)"/><g transform="rotate(0 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><circle cx="50" cy="50" r="6" fill="currentColor"/></svg>
+          <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
         </a>
         <p style="font-size:.88rem;line-height:1.65;color:#9fb0d0;max-width:30ch">
           Specialised engineering partner for enterprise architecture, AI &amp; MLOps, and technical enablement.

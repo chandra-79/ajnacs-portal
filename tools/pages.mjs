@@ -237,7 +237,7 @@ ${seriesMap.size ? `<section class="section band band-warm">
     jsonld: [{
       "@context": "https://schema.org", "@type": "Organization",
       "@id": SITE.url + "/#org", name: SITE.name, url: SITE.url,
-      email: SITE.email, logo: SITE.url + "/images/ajna-logo.png",
+      email: SITE.email, logo: SITE.url + "/images/icon-512.png",
       description: "Specialised engineering partner for enterprise architecture, AI and MLOps, and corporate technical enablement.",
       sameAs: [SITE.youtube, SITE.blog],
       founder: { "@type": "Person", name: "Chandra Lanka" },

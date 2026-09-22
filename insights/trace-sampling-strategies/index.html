@@ -22,20 +22,33 @@
 <meta name="twitter:description" content="Distributed tracing at production volume is a sampling problem wearing an instrumentation costume — head vs tail sampling, the consistency rules that keep…">
 <meta name="twitter:image" content="https://ajnacs.com/assets/og/insights-trace-sampling-strategies.svg">
 
-<link rel="icon" href="/images/favicon.ico" sizes="any">
-<link rel="apple-touch-icon" href="/images/ajna-logo.png">
+<link rel="icon" href="/images/favicon.ico" sizes="32x32">
+<link rel="icon" href="/images/ajna-mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
 <meta name="theme-color" content="#0a1020">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Quintessential&display=swap">
 <link rel="stylesheet" href="/assets/css/site.css">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
 <script>
-/* Set the theme before first paint so the page never flashes the wrong one. */
-(function(){try{var t=localStorage.getItem('acs-theme');
-if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
-document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+/* Theme and reading preferences are applied before first paint, so the page
+   never flashes the wrong ground or resets someone's text size mid-read. */
+(function(){try{
+var d=document.documentElement,t=localStorage.getItem('acs-theme');
+if(t!=='dark'&&t!=='light'&&t!=='sepia')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+d.setAttribute('data-theme',t);
+['rsize','rwidth','rface'].forEach(function(k){
+  var v=localStorage.getItem('acs-'+k);
+  if(v&&/^[a-z]{1,5}$/.test(v))d.setAttribute('data-'+k,v);
+});
+if(d.getAttribute('data-rface')==='serif'){
+  var l=document.createElement('link');l.rel='stylesheet';
+  l.href='https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600&display=swap';
+  document.head.appendChild(l);
+}
+}catch(e){}})();
 </script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Trace Sampling: Keeping the Traces That Matter When You Can't Keep Them All","description":"Distributed tracing at production volume is a sampling problem wearing an instrumentation costume — head vs tail sampling, the consistency rules that keep traces whole, error-and-latency-biased retention, and the cost architecture of an honest tracing pipeline.","datePublished":"2025-09-23","dateModified":"2025-09-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/trace-sampling-strategies/","image":"https://ajnacs.com/assets/og/insights-trace-sampling-strategies.svg","keywords":"Observability, Distributed Systems, Reliability, Performance, Cloud Architecture","articleSection":"Observability","wordCount":923}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Trace Sampling: Keeping the Traces That Matter When You Can't Keep Them All"}]}</script>
@@ -45,9 +58,9 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 
 <header class="site-header" id="siteHeader">
   <div class="wrap" style="display:flex;align-items:center;width:min(1220px,100% - var(--gutter)*2)">
-    <a class="brand" href="/">
-      <img src="/images/ajna-logo.png" alt="" width="32" height="32">
-      <span class="brand-name">Ajna<span>CS</span></span>
+    <a class="brand" href="/" aria-label="Ajna Consulting Services — home">
+      <svg viewBox="0 0 100 100" width="40" height="40" fill="none" aria-hidden="true" focusable="false"><defs><linearGradient id="lit-hdr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".30"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".32"/></linearGradient></defs><g transform="rotate(0 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#E8402A"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#F5A623"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#17A05E"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#2B57E8"/></g><path d="M 50 4 L 96 50 L 50 96 L 4 50 Z" fill="url(#lit-hdr)"/><g transform="rotate(0 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><circle cx="50" cy="50" r="6" fill="currentColor"/></svg>
+      <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
     </a>
     <nav class="nav" id="nav" aria-label="Primary">
       <a href="/services/">Services</a>
@@ -101,19 +114,19 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 </svg></div></div>
 
   <div class="art-wrap article-grid">
-    <nav class="toc" aria-label="On this page">
+    <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#the-consistency-rule-that-everything-rests-on">The consistency rule that everything rests on</a></li><li><a href="#head-vs-tail-deciding-early-and-cheap-or-late-and-smart">Head vs tail: deciding early and cheap, or late and smart</a></li><li><a href="#the-operational-rim">The operational rim</a></li></ol>
-</nav>
+</nav></div>
     <div class="prose">
 <p>Distributed tracing&#39;s pitch — every request&#39;s journey across services, reconstructible on demand — collides at production scale with arithmetic nobody escapes: a mid-size estate serving 50k requests/sec, each touching a dozen services with a handful of spans apiece, generates <em>billions of spans daily</em>, and storing them all costs more than the incidents they&#39;d explain. Tracing at scale is therefore a <strong>retention-policy problem</strong>: which traces do you keep, decided by what logic, enforced where — and the quality of those decisions determines whether the tracing system answers the 3 AM question (&quot;show me a trace of the failure&quot;) or delivers its most demoralizing failure mode: perfect instrumentation, 1% sampling, and <em>no trace of the incident anyone is debugging</em>, because uniform randomness keeps mostly the healthy majority.</p>
-<h2 id="the-consistency-rule-that-everything-rests-on">The consistency rule that everything rests on</h2>
+<h2 id="the-consistency-rule-that-everything-rests-on"><a class="h-anchor" href="#the-consistency-rule-that-everything-rests-on" aria-label="Link to this section">#</a>The consistency rule that everything rests on</h2>
 <p>Before strategy: a partial trace is a lie — spans sampled independently per service produce journeys with missing legs that mislead worse than no trace. The foundational mechanism is <strong>consistent, propagated sampling decisions</strong>: the decision made once (typically at the ingress span) and carried in the trace context (the W3C traceparent&#39;s sampled flag — the same propagation rails as every context discipline), so every downstream service honors the same verdict and traces arrive <em>whole or not at all</em>. Every strategy below is a policy about <em>where and on what information</em> that decision gets made — which is the entire design space.</p>
-<h2 id="head-vs-tail-deciding-early-and-cheap-or-late-and-smart">Head vs tail: deciding early and cheap, or late and smart</h2>
+<h2 id="head-vs-tail-deciding-early-and-cheap-or-late-and-smart"><a class="h-anchor" href="#head-vs-tail-deciding-early-and-cheap-or-late-and-smart" aria-label="Link to this section">#</a>Head vs tail: deciding early and cheap, or late and smart</h2>
 <p><strong>Head sampling</strong> decides at trace start with what&#39;s knowable then — essentially nothing about how the trace will turn out — so its policies are rate-shaped: probabilistic percentages, rate limits per service, per-route overrides (checkout at 100%, health checks at 0% — the criticality tiering from every SLO discipline). Its virtues: trivially cheap (unsampled traces cost near-zero — the spans are never exported, or never created), simple, and <em>predictable</em> in cost. Its structural flaw: it cannot know the future — the error, the 30-second outlier, the interesting anomaly all look identical to the boring median at decision time, so head sampling keeps them at the same rate as everything else, which at 1% means missing 99% of exactly what you wanted.</p>
 <p><strong>Tail sampling</strong> inverts the timing: buffer every trace&#39;s spans (in a collector tier), decide <em>after completion</em> with full knowledge — keep all errors, keep everything over the latency threshold, keep traces touching flagged tenants or routes, downsample the healthy fast majority to a token rate. This is the policy that matches what humans actually query for (&quot;show me slow,&quot; &quot;show me failed&quot;), and it&#39;s what the OpenTelemetry collector&#39;s tail-sampling machinery and the vendor pipelines implement. The bill: the buffering tier is real infrastructure (every span held in memory for the decision window — the capacity math scales with trace volume and duration, and long-running traces strain the window), decisions require <em>all</em> the spans to converge on one collector (trace-ID-based routing in the collector fleet — the consistent-hashing pattern, again), and cost predictability degrades (an incident producing 100% errors is also producing 100% keep-decisions at your worst moment — the sampling policy needs its own rate cap, per the protect-the-protector instinct).</p>
 <p>The mature architecture is layered, as usual: <strong>head sampling as the volume governor</strong> (drop the health checks and the known-noise at the source — the cheapest span is the one never created), <strong>tail sampling as the intelligence layer</strong> (error/latency/attribute-biased retention on what survives), and — the piece that makes relaxed sampling tolerable — <strong>metrics and exemplars carrying the aggregate truth</strong>: the span-derived RED metrics are computed <em>before</em> sampling (so dashboards and SLO math see 100% of reality regardless of trace retention — the histogram-sketch machinery from observability practice), with <strong>exemplars</strong> linking metric buckets to retained trace IDs (the &quot;click the p99 bucket, land on a real slow trace&quot; workflow that makes sampled tracing feel unsampled exactly where investigation starts).</p>
-<h2 id="the-operational-rim">The operational rim</h2>
+<h2 id="the-operational-rim"><a class="h-anchor" href="#the-operational-rim" aria-label="Link to this section">#</a>The operational rim</h2>
 <p>The details that separate working pipelines from aspirational ones: <strong>sample-rate metadata on every kept trace</strong> (the decision and its rate recorded as span attributes, so analytical queries can re-weight — a kept-at-1% trace represents a hundred; count-style analysis over traces without rate-awareness is silently wrong arithmetic), <strong>per-signal budgets with owners</strong> (trace volume by service on the same FinOps-style dashboards as log ingestion — the cardinality-and-cost review from logging practice, applied to spans; the service exporting 40% of the estate&#39;s spans for no queried benefit is this pipeline&#39;s unused-index equivalent), <strong>dynamic and per-tenant overrides</strong> (the debug-sampling toggle — crank a route/tenant to 100% during investigation without a deploy, per the runtime-toggle disciplines; and the whale tenant&#39;s traces rate-capped per the fairness rules), and <strong>retention tiers matching query patterns</strong> (hot full-fidelity days for incident work, downsampled/aggregated weeks for trends — the lifecycle economics, as everywhere). And the honesty check that keeps the whole system accountable: periodically, during a real incident review, ask <em>&quot;did we have the trace?&quot;</em> — the tracing pipeline&#39;s single meaningful SLO is trace-availability-for-investigated-incidents, and a quarter of misses is the signal to rebalance policies toward the tail.</p>
 <p>The closing frame: sampling isn&#39;t the compromise tracing makes with cost — it&#39;s the design surface where an observability team encodes <em>what questions the organization has committed to answering</em>. Keep the errors, keep the outliers, keep whole traces or none, let metrics carry the aggregates, link them with exemplars, and cap the volume everywhere else — and 1% storage delivers 95% of the answers, which is the trade every honest telemetry budget was always going to make. The only unacceptable policy is the accidental one.</p>
 
@@ -237,15 +250,47 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
     </div></div>
   </section>
 </article>
+
+<div class="reader-tools">
+  <button class="icon-btn" id="readerBtn" type="button" aria-expanded="false" aria-controls="readerPanel" title="Reading settings" aria-label="Reading settings"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2.2"/><circle cx="10" cy="17" r="2.2"/></svg></button>
+  <button class="icon-btn" id="focusBtn" type="button" aria-pressed="false" title="Focus mode" aria-label="Enter focus mode"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></button>
+</div>
+<div class="reader-panel" id="readerPanel" role="dialog" aria-label="Reading settings" hidden>
+  <fieldset><legend>Text size</legend>
+    <div class="seg" data-pref="rsize">
+      <button type="button" data-val="s" aria-pressed="false"><span class="sample s">Aa</span>Small</button><button type="button" data-val="m" aria-pressed="false"><span class="sample ">Aa</span>Default</button><button type="button" data-val="l" aria-pressed="false"><span class="sample l">Aa</span>Large</button><button type="button" data-val="xl" aria-pressed="false"><span class="sample l">Aa</span>Largest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Ground</legend>
+    <div class="seg" data-pref="theme">
+      <button type="button" data-val="light" aria-pressed="false"><span class="swatch light"></span>Light</button><button type="button" data-val="sepia" aria-pressed="false"><span class="swatch sepia"></span>Sepia</button><button type="button" data-val="dark" aria-pressed="false"><span class="swatch dark"></span>Dark</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Column width</legend>
+    <div class="seg" data-pref="rwidth">
+      <button type="button" data-val="s" aria-pressed="false">Narrow</button><button type="button" data-val="m" aria-pressed="false">Default</button><button type="button" data-val="l" aria-pressed="false">Wide</button><button type="button" data-val="xl" aria-pressed="false">Widest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Typeface</legend>
+    <div class="seg" data-pref="rface">
+      <button type="button" data-val="sans" aria-pressed="false"><span class="sample">Aa</span>Sans</button>
+      <button type="button" data-val="serif" aria-pressed="false"><span class="sample serif">Aa</span>Serif</button>
+    </div>
+  </fieldset>
+  <button class="reader-reset" id="readerReset" type="button">Reset to defaults</button>
+  <p class="reader-note">Saved in this browser only — these settings do not follow you to another device.</p>
+</div>
+<button class="focus-exit" id="focusExit" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h6V3M21 9h-6V3M3 15h6v6M21 15h-6v6"/></svg> Exit focus</button>
+
 </main>
 
 <footer class="site-footer">
   <div class="wrap">
     <div class="grid g-4" style="gap:2rem">
       <div>
-        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem">
-          <img src="/images/ajna-logo.png" alt="" width="32" height="32">
-          <span class="brand-name">Ajna<span style="color:#6f9bff">CS</span></span>
+        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem" aria-label="Ajna Consulting Services — home">
+          <svg viewBox="0 0 100 100" width="36" height="36" fill="none" aria-hidden="true" focusable="false"><defs><linearGradient id="lit-ftr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".30"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".32"/></linearGradient></defs><g transform="rotate(0 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#E8402A"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#F5A623"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#17A05E"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#2B57E8"/></g><path d="M 50 4 L 96 50 L 50 96 L 4 50 Z" fill="url(#lit-ftr)"/><g transform="rotate(0 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><circle cx="50" cy="50" r="6" fill="currentColor"/></svg>
+          <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
         </a>
         <p style="font-size:.88rem;line-height:1.65;color:#9fb0d0;max-width:30ch">
           Specialised engineering partner for enterprise architecture, AI &amp; MLOps, and technical enablement.

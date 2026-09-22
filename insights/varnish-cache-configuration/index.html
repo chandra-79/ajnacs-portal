@@ -22,20 +22,33 @@
 <meta name="twitter:description" content="Varnish is a powerful HTTP accelerator, but the configuration language (VCL) has a steep learning curve. Here&#39;s how to configure Varnish for real workloads…">
 <meta name="twitter:image" content="https://ajnacs.com/assets/og/insights-varnish-cache-configuration.svg">
 
-<link rel="icon" href="/images/favicon.ico" sizes="any">
-<link rel="apple-touch-icon" href="/images/ajna-logo.png">
+<link rel="icon" href="/images/favicon.ico" sizes="32x32">
+<link rel="icon" href="/images/ajna-mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
 <meta name="theme-color" content="#0a1020">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Quintessential&display=swap">
 <link rel="stylesheet" href="/assets/css/site.css">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
 <script>
-/* Set the theme before first paint so the page never flashes the wrong one. */
-(function(){try{var t=localStorage.getItem('acs-theme');
-if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
-document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+/* Theme and reading preferences are applied before first paint, so the page
+   never flashes the wrong ground or resets someone's text size mid-read. */
+(function(){try{
+var d=document.documentElement,t=localStorage.getItem('acs-theme');
+if(t!=='dark'&&t!=='light'&&t!=='sepia')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+d.setAttribute('data-theme',t);
+['rsize','rwidth','rface'].forEach(function(k){
+  var v=localStorage.getItem('acs-'+k);
+  if(v&&/^[a-z]{1,5}$/.test(v))d.setAttribute('data-'+k,v);
+});
+if(d.getAttribute('data-rface')==='serif'){
+  var l=document.createElement('link');l.rel='stylesheet';
+  l.href='https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600&display=swap';
+  document.head.appendChild(l);
+}
+}catch(e){}})();
 </script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Varnish Cache Configuration: A Practical Guide to VCL and Caching Strategy","description":"Varnish is a powerful HTTP accelerator, but the configuration language (VCL) has a steep learning curve. Here's how to configure Varnish for real workloads — including cache key design, TTL strategy, authentication handling, and ESI for partial caching.","datePublished":"2025-03-04","dateModified":"2025-03-04","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/varnish-cache-configuration/","image":"https://ajnacs.com/assets/og/insights-varnish-cache-configuration.svg","keywords":"CDN & Caching, Infrastructure, Architecture","articleSection":"Infrastructure","wordCount":940}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Varnish Cache Configuration: A Practical Guide to VCL and Caching Strategy"}]}</script>
@@ -45,9 +58,9 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 
 <header class="site-header" id="siteHeader">
   <div class="wrap" style="display:flex;align-items:center;width:min(1220px,100% - var(--gutter)*2)">
-    <a class="brand" href="/">
-      <img src="/images/ajna-logo.png" alt="" width="32" height="32">
-      <span class="brand-name">Ajna<span>CS</span></span>
+    <a class="brand" href="/" aria-label="Ajna Consulting Services — home">
+      <svg viewBox="0 0 100 100" width="40" height="40" fill="none" aria-hidden="true" focusable="false"><defs><linearGradient id="lit-hdr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".30"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".32"/></linearGradient></defs><g transform="rotate(0 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#E8402A"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#F5A623"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#17A05E"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#2B57E8"/></g><path d="M 50 4 L 96 50 L 50 96 L 4 50 Z" fill="url(#lit-hdr)"/><g transform="rotate(0 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><circle cx="50" cy="50" r="6" fill="currentColor"/></svg>
+      <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
     </a>
     <nav class="nav" id="nav" aria-label="Primary">
       <a href="/services/">Services</a>
@@ -101,13 +114,13 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 </svg></div></div>
 
   <div class="art-wrap article-grid">
-    <nav class="toc" aria-label="On this page">
+    <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#the-vcl-request-lifecycle">The VCL request lifecycle</a></li><li><a href="#the-minimum-config-that-makes-varnish-useful">The minimum config that makes Varnish useful</a></li><li><a href="#cache-key-design">Cache key design</a></li><li><a href="#ttl-strategy">TTL strategy</a></li><li><a href="#handling-authenticated-content">Handling authenticated content</a></li><li><a href="#purging-cached-content">Purging cached content</a></li><li><a href="#monitoring-what-varnish-is-doing">Monitoring what Varnish is doing</a></li></ol>
-</nav>
+</nav></div>
     <div class="prose">
 <p>Varnish Cache sits in front of your web servers and caches responses in memory. For content-heavy sites with high read traffic, a correctly configured Varnish instance absorbs most of the load that would otherwise hit your application servers. The challenge is &quot;correctly configured&quot; — Varnish&#39;s Varnish Configuration Language (VCL) is C-like and the default behavior needs adjustment for most real workloads.</p>
-<h2 id="the-vcl-request-lifecycle">The VCL request lifecycle</h2>
+<h2 id="the-vcl-request-lifecycle"><a class="h-anchor" href="#the-vcl-request-lifecycle" aria-label="Link to this section">#</a>The VCL request lifecycle</h2>
 <aside class="keyfig">
   <p class="keyfig-label">Key figure</p>
   <p class="keyfig-text">A well-configured Varnish instance handling content workloads should have a hit ratio above <b>90%</b>.</p>
@@ -122,7 +135,7 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 <li><code>vcl_deliver</code>: send response to client</li>
 </ul>
 <p>You override behavior by adding logic to these subroutines in your VCL file.</p>
-<h2 id="the-minimum-config-that-makes-varnish-useful">The minimum config that makes Varnish useful</h2>
+<h2 id="the-minimum-config-that-makes-varnish-useful"><a class="h-anchor" href="#the-minimum-config-that-makes-varnish-useful" aria-label="Link to this section">#</a>The minimum config that makes Varnish useful</h2>
 <p>Default Varnish won&#39;t cache requests with cookies. Since most modern applications set cookies, this means nothing gets cached by default. The first VCL customisation: strip cookies for assets that don&#39;t need them.</p>
 <pre><code class="language-vcl">sub vcl_recv {
     // Strip cookies for static assets
@@ -137,7 +150,7 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 }
 </code></pre>
 <p>With cookies stripped, Varnish will serve these from cache for all users.</p>
-<h2 id="cache-key-design">Cache key design</h2>
+<h2 id="cache-key-design"><a class="h-anchor" href="#cache-key-design" aria-label="Link to this section">#</a>Cache key design</h2>
 <p>The default cache key is <code>Host</code> + <code>URL</code>. For most applications this is correct, but some workloads need adjustment.</p>
 <p><strong>Vary headers</strong>: if your application serves different content based on <code>Accept-Encoding</code> or <code>Accept-Language</code>, the <code>Vary</code> response header tells Varnish to cache separate versions per value. A <code>Vary: Accept-Encoding</code> header means Varnish caches both the gzip and non-gzip versions of each URL separately. Too many Vary headers fragment the cache and reduce hit rates.</p>
 <p><strong>Normalise query strings</strong>: URLs with different query parameter orderings are cached separately by default. <code>?sort=name&amp;page=2</code> and <code>?page=2&amp;sort=name</code> produce different cache entries. Normalise query strings to increase cache hits:</p>
@@ -147,7 +160,7 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
     set req.url = regsub(req.url, &quot;(\?[^#]+)#.*$&quot;, &quot;\1&quot;);  // strip fragment
 }
 </code></pre>
-<h2 id="ttl-strategy">TTL strategy</h2>
+<h2 id="ttl-strategy"><a class="h-anchor" href="#ttl-strategy" aria-label="Link to this section">#</a>TTL strategy</h2>
 <p>Varnish caches based on the <code>Cache-Control</code> header from your backend. If your backend sends <code>Cache-Control: max-age=300</code>, Varnish caches for 5 minutes. If the backend doesn&#39;t send a caching header, Varnish uses its <code>default_ttl</code> (120 seconds by default).</p>
 <p>In <code>vcl_backend_response</code>, you can override or extend TTLs:</p>
 <pre><code class="language-vcl">sub vcl_backend_response {
@@ -170,7 +183,7 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 }
 </code></pre>
 <p><strong>Grace mode</strong> is underused and valuable. <code>beresp.grace = 120s</code> tells Varnish: &quot;if the cached object is expired but the backend is slow or unavailable, serve the stale object for up to 2 minutes&quot;. This prevents users from seeing errors during backend restarts or traffic spikes.</p>
-<h2 id="handling-authenticated-content">Handling authenticated content</h2>
+<h2 id="handling-authenticated-content"><a class="h-anchor" href="#handling-authenticated-content" aria-label="Link to this section">#</a>Handling authenticated content</h2>
 <p>Content behind authentication should not be served from cache to unauthenticated users. The standard approach:</p>
 <pre><code class="language-vcl">sub vcl_recv {
     // Pass authenticated requests directly to backend
@@ -190,7 +203,7 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 &lt;esi:include src=&quot;/content/article-body&quot; ttl=&quot;3600&quot; /&gt;
 </code></pre>
 <p>Varnish assembles the final response by fetching and caching each included fragment independently. The article body is cached for an hour; the user header fragment is not cached (or cached briefly). The result: most of the page comes from cache; only the personalised fragment hits the backend.</p>
-<h2 id="purging-cached-content">Purging cached content</h2>
+<h2 id="purging-cached-content"><a class="h-anchor" href="#purging-cached-content" aria-label="Link to this section">#</a>Purging cached content</h2>
 <p>When content changes, you need to invalidate the cached version. Varnish provides several mechanisms:</p>
 <p><strong>BAN</strong>: mark all cached objects matching an expression as invalid</p>
 <pre><code class="language-bash">varnishadm ban req.url ~ ^/blog/new-post
@@ -215,7 +228,7 @@ sub vcl_recv {
 <pre><code class="language-bash">curl -X PURGE http://varnish-host/blog/specific-post
 </code></pre>
 <p>In production, restrict purge requests to trusted internal IPs.</p>
-<h2 id="monitoring-what-varnish-is-doing">Monitoring what Varnish is doing</h2>
+<h2 id="monitoring-what-varnish-is-doing"><a class="h-anchor" href="#monitoring-what-varnish-is-doing" aria-label="Link to this section">#</a>Monitoring what Varnish is doing</h2>
 <p><code>varnishstat</code> shows real-time statistics: cache hit ratio, request rate, backend health. The metric to watch first: <code>cache_hit / (cache_hit + cache_miss)</code>. A well-configured Varnish instance handling content workloads should have a hit ratio above 90%.</p>
 <p><code>varnishlog</code> shows request-level logs with the cache decision for each request. Essential for debugging why specific requests aren&#39;t being cached.</p>
 <p><em>Tuning a Varnish configuration or designing a caching strategy for a high-traffic site? <a href="/contact">Happy to work through the specifics.</a></em></p>
@@ -331,15 +344,47 @@ sub vcl_recv {
     </div></div>
   </section>
 </article>
+
+<div class="reader-tools">
+  <button class="icon-btn" id="readerBtn" type="button" aria-expanded="false" aria-controls="readerPanel" title="Reading settings" aria-label="Reading settings"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2.2"/><circle cx="10" cy="17" r="2.2"/></svg></button>
+  <button class="icon-btn" id="focusBtn" type="button" aria-pressed="false" title="Focus mode" aria-label="Enter focus mode"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></button>
+</div>
+<div class="reader-panel" id="readerPanel" role="dialog" aria-label="Reading settings" hidden>
+  <fieldset><legend>Text size</legend>
+    <div class="seg" data-pref="rsize">
+      <button type="button" data-val="s" aria-pressed="false"><span class="sample s">Aa</span>Small</button><button type="button" data-val="m" aria-pressed="false"><span class="sample ">Aa</span>Default</button><button type="button" data-val="l" aria-pressed="false"><span class="sample l">Aa</span>Large</button><button type="button" data-val="xl" aria-pressed="false"><span class="sample l">Aa</span>Largest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Ground</legend>
+    <div class="seg" data-pref="theme">
+      <button type="button" data-val="light" aria-pressed="false"><span class="swatch light"></span>Light</button><button type="button" data-val="sepia" aria-pressed="false"><span class="swatch sepia"></span>Sepia</button><button type="button" data-val="dark" aria-pressed="false"><span class="swatch dark"></span>Dark</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Column width</legend>
+    <div class="seg" data-pref="rwidth">
+      <button type="button" data-val="s" aria-pressed="false">Narrow</button><button type="button" data-val="m" aria-pressed="false">Default</button><button type="button" data-val="l" aria-pressed="false">Wide</button><button type="button" data-val="xl" aria-pressed="false">Widest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Typeface</legend>
+    <div class="seg" data-pref="rface">
+      <button type="button" data-val="sans" aria-pressed="false"><span class="sample">Aa</span>Sans</button>
+      <button type="button" data-val="serif" aria-pressed="false"><span class="sample serif">Aa</span>Serif</button>
+    </div>
+  </fieldset>
+  <button class="reader-reset" id="readerReset" type="button">Reset to defaults</button>
+  <p class="reader-note">Saved in this browser only — these settings do not follow you to another device.</p>
+</div>
+<button class="focus-exit" id="focusExit" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h6V3M21 9h-6V3M3 15h6v6M21 15h-6v6"/></svg> Exit focus</button>
+
 </main>
 
 <footer class="site-footer">
   <div class="wrap">
     <div class="grid g-4" style="gap:2rem">
       <div>
-        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem">
-          <img src="/images/ajna-logo.png" alt="" width="32" height="32">
-          <span class="brand-name">Ajna<span style="color:#6f9bff">CS</span></span>
+        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem" aria-label="Ajna Consulting Services — home">
+          <svg viewBox="0 0 100 100" width="36" height="36" fill="none" aria-hidden="true" focusable="false"><defs><linearGradient id="lit-ftr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".30"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".32"/></linearGradient></defs><g transform="rotate(0 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#E8402A"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#F5A623"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#17A05E"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#2B57E8"/></g><path d="M 50 4 L 96 50 L 50 96 L 4 50 Z" fill="url(#lit-ftr)"/><g transform="rotate(0 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><circle cx="50" cy="50" r="6" fill="currentColor"/></svg>
+          <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
         </a>
         <p style="font-size:.88rem;line-height:1.65;color:#9fb0d0;max-width:30ch">
           Specialised engineering partner for enterprise architecture, AI &amp; MLOps, and technical enablement.

@@ -22,20 +22,33 @@
 <meta name="twitter:description" content="Rolling updates, blue-green switches, canary releases, and shadow traffic — what each strategy really costs, what each protects against, and the database p…">
 <meta name="twitter:image" content="https://ajnacs.com/assets/og/insights-deployment-strategies-blue-green-canary.svg">
 
-<link rel="icon" href="/images/favicon.ico" sizes="any">
-<link rel="apple-touch-icon" href="/images/ajna-logo.png">
+<link rel="icon" href="/images/favicon.ico" sizes="32x32">
+<link rel="icon" href="/images/ajna-mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
 <meta name="theme-color" content="#0a1020">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Quintessential&display=swap">
 <link rel="stylesheet" href="/assets/css/site.css">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
 <script>
-/* Set the theme before first paint so the page never flashes the wrong one. */
-(function(){try{var t=localStorage.getItem('acs-theme');
-if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
-document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+/* Theme and reading preferences are applied before first paint, so the page
+   never flashes the wrong ground or resets someone's text size mid-read. */
+(function(){try{
+var d=document.documentElement,t=localStorage.getItem('acs-theme');
+if(t!=='dark'&&t!=='light'&&t!=='sepia')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+d.setAttribute('data-theme',t);
+['rsize','rwidth','rface'].forEach(function(k){
+  var v=localStorage.getItem('acs-'+k);
+  if(v&&/^[a-z]{1,5}$/.test(v))d.setAttribute('data-'+k,v);
+});
+if(d.getAttribute('data-rface')==='serif'){
+  var l=document.createElement('link');l.rel='stylesheet';
+  l.href='https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600&display=swap';
+  document.head.appendChild(l);
+}
+}catch(e){}})();
 </script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Deployment Strategies Compared: Rolling, Blue-Green, Canary, and When Each Actually Fits","description":"Rolling updates, blue-green switches, canary releases, and shadow traffic — what each strategy really costs, what each protects against, and the database problem that constrains all of them.","datePublished":"2026-03-20","dateModified":"2026-03-20","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/deployment-strategies-blue-green-canary/","image":"https://ajnacs.com/assets/og/insights-deployment-strategies-blue-green-canary.svg","keywords":"Deployment, Platform Engineering, Engineering Practice, Containers, Reliability","articleSection":"Platform Engineering","wordCount":1035}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Deployment Strategies Compared: Rolling, Blue-Green, Canary, and When Each Actually Fits"}]}</script>
@@ -45,9 +58,9 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 
 <header class="site-header" id="siteHeader">
   <div class="wrap" style="display:flex;align-items:center;width:min(1220px,100% - var(--gutter)*2)">
-    <a class="brand" href="/">
-      <img src="/images/ajna-logo.png" alt="" width="32" height="32">
-      <span class="brand-name">Ajna<span>CS</span></span>
+    <a class="brand" href="/" aria-label="Ajna Consulting Services — home">
+      <svg viewBox="0 0 100 100" width="40" height="40" fill="none" aria-hidden="true" focusable="false"><defs><linearGradient id="lit-hdr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".30"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".32"/></linearGradient></defs><g transform="rotate(0 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#E8402A"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#F5A623"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#17A05E"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#2B57E8"/></g><path d="M 50 4 L 96 50 L 50 96 L 4 50 Z" fill="url(#lit-hdr)"/><g transform="rotate(0 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><circle cx="50" cy="50" r="6" fill="currentColor"/></svg>
+      <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
     </a>
     <nav class="nav" id="nav" aria-label="Primary">
       <a href="/services/">Services</a>
@@ -101,14 +114,14 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 </svg></div></div>
 
   <div class="art-wrap article-grid">
-    <nav class="toc" aria-label="On this page">
+    <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#the-baseline-rolling-updates">The baseline: rolling updates</a></li><li><a href="#blue-green-the-binary-switch">Blue-green: the binary switch</a></li><li><a href="#canary-measured-exposure">Canary: measured exposure</a></li><li><a href="#the-constraint-underneath-all-of-them-the-database">The constraint underneath all of them: the database</a></li><li><a href="#choosing-and-the-maturity-path">Choosing, and the maturity path</a></li></ol>
-</nav>
+</nav></div>
     <div class="prose">
 <p>Deployment strategy discussions have a way of floating free of their constraints. Teams debate blue-green versus canary as if choosing a philosophy, when the real determinants are unglamorous: how many instances you run, whether your traffic layer can split by percentage, what your observability can detect in five minutes, and — above all — whether your database schema can serve two application versions at once.</p>
 <p>Here&#39;s the strategy landscape with the constraints attached.</p>
-<h2 id="the-baseline-rolling-updates">The baseline: rolling updates</h2>
+<h2 id="the-baseline-rolling-updates"><a class="h-anchor" href="#the-baseline-rolling-updates" aria-label="Link to this section">#</a>The baseline: rolling updates</h2>
 <aside class="keyfig">
   <p class="keyfig-label">Key figure</p>
   <p class="keyfig-text">During a rollout, both versions serve mixed traffic with no control over who gets what — you can&#39;t aim the new version at <b>1%</b> or at internal users first.</p>
@@ -116,20 +129,20 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 <p>Replace instances a few at a time behind a load balancer until the fleet runs the new version. This is Kubernetes&#39; default and the industry&#39;s workhorse, and its virtues are real: no extra capacity beyond a surge margin, no traffic-management sophistication required, built into every orchestrator.</p>
 <p>Its limits define why the other strategies exist. During a rollout, <strong>both versions serve mixed traffic with no control over who gets what</strong> — you can&#39;t aim the new version at 1% or at internal users first. Detection is coarse: by the time your error-rate alert fires, the rollout may be 60% complete. And &quot;rollback&quot; is a second rolling deployment, taking as long as the first, during which the bad version keeps serving.</p>
 <p>Rolling is the right answer when changes are low-risk, releases are frequent and small, and your test pipeline catches most problems pre-production. Its two non-negotiables: real <strong>readiness checks</strong> (traffic must not arrive before warmup — a JVM serving requests during class-loading is a self-inflicted incident) and <strong>graceful termination</strong> (drain connections before killing instances; the deploy-time 502 blip that teams learn to ignore is almost always a draining bug, and learned alarm-ignoring is expensive).</p>
-<h2 id="blue-green-the-binary-switch">Blue-green: the binary switch</h2>
+<h2 id="blue-green-the-binary-switch"><a class="h-anchor" href="#blue-green-the-binary-switch" aria-label="Link to this section">#</a>Blue-green: the binary switch</h2>
 <p>Run two complete environments; deploy to the idle one, smoke-test it against production infrastructure, then flip traffic atomically at the router. Rollback is flipping back — seconds, not minutes.</p>
 <p>What you&#39;re buying: <strong>instant, rehearsed rollback</strong> and the ability to validate the real artifact on real infrastructure before any user meets it. What you&#39;re paying: double capacity (transient in cloud/Kubernetes, where &quot;environments&quot; are just deployments and the cost is an hour of duplicate pods, not a second data center), and — the underrated one — <strong>all-at-once exposure</strong>: when you flip, 100% of users hit the new version simultaneously, so anything your smoke tests missed hits everyone at once. Blue-green trades blast-radius control for rollback speed.</p>
 <p>Operational details that decide success: long-lived connections (websockets, streaming) need a drain story at flip time; background workers and schedulers must not double-run while both environments exist; and the idle environment&#39;s configuration must be <em>provably</em> identical — drift between blue and green converts your rollback plan into a second incident.</p>
 <p>Blue-green fits when releases are infrequent and chunky, rollback speed is the dominant requirement (payments, trading windows), or compliance demands a validated-then-promoted artifact with a clean audit line.</p>
-<h2 id="canary-measured-exposure">Canary: measured exposure</h2>
+<h2 id="canary-measured-exposure"><a class="h-anchor" href="#canary-measured-exposure" aria-label="Link to this section">#</a>Canary: measured exposure</h2>
 <p>Route a small slice of traffic — 1%, then 5%, 25%, 100% — to the new version, comparing its health against the stable fleet at each step, with automatic rollback on regression. This is the strategy hyperscalers converge on, because it converts deployment risk into a controlled experiment: worst case, 1% of users saw the bug for four minutes.</p>
 <p>The honest cost is that <strong>canary is an observability program wearing a deployment costume.</strong> To progress safely you need per-version metrics (latency, errors, saturation, and ideally one business metric — orders completed, not just HTTP 200s), traffic splitting finer than instance granularity (a service mesh or L7 load balancer; ingress percentage routing), and <em>automated</em> analysis — humans watching dashboards do not reliably catch a 2% error-rate delta at step three of a 2 AM rollout. Tooling exists precisely for this (Argo Rollouts and Flagger drive the analysis loop against Prometheus/Datadog queries in Kubernetes-land); adopting the tool without defining the metrics is the common half-implementation.</p>
 <p>Two sharp edges: <strong>session affinity</strong> (a user bouncing between versions mid-session must be safe, or you need sticky routing), and <strong>sample size</strong> — at 1% traffic on a modest service, rare failure modes simply won&#39;t occur during the canary window; size steps and durations against actual request volumes, not round numbers.</p>
 <p>A canary&#39;s quieter sibling deserves mention: <strong>shadow traffic</strong> — mirror production requests to the new version and <em>discard its responses</em>. Zero user risk, superb for validating performance and error behavior of risky rewrites; useless for anything with side effects unless you can stub them. Rewrites and migrations should shadow before they canary.</p>
-<h2 id="the-constraint-underneath-all-of-them-the-database">The constraint underneath all of them: the database</h2>
+<h2 id="the-constraint-underneath-all-of-them-the-database"><a class="h-anchor" href="#the-constraint-underneath-all-of-them-the-database" aria-label="Link to this section">#</a>The constraint underneath all of them: the database</h2>
 <p>Every strategy above assumes two application versions can coexist against one database. That assumption — not the traffic mechanics — is where zero-downtime deployment is actually won or lost. The discipline is <strong>expand/contract</strong>: additive schema changes first (new columns nullable or defaulted, new tables, dual-write where needed), deploy code that works with both shapes, backfill, then contract (drop the old shape) releases later, after rollback windows close. The moment a deployment requires a schema change and a code change to land <em>together</em>, you&#39;ve bought an outage window regardless of your traffic strategy. Schema review — &quot;can version N-1 run against this?&quot; — belongs in the pipeline as a gate, not in the post-incident review as a finding.</p>
 <p>The same coexistence test applies to queues (old consumers meeting new message schemas), caches (serialization compatibility), and any singleton background jobs.</p>
-<h2 id="choosing-and-the-maturity-path">Choosing, and the maturity path</h2>
+<h2 id="choosing-and-the-maturity-path"><a class="h-anchor" href="#choosing-and-the-maturity-path" aria-label="Link to this section">#</a>Choosing, and the maturity path</h2>
 <p>The selection heuristic in one breath: <strong>rolling</strong> for routine low-risk changes with good pre-prod coverage; <strong>blue-green</strong> when rollback-in-seconds is the requirement and all-at-once exposure is acceptable after smoke tests; <strong>canary</strong> when user-facing risk must be bounded and you have (or will build) the observability to automate judgment; <strong>shadow</strong> before big rewrites. These compose — plenty of mature shops blue-green the infrastructure layer while canarying application releases through it.</p>
 <p>And note what all four strategies quietly assume: <strong>decoupling deploy from release</strong>. Feature flags let code ship dark and activate independently, which shrinks deployment risk to &quot;does the binary run&quot; while product risk is managed per-feature. Teams that internalize that separation stop needing deployment strategies to carry product risk at all — which is the actual end state worth aiming for: deploys so routine and reversible that the strategy discussion gets boring. Boring is the win condition.</p>
 
@@ -245,15 +258,47 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
     </div></div>
   </section>
 </article>
+
+<div class="reader-tools">
+  <button class="icon-btn" id="readerBtn" type="button" aria-expanded="false" aria-controls="readerPanel" title="Reading settings" aria-label="Reading settings"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2.2"/><circle cx="10" cy="17" r="2.2"/></svg></button>
+  <button class="icon-btn" id="focusBtn" type="button" aria-pressed="false" title="Focus mode" aria-label="Enter focus mode"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></button>
+</div>
+<div class="reader-panel" id="readerPanel" role="dialog" aria-label="Reading settings" hidden>
+  <fieldset><legend>Text size</legend>
+    <div class="seg" data-pref="rsize">
+      <button type="button" data-val="s" aria-pressed="false"><span class="sample s">Aa</span>Small</button><button type="button" data-val="m" aria-pressed="false"><span class="sample ">Aa</span>Default</button><button type="button" data-val="l" aria-pressed="false"><span class="sample l">Aa</span>Large</button><button type="button" data-val="xl" aria-pressed="false"><span class="sample l">Aa</span>Largest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Ground</legend>
+    <div class="seg" data-pref="theme">
+      <button type="button" data-val="light" aria-pressed="false"><span class="swatch light"></span>Light</button><button type="button" data-val="sepia" aria-pressed="false"><span class="swatch sepia"></span>Sepia</button><button type="button" data-val="dark" aria-pressed="false"><span class="swatch dark"></span>Dark</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Column width</legend>
+    <div class="seg" data-pref="rwidth">
+      <button type="button" data-val="s" aria-pressed="false">Narrow</button><button type="button" data-val="m" aria-pressed="false">Default</button><button type="button" data-val="l" aria-pressed="false">Wide</button><button type="button" data-val="xl" aria-pressed="false">Widest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Typeface</legend>
+    <div class="seg" data-pref="rface">
+      <button type="button" data-val="sans" aria-pressed="false"><span class="sample">Aa</span>Sans</button>
+      <button type="button" data-val="serif" aria-pressed="false"><span class="sample serif">Aa</span>Serif</button>
+    </div>
+  </fieldset>
+  <button class="reader-reset" id="readerReset" type="button">Reset to defaults</button>
+  <p class="reader-note">Saved in this browser only — these settings do not follow you to another device.</p>
+</div>
+<button class="focus-exit" id="focusExit" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h6V3M21 9h-6V3M3 15h6v6M21 15h-6v6"/></svg> Exit focus</button>
+
 </main>
 
 <footer class="site-footer">
   <div class="wrap">
     <div class="grid g-4" style="gap:2rem">
       <div>
-        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem">
-          <img src="/images/ajna-logo.png" alt="" width="32" height="32">
-          <span class="brand-name">Ajna<span style="color:#6f9bff">CS</span></span>
+        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem" aria-label="Ajna Consulting Services — home">
+          <svg viewBox="0 0 100 100" width="36" height="36" fill="none" aria-hidden="true" focusable="false"><defs><linearGradient id="lit-ftr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".30"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".32"/></linearGradient></defs><g transform="rotate(0 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#E8402A"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#F5A623"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#17A05E"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#2B57E8"/></g><path d="M 50 4 L 96 50 L 50 96 L 4 50 Z" fill="url(#lit-ftr)"/><g transform="rotate(0 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><circle cx="50" cy="50" r="6" fill="currentColor"/></svg>
+          <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
         </a>
         <p style="font-size:.88rem;line-height:1.65;color:#9fb0d0;max-width:30ch">
           Specialised engineering partner for enterprise architecture, AI &amp; MLOps, and technical enablement.

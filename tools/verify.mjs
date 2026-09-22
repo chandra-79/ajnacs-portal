@@ -77,8 +77,16 @@ try {
 const css = await readFile("assets/css/site.css", "utf8");
 const braces = (css.match(/{/g) || []).length - (css.match(/}/g) || []).length;
 if (braces !== 0) fail(`site.css braces unbalanced by ${braces}`); else ok("site.css is well formed");
-if (/#[0-9a-f]*[g-z]/i.test(css.replace(/\/\*[\s\S]*?\*\//g, ""))) fail("site.css contains an invalid hex colour");
-else ok("no invalid colour tokens");
+// Only declaration values can hold a colour. Scanning the whole file also
+// catches id selectors like #readBar, which are not colours at all.
+{
+  const decls = css.replace(/\/\*[\s\S]*?\*\//g, "")
+    .match(/:[^;{}]+[;}]/g) || [];
+  const bad = decls.flatMap(d => (d.match(/#[0-9a-zA-Z]+/g) || []))
+    .filter(h => !/^#(?:[0-9a-f]{3,4}|[0-9a-f]{6}|[0-9a-f]{8})$/i.test(h));
+  if (bad.length) fail(`site.css has ${bad.length} invalid hex colour(s): ${[...new Set(bad)].slice(0, 5).join(", ")}`);
+  else ok("no invalid colour tokens");
+}
 
 // The article's blocks all take their width from one container. If any of
 // them goes back to a different wrapper, the body text stops lining up with
@@ -94,6 +102,37 @@ else ok("no invalid colour tokens");
   else ok("article blocks share one column");
   if (!/--art-col:/.test(css)) fail("--art-col is gone; the article column is undefined");
   else ok("article column width is tokenised");
+}
+
+console.log("\nBrand & reader");
+{
+  for (const f of ["images/ajna-mark.svg", "images/favicon.ico", "images/apple-touch-icon.png", "images/icon-512.png"]) {
+    try { await access(f, constants.R_OK); } catch { fail(`missing ${f}`); }
+  }
+  const shell = await readFile(`insights/${dirs[0].name}/index.html`, "utf8");
+  if (/ajna-logo\.png/.test(shell)) fail("the retired logo is still referenced");
+  else ok("mark and icon set in place");
+  if (!/Quintessential/.test(shell)) fail("the wordmark face is not being loaded");
+  else ok("wordmark face loaded");
+
+  // Reading preferences are offered on every article; the chapter bar only
+  // where there is enough article to navigate.
+  let noPanel = 0, barOnShort = 0, noBarOnLong = 0;
+  for (const m of live) {
+    const dir = m.section === "notes" ? "notes" : "insights";
+    let h; try { h = await readFile(`${dir}/${m.slug}/index.html`, "utf8"); } catch { continue; }
+    if (!/id="readerPanel"/.test(h)) noPanel++;
+    const longForm = Boolean(m.series) || m.words > 1200;
+    const hasBar = /id="chapterBar"/.test(h);
+    if (hasBar && !longForm) barOnShort++;
+    if (!hasBar && longForm) noBarOnLong++;
+  }
+  if (noPanel) fail(`${noPanel} article(s) without reading settings`);
+  else ok("reading settings on every article");
+  if (barOnShort || noBarOnLong) fail(`chapter bar misapplied (${barOnShort} short with, ${noBarOnLong} long without)`);
+  else ok("chapter bar only on long-form");
+  if (!/\[data-theme="sepia"\]/.test(css)) fail("the sepia ground is gone");
+  else ok("three reading grounds defined");
 }
 
 console.log("\nAccessibility");

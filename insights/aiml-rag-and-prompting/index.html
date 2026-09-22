@@ -22,20 +22,33 @@
 <meta name="twitter:description" content="Retrieval-augmented generation, system prompts, few-shot examples, chain-of-thought, structured output, and the engineering patterns that make LLM applicat…">
 <meta name="twitter:image" content="https://ajnacs.com/assets/og/insights-aiml-rag-and-prompting.svg">
 
-<link rel="icon" href="/images/favicon.ico" sizes="any">
-<link rel="apple-touch-icon" href="/images/ajna-logo.png">
+<link rel="icon" href="/images/favicon.ico" sizes="32x32">
+<link rel="icon" href="/images/ajna-mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
 <meta name="theme-color" content="#0a1020">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Quintessential&display=swap">
 <link rel="stylesheet" href="/assets/css/site.css">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
 <script>
-/* Set the theme before first paint so the page never flashes the wrong one. */
-(function(){try{var t=localStorage.getItem('acs-theme');
-if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
-document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+/* Theme and reading preferences are applied before first paint, so the page
+   never flashes the wrong ground or resets someone's text size mid-read. */
+(function(){try{
+var d=document.documentElement,t=localStorage.getItem('acs-theme');
+if(t!=='dark'&&t!=='light'&&t!=='sepia')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+d.setAttribute('data-theme',t);
+['rsize','rwidth','rface'].forEach(function(k){
+  var v=localStorage.getItem('acs-'+k);
+  if(v&&/^[a-z]{1,5}$/.test(v))d.setAttribute('data-'+k,v);
+});
+if(d.getAttribute('data-rface')==='serif'){
+  var l=document.createElement('link');l.rel='stylesheet';
+  l.href='https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600&display=swap';
+  document.head.appendChild(l);
+}
+}catch(e){}})();
 </script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"RAG, Prompting, and Building Applications on LLMs: The Practitioner's Guide","description":"Retrieval-augmented generation, system prompts, few-shot examples, chain-of-thought, structured output, and the engineering patterns that make LLM applications reliable in production.","datePublished":"2026-08-25","dateModified":"2026-08-25","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/aiml-rag-and-prompting/","image":"https://ajnacs.com/assets/og/insights-aiml-rag-and-prompting.svg","keywords":"AI & MLOps, Enterprise AI, Fundamentals","articleSection":"AI & MLOps","wordCount":789}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"RAG, Prompting, and Building Applications on LLMs: The Practitioner's Guide"}]}</script>
@@ -45,9 +58,9 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 
 <header class="site-header" id="siteHeader">
   <div class="wrap" style="display:flex;align-items:center;width:min(1220px,100% - var(--gutter)*2)">
-    <a class="brand" href="/">
-      <img src="/images/ajna-logo.png" alt="" width="32" height="32">
-      <span class="brand-name">Ajna<span>CS</span></span>
+    <a class="brand" href="/" aria-label="Ajna Consulting Services — home">
+      <svg viewBox="0 0 100 100" width="40" height="40" fill="none" aria-hidden="true" focusable="false"><defs><linearGradient id="lit-hdr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".30"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".32"/></linearGradient></defs><g transform="rotate(0 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#E8402A"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#F5A623"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#17A05E"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#2B57E8"/></g><path d="M 50 4 L 96 50 L 50 96 L 4 50 Z" fill="url(#lit-hdr)"/><g transform="rotate(0 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><circle cx="50" cy="50" r="6" fill="currentColor"/></svg>
+      <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
     </a>
     <nav class="nav" id="nav" aria-label="Primary">
       <a href="/services/">Services</a>
@@ -101,13 +114,16 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 </svg></div></div>
 
   <div class="art-wrap article-grid">
-    <nav class="toc" aria-label="On this page">
+    <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#retrieval-augmented-generation-rag">Retrieval-Augmented Generation (RAG)</a></li><li><a href="#prompt-engineering-that-matters-in-production">Prompt Engineering That Matters in Production</a></li><li><a href="#structured-output">Structured Output</a></li><li><a href="#evaluation-the-work-nobody-does-until-it-is-expensive">Evaluation: The Work Nobody Does Until It Is Expensive</a></li></ol>
-</nav>
+</nav><nav class="chapters" aria-label="Articles in this series">
+      <p class="chapters-title">AI, ML, LLMs, and Neural Networks: A Practitioner&#39;s Introduction</p>
+      <ol><li><a href="/insights/aiml-what-is-machine-learning/">What Machine Learning Actually Is — Before the Hype and After the Buzzwords</a></li><li><a href="/insights/aiml-neural-networks/">Neural Networks Explained: What They Are, How They Learn, and Why They Work</a></li><li aria-current="true"><a href="/insights/aiml-rag-and-prompting/">RAG, Prompting, and Building Applications on LLMs: The Practitioner&#39;s Guide</a></li><li><a href="/insights/aiml-production-ai/">Putting AI in Production: What Enterprise AI Deployment Actually Requires</a></li></ol>
+    </nav></div>
     <div class="prose">
 <p>The gap between a demo that works and an application that is reliable in production is wider for LLM-based systems than for most software categories. The model generates plausible output, not correct output. The engineering work in production LLM applications is largely about closing that gap — through information retrieval that provides accurate context, prompt engineering that constraints outputs, and evaluation frameworks that catch degradation before users do.</p>
-<h2 id="retrieval-augmented-generation-rag">Retrieval-Augmented Generation (RAG)</h2>
+<h2 id="retrieval-augmented-generation-rag"><a class="h-anchor" href="#retrieval-augmented-generation-rag" aria-label="Link to this section">#</a>Retrieval-Augmented Generation (RAG)</h2>
 <p>LLMs have fixed training knowledge. RAG extends this by retrieving relevant documents at inference time and including them in the context sent to the model.</p>
 <pre><code>User query: &quot;What is our current cloud egress cost per GB?&quot;
 
@@ -141,7 +157,7 @@ def cosine_similarity(a: list[float], b: list[float]) -&gt; float:
     return np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))
 </code></pre>
 <p><strong>Vector databases</strong> (Pinecone, Weaviate, Qdrant, pgvector) store pre-computed embeddings and retrieve nearest neighbours at query time.</p>
-<h2 id="prompt-engineering-that-matters-in-production">Prompt Engineering That Matters in Production</h2>
+<h2 id="prompt-engineering-that-matters-in-production"><a class="h-anchor" href="#prompt-engineering-that-matters-in-production" aria-label="Link to this section">#</a>Prompt Engineering That Matters in Production</h2>
 <p>The system prompt is the most powerful tool for constraining model behaviour.</p>
 <pre><code class="language-python">SYSTEM_PROMPT = &quot;&quot;&quot;You are a cloud cost analysis assistant for Acme Corp.
 
@@ -173,7 +189,7 @@ Assistant: AWS accounts for 62% of cloud spend, Azure 31%, and GCP 7%.
 &quot;&quot;&quot;
 </code></pre>
 <p><strong>Chain-of-thought prompting</strong>: for reasoning tasks, instruct the model to show its reasoning before giving the final answer. &quot;Think step by step&quot; or including reasoning steps in few-shot examples improves accuracy on multi-step problems.</p>
-<h2 id="structured-output">Structured Output</h2>
+<h2 id="structured-output"><a class="h-anchor" href="#structured-output" aria-label="Link to this section">#</a>Structured Output</h2>
 <p>Unstructured text is difficult to parse reliably. For applications that need to process model output programmatically, enforce structured output:</p>
 <pre><code class="language-python">from pydantic import BaseModel
 from openai import OpenAI
@@ -199,7 +215,7 @@ response = client.beta.chat.completions.parse(
 summary = response.choices[0].message.parsed
 ## summary.total_cost, summary.top_services — strongly typed
 </code></pre>
-<h2 id="evaluation-the-work-nobody-does-until-it-is-expensive">Evaluation: The Work Nobody Does Until It Is Expensive</h2>
+<h2 id="evaluation-the-work-nobody-does-until-it-is-expensive"><a class="h-anchor" href="#evaluation-the-work-nobody-does-until-it-is-expensive" aria-label="Link to this section">#</a>Evaluation: The Work Nobody Does Until It Is Expensive</h2>
 <p>Production LLM applications need automated evaluation. Without it, a model version change that degrades performance reaches users before anyone notices.</p>
 <p><strong>Minimum viable evaluation framework</strong>:</p>
 <ol>
@@ -226,18 +242,7 @@ summary = response.choices[0].message.parsed
 
   
 
-  <div class="art-wrap" style="margin-top:3rem">
-    <aside class="series-box">
-      <p class="eyebrow">Series</p>
-      <h2 class="h3" style="margin:.5rem 0 1rem">AI, ML, LLMs, and Neural Networks: A Practitioner&#39;s Introduction</h2>
-      <ol class="series-list">
-        <li><a href="/insights/aiml-what-is-machine-learning/">What Machine Learning Actually Is — Before the Hype and After the Buzzwords</a></li>
-        <li><a href="/insights/aiml-neural-networks/">Neural Networks Explained: What They Are, How They Learn, and Why They Work</a></li>
-        <li aria-current="true"><a href="/insights/aiml-rag-and-prompting/">RAG, Prompting, and Building Applications on LLMs: The Practitioner&#39;s Guide</a></li>
-        <li><a href="/insights/aiml-production-ai/">Putting AI in Production: What Enterprise AI Deployment Actually Requires</a></li>
-      </ol>
-    </aside>
-  </div>
+  
 
   <div class="art-wrap article-foot">
     <div class="row" style="gap:.4rem">
@@ -329,15 +334,57 @@ summary = response.choices[0].message.parsed
     </div></div>
   </section>
 </article>
+
+<div class="reader-tools">
+  <button class="icon-btn" id="readerBtn" type="button" aria-expanded="false" aria-controls="readerPanel" title="Reading settings" aria-label="Reading settings"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2.2"/><circle cx="10" cy="17" r="2.2"/></svg></button>
+  <button class="icon-btn" id="focusBtn" type="button" aria-pressed="false" title="Focus mode" aria-label="Enter focus mode"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></button>
+</div>
+<div class="reader-panel" id="readerPanel" role="dialog" aria-label="Reading settings" hidden>
+  <fieldset><legend>Text size</legend>
+    <div class="seg" data-pref="rsize">
+      <button type="button" data-val="s" aria-pressed="false"><span class="sample s">Aa</span>Small</button><button type="button" data-val="m" aria-pressed="false"><span class="sample ">Aa</span>Default</button><button type="button" data-val="l" aria-pressed="false"><span class="sample l">Aa</span>Large</button><button type="button" data-val="xl" aria-pressed="false"><span class="sample l">Aa</span>Largest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Ground</legend>
+    <div class="seg" data-pref="theme">
+      <button type="button" data-val="light" aria-pressed="false"><span class="swatch light"></span>Light</button><button type="button" data-val="sepia" aria-pressed="false"><span class="swatch sepia"></span>Sepia</button><button type="button" data-val="dark" aria-pressed="false"><span class="swatch dark"></span>Dark</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Column width</legend>
+    <div class="seg" data-pref="rwidth">
+      <button type="button" data-val="s" aria-pressed="false">Narrow</button><button type="button" data-val="m" aria-pressed="false">Default</button><button type="button" data-val="l" aria-pressed="false">Wide</button><button type="button" data-val="xl" aria-pressed="false">Widest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Typeface</legend>
+    <div class="seg" data-pref="rface">
+      <button type="button" data-val="sans" aria-pressed="false"><span class="sample">Aa</span>Sans</button>
+      <button type="button" data-val="serif" aria-pressed="false"><span class="sample serif">Aa</span>Serif</button>
+    </div>
+  </fieldset>
+  <button class="reader-reset" id="readerReset" type="button">Reset to defaults</button>
+  <p class="reader-note">Saved in this browser only — these settings do not follow you to another device.</p>
+</div>
+<button class="focus-exit" id="focusExit" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h6V3M21 9h-6V3M3 15h6v6M21 15h-6v6"/></svg> Exit focus</button>
+<div class="chapter-bar" id="chapterBar">
+  <div class="chapter-where">
+    <b>RAG, Prompting, and Building Applications on LLMs: The Practitioner&#39;s Guide</b>
+    <span>AI, ML, LLMs, and Neural Networks: A Practitioner&#39;s Introduction</span>
+  </div>
+  <span class="chapter-left" id="chapterLeft"></span>
+  <nav class="chapter-step" aria-label="Article navigation">
+    <a href="/insights/aiml-production-ai/" aria-label="Previous: Putting AI in Production: What Enterprise AI Deployment Actually Requires"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a>
+    <a href="/insights/aiml-neural-networks/" aria-label="Next: Neural Networks Explained: What They Are, How They Learn, and Why They Work"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
+  </nav>
+</div>
 </main>
 
 <footer class="site-footer">
   <div class="wrap">
     <div class="grid g-4" style="gap:2rem">
       <div>
-        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem">
-          <img src="/images/ajna-logo.png" alt="" width="32" height="32">
-          <span class="brand-name">Ajna<span style="color:#6f9bff">CS</span></span>
+        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem" aria-label="Ajna Consulting Services — home">
+          <svg viewBox="0 0 100 100" width="36" height="36" fill="none" aria-hidden="true" focusable="false"><defs><linearGradient id="lit-ftr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".30"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".32"/></linearGradient></defs><g transform="rotate(0 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#E8402A"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#F5A623"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#17A05E"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#2B57E8"/></g><path d="M 50 4 L 96 50 L 50 96 L 4 50 Z" fill="url(#lit-ftr)"/><g transform="rotate(0 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><circle cx="50" cy="50" r="6" fill="currentColor"/></svg>
+          <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
         </a>
         <p style="font-size:.88rem;line-height:1.65;color:#9fb0d0;max-width:30ch">
           Specialised engineering partner for enterprise architecture, AI &amp; MLOps, and technical enablement.

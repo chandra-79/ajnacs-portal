@@ -15,11 +15,10 @@
   }
   if (themeBtn) {
     themeBtn.addEventListener("click", function () {
+      // Goes through writePref so the reading panel's ground buttons stay in
+      // step with this one. Sepia is treated as a light ground here.
       var dark = document.documentElement.getAttribute("data-theme") === "dark";
-      var next = dark ? "light" : "dark";
-      document.documentElement.setAttribute("data-theme", next);
-      try { localStorage.setItem("acs-theme", next); } catch (e) {}
-      syncTheme();
+      writePref("theme", dark ? "light" : "dark");
     });
     syncTheme();
   }
@@ -229,5 +228,130 @@
       if (navigator.clipboard) navigator.clipboard.writeText(url).then(done, function () {});
       else done();
     });
+  }
+
+  /* ---------- reader ----------
+     Preferences live on <html> as data attributes; the CSS reads them as
+     tokens. Everything here is per-browser by design: there is no account to
+     hang it on, and pretending otherwise would lose someone's settings
+     silently on their next device. */
+  var PREFS = { theme: "acs-theme", rsize: "acs-rsize", rwidth: "acs-rwidth", rface: "acs-rface" };
+  var root = document.documentElement;
+
+  function readPref(name) {
+    if (name === "theme") return root.getAttribute("data-theme") || "light";
+    return root.getAttribute("data-" + name) || (name === "rface" ? "sans" : "m");
+  }
+  function writePref(name, value) {
+    root.setAttribute(name === "theme" ? "data-theme" : "data-" + name, value);
+    try { localStorage.setItem(PREFS[name], value); } catch (e) {}
+    if (name === "theme" && typeof syncTheme === "function") syncTheme();
+    if (name === "rface" && value === "serif") loadSerif();
+    syncSegs();
+  }
+  /* The reading serif is only fetched if someone actually asks for it. */
+  var serifLoaded = false;
+  function loadSerif() {
+    if (serifLoaded || document.querySelector('link[href*="Newsreader"]')) { serifLoaded = true; return; }
+    serifLoaded = true;
+    var l = document.createElement("link");
+    l.rel = "stylesheet";
+    l.href = "https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600&display=swap";
+    document.head.appendChild(l);
+  }
+
+  var segs = [].slice.call(document.querySelectorAll(".seg[data-pref]"));
+  function syncSegs() {
+    segs.forEach(function (seg) {
+      var current = readPref(seg.dataset.pref);
+      [].slice.call(seg.querySelectorAll("button")).forEach(function (b) {
+        b.setAttribute("aria-pressed", b.dataset.val === current ? "true" : "false");
+      });
+    });
+  }
+  segs.forEach(function (seg) {
+    seg.addEventListener("click", function (e) {
+      var b = e.target.closest("button[data-val]");
+      if (b) writePref(seg.dataset.pref, b.dataset.val);
+    });
+  });
+  syncSegs();
+
+  var readerBtn = $("readerBtn"), readerPanel = $("readerPanel"), readerReset = $("readerReset");
+  if (readerBtn && readerPanel) {
+    var closePanel = function (refocus) {
+      readerPanel.hidden = true;
+      readerBtn.setAttribute("aria-expanded", "false");
+      if (refocus) readerBtn.focus();
+    };
+    readerBtn.addEventListener("click", function () {
+      var open = readerPanel.hidden;
+      readerPanel.hidden = !open;
+      readerBtn.setAttribute("aria-expanded", open ? "true" : "false");
+      if (open) { var f = readerPanel.querySelector("button"); if (f) f.focus(); }
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && !readerPanel.hidden) closePanel(true);
+    });
+    document.addEventListener("click", function (e) {
+      if (readerPanel.hidden) return;
+      if (!readerPanel.contains(e.target) && !readerBtn.contains(e.target)) closePanel(false);
+    });
+  }
+  if (readerReset) {
+    readerReset.addEventListener("click", function () {
+      ["rsize", "rwidth", "rface"].forEach(function (k) {
+        root.removeAttribute("data-" + k);
+        try { localStorage.removeItem(PREFS[k]); } catch (e) {}
+      });
+      syncSegs();
+    });
+  }
+
+  /* ---------- focus mode ---------- */
+  var focusBtn = $("focusBtn"), focusExit = $("focusExit");
+  function setFocus(on) {
+    root.setAttribute("data-focus", on ? "on" : "off");
+    if (focusBtn) {
+      focusBtn.setAttribute("aria-pressed", on ? "true" : "false");
+      focusBtn.setAttribute("aria-label", on ? "Exit focus mode" : "Enter focus mode");
+    }
+    if (!on && focusBtn) focusBtn.focus();
+  }
+  if (focusBtn) focusBtn.addEventListener("click", function () {
+    setFocus(root.getAttribute("data-focus") !== "on");
+  });
+  if (focusExit) focusExit.addEventListener("click", function () { setFocus(false); });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && root.getAttribute("data-focus") === "on") setFocus(false);
+  });
+
+  /* ---------- chapter bar ---------- */
+  var chapterBar = $("chapterBar"), chapterLeft = $("chapterLeft");
+  var proseEl = document.querySelector(".article .prose");
+  if (chapterBar && proseEl) {
+    var words = (proseEl.textContent || "").trim().split(/\s+/).length;
+    var lastLeft = -1;
+    var tickBar = function () {
+      var box = proseEl.getBoundingClientRect();
+      var total = box.height - window.innerHeight;
+      var read = total > 0 ? Math.min(1, Math.max(0, -box.top / total)) : (box.top < 0 ? 1 : 0);
+      chapterBar.classList.toggle("is-on", box.top < window.innerHeight * 0.4 && read < 0.999);
+      if (chapterLeft) {
+        var left = Math.max(0, Math.round((words * (1 - read)) / 220));
+        if (left !== lastLeft) {
+          lastLeft = left;
+          chapterLeft.textContent = left > 0 ? left + " min left" : "Finished";
+        }
+      }
+    };
+    var barQueued = false;
+    window.addEventListener("scroll", function () {
+      if (barQueued) return;
+      barQueued = true;
+      requestAnimationFrame(function () { barQueued = false; tickBar(); });
+    }, { passive: true });
+    window.addEventListener("resize", tickBar);
+    tickBar();
   }
 })();

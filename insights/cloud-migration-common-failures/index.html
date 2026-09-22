@@ -22,20 +22,33 @@
 <meta name="twitter:description" content="Cloud migrations that fail share recognisable patterns — lift-and-shift with no optimization, underestimated dependency complexity, inadequate cost modelin…">
 <meta name="twitter:image" content="https://ajnacs.com/assets/og/insights-cloud-migration-common-failures.svg">
 
-<link rel="icon" href="/images/favicon.ico" sizes="any">
-<link rel="apple-touch-icon" href="/images/ajna-logo.png">
+<link rel="icon" href="/images/favicon.ico" sizes="32x32">
+<link rel="icon" href="/images/ajna-mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
 <meta name="theme-color" content="#0a1020">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Quintessential&display=swap">
 <link rel="stylesheet" href="/assets/css/site.css">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
 <script>
-/* Set the theme before first paint so the page never flashes the wrong one. */
-(function(){try{var t=localStorage.getItem('acs-theme');
-if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
-document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+/* Theme and reading preferences are applied before first paint, so the page
+   never flashes the wrong ground or resets someone's text size mid-read. */
+(function(){try{
+var d=document.documentElement,t=localStorage.getItem('acs-theme');
+if(t!=='dark'&&t!=='light'&&t!=='sepia')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+d.setAttribute('data-theme',t);
+['rsize','rwidth','rface'].forEach(function(k){
+  var v=localStorage.getItem('acs-'+k);
+  if(v&&/^[a-z]{1,5}$/.test(v))d.setAttribute('data-'+k,v);
+});
+if(d.getAttribute('data-rface')==='serif'){
+  var l=document.createElement('link');l.rel='stylesheet';
+  l.href='https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600&display=swap';
+  document.head.appendChild(l);
+}
+}catch(e){}})();
 </script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Why Cloud Migrations Fail: The Pattern Behind the Common Failures","description":"Cloud migrations that fail share recognisable patterns — lift-and-shift with no optimization, underestimated dependency complexity, inadequate cost modeling. Understanding these patterns before starting is preventable failure.","datePublished":"2025-07-11","dateModified":"2025-07-11","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/cloud-migration-common-failures/","image":"https://ajnacs.com/assets/og/insights-cloud-migration-common-failures.svg","keywords":"Cloud Architecture, Engineering Leadership","articleSection":"Cloud Architecture","wordCount":758}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Why Cloud Migrations Fail: The Pattern Behind the Common Failures"}]}</script>
@@ -45,9 +58,9 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 
 <header class="site-header" id="siteHeader">
   <div class="wrap" style="display:flex;align-items:center;width:min(1220px,100% - var(--gutter)*2)">
-    <a class="brand" href="/">
-      <img src="/images/ajna-logo.png" alt="" width="32" height="32">
-      <span class="brand-name">Ajna<span>CS</span></span>
+    <a class="brand" href="/" aria-label="Ajna Consulting Services — home">
+      <svg viewBox="0 0 100 100" width="40" height="40" fill="none" aria-hidden="true" focusable="false"><defs><linearGradient id="lit-hdr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".30"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".32"/></linearGradient></defs><g transform="rotate(0 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#E8402A"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#F5A623"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#17A05E"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#2B57E8"/></g><path d="M 50 4 L 96 50 L 50 96 L 4 50 Z" fill="url(#lit-hdr)"/><g transform="rotate(0 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><circle cx="50" cy="50" r="6" fill="currentColor"/></svg>
+      <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
     </a>
     <nav class="nav" id="nav" aria-label="Primary">
       <a href="/services/">Services</a>
@@ -101,14 +114,14 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 </svg></div></div>
 
   <div class="art-wrap article-grid">
-    <nav class="toc" aria-label="On this page">
+    <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#lift-and-shift-with-no-optimization-plan">Lift-and-shift with no optimization plan</a></li><li><a href="#underestimating-dependency-complexity">Underestimating dependency complexity</a></li><li><a href="#inadequate-cost-modeling">Inadequate cost modeling</a></li><li><a href="#missing-the-security-and-compliance-handoff">Missing the security and compliance handoff</a></li><li><a href="#insufficient-testing-before-cutover">Insufficient testing before cutover</a></li></ol>
-</nav>
+</nav></div>
     <div class="prose">
 <p>Cloud migration success rates are worse than most organizations expect. Projects run over budget, over time, and sometimes deliver infrastructure that is more expensive and less reliable than what was replaced. The causes are usually not technical failures — they are planning failures that the technology cannot compensate for.</p>
 <p>The patterns behind failed migrations are well-documented at this point. Most of them are avoidable.</p>
-<h2 id="lift-and-shift-with-no-optimization-plan">Lift-and-shift with no optimization plan</h2>
+<h2 id="lift-and-shift-with-no-optimization-plan"><a class="h-anchor" href="#lift-and-shift-with-no-optimization-plan" aria-label="Link to this section">#</a>Lift-and-shift with no optimization plan</h2>
 <aside class="keyfig">
   <p class="keyfig-label">Key figure</p>
   <p class="keyfig-text">A 16-core, <b>64GB</b> VM running on-premises at 20% utilization costs roughly the same as running it in the cloud — but in the cloud you are also paying for the 80% you are not using, with no depreciation benefit.</p>
@@ -117,11 +130,11 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 <p>On-premises workloads are designed around the economics of owned hardware: large, always-on, provisioned for peak load. Cloud economics reward elasticity, managed services, and right-sizing. A 16-core, 64GB VM running on-premises at 20% utilization costs roughly the same as running it in the cloud — but in the cloud you are also paying for the 80% you are not using, with no depreciation benefit.</p>
 <p>Lift-and-shift is a migration phase, not a final state. Organizations that treat it as the end goal pay on-premises prices for cloud infrastructure without the reliability, flexibility, or managed service benefits that justify cloud investment.</p>
 <p>The migration plans that succeed treat lift-and-shift as a transitional phase with a defined optimization roadmap: which services will be modernized to PaaS or SaaS, which will be right-sized, which will adopt cloud-native patterns, and on what timeline.</p>
-<h2 id="underestimating-dependency-complexity">Underestimating dependency complexity</h2>
+<h2 id="underestimating-dependency-complexity"><a class="h-anchor" href="#underestimating-dependency-complexity" aria-label="Link to this section">#</a>Underestimating dependency complexity</h2>
 <p>Application dependencies are almost always more complex than the dependency map suggests. An application that appears to depend on three services in the migration assessment may actually depend on twelve services, some of which are undocumented, some of which are dependencies of dependencies.</p>
 <p>Undiscovered dependencies surface during migration in the form of broken connectivity: the application is in the cloud and the dependency is not, and the application fails silently until an engineer investigates.</p>
 <p>The dependency mapping investment before migration is undervalued. Automated discovery tools (AWS Migration Hub, Azure Migrate, third-party tools) can identify network-level dependencies that manual documentation misses. Thorough dependency mapping takes time and delays the start of migration; it almost always reduces the total time to completed migration by avoiding dependency-related incidents.</p>
-<h2 id="inadequate-cost-modeling">Inadequate cost modeling</h2>
+<h2 id="inadequate-cost-modeling"><a class="h-anchor" href="#inadequate-cost-modeling" aria-label="Link to this section">#</a>Inadequate cost modeling</h2>
 <p>Cloud costs are genuinely hard to model accurately before migration, which leads to two failure modes: under-estimating costs and being surprised by the bill, or over-estimating costs and being unable to justify the migration business case.</p>
 <p>The costs that are consistently underestimated:</p>
 <ul>
@@ -130,11 +143,11 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 <li>Operations tooling: monitoring, security, backup, and compliance tooling that was handled by on-premises infrastructure teams.</li>
 </ul>
 <p>The correct approach: build a cloud cost model using the cloud provider&#39;s pricing calculator, add 20-30% for unmodeled costs, validate against a pilot workload, and use the pilot actuals to recalibrate the full migration estimate.</p>
-<h2 id="missing-the-security-and-compliance-handoff">Missing the security and compliance handoff</h2>
+<h2 id="missing-the-security-and-compliance-handoff"><a class="h-anchor" href="#missing-the-security-and-compliance-handoff" aria-label="Link to this section">#</a>Missing the security and compliance handoff</h2>
 <p>On-premises environments have accumulated security controls over years: network segmentation, access controls, patch management, monitoring. These controls are not automatically replicated when workloads move to cloud.</p>
 <p>The failure mode: a migration that is technically successful (applications are running in cloud) but security controls are incomplete. The cloud environment has default security configurations rather than the controls required by compliance frameworks or security policy.</p>
 <p>Security and compliance requirements for the cloud environment should be defined before the first workload migrates, not after. The cloud landing zone — the account structure, network architecture, identity configuration, logging, and monitoring baseline — must be established first. Workloads migrate into a secure environment, not one built concurrently with migration.</p>
-<h2 id="insufficient-testing-before-cutover">Insufficient testing before cutover</h2>
+<h2 id="insufficient-testing-before-cutover"><a class="h-anchor" href="#insufficient-testing-before-cutover" aria-label="Link to this section">#</a>Insufficient testing before cutover</h2>
 <p>Cutover is the moment of highest risk in any migration. The application is in the cloud; the on-premises system is decommissioned; user traffic is switching. If something is wrong, you are in an incident, not a deployment.</p>
 <p>Migrations that are underprepared for cutover often have not tested the cloud environment under production-representative load, have not verified that monitoring and alerting are configured correctly, and have not tested the rollback procedure.</p>
 <p>A cutover without a tested rollback is not a deployment — it is a bet. Rollback procedures are worth as much investment as the forward migration.</p>
@@ -253,15 +266,47 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
     </div></div>
   </section>
 </article>
+
+<div class="reader-tools">
+  <button class="icon-btn" id="readerBtn" type="button" aria-expanded="false" aria-controls="readerPanel" title="Reading settings" aria-label="Reading settings"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2.2"/><circle cx="10" cy="17" r="2.2"/></svg></button>
+  <button class="icon-btn" id="focusBtn" type="button" aria-pressed="false" title="Focus mode" aria-label="Enter focus mode"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></button>
+</div>
+<div class="reader-panel" id="readerPanel" role="dialog" aria-label="Reading settings" hidden>
+  <fieldset><legend>Text size</legend>
+    <div class="seg" data-pref="rsize">
+      <button type="button" data-val="s" aria-pressed="false"><span class="sample s">Aa</span>Small</button><button type="button" data-val="m" aria-pressed="false"><span class="sample ">Aa</span>Default</button><button type="button" data-val="l" aria-pressed="false"><span class="sample l">Aa</span>Large</button><button type="button" data-val="xl" aria-pressed="false"><span class="sample l">Aa</span>Largest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Ground</legend>
+    <div class="seg" data-pref="theme">
+      <button type="button" data-val="light" aria-pressed="false"><span class="swatch light"></span>Light</button><button type="button" data-val="sepia" aria-pressed="false"><span class="swatch sepia"></span>Sepia</button><button type="button" data-val="dark" aria-pressed="false"><span class="swatch dark"></span>Dark</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Column width</legend>
+    <div class="seg" data-pref="rwidth">
+      <button type="button" data-val="s" aria-pressed="false">Narrow</button><button type="button" data-val="m" aria-pressed="false">Default</button><button type="button" data-val="l" aria-pressed="false">Wide</button><button type="button" data-val="xl" aria-pressed="false">Widest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Typeface</legend>
+    <div class="seg" data-pref="rface">
+      <button type="button" data-val="sans" aria-pressed="false"><span class="sample">Aa</span>Sans</button>
+      <button type="button" data-val="serif" aria-pressed="false"><span class="sample serif">Aa</span>Serif</button>
+    </div>
+  </fieldset>
+  <button class="reader-reset" id="readerReset" type="button">Reset to defaults</button>
+  <p class="reader-note">Saved in this browser only — these settings do not follow you to another device.</p>
+</div>
+<button class="focus-exit" id="focusExit" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h6V3M21 9h-6V3M3 15h6v6M21 15h-6v6"/></svg> Exit focus</button>
+
 </main>
 
 <footer class="site-footer">
   <div class="wrap">
     <div class="grid g-4" style="gap:2rem">
       <div>
-        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem">
-          <img src="/images/ajna-logo.png" alt="" width="32" height="32">
-          <span class="brand-name">Ajna<span style="color:#6f9bff">CS</span></span>
+        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem" aria-label="Ajna Consulting Services — home">
+          <svg viewBox="0 0 100 100" width="36" height="36" fill="none" aria-hidden="true" focusable="false"><defs><linearGradient id="lit-ftr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".30"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".32"/></linearGradient></defs><g transform="rotate(0 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#E8402A"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#F5A623"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#17A05E"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#2B57E8"/></g><path d="M 50 4 L 96 50 L 50 96 L 4 50 Z" fill="url(#lit-ftr)"/><g transform="rotate(0 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><circle cx="50" cy="50" r="6" fill="currentColor"/></svg>
+          <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
         </a>
         <p style="font-size:.88rem;line-height:1.65;color:#9fb0d0;max-width:30ch">
           Specialised engineering partner for enterprise architecture, AI &amp; MLOps, and technical enablement.

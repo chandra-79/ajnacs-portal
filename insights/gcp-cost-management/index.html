@@ -22,20 +22,33 @@
 <meta name="twitter:description" content="Google Cloud&#39;s cost optimization tools are extensive but spread across multiple products. Here&#39;s how Committed Use Discounts, the Recommender API, and bill…">
 <meta name="twitter:image" content="https://ajnacs.com/assets/og/insights-gcp-cost-management.svg">
 
-<link rel="icon" href="/images/favicon.ico" sizes="any">
-<link rel="apple-touch-icon" href="/images/ajna-logo.png">
+<link rel="icon" href="/images/favicon.ico" sizes="32x32">
+<link rel="icon" href="/images/ajna-mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
 <meta name="theme-color" content="#0a1020">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Quintessential&display=swap">
 <link rel="stylesheet" href="/assets/css/site.css">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
 <script>
-/* Set the theme before first paint so the page never flashes the wrong one. */
-(function(){try{var t=localStorage.getItem('acs-theme');
-if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
-document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+/* Theme and reading preferences are applied before first paint, so the page
+   never flashes the wrong ground or resets someone's text size mid-read. */
+(function(){try{
+var d=document.documentElement,t=localStorage.getItem('acs-theme');
+if(t!=='dark'&&t!=='light'&&t!=='sepia')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+d.setAttribute('data-theme',t);
+['rsize','rwidth','rface'].forEach(function(k){
+  var v=localStorage.getItem('acs-'+k);
+  if(v&&/^[a-z]{1,5}$/.test(v))d.setAttribute('data-'+k,v);
+});
+if(d.getAttribute('data-rface')==='serif'){
+  var l=document.createElement('link');l.rel='stylesheet';
+  l.href='https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600&display=swap';
+  document.head.appendChild(l);
+}
+}catch(e){}})();
 </script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"GCP Cost Management: Committed Use Discounts, Recommenders, and What Cloud Billing Doesn't Show You","description":"Google Cloud's cost optimization tools are extensive but spread across multiple products. Here's how Committed Use Discounts, the Recommender API, and billing export to BigQuery work together for a complete FinOps practice.","datePublished":"2025-11-11","dateModified":"2025-11-11","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/gcp-cost-management/","image":"https://ajnacs.com/assets/og/insights-gcp-cost-management.svg","keywords":"FinOps, Cloud Architecture","articleSection":"FinOps","wordCount":814}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"GCP Cost Management: Committed Use Discounts, Recommenders, and What Cloud Billing Doesn't Show You"}]}</script>
@@ -45,9 +58,9 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 
 <header class="site-header" id="siteHeader">
   <div class="wrap" style="display:flex;align-items:center;width:min(1220px,100% - var(--gutter)*2)">
-    <a class="brand" href="/">
-      <img src="/images/ajna-logo.png" alt="" width="32" height="32">
-      <span class="brand-name">Ajna<span>CS</span></span>
+    <a class="brand" href="/" aria-label="Ajna Consulting Services — home">
+      <svg viewBox="0 0 100 100" width="40" height="40" fill="none" aria-hidden="true" focusable="false"><defs><linearGradient id="lit-hdr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".30"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".32"/></linearGradient></defs><g transform="rotate(0 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#E8402A"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#F5A623"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#17A05E"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#2B57E8"/></g><path d="M 50 4 L 96 50 L 50 96 L 4 50 Z" fill="url(#lit-hdr)"/><g transform="rotate(0 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><circle cx="50" cy="50" r="6" fill="currentColor"/></svg>
+      <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
     </a>
     <nav class="nav" id="nav" aria-label="Primary">
       <a href="/services/">Services</a>
@@ -101,13 +114,13 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 </svg></div></div>
 
   <div class="art-wrap article-grid">
-    <nav class="toc" aria-label="On this page">
+    <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#sustained-use-discounts-the-automatic-discount-nobody-talks-">Sustained Use Discounts: the automatic discount nobody talks about</a></li><li><a href="#committed-use-discounts">Committed Use Discounts</a></li><li><a href="#bigquery-billing-export">BigQuery billing export</a></li><li><a href="#the-recommender-api">The Recommender API</a></li><li><a href="#labels-as-finops-infrastructure">Labels as FinOps infrastructure</a></li></ol>
-</nav>
+</nav></div>
     <div class="prose">
 <p>GCP cost management has a different character than AWS or Azure FinOps. GCP&#39;s pricing model (particularly Sustained Use Discounts and Committed Use Discounts) is less visible than AWS Reserved Instances but often results in lower effective compute prices for workloads with consistent usage. The tooling — Recommender API, Active Assist, billing export to BigQuery — is sophisticated once you know where to find it.</p>
-<h2 id="sustained-use-discounts-the-automatic-discount-nobody-talks-">Sustained Use Discounts: the automatic discount nobody talks about</h2>
+<h2 id="sustained-use-discounts-the-automatic-discount-nobody-talks-"><a class="h-anchor" href="#sustained-use-discounts-the-automatic-discount-nobody-talks-" aria-label="Link to this section">#</a>Sustained Use Discounts: the automatic discount nobody talks about</h2>
 <aside class="keyfig">
   <p class="keyfig-label">Key figure</p>
   <p class="keyfig-text">A VM running for the full month receives a <b>30%</b> discount on the base price.</p>
@@ -115,7 +128,7 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 <p>GCP Compute Engine applies Sustained Use Discounts (SUDs) automatically for VMs that run for a significant portion of the month — no commitment required. A VM running for the full month receives a 30% discount on the base price. No RI purchase, no upfront commitment.</p>
 <p>This is a meaningful advantage for workloads with variable lifecycles. A VM that runs for 70% of a month gets a partial SUD; a VM that runs 100% gets the full 30%. The discount applies to vCPU and memory costs separately, which means a resized VM still accumulates usage toward the discount threshold.</p>
 <p>The implication: GCP on-demand pricing for compute is effectively lower than the list price for any workload running more than ~25% of the month. When comparing GCP to AWS or Azure pricing, use the SUD-adjusted price, not the list price.</p>
-<h2 id="committed-use-discounts">Committed Use Discounts</h2>
+<h2 id="committed-use-discounts"><a class="h-anchor" href="#committed-use-discounts" aria-label="Link to this section">#</a>Committed Use Discounts</h2>
 <p>On top of SUDs, GCP offers Committed Use Discounts (CUDs) for 1 or 3-year commitments:</p>
 <ul>
 <li><p><strong>Resource-based CUDs</strong>: commit to a specific amount of vCPU and memory in a region. 37% discount for 1 year, 55% for 3 years. Applied to any VM in the committed region that matches the resource type, regardless of machine type.</p>
@@ -125,7 +138,7 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 </ul>
 <p>Resource-based CUDs are more flexible than AWS Reserved Instances — they apply to any VM in the region at or below the committed resource level, across different machine types. A commitment of 100 vCPU applies whether you run 100 n2-standard-1 instances or 10 n2-standard-10 instances.</p>
 <p>The analysis before committing: use the Cost Table export in BigQuery to understand your compute usage over the past 3-6 months. Identify the consistent baseline — the vCPU and memory that run every day regardless of demand spikes. Commit to the baseline; let the remainder run on SUD-adjusted on-demand pricing.</p>
-<h2 id="bigquery-billing-export">BigQuery billing export</h2>
+<h2 id="bigquery-billing-export"><a class="h-anchor" href="#bigquery-billing-export" aria-label="Link to this section">#</a>BigQuery billing export</h2>
 <p>GCP&#39;s most powerful cost management tool is often the least used: billing export to BigQuery. Every line item in your GCP bill, with full resource-level detail, lands in a BigQuery table that you can query with standard SQL.</p>
 <pre><code class="language-sql">-- Top 10 most expensive services last 30 days
 SELECT
@@ -147,7 +160,7 @@ LIMIT 10;
 <li>Alerting on specific cost thresholds per service or project</li>
 </ul>
 <p>This is substantially more powerful than the default Cloud Console billing view. Setting it up (a few hours) pays back in the first month of cost analysis.</p>
-<h2 id="the-recommender-api">The Recommender API</h2>
+<h2 id="the-recommender-api"><a class="h-anchor" href="#the-recommender-api" aria-label="Link to this section">#</a>The Recommender API</h2>
 <p>GCP&#39;s Recommender API surfaces actionable optimization recommendations across your infrastructure:</p>
 <ul>
 <li><strong>VM right-sizing recommendations</strong>: VMs where historical CPU and memory usage suggests a smaller machine type would be adequate</li>
@@ -164,7 +177,7 @@ gcloud recommender recommendations list \
   --format=&quot;table(name,description,primaryImpact.costProjection.cost)&quot;
 </code></pre>
 <p>Reviewing Recommender output monthly and actioning high-confidence recommendations typically produces 10-20% compute cost reduction without architectural changes.</p>
-<h2 id="labels-as-finops-infrastructure">Labels as FinOps infrastructure</h2>
+<h2 id="labels-as-finops-infrastructure"><a class="h-anchor" href="#labels-as-finops-infrastructure" aria-label="Link to this section">#</a>Labels as FinOps infrastructure</h2>
 <p>GCP labels (key-value metadata on resources) are how team-level cost attribution works. Without labels, every project&#39;s cost is visible at the project level, but not at the team or application level within a project.</p>
 <p>Standard label strategy:</p>
 <pre><code>environment: production | staging | development
@@ -295,15 +308,47 @@ cost-centre: engineering | data-science
     </div></div>
   </section>
 </article>
+
+<div class="reader-tools">
+  <button class="icon-btn" id="readerBtn" type="button" aria-expanded="false" aria-controls="readerPanel" title="Reading settings" aria-label="Reading settings"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2.2"/><circle cx="10" cy="17" r="2.2"/></svg></button>
+  <button class="icon-btn" id="focusBtn" type="button" aria-pressed="false" title="Focus mode" aria-label="Enter focus mode"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></button>
+</div>
+<div class="reader-panel" id="readerPanel" role="dialog" aria-label="Reading settings" hidden>
+  <fieldset><legend>Text size</legend>
+    <div class="seg" data-pref="rsize">
+      <button type="button" data-val="s" aria-pressed="false"><span class="sample s">Aa</span>Small</button><button type="button" data-val="m" aria-pressed="false"><span class="sample ">Aa</span>Default</button><button type="button" data-val="l" aria-pressed="false"><span class="sample l">Aa</span>Large</button><button type="button" data-val="xl" aria-pressed="false"><span class="sample l">Aa</span>Largest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Ground</legend>
+    <div class="seg" data-pref="theme">
+      <button type="button" data-val="light" aria-pressed="false"><span class="swatch light"></span>Light</button><button type="button" data-val="sepia" aria-pressed="false"><span class="swatch sepia"></span>Sepia</button><button type="button" data-val="dark" aria-pressed="false"><span class="swatch dark"></span>Dark</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Column width</legend>
+    <div class="seg" data-pref="rwidth">
+      <button type="button" data-val="s" aria-pressed="false">Narrow</button><button type="button" data-val="m" aria-pressed="false">Default</button><button type="button" data-val="l" aria-pressed="false">Wide</button><button type="button" data-val="xl" aria-pressed="false">Widest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Typeface</legend>
+    <div class="seg" data-pref="rface">
+      <button type="button" data-val="sans" aria-pressed="false"><span class="sample">Aa</span>Sans</button>
+      <button type="button" data-val="serif" aria-pressed="false"><span class="sample serif">Aa</span>Serif</button>
+    </div>
+  </fieldset>
+  <button class="reader-reset" id="readerReset" type="button">Reset to defaults</button>
+  <p class="reader-note">Saved in this browser only — these settings do not follow you to another device.</p>
+</div>
+<button class="focus-exit" id="focusExit" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h6V3M21 9h-6V3M3 15h6v6M21 15h-6v6"/></svg> Exit focus</button>
+
 </main>
 
 <footer class="site-footer">
   <div class="wrap">
     <div class="grid g-4" style="gap:2rem">
       <div>
-        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem">
-          <img src="/images/ajna-logo.png" alt="" width="32" height="32">
-          <span class="brand-name">Ajna<span style="color:#6f9bff">CS</span></span>
+        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem" aria-label="Ajna Consulting Services — home">
+          <svg viewBox="0 0 100 100" width="36" height="36" fill="none" aria-hidden="true" focusable="false"><defs><linearGradient id="lit-ftr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".30"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".32"/></linearGradient></defs><g transform="rotate(0 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#E8402A"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#F5A623"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#17A05E"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#2B57E8"/></g><path d="M 50 4 L 96 50 L 50 96 L 4 50 Z" fill="url(#lit-ftr)"/><g transform="rotate(0 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><circle cx="50" cy="50" r="6" fill="currentColor"/></svg>
+          <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
         </a>
         <p style="font-size:.88rem;line-height:1.65;color:#9fb0d0;max-width:30ch">
           Specialised engineering partner for enterprise architecture, AI &amp; MLOps, and technical enablement.

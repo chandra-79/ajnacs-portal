@@ -22,20 +22,33 @@
 <meta name="twitter:description" content="Multi-agent architectures are generating significant interest. Before adopting one, it helps to be clear about what problem they solve, what they cost in c…">
 <meta name="twitter:image" content="https://ajnacs.com/assets/og/insights-multi-agent-systems-enterprise.svg">
 
-<link rel="icon" href="/images/favicon.ico" sizes="any">
-<link rel="apple-touch-icon" href="/images/ajna-logo.png">
+<link rel="icon" href="/images/favicon.ico" sizes="32x32">
+<link rel="icon" href="/images/ajna-mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
 <meta name="theme-color" content="#0a1020">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Quintessential&display=swap">
 <link rel="stylesheet" href="/assets/css/site.css">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
 <script>
-/* Set the theme before first paint so the page never flashes the wrong one. */
-(function(){try{var t=localStorage.getItem('acs-theme');
-if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
-document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+/* Theme and reading preferences are applied before first paint, so the page
+   never flashes the wrong ground or resets someone's text size mid-read. */
+(function(){try{
+var d=document.documentElement,t=localStorage.getItem('acs-theme');
+if(t!=='dark'&&t!=='light'&&t!=='sepia')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+d.setAttribute('data-theme',t);
+['rsize','rwidth','rface'].forEach(function(k){
+  var v=localStorage.getItem('acs-'+k);
+  if(v&&/^[a-z]{1,5}$/.test(v))d.setAttribute('data-'+k,v);
+});
+if(d.getAttribute('data-rface')==='serif'){
+  var l=document.createElement('link');l.rel='stylesheet';
+  l.href='https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600&display=swap';
+  document.head.appendChild(l);
+}
+}catch(e){}})();
 </script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Multi-Agent AI Systems: When They Add Value and When They Add Complexity","description":"Multi-agent architectures are generating significant interest. Before adopting one, it helps to be clear about what problem they solve, what they cost in complexity and reliability, and what simpler alternatives look like.","datePublished":"2024-10-22","dateModified":"2024-10-22","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/multi-agent-systems-enterprise/","image":"https://ajnacs.com/assets/og/insights-multi-agent-systems-enterprise.svg","keywords":"AI & MLOps, Enterprise AI, Architecture","articleSection":"AI & MLOps","wordCount":922}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Multi-Agent AI Systems: When They Add Value and When They Add Complexity"}]}</script>
@@ -45,9 +58,9 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 
 <header class="site-header" id="siteHeader">
   <div class="wrap" style="display:flex;align-items:center;width:min(1220px,100% - var(--gutter)*2)">
-    <a class="brand" href="/">
-      <img src="/images/ajna-logo.png" alt="" width="32" height="32">
-      <span class="brand-name">Ajna<span>CS</span></span>
+    <a class="brand" href="/" aria-label="Ajna Consulting Services — home">
+      <svg viewBox="0 0 100 100" width="40" height="40" fill="none" aria-hidden="true" focusable="false"><defs><linearGradient id="lit-hdr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".30"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".32"/></linearGradient></defs><g transform="rotate(0 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#E8402A"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#F5A623"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#17A05E"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#2B57E8"/></g><path d="M 50 4 L 96 50 L 50 96 L 4 50 Z" fill="url(#lit-hdr)"/><g transform="rotate(0 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><circle cx="50" cy="50" r="6" fill="currentColor"/></svg>
+      <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
     </a>
     <nav class="nav" id="nav" aria-label="Primary">
       <a href="/services/">Services</a>
@@ -101,14 +114,14 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 </svg></div></div>
 
   <div class="art-wrap article-grid">
-    <nav class="toc" aria-label="On this page">
+    <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#what-multi-agent-architectures-actually-solve">What multi-agent architectures actually solve</a></li><li><a href="#the-costs">The costs</a></li><li><a href="#the-simpler-alternative-worth-trying-first">The simpler alternative worth trying first</a></li><li><a href="#when-to-actually-build-multi-agent">When to actually build multi-agent</a></li><li><a href="#practical-orchestration-patterns">Practical orchestration patterns</a></li></ol>
-</nav>
+</nav></div>
     <div class="prose">
 <p>Multi-agent systems are compelling in demos. A coordinator agent breaks down a task, specialist agents handle their parts, results are assembled, and the system produces an output that no single LLM call could have achieved.</p>
 <p>In production, multi-agent architectures are harder to operate than single-model pipelines, more difficult to debug when they fail, and rarely necessary for the tasks most enterprise applications actually need. The question worth asking before building one: what specifically requires multiple agents rather than a well-designed single prompt or pipeline?</p>
-<h2 id="what-multi-agent-architectures-actually-solve">What multi-agent architectures actually solve</h2>
+<h2 id="what-multi-agent-architectures-actually-solve"><a class="h-anchor" href="#what-multi-agent-architectures-actually-solve" aria-label="Link to this section">#</a>What multi-agent architectures actually solve</h2>
 <aside class="keyfig">
   <p class="keyfig-label">Key figure</p>
   <p class="keyfig-text">Reliability compounds downward. A three-agent pipeline where each agent has <b>90%</b> reliability has roughly 73% end-to-end reliability (0.9 × 0.9 × 0.9).</p>
@@ -119,24 +132,24 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 <p><strong>Specialization</strong>: tasks where different subtasks benefit from different prompting strategies, tools, or models. A planning agent using a reasoning-optimized model; an execution agent using a faster, cheaper model for straightforward tasks.</p>
 <p><strong>Long-horizon tasks</strong>: multi-step workflows where intermediate results inform subsequent decisions. An agent that searches for information, evaluates what it found, decides whether to search further, and synthesizes when it has enough.</p>
 <p>These are legitimate benefits. They come with real costs.</p>
-<h2 id="the-costs">The costs</h2>
+<h2 id="the-costs"><a class="h-anchor" href="#the-costs" aria-label="Link to this section">#</a>The costs</h2>
 <p><strong>Reliability compounds downward.</strong> A three-agent pipeline where each agent has 90% reliability has roughly 73% end-to-end reliability (0.9 × 0.9 × 0.9). Each additional agent in a chain reduces overall reliability. For a pipeline that needs to be reliable enough for production use, every agent is a risk factor.</p>
 <p><strong>Failure modes are harder to debug.</strong> When a single LLM call fails or produces a bad output, the failure is localized and inspectable. When a multi-agent system produces a wrong answer, tracing why requires understanding which agent&#39;s output was wrong, whether it was a tool call, a hallucination, a bad decision in the orchestration logic, or a context window issue in the coordinator. This is significantly harder to debug than a monolithic pipeline.</p>
 <p><strong>Latency accumulates.</strong> Sequential agent calls add latency. An agentic loop that makes 5 sequential LLM calls at 2-3 seconds each takes 10-15 seconds before it reaches an answer. For user-facing applications, this is often unacceptable.</p>
 <p><strong>Cost scales with calls.</strong> Each agent invocation is a billable API call. A workflow that makes 10 LLM calls to accomplish something that one careful prompt could achieve is 10x the API cost (plus orchestration overhead).</p>
-<h2 id="the-simpler-alternative-worth-trying-first">The simpler alternative worth trying first</h2>
+<h2 id="the-simpler-alternative-worth-trying-first"><a class="h-anchor" href="#the-simpler-alternative-worth-trying-first" aria-label="Link to this section">#</a>The simpler alternative worth trying first</h2>
 <p>Before building a multi-agent system, try:</p>
 <p><strong>Structured prompting</strong>: a single prompt with explicit step-by-step instructions, chain-of-thought guidance, and output format specifications. For many &quot;complex&quot; tasks, a well-structured prompt with a capable model outperforms a multi-agent system at a fraction of the complexity.</p>
 <p><strong>Sequential pipeline with validation</strong>: a series of single LLM calls with deterministic code between them — format validation, filtering, transformation. Each step is predictable, debuggable, and independently testable. Not &quot;agentic,&quot; but reliable.</p>
 <p><strong>Tool-augmented single agent</strong>: one agent with access to tools (web search, code execution, database queries, API calls). The agent decides when to use tools and synthesizes the results. Much simpler than multi-agent orchestration for most workflows.</p>
 <p>The question is not &quot;could this benefit from multiple agents?&quot; but &quot;is the complexity of multiple agents justified by what they enable over a simpler design?&quot;</p>
-<h2 id="when-to-actually-build-multi-agent">When to actually build multi-agent</h2>
+<h2 id="when-to-actually-build-multi-agent"><a class="h-anchor" href="#when-to-actually-build-multi-agent" aria-label="Link to this section">#</a>When to actually build multi-agent</h2>
 <p>The cases where multi-agent architectures genuinely earn their complexity:</p>
 <p><strong>Document processing at scale</strong>: processing hundreds of documents in parallel, each requiring substantive analysis, with results aggregated into a single output. The parallelism justifies the orchestration overhead.</p>
 <p><strong>Competitive research or monitoring</strong>: an agent that reads multiple sources, each handled by a sub-agent, with deduplication and synthesis at the coordinator level. Genuinely parallel independent tasks.</p>
 <p><strong>Long-horizon planning tasks</strong>: a planner that generates a multi-step execution plan, delegates steps to specialized executors, checks results, adjusts the plan based on what it learns. The planning-execution separation is architecturally meaningful.</p>
 <p><strong>Human-in-the-loop workflows</strong>: an orchestrator that hands off to a human for approval at defined checkpoints. The &quot;agent&quot; is the workflow manager; humans are one type of participant. This is often more workflow orchestration than multi-agent AI.</p>
-<h2 id="practical-orchestration-patterns">Practical orchestration patterns</h2>
+<h2 id="practical-orchestration-patterns"><a class="h-anchor" href="#practical-orchestration-patterns" aria-label="Link to this section">#</a>Practical orchestration patterns</h2>
 <p>If you do build multi-agent, the patterns that hold up:</p>
 <p><strong>Explicit message passing</strong>: agents communicate through defined message types with schemas, not freeform text. This makes the contract between agents auditable and testable.</p>
 <p><strong>Idempotent agents</strong>: design agents so that re-running them with the same input produces the same output. This makes retry logic safe and simplifies debugging.</p>
@@ -258,15 +271,47 @@ else:
     </div></div>
   </section>
 </article>
+
+<div class="reader-tools">
+  <button class="icon-btn" id="readerBtn" type="button" aria-expanded="false" aria-controls="readerPanel" title="Reading settings" aria-label="Reading settings"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2.2"/><circle cx="10" cy="17" r="2.2"/></svg></button>
+  <button class="icon-btn" id="focusBtn" type="button" aria-pressed="false" title="Focus mode" aria-label="Enter focus mode"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></button>
+</div>
+<div class="reader-panel" id="readerPanel" role="dialog" aria-label="Reading settings" hidden>
+  <fieldset><legend>Text size</legend>
+    <div class="seg" data-pref="rsize">
+      <button type="button" data-val="s" aria-pressed="false"><span class="sample s">Aa</span>Small</button><button type="button" data-val="m" aria-pressed="false"><span class="sample ">Aa</span>Default</button><button type="button" data-val="l" aria-pressed="false"><span class="sample l">Aa</span>Large</button><button type="button" data-val="xl" aria-pressed="false"><span class="sample l">Aa</span>Largest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Ground</legend>
+    <div class="seg" data-pref="theme">
+      <button type="button" data-val="light" aria-pressed="false"><span class="swatch light"></span>Light</button><button type="button" data-val="sepia" aria-pressed="false"><span class="swatch sepia"></span>Sepia</button><button type="button" data-val="dark" aria-pressed="false"><span class="swatch dark"></span>Dark</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Column width</legend>
+    <div class="seg" data-pref="rwidth">
+      <button type="button" data-val="s" aria-pressed="false">Narrow</button><button type="button" data-val="m" aria-pressed="false">Default</button><button type="button" data-val="l" aria-pressed="false">Wide</button><button type="button" data-val="xl" aria-pressed="false">Widest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Typeface</legend>
+    <div class="seg" data-pref="rface">
+      <button type="button" data-val="sans" aria-pressed="false"><span class="sample">Aa</span>Sans</button>
+      <button type="button" data-val="serif" aria-pressed="false"><span class="sample serif">Aa</span>Serif</button>
+    </div>
+  </fieldset>
+  <button class="reader-reset" id="readerReset" type="button">Reset to defaults</button>
+  <p class="reader-note">Saved in this browser only — these settings do not follow you to another device.</p>
+</div>
+<button class="focus-exit" id="focusExit" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h6V3M21 9h-6V3M3 15h6v6M21 15h-6v6"/></svg> Exit focus</button>
+
 </main>
 
 <footer class="site-footer">
   <div class="wrap">
     <div class="grid g-4" style="gap:2rem">
       <div>
-        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem">
-          <img src="/images/ajna-logo.png" alt="" width="32" height="32">
-          <span class="brand-name">Ajna<span style="color:#6f9bff">CS</span></span>
+        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem" aria-label="Ajna Consulting Services — home">
+          <svg viewBox="0 0 100 100" width="36" height="36" fill="none" aria-hidden="true" focusable="false"><defs><linearGradient id="lit-ftr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".30"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".32"/></linearGradient></defs><g transform="rotate(0 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#E8402A"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#F5A623"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#17A05E"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#2B57E8"/></g><path d="M 50 4 L 96 50 L 50 96 L 4 50 Z" fill="url(#lit-ftr)"/><g transform="rotate(0 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><circle cx="50" cy="50" r="6" fill="currentColor"/></svg>
+          <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
         </a>
         <p style="font-size:.88rem;line-height:1.65;color:#9fb0d0;max-width:30ch">
           Specialised engineering partner for enterprise architecture, AI &amp; MLOps, and technical enablement.

@@ -22,20 +22,33 @@
 <meta name="twitter:description" content="Most enterprise Java still runs on versions the ecosystem has left behind. A staged roadmap for moving Java 8 estates to 21+ — what breaks, what to automat…">
 <meta name="twitter:image" content="https://ajnacs.com/assets/og/insights-java-legacy-modernization-roadmap.svg">
 
-<link rel="icon" href="/images/favicon.ico" sizes="any">
-<link rel="apple-touch-icon" href="/images/ajna-logo.png">
+<link rel="icon" href="/images/favicon.ico" sizes="32x32">
+<link rel="icon" href="/images/ajna-mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
 <meta name="theme-color" content="#0a1020">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Quintessential&display=swap">
 <link rel="stylesheet" href="/assets/css/site.css">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
 <script>
-/* Set the theme before first paint so the page never flashes the wrong one. */
-(function(){try{var t=localStorage.getItem('acs-theme');
-if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
-document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+/* Theme and reading preferences are applied before first paint, so the page
+   never flashes the wrong ground or resets someone's text size mid-read. */
+(function(){try{
+var d=document.documentElement,t=localStorage.getItem('acs-theme');
+if(t!=='dark'&&t!=='light'&&t!=='sepia')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+d.setAttribute('data-theme',t);
+['rsize','rwidth','rface'].forEach(function(k){
+  var v=localStorage.getItem('acs-'+k);
+  if(v&&/^[a-z]{1,5}$/.test(v))d.setAttribute('data-'+k,v);
+});
+if(d.getAttribute('data-rface')==='serif'){
+  var l=document.createElement('link');l.rel='stylesheet';
+  l.href='https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600&display=swap';
+  document.head.appendChild(l);
+}
+}catch(e){}})();
 </script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Modernizing Legacy Java: A Roadmap from Java 8 to 21+ Without Stopping the Business","description":"Most enterprise Java still runs on versions the ecosystem has left behind. A staged roadmap for moving Java 8 estates to 21+ — what breaks, what to automate, how to sequence framework upgrades, and how to sell the work to the business.","datePublished":"2026-03-10","dateModified":"2026-03-10","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/java-legacy-modernization-roadmap/","image":"https://ajnacs.com/assets/og/insights-java-legacy-modernization-roadmap.svg","keywords":"Java, Modernization, Technical Debt, Architecture, Engineering Practice","articleSection":"Architecture","wordCount":1055}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Modernizing Legacy Java: A Roadmap from Java 8 to 21+ Without Stopping the Business"}]}</script>
@@ -45,9 +58,9 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 
 <header class="site-header" id="siteHeader">
   <div class="wrap" style="display:flex;align-items:center;width:min(1220px,100% - var(--gutter)*2)">
-    <a class="brand" href="/">
-      <img src="/images/ajna-logo.png" alt="" width="32" height="32">
-      <span class="brand-name">Ajna<span>CS</span></span>
+    <a class="brand" href="/" aria-label="Ajna Consulting Services — home">
+      <svg viewBox="0 0 100 100" width="40" height="40" fill="none" aria-hidden="true" focusable="false"><defs><linearGradient id="lit-hdr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".30"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".32"/></linearGradient></defs><g transform="rotate(0 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#E8402A"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#F5A623"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#17A05E"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#2B57E8"/></g><path d="M 50 4 L 96 50 L 50 96 L 4 50 Z" fill="url(#lit-hdr)"/><g transform="rotate(0 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><circle cx="50" cy="50" r="6" fill="currentColor"/></svg>
+      <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
     </a>
     <nav class="nav" id="nav" aria-label="Primary">
       <a href="/services/">Services</a>
@@ -101,30 +114,30 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 </svg></div></div>
 
   <div class="art-wrap article-grid">
-    <nav class="toc" aria-label="On this page">
+    <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#why-this-became-urgent-rather-than-nice-to-have">Why this became urgent rather than nice-to-have</a></li><li><a href="#the-staged-path-runtime-first-then-language-then-frameworks">The staged path: runtime first, then language, then frameworks</a></li><li><a href="#automation-is-the-difference-between-a-quarter-and-a-decade">Automation is the difference between a quarter and a decade</a></li><li><a href="#sequencing-the-portfolio-and-selling-it">Sequencing the portfolio (and selling it)</a></li><li><a href="#the-traps">The traps</a></li></ol>
-</nav>
+</nav></div>
     <div class="prose">
 <p>Somewhere in your organization, revenue is flowing through a Java 8 application built with Spring 4, packaged as a WAR, and deployed to an app server by a script whose author left in 2019. Industry surveys still put a stubborn double-digit share of production Java on version 8 — a platform from 2014.</p>
 <p>The gap between that and current Java (21 LTS, 25 LTS) is not cosmetic. It&#39;s a security posture gap, a hiring gap, a performance gap, and — increasingly — a dependency gap, because the library ecosystem has moved its baseline. Here&#39;s how to close it without a big-bang rewrite and without stopping feature delivery.</p>
-<h2 id="why-this-became-urgent-rather-than-nice-to-have">Why this became urgent rather than nice-to-have</h2>
+<h2 id="why-this-became-urgent-rather-than-nice-to-have"><a class="h-anchor" href="#why-this-became-urgent-rather-than-nice-to-have" aria-label="Link to this section">#</a>Why this became urgent rather than nice-to-have</h2>
 <p>Four forces changed the calculus. <strong>Dependencies moved:</strong> Spring Framework 6/Boot 3 require Java 17+, and a growing set of libraries now baseline against 17 or 21 — staying on 8 means running increasingly unpatched transitive dependencies, which is where CVEs actually live. <strong>Security economics moved:</strong> commercial support for old JDKs exists but its price rises annually, and auditors have learned to ask for JDK versions. <strong>Performance moved:</strong> G1/ZGC improvements, compact strings, and startup work deliver double-digit percentage wins for a recompile — cloud bills notice. <strong>People moved:</strong> engineers learn records, virtual threads, and pattern matching now; estates frozen in 2014 idiom repel the hires they need most.</p>
-<h2 id="the-staged-path-runtime-first-then-language-then-frameworks">The staged path: runtime first, then language, then frameworks</h2>
+<h2 id="the-staged-path-runtime-first-then-language-then-frameworks"><a class="h-anchor" href="#the-staged-path-runtime-first-then-language-then-frameworks" aria-label="Link to this section">#</a>The staged path: runtime first, then language, then frameworks</h2>
 <p>The single most important sequencing decision: <strong>upgrade the runtime before rewriting any code.</strong> Java&#39;s backward compatibility means most Java 8 bytecode runs on JDK 21 unchanged. Decouple &quot;which JVM executes this&quot; from &quot;which language level we write&quot; and the risk profile transforms.</p>
 <p><strong>Stage 1 — Run on a modern JDK, compile at the old level.</strong> Keep <code>--release 8</code>, run on 21. What breaks is well-catalogued and mostly mechanical: the Java EE modules removed from the JDK (JAXB, JAX-WS, <code>javax.activation</code> — add them as Maven/Gradle dependencies), internal-API usage (<code>sun.misc.Unsafe</code> reflection holes — usually fixed by upgrading the library doing it: old Guava, old ASM-based anything, old Mockito/CGLIB), and JVM flags that no longer exist (CMS is gone; PermSize means nothing). Tools do the finding: <code>jdeps</code> reports internal-API dependencies, and the Rewrite/OpenRewrite recipes fix the common patterns mechanically at scale.</p>
 <p><strong>Stage 2 — Raise the language level and modernize dependencies.</strong> Move source level to 17/21 module by module. The javax→<strong>jakarta</strong> namespace migration is the big rock here for anything on the Servlet/JPA/JMS APIs — mechanical (OpenRewrite again does 90%), but it must be coordinated with the framework jump because Spring Boot 3/Jakarta EE 9+ are the versions that require it.</p>
 <p><strong>Stage 3 — Framework upgrades ride the same wave.</strong> Spring Boot 1.x/2.x → 3.x, Hibernate 5 → 6, and friends. Take them one major version at a time per service, using each framework&#39;s migration guides and the OpenRewrite recipes published for exactly these paths. This stage is where test coverage gets audited honestly: services without characterization tests get them <em>before</em> the framework jump, because &quot;it compiles&quot; and &quot;it computes the same invoices&quot; are different claims.</p>
 <p><strong>Stage 4 — Exploit the platform.</strong> Only now spend effort on new idiom where it pays: virtual threads replacing thread-pool gymnastics in I/O-bound services, records replacing Lombok data classes, pattern matching collapsing visitor hierarchies, <code>HttpClient</code> replacing that vendored 2009 HTTP library. Resist idiom-modernization as an end in itself; touch code when you&#39;re in it for a feature, guided by a written &quot;when we touch it, we bring it to this standard&quot; policy.</p>
-<h2 id="automation-is-the-difference-between-a-quarter-and-a-decade">Automation is the difference between a quarter and a decade</h2>
+<h2 id="automation-is-the-difference-between-a-quarter-and-a-decade"><a class="h-anchor" href="#automation-is-the-difference-between-a-quarter-and-a-decade" aria-label="Link to this section">#</a>Automation is the difference between a quarter and a decade</h2>
 <p>At estate scale — hundreds of services — the manual version of this program dies of coordination cost. The leverage points:</p>
 <p><strong>OpenRewrite</strong> (and vendor tooling built on it) executes the mechanical 80%: javax→jakarta, JUnit 4→5, Spring Boot version bumps, deprecated-API replacements. Run recipes across whole repository fleets and review diffs, rather than assigning tickets to humans to do regex work.</p>
 <p><strong>The build pipeline as the enforcement layer.</strong> Add a &quot;runs on modern JDK&quot; CI job to every service <em>before</em> migrating any of them — the failing jobs are your automatically-generated, always-current work inventory. Ratchet forward: once a service passes on 21, its pipeline pins there and won&#39;t accept regressions.</p>
 <p><strong>A bill of materials, centrally managed.</strong> One platform BOM per organization defining blessed versions of the common stack, owned by a platform team, consumed by every service. The alternative — 400 services each negotiating their own Jackson version — is how estates got stuck last time.</p>
-<h2 id="sequencing-the-portfolio-and-selling-it">Sequencing the portfolio (and selling it)</h2>
+<h2 id="sequencing-the-portfolio-and-selling-it"><a class="h-anchor" href="#sequencing-the-portfolio-and-selling-it" aria-label="Link to this section">#</a>Sequencing the portfolio (and selling it)</h2>
 <p>Order services by <em>risk-adjusted value</em>: internal tools and low-traffic services first as pathfinders (they debug the runbook cheaply), then the high-change services where modern tooling pays daily, and the frozen-but-critical systems last with the now-mature playbook. A useful forcing function: tie the migration to something the business already wants — the cloud move, the security certification, the performance target — rather than pitching &quot;Java upgrade&quot; as its own line item. &quot;The PCI scope requires patched runtimes&quot; opens budgets that &quot;Java 8 is old&quot; never will.</p>
 <p>Track and publish three numbers weekly: services on a supported JDK (%), services on the platform BOM (%), and CVE exposure count from dependency scanning. Visible, monotonic progress is what keeps a two-year program funded through leadership changes.</p>
-<h2 id="the-traps">The traps</h2>
+<h2 id="the-traps"><a class="h-anchor" href="#the-traps" aria-label="Link to this section">#</a>The traps</h2>
 <p><strong>The parallel-rewrite mirage:</strong> &quot;while we&#39;re at it, let&#39;s rewrite it properly&quot; converts a bounded migration into an unbounded project; migrations succeed by being boring. <strong>The 95%-done plateau:</strong> the last services are the ones with no tests, no owner, and a hard dependency on something removed — assign them owners and dates at program start, not end. <strong>Reflection-heavy magic:</strong> old AOP, old serialization frameworks, and hand-rolled classloader tricks are where the non-mechanical week-long debugging lives; inventory them early via <code>jdeps</code> and JFR. <strong>Certifying vendors:</strong> that third-party JAR from a supplier who &quot;supports Java 8 only&quot; needs a commercial conversation started in month one, because their timeline is now on your critical path.</p>
 <p>The end state worth aiming at isn&#39;t &quot;we&#39;re on 21.&quot; It&#39;s <em>upgrade fluency</em>: a fleet on a managed BOM, CI that proves runtime compatibility continuously, and the organizational muscle to adopt 25 LTS as a routine quarter&#39;s chore rather than a named program with a steering committee. The first migration is expensive precisely because that muscle atrophied. Its lasting deliverable is making sure the next one is boring.</p>
 
@@ -233,15 +246,47 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
     </div></div>
   </section>
 </article>
+
+<div class="reader-tools">
+  <button class="icon-btn" id="readerBtn" type="button" aria-expanded="false" aria-controls="readerPanel" title="Reading settings" aria-label="Reading settings"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2.2"/><circle cx="10" cy="17" r="2.2"/></svg></button>
+  <button class="icon-btn" id="focusBtn" type="button" aria-pressed="false" title="Focus mode" aria-label="Enter focus mode"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></button>
+</div>
+<div class="reader-panel" id="readerPanel" role="dialog" aria-label="Reading settings" hidden>
+  <fieldset><legend>Text size</legend>
+    <div class="seg" data-pref="rsize">
+      <button type="button" data-val="s" aria-pressed="false"><span class="sample s">Aa</span>Small</button><button type="button" data-val="m" aria-pressed="false"><span class="sample ">Aa</span>Default</button><button type="button" data-val="l" aria-pressed="false"><span class="sample l">Aa</span>Large</button><button type="button" data-val="xl" aria-pressed="false"><span class="sample l">Aa</span>Largest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Ground</legend>
+    <div class="seg" data-pref="theme">
+      <button type="button" data-val="light" aria-pressed="false"><span class="swatch light"></span>Light</button><button type="button" data-val="sepia" aria-pressed="false"><span class="swatch sepia"></span>Sepia</button><button type="button" data-val="dark" aria-pressed="false"><span class="swatch dark"></span>Dark</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Column width</legend>
+    <div class="seg" data-pref="rwidth">
+      <button type="button" data-val="s" aria-pressed="false">Narrow</button><button type="button" data-val="m" aria-pressed="false">Default</button><button type="button" data-val="l" aria-pressed="false">Wide</button><button type="button" data-val="xl" aria-pressed="false">Widest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Typeface</legend>
+    <div class="seg" data-pref="rface">
+      <button type="button" data-val="sans" aria-pressed="false"><span class="sample">Aa</span>Sans</button>
+      <button type="button" data-val="serif" aria-pressed="false"><span class="sample serif">Aa</span>Serif</button>
+    </div>
+  </fieldset>
+  <button class="reader-reset" id="readerReset" type="button">Reset to defaults</button>
+  <p class="reader-note">Saved in this browser only — these settings do not follow you to another device.</p>
+</div>
+<button class="focus-exit" id="focusExit" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h6V3M21 9h-6V3M3 15h6v6M21 15h-6v6"/></svg> Exit focus</button>
+
 </main>
 
 <footer class="site-footer">
   <div class="wrap">
     <div class="grid g-4" style="gap:2rem">
       <div>
-        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem">
-          <img src="/images/ajna-logo.png" alt="" width="32" height="32">
-          <span class="brand-name">Ajna<span style="color:#6f9bff">CS</span></span>
+        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem" aria-label="Ajna Consulting Services — home">
+          <svg viewBox="0 0 100 100" width="36" height="36" fill="none" aria-hidden="true" focusable="false"><defs><linearGradient id="lit-ftr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".30"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".32"/></linearGradient></defs><g transform="rotate(0 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#E8402A"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#F5A623"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#17A05E"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#2B57E8"/></g><path d="M 50 4 L 96 50 L 50 96 L 4 50 Z" fill="url(#lit-ftr)"/><g transform="rotate(0 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><circle cx="50" cy="50" r="6" fill="currentColor"/></svg>
+          <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
         </a>
         <p style="font-size:.88rem;line-height:1.65;color:#9fb0d0;max-width:30ch">
           Specialised engineering partner for enterprise architecture, AI &amp; MLOps, and technical enablement.

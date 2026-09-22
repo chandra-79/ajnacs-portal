@@ -22,20 +22,33 @@
 <meta name="twitter:description" content="Everyone cites the strangler pattern; few finish a strangulation. The facade and routing mechanics, the data-migration sequencing that makes or breaks it…">
 <meta name="twitter:image" content="https://ajnacs.com/assets/og/insights-strangler-fig-legacy-migration.svg">
 
-<link rel="icon" href="/images/favicon.ico" sizes="any">
-<link rel="apple-touch-icon" href="/images/ajna-logo.png">
+<link rel="icon" href="/images/favicon.ico" sizes="32x32">
+<link rel="icon" href="/images/ajna-mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
 <meta name="theme-color" content="#0a1020">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Quintessential&display=swap">
 <link rel="stylesheet" href="/assets/css/site.css">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
 <script>
-/* Set the theme before first paint so the page never flashes the wrong one. */
-(function(){try{var t=localStorage.getItem('acs-theme');
-if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
-document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+/* Theme and reading preferences are applied before first paint, so the page
+   never flashes the wrong ground or resets someone's text size mid-read. */
+(function(){try{
+var d=document.documentElement,t=localStorage.getItem('acs-theme');
+if(t!=='dark'&&t!=='light'&&t!=='sepia')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+d.setAttribute('data-theme',t);
+['rsize','rwidth','rface'].forEach(function(k){
+  var v=localStorage.getItem('acs-'+k);
+  if(v&&/^[a-z]{1,5}$/.test(v))d.setAttribute('data-'+k,v);
+});
+if(d.getAttribute('data-rface')==='serif'){
+  var l=document.createElement('link');l.rel='stylesheet';
+  l.href='https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600&display=swap';
+  document.head.appendChild(l);
+}
+}catch(e){}})();
 </script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"The Strangler Fig in Practice: Incremental Legacy Replacement That Actually Finishes","description":"Everyone cites the strangler pattern; few finish a strangulation. The facade and routing mechanics, the data-migration sequencing that makes or breaks it, the organizational funding model, and the anti-patterns that leave estates half-strangled forever.","datePublished":"2026-01-19","dateModified":"2026-01-19","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/strangler-fig-legacy-migration/","image":"https://ajnacs.com/assets/og/insights-strangler-fig-legacy-migration.svg","keywords":"Legacy Modernization, Architecture, Distributed Systems, Engineering Practice, Technical Debt","articleSection":"Architecture","wordCount":1040}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"The Strangler Fig in Practice: Incremental Legacy Replacement That Actually Finishes"}]}</script>
@@ -45,9 +58,9 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 
 <header class="site-header" id="siteHeader">
   <div class="wrap" style="display:flex;align-items:center;width:min(1220px,100% - var(--gutter)*2)">
-    <a class="brand" href="/">
-      <img src="/images/ajna-logo.png" alt="" width="32" height="32">
-      <span class="brand-name">Ajna<span>CS</span></span>
+    <a class="brand" href="/" aria-label="Ajna Consulting Services — home">
+      <svg viewBox="0 0 100 100" width="40" height="40" fill="none" aria-hidden="true" focusable="false"><defs><linearGradient id="lit-hdr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".30"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".32"/></linearGradient></defs><g transform="rotate(0 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#E8402A"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#F5A623"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#17A05E"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#2B57E8"/></g><path d="M 50 4 L 96 50 L 50 96 L 4 50 Z" fill="url(#lit-hdr)"/><g transform="rotate(0 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><circle cx="50" cy="50" r="6" fill="currentColor"/></svg>
+      <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
     </a>
     <nav class="nav" id="nav" aria-label="Primary">
       <a href="/services/">Services</a>
@@ -101,25 +114,25 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 </svg></div></div>
 
   <div class="art-wrap article-grid">
-    <nav class="toc" aria-label="On this page">
+    <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#the-mechanics-facade-routing-and-the-seam-catalog">The mechanics: facade, routing, and the seam catalog</a></li><li><a href="#data-is-the-boss-fight-again">Data is the boss fight (again)</a></li><li><a href="#the-organizational-mechanics-decide-the-outcome">The organizational mechanics decide the outcome</a></li><li><a href="#when-the-strangler-is-wrong">When the strangler is wrong</a></li></ol>
-</nav>
+</nav></div>
     <div class="prose">
 <p>The strangler fig pattern — grow the new system around the old, route traffic incrementally, retire the legacy when nothing calls it — has won the argument against the big-bang rewrite so thoroughly that citing it is now table stakes in every modernization deck. What the decks omit is the base rate: most strangulations stall. The industry is full of estates running <em>both</em> systems indefinitely — the legacy not retired, the new system not complete, integration complexity doubled, the worst of both worlds achieved and institutionalized. The pattern works; it&#39;s the practice that fails, and it fails in knowable places.</p>
-<h2 id="the-mechanics-facade-routing-and-the-seam-catalog">The mechanics: facade, routing, and the seam catalog</h2>
+<h2 id="the-mechanics-facade-routing-and-the-seam-catalog"><a class="h-anchor" href="#the-mechanics-facade-routing-and-the-seam-catalog" aria-label="Link to this section">#</a>The mechanics: facade, routing, and the seam catalog</h2>
 <p>The load-bearing component is the <strong>facade</strong> — the interception layer (API gateway, reverse proxy, or an explicit anti-corruption layer) through which <em>all</em> consumers reach the capability being replaced. Its jobs: route each request to legacy or new by rule (per endpoint, per tenant, per percentage — the progressive-delivery machinery applied to migration), translate between old and new contracts so consumers never care which side answered, and <em>measure</em> — per-route traffic, error deltas, latency comparisons between the systems. No facade, no strangulation: if consumers call the legacy directly through a dozen undocumented paths (the ODBC connection from finance, the file drop, the shared database read — the integration archaeology from migration practice), step zero is herding every path through the interception point, and it&#39;s often a project of its own. Budget it honestly; it&#39;s also where half the discovery value lives.</p>
 <p>Increment selection is the next craft: strangle along <strong>business capability seams, not technical layers</strong> (&quot;customer address management,&quot; not &quot;the DAO tier&quot;), choosing early increments for <em>decoupling feasibility</em> (bounded data, few callers) and <em>learning value</em>, not executive visibility. Each increment should reach <em>full</em> retirement — traffic at 100%, legacy code path deleted, data ownership transferred — before declaring victory, because a fleet of 80%-migrated capabilities is precisely the both-systems-forever trap.</p>
-<h2 id="data-is-the-boss-fight-again">Data is the boss fight (again)</h2>
+<h2 id="data-is-the-boss-fight-again"><a class="h-anchor" href="#data-is-the-boss-fight-again" aria-label="Link to this section">#</a>Data is the boss fight (again)</h2>
 <p>Routing requests is easy; the schism is the data. While a capability straddles systems, its state needs a coherence strategy, and the options are the familiar distributed-data toolkit applied with migration-specific sequencing: <strong>legacy-owns, new-reads</strong> (the new system reads via CDC-fed projections or APIs while writes stay legacy — the safe starting posture, and CDC&#39;s killer use case: the legacy publishes changes without being modified); then <strong>dual-write windows</strong> managed with the same care as any expand/contract migration (idempotent writes, drift detection via reconciliation jobs — the discipline that catches the divergence <em>before</em> the cutover instead of after); then <strong>ownership transfer</strong> per data domain — the moment the new system becomes the writer and the legacy becomes the reader (or is severed) — which is the <em>real</em> migration milestone, the one worth ceremony. The strangler estates that stall almost always stalled here: traffic moved, data ownership didn&#39;t, and now every schema decision requires two teams and a treaty. Sequence data ownership transfer <em>into</em> each increment&#39;s definition of done, not into a mythical &quot;phase 3.&quot;</p>
 <p>Throughout: the reconciliation loop (compare, alarm, repair) runs continuously between the systems — treating divergence as a monitored SLO rather than an assumed impossibility — and shadow traffic (mirror to the new system, compare answers, serve from legacy) is the strangler&#39;s best verification tool, converting &quot;we think the new implementation matches&quot; into measured agreement rates before a single user depends on it.</p>
-<h2 id="the-organizational-mechanics-decide-the-outcome">The organizational mechanics decide the outcome</h2>
+<h2 id="the-organizational-mechanics-decide-the-outcome"><a class="h-anchor" href="#the-organizational-mechanics-decide-the-outcome" aria-label="Link to this section">#</a>The organizational mechanics decide the outcome</h2>
 <p>The pattern&#39;s failure modes are mostly funding and incentive failures wearing technical costumes:</p>
 <p><strong>The strangulation must be funded as a <em>program with an end state</em>, not a tax on feature teams.</strong> &quot;Migrate as you touch&quot; (opportunistic-only strangulation) asymptotes at the 60% of the system that features regularly touch — the untouched 40% remains legacy forever, and it&#39;s disproportionately the risky, undocumented part. Working models pair opportunistic migration (touch it, move it) with a funded backbone team driving the increments features won&#39;t reach, tracked against a public burn-down of capabilities-remaining.</p>
 <p><strong>The legacy freeze must be real.</strong> Every feature added to the legacy during migration widens the gap the new system must close — the classic race condition where the target moves faster than the migration. The governance that works: new capabilities land in the new system <em>by default</em>, legacy changes require exception review, and the exception list is visible enough to embarrass.</p>
 <p><strong>Retirement is a deliverable with an owner.</strong> Decommissioning — the license terminated, the servers gone, the data archived per retention policy, the integrations formally cut over — is unglamorous work that no one volunteers for, and its absence is why &quot;migrated&quot; systems keep costing money for years. Put retirement line-items in the plan with dates and names; celebrate deletions with the same energy as launches (the cultural signal that finishing matters).</p>
 <p><strong>And measure the honest metric:</strong> percentage of <em>traffic</em> served by the new system, percentage of <em>data domains</em> owned by it, and <em>legacy run-cost trending to zero</em> — not &quot;services built,&quot; which measures construction rather than strangulation. A dashboard where legacy cost hasn&#39;t moved in three quarters is a program review, not a status update.</p>
-<h2 id="when-the-strangler-is-wrong">When the strangler is wrong</h2>
+<h2 id="when-the-strangler-is-wrong"><a class="h-anchor" href="#when-the-strangler-is-wrong" aria-label="Link to this section">#</a>When the strangler is wrong</h2>
 <p>Completeness demands the counter-cases: <strong>small systems</strong> (a bounded system rewritable in a quarter doesn&#39;t need a two-year incremental scaffold — the pattern&#39;s overhead only pays above a size threshold); <strong>doomed capabilities</strong> (don&#39;t strangle what should be retired outright or bought — the build-vs-buy question precedes the migration question); and <strong>the un-seamable monolith</strong> (systems whose internals resist capability boundaries — shared mutable state everywhere — sometimes need an internal decoupling investment <em>first</em>, or an honest acceptance that replacement will be chunkier than the pattern&#39;s ideal). The pattern is a strategy for <em>managing risk over a long replacement</em>, and where the replacement isn&#39;t long or the risk isn&#39;t high, simpler plans win.</p>
 <p>The strangler fig&#39;s real lesson was never the routing trick — it&#39;s that <strong>legacy replacement is a delivery program with all the disciplines that implies</strong>: incremental value, measured progress, funded completion, and an explicit definition of done that includes the funeral. Estates that adopt the pattern&#39;s diagram without those disciplines get the pattern&#39;s namesake outcome in the wrong direction — two systems, intertwined, both alive, forever. Estates that adopt the disciplines finish — and finishing, in legacy modernization, is the entire point.</p>
 
@@ -228,15 +241,47 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
     </div></div>
   </section>
 </article>
+
+<div class="reader-tools">
+  <button class="icon-btn" id="readerBtn" type="button" aria-expanded="false" aria-controls="readerPanel" title="Reading settings" aria-label="Reading settings"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2.2"/><circle cx="10" cy="17" r="2.2"/></svg></button>
+  <button class="icon-btn" id="focusBtn" type="button" aria-pressed="false" title="Focus mode" aria-label="Enter focus mode"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></button>
+</div>
+<div class="reader-panel" id="readerPanel" role="dialog" aria-label="Reading settings" hidden>
+  <fieldset><legend>Text size</legend>
+    <div class="seg" data-pref="rsize">
+      <button type="button" data-val="s" aria-pressed="false"><span class="sample s">Aa</span>Small</button><button type="button" data-val="m" aria-pressed="false"><span class="sample ">Aa</span>Default</button><button type="button" data-val="l" aria-pressed="false"><span class="sample l">Aa</span>Large</button><button type="button" data-val="xl" aria-pressed="false"><span class="sample l">Aa</span>Largest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Ground</legend>
+    <div class="seg" data-pref="theme">
+      <button type="button" data-val="light" aria-pressed="false"><span class="swatch light"></span>Light</button><button type="button" data-val="sepia" aria-pressed="false"><span class="swatch sepia"></span>Sepia</button><button type="button" data-val="dark" aria-pressed="false"><span class="swatch dark"></span>Dark</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Column width</legend>
+    <div class="seg" data-pref="rwidth">
+      <button type="button" data-val="s" aria-pressed="false">Narrow</button><button type="button" data-val="m" aria-pressed="false">Default</button><button type="button" data-val="l" aria-pressed="false">Wide</button><button type="button" data-val="xl" aria-pressed="false">Widest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Typeface</legend>
+    <div class="seg" data-pref="rface">
+      <button type="button" data-val="sans" aria-pressed="false"><span class="sample">Aa</span>Sans</button>
+      <button type="button" data-val="serif" aria-pressed="false"><span class="sample serif">Aa</span>Serif</button>
+    </div>
+  </fieldset>
+  <button class="reader-reset" id="readerReset" type="button">Reset to defaults</button>
+  <p class="reader-note">Saved in this browser only — these settings do not follow you to another device.</p>
+</div>
+<button class="focus-exit" id="focusExit" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h6V3M21 9h-6V3M3 15h6v6M21 15h-6v6"/></svg> Exit focus</button>
+
 </main>
 
 <footer class="site-footer">
   <div class="wrap">
     <div class="grid g-4" style="gap:2rem">
       <div>
-        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem">
-          <img src="/images/ajna-logo.png" alt="" width="32" height="32">
-          <span class="brand-name">Ajna<span style="color:#6f9bff">CS</span></span>
+        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem" aria-label="Ajna Consulting Services — home">
+          <svg viewBox="0 0 100 100" width="36" height="36" fill="none" aria-hidden="true" focusable="false"><defs><linearGradient id="lit-ftr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".30"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".32"/></linearGradient></defs><g transform="rotate(0 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#E8402A"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#F5A623"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#17A05E"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#2B57E8"/></g><path d="M 50 4 L 96 50 L 50 96 L 4 50 Z" fill="url(#lit-ftr)"/><g transform="rotate(0 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><circle cx="50" cy="50" r="6" fill="currentColor"/></svg>
+          <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
         </a>
         <p style="font-size:.88rem;line-height:1.65;color:#9fb0d0;max-width:30ch">
           Specialised engineering partner for enterprise architecture, AI &amp; MLOps, and technical enablement.

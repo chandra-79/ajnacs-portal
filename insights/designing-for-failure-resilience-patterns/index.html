@@ -22,20 +22,33 @@
 <meta name="twitter:description" content="Circuit breakers, bulkheads, retry logic, chaos engineering — the resilience patterns that genuinely reduce MTTR and the ones that look good on architectur…">
 <meta name="twitter:image" content="https://ajnacs.com/assets/og/insights-designing-for-failure-resilience-patterns.svg">
 
-<link rel="icon" href="/images/favicon.ico" sizes="any">
-<link rel="apple-touch-icon" href="/images/ajna-logo.png">
+<link rel="icon" href="/images/favicon.ico" sizes="32x32">
+<link rel="icon" href="/images/ajna-mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
 <meta name="theme-color" content="#0a1020">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Quintessential&display=swap">
 <link rel="stylesheet" href="/assets/css/site.css">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
 <script>
-/* Set the theme before first paint so the page never flashes the wrong one. */
-(function(){try{var t=localStorage.getItem('acs-theme');
-if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
-document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+/* Theme and reading preferences are applied before first paint, so the page
+   never flashes the wrong ground or resets someone's text size mid-read. */
+(function(){try{
+var d=document.documentElement,t=localStorage.getItem('acs-theme');
+if(t!=='dark'&&t!=='light'&&t!=='sepia')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+d.setAttribute('data-theme',t);
+['rsize','rwidth','rface'].forEach(function(k){
+  var v=localStorage.getItem('acs-'+k);
+  if(v&&/^[a-z]{1,5}$/.test(v))d.setAttribute('data-'+k,v);
+});
+if(d.getAttribute('data-rface')==='serif'){
+  var l=document.createElement('link');l.rel='stylesheet';
+  l.href='https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600&display=swap';
+  document.head.appendChild(l);
+}
+}catch(e){}})();
 </script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Designing for Failure: Resilience Patterns That Actually Hold in Production","description":"Circuit breakers, bulkheads, retry logic, chaos engineering — the resilience patterns that genuinely reduce MTTR and the ones that look good on architecture diagrams but fail when things get real.","datePublished":"2026-01-07","dateModified":"2026-01-07","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/designing-for-failure-resilience-patterns/","image":"https://ajnacs.com/assets/og/insights-designing-for-failure-resilience-patterns.svg","keywords":"Cloud Architecture, Infrastructure, Observability","articleSection":"Cloud Architecture","wordCount":1271}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Designing for Failure: Resilience Patterns That Actually Hold in Production"}]}</script>
@@ -45,9 +58,9 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 
 <header class="site-header" id="siteHeader">
   <div class="wrap" style="display:flex;align-items:center;width:min(1220px,100% - var(--gutter)*2)">
-    <a class="brand" href="/">
-      <img src="/images/ajna-logo.png" alt="" width="32" height="32">
-      <span class="brand-name">Ajna<span>CS</span></span>
+    <a class="brand" href="/" aria-label="Ajna Consulting Services — home">
+      <svg viewBox="0 0 100 100" width="40" height="40" fill="none" aria-hidden="true" focusable="false"><defs><linearGradient id="lit-hdr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".30"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".32"/></linearGradient></defs><g transform="rotate(0 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#E8402A"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#F5A623"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#17A05E"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#2B57E8"/></g><path d="M 50 4 L 96 50 L 50 96 L 4 50 Z" fill="url(#lit-hdr)"/><g transform="rotate(0 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><circle cx="50" cy="50" r="6" fill="currentColor"/></svg>
+      <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
     </a>
     <nav class="nav" id="nav" aria-label="Primary">
       <a href="/services/">Services</a>
@@ -101,29 +114,29 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 </svg></div></div>
 
   <div class="art-wrap article-grid">
-    <nav class="toc" aria-label="On this page">
+    <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#the-circuit-breaker-useful-but-often-implemented-wrong">The circuit breaker — useful, but often implemented wrong</a></li><li><a href="#bulkheads-the-most-underused-pattern">Bulkheads — the most underused pattern</a></li><li><a href="#retry-logic-helpful-and-dangerous">Retry logic — helpful and dangerous</a></li><li><a href="#timeouts-the-most-basic-thing-that39s-most-often-misconfigur">Timeouts — the most basic thing that&amp;#39;s most often misconfigured</a></li><li><a href="#graceful-degradation-the-gap-between-theory-and-practice">Graceful degradation — the gap between theory and practice</a></li><li><a href="#chaos-engineering-valuable-but-start-small">Chaos engineering — valuable, but start small</a></li><li><a href="#what-actually-moves-the-needle-on-mttr">What actually moves the needle on MTTR</a></li></ol>
-</nav>
+</nav></div>
     <div class="prose">
 <p>Something shifts in how you think about system design after you&#39;ve been in enough production incidents. You stop trying to prevent all failure and start designing for recovery. The question changes from &quot;how do we make sure this never breaks&quot; to &quot;when this breaks — and it will — how fast do we get back?&quot;</p>
 <p>Here are the patterns I&#39;ve found worth investing in, and a few that sound better in theory than they perform under pressure.</p>
 <hr>
-<h2 id="the-circuit-breaker-useful-but-often-implemented-wrong">The circuit breaker — useful, but often implemented wrong</h2>
+<h2 id="the-circuit-breaker-useful-but-often-implemented-wrong"><a class="h-anchor" href="#the-circuit-breaker-useful-but-often-implemented-wrong" aria-label="Link to this section">#</a>The circuit breaker — useful, but often implemented wrong</h2>
 <p>The circuit breaker pattern (from Michael Nygard&#39;s <em>Release It!</em>) is one of the most widely referenced resilience patterns, and one of the most frequently misconfigured.</p>
 <p>The idea: track failure rates for calls to a downstream service. When failures exceed a threshold, &quot;open&quot; the circuit and stop making calls — return a fast failure instead of waiting for timeouts. After a reset period, allow limited calls through to test if the downstream has recovered.</p>
 <p>Where it breaks down in practice: teams set thresholds too high (the circuit never trips until the damage is done), or the fallback for an open circuit isn&#39;t designed (an exception is thrown instead of graceful degradation), or the circuit opens and the team doesn&#39;t know because there&#39;s no alerting on state changes.</p>
 <p>A circuit breaker that opens without alerting is worse than no circuit breaker — it silently degrades service without anyone knowing why.</p>
 <p><strong>What makes it work:</strong> aggressive thresholds, tested fallback paths, and monitoring on circuit state. If your circuit breaker has never opened in production, you probably haven&#39;t tested it.</p>
 <hr>
-<h2 id="bulkheads-the-most-underused-pattern">Bulkheads — the most underused pattern</h2>
+<h2 id="bulkheads-the-most-underused-pattern"><a class="h-anchor" href="#bulkheads-the-most-underused-pattern" aria-label="Link to this section">#</a>Bulkheads — the most underused pattern</h2>
 <p>Named after the watertight compartments in a ship&#39;s hull. If one compartment floods, the others remain intact.</p>
 <p>In software: isolate resources (thread pools, connection pools, process boundaries) so that failure in one part of the system doesn&#39;t cascade into others.</p>
 <p>The most common failure mode I&#39;ve seen: a single shared database connection pool. One slow query (or one database under load) backs up the connection pool, all queries queue waiting for connections, the entire application grinds to a halt — including endpoints that don&#39;t touch the slow part of the database.</p>
 <p>Bulkheads fix this by giving critical paths their own resource pools. Your user authentication endpoint has its own connection pool. Your analytics queries have theirs. When analytics are slow, authentication keeps working.</p>
 <p>This requires more configuration upfront and more resource allocation. It&#39;s worth it for anything on a critical path.</p>
 <hr>
-<h2 id="retry-logic-helpful-and-dangerous">Retry logic — helpful and dangerous</h2>
+<h2 id="retry-logic-helpful-and-dangerous"><a class="h-anchor" href="#retry-logic-helpful-and-dangerous" aria-label="Link to this section">#</a>Retry logic — helpful and dangerous</h2>
 <p>Retrying failed requests is reasonable. Retrying without care causes thundering herd problems that make outages worse.</p>
 <p>The pattern that causes problems: naive retries with fixed delays. A downstream service fails. All clients retry simultaneously after 1 second. The downstream — which was just recovering — gets hit with a spike of concurrent retries and fails again. Loop repeats.</p>
 <p><strong>Exponential backoff with jitter</strong> breaks the synchronisation. Each retry waits exponentially longer, plus a random component that spreads retries across time rather than synchronising them. This is the implementation AWS, Google, and Azure all recommend in their SDKs, and it&#39;s the implementation most internal code gets wrong.</p>
@@ -142,13 +155,13 @@ def retry_with_backoff(func, max_retries=3, base_delay=1.0):
 </code></pre>
 <p>Also: retries are only safe for idempotent operations. Don&#39;t retry a payment initiation. Do retry a GET request or an idempotent PUT.</p>
 <hr>
-<h2 id="timeouts-the-most-basic-thing-that39s-most-often-misconfigur">Timeouts — the most basic thing that&#39;s most often misconfigured</h2>
+<h2 id="timeouts-the-most-basic-thing-that39s-most-often-misconfigur"><a class="h-anchor" href="#timeouts-the-most-basic-thing-that39s-most-often-misconfigur" aria-label="Link to this section">#</a>Timeouts — the most basic thing that&#39;s most often misconfigured</h2>
 <p>Every external call your application makes should have a timeout. This sounds obvious. In practice, I&#39;ve found database connections without timeouts, HTTP clients using default settings that allow indefinite waits, and third-party SDK calls that can block a thread forever.</p>
 <p>A hung thread waiting for a timeout that never comes is a resource leak. Enough of them and your application stops processing new requests.</p>
 <p><strong>Default timeouts are almost always wrong.</strong> Cloud SDKs often default to no timeout or to very long timeouts. Set explicit values based on your SLO requirements and what&#39;s operationally acceptable. A user waiting more than 5 seconds for a response is already having a bad experience — there&#39;s no reason for your database timeout to be 30 seconds.</p>
 <p>The tricky part: timeouts need to be set at every layer. A 5-second HTTP timeout at the load balancer doesn&#39;t help if your application server waits 30 seconds for a database response before responding to the load balancer. Model the full call chain.</p>
 <hr>
-<h2 id="graceful-degradation-the-gap-between-theory-and-practice">Graceful degradation — the gap between theory and practice</h2>
+<h2 id="graceful-degradation-the-gap-between-theory-and-practice"><a class="h-anchor" href="#graceful-degradation-the-gap-between-theory-and-practice" aria-label="Link to this section">#</a>Graceful degradation — the gap between theory and practice</h2>
 <p>The principle: when a non-critical dependency is unavailable, the system should continue functioning with reduced capability rather than failing entirely.</p>
 <p>In practice: teams add the circuit breaker, implement the fallback — and the fallback path is a stub that was written in 10 minutes and never tested. It throws a NullPointerException, or returns an empty object that downstream code wasn&#39;t written to handle, or logs an error message and returns a 500.</p>
 <p>Graceful degradation requires treating the degraded path as a first-class concern:</p>
@@ -159,13 +172,13 @@ def retry_with_backoff(func, max_retries=3, base_delay=1.0):
 </ul>
 <p>The systems that handle failures elegantly aren&#39;t the ones with the most sophisticated patterns — they&#39;re the ones where the degraded paths are actually used in drills and tested regularly.</p>
 <hr>
-<h2 id="chaos-engineering-valuable-but-start-small">Chaos engineering — valuable, but start small</h2>
+<h2 id="chaos-engineering-valuable-but-start-small"><a class="h-anchor" href="#chaos-engineering-valuable-but-start-small" aria-label="Link to this section">#</a>Chaos engineering — valuable, but start small</h2>
 <p>Netflix&#39;s Chaos Monkey made chaos engineering famous, and the concept is sound: intentionally introduce failures in controlled ways to verify your resilience assumptions before production does it for you.</p>
 <p>Where teams go wrong: they either don&#39;t do it at all (&quot;we&#39;ll do it when things are more stable&quot; — they never are), or they jump straight to large-scale chaos experiments on production systems before they&#39;ve built the observability to understand what they&#39;re seeing.</p>
 <p>A better starting point: chaos in staging, against known failure modes. Kill one instance and verify load balancing redistributes correctly. Delay one dependency and verify circuit breakers trip and fallbacks engage. Fill a disk and verify log rotation is working. These simple experiments surface surprising gaps.</p>
 <p>Grow to production experiments only when your monitoring is good enough to detect anomalies quickly and your team has practiced the response.</p>
 <hr>
-<h2 id="what-actually-moves-the-needle-on-mttr">What actually moves the needle on MTTR</h2>
+<h2 id="what-actually-moves-the-needle-on-mttr"><a class="h-anchor" href="#what-actually-moves-the-needle-on-mttr" aria-label="Link to this section">#</a>What actually moves the needle on MTTR</h2>
 <p>The resilience patterns above matter. But in practice, when I&#39;ve seen MTTR improve meaningfully, it almost never came from one pattern landing well. It came from three operational investments happening together:</p>
 <p><strong>Observability first</strong> — Prometheus + Grafana + distributed tracing with OpenTelemetry, set up before anything else. You cannot recover fast from something you cannot see.</p>
 <p><strong>Runbooks for the top failure modes</strong> — documented, tested, and actually maintained. When an incident happens at 3am, the engineer on call should be following a tested procedure, not doing diagnosis from a blank state. Runbooks that are six months out of date are worse than no runbooks — they create false confidence.</p>
@@ -293,15 +306,57 @@ def retry_with_backoff(func, max_retries=3, base_delay=1.0):
     </div></div>
   </section>
 </article>
+
+<div class="reader-tools">
+  <button class="icon-btn" id="readerBtn" type="button" aria-expanded="false" aria-controls="readerPanel" title="Reading settings" aria-label="Reading settings"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2.2"/><circle cx="10" cy="17" r="2.2"/></svg></button>
+  <button class="icon-btn" id="focusBtn" type="button" aria-pressed="false" title="Focus mode" aria-label="Enter focus mode"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></button>
+</div>
+<div class="reader-panel" id="readerPanel" role="dialog" aria-label="Reading settings" hidden>
+  <fieldset><legend>Text size</legend>
+    <div class="seg" data-pref="rsize">
+      <button type="button" data-val="s" aria-pressed="false"><span class="sample s">Aa</span>Small</button><button type="button" data-val="m" aria-pressed="false"><span class="sample ">Aa</span>Default</button><button type="button" data-val="l" aria-pressed="false"><span class="sample l">Aa</span>Large</button><button type="button" data-val="xl" aria-pressed="false"><span class="sample l">Aa</span>Largest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Ground</legend>
+    <div class="seg" data-pref="theme">
+      <button type="button" data-val="light" aria-pressed="false"><span class="swatch light"></span>Light</button><button type="button" data-val="sepia" aria-pressed="false"><span class="swatch sepia"></span>Sepia</button><button type="button" data-val="dark" aria-pressed="false"><span class="swatch dark"></span>Dark</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Column width</legend>
+    <div class="seg" data-pref="rwidth">
+      <button type="button" data-val="s" aria-pressed="false">Narrow</button><button type="button" data-val="m" aria-pressed="false">Default</button><button type="button" data-val="l" aria-pressed="false">Wide</button><button type="button" data-val="xl" aria-pressed="false">Widest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Typeface</legend>
+    <div class="seg" data-pref="rface">
+      <button type="button" data-val="sans" aria-pressed="false"><span class="sample">Aa</span>Sans</button>
+      <button type="button" data-val="serif" aria-pressed="false"><span class="sample serif">Aa</span>Serif</button>
+    </div>
+  </fieldset>
+  <button class="reader-reset" id="readerReset" type="button">Reset to defaults</button>
+  <p class="reader-note">Saved in this browser only — these settings do not follow you to another device.</p>
+</div>
+<button class="focus-exit" id="focusExit" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h6V3M21 9h-6V3M3 15h6v6M21 15h-6v6"/></svg> Exit focus</button>
+<div class="chapter-bar" id="chapterBar">
+  <div class="chapter-where">
+    <b>Designing for Failure: Resilience Patterns That Actually Hold in Production</b>
+    <span>Cloud Architecture</span>
+  </div>
+  <span class="chapter-left" id="chapterLeft"></span>
+  <nav class="chapter-step" aria-label="Article navigation">
+    <a href="/insights/postgresql-performance-tuning/" aria-label="Previous: PostgreSQL Performance Tuning: The Settings and Patterns That Actually Matter"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a>
+    <a href="/insights/strangler-fig-legacy-migration/" aria-label="Next: The Strangler Fig in Practice: Incremental Legacy Replacement That Actually Finishes"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
+  </nav>
+</div>
 </main>
 
 <footer class="site-footer">
   <div class="wrap">
     <div class="grid g-4" style="gap:2rem">
       <div>
-        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem">
-          <img src="/images/ajna-logo.png" alt="" width="32" height="32">
-          <span class="brand-name">Ajna<span style="color:#6f9bff">CS</span></span>
+        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem" aria-label="Ajna Consulting Services — home">
+          <svg viewBox="0 0 100 100" width="36" height="36" fill="none" aria-hidden="true" focusable="false"><defs><linearGradient id="lit-ftr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".30"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".32"/></linearGradient></defs><g transform="rotate(0 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#E8402A"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#F5A623"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#17A05E"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#2B57E8"/></g><path d="M 50 4 L 96 50 L 50 96 L 4 50 Z" fill="url(#lit-ftr)"/><g transform="rotate(0 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><circle cx="50" cy="50" r="6" fill="currentColor"/></svg>
+          <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
         </a>
         <p style="font-size:.88rem;line-height:1.65;color:#9fb0d0;max-width:30ch">
           Specialised engineering partner for enterprise architecture, AI &amp; MLOps, and technical enablement.

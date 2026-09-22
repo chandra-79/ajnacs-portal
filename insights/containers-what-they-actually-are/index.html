@@ -22,20 +22,33 @@
 <meta name="twitter:description" content="Containers are not lightweight VMs. They are processes with resource constraints and namespace isolation. Understanding the actual mechanism makes you a be…">
 <meta name="twitter:image" content="https://ajnacs.com/assets/og/insights-containers-what-they-actually-are.svg">
 
-<link rel="icon" href="/images/favicon.ico" sizes="any">
-<link rel="apple-touch-icon" href="/images/ajna-logo.png">
+<link rel="icon" href="/images/favicon.ico" sizes="32x32">
+<link rel="icon" href="/images/ajna-mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
 <meta name="theme-color" content="#0a1020">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Quintessential&display=swap">
 <link rel="stylesheet" href="/assets/css/site.css">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
 <script>
-/* Set the theme before first paint so the page never flashes the wrong one. */
-(function(){try{var t=localStorage.getItem('acs-theme');
-if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
-document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+/* Theme and reading preferences are applied before first paint, so the page
+   never flashes the wrong ground or resets someone's text size mid-read. */
+(function(){try{
+var d=document.documentElement,t=localStorage.getItem('acs-theme');
+if(t!=='dark'&&t!=='light'&&t!=='sepia')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+d.setAttribute('data-theme',t);
+['rsize','rwidth','rface'].forEach(function(k){
+  var v=localStorage.getItem('acs-'+k);
+  if(v&&/^[a-z]{1,5}$/.test(v))d.setAttribute('data-'+k,v);
+});
+if(d.getAttribute('data-rface')==='serif'){
+  var l=document.createElement('link');l.rel='stylesheet';
+  l.href='https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600&display=swap';
+  document.head.appendChild(l);
+}
+}catch(e){}})();
 </script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"What Containers Actually Are — Not the Marketing Version","description":"Containers are not lightweight VMs. They are processes with resource constraints and namespace isolation. Understanding the actual mechanism makes you a better user of Docker, Kubernetes, and every container runtime.","datePublished":"2026-07-30","dateModified":"2026-07-30","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/containers-what-they-actually-are/","image":"https://ajnacs.com/assets/og/insights-containers-what-they-actually-are.svg","keywords":"DevSecOps, Fundamentals","articleSection":"DevSecOps","wordCount":849}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"What Containers Actually Are — Not the Marketing Version"}]}</script>
@@ -45,9 +58,9 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 
 <header class="site-header" id="siteHeader">
   <div class="wrap" style="display:flex;align-items:center;width:min(1220px,100% - var(--gutter)*2)">
-    <a class="brand" href="/">
-      <img src="/images/ajna-logo.png" alt="" width="32" height="32">
-      <span class="brand-name">Ajna<span>CS</span></span>
+    <a class="brand" href="/" aria-label="Ajna Consulting Services — home">
+      <svg viewBox="0 0 100 100" width="40" height="40" fill="none" aria-hidden="true" focusable="false"><defs><linearGradient id="lit-hdr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".30"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".32"/></linearGradient></defs><g transform="rotate(0 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#E8402A"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#F5A623"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#17A05E"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#2B57E8"/></g><path d="M 50 4 L 96 50 L 50 96 L 4 50 Z" fill="url(#lit-hdr)"/><g transform="rotate(0 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><circle cx="50" cy="50" r="6" fill="currentColor"/></svg>
+      <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
     </a>
     <nav class="nav" id="nav" aria-label="Primary">
       <a href="/services/">Services</a>
@@ -101,13 +114,16 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 </svg></div></div>
 
   <div class="art-wrap article-grid">
-    <nav class="toc" aria-label="On this page">
+    <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#virtual-machines-vs-containers-the-actual-difference">Virtual Machines vs Containers: The Actual Difference</a></li><li><a href="#the-two-linux-features-that-make-containers-work">The Two Linux Features That Make Containers Work</a></li><li><a href="#container-images-layered-filesystems">Container Images: Layered Filesystems</a></li><li><a href="#what-docker-actually-does">What Docker Actually Does</a></li><li><a href="#why-this-matters-for-production">Why This Matters for Production</a></li></ol>
-</nav>
+</nav><nav class="chapters" aria-label="Articles in this series">
+      <p class="chapters-title">Containerization from the Ground Up</p>
+      <ol><li aria-current="true"><a href="/insights/containers-what-they-actually-are/">What Containers Actually Are — Not the Marketing Version</a></li><li><a href="/insights/containers-production-dockerfiles/">Writing Production-Grade Dockerfiles: The Decisions That Actually Matter</a></li><li><a href="/insights/containers-networking/">Container Networking: How Containers Talk to Each Other and to the Outside World</a></li><li><a href="/insights/containers-kubernetes-fundamentals/">Kubernetes Fundamentals: What It Is, What It Does, and When You Actually Need It</a></li></ol>
+    </nav></div>
     <div class="prose">
 <p>The most common misconception about containers: they are lightweight virtual machines. They are not. A container is a process — or a group of processes — running on the host OS, isolated by Linux kernel features and constrained in its resource usage. Understanding this distinction is foundational for every engineer who uses containers in production.</p>
-<h2 id="virtual-machines-vs-containers-the-actual-difference">Virtual Machines vs Containers: The Actual Difference</h2>
+<h2 id="virtual-machines-vs-containers-the-actual-difference"><a class="h-anchor" href="#virtual-machines-vs-containers-the-actual-difference" aria-label="Link to this section">#</a>Virtual Machines vs Containers: The Actual Difference</h2>
 <p>A virtual machine (VM) includes a full guest operating system — its own kernel, its own init process, its own drivers. The hypervisor (VMware, KVM, Hyper-V) runs below all guest OS instances and provides the illusion of dedicated hardware to each. The guest kernel is fully isolated from the host kernel.</p>
 <p>A container includes only the application and its dependencies — no kernel. The container shares the host OS kernel. It is isolated at the process level, not the kernel level.</p>
 <pre><code>Virtual Machine:                Container:
@@ -132,7 +148,7 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 <li>Containers have a smaller attack surface than VMs in some respects — but they share the host kernel, which means a kernel vulnerability affects all containers on the host</li>
 <li>You cannot run a Windows container on a Linux host (different kernels), but you can run multiple Linux distributions as containers on a Linux host (they share the kernel; the user-space libraries differ)</li>
 </ul>
-<h2 id="the-two-linux-features-that-make-containers-work">The Two Linux Features That Make Containers Work</h2>
+<h2 id="the-two-linux-features-that-make-containers-work"><a class="h-anchor" href="#the-two-linux-features-that-make-containers-work" aria-label="Link to this section">#</a>The Two Linux Features That Make Containers Work</h2>
 <p>Containers are built on two Linux kernel features:</p>
 <p><strong>Namespaces</strong> provide isolation — making processes believe they have exclusive access to a resource. Linux has seven namespace types:</p>
 <div class="table-wrap"><table><thead><tr><th>Namespace</th><th>What It Isolates</th></tr></thead><tbody><tr><td>PID</td><td>Process IDs — container processes start at PID 1</td></tr><tr><td>Network</td><td>Network interfaces, IP addresses, routing tables</td></tr><tr><td>Mount</td><td>Filesystem mount points</td></tr><tr><td>UTS</td><td>Hostname and domain name</td></tr><tr><td>IPC</td><td>Inter-process communication (shared memory, semaphores)</td></tr><tr><td>User</td><td>User and group IDs</td></tr><tr><td>Cgroup</td><td>Control group hierarchy</td></tr></tbody></table></div>
@@ -149,7 +165,7 @@ unshare --pid --mount --net --fork bash
 ## - cgroup limits
 ## - A pleasant API
 </code></pre>
-<h2 id="container-images-layered-filesystems">Container Images: Layered Filesystems</h2>
+<h2 id="container-images-layered-filesystems"><a class="h-anchor" href="#container-images-layered-filesystems" aria-label="Link to this section">#</a>Container Images: Layered Filesystems</h2>
 <p>A container image is a layered filesystem. Each instruction in a Dockerfile creates a read-only layer:</p>
 <pre><code class="language-dockerfile">FROM ubuntu:22.04        # Base layer from Ubuntu image
 RUN apt-get update \     # New layer: updated package lists
@@ -166,7 +182,7 @@ docker history my-image:latest
 ## See disk usage by images and containers
 docker system df -v
 </code></pre>
-<h2 id="what-docker-actually-does">What Docker Actually Does</h2>
+<h2 id="what-docker-actually-does"><a class="h-anchor" href="#what-docker-actually-does" aria-label="Link to this section">#</a>What Docker Actually Does</h2>
 <p>Docker is a tool that wraps all of the above — namespace creation, cgroup configuration, image layer management, networking — into a usable interface. It is not the only container runtime: containerd, CRI-O, and podman are alternatives that Kubernetes commonly uses directly.</p>
 <pre><code class="language-bash">## Run a container with explicit resource limits
 docker run \
@@ -182,7 +198,7 @@ docker inspect my-service
 cat /sys/fs/cgroup/memory/docker/&lt;container-id&gt;/memory.limit_in_bytes
 ls /proc/&lt;container-pid&gt;/ns/
 </code></pre>
-<h2 id="why-this-matters-for-production">Why This Matters for Production</h2>
+<h2 id="why-this-matters-for-production"><a class="h-anchor" href="#why-this-matters-for-production" aria-label="Link to this section">#</a>Why This Matters for Production</h2>
 <p>The kernel-sharing model has security implications. If a container runs as root, and a kernel vulnerability allows privilege escalation, the attacker has root on the host — affecting all other containers. This is why:</p>
 <ol>
 <li>Never run containers as root when avoidable</li>
@@ -203,18 +219,7 @@ ls /proc/&lt;container-pid&gt;/ns/
   </ul>
 </aside></div>
 
-  <div class="art-wrap" style="margin-top:3rem">
-    <aside class="series-box">
-      <p class="eyebrow">Series</p>
-      <h2 class="h3" style="margin:.5rem 0 1rem">Containerization from the Ground Up</h2>
-      <ol class="series-list">
-        <li aria-current="true"><a href="/insights/containers-what-they-actually-are/">What Containers Actually Are — Not the Marketing Version</a></li>
-        <li><a href="/insights/containers-production-dockerfiles/">Writing Production-Grade Dockerfiles: The Decisions That Actually Matter</a></li>
-        <li><a href="/insights/containers-networking/">Container Networking: How Containers Talk to Each Other and to the Outside World</a></li>
-        <li><a href="/insights/containers-kubernetes-fundamentals/">Kubernetes Fundamentals: What It Is, What It Does, and When You Actually Need It</a></li>
-      </ol>
-    </aside>
-  </div>
+  
 
   <div class="art-wrap article-foot">
     <div class="row" style="gap:.4rem">
@@ -306,15 +311,57 @@ ls /proc/&lt;container-pid&gt;/ns/
     </div></div>
   </section>
 </article>
+
+<div class="reader-tools">
+  <button class="icon-btn" id="readerBtn" type="button" aria-expanded="false" aria-controls="readerPanel" title="Reading settings" aria-label="Reading settings"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2.2"/><circle cx="10" cy="17" r="2.2"/></svg></button>
+  <button class="icon-btn" id="focusBtn" type="button" aria-pressed="false" title="Focus mode" aria-label="Enter focus mode"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></button>
+</div>
+<div class="reader-panel" id="readerPanel" role="dialog" aria-label="Reading settings" hidden>
+  <fieldset><legend>Text size</legend>
+    <div class="seg" data-pref="rsize">
+      <button type="button" data-val="s" aria-pressed="false"><span class="sample s">Aa</span>Small</button><button type="button" data-val="m" aria-pressed="false"><span class="sample ">Aa</span>Default</button><button type="button" data-val="l" aria-pressed="false"><span class="sample l">Aa</span>Large</button><button type="button" data-val="xl" aria-pressed="false"><span class="sample l">Aa</span>Largest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Ground</legend>
+    <div class="seg" data-pref="theme">
+      <button type="button" data-val="light" aria-pressed="false"><span class="swatch light"></span>Light</button><button type="button" data-val="sepia" aria-pressed="false"><span class="swatch sepia"></span>Sepia</button><button type="button" data-val="dark" aria-pressed="false"><span class="swatch dark"></span>Dark</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Column width</legend>
+    <div class="seg" data-pref="rwidth">
+      <button type="button" data-val="s" aria-pressed="false">Narrow</button><button type="button" data-val="m" aria-pressed="false">Default</button><button type="button" data-val="l" aria-pressed="false">Wide</button><button type="button" data-val="xl" aria-pressed="false">Widest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Typeface</legend>
+    <div class="seg" data-pref="rface">
+      <button type="button" data-val="sans" aria-pressed="false"><span class="sample">Aa</span>Sans</button>
+      <button type="button" data-val="serif" aria-pressed="false"><span class="sample serif">Aa</span>Serif</button>
+    </div>
+  </fieldset>
+  <button class="reader-reset" id="readerReset" type="button">Reset to defaults</button>
+  <p class="reader-note">Saved in this browser only — these settings do not follow you to another device.</p>
+</div>
+<button class="focus-exit" id="focusExit" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h6V3M21 9h-6V3M3 15h6v6M21 15h-6v6"/></svg> Exit focus</button>
+<div class="chapter-bar" id="chapterBar">
+  <div class="chapter-where">
+    <b>What Containers Actually Are — Not the Marketing Version</b>
+    <span>Containerization from the Ground Up</span>
+  </div>
+  <span class="chapter-left" id="chapterLeft"></span>
+  <nav class="chapter-step" aria-label="Article navigation">
+    <a href="/insights/platform-eng-measuring-success/" aria-label="Previous: Measuring Platform Engineering Success: The Metrics That Actually Matter"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a>
+    <a href="/insights/aiml-production-ai/" aria-label="Next: Putting AI in Production: What Enterprise AI Deployment Actually Requires"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
+  </nav>
+</div>
 </main>
 
 <footer class="site-footer">
   <div class="wrap">
     <div class="grid g-4" style="gap:2rem">
       <div>
-        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem">
-          <img src="/images/ajna-logo.png" alt="" width="32" height="32">
-          <span class="brand-name">Ajna<span style="color:#6f9bff">CS</span></span>
+        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem" aria-label="Ajna Consulting Services — home">
+          <svg viewBox="0 0 100 100" width="36" height="36" fill="none" aria-hidden="true" focusable="false"><defs><linearGradient id="lit-ftr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".30"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".32"/></linearGradient></defs><g transform="rotate(0 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#E8402A"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#F5A623"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#17A05E"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#2B57E8"/></g><path d="M 50 4 L 96 50 L 50 96 L 4 50 Z" fill="url(#lit-ftr)"/><g transform="rotate(0 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><circle cx="50" cy="50" r="6" fill="currentColor"/></svg>
+          <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
         </a>
         <p style="font-size:.88rem;line-height:1.65;color:#9fb0d0;max-width:30ch">
           Specialised engineering partner for enterprise architecture, AI &amp; MLOps, and technical enablement.

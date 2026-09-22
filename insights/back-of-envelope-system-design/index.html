@@ -22,20 +22,33 @@
 <meta name="twitter:description" content="Before the design review argues about frameworks, arithmetic should have eliminated half the options. The latency numbers worth memorizing, the estimation…">
 <meta name="twitter:image" content="https://ajnacs.com/assets/og/insights-back-of-envelope-system-design.svg">
 
-<link rel="icon" href="/images/favicon.ico" sizes="any">
-<link rel="apple-touch-icon" href="/images/ajna-logo.png">
+<link rel="icon" href="/images/favicon.ico" sizes="32x32">
+<link rel="icon" href="/images/ajna-mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
 <meta name="theme-color" content="#0a1020">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Quintessential&display=swap">
 <link rel="stylesheet" href="/assets/css/site.css">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
 <script>
-/* Set the theme before first paint so the page never flashes the wrong one. */
-(function(){try{var t=localStorage.getItem('acs-theme');
-if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
-document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+/* Theme and reading preferences are applied before first paint, so the page
+   never flashes the wrong ground or resets someone's text size mid-read. */
+(function(){try{
+var d=document.documentElement,t=localStorage.getItem('acs-theme');
+if(t!=='dark'&&t!=='light'&&t!=='sepia')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+d.setAttribute('data-theme',t);
+['rsize','rwidth','rface'].forEach(function(k){
+  var v=localStorage.getItem('acs-'+k);
+  if(v&&/^[a-z]{1,5}$/.test(v))d.setAttribute('data-'+k,v);
+});
+if(d.getAttribute('data-rface')==='serif'){
+  var l=document.createElement('link');l.rel='stylesheet';
+  l.href='https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600&display=swap';
+  document.head.appendChild(l);
+}
+}catch(e){}})();
 </script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Back-of-Envelope Engineering: The Estimation Skill That Filters Bad Architectures in Minutes","description":"Before the design review argues about frameworks, arithmetic should have eliminated half the options. The latency numbers worth memorizing, the estimation moves — traffic, storage, bandwidth, cost — and worked habits that turn guesses into engineering.","datePublished":"2026-04-01","dateModified":"2026-04-01","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/back-of-envelope-system-design/","image":"https://ajnacs.com/assets/og/insights-back-of-envelope-system-design.svg","keywords":"Architecture, Performance, Engineering Leadership, Capacity Planning","articleSection":"Architecture","wordCount":908}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Back-of-Envelope Engineering: The Estimation Skill That Filters Bad Architectures in Minutes"}]}</script>
@@ -45,9 +58,9 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 
 <header class="site-header" id="siteHeader">
   <div class="wrap" style="display:flex;align-items:center;width:min(1220px,100% - var(--gutter)*2)">
-    <a class="brand" href="/">
-      <img src="/images/ajna-logo.png" alt="" width="32" height="32">
-      <span class="brand-name">Ajna<span>CS</span></span>
+    <a class="brand" href="/" aria-label="Ajna Consulting Services — home">
+      <svg viewBox="0 0 100 100" width="40" height="40" fill="none" aria-hidden="true" focusable="false"><defs><linearGradient id="lit-hdr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".30"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".32"/></linearGradient></defs><g transform="rotate(0 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#E8402A"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#F5A623"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#17A05E"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#2B57E8"/></g><path d="M 50 4 L 96 50 L 50 96 L 4 50 Z" fill="url(#lit-hdr)"/><g transform="rotate(0 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><circle cx="50" cy="50" r="6" fill="currentColor"/></svg>
+      <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
     </a>
     <nav class="nav" id="nav" aria-label="Primary">
       <a href="/services/">Services</a>
@@ -109,22 +122,22 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 </svg></div></div>
 
   <div class="art-wrap article-grid">
-    <nav class="toc" aria-label="On this page">
+    <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#the-numbers-worth-carrying">The numbers worth carrying</a></li><li><a href="#the-moves-a-repeatable-sequence">The moves: a repeatable sequence</a></li><li><a href="#where-it-earns-its-keep">Where it earns its keep</a></li></ol>
-</nav>
+</nav></div>
     <div class="prose">
 <p>There&#39;s a moment in good design reviews that separates engineering from opinion: someone does thirty seconds of arithmetic and an entire architectural option quietly dies. &quot;That&#39;s 40 billion writes a month — at DynamoDB pricing that&#39;s six figures annually; next option.&quot; &quot;Each request fans out to 30 services at 2ms each — sequentially that&#39;s your whole latency budget; this needs parallelism or fewer hops.&quot; Back-of-envelope calculation is the cheapest analysis in the field — no prototypes, no benchmarks, no meetings — and it&#39;s systematically undertaught, treated as interview theater rather than what it is: the daily filter that keeps designs tethered to physics and prices before anyone writes code.</p>
-<h2 id="the-numbers-worth-carrying">The numbers worth carrying</h2>
+<h2 id="the-numbers-worth-carrying"><a class="h-anchor" href="#the-numbers-worth-carrying" aria-label="Link to this section">#</a>The numbers worth carrying</h2>
 <p>The method needs a small mental almanac — order-of-magnitude values, not precision: <strong>latency&#39;s ladder</strong> (L1 cache ~1ns; RAM ~100ns; NVMe read ~100μs; same-zone network round trip ~0.5ms; cross-region ~50–150ms; disk-vs-memory is three orders of magnitude, and <em>cross-region-vs-same-zone is two</em> — the number underneath every data-locality and multi-region argument), <strong>throughput&#39;s anchors</strong> (a modern server pushes millions of simple ops/sec in memory, tens-of-thousands of database transactions/sec; a single Postgres comfortably serves thousands of mixed QPS before architecture is the answer; NICs are 10–100Gbps and rarely the bottleneck you think), <strong>time&#39;s conversions</strong> (1 day ≈ 86,400s — so 1M requests/day ≈ 12/sec, a number that has ended a thousand premature-scaling conversations; 1 month ≈ 2.6M seconds; a year of 1/sec ≈ 31M events), <strong>storage&#39;s scale</strong> (1KB per event × 1B events = 1TB — the &quot;can this fit in one Postgres&quot; arithmetic; RAM-per-node in the hundreds-of-GB means &quot;just cache it all&quot; is often literal), and <strong>cost&#39;s handles</strong> (object storage ~$0.02/GB-month; the egress multiple; a vCPU-hour&#39;s rough price; the 10–100× spread between hot-database and cold-object storage per GB — the tiering economics in one ratio). Precision is the enemy here: these move yearly, but their <em>ratios</em> — the orders of magnitude between tiers — are the stable furniture of judgment.</p>
-<h2 id="the-moves-a-repeatable-sequence">The moves: a repeatable sequence</h2>
+<h2 id="the-moves-a-repeatable-sequence"><a class="h-anchor" href="#the-moves-a-repeatable-sequence" aria-label="Link to this section">#</a>The moves: a repeatable sequence</h2>
 <p>Real estimation is four moves run in order, each a one-liner:</p>
 <p><strong>1. Traffic, decomposed.</strong> DAU × actions/user/day ÷ 86,400 = average RPS; multiply by the peak factor (2–5× for consumer diurnal patterns, more for event-driven spikes — the burst-shape honesty from capacity practice); split reads from writes (the ratio drives everything downstream — a 100:1 read-heavy system is a caching problem, a write-heavy one is a partitioning problem).</p>
 <p><strong>2. Data, integrated over time.</strong> Payload size × write rate × retention = storage; growth rate versus the single-node comfort zone tells you <em>when</em> sharding becomes real rather than whether it&#39;s fashionable (the &quot;we&#39;ll need it in year four&quot; answer that reprioritizes a roadmap). Don&#39;t forget the multipliers: replication factor, index overhead, the derived copies every projection pattern creates.</p>
 <p><strong>3. Bandwidth and fan-out.</strong> Response size × RPS = egress (and its bill); per-request internal fan-out × hop latency, sequential versus parallel, against the latency budget (the arithmetic that turns &quot;microservices&quot; from an org-chart preference into a numbers conversation — the six-hop-99.9% composite-availability math belongs here too: six sequential 99.9% dependencies ≈ 99.4%, a number that redesigns diagrams).</p>
 <p><strong>4. Dollars, always.</strong> Every resource estimate gets a unit price and an annual figure — because &quot;technically feasible&quot; and &quot;economically sane&quot; diverge exactly where envelope math is cheapest to run (the build-vs-buy and serving-cost disciplines all begin as this move), and because a cost-per-request estimate is the number that lets product and engineering argue productively.</p>
 <p>Then the two hygiene habits that make it engineering rather than numerology: <strong>write the assumptions down</strong> (the envelope&#39;s value is auditable reasoning — &quot;assumed 2KB events, 90-day retention, 3× replication&quot; is checkable and updatable; a bare conclusion is neither), and <strong>bracket instead of point-guessing</strong> (run the pessimistic and optimistic cases; if both land on the same side of the decision, the decision is robust to your ignorance — the calibrated-range discipline from estimation practice, applied to systems).</p>
-<h2 id="where-it-earns-its-keep">Where it earns its keep</h2>
+<h2 id="where-it-earns-its-keep"><a class="h-anchor" href="#where-it-earns-its-keep" aria-label="Link to this section">#</a>Where it earns its keep</h2>
 <p>The applications beyond the design review: <strong>sanity-checking vendor claims and benchmarks</strong> (does the promised throughput exceed what the instance&#39;s memory bandwidth could physically deliver? — marketing decks fail envelope math at an instructive rate), <strong>incident triage</strong> (&quot;the queue is growing at 5k/sec and drains at 3k/sec — we have 40 minutes of buffer&quot; is envelope math under adrenaline, and the responders who do it steer better), <strong>capacity and headroom reasoning</strong> (the time-to-wall trajectory from capacity planning is an envelope calculation maintained quarterly), <strong>prioritization</strong> (&quot;this optimization saves 2ms on a path that runs 100 times/day&quot; versus &quot;0.2ms on one that runs 10k/sec&quot; — total-time thinking, the profiler&#39;s lesson, computable before profiling), and — increasingly — <strong>AI-era feasibility</strong> (tokens × price × volume is the new storage-math; many an LLM feature has died or been re-scoped in one line of per-request cost arithmetic, exactly as it should).</p>
 <p>The deeper case for the habit is cultural: teams that estimate publicly develop a shared sense of <em>scale</em> — the collective instinct for what&#39;s big, what&#39;s cheap, what&#39;s absurd — which is the actual foundation under every judgment this series describes: choosing databases by working set, deployment strategies by blast radius, architectures by fan-out, tools by workload shape. None of those judgments require precision; all of them require knowing the orders of magnitude, and orders of magnitude are exactly what the envelope delivers. Thirty seconds of arithmetic before every consequential choice — assumptions written, ranges bracketed, dollars attached — is the highest-return ritual available to a technical organization. The prototype confirms; the envelope <em>decides</em>.</p>
 
@@ -239,15 +252,47 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
     </div></div>
   </section>
 </article>
+
+<div class="reader-tools">
+  <button class="icon-btn" id="readerBtn" type="button" aria-expanded="false" aria-controls="readerPanel" title="Reading settings" aria-label="Reading settings"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2.2"/><circle cx="10" cy="17" r="2.2"/></svg></button>
+  <button class="icon-btn" id="focusBtn" type="button" aria-pressed="false" title="Focus mode" aria-label="Enter focus mode"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></button>
+</div>
+<div class="reader-panel" id="readerPanel" role="dialog" aria-label="Reading settings" hidden>
+  <fieldset><legend>Text size</legend>
+    <div class="seg" data-pref="rsize">
+      <button type="button" data-val="s" aria-pressed="false"><span class="sample s">Aa</span>Small</button><button type="button" data-val="m" aria-pressed="false"><span class="sample ">Aa</span>Default</button><button type="button" data-val="l" aria-pressed="false"><span class="sample l">Aa</span>Large</button><button type="button" data-val="xl" aria-pressed="false"><span class="sample l">Aa</span>Largest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Ground</legend>
+    <div class="seg" data-pref="theme">
+      <button type="button" data-val="light" aria-pressed="false"><span class="swatch light"></span>Light</button><button type="button" data-val="sepia" aria-pressed="false"><span class="swatch sepia"></span>Sepia</button><button type="button" data-val="dark" aria-pressed="false"><span class="swatch dark"></span>Dark</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Column width</legend>
+    <div class="seg" data-pref="rwidth">
+      <button type="button" data-val="s" aria-pressed="false">Narrow</button><button type="button" data-val="m" aria-pressed="false">Default</button><button type="button" data-val="l" aria-pressed="false">Wide</button><button type="button" data-val="xl" aria-pressed="false">Widest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Typeface</legend>
+    <div class="seg" data-pref="rface">
+      <button type="button" data-val="sans" aria-pressed="false"><span class="sample">Aa</span>Sans</button>
+      <button type="button" data-val="serif" aria-pressed="false"><span class="sample serif">Aa</span>Serif</button>
+    </div>
+  </fieldset>
+  <button class="reader-reset" id="readerReset" type="button">Reset to defaults</button>
+  <p class="reader-note">Saved in this browser only — these settings do not follow you to another device.</p>
+</div>
+<button class="focus-exit" id="focusExit" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h6V3M21 9h-6V3M3 15h6v6M21 15h-6v6"/></svg> Exit focus</button>
+
 </main>
 
 <footer class="site-footer">
   <div class="wrap">
     <div class="grid g-4" style="gap:2rem">
       <div>
-        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem">
-          <img src="/images/ajna-logo.png" alt="" width="32" height="32">
-          <span class="brand-name">Ajna<span style="color:#6f9bff">CS</span></span>
+        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem" aria-label="Ajna Consulting Services — home">
+          <svg viewBox="0 0 100 100" width="36" height="36" fill="none" aria-hidden="true" focusable="false"><defs><linearGradient id="lit-ftr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".30"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".32"/></linearGradient></defs><g transform="rotate(0 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#E8402A"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#F5A623"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#17A05E"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#2B57E8"/></g><path d="M 50 4 L 96 50 L 50 96 L 4 50 Z" fill="url(#lit-ftr)"/><g transform="rotate(0 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><circle cx="50" cy="50" r="6" fill="currentColor"/></svg>
+          <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
         </a>
         <p style="font-size:.88rem;line-height:1.65;color:#9fb0d0;max-width:30ch">
           Specialised engineering partner for enterprise architecture, AI &amp; MLOps, and technical enablement.

@@ -22,20 +22,33 @@
 <meta name="twitter:description" content="CDN selection is more than picking the fastest network. Origin configuration, cache invalidation, edge compute capabilities, and the overlap between your C…">
 <meta name="twitter:image" content="https://ajnacs.com/assets/og/insights-cdn-strategy-decision-guide.svg">
 
-<link rel="icon" href="/images/favicon.ico" sizes="any">
-<link rel="apple-touch-icon" href="/images/ajna-logo.png">
+<link rel="icon" href="/images/favicon.ico" sizes="32x32">
+<link rel="icon" href="/images/ajna-mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
 <meta name="theme-color" content="#0a1020">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Quintessential&display=swap">
 <link rel="stylesheet" href="/assets/css/site.css">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
 <script>
-/* Set the theme before first paint so the page never flashes the wrong one. */
-(function(){try{var t=localStorage.getItem('acs-theme');
-if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
-document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+/* Theme and reading preferences are applied before first paint, so the page
+   never flashes the wrong ground or resets someone's text size mid-read. */
+(function(){try{
+var d=document.documentElement,t=localStorage.getItem('acs-theme');
+if(t!=='dark'&&t!=='light'&&t!=='sepia')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+d.setAttribute('data-theme',t);
+['rsize','rwidth','rface'].forEach(function(k){
+  var v=localStorage.getItem('acs-'+k);
+  if(v&&/^[a-z]{1,5}$/.test(v))d.setAttribute('data-'+k,v);
+});
+if(d.getAttribute('data-rface')==='serif'){
+  var l=document.createElement('link');l.rel='stylesheet';
+  l.href='https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600&display=swap';
+  document.head.appendChild(l);
+}
+}catch(e){}})();
 </script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"CDN Strategy: Choosing the Right Approach for Your Architecture","description":"CDN selection is more than picking the fastest network. Origin configuration, cache invalidation, edge compute capabilities, and the overlap between your CDN and your cloud provider's services all affect the right choice. Here's how to think through it.","datePublished":"2025-03-13","dateModified":"2025-03-13","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/cdn-strategy-decision-guide/","image":"https://ajnacs.com/assets/og/insights-cdn-strategy-decision-guide.svg","keywords":"CDN & Caching, Cloud Architecture, Infrastructure","articleSection":"Cloud Architecture","wordCount":907}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"CDN Strategy: Choosing the Right Approach for Your Architecture"}]}</script>
@@ -45,9 +58,9 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 
 <header class="site-header" id="siteHeader">
   <div class="wrap" style="display:flex;align-items:center;width:min(1220px,100% - var(--gutter)*2)">
-    <a class="brand" href="/">
-      <img src="/images/ajna-logo.png" alt="" width="32" height="32">
-      <span class="brand-name">Ajna<span>CS</span></span>
+    <a class="brand" href="/" aria-label="Ajna Consulting Services — home">
+      <svg viewBox="0 0 100 100" width="40" height="40" fill="none" aria-hidden="true" focusable="false"><defs><linearGradient id="lit-hdr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".30"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".32"/></linearGradient></defs><g transform="rotate(0 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#E8402A"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#F5A623"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#17A05E"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#2B57E8"/></g><path d="M 50 4 L 96 50 L 50 96 L 4 50 Z" fill="url(#lit-hdr)"/><g transform="rotate(0 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><circle cx="50" cy="50" r="6" fill="currentColor"/></svg>
+      <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
     </a>
     <nav class="nav" id="nav" aria-label="Primary">
       <a href="/services/">Services</a>
@@ -101,13 +114,13 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 </svg></div></div>
 
   <div class="art-wrap article-grid">
-    <nav class="toc" aria-label="On this page">
+    <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#the-fundamental-decision-cloud-native-cdn-vs-specialist-cdn">The fundamental decision: cloud-native CDN vs. specialist CDN</a></li><li><a href="#cache-configuration-decisions-that-matter">Cache configuration decisions that matter</a></li><li><a href="#cache-invalidation-the-hard-part">Cache invalidation: the hard part</a></li><li><a href="#edge-compute-where-it-makes-sense">Edge compute: where it makes sense</a></li><li><a href="#performance-measurement-what-matters-and-what39s-noise">Performance measurement: what matters and what&amp;#39;s noise</a></li></ol>
-</nav>
+</nav></div>
     <div class="prose">
 <p>A CDN solves a simple problem — content is faster when it&#39;s closer to the user — in increasingly complex ways. Modern CDNs aren&#39;t just caches; they&#39;re the place where TLS terminates, where bot traffic is filtered, where geolocation routing happens, where edge compute runs, and where rate limiting is enforced. The CDN decision has more surface area than most teams realise when they first evaluate it.</p>
-<h2 id="the-fundamental-decision-cloud-native-cdn-vs-specialist-cdn">The fundamental decision: cloud-native CDN vs. specialist CDN</h2>
+<h2 id="the-fundamental-decision-cloud-native-cdn-vs-specialist-cdn"><a class="h-anchor" href="#the-fundamental-decision-cloud-native-cdn-vs-specialist-cdn" aria-label="Link to this section">#</a>The fundamental decision: cloud-native CDN vs. specialist CDN</h2>
 <p>Cloud providers offer CDN services that integrate tightly with their other services:</p>
 <ul>
 <li><strong>AWS CloudFront</strong>: integrates with S3, ALB, Lambda@Edge, and AWS WAF. Origin access control for S3 buckets. The natural choice if you&#39;re deeply invested in AWS.</li>
@@ -122,18 +135,18 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 <li>Configuration that&#39;s independent of your cloud provider</li>
 </ul>
 <p>The choice is rarely &quot;cloud CDN vs. specialist CDN&quot; — it&#39;s often both. Cloudflare in front of AWS, with CloudFront for specific workloads, is a common production configuration.</p>
-<h2 id="cache-configuration-decisions-that-matter">Cache configuration decisions that matter</h2>
+<h2 id="cache-configuration-decisions-that-matter"><a class="h-anchor" href="#cache-configuration-decisions-that-matter" aria-label="Link to this section">#</a>Cache configuration decisions that matter</h2>
 <p><strong>What to cache</strong>: any publicly accessible content that changes less frequently than your cache TTL, and any content that&#39;s served at high volume. Static assets (CSS, JS, images) with long TTLs. API responses for publicly accessible data with shorter TTLs.</p>
 <p><strong>What not to cache at the CDN</strong>: authenticated responses (responses that are specific to a logged-in user), responses containing session data, payment and checkout flows. The CDN should skip caching these and pass directly to origin.</p>
 <p><strong>Origin caching headers</strong>: CDNs respect <code>Cache-Control</code> headers from origin. <code>Cache-Control: public, max-age=86400, s-maxage=3600</code> — <code>max-age</code> applies to browser caches, <code>s-maxage</code> applies to CDN caches. Use <code>s-maxage</code> to set longer CDN cache times while keeping browser cache shorter (so users see fresh content after a CDN cache hit expires).</p>
 <p><strong>Stale-while-revalidate</strong>: <code>Cache-Control: max-age=60, stale-while-revalidate=600</code> — serve the cached object for up to 60 seconds, then revalidate in the background. For up to 600 additional seconds, serve the stale object while waiting for the background refresh. This improves perceived performance by eliminating cache misses.</p>
-<h2 id="cache-invalidation-the-hard-part">Cache invalidation: the hard part</h2>
+<h2 id="cache-invalidation-the-hard-part"><a class="h-anchor" href="#cache-invalidation-the-hard-part" aria-label="Link to this section">#</a>Cache invalidation: the hard part</h2>
 <p>CDN cache invalidation is one of the &quot;two hard problems&quot; in computer science for a reason. A file cached at 300 PoPs needs to be invalidated at all 300 PoPs. Approaches:</p>
 <p><strong>Versioned URLs</strong>: <code>app.a3b8f2.js</code> instead of <code>app.js</code>. The content is immutable by construction — when the file changes, the URL changes. No cache invalidation needed; the old URL simply expires naturally. This is the right approach for build artifacts and static assets.</p>
 <p><strong>Surrogate keys / cache tags</strong>: attach metadata to cached objects that allows bulk invalidation. Cloudflare&#39;s Cache Tags, Fastly&#39;s Surrogate-Key header, and Akamai&#39;s Edge-Control header all support this pattern. Tag all product page variants with <code>product-{id}</code> — when a product is updated, invalidate all objects with that tag. Faster and more precise than path-based invalidation.</p>
 <p><strong>Path-based purge</strong>: invalidate <code>https://cdn.example.com/api/products/*</code>. Works for hierarchical URL structures. Slower than surrogate keys for large invalidation jobs.</p>
 <p><strong>Wildcard purge / full cache purge</strong>: use as a last resort. A full CDN cache purge sends all traffic to origin until the cache repopulates — this is a self-inflicted origin overload.</p>
-<h2 id="edge-compute-where-it-makes-sense">Edge compute: where it makes sense</h2>
+<h2 id="edge-compute-where-it-makes-sense"><a class="h-anchor" href="#edge-compute-where-it-makes-sense" aria-label="Link to this section">#</a>Edge compute: where it makes sense</h2>
 <p>CDN edge compute runs your code at PoPs rather than in your origin datacenter. The use cases where it provides genuine value:</p>
 <ul>
 <li><strong>A/B testing</strong>: split traffic at the edge without a round-trip to origin. Cloudflare Workers or Lambda@Edge intercept the request, assign a variant, and route accordingly.</li>
@@ -143,7 +156,7 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 <li><strong>Synthetic responses</strong>: return responses for common cases (redirects, health checks, static error pages) without hitting origin at all.</li>
 </ul>
 <p>Edge compute is constrained: CPU time limits, limited memory, no persistent connections to databases. It&#39;s for logic that can be expressed as a short, stateless function. Attempts to do more than this — maintaining state, complex business logic, database queries — run into the constraints and should stay at origin.</p>
-<h2 id="performance-measurement-what-matters-and-what39s-noise">Performance measurement: what matters and what&#39;s noise</h2>
+<h2 id="performance-measurement-what-matters-and-what39s-noise"><a class="h-anchor" href="#performance-measurement-what-matters-and-what39s-noise" aria-label="Link to this section">#</a>Performance measurement: what matters and what&#39;s noise</h2>
 <p><strong>TTFB from origin</strong>: the latency from CDN edge to your origin. This is what the CDN can&#39;t fix — if your origin is slow, the CDN only helps for cache hits.</p>
 <p><strong>Cache hit ratio</strong>: what percentage of requests are served from cache. Below 70% suggests something is preventing caching (too many uncacheable parameters, too many authenticated paths, TTLs too short).</p>
 <p><strong>Time to First Byte (TTFB) measured at edge</strong>: includes the CDN processing time and, for misses, the origin round-trip. This is the metric end users experience.</p>
@@ -263,15 +276,47 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
     </div></div>
   </section>
 </article>
+
+<div class="reader-tools">
+  <button class="icon-btn" id="readerBtn" type="button" aria-expanded="false" aria-controls="readerPanel" title="Reading settings" aria-label="Reading settings"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2.2"/><circle cx="10" cy="17" r="2.2"/></svg></button>
+  <button class="icon-btn" id="focusBtn" type="button" aria-pressed="false" title="Focus mode" aria-label="Enter focus mode"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></button>
+</div>
+<div class="reader-panel" id="readerPanel" role="dialog" aria-label="Reading settings" hidden>
+  <fieldset><legend>Text size</legend>
+    <div class="seg" data-pref="rsize">
+      <button type="button" data-val="s" aria-pressed="false"><span class="sample s">Aa</span>Small</button><button type="button" data-val="m" aria-pressed="false"><span class="sample ">Aa</span>Default</button><button type="button" data-val="l" aria-pressed="false"><span class="sample l">Aa</span>Large</button><button type="button" data-val="xl" aria-pressed="false"><span class="sample l">Aa</span>Largest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Ground</legend>
+    <div class="seg" data-pref="theme">
+      <button type="button" data-val="light" aria-pressed="false"><span class="swatch light"></span>Light</button><button type="button" data-val="sepia" aria-pressed="false"><span class="swatch sepia"></span>Sepia</button><button type="button" data-val="dark" aria-pressed="false"><span class="swatch dark"></span>Dark</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Column width</legend>
+    <div class="seg" data-pref="rwidth">
+      <button type="button" data-val="s" aria-pressed="false">Narrow</button><button type="button" data-val="m" aria-pressed="false">Default</button><button type="button" data-val="l" aria-pressed="false">Wide</button><button type="button" data-val="xl" aria-pressed="false">Widest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Typeface</legend>
+    <div class="seg" data-pref="rface">
+      <button type="button" data-val="sans" aria-pressed="false"><span class="sample">Aa</span>Sans</button>
+      <button type="button" data-val="serif" aria-pressed="false"><span class="sample serif">Aa</span>Serif</button>
+    </div>
+  </fieldset>
+  <button class="reader-reset" id="readerReset" type="button">Reset to defaults</button>
+  <p class="reader-note">Saved in this browser only — these settings do not follow you to another device.</p>
+</div>
+<button class="focus-exit" id="focusExit" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h6V3M21 9h-6V3M3 15h6v6M21 15h-6v6"/></svg> Exit focus</button>
+
 </main>
 
 <footer class="site-footer">
   <div class="wrap">
     <div class="grid g-4" style="gap:2rem">
       <div>
-        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem">
-          <img src="/images/ajna-logo.png" alt="" width="32" height="32">
-          <span class="brand-name">Ajna<span style="color:#6f9bff">CS</span></span>
+        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem" aria-label="Ajna Consulting Services — home">
+          <svg viewBox="0 0 100 100" width="36" height="36" fill="none" aria-hidden="true" focusable="false"><defs><linearGradient id="lit-ftr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".30"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".32"/></linearGradient></defs><g transform="rotate(0 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#E8402A"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#F5A623"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#17A05E"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#2B57E8"/></g><path d="M 50 4 L 96 50 L 50 96 L 4 50 Z" fill="url(#lit-ftr)"/><g transform="rotate(0 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><circle cx="50" cy="50" r="6" fill="currentColor"/></svg>
+          <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
         </a>
         <p style="font-size:.88rem;line-height:1.65;color:#9fb0d0;max-width:30ch">
           Specialised engineering partner for enterprise architecture, AI &amp; MLOps, and technical enablement.

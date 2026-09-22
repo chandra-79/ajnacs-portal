@@ -22,20 +22,33 @@
 <meta name="twitter:description" content="Operators extend Kubernetes with custom domain logic. But writing an operator is a significant commitment — the control loop, the reconciliation logic, the…">
 <meta name="twitter:image" content="https://ajnacs.com/assets/og/insights-kubernetes-operators-custom-resources.svg">
 
-<link rel="icon" href="/images/favicon.ico" sizes="any">
-<link rel="apple-touch-icon" href="/images/ajna-logo.png">
+<link rel="icon" href="/images/favicon.ico" sizes="32x32">
+<link rel="icon" href="/images/ajna-mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
 <meta name="theme-color" content="#0a1020">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Quintessential&display=swap">
 <link rel="stylesheet" href="/assets/css/site.css">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
 <script>
-/* Set the theme before first paint so the page never flashes the wrong one. */
-(function(){try{var t=localStorage.getItem('acs-theme');
-if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
-document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+/* Theme and reading preferences are applied before first paint, so the page
+   never flashes the wrong ground or resets someone's text size mid-read. */
+(function(){try{
+var d=document.documentElement,t=localStorage.getItem('acs-theme');
+if(t!=='dark'&&t!=='light'&&t!=='sepia')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+d.setAttribute('data-theme',t);
+['rsize','rwidth','rface'].forEach(function(k){
+  var v=localStorage.getItem('acs-'+k);
+  if(v&&/^[a-z]{1,5}$/.test(v))d.setAttribute('data-'+k,v);
+});
+if(d.getAttribute('data-rface')==='serif'){
+  var l=document.createElement('link');l.rel='stylesheet';
+  l.href='https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600&display=swap';
+  document.head.appendChild(l);
+}
+}catch(e){}})();
 </script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Kubernetes Operators: When to Build One and When to Stop at CRDs","description":"Operators extend Kubernetes with custom domain logic. But writing an operator is a significant commitment — the control loop, the reconciliation logic, the RBAC, the upgrade path. Here's when operators solve real problems and when simpler alternatives are enough.","datePublished":"2025-02-05","dateModified":"2025-02-05","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/kubernetes-operators-custom-resources/","image":"https://ajnacs.com/assets/og/insights-kubernetes-operators-custom-resources.svg","keywords":"Cloud Architecture, Containers, Programming","articleSection":"Cloud Architecture","wordCount":923}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Kubernetes Operators: When to Build One and When to Stop at CRDs"}]}</script>
@@ -45,9 +58,9 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 
 <header class="site-header" id="siteHeader">
   <div class="wrap" style="display:flex;align-items:center;width:min(1220px,100% - var(--gutter)*2)">
-    <a class="brand" href="/">
-      <img src="/images/ajna-logo.png" alt="" width="32" height="32">
-      <span class="brand-name">Ajna<span>CS</span></span>
+    <a class="brand" href="/" aria-label="Ajna Consulting Services — home">
+      <svg viewBox="0 0 100 100" width="40" height="40" fill="none" aria-hidden="true" focusable="false"><defs><linearGradient id="lit-hdr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".30"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".32"/></linearGradient></defs><g transform="rotate(0 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#E8402A"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#F5A623"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#17A05E"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#2B57E8"/></g><path d="M 50 4 L 96 50 L 50 96 L 4 50 Z" fill="url(#lit-hdr)"/><g transform="rotate(0 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><circle cx="50" cy="50" r="6" fill="currentColor"/></svg>
+      <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
     </a>
     <nav class="nav" id="nav" aria-label="Primary">
       <a href="/services/">Services</a>
@@ -109,14 +122,14 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 </svg></div></div>
 
   <div class="art-wrap article-grid">
-    <nav class="toc" aria-label="On this page">
+    <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#the-controller-pattern-that-operators-implement">The controller pattern that operators implement</a></li><li><a href="#when-an-operator-makes-sense">When an operator makes sense</a></li><li><a href="#when-an-operator-is-overkill">When an operator is overkill</a></li><li><a href="#the-scaffolding-kubebuilder-vs-operator-sdk">The scaffolding: Kubebuilder vs Operator SDK</a></li><li><a href="#the-crd-without-an-operator-validating-admission-webhooks">The CRD without an operator: validating admission webhooks</a></li><li><a href="#existing-operators-worth-knowing">Existing operators worth knowing</a></li></ol>
-</nav>
+</nav></div>
     <div class="prose">
 <p>Kubernetes Operators are applications that extend the Kubernetes API with domain-specific knowledge. An operator for a database might know how to perform a rolling upgrade, manage backups, handle leader election, and respond to member failures — all through standard Kubernetes primitives like CustomResourceDefinitions (CRDs) and reconciliation loops.</p>
 <p>The concept is genuinely powerful. The reality is that most teams don&#39;t need to write operators; they need to use the right ones that already exist, and understand when a simpler pattern (a Helm chart, a simple CRD with a scripted reconciler) is appropriate.</p>
-<h2 id="the-controller-pattern-that-operators-implement">The controller pattern that operators implement</h2>
+<h2 id="the-controller-pattern-that-operators-implement"><a class="h-anchor" href="#the-controller-pattern-that-operators-implement" aria-label="Link to this section">#</a>The controller pattern that operators implement</h2>
 <aside class="keyfig">
   <p class="keyfig-label">Key figure</p>
   <p class="keyfig-text">For simple cases, this is a <b>80%</b> solution with 20% of the effort of writing a controller.</p>
@@ -152,23 +165,23 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 }
 </code></pre>
 <p>The reconciler is called on every relevant change, and is expected to be <strong>idempotent</strong> — running it multiple times has the same effect as running it once.</p>
-<h2 id="when-an-operator-makes-sense">When an operator makes sense</h2>
+<h2 id="when-an-operator-makes-sense"><a class="h-anchor" href="#when-an-operator-makes-sense" aria-label="Link to this section">#</a>When an operator makes sense</h2>
 <p><strong>Managing stateful applications with complex lifecycle operations</strong>: databases (PostgreSQL operator, MySQL operator, MongoDB Enterprise operator), messaging systems (Strimzi for Kafka), and search engines (Elastic Cloud on Kubernetes) are the canonical operator use cases. The reason: their operational procedures (rolling upgrades that preserve data, backup scheduling, failover promotion) require domain knowledge that generic Kubernetes primitives don&#39;t capture.</p>
 <p><strong>Enforcing organizational policies as code</strong>: an operator that watches Deployments and ensures every deployment has required labels, has resource limits set, and uses an approved base image registry can enforce policies across the cluster without requiring every team to remember them.</p>
 <p><strong>Automating Day 2 operations for your own platform</strong>: if you run a platform where teams provision databases or queues through self-service, an operator that responds to a <code>DatabaseInstance</code> CRD and provisions the actual database (in an RDS instance, or in the cluster, or in a managed service) provides consistent, auditable provisioning without manual steps.</p>
-<h2 id="when-an-operator-is-overkill">When an operator is overkill</h2>
+<h2 id="when-an-operator-is-overkill"><a class="h-anchor" href="#when-an-operator-is-overkill" aria-label="Link to this section">#</a>When an operator is overkill</h2>
 <p><strong>You just need a ConfigMap with watch logic</strong>: if the use case is &quot;run a script when a ConfigMap changes&quot;, a sidecar container or an init container with <code>kubectl watch</code> is simpler than a full operator.</p>
 <p><strong>You want to wrap a Helm chart with some defaults</strong>: Helm&#39;s values system and pre/post hooks cover most needs. An operator that creates Helm releases is usually unnecessary complexity.</p>
 <p><strong>The lifecycle logic is simple enough for shell scripts</strong>: operators shine for complex, stateful lifecycle management. For &quot;create a namespace and some RBAC when a team is onboarded&quot;, a Helm chart with a pre-install hook is simpler.</p>
 <p><strong>You don&#39;t have the bandwidth to maintain an operator</strong>: operators are running software that needs updates as Kubernetes evolves, security patches, and fixes when edge cases emerge. The maintenance cost is real. Don&#39;t write an operator without committing to that maintenance.</p>
-<h2 id="the-scaffolding-kubebuilder-vs-operator-sdk">The scaffolding: Kubebuilder vs Operator SDK</h2>
+<h2 id="the-scaffolding-kubebuilder-vs-operator-sdk"><a class="h-anchor" href="#the-scaffolding-kubebuilder-vs-operator-sdk" aria-label="Link to this section">#</a>The scaffolding: Kubebuilder vs Operator SDK</h2>
 <p><strong>Kubebuilder</strong>: the reference implementation from the Kubernetes SIG. Scaffolds a Go project with controller-runtime, generates CRD manifests from Go type annotations, provides webhooks for validation and defaulting. The right choice for Go developers building operators that will be maintained long-term.</p>
 <p><strong>Operator SDK</strong>: wraps Kubebuilder with additional features — Ansible operator support, Helm operator support (wrap an existing Helm chart as an operator), and OLM (Operator Lifecycle Manager) integration for distribution via OperatorHub. More accessible if your team isn&#39;t writing Go.</p>
 <p>The Helm operator mode is worth understanding: you define a CRD and point the operator at a Helm chart; the operator applies the chart values whenever the CR is created or updated. For simple cases, this is a 80% solution with 20% of the effort of writing a controller.</p>
-<h2 id="the-crd-without-an-operator-validating-admission-webhooks">The CRD without an operator: validating admission webhooks</h2>
+<h2 id="the-crd-without-an-operator-validating-admission-webhooks"><a class="h-anchor" href="#the-crd-without-an-operator-validating-admission-webhooks" aria-label="Link to this section">#</a>The CRD without an operator: validating admission webhooks</h2>
 <p>Sometimes you want a custom resource type — for configuration management, for developer self-service APIs — without the full operator pattern. A CRD with a validating admission webhook (which validates resources on create/update) and a mutating webhook (which sets defaults) can serve this purpose.</p>
 <p>This is appropriate when: the resource is primarily declarative (just stores configuration), lifecycle management is handled separately, and you want the Kubernetes API to be the interface (kubectl, GitOps workflows) but don&#39;t need continuous reconciliation.</p>
-<h2 id="existing-operators-worth-knowing">Existing operators worth knowing</h2>
+<h2 id="existing-operators-worth-knowing"><a class="h-anchor" href="#existing-operators-worth-knowing" aria-label="Link to this section">#</a>Existing operators worth knowing</h2>
 <p>Before writing an operator, check if one exists:</p>
 <ul>
 <li><strong>databases</strong>: CloudNativePG (PostgreSQL), MySQL Operator for Kubernetes, Percona operators</li>
@@ -295,15 +308,47 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
     </div></div>
   </section>
 </article>
+
+<div class="reader-tools">
+  <button class="icon-btn" id="readerBtn" type="button" aria-expanded="false" aria-controls="readerPanel" title="Reading settings" aria-label="Reading settings"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2.2"/><circle cx="10" cy="17" r="2.2"/></svg></button>
+  <button class="icon-btn" id="focusBtn" type="button" aria-pressed="false" title="Focus mode" aria-label="Enter focus mode"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></button>
+</div>
+<div class="reader-panel" id="readerPanel" role="dialog" aria-label="Reading settings" hidden>
+  <fieldset><legend>Text size</legend>
+    <div class="seg" data-pref="rsize">
+      <button type="button" data-val="s" aria-pressed="false"><span class="sample s">Aa</span>Small</button><button type="button" data-val="m" aria-pressed="false"><span class="sample ">Aa</span>Default</button><button type="button" data-val="l" aria-pressed="false"><span class="sample l">Aa</span>Large</button><button type="button" data-val="xl" aria-pressed="false"><span class="sample l">Aa</span>Largest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Ground</legend>
+    <div class="seg" data-pref="theme">
+      <button type="button" data-val="light" aria-pressed="false"><span class="swatch light"></span>Light</button><button type="button" data-val="sepia" aria-pressed="false"><span class="swatch sepia"></span>Sepia</button><button type="button" data-val="dark" aria-pressed="false"><span class="swatch dark"></span>Dark</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Column width</legend>
+    <div class="seg" data-pref="rwidth">
+      <button type="button" data-val="s" aria-pressed="false">Narrow</button><button type="button" data-val="m" aria-pressed="false">Default</button><button type="button" data-val="l" aria-pressed="false">Wide</button><button type="button" data-val="xl" aria-pressed="false">Widest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Typeface</legend>
+    <div class="seg" data-pref="rface">
+      <button type="button" data-val="sans" aria-pressed="false"><span class="sample">Aa</span>Sans</button>
+      <button type="button" data-val="serif" aria-pressed="false"><span class="sample serif">Aa</span>Serif</button>
+    </div>
+  </fieldset>
+  <button class="reader-reset" id="readerReset" type="button">Reset to defaults</button>
+  <p class="reader-note">Saved in this browser only — these settings do not follow you to another device.</p>
+</div>
+<button class="focus-exit" id="focusExit" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h6V3M21 9h-6V3M3 15h6v6M21 15h-6v6"/></svg> Exit focus</button>
+
 </main>
 
 <footer class="site-footer">
   <div class="wrap">
     <div class="grid g-4" style="gap:2rem">
       <div>
-        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem">
-          <img src="/images/ajna-logo.png" alt="" width="32" height="32">
-          <span class="brand-name">Ajna<span style="color:#6f9bff">CS</span></span>
+        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem" aria-label="Ajna Consulting Services — home">
+          <svg viewBox="0 0 100 100" width="36" height="36" fill="none" aria-hidden="true" focusable="false"><defs><linearGradient id="lit-ftr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".30"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".32"/></linearGradient></defs><g transform="rotate(0 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#E8402A"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#F5A623"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#17A05E"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 96 50 L 50 50 Z" fill="#2B57E8"/></g><path d="M 50 4 L 96 50 L 50 96 L 4 50 Z" fill="url(#lit-ftr)"/><g transform="rotate(0 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(90 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(180 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><g transform="rotate(270 50 50)"><path d="M 50 4 L 50 50 L 96 50" stroke="#000" stroke-width="1" opacity=".16" fill="none"/></g><circle cx="50" cy="50" r="6" fill="currentColor"/></svg>
+          <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
         </a>
         <p style="font-size:.88rem;line-height:1.65;color:#9fb0d0;max-width:30ch">
           Specialised engineering partner for enterprise architecture, AI &amp; MLOps, and technical enablement.
