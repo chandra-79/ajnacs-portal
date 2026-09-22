@@ -27,6 +27,9 @@
   --shadow-3:0 10px 30px rgba(16,26,48,.12), 0 30px 70px rgba(16,26,48,.14);
 
   --measure:74ch;
+  --art-col:700px;
+  --art-aside:214px;
+  --art-gap:3rem;
   --nav-h:68px;
   --gutter:clamp(1.15rem, 4vw, 2.75rem);
   --section-y:clamp(3.5rem, 8vw, 7rem);
@@ -431,6 +434,12 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:800;line-height:1.12;
 .article-meta{display:flex;align-items:center;gap:.65rem;flex-wrap:wrap;margin-top:1.4rem;font-size:.84rem;color:var(--text-3)}
 .article-hero{border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--line);margin-bottom:3.4rem;aspect-ratio:1200/380}
 .article-hero svg{width:100%;height:100%;display:block}
+/* One column governs the whole article. The title, the hero, the body, the
+   references and the footer all take their width and their left edge from
+   --art-col, so nothing shifts sideways as you scroll. The contents list is
+   the only thing that sits outside it, in its own track on wide screens. */
+.art-wrap{width:min(var(--art-col),100% - var(--gutter)*2);margin-inline:auto}
+.article .prose{max-width:none;margin-inline:0}
 .article-grid{display:block}
 .toc{
   margin:0 0 2.2rem;padding:1.1rem 1.3rem;background:var(--paper-2);
@@ -439,18 +448,27 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:800;line-height:1.12;
 .toc-title{font-family:var(--font-display);font-size:.72rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--text-3);margin-bottom:.7rem}
 .toc ol{counter-reset:t;padding:0;list-style:none;display:flex;flex-direction:column;gap:.4rem}
 .toc li{counter-increment:t}
-.toc a{font-size:.9rem;color:var(--text-2);text-decoration:none}
+.toc a{font-size:.9rem;color:var(--text-2);text-decoration:none;display:block}
 .toc a::before{content:counter(t,decimal-leading-zero);font-family:var(--font-mono);font-size:.74rem;color:var(--accent);margin-right:.6rem}
 .toc a:hover{color:var(--accent-ink);text-decoration:underline}
-@media (min-width:1240px){
-  /* Only reserve the sidebar when there is actually a contents list to put in
-     it; otherwise the article is centred and the page has no dead column. */
-  .article-grid.has-toc{
-    display:grid;grid-template-columns:minmax(0,1fr) 220px;gap:3.4rem;align-items:start;
-    width:min(1080px,100% - var(--gutter)*2);margin-inline:auto;
+@media (min-width:1180px){
+  /* Widen the shared container by exactly the aside track, then cap every
+     block back to --art-col. The text column keeps the same left edge it had
+     at every other width; only the contents list moves out beside it. */
+  .article.with-toc .art-wrap{
+    width:min(calc(var(--art-col) + var(--art-gap) + var(--art-aside)),100% - var(--gutter)*2);
   }
-  .article-grid.has-toc .toc{order:2;position:sticky;top:calc(var(--nav-h) + 1.4rem);margin:0}
-  .article-grid.has-toc .prose{order:1;margin-inline:0}
+  .article.with-toc .art-wrap > *{max-width:var(--art-col)}
+  .article.with-toc .article-grid{
+    display:grid;grid-template-columns:minmax(0,var(--art-col)) var(--art-aside);
+    gap:var(--art-gap);align-items:start;
+  }
+  .article.with-toc .article-grid > *{max-width:none}
+  .article.with-toc .toc{
+    order:2;position:sticky;top:calc(var(--nav-h) + 1.4rem);margin:0;
+    background:none;border:0;border-left:1px solid var(--line);border-radius:0;padding:.15rem 0 .15rem 1.2rem;
+  }
+  .article.with-toc .prose{order:1}
 }
 .table-wrap{overflow-x:auto;margin-block:1.6em;border:1px solid var(--line);border-radius:var(--radius)}
 .table-wrap table{margin:0}

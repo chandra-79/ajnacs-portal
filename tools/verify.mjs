@@ -80,6 +80,22 @@ if (braces !== 0) fail(`site.css braces unbalanced by ${braces}`); else ok("site
 if (/#[0-9a-f]*[g-z]/i.test(css.replace(/\/\*[\s\S]*?\*\//g, ""))) fail("site.css contains an invalid hex colour");
 else ok("no invalid colour tokens");
 
+// The article's blocks all take their width from one container. If any of
+// them goes back to a different wrapper, the body text stops lining up with
+// the title and the page visibly steps sideways as you scroll it.
+{
+  let drift = 0;
+  for (const d of dirs.slice(0, 12)) {
+    const h = await readFile(`insights/${d.name}/index.html`, "utf8");
+    const art = h.slice(h.indexOf("<article"), h.indexOf("</article>"));
+    if (/wrap-narrow/.test(art)) drift++;
+  }
+  if (drift) fail(`${drift} article(s) still mix wrap-narrow into the article column`);
+  else ok("article blocks share one column");
+  if (!/--art-col:/.test(css)) fail("--art-col is gone; the article column is undefined");
+  else ok("article column width is tokenised");
+}
+
 console.log("\nAccessibility");
 const sample = await readFile(`insights/${dirs[0].name}/index.html`, "utf8");
 for (const [re, what] of [

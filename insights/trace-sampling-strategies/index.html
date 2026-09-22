@@ -67,9 +67,9 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 <main id="main" tabindex="-1">
 
 <div class="read-bar" aria-hidden="true"><span id="readBar"></span></div>
-<article class="article">
+<article class="article with-toc">
   <header class="article-head">
-    <div class="wrap-narrow">
+    <div class="art-wrap">
       <nav class="crumbs" aria-label="Breadcrumb">
         <a href="/">Home</a> <span aria-hidden="true">/</span>
         <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
@@ -86,7 +86,7 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
     </div>
   </header>
 
-  <div class="article-hero wrap-narrow" data-topic="Observability"><svg viewBox="0 0 1200 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <div class="art-wrap"><div class="article-hero" data-topic="Observability"><svg viewBox="0 0 1200 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
   <defs>
     <linearGradient id="bgtracesamplin" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#1e9e63" stop-opacity=".10"/>
@@ -98,9 +98,9 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
   </defs>
   <rect width="1200" height="380" fill="url(#bgtracesamplin)"/>
   <path d="M0 70 L0 56.9 L16 49.2 L32 42.4 L48 36.7 L64 32.4 L80 29.7 L96 28.7 L112 29.4 L128 31.8 L144 35.8 L160 41.3 L176 47.9 L192 55.5 L208 63.7 L224 72.2 L240 80.5 L256 88.4 L272 95.6 L288 101.7 L304 106.4 L320 109.6 L336 111.2 L352 111.0 L368 109.1 L384 105.6 L400 100.6 L416 94.3 L432 87.0 L448 78.9 L464 70.5 L480 62.1 L496 54.0 L512 46.6 L528 40.1 L544 34.9 L560 31.2 L576 29.1 L592 28.7 L608 30.1 L624 33.1 L640 37.7" fill="none" stroke="#1e9e63" stroke-opacity="0.50" stroke-width="2.2" stroke-linecap="round"/><path d="M0 116 L0 148.4 L16 144.5 L32 139.5 L48 133.5 L64 126.7 L80 119.5 L96 112.1 L112 104.9 L128 98.2 L144 92.2 L160 87.2 L176 83.4 L192 81.0 L208 80.1 L224 80.6 L240 82.7 L256 86.1 L272 90.8 L288 96.6 L304 103.1 L320 110.2 L336 117.6 L352 124.8 L368 131.8 L384 138.0 L400 143.3 L416 147.5 L432 150.4 L448 151.8 L464 151.7 L480 150.1 L496 147.1 L512 142.8 L528 137.4 L544 131.0 L560 124.1 L576 116.8 L592 109.4 L608 102.4 L624 95.9 L640 90.2" fill="none" stroke="#157a4c" stroke-opacity="0.43" stroke-width="2.0" stroke-linecap="round"/><path d="M0 162 L0 215.6 L16 220.9 L32 223.8 L48 224.1 L64 221.8 L80 217.0 L96 209.9 L112 200.7 L128 190.0 L144 178.0 L160 165.4 L176 152.7 L192 140.3 L208 128.9 L224 118.8 L240 110.6 L256 104.5 L272 100.8 L288 99.7 L304 101.2 L320 105.2 L336 111.7 L352 120.2 L368 130.5 L384 142.1 L400 154.5 L416 167.3 L432 179.8 L448 191.6 L464 202.2 L480 211.0 L496 217.8 L512 222.3 L528 224.2 L544 223.6 L560 220.3 L576 214.6 L592 206.7 L608 196.9 L624 185.7 L640 173.4" fill="none" stroke="#1e9e63" stroke-opacity="0.36" stroke-width="1.7" stroke-linecap="round"/><path d="M0 208 L0 190.1 L16 185.2 L32 181.2 L48 178.4 L64 176.8 L80 176.4 L96 177.5 L112 179.8 L128 183.3 L144 187.8 L160 193.1 L176 199.1 L192 205.5 L208 212.0 L224 218.3 L240 224.1 L256 229.3 L272 233.6 L288 236.9 L304 238.9 L320 239.6 L336 239.0 L352 237.1 L368 234.0 L384 229.8 L400 224.6 L416 218.8 L432 212.5 L448 206.1 L464 199.7 L480 193.6 L496 188.2 L512 183.6 L528 180.0 L544 177.6 L560 176.5 L576 176.7 L592 178.2 L608 180.9 L624 184.8 L640 189.7" fill="none" stroke="#157a4c" stroke-opacity="0.29" stroke-width="1.5" stroke-linecap="round"/><path d="M0 254 L0 212.5 L16 214.1 L32 217.3 L48 222.1 L64 228.2 L80 235.4 L96 243.3 L112 251.7 L128 260.3 L144 268.5 L160 276.2 L176 282.9 L192 288.4 L208 292.4 L224 294.9 L240 295.6 L256 294.6 L272 291.9 L288 287.6 L304 281.9 L320 275.0 L336 267.3 L352 258.9 L368 250.4 L384 242.0 L400 234.2 L416 227.1 L432 221.2 L448 216.7 L464 213.7 L480 212.4 L496 212.9 L512 215.1 L528 218.9 L544 224.2 L560 230.7 L576 238.2 L592 246.4 L608 254.9 L624 263.4 L640 271.4" fill="none" stroke="#1e9e63" stroke-opacity="0.22" stroke-width="1.2" stroke-linecap="round"/>
-</svg></div>
+</svg></div></div>
 
-  <div class="wrap-narrow article-grid has-toc">
+  <div class="art-wrap article-grid">
     <nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#the-consistency-rule-that-everything-rests-on">The consistency rule that everything rests on</a></li><li><a href="#head-vs-tail-deciding-early-and-cheap-or-late-and-smart">Head vs tail: deciding early and cheap, or late and smart</a></li><li><a href="#the-operational-rim">The operational rim</a></li></ol>
@@ -120,7 +120,7 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
     </div>
   </div>
 
-  <div class="wrap-narrow"><aside class="refs" aria-labelledby="refs-h">
+  <div class="art-wrap"><aside class="refs" aria-labelledby="refs-h">
   <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
   <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
   <ul>
@@ -131,7 +131,7 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 
   
 
-  <div class="wrap-narrow article-foot">
+  <div class="art-wrap article-foot">
     <div class="row" style="gap:.4rem">
       <a class="chip chip-plain" href="/insights/?topic=Observability">Observability</a><a class="chip chip-plain" href="/insights/?topic=Distributed%20Systems">Distributed Systems</a><a class="chip chip-plain" href="/insights/?topic=Reliability">Reliability</a><a class="chip chip-plain" href="/insights/?topic=Performance">Performance</a><a class="chip chip-plain" href="/insights/?topic=Cloud%20Architecture">Cloud Architecture</a>
     </div>
@@ -227,14 +227,14 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
   </section>
 
   <section class="section">
-    <div class="wrap-narrow cta-panel">
+    <div class="art-wrap"><div class="cta-panel">
       <h2 class="h2">Working on this in production?</h2>
       <p class="lede" style="margin-top:.7rem">We do this work directly alongside engineering teams — architecture review, migration, and hands-on enablement.</p>
       <div class="row" style="margin-top:1.4rem">
         <a class="btn" href="/contact/">Engage engineering <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         <a class="btn btn-ghost" href="/services/">See what we do</a>
       </div>
-    </div>
+    </div></div>
   </section>
 </article>
 </main>

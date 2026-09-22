@@ -75,9 +75,9 @@ for (const m of live) {
 
   const body_ = `
 <div class="read-bar" aria-hidden="true"><span id="readBar"></span></div>
-<article class="article">
+<article class="article${tocHtml ? " with-toc" : ""}">
   <header class="article-head">
-    <div class="wrap-narrow">
+    <div class="art-wrap">
       <nav class="crumbs" aria-label="Breadcrumb">
         <a href="/">Home</a> <span aria-hidden="true">/</span>
         <a href="${base}/">${m.section === "notes" ? "Notes" : "Insights"}</a> <span aria-hidden="true">/</span>
@@ -94,18 +94,18 @@ for (const m of live) {
     </div>
   </header>
 
-  <div class="article-hero wrap-narrow" data-topic="${esc(topic)}">${artwork(m.slug, m.tags, { w: 1200, h: 380, calm: m.section === "notes" })}</div>
+  <div class="art-wrap"><div class="article-hero" data-topic="${esc(topic)}">${artwork(m.slug, m.tags, { w: 1200, h: 380, calm: m.section === "notes" })}</div></div>
 
-  <div class="wrap-narrow article-grid${tocHtml ? " has-toc" : ""}">
+  <div class="art-wrap article-grid">
     ${tocHtml}
     <div class="prose">
 ${html}
     </div>
   </div>
 
-  ${refsHtml ? `<div class="wrap-narrow">${refsHtml}</div>` : ""}
+  ${refsHtml ? `<div class="art-wrap">${refsHtml}</div>` : ""}
 
-  ${seriesItems.length > 1 ? `<div class="wrap-narrow" style="margin-top:3rem">
+  ${seriesItems.length > 1 ? `<div class="art-wrap" style="margin-top:3rem">
     <aside class="series-box">
       <p class="eyebrow">Series</p>
       <h2 class="h3" style="margin:.5rem 0 1rem">${esc(m.series)}</h2>
@@ -115,7 +115,7 @@ ${html}
     </aside>
   </div>` : ""}
 
-  <div class="wrap-narrow article-foot">
+  <div class="art-wrap article-foot">
     <div class="row" style="gap:.4rem">
       ${m.tags.map(t => `<a class="chip chip-plain" href="/insights/?topic=${encodeURIComponent(t)}">${esc(t)}</a>`).join("")}
     </div>
@@ -133,14 +133,14 @@ ${html}
   </section>` : ""}
 
   <section class="section">
-    <div class="wrap-narrow cta-panel">
+    <div class="art-wrap"><div class="cta-panel">
       <h2 class="h2">Working on this in production?</h2>
       <p class="lede" style="margin-top:.7rem">We do this work directly alongside engineering teams — architecture review, migration, and hands-on enablement.</p>
       <div class="row" style="margin-top:1.4rem">
         <a class="btn" href="/contact/">Engage engineering ${icon.arrow}</a>
         <a class="btn btn-ghost" href="/services/">See what we do</a>
       </div>
-    </div>
+    </div></div>
   </section>
 </article>`;
 
