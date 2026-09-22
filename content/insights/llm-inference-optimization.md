@@ -1,0 +1,37 @@
+---
+title: "LLM Inference Optimization: The Levers Behind Latency, Throughput, and the Bill"
+description: "Serving large language models is a systems problem wearing an AI costume — KV caches, continuous batching, quantization, speculative decoding, and routing. What each lever buys, what it costs in quality, and how to think about the serving stack."
+date: 2025-01-07
+tags: ["AI Adoption", "LLM", "Performance", "Cloud Architecture", "AI & MLOps"]
+format: article
+---
+
+Once an organization moves past the API-only phase of LLM adoption — whether for cost, latency, data governance, or fine-tuned models — it inherits a serving problem with unusual physics: a workload that is memory-bandwidth-bound rather than compute-bound for most of its life, whose per-request state grows with conversation length, and whose cost per token can vary by an order of magnitude based on decisions that have nothing to do with the model's weights. Inference optimization is where AI infrastructure budgets are won or lost, and the levers are more knowable than the vendor fog suggests.
+
+## The shape of the workload: two phases, different physics
+
+Every generation request has two phases with opposite characters. **Prefill** processes the entire prompt in parallel — compute-intensive, GPU-saturating, fast per token. **Decode** then produces output one token at a time, each step reading the *entire* model weights plus the accumulated attention state — this phase is bound by memory bandwidth, not FLOPs, and it's where most wall-clock time goes. The accumulated attention state is the **KV cache**, and it is the hidden protagonist of inference economics: it grows linearly with context length, per request, in precious GPU memory — long contexts don't just cost prompt-processing time, they *occupy the memory that determines how many requests can run concurrently*.
+
+Two user-facing metrics fall out: **time-to-first-token** (prefill latency — what makes chat feel responsive) and **inter-token latency/tokens-per-second** (decode speed — what makes streaming feel fluid). Optimizations trade differently against each, so knowing which one your product actually needs is the first decision.
+
+## The serving-layer levers (biggest first)
+
+**Continuous batching** is the foundational one, and it's why purpose-built servers (vLLM, TensorRT-LLM, TGI, SGLang) exist: because decode reads all weights per step regardless of batch size, serving one request and serving thirty-two cost nearly the same memory bandwidth — batching is almost free throughput. Naive batching waits for the batch to fill and finish together; continuous batching admits and retires requests *per decoding step*, keeping the GPU saturated with whatever's in flight. Throughput gains versus request-at-a-time serving run 10–20×. Nobody should be serving production LLM traffic on hand-rolled loops.
+
+**PagedAttention and KV-cache management** — vLLM's signature contribution — treats KV memory like an OS treats RAM: paged, non-contiguous, shared where possible (identical prompt prefixes across requests share pages). The practical yields: far less memory fragmentation (so bigger effective batches) and **prefix caching**, which is the sleeper win for enterprise workloads — the 2,000-token system prompt your application prepends to every request gets computed once and reused, collapsing per-request prefill. Structuring applications for shared prefixes (stable system prompts first, variable content last) is a free optimization most teams haven't noticed they're leaving on the table.
+
+**Quantization** shrinks weights (and increasingly KV caches) to lower precision — the current sane defaults: 8-bit (FP8/INT8) serving as the near-lossless workhorse, 4-bit weights (AWQ/GPTQ-class) as the aggressive tier that roughly halves memory again and speeds bandwidth-bound decode, with real-but-often-acceptable quality cost that *must be evaluated on your tasks, not on leaderboard perplexity* — quality cliffs are task-specific, and structured-output or long-reasoning workloads feel 4-bit degradation before summarization does. The strategic payoff is usually not "same model, cheaper" but "bigger model per GPU": a 4-bit 70B often beats an 8-bit 34B at similar footprint.
+
+**Speculative decoding** attacks decode latency directly: a small draft model (or self-drafting head, Medusa/EAGLE-style) proposes several tokens; the big model verifies them in one parallel pass — accepted tokens arrive at draft speed with *identical output distribution* (verification guarantees it). Speedups of 2–3× on predictable text; less on high-entropy generation. It costs GPU memory for the draft and engineering for the pairing, which is why it's the second-wave optimization after batching and quantization are in place.
+
+## The fleet-level levers
+
+Above a single server, the levers change name. **Model routing**: not every request deserves the flagship — classifiers or heuristics steering traffic between a small/fast and large/smart tier routinely cut spend 40–70% at negligible quality cost, and this is usually the single largest bill reduction available (bigger than any kernel). **Disaggregated prefill/decode** — separating the compute-bound and bandwidth-bound phases onto different hardware pools, now standard in large-scale servers — smooths latency under mixed workloads (long-prompt requests stop stalling everyone's decode). **Autoscaling with honest cold-start math**: model loading takes minutes, so scale-up must lead demand, and scale-to-zero is for dev environments. **And caching above the model entirely**: exact-match and semantic response caches, plus "did this need a model at all?" review — the cheapest token is the one never generated.
+
+For self-hosting decisions, the capacity arithmetic worth internalizing: a 70B-class model at 8-bit wants ~70+ GB for weights alone before KV — the batch size (thus the economics) lives in whatever memory remains, which is why quantization and cache paging translate directly into cost-per-token, and why long-context features must be priced as *memory products*, not marketing checkboxes.
+
+## The operating discipline
+
+Three habits separate teams that optimize from teams that thrash. **Measure the product metric, not the benchmark**: tokens/sec on synthetic 128-token prompts predicts nothing about your 6k-prompt, streaming, bursty reality — load-test with production-shaped traffic (prompt/output length distributions matter more than QPS). **Hold a quality-evaluation gate**: every serving change — quantization tier, speculative pairing, even server version bumps — runs the task-specific eval suite before rollout, because inference optimizations fail *silently*, as slightly worse answers rather than errors. **And publish cost-per-request by route**: the number that turns optimization from an infrastructure hobby into a product conversation — once product managers can see that the flagship-model route costs 30× the routed alternative for a 2% quality delta on their actual task, the roadmap has a way of optimizing itself.
+
+The meta-point for architecture leaders: inference is a systems discipline — batching, caching, memory management, routing — where the AI-specific parts are narrower than they look. The teams that serve models well are the ones that recognized the shape early: it's the same performance engineering craft the industry already knows, pointed at a workload whose defining resource is GPU memory bandwidth, and whose defining trap is optimizing the demo instead of the distribution.

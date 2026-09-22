@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kubernetes Security Hardening: The Controls That Actually Reduce Attack Surface | Ajna CS</title>
+<meta name="description" content="Default Kubernetes configurations are not production-secure. Here are the specific hardening controls — RBAC, Pod Security Standards, network policies, ima…">
+<meta name="author" content="Chandra Lanka">
+<link rel="canonical" href="https://ajnacs.com/insights/kubernetes-security-hardening/">
+<meta name="robots" content="index, follow, max-image-preview:large">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Ajna Consulting Services">
+<meta property="og:title" content="Kubernetes Security Hardening: The Controls That Actually Reduce Attack Surface">
+<meta property="og:description" content="Default Kubernetes configurations are not production-secure. Here are the specific hardening controls — RBAC, Pod Security Standards, network policies, ima…">
+<meta property="og:url" content="https://ajnacs.com/insights/kubernetes-security-hardening/">
+<meta property="og:image" content="https://ajnacs.com/assets/og/insights-kubernetes-security-hardening.svg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Kubernetes Security Hardening: The Controls That Actually Reduce Attack Surface">
+<meta name="twitter:description" content="Default Kubernetes configurations are not production-secure. Here are the specific hardening controls — RBAC, Pod Security Standards, network policies, ima…">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/insights-kubernetes-security-hardening.svg">
+
+<link rel="icon" href="/images/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="/images/ajna-logo.png">
+<meta name="theme-color" content="#0a1020">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="/assets/css/site.css">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<script>
+/* Set the theme before first paint so the page never flashes the wrong one. */
+(function(){try{var t=localStorage.getItem('acs-theme');
+if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Kubernetes Security Hardening: The Controls That Actually Reduce Attack Surface","description":"Default Kubernetes configurations are not production-secure. Here are the specific hardening controls — RBAC, Pod Security Standards, network policies, image policies, secrets management — that reduce attack surface and what each actually protects against.","datePublished":"2026-04-13","dateModified":"2026-04-13","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/kubernetes-security-hardening/","image":"https://ajnacs.com/assets/og/insights-kubernetes-security-hardening.svg","keywords":"DevSecOps, Containers, Security","articleSection":"DevSecOps","wordCount":1000}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Kubernetes Security Hardening: The Controls That Actually Reduce Attack Surface"}]}</script>
+</head>
+<body class="" data-topic="DevSecOps">
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header" id="siteHeader">
+  <div class="wrap" style="display:flex;align-items:center;width:min(1220px,100% - var(--gutter)*2)">
+    <a class="brand" href="/">
+      <img src="/images/ajna-logo.png" alt="" width="32" height="32">
+      <span class="brand-name">Ajna<span>CS</span></span>
+    </a>
+    <nav class="nav" id="nav" aria-label="Primary">
+      <a href="/services/">Services</a>
+      <a href="/insights/" aria-current="page">Insights</a>
+      <a href="/series/">Series</a>
+      <a href="/case-studies/">Case studies</a>
+      <a href="/about/">About</a>
+      <a class="btn btn-sm" href="/contact/" style="margin-left:.4rem">Engage engineering</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn" id="themeBtn" type="button" aria-label="Switch to dark mode" aria-pressed="false"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg></button>
+      <button class="icon-btn nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+
+<div class="read-bar" aria-hidden="true"><span id="readBar"></span></div>
+<article class="article">
+  <header class="article-head">
+    <div class="wrap-narrow">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a> <span aria-hidden="true">/</span>
+        <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
+        <span>DevSecOps</span>
+      </nav>
+      <h1 class="h1">Kubernetes Security Hardening: The Controls That Actually Reduce Attack Surface</h1>
+      <p class="lede" style="margin-top:1rem">Default Kubernetes configurations are not production-secure. Here are the specific hardening controls — RBAC, Pod Security Standards, network policies, image policies, secrets management — that reduce attack surface and what each actually protects against.</p>
+      <div class="article-meta">
+        <span class="chip">DevSecOps</span>
+        <time datetime="2026-04-13">13 Apr 2026</time>
+        <span class="dot"></span><span>4 min read</span>
+        <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="article-hero wrap-narrow" data-topic="DevSecOps"><svg viewBox="0 0 1200 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgkubernetesse" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e0473a" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#c03a2e" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#e0473a" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="420" fill="url(#bgkubernetesse)"/>
+  <line x1="160.1" y1="66.2" x2="89.3" y2="179.6" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="160.1" y1="66.2" x2="326.4" y2="48.2" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="160.1" y1="66.2" x2="253.8" y2="203.1" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="160.1" y1="66.2" x2="78.7" y2="178.3" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="160.1" y1="66.2" x2="199.0" y2="215.6" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="160.1" y1="66.2" x2="61.3" y2="182.8" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="89.3" y1="179.6" x2="79.3" y2="245.1" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="89.3" y1="179.6" x2="144.1" y2="305.3" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="89.3" y1="179.6" x2="253.8" y2="203.1" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="89.3" y1="179.6" x2="78.7" y2="178.3" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="89.3" y1="179.6" x2="148.8" y2="246.4" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="89.3" y1="179.6" x2="199.0" y2="215.6" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="89.3" y1="179.6" x2="61.3" y2="182.8" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="79.3" y1="245.1" x2="144.1" y2="305.3" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="79.3" y1="245.1" x2="78.7" y2="178.3" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="79.3" y1="245.1" x2="148.8" y2="246.4" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="79.3" y1="245.1" x2="199.0" y2="215.6" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="79.3" y1="245.1" x2="61.3" y2="182.8" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="144.1" y1="305.3" x2="253.8" y2="203.1" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="144.1" y1="305.3" x2="78.7" y2="178.3" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="144.1" y1="305.3" x2="148.8" y2="246.4" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="144.1" y1="305.3" x2="199.0" y2="215.6" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="144.1" y1="305.3" x2="61.3" y2="182.8" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="253.8" y1="203.1" x2="148.8" y2="246.4" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="253.8" y1="203.1" x2="199.0" y2="215.6" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="78.7" y1="178.3" x2="148.8" y2="246.4" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="78.7" y1="178.3" x2="199.0" y2="215.6" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="78.7" y1="178.3" x2="61.3" y2="182.8" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="422.7" y1="206.1" x2="488.8" y2="117.3" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="148.8" y1="246.4" x2="199.0" y2="215.6" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="148.8" y1="246.4" x2="61.3" y2="182.8" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="563.2" y1="71.1" x2="488.8" y2="117.3" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="199.0" y1="215.6" x2="61.3" y2="182.8" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><circle cx="160.1" cy="66.2" r="5" fill="#e0473a" fill-opacity=".9"/><circle cx="89.3" cy="179.6" r="8.5" fill="#c03a2e" fill-opacity=".9"/><circle cx="326.4" cy="48.2" r="12" fill="#e0473a" fill-opacity=".9"/><circle cx="79.3" cy="245.1" r="5" fill="#c03a2e" fill-opacity=".9"/><circle cx="144.1" cy="305.3" r="8.5" fill="#e0473a" fill-opacity=".9"/><circle cx="253.8" cy="203.1" r="12" fill="#c03a2e" fill-opacity=".9"/><circle cx="78.7" cy="178.3" r="5" fill="#e0473a" fill-opacity=".9"/><circle cx="422.7" cy="206.1" r="8.5" fill="#c03a2e" fill-opacity=".9"/><circle cx="148.8" cy="246.4" r="12" fill="#e0473a" fill-opacity=".9"/><circle cx="563.2" cy="71.1" r="5" fill="#c03a2e" fill-opacity=".9"/><circle cx="488.8" cy="117.3" r="8.5" fill="#e0473a" fill-opacity=".9"/><circle cx="199.0" cy="215.6" r="12" fill="#c03a2e" fill-opacity=".9"/><circle cx="61.3" cy="182.8" r="5" fill="#e0473a" fill-opacity=".9"/>
+</svg></div>
+
+  <div class="wrap-narrow article-grid">
+    <nav class="toc" aria-label="On this page">
+  <p class="toc-title">On this page</p>
+  <ol><li><a href="#rbac-the-principle-of-least-privilege-for-cluster-access">RBAC: the principle of least privilege for cluster access</a></li><li><a href="#pod-security-standards-replacing-podsecuritypolicy">Pod Security Standards: replacing PodSecurityPolicy</a></li><li><a href="#network-policies-default-deny-allow-explicitly">Network policies: default-deny, allow explicitly</a></li><li><a href="#image-security-admission-control-and-signed-images">Image security: admission control and signed images</a></li><li><a href="#secrets-don39t-trust-etcd-at-rest-by-default">Secrets: don&amp;#39;t trust etcd at rest by default</a></li><li><a href="#audit-logging">Audit logging</a></li></ol>
+</nav>
+    <div class="prose">
+<p>A Kubernetes cluster out of the box has a large attack surface. Pods can communicate freely. Containers run as root by default. Any pod can access the Kubernetes API with the default service account, which has broad permissions in many configurations. Secrets are base64-encoded, not encrypted.</p>
+<p>None of these are unfixable. They&#39;re defaults chosen for developer convenience, not production security. Here&#39;s the set of controls I consider baseline for any production cluster.</p>
+<h2 id="rbac-the-principle-of-least-privilege-for-cluster-access">RBAC: the principle of least privilege for cluster access</h2>
+<p>Kubernetes RBAC defines what users and service accounts can do in the cluster. The defaults are often too permissive.</p>
+<p>The common failure: <code>ClusterRoleBinding</code> that grants <code>cluster-admin</code> to a service account or group because it was the path of least resistance when something didn&#39;t work. <code>cluster-admin</code> is full control of the entire cluster — it should never be granted to anything except emergency break-glass access.</p>
+<p>The right approach: role-based access scoped to the namespace a team owns.</p>
+<pre><code class="language-yaml">apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: payments
+  name: payments-developer
+rules:
+- apiGroups: [&quot;&quot;]
+  resources: [&quot;pods&quot;, &quot;pods/logs&quot;, &quot;services&quot;, &quot;configmaps&quot;]
+  verbs: [&quot;get&quot;, &quot;list&quot;, &quot;watch&quot;]
+- apiGroups: [&quot;apps&quot;]
+  resources: [&quot;deployments&quot;, &quot;replicasets&quot;]
+  verbs: [&quot;get&quot;, &quot;list&quot;, &quot;watch&quot;, &quot;update&quot;, &quot;patch&quot;]
+</code></pre>
+<p>Developers can view and update their deployments; they can&#39;t read secrets, modify RBAC, or interact with other namespaces.</p>
+<p><strong>For workloads</strong>: pods should have a dedicated service account with only the permissions needed. The <code>automountServiceAccountToken: false</code> setting prevents the default service account token from being mounted into pods that don&#39;t need API access — most application pods don&#39;t need to call the Kubernetes API at all.</p>
+<h2 id="pod-security-standards-replacing-podsecuritypolicy">Pod Security Standards: replacing PodSecurityPolicy</h2>
+<p>PodSecurityPolicy (PSP) is deprecated and removed in Kubernetes 1.25. The replacement is Pod Security Standards (PSS) with the Pod Security Admission controller.</p>
+<p>Three policy levels:</p>
+<ul>
+<li><strong>Privileged</strong>: unrestricted, no security controls. For system-level infrastructure pods.</li>
+<li><strong>Baseline</strong>: prevents known privilege escalation without breaking most legitimate workloads. Disables <code>hostNetwork</code>, <code>hostPID</code>, <code>hostIPC</code>, privileged containers, most Linux capabilities.</li>
+<li><strong>Restricted</strong>: heavily restricted, follow security best practices. Requires non-root user, drops all capabilities, requires <code>seccompProfile</code>.</li>
+</ul>
+<p>Apply at the namespace level with labels:</p>
+<pre><code class="language-yaml">apiVersion: v1
+kind: Namespace
+metadata:
+  name: payments
+  labels:
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/warn: restricted
+    pod-security.kubernetes.io/audit: restricted
+</code></pre>
+<p><code>enforce</code> blocks non-compliant pods. <code>warn</code> allows the pod but generates a warning. <code>audit</code> records to audit logs but doesn&#39;t block or warn. Roll out with <code>warn</code> first, then promote to <code>enforce</code> once workloads are compliant.</p>
+<p>Most application workloads can run under <code>restricted</code> with these container spec settings:</p>
+<pre><code class="language-yaml">securityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop: [&quot;ALL&quot;]
+  seccompProfile:
+    type: RuntimeDefault
+</code></pre>
+<h2 id="network-policies-default-deny-allow-explicitly">Network policies: default-deny, allow explicitly</h2>
+<p>By default, every pod in a Kubernetes cluster can communicate with every other pod. Network policies are the mechanism for restricting this.</p>
+<p>The baseline posture: a default-deny policy for every namespace that blocks all ingress and egress, then explicit allow policies for the communication that&#39;s needed.</p>
+<pre><code class="language-yaml">apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny-all
+  namespace: payments
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+  - Egress
+</code></pre>
+<p>Then allow the specific traffic:</p>
+<pre><code class="language-yaml">apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-payments-api
+  namespace: payments
+spec:
+  podSelector:
+    matchLabels:
+      app: payments-api
+  policyTypes:
+  - Ingress
+  policyTypes:
+  - Egress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: gateway
+    ports:
+    - port: 8080
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          name: database
+    ports:
+    - port: 5432
+</code></pre>
+<p>This is more to maintain but significantly reduces the blast radius of a compromised pod. A compromised payments service that can only reach the database and the gateway is contained; one that can reach any cluster resource is a more serious incident.</p>
+<p>Network policies require a CNI plugin that implements them — Calico, Cilium, or Weave Net. The default networking in many managed Kubernetes services (EKS with VPC CNI, GKE in some configurations) may not enforce network policies without additional configuration or plugin installation.</p>
+<h2 id="image-security-admission-control-and-signed-images">Image security: admission control and signed images</h2>
+<p>Running unknown images is a risk. The controls:</p>
+<p><strong>Admission controllers</strong> can enforce image policies before pods start. OPA Gatekeeper or Kyverno allow policies like &quot;images must come from approved registries&quot; and &quot;images must not use the <code>:latest</code> tag&quot; (which pins to a specific image).</p>
+<p><strong>Image signing</strong> with Sigstore/Cosign allows you to verify that an image was built by your CI pipeline and hasn&#39;t been tampered with. The admission controller verifies the signature before allowing the image to run. This is the strongest control for supply chain security in Kubernetes.</p>
+<p><strong>Regular base image updates</strong>: a hardened cluster with outdated container images is still vulnerable. Automate base image updates (Dependabot for container base images, or Renovate Bot) and run Trivy or Grype image scanning in CI to catch vulnerabilities before deployment.</p>
+<h2 id="secrets-don39t-trust-etcd-at-rest-by-default">Secrets: don&#39;t trust etcd at rest by default</h2>
+<p>Kubernetes Secrets are stored in etcd. etcd is not encrypted at rest by default — base64 is encoding, not encryption. Anyone with access to the etcd datastore can read all secrets.</p>
+<p>Enable etcd encryption at rest. For managed clusters:</p>
+<ul>
+<li>EKS: secrets encryption is optional, uses AWS KMS. Enable it.</li>
+<li>GKE: encrypted by default with Google-managed keys; customer-managed keys available.</li>
+<li>AKS: encryption at rest with platform keys by default; customer-managed keys available.</li>
+</ul>
+<p>Better: don&#39;t store sensitive secrets in etcd at all. Use the External Secrets Operator or the CSI Secrets Store Driver to pull secrets from AWS Secrets Manager, Azure Key Vault, or GCP Secret Manager at pod startup. The secret exists in memory; it never lives in etcd.</p>
+<h2 id="audit-logging">Audit logging</h2>
+<p>Kubernetes API server audit logging records every request to the API — who created what, who deleted what, who accessed which secrets. This is essential for incident response and compliance.</p>
+<p>Audit logs should be shipped to a central logging system (CloudWatch Logs, Azure Monitor, GCP Cloud Logging, or your own ELK stack) where they&#39;re retained and searchable. The default audit policy logs everything, which is voluminous; a policy that logs at <code>RequestResponse</code> level for sensitive operations (secret access, RBAC changes) and <code>Metadata</code> level for routine operations is more manageable.</p>
+<p><em>Reviewing your cluster security posture or hardening a new cluster? <a href="/contact">Happy to compare configurations.</a></em></p>
+
+    </div>
+  </div>
+
+  <div class="wrap-narrow"><aside class="refs" aria-labelledby="refs-h">
+  <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
+  <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
+  <ul>
+    <li><a href="https://kubernetes.io/docs/" rel="noopener nofollow" target="_blank">Kubernetes documentation</a><span>Primary reference for the concepts used here.</span></li>
+    <li><a href="https://www.openpolicyagent.org/docs/" rel="noopener nofollow" target="_blank">Open Policy Agent</a><span>Policy engine and the Rego language.</span></li>
+    <li><a href="https://www.sigstore.dev/" rel="noopener nofollow" target="_blank">Sigstore</a><span>Signing and verification for artifacts.</span></li>
+  </ul>
+</aside></div>
+
+  
+
+  <div class="wrap-narrow article-foot">
+    <div class="row" style="gap:.4rem">
+      <a class="chip chip-plain" href="/insights/?topic=DevSecOps">DevSecOps</a><a class="chip chip-plain" href="/insights/?topic=Containers">Containers</a><a class="chip chip-plain" href="/insights/?topic=Security">Security</a>
+    </div>
+    <nav class="prevnext" aria-label="More articles">
+      <a href="/insights/back-of-envelope-system-design/"><span>Previous</span><strong>Back-of-Envelope Engineering: The Estimation Skill That Filters Bad Architectures in Minutes</strong></a>
+      <a href="/insights/containers-networking/" class="next"><span>Next</span><strong>Container Networking: How Containers Talk to Each Other and to the Outside World</strong></a>
+    </nav>
+  </div>
+
+  <section class="section surface hair" style="margin-top:4rem">
+    <div class="wrap">
+      <p class="eyebrow">Related</p>
+      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|DevSecOps|Architecture|Fundamentals|" data-search="platform observability: building the visibility layer every application team gets automatically how platform teams build and operate the metrics, logging, and tracing infrastructure that application teams consume without configuring — and what good platform observability coverage actually looks like. devsecops architecture fundamentals" data-topic="DevSecOps" href="/insights/platform-eng-observability/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgplatformengo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e0473a" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#c03a2e" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#e0473a" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgplatformengo)"/>
+  <rect x="28" y="26" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.63"/><rect x="348" y="26" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.57"/><rect x="388" y="26" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.73"/><rect x="428" y="26" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.69"/><rect x="548" y="26" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.54"/><rect x="188" y="62" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.73"/><rect x="348" y="62" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.64"/><rect x="428" y="62" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.72"/><rect x="588" y="62" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.66"/><rect x="228" y="98" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.70"/><rect x="308" y="98" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.48"/><rect x="348" y="98" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.55"/><rect x="388" y="98" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.52"/><rect x="428" y="98" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.64"/><rect x="508" y="98" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.58"/><rect x="588" y="98" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.63"/><rect x="68" y="134" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.65"/><rect x="268" y="134" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.65"/><rect x="508" y="134" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.50"/><rect x="548" y="134" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.67"/><rect x="588" y="134" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.70"/><rect x="68" y="170" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.52"/><rect x="108" y="170" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.48"/><rect x="148" y="170" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.50"/><rect x="268" y="170" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.56"/><rect x="428" y="170" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.74"/><rect x="468" y="170" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.58"/><rect x="508" y="170" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.60"/><rect x="548" y="170" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.60"/><rect x="148" y="206" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.62"/><rect x="228" y="206" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.59"/><rect x="388" y="206" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.74"/><rect x="428" y="206" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.74"/><rect x="508" y="206" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.51"/><rect x="28" y="242" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.63"/><rect x="68" y="242" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.63"/><rect x="148" y="242" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.61"/><rect x="188" y="242" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.64"/><rect x="268" y="242" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.65"/><rect x="348" y="242" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.59"/><rect x="148" y="278" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.63"/><rect x="188" y="278" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.72"/><rect x="428" y="278" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.55"/><rect x="548" y="278" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.58"/><rect x="588" y="278" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.68"/><rect x="28" y="314" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.54"/><rect x="108" y="314" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.61"/><rect x="228" y="314" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.67"/><rect x="348" y="314" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.52"/><rect x="428" y="314" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.59"/><rect x="468" y="314" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.61"/><rect x="548" y="314" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.59"/>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">DevSecOps</span>
+    <h3 class="card-title">Platform Observability: Building the Visibility Layer Every Application Team Gets Automatically</h3>
+    <p class="card-desc">How platform teams build and operate the metrics, logging, and tracing infrastructure that application teams consume without configuring — and what good platform observability coverage actually looks like.</p>
+    <div class="card-meta"><time datetime="2026-09-16">16 Sept 2026</time><span class="dot"></span><span>3 min read</span><span class="dot"></span><span>Series</span></div>
+  </div>
+</a>
+<a class="card" data-card data-topics="|DevSecOps|Fundamentals|" data-search="what containers actually are — not the marketing version containers are not lightweight vms. they are processes with resource constraints and namespace isolation. understanding the actual mechanism makes you a better user of docker, kubernetes, and every container runtime. devsecops fundamentals" data-topic="DevSecOps" href="/insights/containers-what-they-actually-are/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgcontainerswh" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e0473a" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#c03a2e" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#e0473a" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgcontainerswh)"/>
+  <path d="M0 70 L0 35.0 L16 36.2 L32 38.8 L48 42.7 L64 47.8 L80 53.8 L96 60.5 L112 67.6 L128 74.7 L144 81.7 L160 88.2 L176 93.9 L192 98.6 L208 102.2 L224 104.3 L240 105.1 L256 104.3 L272 102.2 L288 98.6 L304 93.9 L320 88.2 L336 81.7 L352 74.7 L368 67.5 L384 60.5 L400 53.8 L416 47.8 L432 42.7 L448 38.8 L464 36.2 L480 35.0 L496 35.3 L512 37.0 L528 40.1 L544 44.5 L560 49.9 L576 56.2 L592 63.1 L608 70.2 L624 77.3 L640 84.2" fill="none" stroke="#e0473a" stroke-opacity="0.50" stroke-width="2.2" stroke-linecap="round"/><path d="M0 116 L0 62.4 L16 66.1 L32 71.8 L48 79.4 L64 88.5 L80 98.7 L96 109.7 L112 121.0 L128 132.0 L144 142.4 L160 151.7 L176 159.5 L192 165.4 L208 169.3 L224 170.9 L240 170.3 L256 167.3 L272 162.2 L288 155.2 L304 146.5 L320 136.6 L336 125.8 L352 114.6 L368 103.4 L384 92.8 L400 83.1 L416 74.8 L432 68.3 L448 63.7 L464 61.3 L480 61.3 L496 63.5 L512 67.9 L528 74.4 L544 82.6 L560 92.2 L576 102.7 L592 113.9 L608 125.1 L624 136.0 L640 146.0" fill="none" stroke="#c03a2e" stroke-opacity="0.43" stroke-width="2.0" stroke-linecap="round"/><path d="M0 162 L0 144.6 L16 135.8 L32 128.1 L48 121.8 L64 117.2 L80 114.4 L96 113.7 L112 115.0 L128 118.2 L144 123.3 L160 130.0 L176 138.1 L192 147.1 L208 156.8 L224 166.7 L240 176.4 L256 185.5 L272 193.6 L288 200.4 L304 205.6 L320 208.9 L336 210.3 L352 209.7 L368 207.0 L384 202.5 L400 196.2 L416 188.6 L432 179.8 L448 170.3 L464 160.4 L480 150.6 L496 141.3 L512 132.8 L528 125.6 L544 119.9 L560 115.9 L576 113.9 L592 113.9 L608 115.9 L624 119.9 L640 125.6" fill="none" stroke="#e0473a" stroke-opacity="0.36" stroke-width="1.7" stroke-linecap="round"/><path d="M0 208 L0 152.0 L16 150.1 L32 150.7 L48 153.7 L64 158.9 L80 166.3 L96 175.3 L112 185.8 L128 197.1 L144 208.9 L160 220.7 L176 232.0 L192 242.2 L208 251.0 L224 258.0 L240 262.9 L256 265.5 L272 265.7 L288 263.5 L304 258.9 L320 252.2 L336 243.7 L352 233.7 L368 222.5 L384 210.8 L400 199.0 L416 187.5 L432 176.9 L448 167.6 L464 160.0 L480 154.4 L496 151.0 L512 150.1 L528 151.5 L544 155.4 L560 161.4 L576 169.4 L592 179.0 L608 189.9 L624 201.5 L640 213.3" fill="none" stroke="#c03a2e" stroke-opacity="0.29" stroke-width="1.5" stroke-linecap="round"/><path d="M0 254 L0 292.2 L16 299.2 L32 304.3 L48 307.3 L64 308.0 L80 306.6 L96 302.9 L112 297.1 L128 289.5 L144 280.5 L160 270.3 L176 259.5 L192 248.4 L208 237.6 L224 227.4 L240 218.4 L256 210.9 L272 205.1 L288 201.4 L304 199.9 L320 200.7 L336 203.8 L352 208.9 L368 215.9 L384 224.5 L400 234.4 L416 245.0 L432 256.1 L448 267.0 L464 277.5 L480 286.9 L496 295.0 L512 301.3 L528 305.6 L544 307.8 L560 307.8 L576 305.4 L592 301.0 L608 294.5 L624 286.4 L640 276.9" fill="none" stroke="#e0473a" stroke-opacity="0.22" stroke-width="1.2" stroke-linecap="round"/>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">DevSecOps</span>
+    <h3 class="card-title">What Containers Actually Are — Not the Marketing Version</h3>
+    <p class="card-desc">Containers are not lightweight VMs. They are processes with resource constraints and namespace isolation. Understanding the actual mechanism makes you a better user of Docker, Kubernetes, and every container runtime.</p>
+    <div class="card-meta"><time datetime="2026-07-30">30 Jul 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
+  </div>
+</a>
+<a class="card" data-card data-topics="|DevSecOps|Fundamentals|" data-search="writing production-grade dockerfiles: the decisions that actually matter multi-stage builds, minimal base images, layer caching, non-root users, build arguments, and the specific dockerfile patterns that separate a working image from a secure, efficient, maintainable one. devsecops fundamentals" data-topic="DevSecOps" href="/insights/containers-production-dockerfiles/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgcontainerspr" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e0473a" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#c03a2e" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#e0473a" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgcontainerspr)"/>
+  <path d="M0 70 L0 124.7 L16 118.0 L32 109.3 L48 98.9 L64 87.3 L80 74.9 L96 62.4 L112 50.2 L128 38.8 L144 28.8 L160 20.4 L176 14.2 L192 10.2 L208 8.8 L224 10.0 L240 13.6 L256 19.7 L272 27.8 L288 37.7 L304 49.0 L320 61.1 L336 73.6 L352 86.0 L368 97.7 L384 108.2 L400 117.2 L416 124.1 L432 128.8 L448 131.0 L464 130.7 L480 127.8 L496 122.5 L512 115.0 L528 105.6 L544 94.7 L560 82.8 L576 70.3 L592 57.8 L608 45.9 L624 34.9 L640 25.5" fill="none" stroke="#e0473a" stroke-opacity="0.50" stroke-width="2.2" stroke-linecap="round"/><path d="M0 116 L0 93.5 L16 88.9 L32 85.4 L48 83.2 L64 82.4 L80 83.0 L96 84.9 L112 88.2 L128 92.7 L144 98.1 L160 104.2 L176 110.9 L192 117.8 L208 124.6 L224 131.0 L240 136.8 L256 141.8 L272 145.6 L288 148.3 L304 149.5 L320 149.4 L336 147.8 L352 145.0 L368 140.9 L384 135.7 L400 129.8 L416 123.2 L432 116.4 L448 109.5 L464 102.9 L480 96.9 L496 91.7 L512 87.5 L528 84.4 L544 82.7 L560 82.4 L576 83.5 L592 86.0 L608 89.7 L624 94.6 L640 100.3" fill="none" stroke="#c03a2e" stroke-opacity="0.43" stroke-width="2.0" stroke-linecap="round"/><path d="M0 162 L0 119.8 L16 118.7 L32 119.5 L48 122.0 L64 126.2 L80 132.0 L96 138.9 L112 146.9 L128 155.4 L144 164.3 L160 173.1 L176 181.3 L192 188.8 L208 195.2 L224 200.1 L240 203.5 L256 205.1 L272 205.0 L288 203.0 L304 199.3 L320 194.0 L336 187.4 L352 179.7 L368 171.3 L384 162.5 L400 153.7 L416 145.2 L432 137.4 L448 130.7 L464 125.3 L480 121.4 L496 119.2 L512 118.8 L528 120.2 L544 123.4 L560 128.2 L576 134.4 L592 141.8 L608 150.0 L624 158.7 L640 167.6" fill="none" stroke="#e0473a" stroke-opacity="0.36" stroke-width="1.7" stroke-linecap="round"/><path d="M0 208 L0 237.9 L16 235.9 L32 232.8 L48 228.6 L64 223.5 L80 217.8 L96 211.7 L112 205.4 L128 199.2 L144 193.4 L160 188.3 L176 183.9 L192 180.6 L208 178.4 L224 177.4 L240 177.7 L256 179.3 L272 182.1 L288 186.0 L304 190.8 L320 196.3 L336 202.4 L352 208.6 L368 214.8 L384 220.8 L400 226.2 L416 230.8 L432 234.5 L448 237.1 L464 238.4 L480 238.5 L496 237.3 L512 234.9 L528 231.3 L544 226.8 L560 221.5 L576 215.6 L592 209.4 L608 203.1 L624 197.0 L640 191.5" fill="none" stroke="#c03a2e" stroke-opacity="0.29" stroke-width="1.5" stroke-linecap="round"/><path d="M0 254 L0 276.1 L16 283.5 L32 289.8 L48 294.5 L64 297.6 L80 298.8 L96 298.1 L112 295.6 L128 291.3 L144 285.5 L160 278.4 L176 270.2 L192 261.4 L208 252.2 L224 243.1 L240 234.5 L256 226.7 L272 220.0 L288 214.8 L304 211.2 L320 209.4 L336 209.5 L352 211.4 L368 215.2 L384 220.5 L400 227.3 L416 235.1 L432 243.8 L448 252.9 L464 262.0 L480 270.9 L496 279.0 L512 286.0 L528 291.7 L544 295.8 L560 298.2 L576 298.7 L592 297.4 L608 294.2 L624 289.3 L640 283.0" fill="none" stroke="#e0473a" stroke-opacity="0.22" stroke-width="1.2" stroke-linecap="round"/>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">DevSecOps</span>
+    <h3 class="card-title">Writing Production-Grade Dockerfiles: The Decisions That Actually Matter</h3>
+    <p class="card-desc">Multi-stage builds, minimal base images, layer caching, non-root users, build arguments, and the specific Dockerfile patterns that separate a working image from a secure, efficient, maintainable one.</p>
+    <div class="card-meta"><time datetime="2026-06-24">24 Jun 2026</time><span class="dot"></span><span>3 min read</span><span class="dot"></span><span>Series</span></div>
+  </div>
+</a></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap-narrow cta-panel">
+      <h2 class="h2">Working on this in production?</h2>
+      <p class="lede" style="margin-top:.7rem">We do this work directly alongside engineering teams — architecture review, migration, and hands-on enablement.</p>
+      <div class="row" style="margin-top:1.4rem">
+        <a class="btn" href="/contact/">Engage engineering <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="btn btn-ghost" href="/services/">See what we do</a>
+      </div>
+    </div>
+  </section>
+</article>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="grid g-4" style="gap:2rem">
+      <div>
+        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem">
+          <img src="/images/ajna-logo.png" alt="" width="32" height="32">
+          <span class="brand-name">Ajna<span style="color:#6f9bff">CS</span></span>
+        </a>
+        <p style="font-size:.88rem;line-height:1.65;color:#9fb0d0;max-width:30ch">
+          Specialised engineering partner for enterprise architecture, AI &amp; MLOps, and technical enablement.
+        </p>
+        <div class="social" style="margin-top:1.1rem">
+          <a href="https://www.youtube.com/@TechKnowen" rel="noopener" aria-label="YouTube"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 12s0-3.8-.5-5.6a2.9 2.9 0 0 0-2-2C18.7 4 12 4 12 4s-6.7 0-8.5.4a2.9 2.9 0 0 0-2 2C1 8.2 1 12 1 12s0 3.8.5 5.6a2.9 2.9 0 0 0 2 2C5.3 20 12 20 12 20s6.7 0 8.5-.4a2.9 2.9 0 0 0 2-2C23 15.8 23 12 23 12zM9.8 15.4V8.6l5.9 3.4z"/></svg></a>
+          <a href="https://techknowen.com" rel="noopener" aria-label="TechKnowen blog"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 3h16v3H4zm0 5h16v13l-8-4-8 4z"/></svg></a>
+          <a href="/feed.xml" aria-label="RSS feed"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="6.2" cy="17.8" r="2.2"/><path d="M4 10.2v3a6.6 6.6 0 0 1 6.6 6.6h3A9.6 9.6 0 0 0 4 10.2zM4 4v3c7.2 0 13 5.8 13 13h3C20 11.2 12.8 4 4 4z"/></svg></a>
+        </div>
+      </div>
+      <div>
+        <h4>Services</h4>
+        <ul>
+          <li><a href="/services/#architecture">Enterprise architecture</a></li>
+          <li><a href="/services/#ai">AI &amp; MLOps</a></li>
+          <li><a href="/services/#training">Technical enablement</a></li>
+          <li><a href="/case-studies/">Case studies</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Insights</h4>
+        <ul>
+          <li><a href="/insights/">All articles</a></li>
+          <li><a href="/series/">Series</a></li>
+          <li><a href="/topics/">Topics</a></li>
+          <li><a href="/notes/">Personal notes</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
+          <li><a href="/contact/">Start an engagement</a></li>
+          <li><a href="/about/">About</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span id="yr">2026</span> Ajna Consulting Services. All rights reserved.</span>
+      <span style="display:flex;gap:1.2rem"><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a></span>
+    </div>
+  </div>
+</footer>
+<script src="/assets/js/site.js" defer></script>
+</body>
+</html>

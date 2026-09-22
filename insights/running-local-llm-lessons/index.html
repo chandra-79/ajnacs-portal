@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Running LLMs Locally: What Six Months of Daily Use Actually Taught Me | Ajna CS</title>
+<meta name="description" content="I started running local LLMs as a cost experiment. It became a privacy practice, a performance benchmark, and an education in what language models actually…">
+<meta name="author" content="Chandra Lanka">
+<link rel="canonical" href="https://ajnacs.com/insights/running-local-llm-lessons/">
+<meta name="robots" content="index, follow, max-image-preview:large">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Ajna Consulting Services">
+<meta property="og:title" content="Running LLMs Locally: What Six Months of Daily Use Actually Taught Me">
+<meta property="og:description" content="I started running local LLMs as a cost experiment. It became a privacy practice, a performance benchmark, and an education in what language models actually…">
+<meta property="og:url" content="https://ajnacs.com/insights/running-local-llm-lessons/">
+<meta property="og:image" content="https://ajnacs.com/assets/og/insights-running-local-llm-lessons.svg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Running LLMs Locally: What Six Months of Daily Use Actually Taught Me">
+<meta name="twitter:description" content="I started running local LLMs as a cost experiment. It became a privacy practice, a performance benchmark, and an education in what language models actually…">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/insights-running-local-llm-lessons.svg">
+
+<link rel="icon" href="/images/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="/images/ajna-logo.png">
+<meta name="theme-color" content="#0a1020">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="/assets/css/site.css">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<script>
+/* Set the theme before first paint so the page never flashes the wrong one. */
+(function(){try{var t=localStorage.getItem('acs-theme');
+if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Running LLMs Locally: What Six Months of Daily Use Actually Taught Me","description":"I started running local LLMs as a cost experiment. It became a privacy practice, a performance benchmark, and an education in what language models actually need to function well. Here's the honest version of what I found.","datePublished":"2025-06-05","dateModified":"2025-06-05","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/running-local-llm-lessons/","image":"https://ajnacs.com/assets/og/insights-running-local-llm-lessons.svg","keywords":"Enterprise AI, Emerging Technology","articleSection":"Enterprise AI","wordCount":928}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Running LLMs Locally: What Six Months of Daily Use Actually Taught Me"}]}</script>
+</head>
+<body class="" data-topic="Enterprise AI">
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header" id="siteHeader">
+  <div class="wrap" style="display:flex;align-items:center;width:min(1220px,100% - var(--gutter)*2)">
+    <a class="brand" href="/">
+      <img src="/images/ajna-logo.png" alt="" width="32" height="32">
+      <span class="brand-name">Ajna<span>CS</span></span>
+    </a>
+    <nav class="nav" id="nav" aria-label="Primary">
+      <a href="/services/">Services</a>
+      <a href="/insights/" aria-current="page">Insights</a>
+      <a href="/series/">Series</a>
+      <a href="/case-studies/">Case studies</a>
+      <a href="/about/">About</a>
+      <a class="btn btn-sm" href="/contact/" style="margin-left:.4rem">Engage engineering</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn" id="themeBtn" type="button" aria-label="Switch to dark mode" aria-pressed="false"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg></button>
+      <button class="icon-btn nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+
+<div class="read-bar" aria-hidden="true"><span id="readBar"></span></div>
+<article class="article">
+  <header class="article-head">
+    <div class="wrap-narrow">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a> <span aria-hidden="true">/</span>
+        <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
+        <span>Enterprise AI</span>
+      </nav>
+      <h1 class="h1">Running LLMs Locally: What Six Months of Daily Use Actually Taught Me</h1>
+      <p class="lede" style="margin-top:1rem">I started running local LLMs as a cost experiment. It became a privacy practice, a performance benchmark, and an education in what language models actually need to function well. Here&#39;s the honest version of what I found.</p>
+      <div class="article-meta">
+        <span class="chip">Enterprise AI</span>
+        <time datetime="2025-06-05">5 Jun 2025</time>
+        <span class="dot"></span><span>4 min read</span>
+        <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="article-hero wrap-narrow" data-topic="Enterprise AI"><svg viewBox="0 0 1200 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgrunninglocal" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6d4aff" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#5837e0" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#6d4aff" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="420" fill="url(#bgrunninglocal)"/>
+  <path d="M0 70 L0 84.5 L16 92.3 L32 99.2 L48 104.8 L64 109.0 L80 111.6 L96 112.4 L112 111.5 L128 108.8 L144 104.4 L160 98.7 L176 91.7 L192 83.8 L208 75.4 L224 66.7 L240 58.1 L256 50.1 L272 42.9 L288 36.8 L304 32.1 L320 29.0 L336 27.7 L352 28.1 L368 30.2 L384 34.0 L400 39.4 L416 46.0 L432 53.6 L448 61.9 L464 70.6 L480 79.2 L496 87.4 L512 95.0 L528 101.4 L544 106.6 L560 110.2 L576 112.1 L592 112.3 L608 110.7 L624 107.3 L640 102.5" fill="none" stroke="#6d4aff" stroke-opacity="0.50" stroke-width="2.2" stroke-linecap="round"/><path d="M0 116 L0 114.2 L16 127.5 L32 140.2 L48 152.0 L64 162.3 L80 170.6 L96 176.6 L112 180.1 L128 180.9 L144 179.0 L160 174.4 L176 167.4 L192 158.2 L208 147.3 L224 135.0 L240 122.0 L256 108.7 L272 95.7 L288 83.6 L304 72.8 L320 63.8 L336 57.0 L352 52.7 L368 51.1 L384 52.1 L400 55.9 L416 62.2 L432 70.7 L448 81.1 L464 93.0 L480 105.8 L496 119.1 L512 132.3 L528 144.7 L544 156.0 L560 165.6 L576 173.1 L592 178.2 L608 180.7 L624 180.5 L640 177.6" fill="none" stroke="#5837e0" stroke-opacity="0.43" stroke-width="2.0" stroke-linecap="round"/><path d="M0 162 L0 141.2 L16 145.1 L32 149.7 L48 154.9 L64 160.3 L80 165.8 L96 171.1 L112 176.1 L128 180.5 L144 184.1 L160 186.7 L176 188.4 L192 188.9 L208 188.3 L224 186.6 L240 183.9 L256 180.2 L272 175.8 L288 170.8 L304 165.4 L320 159.9 L336 154.5 L352 149.4 L368 144.8 L384 141.0 L400 138.0 L416 136.0 L432 135.2 L448 135.4 L464 136.8 L480 139.2 L496 142.6 L512 146.8 L528 151.6 L544 156.8 L560 162.3 L576 167.8 L592 173.0 L608 177.8 L624 181.9 L640 185.2" fill="none" stroke="#6d4aff" stroke-opacity="0.36" stroke-width="1.7" stroke-linecap="round"/><path d="M0 208 L0 220.9 L16 209.7 L32 198.4 L48 187.6 L64 177.6 L80 168.8 L96 161.8 L112 156.6 L128 153.6 L144 152.9 L160 154.5 L176 158.3 L192 164.2 L208 172.0 L224 181.3 L240 191.7 L256 202.7 L272 214.0 L288 225.1 L304 235.4 L320 244.6 L336 252.2 L352 258.0 L368 261.7 L384 263.1 L400 262.3 L416 259.1 L432 253.8 L448 246.6 L464 237.8 L480 227.7 L496 216.8 L512 205.5 L528 194.4 L544 183.8 L560 174.2 L576 166.0 L592 159.6 L608 155.2 L624 153.1 L640 153.2" fill="none" stroke="#5837e0" stroke-opacity="0.29" stroke-width="1.5" stroke-linecap="round"/><path d="M0 254 L0 300.5 L16 296.4 L32 290.5 L48 283.1 L64 274.5 L80 265.0 L96 255.1 L112 245.1 L128 235.5 L144 226.6 L160 219.0 L176 212.7 L192 208.3 L208 205.7 L224 205.1 L240 206.6 L256 210.1 L272 215.5 L288 222.4 L304 230.7 L320 239.9 L336 249.8 L352 259.8 L368 269.6 L384 278.7 L400 286.8 L416 293.5 L432 298.5 L448 301.7 L464 302.9 L480 302.0 L496 299.2 L512 294.4 L528 287.9 L544 280.0 L560 271.1 L576 261.4 L592 251.4 L608 241.5 L624 232.1 L640 223.7" fill="none" stroke="#6d4aff" stroke-opacity="0.22" stroke-width="1.2" stroke-linecap="round"/>
+</svg></div>
+
+  <div class="wrap-narrow article-grid">
+    <nav class="toc" aria-label="On this page">
+  <p class="toc-title">On this page</p>
+  <ol><li><a href="#the-tooling-that-actually-works">The Tooling That Actually Works</a></li><li><a href="#what-hardware-you-actually-need">What Hardware You Actually Need</a></li><li><a href="#the-models-worth-running-locally">The Models Worth Running Locally</a></li><li><a href="#the-enterprise-case-that39s-being-underweighted">The Enterprise Case That&amp;#39;s Being Underweighted</a></li><li><a href="#what-local-llms-still-can39t-do-well">What Local LLMs Still Can&amp;#39;t Do Well</a></li></ol>
+</nav>
+    <div class="prose">
+<p>I started running LLMs locally because I was spending more than I expected on API calls. That&#39;s the honest origin — cost, not principle. What I discovered over the following six months changed how I think about AI infrastructure for enterprise environments more broadly.</p>
+<p>The short version: local LLMs are genuinely useful for a specific set of tasks, the tooling has matured considerably, and the enterprise case for on-premises model hosting is stronger than most cloud-first conversations acknowledge.</p>
+<h2 id="the-tooling-that-actually-works">The Tooling That Actually Works</h2>
+<aside class="keyfig">
+  <p class="keyfig-label">Key figure</p>
+  <p class="keyfig-text">A MacBook Pro M3 Max with <b>96 GB</b> RAM can run a 70B parameter model at 4-bit quantisation at usable speeds — 15–25 tokens per second, which is slower than a hosted API but fast enough for interactive use.</p>
+</aside>
+<p><strong>Ollama</strong> is where most people should start. It handles model downloads, quantisation selection, and an OpenAI-compatible API endpoint that means your existing integrations often just work with a URL swap. The developer experience is clean:</p>
+<pre><code class="language-bash">ollama pull llama3.2
+ollama run llama3.2
+</code></pre>
+<p>You&#39;re talking to a model in 60 seconds. The Ollama API exposes <code>/api/chat</code> and <code>/api/generate</code> endpoints compatible enough with OpenAI&#39;s spec that tools like Continue (VS Code extension for AI coding assistance) connect without modification.</p>
+<p><strong>LM Studio</strong> is the right choice if you want a GUI and want to experiment with models from Hugging Face without writing anything. It handles quantised model downloads (GGUF format), has a built-in chat interface, and exposes a local API server. For non-technical stakeholders who want to evaluate local models, LM Studio lowers the barrier considerably.</p>
+<p><strong>Jan</strong> is an open-source alternative to LM Studio worth watching. Lighter footprint, active development, and a clean interface. Not as mature as LM Studio but improving quickly.</p>
+<p>For production-style deployments where you need inference server semantics — batching, concurrent requests, metrics — <strong>llama.cpp server</strong> or <strong>vLLM</strong> (if you have a GPU) are the serious options. Llama.cpp&#39;s server mode serves a subset of the OpenAI API and handles multiple concurrent users reasonably well on CPU-only hardware.</p>
+<h2 id="what-hardware-you-actually-need">What Hardware You Actually Need</h2>
+<p>The honest answer: less than the internet will tell you, but more than you might have.</p>
+<p>Apple Silicon is the standout story here. The unified memory architecture means the M-series chips can use all installed RAM as GPU memory, which allows running larger models than any similarly-priced discrete GPU setup. A MacBook Pro M3 Max with 96 GB RAM can run a 70B parameter model at 4-bit quantisation at usable speeds — 15–25 tokens per second, which is slower than a hosted API but fast enough for interactive use.</p>
+<p>On x86 hardware without a GPU, expect 3–8 tokens per second for 7B models and slower still for larger ones. This is workable for batch tasks (summarisation, classification over documents) but frustrating for interactive conversation. If you&#39;re serious about x86 CPU inference, 64 GB RAM minimum and a recent-generation processor with AVX-512 support materially improves throughput.</p>
+<p>GPU acceleration via CUDA or ROCm brings the experience much closer to hosted API response times. An NVIDIA RTX 4090 with 24 GB VRAM handles 13B parameter models at 4-bit quantisation at 80–100 tokens per second — essentially indistinguishable from a hosted API in terms of latency.</p>
+<h2 id="the-models-worth-running-locally">The Models Worth Running Locally</h2>
+<p>Not every model is worth the weight. My practical shortlist as of mid-2026:</p>
+<p><strong>Llama 3.2 (3B and 8B)</strong> — excellent performance-to-size ratio, strong instruction following, genuinely useful for coding assistance and document tasks on modest hardware.</p>
+<p><strong>Mistral 7B and Mistral Nemo</strong> — fast, capable, and surprisingly good at structured output tasks. The Nemo variant has a 128K context window, which changes what you can do with long documents locally.</p>
+<p><strong>Qwen2.5 (7B and 14B)</strong> — strong multilingual capability and notably good coding performance. If your work involves multiple languages, Qwen outperforms the Llama family here.</p>
+<p><strong>Phi-4</strong> — Microsoft&#39;s small model series punches well above its parameter count for reasoning tasks. Excellent choice when you need capability on constrained hardware.</p>
+<p><strong>DeepSeek-R1 distillations</strong> — if you need chain-of-thought reasoning locally, the distilled versions of DeepSeek-R1 (7B and 14B) bring reasoning capability to consumer hardware that didn&#39;t exist 12 months ago.</p>
+<h2 id="the-enterprise-case-that39s-being-underweighted">The Enterprise Case That&#39;s Being Underweighted</h2>
+<p>The privacy argument is obvious — data that doesn&#39;t leave your network can&#39;t be logged, trained on, or breached at the provider level. But there are stronger enterprise arguments that get less attention.</p>
+<p><strong>Air-gapped environments.</strong> Classified or sensitive networks can&#39;t reach commercial AI APIs. Local inference is not optional — it&#39;s the only path. The same applies to operational technology networks in critical infrastructure.</p>
+<p><strong>Latency-sensitive agentic workflows.</strong> When you&#39;re running multi-step agentic processes — code review, document analysis pipelines, evaluation loops — API call latency compounds. Local inference at 50+ tokens per second, even for a smaller model, can deliver end-to-end pipeline performance that beats a larger hosted model with network overhead.</p>
+<p><strong>Cost at scale.</strong> The break-even calculation depends on usage patterns, but organizations running more than 10 million tokens per day against commercial APIs are typically at a scale where dedicated inference infrastructure pays for itself within 12–18 months.</p>
+<h2 id="what-local-llms-still-can39t-do-well">What Local LLMs Still Can&#39;t Do Well</h2>
+<p>Honesty requires balance. Local models lag hosted frontier models on:</p>
+<ul>
+<li>Complex multi-step reasoning (though this gap is closing rapidly)</li>
+<li>Reliable tool use and function calling at production quality</li>
+<li>Multimodal tasks — vision models locally are capable but behind GPT-4V and Claude 3</li>
+<li>Context windows beyond 128K without significant memory investment</li>
+</ul>
+<p>The right framing is not &quot;local vs. cloud&quot; but &quot;which tasks warrant local and which warrant cloud.&quot; Routine, high-volume, latency-sensitive tasks with data sensitivity concerns → local. Novel, complex reasoning tasks where quality is the primary constraint → cloud. Most organizations need both.</p>
+<p><em>Running local inference in production or evaluating it for an enterprise use case? I&#39;m interested in comparing notes — <a href="/contact">get in touch</a>.</em></p>
+
+    </div>
+  </div>
+
+  <div class="wrap-narrow"><aside class="refs" aria-labelledby="refs-h">
+  <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
+  <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
+  <ul>
+    <li><a href="https://huggingface.co/docs" rel="noopener nofollow" target="_blank">Hugging Face</a><span>Model and dataset hubs.</span></li>
+  </ul>
+</aside></div>
+
+  
+
+  <div class="wrap-narrow article-foot">
+    <div class="row" style="gap:.4rem">
+      <a class="chip chip-plain" href="/insights/?topic=Enterprise%20AI">Enterprise AI</a><a class="chip chip-plain" href="/insights/?topic=Emerging%20Technology">Emerging Technology</a>
+    </div>
+    <nav class="prevnext" aria-label="More articles">
+      <a href="/insights/aws-savings-plans/"><span>Previous</span><strong>AWS Savings Plans vs Reserved Instances: Making the Commitment Decision</strong></a>
+      <a href="/insights/mttr-reduction-playbook/" class="next"><span>Next</span><strong>The MTTR Reduction Playbook: Investments That Actually Move the Needle</strong></a>
+    </nav>
+  </div>
+
+  <section class="section surface hair" style="margin-top:4rem">
+    <div class="wrap">
+      <p class="eyebrow">Related</p>
+      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|AI &amp; MLOps|Enterprise AI|Fundamentals|" data-search="rag, prompting, and building applications on llms: the practitioner&#39;s guide retrieval-augmented generation, system prompts, few-shot examples, chain-of-thought, structured output, and the engineering patterns that make llm applications reliable in production. ai &amp; mlops enterprise ai fundamentals" data-topic="AI &amp; MLOps" href="/insights/aiml-rag-and-prompting/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgaimlragandpr" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6d4aff" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#5837e0" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#6d4aff" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgaimlragandpr)"/>
+  <line x1="558.0" y1="238.5" x2="507.0" y2="307.9" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="558.0" y1="238.5" x2="533.9" y2="248.6" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="558.0" y1="238.5" x2="454.4" y2="262.2" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="558.0" y1="238.5" x2="526.7" y2="294.6" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="277.7" y1="133.5" x2="137.5" y2="170.9" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="277.7" y1="133.5" x2="299.0" y2="98.8" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="277.7" y1="133.5" x2="296.8" y2="225.1" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="277.7" y1="133.5" x2="183.4" y2="237.5" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="277.7" y1="133.5" x2="375.6" y2="73.2" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="137.5" y1="170.9" x2="183.4" y2="237.5" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="137.5" y1="170.9" x2="59.8" y2="301.1" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="137.5" y1="170.9" x2="120.6" y2="58.1" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="507.0" y1="307.9" x2="533.9" y2="248.6" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="507.0" y1="307.9" x2="454.4" y2="262.2" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="507.0" y1="307.9" x2="526.7" y2="294.6" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="533.9" y1="248.6" x2="454.4" y2="262.2" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="533.9" y1="248.6" x2="526.7" y2="294.6" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="299.0" y1="98.8" x2="296.8" y2="225.1" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="299.0" y1="98.8" x2="375.6" y2="73.2" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="296.8" y1="225.1" x2="183.4" y2="237.5" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="296.8" y1="225.1" x2="454.4" y2="262.2" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="183.4" y1="237.5" x2="59.8" y2="301.1" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="454.4" y1="262.2" x2="526.7" y2="294.6" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><circle cx="558.0" cy="238.5" r="5" fill="#6d4aff" fill-opacity=".9"/><circle cx="277.7" cy="133.5" r="8.5" fill="#5837e0" fill-opacity=".9"/><circle cx="137.5" cy="170.9" r="12" fill="#6d4aff" fill-opacity=".9"/><circle cx="507.0" cy="307.9" r="5" fill="#5837e0" fill-opacity=".9"/><circle cx="533.9" cy="248.6" r="8.5" fill="#6d4aff" fill-opacity=".9"/><circle cx="299.0" cy="98.8" r="12" fill="#5837e0" fill-opacity=".9"/><circle cx="296.8" cy="225.1" r="5" fill="#6d4aff" fill-opacity=".9"/><circle cx="183.4" cy="237.5" r="8.5" fill="#5837e0" fill-opacity=".9"/><circle cx="59.8" cy="301.1" r="12" fill="#6d4aff" fill-opacity=".9"/><circle cx="375.6" cy="73.2" r="5" fill="#5837e0" fill-opacity=".9"/><circle cx="454.4" cy="262.2" r="8.5" fill="#6d4aff" fill-opacity=".9"/><circle cx="526.7" cy="294.6" r="12" fill="#5837e0" fill-opacity=".9"/><circle cx="120.6" cy="58.1" r="5" fill="#6d4aff" fill-opacity=".9"/>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">AI &amp; MLOps</span>
+    <h3 class="card-title">RAG, Prompting, and Building Applications on LLMs: The Practitioner&#39;s Guide</h3>
+    <p class="card-desc">Retrieval-augmented generation, system prompts, few-shot examples, chain-of-thought, structured output, and the engineering patterns that make LLM applications reliable in production.</p>
+    <div class="card-meta"><time datetime="2026-08-25">25 Aug 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
+  </div>
+</a>
+<a class="card" data-card data-topics="|AI &amp; MLOps|Enterprise AI|Fundamentals|" data-search="putting ai in production: what enterprise ai deployment actually requires model serving, latency, cost, monitoring, governance, and the operational discipline that separates a proof of concept from an ai system that runs reliably at enterprise scale. ai &amp; mlops enterprise ai fundamentals" data-topic="AI &amp; MLOps" href="/insights/aiml-production-ai/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgaimlproducti" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6d4aff" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#5837e0" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#6d4aff" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgaimlproducti)"/>
+  <rect x="338" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.12" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 108 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.51" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="86" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.36" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 172 H212" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.51" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="464" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.14" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="338" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.22" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 236 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">AI &amp; MLOps</span>
+    <h3 class="card-title">Putting AI in Production: What Enterprise AI Deployment Actually Requires</h3>
+    <p class="card-desc">Model serving, latency, cost, monitoring, governance, and the operational discipline that separates a proof of concept from an AI system that runs reliably at enterprise scale.</p>
+    <div class="card-meta"><time datetime="2026-08-11">11 Aug 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
+  </div>
+</a>
+<a class="card" data-card data-topics="|AI &amp; MLOps|FinOps|Enterprise AI|" data-search="ai cost management in production: controlling token spend without degrading quality llm api costs scale with usage in ways that surprise teams used to fixed infrastructure pricing. here&#39;s how to build cost visibility, set sensible ceilings, and optimize prompt design without breaking the features that depend on it. ai &amp; mlops finops enterprise ai" data-topic="AI &amp; MLOps" href="/insights/ai-cost-management-production/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgaicostmanage" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6d4aff" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#5837e0" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#6d4aff" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgaicostmanage)"/>
+  <rect x="151.8" y="78" width="300.0" height="34" rx="8"
+      fill="#5837e0" fill-opacity="0.16"
+      stroke="#6d4aff" stroke-opacity=".45" stroke-width="1.2"/><line x1="320" y1="112" x2="320" y2="134" stroke="#6d4aff" stroke-opacity=".4" stroke-width="1.4"/><rect x="205.3" y="134" width="266.0" height="34" rx="8"
+      fill="#6d4aff" fill-opacity="0.29"
+      stroke="#6d4aff" stroke-opacity=".45" stroke-width="1.2"/><line x1="320" y1="168" x2="320" y2="190" stroke="#6d4aff" stroke-opacity=".4" stroke-width="1.4"/><rect x="190.1" y="190" width="232.0" height="34" rx="8"
+      fill="#5837e0" fill-opacity="0.42"
+      stroke="#6d4aff" stroke-opacity=".45" stroke-width="1.2"/><line x1="320" y1="224" x2="320" y2="246" stroke="#6d4aff" stroke-opacity=".4" stroke-width="1.4"/><rect x="230.6" y="246" width="198.0" height="34" rx="8"
+      fill="#6d4aff" fill-opacity="0.55"
+      stroke="#6d4aff" stroke-opacity=".45" stroke-width="1.2"/>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">AI &amp; MLOps</span>
+    <h3 class="card-title">AI Cost Management in Production: Controlling Token Spend Without Degrading Quality</h3>
+    <p class="card-desc">LLM API costs scale with usage in ways that surprise teams used to fixed infrastructure pricing. Here&#39;s how to build cost visibility, set sensible ceilings, and optimize prompt design without breaking the features that depend on it.</p>
+    <div class="card-meta"><time datetime="2025-12-16">16 Dec 2025</time><span class="dot"></span><span>5 min read</span></div>
+  </div>
+</a></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap-narrow cta-panel">
+      <h2 class="h2">Working on this in production?</h2>
+      <p class="lede" style="margin-top:.7rem">We do this work directly alongside engineering teams — architecture review, migration, and hands-on enablement.</p>
+      <div class="row" style="margin-top:1.4rem">
+        <a class="btn" href="/contact/">Engage engineering <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="btn btn-ghost" href="/services/">See what we do</a>
+      </div>
+    </div>
+  </section>
+</article>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="grid g-4" style="gap:2rem">
+      <div>
+        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem">
+          <img src="/images/ajna-logo.png" alt="" width="32" height="32">
+          <span class="brand-name">Ajna<span style="color:#6f9bff">CS</span></span>
+        </a>
+        <p style="font-size:.88rem;line-height:1.65;color:#9fb0d0;max-width:30ch">
+          Specialised engineering partner for enterprise architecture, AI &amp; MLOps, and technical enablement.
+        </p>
+        <div class="social" style="margin-top:1.1rem">
+          <a href="https://www.youtube.com/@TechKnowen" rel="noopener" aria-label="YouTube"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 12s0-3.8-.5-5.6a2.9 2.9 0 0 0-2-2C18.7 4 12 4 12 4s-6.7 0-8.5.4a2.9 2.9 0 0 0-2 2C1 8.2 1 12 1 12s0 3.8.5 5.6a2.9 2.9 0 0 0 2 2C5.3 20 12 20 12 20s6.7 0 8.5-.4a2.9 2.9 0 0 0 2-2C23 15.8 23 12 23 12zM9.8 15.4V8.6l5.9 3.4z"/></svg></a>
+          <a href="https://techknowen.com" rel="noopener" aria-label="TechKnowen blog"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 3h16v3H4zm0 5h16v13l-8-4-8 4z"/></svg></a>
+          <a href="/feed.xml" aria-label="RSS feed"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="6.2" cy="17.8" r="2.2"/><path d="M4 10.2v3a6.6 6.6 0 0 1 6.6 6.6h3A9.6 9.6 0 0 0 4 10.2zM4 4v3c7.2 0 13 5.8 13 13h3C20 11.2 12.8 4 4 4z"/></svg></a>
+        </div>
+      </div>
+      <div>
+        <h4>Services</h4>
+        <ul>
+          <li><a href="/services/#architecture">Enterprise architecture</a></li>
+          <li><a href="/services/#ai">AI &amp; MLOps</a></li>
+          <li><a href="/services/#training">Technical enablement</a></li>
+          <li><a href="/case-studies/">Case studies</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Insights</h4>
+        <ul>
+          <li><a href="/insights/">All articles</a></li>
+          <li><a href="/series/">Series</a></li>
+          <li><a href="/topics/">Topics</a></li>
+          <li><a href="/notes/">Personal notes</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
+          <li><a href="/contact/">Start an engagement</a></li>
+          <li><a href="/about/">About</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span id="yr">2026</span> Ajna Consulting Services. All rights reserved.</span>
+      <span style="display:flex;gap:1.2rem"><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a></span>
+    </div>
+  </div>
+</footer>
+<script src="/assets/js/site.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Observability with OpenTelemetry: Getting the Three Pillars Working Together | Ajna CS</title>
+<meta name="description" content="Metrics, logs, and traces are only useful when they&#39;re correlated. OpenTelemetry provides the standard for instrumenting your services — here&#39;s how to impl…">
+<meta name="author" content="Chandra Lanka">
+<link rel="canonical" href="https://ajnacs.com/insights/observability-opentelemetry-2026/">
+<meta name="robots" content="index, follow, max-image-preview:large">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Ajna Consulting Services">
+<meta property="og:title" content="Observability with OpenTelemetry: Getting the Three Pillars Working Together">
+<meta property="og:description" content="Metrics, logs, and traces are only useful when they&#39;re correlated. OpenTelemetry provides the standard for instrumenting your services — here&#39;s how to impl…">
+<meta property="og:url" content="https://ajnacs.com/insights/observability-opentelemetry-2026/">
+<meta property="og:image" content="https://ajnacs.com/assets/og/insights-observability-opentelemetry-2026.svg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Observability with OpenTelemetry: Getting the Three Pillars Working Together">
+<meta name="twitter:description" content="Metrics, logs, and traces are only useful when they&#39;re correlated. OpenTelemetry provides the standard for instrumenting your services — here&#39;s how to impl…">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/insights-observability-opentelemetry-2026.svg">
+
+<link rel="icon" href="/images/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="/images/ajna-logo.png">
+<meta name="theme-color" content="#0a1020">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="/assets/css/site.css">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<script>
+/* Set the theme before first paint so the page never flashes the wrong one. */
+(function(){try{var t=localStorage.getItem('acs-theme');
+if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Observability with OpenTelemetry: Getting the Three Pillars Working Together","description":"Metrics, logs, and traces are only useful when they're correlated. OpenTelemetry provides the standard for instrumenting your services — here's how to implement it, connect the signals, and build the observability that actually reduces diagnosis time.","datePublished":"2024-12-31","dateModified":"2024-12-31","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/observability-opentelemetry-2026/","image":"https://ajnacs.com/assets/og/insights-observability-opentelemetry-2026.svg","keywords":"Observability, Cloud Architecture, DevSecOps","articleSection":"Observability","wordCount":1059}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Observability with OpenTelemetry: Getting the Three Pillars Working Together"}]}</script>
+</head>
+<body class="" data-topic="Observability">
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header" id="siteHeader">
+  <div class="wrap" style="display:flex;align-items:center;width:min(1220px,100% - var(--gutter)*2)">
+    <a class="brand" href="/">
+      <img src="/images/ajna-logo.png" alt="" width="32" height="32">
+      <span class="brand-name">Ajna<span>CS</span></span>
+    </a>
+    <nav class="nav" id="nav" aria-label="Primary">
+      <a href="/services/">Services</a>
+      <a href="/insights/" aria-current="page">Insights</a>
+      <a href="/series/">Series</a>
+      <a href="/case-studies/">Case studies</a>
+      <a href="/about/">About</a>
+      <a class="btn btn-sm" href="/contact/" style="margin-left:.4rem">Engage engineering</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn" id="themeBtn" type="button" aria-label="Switch to dark mode" aria-pressed="false"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg></button>
+      <button class="icon-btn nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+
+<div class="read-bar" aria-hidden="true"><span id="readBar"></span></div>
+<article class="article">
+  <header class="article-head">
+    <div class="wrap-narrow">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a> <span aria-hidden="true">/</span>
+        <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
+        <span>Observability</span>
+      </nav>
+      <h1 class="h1">Observability with OpenTelemetry: Getting the Three Pillars Working Together</h1>
+      <p class="lede" style="margin-top:1rem">Metrics, logs, and traces are only useful when they&#39;re correlated. OpenTelemetry provides the standard for instrumenting your services — here&#39;s how to implement it, connect the signals, and build the observability that actually reduces diagnosis time.</p>
+      <div class="article-meta">
+        <span class="chip">Observability</span>
+        <time datetime="2024-12-31">31 Dec 2024</time>
+        <span class="dot"></span><span>5 min read</span>
+        <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="article-hero wrap-narrow" data-topic="Observability"><svg viewBox="0 0 1200 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgobservabilit" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1e9e63" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#157a4c" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#1e9e63" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="420" fill="url(#bgobservabilit)"/>
+  <path d="M0 70 L0 104.3 L16 112.3 L32 118.6 L48 122.9 L64 124.9 L80 124.6 L96 122.0 L112 117.3 L128 110.6 L144 102.1 L160 92.3 L176 81.6 L192 70.4 L208 59.2 L224 48.4 L240 38.6 L256 30.0 L272 23.1 L288 18.2 L304 15.5 L320 15.0 L336 16.9 L352 21.0 L368 27.1 L384 35.0 L400 44.4 L416 54.9 L432 66.0 L448 77.3 L464 88.3 L480 98.5 L496 107.5 L512 114.9 L528 120.4 L544 123.9 L560 125.1 L576 123.9 L592 120.5 L608 115.0 L624 107.6 L640 98.7" fill="none" stroke="#1e9e63" stroke-opacity="0.50" stroke-width="2.2" stroke-linecap="round"/><path d="M0 116 L0 156.5 L16 158.4 L32 158.4 L48 156.7 L64 153.3 L80 148.3 L96 141.9 L112 134.5 L128 126.3 L144 117.6 L160 108.9 L176 100.5 L192 92.7 L208 86.0 L224 80.4 L240 76.4 L256 74.0 L272 73.4 L288 74.6 L304 77.5 L320 82.0 L336 88.0 L352 95.1 L368 103.1 L384 111.6 L400 120.4 L416 128.9 L432 136.9 L448 144.0 L464 150.0 L480 154.5 L496 157.4 L512 158.6 L528 158.0 L544 155.6 L560 151.6 L576 146.1 L592 139.3 L608 131.5 L624 123.1 L640 114.4" fill="none" stroke="#157a4c" stroke-opacity="0.43" stroke-width="2.0" stroke-linecap="round"/><path d="M0 162 L0 202.8 L16 210.3 L32 215.8 L48 219.0 L64 219.8 L80 218.2 L96 214.3 L112 208.1 L128 200.1 L144 190.4 L160 179.5 L176 167.9 L192 156.1 L208 144.5 L224 133.6 L240 123.9 L256 115.9 L272 109.7 L288 105.8 L304 104.2 L320 105.0 L336 108.2 L352 113.7 L368 121.2 L384 130.4 L400 140.9 L416 152.4 L432 164.2 L448 175.9 L464 187.1 L480 197.2 L496 205.8 L512 212.6 L528 217.2 L544 219.6 L560 219.5 L576 217.0 L592 212.3 L608 205.4 L624 196.7 L640 186.5" fill="none" stroke="#1e9e63" stroke-opacity="0.36" stroke-width="1.7" stroke-linecap="round"/><path d="M0 208 L0 229.1 L16 216.7 L32 204.0 L48 191.4 L64 179.5 L80 168.8 L96 159.8 L112 152.8 L128 148.1 L144 145.9 L160 146.3 L176 149.3 L192 154.8 L208 162.5 L224 172.1 L240 183.2 L256 195.3 L272 208.0 L288 220.7 L304 232.9 L320 244.0 L336 253.6 L352 261.3 L368 266.7 L384 269.7 L400 270.1 L416 267.9 L432 263.2 L448 256.2 L464 247.1 L480 236.5 L496 224.6 L512 212.0 L528 199.3 L544 186.9 L560 175.4 L576 165.3 L592 156.9 L608 150.8 L624 147.0 L640 145.7" fill="none" stroke="#157a4c" stroke-opacity="0.29" stroke-width="1.5" stroke-linecap="round"/><path d="M0 254 L0 268.0 L16 277.0 L32 284.9 L48 291.6 L64 296.7 L80 300.0 L96 301.4 L112 300.8 L128 298.2 L144 293.8 L160 287.7 L176 280.2 L192 271.6 L208 262.2 L224 252.6 L240 242.9 L256 233.8 L272 225.4 L288 218.3 L304 212.7 L320 208.8 L336 206.8 L352 206.8 L368 208.8 L384 212.6 L400 218.2 L416 225.3 L432 233.6 L448 242.7 L464 252.4 L480 262.1 L496 271.4 L512 280.0 L528 287.6 L544 293.7 L560 298.2 L576 300.8 L592 301.4 L608 300.1 L624 296.8 L640 291.7" fill="none" stroke="#1e9e63" stroke-opacity="0.22" stroke-width="1.2" stroke-linecap="round"/>
+</svg></div>
+
+  <div class="wrap-narrow article-grid">
+    <nav class="toc" aria-label="On this page">
+  <p class="toc-title">On this page</p>
+  <ol><li><a href="#opentelemetry-what-it-is-and-what-it-isn39t">OpenTelemetry: what it is and what it isn&amp;#39;t</a></li><li><a href="#traces-the-most-valuable-signal-for-distributed-systems">Traces: the most valuable signal for distributed systems</a></li><li><a href="#metrics-the-right-signals-to-alert-on">Metrics: the right signals to alert on</a></li><li><a href="#logs-structured-correlated-with-trace-ids">Logs: structured, correlated with trace IDs</a></li><li><a href="#the-otel-collector-centralise-your-pipeline">The OTel Collector: centralise your pipeline</a></li><li><a href="#the-grafana-stack-as-a-starting-point">The Grafana stack as a starting point</a></li></ol>
+</nav>
+    <div class="prose">
+<p>Observability is one of those terms that means different things to different people. For some teams it means dashboards. For others it means alerts. The technical definition — the ability to understand the internal state of a system from its external outputs — is more specific, and more useful.</p>
+<p>A fully observable system is one where, given a symptom (high error rate, slow P99 latency, increased database connections), you can determine the cause without needing to access the system directly. That requires three types of signal: metrics, logs, and traces. More importantly, it requires them to be correlated.</p>
+<p>OpenTelemetry has become the standard for generating, collecting, and exporting these signals. Here&#39;s how to get it working.</p>
+<h2 id="opentelemetry-what-it-is-and-what-it-isn39t">OpenTelemetry: what it is and what it isn&#39;t</h2>
+<aside class="keyfig">
+  <p class="keyfig-label">Key figure</p>
+  <p class="keyfig-text">An average response time of <b>100ms</b> can hide a P99 of 2 seconds — 1% of requests taking 20x longer than typical.</p>
+</aside>
+<p>OpenTelemetry (OTel) is an observability framework: a vendor-neutral standard for instrumenting applications to produce traces, metrics, and logs, and for collecting and exporting that telemetry to any backend.</p>
+<p>What OTel is <strong>not</strong>: a storage backend, a query engine, or a dashboarding tool. It&#39;s the instrumentation and collection layer. You still need something to store and query the data (Jaeger, Tempo, Prometheus, Loki, Grafana, Datadog, Honeycomb, etc.).</p>
+<p>The value proposition: instrument your application once with OTel, and change your observability backend without re-instrumenting. In practice, vendor lock-in on instrumentation is real — if you&#39;ve instrumented everything with a vendor&#39;s proprietary library, migrating means re-instrumenting. OTel breaks that dependency.</p>
+<h2 id="traces-the-most-valuable-signal-for-distributed-systems">Traces: the most valuable signal for distributed systems</h2>
+<p>A trace represents a single request&#39;s journey through your system. Each service that processes the request contributes a span — a timed unit of work with attributes (tags), events, and status. The spans are linked by a trace ID propagated through the request context.</p>
+<p><strong>Why traces matter more than logs for distributed systems</strong>: when a request fails in a microservice architecture, the error often manifests in service A but the cause is in service B. Logs from service A show the error; logs from service B show the upstream cause. Without traces, correlating these requires knowing which request ID ties the two together and manually searching logs. With distributed tracing, one query shows the full path, every span&#39;s timing, and where things went wrong.</p>
+<p><strong>Implementing OTel tracing in Java:</strong></p>
+<pre><code class="language-java">// Add to pom.xml:
+// opentelemetry-api, opentelemetry-sdk, opentelemetry-exporter-otlp
+
+@RestController
+public class OrderController {
+    private final Tracer tracer = GlobalOpenTelemetry.getTracer(&quot;order-service&quot;);
+
+    @PostMapping(&quot;/orders&quot;)
+    public ResponseEntity&lt;Order&gt; createOrder(@RequestBody OrderRequest request) {
+        Span span = tracer.spanBuilder(&quot;createOrder&quot;)
+            .setAttribute(&quot;customer.id&quot;, request.getCustomerId())
+            .setAttribute(&quot;order.items&quot;, request.getItems().size())
+            .startSpan();
+        
+        try (Scope scope = span.makeCurrent()) {
+            Order order = orderService.create(request);
+            span.setAttribute(&quot;order.id&quot;, order.getId());
+            return ResponseEntity.ok(order);
+        } catch (Exception e) {
+            span.recordException(e);
+            span.setStatus(StatusCode.ERROR);
+            throw e;
+        } finally {
+            span.end();
+        }
+    }
+}
+</code></pre>
+<p>For most frameworks (Spring Boot, Quarkus, Micronaut), the OTel Java agent auto-instruments HTTP, database, and messaging operations without code changes. Add the agent at JVM startup:</p>
+<pre><code>-javaagent:/path/to/opentelemetry-javaagent.jar
+</code></pre>
+<p><strong>Context propagation</strong>: for traces to work across service boundaries, the trace context (trace ID and span ID) must be propagated in request headers. OTel auto-instruments HTTP clients to inject W3C TraceContext headers. Ensure your services don&#39;t strip these headers.</p>
+<h2 id="metrics-the-right-signals-to-alert-on">Metrics: the right signals to alert on</h2>
+<p>Metrics are numerical measurements at points in time — request rate, error rate, latency percentiles, resource utilization. OTel defines a metrics API that produces these measurements; the standard export format is OTLP to a Prometheus-compatible backend.</p>
+<p><strong>The USE method</strong> (Utilisation, Saturation, Errors) for infrastructure resources: measure each resource&#39;s utilization (how busy), saturation (how much it&#39;s queuing work), and errors.</p>
+<p><strong>The RED method</strong> (Rate, Errors, Duration) for services: every service should have metrics for request rate, error rate, and request duration percentiles (P50, P95, P99).</p>
+<p>The P99 latency matters more than the average. An average response time of 100ms can hide a P99 of 2 seconds — 1% of requests taking 20x longer than typical. For services at any meaningful scale, 1% is a lot of users.</p>
+<pre><code class="language-java">// OTel metrics
+Meter meter = GlobalOpenTelemetry.getMeter(&quot;order-service&quot;);
+
+LongCounter requestCounter = meter.counterBuilder(&quot;http.server.requests&quot;)
+    .setDescription(&quot;Total HTTP requests&quot;)
+    .build();
+
+DoubleHistogram latencyHistogram = meter.histogramBuilder(&quot;http.server.duration&quot;)
+    .setDescription(&quot;HTTP request duration&quot;)
+    .setUnit(&quot;ms&quot;)
+    .build();
+</code></pre>
+<h2 id="logs-structured-correlated-with-trace-ids">Logs: structured, correlated with trace IDs</h2>
+<p>Logs are the most familiar signal but the least actionable when not correlated with other signals. A log line that says &quot;ORDER_FAILED: payment rejected&quot; tells you something failed; a log line that includes the trace ID tells you which request, which user, and which span in the distributed trace the failure belongs to.</p>
+<p><strong>Structured logging</strong>: logs should be JSON, not formatted strings. A structured log can be queried on any field — <code>level</code>, <code>service</code>, <code>trace_id</code>, <code>user_id</code>. A formatted string requires regex parsing.</p>
+<pre><code class="language-java">// With logback and logstash-logback-encoder:
+{
+  &quot;timestamp&quot;: &quot;2026-06-07T14:23:01Z&quot;,
+  &quot;level&quot;: &quot;ERROR&quot;,
+  &quot;service&quot;: &quot;order-service&quot;,
+  &quot;trace_id&quot;: &quot;a3b4c5d6e7f8a9b0&quot;,
+  &quot;span_id&quot;: &quot;1234567890abcdef&quot;,
+  &quot;message&quot;: &quot;Payment processing failed&quot;,
+  &quot;error.type&quot;: &quot;PaymentDeclinedException&quot;,
+  &quot;order.id&quot;: &quot;ord-789&quot;,
+  &quot;customer.id&quot;: &quot;cust-456&quot;
+}
+</code></pre>
+<p>The <code>trace_id</code> field connects the log entry to the distributed trace. In Grafana (with Loki for logs and Tempo for traces), clicking the trace ID in a log entry opens the full trace.</p>
+<h2 id="the-otel-collector-centralise-your-pipeline">The OTel Collector: centralise your pipeline</h2>
+<p>The OTel Collector is a standalone process that receives telemetry from your services, processes it, and exports it to your backends. Running a Collector means your services send to a local endpoint rather than directly to Datadog, Prometheus, Jaeger, etc.</p>
+<p>Benefits:</p>
+<ul>
+<li>Change observability backends without re-deploying services</li>
+<li>Add sampling, filtering, and enrichment in one place</li>
+<li>Reduce the number of connections each service needs to maintain</li>
+</ul>
+<p>Collector configuration:</p>
+<pre><code class="language-yaml">receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:4318
+
+processors:
+  batch:
+  resource:
+    attributes:
+      - key: deployment.environment
+        value: production
+        action: upsert
+
+exporters:
+  prometheus:
+    endpoint: &quot;0.0.0.0:8889&quot;
+  otlp/tempo:
+    endpoint: tempo:4317
+    tls:
+      insecure: true
+  loki:
+    endpoint: http://loki:3100/loki/api/v1/push
+
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [batch, resource]
+      exporters: [otlp/tempo]
+    metrics:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [prometheus]
+    logs:
+      receivers: [otlp]
+      processors: [batch, resource]
+      exporters: [loki]
+</code></pre>
+<h2 id="the-grafana-stack-as-a-starting-point">The Grafana stack as a starting point</h2>
+<p>For teams starting from scratch: Prometheus (metrics) + Tempo (traces) + Loki (logs) + Grafana (dashboards and querying) is a cohesive, open-source observability stack that receives OTel signals natively.</p>
+<p>Grafana&#39;s Explore view allows correlating all three signals: start with a metric anomaly, link to logs, link to a trace. This is the workflow that compresses diagnosis time.</p>
+<p>For teams at scale or with managed service requirements: Datadog, Honeycomb, and Grafana Cloud all support OTel natively — instrument once, use managed infrastructure.</p>
+<p><em>Building observability for a new system or migrating from a vendor-specific instrumentation library? <a href="/contact">Happy to compare approaches.</a></em></p>
+
+    </div>
+  </div>
+
+  <div class="wrap-narrow"><aside class="refs" aria-labelledby="refs-h">
+  <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
+  <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
+  <ul>
+    <li><a href="https://opentelemetry.io/docs/" rel="noopener nofollow" target="_blank">OpenTelemetry</a><span>Specification and language SDKs.</span></li>
+    <li><a href="https://prometheus.io/docs/" rel="noopener nofollow" target="_blank">Prometheus</a><span>Query language and operational guidance.</span></li>
+  </ul>
+</aside></div>
+
+  
+
+  <div class="wrap-narrow article-foot">
+    <div class="row" style="gap:.4rem">
+      <a class="chip chip-plain" href="/insights/?topic=Observability">Observability</a><a class="chip chip-plain" href="/insights/?topic=Cloud%20Architecture">Cloud Architecture</a><a class="chip chip-plain" href="/insights/?topic=DevSecOps">DevSecOps</a>
+    </div>
+    <nav class="prevnext" aria-label="More articles">
+      <a href="/insights/mlops-pipelines-azure-sagemaker/"><span>Previous</span><strong>MLOps Pipelines That Actually Work: Lessons from Azure ML and SageMaker</strong></a>
+      <a href="/insights/service-mesh-istio-linkerd/" class="next"><span>Next</span><strong>Service Mesh in Practice: When Istio or Linkerd Is Worth the Complexity</strong></a>
+    </nav>
+  </div>
+
+  <section class="section surface hair" style="margin-top:4rem">
+    <div class="wrap">
+      <p class="eyebrow">Related</p>
+      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|DevSecOps|Architecture|Fundamentals|" data-search="platform observability: building the visibility layer every application team gets automatically how platform teams build and operate the metrics, logging, and tracing infrastructure that application teams consume without configuring — and what good platform observability coverage actually looks like. devsecops architecture fundamentals" data-topic="DevSecOps" href="/insights/platform-eng-observability/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgplatformengo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e0473a" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#c03a2e" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#e0473a" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgplatformengo)"/>
+  <rect x="28" y="26" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.63"/><rect x="348" y="26" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.57"/><rect x="388" y="26" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.73"/><rect x="428" y="26" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.69"/><rect x="548" y="26" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.54"/><rect x="188" y="62" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.73"/><rect x="348" y="62" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.64"/><rect x="428" y="62" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.72"/><rect x="588" y="62" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.66"/><rect x="228" y="98" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.70"/><rect x="308" y="98" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.48"/><rect x="348" y="98" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.55"/><rect x="388" y="98" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.52"/><rect x="428" y="98" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.64"/><rect x="508" y="98" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.58"/><rect x="588" y="98" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.63"/><rect x="68" y="134" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.65"/><rect x="268" y="134" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.65"/><rect x="508" y="134" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.50"/><rect x="548" y="134" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.67"/><rect x="588" y="134" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.70"/><rect x="68" y="170" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.52"/><rect x="108" y="170" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.48"/><rect x="148" y="170" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.50"/><rect x="268" y="170" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.56"/><rect x="428" y="170" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.74"/><rect x="468" y="170" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.58"/><rect x="508" y="170" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.60"/><rect x="548" y="170" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.60"/><rect x="148" y="206" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.62"/><rect x="228" y="206" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.59"/><rect x="388" y="206" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.74"/><rect x="428" y="206" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.74"/><rect x="508" y="206" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.51"/><rect x="28" y="242" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.63"/><rect x="68" y="242" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.63"/><rect x="148" y="242" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.61"/><rect x="188" y="242" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.64"/><rect x="268" y="242" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.65"/><rect x="348" y="242" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.59"/><rect x="148" y="278" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.63"/><rect x="188" y="278" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.72"/><rect x="428" y="278" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.55"/><rect x="548" y="278" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.58"/><rect x="588" y="278" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.68"/><rect x="28" y="314" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.54"/><rect x="108" y="314" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.61"/><rect x="228" y="314" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.67"/><rect x="348" y="314" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.52"/><rect x="428" y="314" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.59"/><rect x="468" y="314" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.61"/><rect x="548" y="314" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.59"/>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">DevSecOps</span>
+    <h3 class="card-title">Platform Observability: Building the Visibility Layer Every Application Team Gets Automatically</h3>
+    <p class="card-desc">How platform teams build and operate the metrics, logging, and tracing infrastructure that application teams consume without configuring — and what good platform observability coverage actually looks like.</p>
+    <div class="card-meta"><time datetime="2026-09-16">16 Sept 2026</time><span class="dot"></span><span>3 min read</span><span class="dot"></span><span>Series</span></div>
+  </div>
+</a>
+<a class="card" data-card data-topics="|DevSecOps|Fundamentals|" data-search="what containers actually are — not the marketing version containers are not lightweight vms. they are processes with resource constraints and namespace isolation. understanding the actual mechanism makes you a better user of docker, kubernetes, and every container runtime. devsecops fundamentals" data-topic="DevSecOps" href="/insights/containers-what-they-actually-are/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgcontainerswh" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e0473a" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#c03a2e" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#e0473a" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgcontainerswh)"/>
+  <path d="M0 70 L0 35.0 L16 36.2 L32 38.8 L48 42.7 L64 47.8 L80 53.8 L96 60.5 L112 67.6 L128 74.7 L144 81.7 L160 88.2 L176 93.9 L192 98.6 L208 102.2 L224 104.3 L240 105.1 L256 104.3 L272 102.2 L288 98.6 L304 93.9 L320 88.2 L336 81.7 L352 74.7 L368 67.5 L384 60.5 L400 53.8 L416 47.8 L432 42.7 L448 38.8 L464 36.2 L480 35.0 L496 35.3 L512 37.0 L528 40.1 L544 44.5 L560 49.9 L576 56.2 L592 63.1 L608 70.2 L624 77.3 L640 84.2" fill="none" stroke="#e0473a" stroke-opacity="0.50" stroke-width="2.2" stroke-linecap="round"/><path d="M0 116 L0 62.4 L16 66.1 L32 71.8 L48 79.4 L64 88.5 L80 98.7 L96 109.7 L112 121.0 L128 132.0 L144 142.4 L160 151.7 L176 159.5 L192 165.4 L208 169.3 L224 170.9 L240 170.3 L256 167.3 L272 162.2 L288 155.2 L304 146.5 L320 136.6 L336 125.8 L352 114.6 L368 103.4 L384 92.8 L400 83.1 L416 74.8 L432 68.3 L448 63.7 L464 61.3 L480 61.3 L496 63.5 L512 67.9 L528 74.4 L544 82.6 L560 92.2 L576 102.7 L592 113.9 L608 125.1 L624 136.0 L640 146.0" fill="none" stroke="#c03a2e" stroke-opacity="0.43" stroke-width="2.0" stroke-linecap="round"/><path d="M0 162 L0 144.6 L16 135.8 L32 128.1 L48 121.8 L64 117.2 L80 114.4 L96 113.7 L112 115.0 L128 118.2 L144 123.3 L160 130.0 L176 138.1 L192 147.1 L208 156.8 L224 166.7 L240 176.4 L256 185.5 L272 193.6 L288 200.4 L304 205.6 L320 208.9 L336 210.3 L352 209.7 L368 207.0 L384 202.5 L400 196.2 L416 188.6 L432 179.8 L448 170.3 L464 160.4 L480 150.6 L496 141.3 L512 132.8 L528 125.6 L544 119.9 L560 115.9 L576 113.9 L592 113.9 L608 115.9 L624 119.9 L640 125.6" fill="none" stroke="#e0473a" stroke-opacity="0.36" stroke-width="1.7" stroke-linecap="round"/><path d="M0 208 L0 152.0 L16 150.1 L32 150.7 L48 153.7 L64 158.9 L80 166.3 L96 175.3 L112 185.8 L128 197.1 L144 208.9 L160 220.7 L176 232.0 L192 242.2 L208 251.0 L224 258.0 L240 262.9 L256 265.5 L272 265.7 L288 263.5 L304 258.9 L320 252.2 L336 243.7 L352 233.7 L368 222.5 L384 210.8 L400 199.0 L416 187.5 L432 176.9 L448 167.6 L464 160.0 L480 154.4 L496 151.0 L512 150.1 L528 151.5 L544 155.4 L560 161.4 L576 169.4 L592 179.0 L608 189.9 L624 201.5 L640 213.3" fill="none" stroke="#c03a2e" stroke-opacity="0.29" stroke-width="1.5" stroke-linecap="round"/><path d="M0 254 L0 292.2 L16 299.2 L32 304.3 L48 307.3 L64 308.0 L80 306.6 L96 302.9 L112 297.1 L128 289.5 L144 280.5 L160 270.3 L176 259.5 L192 248.4 L208 237.6 L224 227.4 L240 218.4 L256 210.9 L272 205.1 L288 201.4 L304 199.9 L320 200.7 L336 203.8 L352 208.9 L368 215.9 L384 224.5 L400 234.4 L416 245.0 L432 256.1 L448 267.0 L464 277.5 L480 286.9 L496 295.0 L512 301.3 L528 305.6 L544 307.8 L560 307.8 L576 305.4 L592 301.0 L608 294.5 L624 286.4 L640 276.9" fill="none" stroke="#e0473a" stroke-opacity="0.22" stroke-width="1.2" stroke-linecap="round"/>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">DevSecOps</span>
+    <h3 class="card-title">What Containers Actually Are — Not the Marketing Version</h3>
+    <p class="card-desc">Containers are not lightweight VMs. They are processes with resource constraints and namespace isolation. Understanding the actual mechanism makes you a better user of Docker, Kubernetes, and every container runtime.</p>
+    <div class="card-meta"><time datetime="2026-07-30">30 Jul 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
+  </div>
+</a>
+<a class="card" data-card data-topics="|FinOps|Cost Optimisation|Cloud Architecture|" data-search="cloud cost anomaly detection: catching runaway spend before it becomes a bill cloud cost overruns that show up in the monthly invoice are already weeks old. here&#39;s how to set up anomaly detection that catches cost spikes in hours, with enough context to diagnose the cause quickly. finops cost optimisation cloud architecture" data-topic="FinOps" href="/insights/finops-anomaly-detection/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgfinopsanomal" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e8a317" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#a9760a" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#e8a317" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgfinopsanomal)"/>
+  <rect x="86" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.39" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 108 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.41" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 108 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.21" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 108 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.13" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 172 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.17" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 172 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="86" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.23" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 236 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.54" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 236 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.51" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">FinOps</span>
+    <h3 class="card-title">Cloud Cost Anomaly Detection: Catching Runaway Spend Before It Becomes a Bill</h3>
+    <p class="card-desc">Cloud cost overruns that show up in the monthly invoice are already weeks old. Here&#39;s how to set up anomaly detection that catches cost spikes in hours, with enough context to diagnose the cause quickly.</p>
+    <div class="card-meta"><time datetime="2026-07-06">6 Jul 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
+  </div>
+</a></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap-narrow cta-panel">
+      <h2 class="h2">Working on this in production?</h2>
+      <p class="lede" style="margin-top:.7rem">We do this work directly alongside engineering teams — architecture review, migration, and hands-on enablement.</p>
+      <div class="row" style="margin-top:1.4rem">
+        <a class="btn" href="/contact/">Engage engineering <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="btn btn-ghost" href="/services/">See what we do</a>
+      </div>
+    </div>
+  </section>
+</article>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="grid g-4" style="gap:2rem">
+      <div>
+        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem">
+          <img src="/images/ajna-logo.png" alt="" width="32" height="32">
+          <span class="brand-name">Ajna<span style="color:#6f9bff">CS</span></span>
+        </a>
+        <p style="font-size:.88rem;line-height:1.65;color:#9fb0d0;max-width:30ch">
+          Specialised engineering partner for enterprise architecture, AI &amp; MLOps, and technical enablement.
+        </p>
+        <div class="social" style="margin-top:1.1rem">
+          <a href="https://www.youtube.com/@TechKnowen" rel="noopener" aria-label="YouTube"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 12s0-3.8-.5-5.6a2.9 2.9 0 0 0-2-2C18.7 4 12 4 12 4s-6.7 0-8.5.4a2.9 2.9 0 0 0-2 2C1 8.2 1 12 1 12s0 3.8.5 5.6a2.9 2.9 0 0 0 2 2C5.3 20 12 20 12 20s6.7 0 8.5-.4a2.9 2.9 0 0 0 2-2C23 15.8 23 12 23 12zM9.8 15.4V8.6l5.9 3.4z"/></svg></a>
+          <a href="https://techknowen.com" rel="noopener" aria-label="TechKnowen blog"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 3h16v3H4zm0 5h16v13l-8-4-8 4z"/></svg></a>
+          <a href="/feed.xml" aria-label="RSS feed"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="6.2" cy="17.8" r="2.2"/><path d="M4 10.2v3a6.6 6.6 0 0 1 6.6 6.6h3A9.6 9.6 0 0 0 4 10.2zM4 4v3c7.2 0 13 5.8 13 13h3C20 11.2 12.8 4 4 4z"/></svg></a>
+        </div>
+      </div>
+      <div>
+        <h4>Services</h4>
+        <ul>
+          <li><a href="/services/#architecture">Enterprise architecture</a></li>
+          <li><a href="/services/#ai">AI &amp; MLOps</a></li>
+          <li><a href="/services/#training">Technical enablement</a></li>
+          <li><a href="/case-studies/">Case studies</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Insights</h4>
+        <ul>
+          <li><a href="/insights/">All articles</a></li>
+          <li><a href="/series/">Series</a></li>
+          <li><a href="/topics/">Topics</a></li>
+          <li><a href="/notes/">Personal notes</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
+          <li><a href="/contact/">Start an engagement</a></li>
+          <li><a href="/about/">About</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span id="yr">2026</span> Ajna Consulting Services. All rights reserved.</span>
+      <span style="display:flex;gap:1.2rem"><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a></span>
+    </div>
+  </div>
+</footer>
+<script src="/assets/js/site.js" defer></script>
+</body>
+</html>

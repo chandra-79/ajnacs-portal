@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>WebLogic JMS in Production: Servers, Stores, and the Configuration That Survives Failover | Ajna CS</title>
+<meta name="description" content="JMS servers, persistent stores, distributed destinations, and connection factories — how WebLogic messaging actually fits together, and the configuration d…">
+<meta name="author" content="Chandra Lanka">
+<link rel="canonical" href="https://ajnacs.com/insights/weblogic-jms-production-configuration/">
+<meta name="robots" content="index, follow, max-image-preview:large">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Ajna Consulting Services">
+<meta property="og:title" content="WebLogic JMS in Production: Servers, Stores, and the Configuration That Survives Failover">
+<meta property="og:description" content="JMS servers, persistent stores, distributed destinations, and connection factories — how WebLogic messaging actually fits together, and the configuration d…">
+<meta property="og:url" content="https://ajnacs.com/insights/weblogic-jms-production-configuration/">
+<meta property="og:image" content="https://ajnacs.com/assets/og/insights-weblogic-jms-production-configuration.svg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="WebLogic JMS in Production: Servers, Stores, and the Configuration That Survives Failover">
+<meta name="twitter:description" content="JMS servers, persistent stores, distributed destinations, and connection factories — how WebLogic messaging actually fits together, and the configuration d…">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/insights-weblogic-jms-production-configuration.svg">
+
+<link rel="icon" href="/images/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="/images/ajna-logo.png">
+<meta name="theme-color" content="#0a1020">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="/assets/css/site.css">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<script>
+/* Set the theme before first paint so the page never flashes the wrong one. */
+(function(){try{var t=localStorage.getItem('acs-theme');
+if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"WebLogic JMS in Production: Servers, Stores, and the Configuration That Survives Failover","description":"JMS servers, persistent stores, distributed destinations, and connection factories — how WebLogic messaging actually fits together, and the configuration decisions that determine whether your queues survive a server failure.","datePublished":"2025-08-28","dateModified":"2025-08-28","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/weblogic-jms-production-configuration/","image":"https://ajnacs.com/assets/og/insights-weblogic-jms-production-configuration.svg","keywords":"Java, WebLogic, Middleware, Messaging, Architecture","articleSection":"Architecture","wordCount":1369}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"WebLogic JMS in Production: Servers, Stores, and the Configuration That Survives Failover"}]}</script>
+</head>
+<body class="" data-topic="Architecture">
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header" id="siteHeader">
+  <div class="wrap" style="display:flex;align-items:center;width:min(1220px,100% - var(--gutter)*2)">
+    <a class="brand" href="/">
+      <img src="/images/ajna-logo.png" alt="" width="32" height="32">
+      <span class="brand-name">Ajna<span>CS</span></span>
+    </a>
+    <nav class="nav" id="nav" aria-label="Primary">
+      <a href="/services/">Services</a>
+      <a href="/insights/" aria-current="page">Insights</a>
+      <a href="/series/">Series</a>
+      <a href="/case-studies/">Case studies</a>
+      <a href="/about/">About</a>
+      <a class="btn btn-sm" href="/contact/" style="margin-left:.4rem">Engage engineering</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn" id="themeBtn" type="button" aria-label="Switch to dark mode" aria-pressed="false"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg></button>
+      <button class="icon-btn nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+
+<div class="read-bar" aria-hidden="true"><span id="readBar"></span></div>
+<article class="article">
+  <header class="article-head">
+    <div class="wrap-narrow">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a> <span aria-hidden="true">/</span>
+        <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
+        <span>Architecture</span>
+      </nav>
+      <h1 class="h1">WebLogic JMS in Production: Servers, Stores, and the Configuration That Survives Failover</h1>
+      <p class="lede" style="margin-top:1rem">JMS servers, persistent stores, distributed destinations, and connection factories — how WebLogic messaging actually fits together, and the configuration decisions that determine whether your queues survive a server failure.</p>
+      <div class="article-meta">
+        <span class="chip">Architecture</span>
+        <time datetime="2025-08-28">28 Aug 2025</time>
+        <span class="dot"></span><span>6 min read</span>
+        <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="article-hero wrap-narrow" data-topic="Architecture"><svg viewBox="0 0 1200 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgweblogicjmsp" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2f6fed" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#1b4fc4" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#2f6fed" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="420" fill="url(#bgweblogicjmsp)"/>
+  <rect x="72" y="228.5" width="30" height="79.5" rx="6" fill="#1b4fc4" fill-opacity="0.49"/><rect x="128" y="114.6" width="30" height="193.4" rx="6" fill="#2f6fed" fill-opacity="0.73"/><rect x="184" y="209.3" width="30" height="98.7" rx="6" fill="#2f6fed" fill-opacity="0.53"/><rect x="240" y="193.1" width="30" height="114.9" rx="6" fill="#1b4fc4" fill-opacity="0.56"/><rect x="296" y="172.0" width="30" height="136.0" rx="6" fill="#2f6fed" fill-opacity="0.61"/><rect x="352" y="108.0" width="30" height="200.0" rx="6" fill="#2f6fed" fill-opacity="0.74"/><rect x="408" y="145.3" width="30" height="162.7" rx="6" fill="#1b4fc4" fill-opacity="0.66"/><rect x="464" y="121.3" width="30" height="186.7" rx="6" fill="#2f6fed" fill-opacity="0.71"/><rect x="520" y="193.4" width="30" height="114.6" rx="6" fill="#2f6fed" fill-opacity="0.56"/><line x1="52" y1="308" x2="600" y2="308" stroke="#2f6fed" stroke-opacity=".42" stroke-width="1.4"/>
+</svg></div>
+
+  <div class="wrap-narrow article-grid">
+    <nav class="toc" aria-label="On this page">
+  <p class="toc-title">On this page</p>
+  <ol><li><a href="#the-object-model-who-owns-what">The object model: who owns what</a></li><li><a href="#uniform-distributed-destinations-the-default-you-should-use">Uniform distributed destinations: the default you should use</a></li><li><a href="#service-migration-the-part-everyone-skips">Service migration: the part everyone skips</a></li><li><a href="#persistent-stores-file-vs-jdbc">Persistent stores: file vs JDBC</a></li><li><a href="#quotas-paging-and-flow-control-surviving-the-flood">Quotas, paging, and flow control: surviving the flood</a></li><li><a href="#connection-factories-the-client-side-settings-that-matter">Connection factories: the client-side settings that matter</a></li><li><a href="#mdbs-consuming-correctly">MDBs: consuming correctly</a></li><li><a href="#the-checklist">The checklist</a></li></ol>
+</nav>
+    <div class="prose">
+<p>WebLogic JMS is one of the most battle-tested message brokers in existence, and also one of the most misconfigured. The domain model gives you a lot of knobs — JMS servers, persistent stores, modules, subdeployments, distributed destinations — and the relationships between them are where production incidents are born.</p>
+<p>This is the explainer for people who have to keep messages flowing at 2 AM, not pass a certification exam.</p>
+<h2 id="the-object-model-who-owns-what">The object model: who owns what</h2>
+<aside class="keyfig">
+  <p class="keyfig-label">Key figure</p>
+  <p class="keyfig-text">Enable it with thresholds around 30–<b>50%</b> of quota.</p>
+</aside>
+<p>The pieces, from the bottom up:</p>
+<p><strong>Persistent store.</strong> Where messages physically live — either a file store on disk or a JDBC store in a database table. Every JMS server that hosts persistent messages needs one. The default store that ships with each managed server is fine for transaction logs; give JMS its own dedicated store so you can tune, migrate, and size it independently.</p>
+<p><strong>JMS server.</strong> A container that manages destinations and enforces quotas. A JMS server is <em>targeted to exactly one managed server</em> (or a migratable target — more on that shortly). This single-targeting is the fact that drives all high-availability design in WebLogic messaging: a queue lives on one JMS server, which lives on one JVM.</p>
+<p><strong>JMS module.</strong> The configuration bundle holding destinations, connection factories, quotas, and destination keys. Modules are targeted to clusters or servers, and <strong>subdeployments</strong> within a module pin specific resources to specific JMS servers.</p>
+<p><strong>Connection factory.</strong> What applications look up to create connections. Target these to the whole cluster — clients should be able to connect anywhere.</p>
+<p>The mental model: connection factories are cluster-wide entry points; destinations are pinned to specific JMS servers via subdeployments; JMS servers are pinned to specific managed servers with their own persistent stores.</p>
+<h2 id="uniform-distributed-destinations-the-default-you-should-use">Uniform distributed destinations: the default you should use</h2>
+<p>A queue pinned to one JMS server is a single point of failure. The answer is the <strong>uniform distributed destination (UDD)</strong>: one logical queue name backed by a physical member queue on each JMS server in the cluster.</p>
+<p>Producers send to the logical name and WebLogic load-balances messages across members. Consumers connect and get pinned to a member. This is where the classic operational surprises live:</p>
+<p><strong>Messages don&#39;t magically move between members.</strong> If a consumer is connected to member A and messages land on member B, they sit on B until a consumer arrives there. Fix this by leaving <strong>forward delay</strong> disabled (the default of -1 means messages wait) only when every member always has consumers — an MDB targeted to the cluster guarantees this. If consumers are external and sporadic, set a forward delay so unconsumed members forward messages to members with consumers.</p>
+<p><strong>A downed member&#39;s messages are unavailable until it returns.</strong> Distribution is not replication. If the managed server hosting member B dies, B&#39;s messages are locked in its persistent store until that JMS server comes back — either the server restarts, or the JMS server <em>migrates</em>.</p>
+<h2 id="service-migration-the-part-everyone-skips">Service migration: the part everyone skips</h2>
+<p>Because a JMS server runs on exactly one managed server, high availability requires the JMS server (and its store) to move when its host dies. WebLogic offers two mechanisms:</p>
+<p><strong>Whole server migration</strong> — the entire managed server, IP address included, restarts on another machine. Heavyweight, requires Node Manager and network configuration, but conceptually simple.</p>
+<p><strong>Automatic service migration</strong> — just the JMS server and its persistent store migrate to another cluster member. This is usually the right choice. Requirements that must all be true for it to work:</p>
+<ul>
+<li>The persistent store must be reachable from every candidate server: a JDBC store, or a file store on shared storage (NFS, cluster file system, or cloud file service). A file store on local disk cannot migrate.</li>
+<li>The JMS server targets a <strong>migratable target</strong>, not a plain managed server.</li>
+<li>Cluster leasing is configured — database leasing (a <code>LEASING</code> table via a non-XA data source) is the dependable option; consensus leasing avoids the database but requires Node Manager everywhere.</li>
+</ul>
+<p>Test the failover before production does it for you: kill the process hosting a migratable JMS server and time how long until messages flow again. If nobody has ever run that test, the honest assumption is that migration doesn&#39;t work.</p>
+<h2 id="persistent-stores-file-vs-jdbc">Persistent stores: file vs JDBC</h2>
+<p><strong>File stores</strong> are faster — often dramatically so, since messages hit local or SAN disk without a database round trip. Use them when you have shared storage that all candidate servers can mount and your ops team is comfortable managing it.</p>
+<p><strong>JDBC stores</strong> put messages in a database table (one store per table). Slower per message, but migration and disaster recovery become database problems, which most enterprises already know how to solve — the store follows the database&#39;s backup, replication, and DR posture. In cloud deployments where shared file storage is awkward, JDBC stores are frequently the pragmatic pick.</p>
+<p>Whichever you choose: <strong>one store per JMS server</strong>, never shared, and monitor store size. An unconsumed queue grows without bound until quota or disk stops it, and you want quota to get there first.</p>
+<h2 id="quotas-paging-and-flow-control-surviving-the-flood">Quotas, paging, and flow control: surviving the flood</h2>
+<p>The failure mode that takes down JVMs isn&#39;t message loss — it&#39;s message <em>pileup</em>. A downstream consumer stalls, messages accumulate, heap fills, and the managed server hosting the JMS server dies, taking every other application on it along.</p>
+<p>Three layers of defence, all off or too generous by default:</p>
+<p><strong>Quotas.</strong> Set bytes and message quotas at the JMS server level, sized so that a full JMS server fits comfortably in heap alongside everything else. When quota is reached, producers get an exception or block (configurable via send timeout). A producer receiving <code>ResourceAllocationException</code> is a much better outcome than an OutOfMemoryError.</p>
+<p><strong>Message paging.</strong> Above a threshold, message bodies are swapped out of heap to the paging directory. Enable it with thresholds around 30–50% of quota. Paging saves the JVM, not the disk — quotas still matter.</p>
+<p><strong>Flow control.</strong> Connection factories can throttle producers as destinations approach thresholds, degrading gracefully instead of hitting a wall.</p>
+<p>Size all three together, then load-test the stall scenario: stop consumers, run producers at production rate, and verify the system degrades in the order you designed — flow control first, then paging, then quota exceptions — with no JVM casualties.</p>
+<h2 id="connection-factories-the-client-side-settings-that-matter">Connection factories: the client-side settings that matter</h2>
+<p>A handful of connection factory settings account for most client-side incidents:</p>
+<ul>
+<li><strong>XA enabled</strong> only where the workload genuinely participates in distributed transactions. XA adds two-phase-commit overhead to every operation; don&#39;t pay it for fire-and-forget telemetry.</li>
+<li><strong>Reconnect policy</strong> for external clients: WebLogic thin-client JMS reconnects are not automatic in all failure modes. Client applications need retry loops around connection creation, not just message send.</li>
+<li><strong>Load balancing enabled, server affinity disabled</strong> if you want producers spread across UDD members; affinity on means a producer sticks to the member on the server it connected to — sometimes desirable, rarely deliberate.</li>
+<li><strong>Default delivery params</strong>: set a sensible default time-to-live for queues where stale messages are worse than no messages. Nothing ages like a two-week-old &quot;cache invalidation&quot; event delivered after the restore.</li>
+</ul>
+<h2 id="mdbs-consuming-correctly">MDBs: consuming correctly</h2>
+<p>Most WebLogic message consumption happens through message-driven beans, and two settings drive their behavior:</p>
+<p><strong>Target MDBs to the cluster</strong>, so each UDD member has local consumers and message forwarding never has to fire.</p>
+<p><strong>Bound the retry loop.</strong> A message that throws on every delivery attempt becomes a poison message: redelivered forever, burning a thread each cycle. Configure a redelivery limit on the destination and an <strong>error destination</strong> where exhausted messages land. Then monitor the error destination — it&#39;s the dead-letter queue nobody looks at until an auditor asks where four thousand payment events went.</p>
+<h2 id="the-checklist">The checklist</h2>
+<p>For a production-ready WebLogic JMS estate: dedicated persistent store per JMS server on shared-accessible storage, uniform distributed destinations with subdeployments pinning members correctly, automatic service migration configured with database leasing and actually tested, quotas plus paging plus flow control sized against heap, MDBs targeted at the cluster with redelivery limits and error destinations, and monitoring on queue depth, store size, and error destinations.</p>
+<p>None of it is exotic. All of it is the difference between &quot;a server failed and nobody noticed&quot; and &quot;a server failed and we spent the weekend replaying messages from database backups.&quot;</p>
+
+    </div>
+  </div>
+
+  <div class="wrap-narrow"><aside class="refs" aria-labelledby="refs-h">
+  <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
+  <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
+  <ul>
+    <li><a href="https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/" rel="noopener nofollow" target="_blank">Oracle WebLogic Server documentation</a><span>Work managers, pools and tuning.</span></li>
+  </ul>
+</aside></div>
+
+  
+
+  <div class="wrap-narrow article-foot">
+    <div class="row" style="gap:.4rem">
+      <a class="chip chip-plain" href="/insights/?topic=Java">Java</a><a class="chip chip-plain" href="/insights/?topic=WebLogic">WebLogic</a><a class="chip chip-plain" href="/insights/?topic=Middleware">Middleware</a><a class="chip chip-plain" href="/insights/?topic=Messaging">Messaging</a><a class="chip chip-plain" href="/insights/?topic=Architecture">Architecture</a>
+    </div>
+    <nav class="prevnext" aria-label="More articles">
+      <a href="/insights/weblogic-performance-tuning/"><span>Previous</span><strong>WebLogic Performance Tuning: Work Managers, Connection Pools, and the Knobs That Actually Matter</strong></a>
+      <a href="/insights/weblogic-domains-clusters-explained/" class="next"><span>Next</span><strong>WebLogic Domains, Clusters, and Managed Servers: The Architecture Explained</strong></a>
+    </nav>
+  </div>
+
+  <section class="section surface hair" style="margin-top:4rem">
+    <div class="wrap">
+      <p class="eyebrow">Related</p>
+      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|DevSecOps|Architecture|Fundamentals|" data-search="platform observability: building the visibility layer every application team gets automatically how platform teams build and operate the metrics, logging, and tracing infrastructure that application teams consume without configuring — and what good platform observability coverage actually looks like. devsecops architecture fundamentals" data-topic="DevSecOps" href="/insights/platform-eng-observability/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgplatformengo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e0473a" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#c03a2e" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#e0473a" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgplatformengo)"/>
+  <rect x="28" y="26" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.63"/><rect x="348" y="26" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.57"/><rect x="388" y="26" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.73"/><rect x="428" y="26" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.69"/><rect x="548" y="26" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.54"/><rect x="188" y="62" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.73"/><rect x="348" y="62" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.64"/><rect x="428" y="62" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.72"/><rect x="588" y="62" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.66"/><rect x="228" y="98" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.70"/><rect x="308" y="98" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.48"/><rect x="348" y="98" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.55"/><rect x="388" y="98" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.52"/><rect x="428" y="98" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.64"/><rect x="508" y="98" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.58"/><rect x="588" y="98" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.63"/><rect x="68" y="134" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.65"/><rect x="268" y="134" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.65"/><rect x="508" y="134" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.50"/><rect x="548" y="134" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.67"/><rect x="588" y="134" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.70"/><rect x="68" y="170" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.52"/><rect x="108" y="170" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.48"/><rect x="148" y="170" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.50"/><rect x="268" y="170" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.56"/><rect x="428" y="170" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.74"/><rect x="468" y="170" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.58"/><rect x="508" y="170" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.60"/><rect x="548" y="170" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.60"/><rect x="148" y="206" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.62"/><rect x="228" y="206" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.59"/><rect x="388" y="206" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.74"/><rect x="428" y="206" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.74"/><rect x="508" y="206" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.51"/><rect x="28" y="242" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.63"/><rect x="68" y="242" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.63"/><rect x="148" y="242" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.61"/><rect x="188" y="242" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.64"/><rect x="268" y="242" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.65"/><rect x="348" y="242" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.59"/><rect x="148" y="278" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.63"/><rect x="188" y="278" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.72"/><rect x="428" y="278" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.55"/><rect x="548" y="278" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.58"/><rect x="588" y="278" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.68"/><rect x="28" y="314" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.54"/><rect x="108" y="314" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.61"/><rect x="228" y="314" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.67"/><rect x="348" y="314" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.52"/><rect x="428" y="314" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.59"/><rect x="468" y="314" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.61"/><rect x="548" y="314" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.59"/>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">DevSecOps</span>
+    <h3 class="card-title">Platform Observability: Building the Visibility Layer Every Application Team Gets Automatically</h3>
+    <p class="card-desc">How platform teams build and operate the metrics, logging, and tracing infrastructure that application teams consume without configuring — and what good platform observability coverage actually looks like.</p>
+    <div class="card-meta"><time datetime="2026-09-16">16 Sept 2026</time><span class="dot"></span><span>3 min read</span><span class="dot"></span><span>Series</span></div>
+  </div>
+</a>
+<a class="card" data-card data-topics="|Engineering Leadership|Architecture|Fundamentals|" data-search="measuring platform engineering success: the metrics that actually matter dora metrics, developer experience scores, cognitive load measures, and the platform health indicators that tell you whether your internal platform is creating value or creating another bottleneck. engineering leadership architecture fundamentals" data-topic="Engineering Leadership" href="/insights/platform-eng-measuring-success/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgplatformengm" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0e7490" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#0b5f77" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#0e7490" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgplatformengm)"/>
+  <rect x="188.8" y="78" width="300.0" height="34" rx="8"
+      fill="#0b5f77" fill-opacity="0.16"
+      stroke="#0e7490" stroke-opacity=".45" stroke-width="1.2"/><line x1="320" y1="112" x2="320" y2="134" stroke="#0e7490" stroke-opacity=".4" stroke-width="1.4"/><rect x="185.1" y="134" width="266.0" height="34" rx="8"
+      fill="#0e7490" fill-opacity="0.29"
+      stroke="#0e7490" stroke-opacity=".45" stroke-width="1.2"/><line x1="320" y1="168" x2="320" y2="190" stroke="#0e7490" stroke-opacity=".4" stroke-width="1.4"/><rect x="199.2" y="190" width="232.0" height="34" rx="8"
+      fill="#0b5f77" fill-opacity="0.42"
+      stroke="#0e7490" stroke-opacity=".45" stroke-width="1.2"/><line x1="320" y1="224" x2="320" y2="246" stroke="#0e7490" stroke-opacity=".4" stroke-width="1.4"/><rect x="239.7" y="246" width="198.0" height="34" rx="8"
+      fill="#0e7490" fill-opacity="0.55"
+      stroke="#0e7490" stroke-opacity=".45" stroke-width="1.2"/>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">Engineering Leadership</span>
+    <h3 class="card-title">Measuring Platform Engineering Success: The Metrics That Actually Matter</h3>
+    <p class="card-desc">DORA metrics, developer experience scores, cognitive load measures, and the platform health indicators that tell you whether your internal platform is creating value or creating another bottleneck.</p>
+    <div class="card-meta"><time datetime="2026-07-21">21 Jul 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
+  </div>
+</a>
+<a class="card" data-card data-topics="|Engineering Leadership|Architecture|Fundamentals|" data-search="designing an internal developer platform: abstraction layers, golden paths, and the governance balance how to design the abstraction layer between your platform and your application teams — what to hide, what to expose, and how to build the golden paths that make good practices the easy practices. engineering leadership architecture fundamentals" data-topic="Engineering Leadership" href="/insights/platform-eng-idp-design/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgplatformengi" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0e7490" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#0b5f77" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#0e7490" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgplatformengi)"/>
+  <line x1="190.3" y1="52.4" x2="86.5" y2="158.7" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="190.3" y1="52.4" x2="230.9" y2="208.1" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="190.3" y1="52.4" x2="116.0" y2="91.0" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="190.3" y1="52.4" x2="178.2" y2="201.8" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="86.5" y1="158.7" x2="230.9" y2="208.1" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="86.5" y1="158.7" x2="116.0" y2="91.0" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="86.5" y1="158.7" x2="140.8" y2="229.3" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="86.5" y1="158.7" x2="77.1" y2="309.4" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="86.5" y1="158.7" x2="102.5" y2="229.8" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="86.5" y1="158.7" x2="178.2" y2="201.8" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="432.0" y1="161.7" x2="379.2" y2="246.9" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="432.0" y1="161.7" x2="533.8" y2="281.4" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="432.0" y1="161.7" x2="366.1" y2="236.9" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="230.9" y1="208.1" x2="116.0" y2="91.0" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="230.9" y1="208.1" x2="379.2" y2="246.9" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="230.9" y1="208.1" x2="140.8" y2="229.3" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="230.9" y1="208.1" x2="289.4" y2="274.8" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="230.9" y1="208.1" x2="102.5" y2="229.8" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="230.9" y1="208.1" x2="366.1" y2="236.9" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="230.9" y1="208.1" x2="178.2" y2="201.8" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="116.0" y1="91.0" x2="140.8" y2="229.3" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="116.0" y1="91.0" x2="102.5" y2="229.8" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="116.0" y1="91.0" x2="178.2" y2="201.8" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="379.2" y1="246.9" x2="289.4" y2="274.8" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="379.2" y1="246.9" x2="533.8" y2="281.4" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="379.2" y1="246.9" x2="366.1" y2="236.9" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="140.8" y1="229.3" x2="289.4" y2="274.8" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="140.8" y1="229.3" x2="77.1" y2="309.4" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="140.8" y1="229.3" x2="102.5" y2="229.8" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="140.8" y1="229.3" x2="178.2" y2="201.8" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="289.4" y1="274.8" x2="366.1" y2="236.9" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="289.4" y1="274.8" x2="178.2" y2="201.8" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="77.1" y1="309.4" x2="102.5" y2="229.8" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="77.1" y1="309.4" x2="178.2" y2="201.8" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="102.5" y1="229.8" x2="178.2" y2="201.8" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><circle cx="190.3" cy="52.4" r="5" fill="#0e7490" fill-opacity=".9"/><circle cx="86.5" cy="158.7" r="8.5" fill="#0b5f77" fill-opacity=".9"/><circle cx="432.0" cy="161.7" r="12" fill="#0e7490" fill-opacity=".9"/><circle cx="230.9" cy="208.1" r="5" fill="#0b5f77" fill-opacity=".9"/><circle cx="116.0" cy="91.0" r="8.5" fill="#0e7490" fill-opacity=".9"/><circle cx="379.2" cy="246.9" r="12" fill="#0b5f77" fill-opacity=".9"/><circle cx="140.8" cy="229.3" r="5" fill="#0e7490" fill-opacity=".9"/><circle cx="289.4" cy="274.8" r="8.5" fill="#0b5f77" fill-opacity=".9"/><circle cx="77.1" cy="309.4" r="12" fill="#0e7490" fill-opacity=".9"/><circle cx="533.8" cy="281.4" r="5" fill="#0b5f77" fill-opacity=".9"/><circle cx="102.5" cy="229.8" r="8.5" fill="#0e7490" fill-opacity=".9"/><circle cx="366.1" cy="236.9" r="12" fill="#0b5f77" fill-opacity=".9"/><circle cx="178.2" cy="201.8" r="5" fill="#0e7490" fill-opacity=".9"/>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">Engineering Leadership</span>
+    <h3 class="card-title">Designing an Internal Developer Platform: Abstraction Layers, Golden Paths, and the Governance Balance</h3>
+    <p class="card-desc">How to design the abstraction layer between your platform and your application teams — what to hide, what to expose, and how to build the golden paths that make good practices the easy practices.</p>
+    <div class="card-meta"><time datetime="2026-05-19">19 May 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
+  </div>
+</a></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap-narrow cta-panel">
+      <h2 class="h2">Working on this in production?</h2>
+      <p class="lede" style="margin-top:.7rem">We do this work directly alongside engineering teams — architecture review, migration, and hands-on enablement.</p>
+      <div class="row" style="margin-top:1.4rem">
+        <a class="btn" href="/contact/">Engage engineering <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="btn btn-ghost" href="/services/">See what we do</a>
+      </div>
+    </div>
+  </section>
+</article>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="grid g-4" style="gap:2rem">
+      <div>
+        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem">
+          <img src="/images/ajna-logo.png" alt="" width="32" height="32">
+          <span class="brand-name">Ajna<span style="color:#6f9bff">CS</span></span>
+        </a>
+        <p style="font-size:.88rem;line-height:1.65;color:#9fb0d0;max-width:30ch">
+          Specialised engineering partner for enterprise architecture, AI &amp; MLOps, and technical enablement.
+        </p>
+        <div class="social" style="margin-top:1.1rem">
+          <a href="https://www.youtube.com/@TechKnowen" rel="noopener" aria-label="YouTube"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 12s0-3.8-.5-5.6a2.9 2.9 0 0 0-2-2C18.7 4 12 4 12 4s-6.7 0-8.5.4a2.9 2.9 0 0 0-2 2C1 8.2 1 12 1 12s0 3.8.5 5.6a2.9 2.9 0 0 0 2 2C5.3 20 12 20 12 20s6.7 0 8.5-.4a2.9 2.9 0 0 0 2-2C23 15.8 23 12 23 12zM9.8 15.4V8.6l5.9 3.4z"/></svg></a>
+          <a href="https://techknowen.com" rel="noopener" aria-label="TechKnowen blog"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 3h16v3H4zm0 5h16v13l-8-4-8 4z"/></svg></a>
+          <a href="/feed.xml" aria-label="RSS feed"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="6.2" cy="17.8" r="2.2"/><path d="M4 10.2v3a6.6 6.6 0 0 1 6.6 6.6h3A9.6 9.6 0 0 0 4 10.2zM4 4v3c7.2 0 13 5.8 13 13h3C20 11.2 12.8 4 4 4z"/></svg></a>
+        </div>
+      </div>
+      <div>
+        <h4>Services</h4>
+        <ul>
+          <li><a href="/services/#architecture">Enterprise architecture</a></li>
+          <li><a href="/services/#ai">AI &amp; MLOps</a></li>
+          <li><a href="/services/#training">Technical enablement</a></li>
+          <li><a href="/case-studies/">Case studies</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Insights</h4>
+        <ul>
+          <li><a href="/insights/">All articles</a></li>
+          <li><a href="/series/">Series</a></li>
+          <li><a href="/topics/">Topics</a></li>
+          <li><a href="/notes/">Personal notes</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
+          <li><a href="/contact/">Start an engagement</a></li>
+          <li><a href="/about/">About</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span id="yr">2026</span> Ajna Consulting Services. All rights reserved.</span>
+      <span style="display:flex;gap:1.2rem"><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a></span>
+    </div>
+  </div>
+</footer>
+<script src="/assets/js/site.js" defer></script>
+</body>
+</html>

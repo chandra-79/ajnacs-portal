@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cloud Unit Economics: The Metric That Makes Cloud Spend Conversations Productive | Ajna CS</title>
+<meta name="description" content="Talking about cloud spend in absolute dollars rarely leads anywhere useful. Unit economics — cost per transaction, cost per user, cost per GB processed — c…">
+<meta name="author" content="Chandra Lanka">
+<link rel="canonical" href="https://ajnacs.com/insights/cloud-unit-economics/">
+<meta name="robots" content="index, follow, max-image-preview:large">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Ajna Consulting Services">
+<meta property="og:title" content="Cloud Unit Economics: The Metric That Makes Cloud Spend Conversations Productive">
+<meta property="og:description" content="Talking about cloud spend in absolute dollars rarely leads anywhere useful. Unit economics — cost per transaction, cost per user, cost per GB processed — c…">
+<meta property="og:url" content="https://ajnacs.com/insights/cloud-unit-economics/">
+<meta property="og:image" content="https://ajnacs.com/assets/og/insights-cloud-unit-economics.svg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Cloud Unit Economics: The Metric That Makes Cloud Spend Conversations Productive">
+<meta name="twitter:description" content="Talking about cloud spend in absolute dollars rarely leads anywhere useful. Unit economics — cost per transaction, cost per user, cost per GB processed — c…">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/insights-cloud-unit-economics.svg">
+
+<link rel="icon" href="/images/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="/images/ajna-logo.png">
+<meta name="theme-color" content="#0a1020">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="/assets/css/site.css">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<script>
+/* Set the theme before first paint so the page never flashes the wrong one. */
+(function(){try{var t=localStorage.getItem('acs-theme');
+if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Cloud Unit Economics: The Metric That Makes Cloud Spend Conversations Productive","description":"Talking about cloud spend in absolute dollars rarely leads anywhere useful. Unit economics — cost per transaction, cost per user, cost per GB processed — creates the context that turns 'we spend too much on cloud' into an actionable conversation.","datePublished":"2025-10-15","dateModified":"2025-10-15","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/cloud-unit-economics/","image":"https://ajnacs.com/assets/og/insights-cloud-unit-economics.svg","keywords":"FinOps, Cost Optimisation, Engineering Leadership","articleSection":"FinOps","wordCount":740}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Cloud Unit Economics: The Metric That Makes Cloud Spend Conversations Productive"}]}</script>
+</head>
+<body class="" data-topic="FinOps">
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header" id="siteHeader">
+  <div class="wrap" style="display:flex;align-items:center;width:min(1220px,100% - var(--gutter)*2)">
+    <a class="brand" href="/">
+      <img src="/images/ajna-logo.png" alt="" width="32" height="32">
+      <span class="brand-name">Ajna<span>CS</span></span>
+    </a>
+    <nav class="nav" id="nav" aria-label="Primary">
+      <a href="/services/">Services</a>
+      <a href="/insights/" aria-current="page">Insights</a>
+      <a href="/series/">Series</a>
+      <a href="/case-studies/">Case studies</a>
+      <a href="/about/">About</a>
+      <a class="btn btn-sm" href="/contact/" style="margin-left:.4rem">Engage engineering</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn" id="themeBtn" type="button" aria-label="Switch to dark mode" aria-pressed="false"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg></button>
+      <button class="icon-btn nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+
+<div class="read-bar" aria-hidden="true"><span id="readBar"></span></div>
+<article class="article">
+  <header class="article-head">
+    <div class="wrap-narrow">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a> <span aria-hidden="true">/</span>
+        <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
+        <span>FinOps</span>
+      </nav>
+      <h1 class="h1">Cloud Unit Economics: The Metric That Makes Cloud Spend Conversations Productive</h1>
+      <p class="lede" style="margin-top:1rem">Talking about cloud spend in absolute dollars rarely leads anywhere useful. Unit economics — cost per transaction, cost per user, cost per GB processed — creates the context that turns &#39;we spend too much on cloud&#39; into an actionable conversation.</p>
+      <div class="article-meta">
+        <span class="chip">FinOps</span>
+        <time datetime="2025-10-15">15 Oct 2025</time>
+        <span class="dot"></span><span>3 min read</span>
+        <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="article-hero wrap-narrow" data-topic="FinOps"><svg viewBox="0 0 1200 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgclouduniteco" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e8a317" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#a9760a" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#e8a317" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="420" fill="url(#bgclouduniteco)"/>
+  <line x1="337.2" y1="111.1" x2="373.9" y2="202.4" stroke="#e8a317" stroke-opacity=".28" stroke-width="1.4"/><line x1="337.2" y1="111.1" x2="358.2" y2="81.8" stroke="#e8a317" stroke-opacity=".28" stroke-width="1.4"/><line x1="337.2" y1="111.1" x2="420.9" y2="101.3" stroke="#e8a317" stroke-opacity=".28" stroke-width="1.4"/><line x1="337.2" y1="111.1" x2="330.9" y2="197.3" stroke="#e8a317" stroke-opacity=".28" stroke-width="1.4"/><line x1="337.2" y1="111.1" x2="380.0" y2="178.9" stroke="#e8a317" stroke-opacity=".28" stroke-width="1.4"/><line x1="337.2" y1="111.1" x2="253.6" y2="86.7" stroke="#e8a317" stroke-opacity=".28" stroke-width="1.4"/><line x1="337.2" y1="111.1" x2="388.3" y2="54.4" stroke="#e8a317" stroke-opacity=".28" stroke-width="1.4"/><line x1="337.2" y1="111.1" x2="379.2" y2="150.5" stroke="#e8a317" stroke-opacity=".28" stroke-width="1.4"/><line x1="337.2" y1="111.1" x2="351.6" y2="117.9" stroke="#e8a317" stroke-opacity=".28" stroke-width="1.4"/><line x1="373.9" y1="202.4" x2="330.5" y2="282.5" stroke="#e8a317" stroke-opacity=".28" stroke-width="1.4"/><line x1="373.9" y1="202.4" x2="505.4" y2="161.7" stroke="#e8a317" stroke-opacity=".28" stroke-width="1.4"/><line x1="373.9" y1="202.4" x2="358.2" y2="81.8" stroke="#e8a317" stroke-opacity=".28" stroke-width="1.4"/><line x1="373.9" y1="202.4" x2="420.9" y2="101.3" stroke="#e8a317" stroke-opacity=".28" stroke-width="1.4"/><line x1="373.9" y1="202.4" x2="330.9" y2="197.3" stroke="#e8a317" stroke-opacity=".28" stroke-width="1.4"/><line x1="373.9" y1="202.4" x2="380.0" y2="178.9" stroke="#e8a317" stroke-opacity=".28" stroke-width="1.4"/><line x1="373.9" y1="202.4" x2="253.6" y2="86.7" stroke="#e8a317" stroke-opacity=".28" stroke-width="1.4"/><line x1="373.9" y1="202.4" x2="388.3" y2="54.4" stroke="#e8a317" stroke-opacity=".28" stroke-width="1.4"/><line x1="373.9" y1="202.4" x2="379.2" y2="150.5" stroke="#e8a317" stroke-opacity=".28" stroke-width="1.4"/><line x1="373.9" y1="202.4" x2="351.6" y2="117.9" stroke="#e8a317" stroke-opacity=".28" stroke-width="1.4"/><line x1="330.5" y1="282.5" x2="330.9" y2="197.3" stroke="#e8a317" stroke-opacity=".28" stroke-width="1.4"/><line x1="330.5" y1="282.5" x2="380.0" y2="178.9" stroke="#e8a317" stroke-opacity=".28" stroke-width="1.4"/><line x1="330.5" y1="282.5" x2="379.2" y2="150.5" stroke="#e8a317" stroke-opacity=".28" stroke-width="1.4"/><line x1="330.5" y1="282.5" x2="351.6" y2="117.9" stroke="#e8a317" stroke-opacity=".28" stroke-width="1.4"/><line x1="505.4" y1="161.7" x2="358.2" y2="81.8" stroke="#e8a317" stroke-opacity=".28" stroke-width="1.4"/><line x1="505.4" y1="161.7" x2="420.9" y2="101.3" stroke="#e8a317" stroke-opacity=".28" stroke-width="1.4"/><line x1="505.4" y1="161.7" x2="550.9" y2="108.0" stroke="#e8a317" stroke-opacity=".28" stroke-width="1.4"/><line x1="505.4" y1="161.7" x2="380.0" y2="178.9" stroke="#e8a317" stroke-opacity=".28" stroke-width="1.4"/><line x1="505.4" y1="161.7" x2="388.3" y2="54.4" stroke="#e8a317" stroke-opacity=".28" stroke-width="1.4"/><line x1="505.4" y1="161.7" x2="379.2" y2="150.5" stroke="#e8a317" stroke-opacity=".28" stroke-width="1.4"/><line x1="505.4" y1="161.7" x2="351.6" y2="117.9" stroke="#e8a317" stroke-opacity=".28" stroke-width="1.4"/><line x1="358.2" y1="81.8" x2="420.9" y2="101.3" stroke="#e8a317" stroke-opacity=".28" stroke-width="1.4"/><line x1="358.2" y1="81.8" x2="330.9" y2="197.3" stroke="#e8a317" stroke-opacity=".28" stroke-width="1.4"/><line x1="358.2" y1="81.8" x2="380.0" y2="178.9" stroke="#e8a317" stroke-opacity=".28" stroke-width="1.4"/><line x1="358.2" y1="81.8" x2="253.6" y2="86.7" stroke="#e8a317" stroke-opacity=".28" stroke-width="1.4"/><line x1="358.2" y1="81.8" x2="388.3" y2="54.4" stroke="#e8a317" stroke-opacity=".28" stroke-width="1.4"/><line x1="358.2" y1="81.8" x2="379.2" y2="150.5" stroke="#e8a317" stroke-opacity=".28" stroke-width="1.4"/><line x1="358.2" y1="81.8" x2="351.6" y2="117.9" stroke="#e8a317" stroke-opacity=".28" stroke-width="1.4"/><line x1="420.9" y1="101.3" x2="550.9" y2="108.0" stroke="#e8a317" stroke-opacity=".28" stroke-width="1.4"/><line x1="420.9" y1="101.3" x2="330.9" y2="197.3" stroke="#e8a317" stroke-opacity=".28" stroke-width="1.4"/><line x1="420.9" y1="101.3" x2="380.0" y2="178.9" stroke="#e8a317" stroke-opacity=".28" stroke-width="1.4"/><line x1="420.9" y1="101.3" x2="253.6" y2="86.7" stroke="#e8a317" stroke-opacity=".28" stroke-width="1.4"/><line x1="420.9" y1="101.3" x2="388.3" y2="54.4" stroke="#e8a317" stroke-opacity=".28" stroke-width="1.4"/><line x1="420.9" y1="101.3" x2="379.2" y2="150.5" stroke="#e8a317" stroke-opacity=".28" stroke-width="1.4"/><line x1="420.9" y1="101.3" x2="351.6" y2="117.9" stroke="#e8a317" stroke-opacity=".28" stroke-width="1.4"/><line x1="330.9" y1="197.3" x2="380.0" y2="178.9" stroke="#e8a317" stroke-opacity=".28" stroke-width="1.4"/><line x1="330.9" y1="197.3" x2="253.6" y2="86.7" stroke="#e8a317" stroke-opacity=".28" stroke-width="1.4"/><line x1="330.9" y1="197.3" x2="388.3" y2="54.4" stroke="#e8a317" stroke-opacity=".28" stroke-width="1.4"/><line x1="330.9" y1="197.3" x2="379.2" y2="150.5" stroke="#e8a317" stroke-opacity=".28" stroke-width="1.4"/><line x1="330.9" y1="197.3" x2="351.6" y2="117.9" stroke="#e8a317" stroke-opacity=".28" stroke-width="1.4"/><line x1="380.0" y1="178.9" x2="253.6" y2="86.7" stroke="#e8a317" stroke-opacity=".28" stroke-width="1.4"/><line x1="380.0" y1="178.9" x2="388.3" y2="54.4" stroke="#e8a317" stroke-opacity=".28" stroke-width="1.4"/><line x1="380.0" y1="178.9" x2="379.2" y2="150.5" stroke="#e8a317" stroke-opacity=".28" stroke-width="1.4"/><line x1="380.0" y1="178.9" x2="351.6" y2="117.9" stroke="#e8a317" stroke-opacity=".28" stroke-width="1.4"/><line x1="253.6" y1="86.7" x2="388.3" y2="54.4" stroke="#e8a317" stroke-opacity=".28" stroke-width="1.4"/><line x1="253.6" y1="86.7" x2="379.2" y2="150.5" stroke="#e8a317" stroke-opacity=".28" stroke-width="1.4"/><line x1="253.6" y1="86.7" x2="351.6" y2="117.9" stroke="#e8a317" stroke-opacity=".28" stroke-width="1.4"/><line x1="388.3" y1="54.4" x2="379.2" y2="150.5" stroke="#e8a317" stroke-opacity=".28" stroke-width="1.4"/><line x1="388.3" y1="54.4" x2="351.6" y2="117.9" stroke="#e8a317" stroke-opacity=".28" stroke-width="1.4"/><line x1="379.2" y1="150.5" x2="351.6" y2="117.9" stroke="#e8a317" stroke-opacity=".28" stroke-width="1.4"/><circle cx="337.2" cy="111.1" r="5" fill="#e8a317" fill-opacity=".9"/><circle cx="373.9" cy="202.4" r="8.5" fill="#a9760a" fill-opacity=".9"/><circle cx="330.5" cy="282.5" r="12" fill="#e8a317" fill-opacity=".9"/><circle cx="505.4" cy="161.7" r="5" fill="#a9760a" fill-opacity=".9"/><circle cx="358.2" cy="81.8" r="8.5" fill="#e8a317" fill-opacity=".9"/><circle cx="420.9" cy="101.3" r="12" fill="#a9760a" fill-opacity=".9"/><circle cx="550.9" cy="108.0" r="5" fill="#e8a317" fill-opacity=".9"/><circle cx="330.9" cy="197.3" r="8.5" fill="#a9760a" fill-opacity=".9"/><circle cx="380.0" cy="178.9" r="12" fill="#e8a317" fill-opacity=".9"/><circle cx="253.6" cy="86.7" r="5" fill="#a9760a" fill-opacity=".9"/><circle cx="388.3" cy="54.4" r="8.5" fill="#e8a317" fill-opacity=".9"/><circle cx="379.2" cy="150.5" r="12" fill="#a9760a" fill-opacity=".9"/><circle cx="351.6" cy="117.9" r="5" fill="#e8a317" fill-opacity=".9"/>
+</svg></div>
+
+  <div class="wrap-narrow article-grid">
+    <nav class="toc" aria-label="On this page">
+  <p class="toc-title">On this page</p>
+  <ol><li><a href="#why-absolute-spend-is-the-wrong-metric">Why absolute spend is the wrong metric</a></li><li><a href="#defining-the-right-unit">Defining the right unit</a></li><li><a href="#how-to-calculate-it">How to calculate it</a></li><li><a href="#benchmarks-and-thresholds">Benchmarks and thresholds</a></li><li><a href="#the-conversation-unit-economics-enables">The conversation unit economics enables</a></li></ol>
+</nav>
+    <div class="prose">
+<p>Most cloud cost conversations go in circles because they&#39;re comparing the wrong things. &quot;Our AWS bill went up 20% this quarter&quot; is a statement that could mean we&#39;re growing efficiently, we&#39;re scaling poorly, or someone left a cluster running — and you can&#39;t tell which from the number alone.</p>
+<p>Unit economics cuts through this. Cost per unit of business output — per active user, per transaction, per API call, per GB of data processed — contextualises spend against the business it&#39;s supporting.</p>
+<h2 id="why-absolute-spend-is-the-wrong-metric">Why absolute spend is the wrong metric</h2>
+<aside class="keyfig">
+  <p class="keyfig-label">Key figure</p>
+  <p class="keyfig-text">&quot;Our AWS bill went up <b>20%</b> this quarter&quot; is a statement that could mean we&#39;re growing efficiently, we&#39;re scaling poorly, or someone left a cluster running — and you can&#39;t tell which from the number alone.</p>
+</aside>
+<p>An engineering team that grew its AWS bill from $50k to $100k over a year might have:</p>
+<ul>
+<li>Doubled their user base at constant efficiency (good)</li>
+<li>Maintained their user base but halved their efficiency (bad)</li>
+<li>Grown their user base by 10x while doubling their bill (excellent)</li>
+</ul>
+<p>The absolute number doesn&#39;t tell you which scenario you&#39;re in. The unit cost does.</p>
+<p>Unit economics doesn&#39;t make the cost conversation easier — it makes it more honest. When a business leader asks &quot;why is our cloud bill so high?&quot;, the unit cost answer is either: &quot;it isn&#39;t, we&#39;re running at $0.003 per transaction and the market rate is $0.005&quot; or &quot;you&#39;re right, our cost per user has increased since Q3 and here&#39;s why.&quot; Both answers are useful. &quot;Our bill is $200k a month&quot; isn&#39;t.</p>
+<h2 id="defining-the-right-unit">Defining the right unit</h2>
+<p>The unit should be something the business already tracks and cares about. Common options:</p>
+<ul>
+<li><strong>SaaS products</strong>: cost per monthly active user (MAU)</li>
+<li><strong>Transaction systems</strong>: cost per transaction (order, payment, booking)</li>
+<li><strong>Data platforms</strong>: cost per GB ingested, cost per GB processed, cost per query</li>
+<li><strong>APIs</strong>: cost per 1,000 API calls</li>
+<li><strong>Streaming</strong>: cost per event processed</li>
+</ul>
+<p>The unit has to be consistent — use the same definition across teams and time periods. If &quot;transaction&quot; means one thing to the payments team and another to the analytics team, the comparisons won&#39;t be useful.</p>
+<p>For complex products that do many different things, start with the unit that most directly connects cloud spend to revenue. Optimise for clarity first.</p>
+<h2 id="how-to-calculate-it">How to calculate it</h2>
+<p>Unit cost calculation:</p>
+<pre><code>unit_cost = total_infrastructure_cost / unit_count
+</code></pre>
+<p>Where <code>total_infrastructure_cost</code> includes all cloud spend attributable to the workload: compute, storage, networking, database, managed services. The tagging taxonomy your team maintains is what makes this possible — if your resources aren&#39;t tagged by application, you&#39;re allocating costs by estimation.</p>
+<p>For a microservice architecture, cost attribution often requires allocating shared infrastructure (Kubernetes cluster overhead, shared load balancers, monitoring) proportionally. Common approaches:</p>
+<ul>
+<li><strong>Resource-proportional</strong>: allocate shared costs based on CPU/memory consumption share</li>
+<li><strong>Transaction-proportional</strong>: allocate based on request volume share</li>
+<li><strong>Flat allocation</strong>: divide shared infrastructure equally across workloads</li>
+</ul>
+<p>Each approach is a simplification. The goal is consistent, good-enough allocation rather than perfect attribution.</p>
+<h2 id="benchmarks-and-thresholds">Benchmarks and thresholds</h2>
+<p>Unit costs become most useful when you have a target to compare against.</p>
+<p>Setting targets:</p>
+<ul>
+<li><strong>Baseline from current performance</strong>: your current unit cost is the baseline. Track improvement (or degradation) over time.</li>
+<li><strong>Architecture exercises</strong>: when planning a major architectural change, estimate the expected unit cost. Compare to actuals after deployment.</li>
+<li><strong>Industry context</strong>: broad industry benchmarks exist for some workload types (SaaS infrastructure spend as a percentage of revenue is a common one; 8-12% is a rough marker, though it varies widely by stage). These are signals, not targets.</li>
+</ul>
+<p>Threshold alerts: if unit cost increases by more than X% quarter-over-quarter without a corresponding product change or growth inflection, that&#39;s a signal to investigate. Growth in spend is expected; disproportionate growth in unit cost is an efficiency signal.</p>
+<h2 id="the-conversation-unit-economics-enables">The conversation unit economics enables</h2>
+<p>With unit economics, the cloud spend conversation becomes:</p>
+<p>&quot;Our cost per MAU has stayed flat at $0.42 despite 30% user growth, which tells us our architecture is scaling efficiently. However, the data processing cost per GB has increased from $0.18 to $0.31 — that&#39;s the area worth investigating before we grow the data pipeline further.&quot;</p>
+<p>This is the conversation FinOps aims to enable: context-rich, actionable, connected to the business. It requires the underlying data (tagging, cost allocation, unit tracking) to be in good shape, which is the infrastructure that takes time to build.</p>
+<p>The return on that investment is conversations like the one above, instead of conversations about whether $200k is too much.</p>
+<p><em>Working toward this kind of visibility in your organization? The data infrastructure that supports unit economics is worth building. <a href="/contact">Happy to compare approaches.</a></em></p>
+
+    </div>
+  </div>
+
+  <div class="wrap-narrow"><aside class="refs" aria-labelledby="refs-h">
+  <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
+  <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
+  <ul>
+    <li><a href="https://kubernetes.io/docs/" rel="noopener nofollow" target="_blank">Kubernetes documentation</a><span>Primary reference for the concepts used here.</span></li>
+    <li><a href="https://www.finops.org/" rel="noopener nofollow" target="_blank">FinOps Foundation</a><span>Framework, capabilities and terminology.</span></li>
+  </ul>
+</aside></div>
+
+  <div class="wrap-narrow" style="margin-top:3rem">
+    <aside class="series-box">
+      <p class="eyebrow">Series</p>
+      <h2 class="h3" style="margin:.5rem 0 1rem">FinOps from Zero to Production</h2>
+      <ol class="series-list">
+        <li><a href="/insights/finops-tagging-policy/">Cloud Tagging Policy Template: The Foundation FinOps Actually Requires</a></li>
+        <li><a href="/insights/reserved-instance-rationalization/">Reserved Instance Rationalisation: How to Commit to the Right Resources</a></li>
+        <li aria-current="true"><a href="/insights/cloud-unit-economics/">Cloud Unit Economics: The Metric That Makes Cloud Spend Conversations Productive</a></li>
+        <li><a href="/insights/finops-anomaly-detection/">Cloud Cost Anomaly Detection: Catching Runaway Spend Before It Becomes a Bill</a></li>
+      </ol>
+    </aside>
+  </div>
+
+  <div class="wrap-narrow article-foot">
+    <div class="row" style="gap:.4rem">
+      <a class="chip chip-plain" href="/insights/?topic=FinOps">FinOps</a><a class="chip chip-plain" href="/insights/?topic=Cost%20Optimisation">Cost Optimisation</a><a class="chip chip-plain" href="/insights/?topic=Engineering%20Leadership">Engineering Leadership</a>
+    </div>
+    <nav class="prevnext" aria-label="More articles">
+      <a href="/insights/structured-logging-practices/"><span>Previous</span><strong>Structured Logging That Pays for Itself: Schema, Context, and Cost Discipline</strong></a>
+      <a href="/insights/supply-chain-security-sbom/" class="next"><span>Next</span><strong>Software Supply Chain Security: SBOM, Dependency Auditing, and What Actually Reduces Risk</strong></a>
+    </nav>
+  </div>
+
+  <section class="section surface hair" style="margin-top:4rem">
+    <div class="wrap">
+      <p class="eyebrow">Related</p>
+      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|Engineering Leadership|Architecture|Fundamentals|" data-search="measuring platform engineering success: the metrics that actually matter dora metrics, developer experience scores, cognitive load measures, and the platform health indicators that tell you whether your internal platform is creating value or creating another bottleneck. engineering leadership architecture fundamentals" data-topic="Engineering Leadership" href="/insights/platform-eng-measuring-success/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgplatformengm" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0e7490" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#0b5f77" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#0e7490" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgplatformengm)"/>
+  <rect x="188.8" y="78" width="300.0" height="34" rx="8"
+      fill="#0b5f77" fill-opacity="0.16"
+      stroke="#0e7490" stroke-opacity=".45" stroke-width="1.2"/><line x1="320" y1="112" x2="320" y2="134" stroke="#0e7490" stroke-opacity=".4" stroke-width="1.4"/><rect x="185.1" y="134" width="266.0" height="34" rx="8"
+      fill="#0e7490" fill-opacity="0.29"
+      stroke="#0e7490" stroke-opacity=".45" stroke-width="1.2"/><line x1="320" y1="168" x2="320" y2="190" stroke="#0e7490" stroke-opacity=".4" stroke-width="1.4"/><rect x="199.2" y="190" width="232.0" height="34" rx="8"
+      fill="#0b5f77" fill-opacity="0.42"
+      stroke="#0e7490" stroke-opacity=".45" stroke-width="1.2"/><line x1="320" y1="224" x2="320" y2="246" stroke="#0e7490" stroke-opacity=".4" stroke-width="1.4"/><rect x="239.7" y="246" width="198.0" height="34" rx="8"
+      fill="#0e7490" fill-opacity="0.55"
+      stroke="#0e7490" stroke-opacity=".45" stroke-width="1.2"/>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">Engineering Leadership</span>
+    <h3 class="card-title">Measuring Platform Engineering Success: The Metrics That Actually Matter</h3>
+    <p class="card-desc">DORA metrics, developer experience scores, cognitive load measures, and the platform health indicators that tell you whether your internal platform is creating value or creating another bottleneck.</p>
+    <div class="card-meta"><time datetime="2026-07-21">21 Jul 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
+  </div>
+</a>
+<a class="card" data-card data-topics="|FinOps|Cost Optimisation|Cloud Architecture|" data-search="cloud cost anomaly detection: catching runaway spend before it becomes a bill cloud cost overruns that show up in the monthly invoice are already weeks old. here&#39;s how to set up anomaly detection that catches cost spikes in hours, with enough context to diagnose the cause quickly. finops cost optimisation cloud architecture" data-topic="FinOps" href="/insights/finops-anomaly-detection/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgfinopsanomal" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e8a317" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#a9760a" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#e8a317" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgfinopsanomal)"/>
+  <rect x="86" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.39" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 108 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.41" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 108 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.21" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 108 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.13" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 172 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.17" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 172 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="86" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.23" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 236 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.54" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 236 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.51" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">FinOps</span>
+    <h3 class="card-title">Cloud Cost Anomaly Detection: Catching Runaway Spend Before It Becomes a Bill</h3>
+    <p class="card-desc">Cloud cost overruns that show up in the monthly invoice are already weeks old. Here&#39;s how to set up anomaly detection that catches cost spikes in hours, with enough context to diagnose the cause quickly.</p>
+    <div class="card-meta"><time datetime="2026-07-06">6 Jul 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
+  </div>
+</a>
+<a class="card" data-card data-topics="|FinOps|Cloud Architecture|Cost Optimisation|" data-search="cloud tagging policy template: the foundation finops actually requires a tagging policy that nobody enforces is worse than no tagging policy. here&#39;s how to design a tagging taxonomy that survives contact with real engineering teams — with enforcement mechanisms, exceptions handling, and the tags that actually drive cost allocation decisions. finops cloud architecture cost optimisation" data-topic="FinOps" href="/insights/finops-tagging-policy/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgfinopstaggin" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e8a317" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#a9760a" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#e8a317" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgfinopstaggin)"/>
+  <rect x="157.1" y="78" width="300.0" height="34" rx="8"
+      fill="#a9760a" fill-opacity="0.16"
+      stroke="#e8a317" stroke-opacity=".45" stroke-width="1.2"/><line x1="320" y1="112" x2="320" y2="134" stroke="#e8a317" stroke-opacity=".4" stroke-width="1.4"/><rect x="193.8" y="134" width="266.0" height="34" rx="8"
+      fill="#e8a317" fill-opacity="0.29"
+      stroke="#e8a317" stroke-opacity=".45" stroke-width="1.2"/><line x1="320" y1="168" x2="320" y2="190" stroke="#e8a317" stroke-opacity=".4" stroke-width="1.4"/><rect x="209.4" y="190" width="232.0" height="34" rx="8"
+      fill="#a9760a" fill-opacity="0.42"
+      stroke="#e8a317" stroke-opacity=".45" stroke-width="1.2"/><line x1="320" y1="224" x2="320" y2="246" stroke="#e8a317" stroke-opacity=".4" stroke-width="1.4"/><rect x="224.4" y="246" width="198.0" height="34" rx="8"
+      fill="#e8a317" fill-opacity="0.55"
+      stroke="#e8a317" stroke-opacity=".45" stroke-width="1.2"/>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">FinOps</span>
+    <h3 class="card-title">Cloud Tagging Policy Template: The Foundation FinOps Actually Requires</h3>
+    <p class="card-desc">A tagging policy that nobody enforces is worse than no tagging policy. Here&#39;s how to design a tagging taxonomy that survives contact with real engineering teams — with enforcement mechanisms, exceptions handling, and the tags that actually drive cost allocation decisions.</p>
+    <div class="card-meta"><time datetime="2026-06-12">12 Jun 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
+  </div>
+</a></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap-narrow cta-panel">
+      <h2 class="h2">Working on this in production?</h2>
+      <p class="lede" style="margin-top:.7rem">We do this work directly alongside engineering teams — architecture review, migration, and hands-on enablement.</p>
+      <div class="row" style="margin-top:1.4rem">
+        <a class="btn" href="/contact/">Engage engineering <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="btn btn-ghost" href="/services/">See what we do</a>
+      </div>
+    </div>
+  </section>
+</article>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="grid g-4" style="gap:2rem">
+      <div>
+        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem">
+          <img src="/images/ajna-logo.png" alt="" width="32" height="32">
+          <span class="brand-name">Ajna<span style="color:#6f9bff">CS</span></span>
+        </a>
+        <p style="font-size:.88rem;line-height:1.65;color:#9fb0d0;max-width:30ch">
+          Specialised engineering partner for enterprise architecture, AI &amp; MLOps, and technical enablement.
+        </p>
+        <div class="social" style="margin-top:1.1rem">
+          <a href="https://www.youtube.com/@TechKnowen" rel="noopener" aria-label="YouTube"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 12s0-3.8-.5-5.6a2.9 2.9 0 0 0-2-2C18.7 4 12 4 12 4s-6.7 0-8.5.4a2.9 2.9 0 0 0-2 2C1 8.2 1 12 1 12s0 3.8.5 5.6a2.9 2.9 0 0 0 2 2C5.3 20 12 20 12 20s6.7 0 8.5-.4a2.9 2.9 0 0 0 2-2C23 15.8 23 12 23 12zM9.8 15.4V8.6l5.9 3.4z"/></svg></a>
+          <a href="https://techknowen.com" rel="noopener" aria-label="TechKnowen blog"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 3h16v3H4zm0 5h16v13l-8-4-8 4z"/></svg></a>
+          <a href="/feed.xml" aria-label="RSS feed"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="6.2" cy="17.8" r="2.2"/><path d="M4 10.2v3a6.6 6.6 0 0 1 6.6 6.6h3A9.6 9.6 0 0 0 4 10.2zM4 4v3c7.2 0 13 5.8 13 13h3C20 11.2 12.8 4 4 4z"/></svg></a>
+        </div>
+      </div>
+      <div>
+        <h4>Services</h4>
+        <ul>
+          <li><a href="/services/#architecture">Enterprise architecture</a></li>
+          <li><a href="/services/#ai">AI &amp; MLOps</a></li>
+          <li><a href="/services/#training">Technical enablement</a></li>
+          <li><a href="/case-studies/">Case studies</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Insights</h4>
+        <ul>
+          <li><a href="/insights/">All articles</a></li>
+          <li><a href="/series/">Series</a></li>
+          <li><a href="/topics/">Topics</a></li>
+          <li><a href="/notes/">Personal notes</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
+          <li><a href="/contact/">Start an engagement</a></li>
+          <li><a href="/about/">About</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span id="yr">2026</span> Ajna Consulting Services. All rights reserved.</span>
+      <span style="display:flex;gap:1.2rem"><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a></span>
+    </div>
+  </div>
+</footer>
+<script src="/assets/js/site.js" defer></script>
+</body>
+</html>

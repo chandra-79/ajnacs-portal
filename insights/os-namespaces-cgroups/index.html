@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Linux Namespaces and cgroups: The Foundation of Containers | Ajna CS</title>
+<meta name="description" content="How Linux namespaces isolate processes, filesystems, networks, and users — and how cgroups enforce resource limits. The primitives that Docker, Kubernetes…">
+<meta name="author" content="Chandra Lanka">
+<link rel="canonical" href="https://ajnacs.com/insights/os-namespaces-cgroups/">
+<meta name="robots" content="index, follow, max-image-preview:large">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Ajna Consulting Services">
+<meta property="og:title" content="Linux Namespaces and cgroups: The Foundation of Containers">
+<meta property="og:description" content="How Linux namespaces isolate processes, filesystems, networks, and users — and how cgroups enforce resource limits. The primitives that Docker, Kubernetes…">
+<meta property="og:url" content="https://ajnacs.com/insights/os-namespaces-cgroups/">
+<meta property="og:image" content="https://ajnacs.com/assets/og/insights-os-namespaces-cgroups.svg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Linux Namespaces and cgroups: The Foundation of Containers">
+<meta name="twitter:description" content="How Linux namespaces isolate processes, filesystems, networks, and users — and how cgroups enforce resource limits. The primitives that Docker, Kubernetes…">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/insights-os-namespaces-cgroups.svg">
+
+<link rel="icon" href="/images/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="/images/ajna-logo.png">
+<meta name="theme-color" content="#0a1020">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="/assets/css/site.css">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<script>
+/* Set the theme before first paint so the page never flashes the wrong one. */
+(function(){try{var t=localStorage.getItem('acs-theme');
+if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Linux Namespaces and cgroups: The Foundation of Containers","description":"How Linux namespaces isolate processes, filesystems, networks, and users — and how cgroups enforce resource limits. The primitives that Docker, Kubernetes, and every container runtime are built on.","datePublished":"2026-06-02","dateModified":"2026-06-02","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/os-namespaces-cgroups/","image":"https://ajnacs.com/assets/og/insights-os-namespaces-cgroups.svg","keywords":"Programming, Fundamentals","articleSection":"Programming","wordCount":1172}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Linux Namespaces and cgroups: The Foundation of Containers"}]}</script>
+</head>
+<body class="" data-topic="Programming">
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header" id="siteHeader">
+  <div class="wrap" style="display:flex;align-items:center;width:min(1220px,100% - var(--gutter)*2)">
+    <a class="brand" href="/">
+      <img src="/images/ajna-logo.png" alt="" width="32" height="32">
+      <span class="brand-name">Ajna<span>CS</span></span>
+    </a>
+    <nav class="nav" id="nav" aria-label="Primary">
+      <a href="/services/">Services</a>
+      <a href="/insights/" aria-current="page">Insights</a>
+      <a href="/series/">Series</a>
+      <a href="/case-studies/">Case studies</a>
+      <a href="/about/">About</a>
+      <a class="btn btn-sm" href="/contact/" style="margin-left:.4rem">Engage engineering</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn" id="themeBtn" type="button" aria-label="Switch to dark mode" aria-pressed="false"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg></button>
+      <button class="icon-btn nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+
+<div class="read-bar" aria-hidden="true"><span id="readBar"></span></div>
+<article class="article">
+  <header class="article-head">
+    <div class="wrap-narrow">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a> <span aria-hidden="true">/</span>
+        <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
+        <span>Programming</span>
+      </nav>
+      <h1 class="h1">Linux Namespaces and cgroups: The Foundation of Containers</h1>
+      <p class="lede" style="margin-top:1rem">How Linux namespaces isolate processes, filesystems, networks, and users — and how cgroups enforce resource limits. The primitives that Docker, Kubernetes, and every container runtime are built on.</p>
+      <div class="article-meta">
+        <span class="chip">Programming</span>
+        <time datetime="2026-06-02">2 Jun 2026</time>
+        <span class="dot"></span><span>5 min read</span>
+        <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="article-hero wrap-narrow" data-topic="Programming"><svg viewBox="0 0 1200 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgosnamespaces" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4f46e5" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#3730a3" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#4f46e5" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="420" fill="url(#bgosnamespaces)"/>
+  <line x1="109.0" y1="104.1" x2="273.3" y2="115.5" stroke="#4f46e5" stroke-opacity=".28" stroke-width="1.4"/><line x1="109.0" y1="104.1" x2="165.1" y2="137.9" stroke="#4f46e5" stroke-opacity=".28" stroke-width="1.4"/><line x1="109.0" y1="104.1" x2="117.0" y2="249.2" stroke="#4f46e5" stroke-opacity=".28" stroke-width="1.4"/><line x1="109.0" y1="104.1" x2="217.8" y2="163.1" stroke="#4f46e5" stroke-opacity=".28" stroke-width="1.4"/><line x1="109.0" y1="104.1" x2="77.7" y2="176.0" stroke="#4f46e5" stroke-opacity=".28" stroke-width="1.4"/><line x1="481.9" y1="286.1" x2="494.9" y2="143.9" stroke="#4f46e5" stroke-opacity=".28" stroke-width="1.4"/><line x1="481.9" y1="286.1" x2="361.6" y2="253.5" stroke="#4f46e5" stroke-opacity=".28" stroke-width="1.4"/><line x1="273.3" y1="115.5" x2="165.1" y2="137.9" stroke="#4f46e5" stroke-opacity=".28" stroke-width="1.4"/><line x1="273.3" y1="115.5" x2="361.6" y2="253.5" stroke="#4f46e5" stroke-opacity=".28" stroke-width="1.4"/><line x1="273.3" y1="115.5" x2="355.0" y2="152.8" stroke="#4f46e5" stroke-opacity=".28" stroke-width="1.4"/><line x1="273.3" y1="115.5" x2="217.8" y2="163.1" stroke="#4f46e5" stroke-opacity=".28" stroke-width="1.4"/><line x1="273.3" y1="115.5" x2="251.6" y2="215.1" stroke="#4f46e5" stroke-opacity=".28" stroke-width="1.4"/><line x1="165.1" y1="137.9" x2="117.0" y2="249.2" stroke="#4f46e5" stroke-opacity=".28" stroke-width="1.4"/><line x1="165.1" y1="137.9" x2="217.8" y2="163.1" stroke="#4f46e5" stroke-opacity=".28" stroke-width="1.4"/><line x1="165.1" y1="137.9" x2="77.7" y2="176.0" stroke="#4f46e5" stroke-opacity=".28" stroke-width="1.4"/><line x1="165.1" y1="137.9" x2="251.6" y2="215.1" stroke="#4f46e5" stroke-opacity=".28" stroke-width="1.4"/><line x1="117.0" y1="249.2" x2="102.1" y2="298.0" stroke="#4f46e5" stroke-opacity=".28" stroke-width="1.4"/><line x1="117.0" y1="249.2" x2="217.8" y2="163.1" stroke="#4f46e5" stroke-opacity=".28" stroke-width="1.4"/><line x1="117.0" y1="249.2" x2="77.7" y2="176.0" stroke="#4f46e5" stroke-opacity=".28" stroke-width="1.4"/><line x1="117.0" y1="249.2" x2="251.6" y2="215.1" stroke="#4f46e5" stroke-opacity=".28" stroke-width="1.4"/><line x1="494.9" y1="143.9" x2="355.0" y2="152.8" stroke="#4f46e5" stroke-opacity=".28" stroke-width="1.4"/><line x1="494.9" y1="143.9" x2="565.9" y2="58.2" stroke="#4f46e5" stroke-opacity=".28" stroke-width="1.4"/><line x1="361.6" y1="253.5" x2="355.0" y2="152.8" stroke="#4f46e5" stroke-opacity=".28" stroke-width="1.4"/><line x1="361.6" y1="253.5" x2="251.6" y2="215.1" stroke="#4f46e5" stroke-opacity=".28" stroke-width="1.4"/><line x1="102.1" y1="298.0" x2="77.7" y2="176.0" stroke="#4f46e5" stroke-opacity=".28" stroke-width="1.4"/><line x1="355.0" y1="152.8" x2="217.8" y2="163.1" stroke="#4f46e5" stroke-opacity=".28" stroke-width="1.4"/><line x1="355.0" y1="152.8" x2="251.6" y2="215.1" stroke="#4f46e5" stroke-opacity=".28" stroke-width="1.4"/><line x1="217.8" y1="163.1" x2="77.7" y2="176.0" stroke="#4f46e5" stroke-opacity=".28" stroke-width="1.4"/><line x1="217.8" y1="163.1" x2="251.6" y2="215.1" stroke="#4f46e5" stroke-opacity=".28" stroke-width="1.4"/><circle cx="109.0" cy="104.1" r="5" fill="#4f46e5" fill-opacity=".9"/><circle cx="481.9" cy="286.1" r="8.5" fill="#3730a3" fill-opacity=".9"/><circle cx="273.3" cy="115.5" r="12" fill="#4f46e5" fill-opacity=".9"/><circle cx="165.1" cy="137.9" r="5" fill="#3730a3" fill-opacity=".9"/><circle cx="117.0" cy="249.2" r="8.5" fill="#4f46e5" fill-opacity=".9"/><circle cx="494.9" cy="143.9" r="12" fill="#3730a3" fill-opacity=".9"/><circle cx="361.6" cy="253.5" r="5" fill="#4f46e5" fill-opacity=".9"/><circle cx="102.1" cy="298.0" r="8.5" fill="#3730a3" fill-opacity=".9"/><circle cx="355.0" cy="152.8" r="12" fill="#4f46e5" fill-opacity=".9"/><circle cx="217.8" cy="163.1" r="5" fill="#3730a3" fill-opacity=".9"/><circle cx="77.7" cy="176.0" r="8.5" fill="#4f46e5" fill-opacity=".9"/><circle cx="565.9" cy="58.2" r="12" fill="#3730a3" fill-opacity=".9"/><circle cx="251.6" cy="215.1" r="5" fill="#4f46e5" fill-opacity=".9"/>
+</svg></div>
+
+  <div class="wrap-narrow article-grid">
+    <nav class="toc" aria-label="On this page">
+  <p class="toc-title">On this page</p>
+  <ol><li><a href="#namespaces">Namespaces</a></li><li><a href="#cgroups-v2">cgroups v2</a></li><li><a href="#systemd-and-cgroups">systemd and cgroups</a></li><li><a href="#how-container-runtimes-use-these-primitives">How Container Runtimes Use These Primitives</a></li><li><a href="#seccomp-syscall-filtering">Seccomp — syscall filtering</a></li><li><a href="#container-escape-via-cgroup-and-namespace-abuse">Container Escape via cgroup and Namespace Abuse</a></li></ol>
+</nav>
+    <div class="prose">
+<p>Containers are not a Linux feature. There is no <code>container</code> system call. What containers are is a combination of two existing kernel primitives — namespaces and cgroups — wrapped in a user-space runtime. Understanding these primitives explains why containers work, what their security boundaries actually are, and what happens when they fail.</p>
+<h2 id="namespaces">Namespaces</h2>
+<aside class="keyfig">
+  <p class="keyfig-label">Key figure</p>
+  <p class="keyfig-text">A container can be limited to 2 CPUs and <b>1GB</b> of RAM using cgroups.</p>
+</aside>
+<p>A namespace wraps a global resource and makes processes inside the namespace believe they have their own isolated copy of it. Processes in different namespaces cannot see or affect each other&#39;s resources.</p>
+<p>Linux has eight namespace types (as of kernel 5.6+):</p>
+<div class="table-wrap"><table><thead><tr><th>Namespace</th><th>Resource isolated</th><th>Linux 3.x</th></tr></thead><tbody><tr><td><code>pid</code></td><td>Process IDs — PID 1 in a container is not PID 1 on the host</td><td>3.8</td></tr><tr><td><code>net</code></td><td>Network interfaces, routing tables, iptables rules</td><td>3.0</td></tr><tr><td><code>mnt</code></td><td>Mount points and filesystem tree</td><td>3.8</td></tr><tr><td><code>uts</code></td><td>Hostname and domain name</td><td>3.0</td></tr><tr><td><code>ipc</code></td><td>System V IPC, POSIX message queues</td><td>3.0</td></tr><tr><td><code>user</code></td><td>User and group IDs (UID/GID remapping)</td><td>3.8</td></tr><tr><td><code>cgroup</code></td><td>cgroup root directory</td><td>4.6</td></tr><tr><td><code>time</code></td><td>System clocks</td><td>5.6</td></tr></tbody></table></div>
+<pre><code class="language-bash">## See namespaces in use by a process
+ls -la /proc/self/ns/
+## Shows symlinks like: pid -&gt; pid:[4026531836]
+## The number in brackets is the namespace ID
+
+## See namespaces for a specific process
+ls -la /proc/&lt;PID&gt;/ns/
+
+## Compare namespaces between two processes
+## Same inode number = same namespace
+ls -lai /proc/1/ns/net /proc/$(pgrep docker)/ns/net
+
+## List all namespaces on the system
+lsns        # requires util-linux
+lsns -t pid # only PID namespaces
+
+## Create a new namespace for a command (unshare)
+sudo unshare --pid --fork --mount-proc bash
+## Now in a new PID namespace — ps shows only this shell and its children
+ps aux   # only shows 1 process (PID 1 = this bash)
+exit
+
+## New network namespace (no network interfaces except loopback)
+sudo unshare --net bash
+ip link    # only lo, no eth0 etc.
+exit
+
+## User namespace (map current user to root inside the namespace)
+unshare --user --map-root-user bash
+id         # uid=0(root) — but only inside this namespace
+whoami     # root
+## On the host, this process still runs as the original user
+exit
+</code></pre>
+<h2 id="cgroups-v2">cgroups v2</h2>
+<p>cgroups (control groups) enforce resource limits on groups of processes. They do not isolate — they constrain. A container can be limited to 2 CPUs and 1GB of RAM using cgroups.</p>
+<pre><code class="language-bash">## Check cgroup version
+stat -fc %T /sys/fs/cgroup
+## tmpfs = cgroups v1
+## cgroup2fs = cgroups v2
+
+## Check if systemd is using cgroup v2
+systemctl --version | grep cgroup
+
+## cgroups v2 filesystem layout
+ls /sys/fs/cgroup/
+## In v2: a unified hierarchy (all controllers in one tree)
+## In v1: separate hierarchies per controller (memory, cpu, etc.)
+
+## See cgroup for a process
+cat /proc/&lt;PID&gt;/cgroup
+
+## Create a cgroup (v2)
+mkdir /sys/fs/cgroup/my-limited-group
+
+## Set CPU and memory limits
+echo &quot;200000 1000000&quot; &gt; /sys/fs/cgroup/my-limited-group/cpu.max
+## 200000 microseconds out of every 1000000 = 20% of one CPU
+
+echo $((512 * 1024 * 1024)) &gt; /sys/fs/cgroup/my-limited-group/memory.max
+## 512MB memory limit
+
+## Add a process to the cgroup
+echo $$ &gt; /sys/fs/cgroup/my-limited-group/cgroup.procs
+## $$ = current shell PID
+
+## Run the stress tool to verify the limit
+stress-ng --cpu 4 --vm 1 --vm-bytes 600M --timeout 10s
+## Memory allocation above 512MB will be OOM-killed by the kernel
+</code></pre>
+<h2 id="systemd-and-cgroups">systemd and cgroups</h2>
+<p>systemd is a cgroup manager. Every systemd service lives in its own cgroup slice.</p>
+<pre><code class="language-bash">## View the cgroup tree
+systemd-cgls
+
+## See resource usage by cgroup
+systemd-cgtop
+
+## Set CPU and memory limits for a service via systemd
+## /etc/systemd/system/myapp.service.d/override.conf
+[Service]
+CPUQuota=200%         # 2 CPU cores (200% of one CPU)
+MemoryMax=1G          # hard memory limit
+MemoryHigh=800M       # soft limit — kernel throttles writes above this
+TasksMax=100          # maximum number of processes/threads
+
+systemctl daemon-reload
+systemctl restart myapp
+
+## Verify the cgroup limits are applied
+cat /sys/fs/cgroup/system.slice/myapp.service/memory.max
+cat /sys/fs/cgroup/system.slice/myapp.service/cpu.max
+</code></pre>
+<h2 id="how-container-runtimes-use-these-primitives">How Container Runtimes Use These Primitives</h2>
+<p>A container is:</p>
+<ol>
+<li>A new set of namespaces (pid, net, mnt, uts, ipc, user)</li>
+<li>A new mount namespace with an overlay filesystem as the root</li>
+<li>A cgroup limiting its CPU and memory</li>
+<li>A set of dropped Linux capabilities and a Seccomp filter</li>
+</ol>
+<pre><code class="language-bash">## See what namespaces Docker created for a container
+docker run -d --name test nginx
+docker inspect test --format &#39;{{.State.Pid}}&#39;   # get container PID on host
+ls -la /proc/&lt;container-PID&gt;/ns/
+
+## Verify CPU limits
+docker run --cpus=0.5 --memory=256m nginx
+cat /sys/fs/cgroup/system.slice/docker-&lt;container-id&gt;.scope/cpu.max
+## Should show: 50000 100000 (50% of one CPU)
+
+## Enter a running container&#39;s namespaces (nsenter)
+sudo nsenter -t &lt;container-PID&gt; --net -- ip link
+## --net: enter only the network namespace
+## Useful for debugging without going through docker exec
+
+## Run a process in the same namespaces as a container
+sudo nsenter -t &lt;container-PID&gt; --pid --net --mnt --uts --ipc bash
+## This is essentially what docker exec does
+</code></pre>
+<h2 id="seccomp-syscall-filtering">Seccomp — syscall filtering</h2>
+<p>Seccomp (Secure Computing Mode) restricts which system calls a process can make. It is the third pillar of container isolation alongside namespaces and cgroups.</p>
+<pre><code class="language-bash">## Check if a process has a Seccomp filter
+cat /proc/&lt;PID&gt;/status | grep Seccomp
+## 0 = no filter
+## 1 = strict (read, write, exit, sigreturn only)
+## 2 = filter mode (custom filter applied)
+
+## Docker applies a default Seccomp profile that blocks ~44 syscalls
+## including: keyctl, add_key, request_key (prevent keyring attacks)
+## clock_adjtime (prevent time manipulation)
+## get_mempolicy (prevent NUMA info leaks)
+
+## Run a container without Seccomp (for debugging only)
+docker run --security-opt seccomp=unconfined myimage
+
+## Apply a custom Seccomp profile
+docker run --security-opt seccomp=/path/to/profile.json myimage
+
+## Kubernetes Seccomp:
+## spec.securityContext.seccompProfile.type: RuntimeDefault
+## or: Localhost (custom profile)
+</code></pre>
+<h2 id="container-escape-via-cgroup-and-namespace-abuse">Container Escape via cgroup and Namespace Abuse</h2>
+<p>Understanding the attack surface of namespaces and cgroups is essential for anyone running containers in production.</p>
+<pre><code class="language-bash">## Check if running in a privileged container (dangerous)
+cat /proc/self/status | grep CapEff
+## Privileged container = 0000003fffffffff (all capabilities)
+## Normal container = much fewer capabilities
+
+## Check for a writable cgroup mount (CVE-2019-5736 class of vulnerability)
+mount | grep cgroup
+find /sys/fs/cgroup -writable 2&gt;/dev/null | head
+
+## Check if container can see host PIDs
+ls /proc | wc -l
+## Large number = host PID namespace is shared (never in production)
+
+## What a container should NOT have:
+## --privileged flag (Docker): grants all capabilities, disables Seccomp and AppArmor
+## --pid=host: shares host PID namespace
+## --net=host: shares host network namespace
+## hostPath mounts to / or /proc or /sys
+
+## Minimal production Kubernetes security context:
+## spec.containers[].securityContext:
+## allowPrivilegeEscalation: false
+## readOnlyRootFilesystem: true
+## runAsNonRoot: true
+## runAsUser: 1000
+## capabilities:
+## drop: [&quot;ALL&quot;]
+</code></pre>
+<p>The container runtime (containerd, CRI-O) handles namespace and cgroup creation, but the policy decisions about what capabilities to grant, what Seccomp profile to apply, and what namespaces to share are the operator&#39;s responsibility. The kernel will enforce exactly what you configure — no more, no less.</p>
+
+    </div>
+  </div>
+
+  <div class="wrap-narrow"><aside class="refs" aria-labelledby="refs-h">
+  <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
+  <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
+  <ul>
+    <li><a href="https://kubernetes.io/docs/" rel="noopener nofollow" target="_blank">Kubernetes documentation</a><span>Primary reference for the concepts used here.</span></li>
+  </ul>
+</aside></div>
+
+  <div class="wrap-narrow" style="margin-top:3rem">
+    <aside class="series-box">
+      <p class="eyebrow">Series</p>
+      <h2 class="h3" style="margin:.5rem 0 1rem">Linux: A Complete Practical Course</h2>
+      <ol class="series-list">
+        <li><a href="/insights/os-storage-management/">Linux Storage Management: Disks, Partitions, LVM, Filesystems, and Mounting</a></li>
+        <li><a href="/insights/os-disk-io-performance/">Disk I/O Performance Analysis on Linux</a></li>
+        <li aria-current="true"><a href="/insights/os-namespaces-cgroups/">Linux Namespaces and cgroups: The Foundation of Containers</a></li>
+      </ol>
+    </aside>
+  </div>
+
+  <div class="wrap-narrow article-foot">
+    <div class="row" style="gap:.4rem">
+      <a class="chip chip-plain" href="/insights/?topic=Programming">Programming</a><a class="chip chip-plain" href="/insights/?topic=Fundamentals">Fundamentals</a>
+    </div>
+    <nav class="prevnext" aria-label="More articles">
+      <a href="/insights/platform-eng-idp-design/"><span>Previous</span><strong>Designing an Internal Developer Platform: Abstraction Layers, Golden Paths, and the Governance Balance</strong></a>
+      <a href="/insights/finops-tagging-policy/" class="next"><span>Next</span><strong>Cloud Tagging Policy Template: The Foundation FinOps Actually Requires</strong></a>
+    </nav>
+  </div>
+
+  <section class="section surface hair" style="margin-top:4rem">
+    <div class="wrap">
+      <p class="eyebrow">Related</p>
+      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|DevSecOps|Architecture|Fundamentals|" data-search="platform observability: building the visibility layer every application team gets automatically how platform teams build and operate the metrics, logging, and tracing infrastructure that application teams consume without configuring — and what good platform observability coverage actually looks like. devsecops architecture fundamentals" data-topic="DevSecOps" href="/insights/platform-eng-observability/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgplatformengo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e0473a" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#c03a2e" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#e0473a" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgplatformengo)"/>
+  <rect x="28" y="26" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.63"/><rect x="348" y="26" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.57"/><rect x="388" y="26" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.73"/><rect x="428" y="26" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.69"/><rect x="548" y="26" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.54"/><rect x="188" y="62" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.73"/><rect x="348" y="62" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.64"/><rect x="428" y="62" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.72"/><rect x="588" y="62" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.66"/><rect x="228" y="98" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.70"/><rect x="308" y="98" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.48"/><rect x="348" y="98" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.55"/><rect x="388" y="98" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.52"/><rect x="428" y="98" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.64"/><rect x="508" y="98" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.58"/><rect x="588" y="98" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.63"/><rect x="68" y="134" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.65"/><rect x="268" y="134" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.65"/><rect x="508" y="134" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.50"/><rect x="548" y="134" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.67"/><rect x="588" y="134" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.70"/><rect x="68" y="170" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.52"/><rect x="108" y="170" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.48"/><rect x="148" y="170" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.50"/><rect x="268" y="170" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.56"/><rect x="428" y="170" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.74"/><rect x="468" y="170" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.58"/><rect x="508" y="170" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.60"/><rect x="548" y="170" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.60"/><rect x="148" y="206" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.62"/><rect x="228" y="206" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.59"/><rect x="388" y="206" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.74"/><rect x="428" y="206" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.74"/><rect x="508" y="206" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.51"/><rect x="28" y="242" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.63"/><rect x="68" y="242" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.63"/><rect x="148" y="242" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.61"/><rect x="188" y="242" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.64"/><rect x="268" y="242" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.65"/><rect x="348" y="242" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.59"/><rect x="148" y="278" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.63"/><rect x="188" y="278" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.72"/><rect x="428" y="278" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.55"/><rect x="548" y="278" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.58"/><rect x="588" y="278" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.68"/><rect x="28" y="314" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.54"/><rect x="108" y="314" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.61"/><rect x="228" y="314" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.67"/><rect x="348" y="314" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.52"/><rect x="428" y="314" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.59"/><rect x="468" y="314" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.61"/><rect x="548" y="314" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.59"/>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">DevSecOps</span>
+    <h3 class="card-title">Platform Observability: Building the Visibility Layer Every Application Team Gets Automatically</h3>
+    <p class="card-desc">How platform teams build and operate the metrics, logging, and tracing infrastructure that application teams consume without configuring — and what good platform observability coverage actually looks like.</p>
+    <div class="card-meta"><time datetime="2026-09-16">16 Sept 2026</time><span class="dot"></span><span>3 min read</span><span class="dot"></span><span>Series</span></div>
+  </div>
+</a>
+<a class="card" data-card data-topics="|AI &amp; MLOps|Fundamentals|" data-search="neural networks explained: what they are, how they learn, and why they work neurons, layers, weights, activation functions, backpropagation, and gradient descent — the actual mechanics of how a neural network learns from data, explained without the mathematics becoming the obstacle. ai &amp; mlops fundamentals" data-topic="AI &amp; MLOps" href="/insights/aiml-neural-networks/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgaimlneuralne" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6d4aff" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#5837e0" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#6d4aff" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgaimlneuralne)"/>
+  <rect x="86" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.51" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="464" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.45" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="212" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.45" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 172 H338" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.60" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 172 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.40" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="338" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.32" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 236 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.39" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">AI &amp; MLOps</span>
+    <h3 class="card-title">Neural Networks Explained: What They Are, How They Learn, and Why They Work</h3>
+    <p class="card-desc">Neurons, layers, weights, activation functions, backpropagation, and gradient descent — the actual mechanics of how a neural network learns from data, explained without the mathematics becoming the obstacle.</p>
+    <div class="card-meta"><time datetime="2026-09-04">4 Sept 2026</time><span class="dot"></span><span>3 min read</span><span class="dot"></span><span>Series</span></div>
+  </div>
+</a>
+<a class="card" data-card data-topics="|AI &amp; MLOps|Enterprise AI|Fundamentals|" data-search="rag, prompting, and building applications on llms: the practitioner&#39;s guide retrieval-augmented generation, system prompts, few-shot examples, chain-of-thought, structured output, and the engineering patterns that make llm applications reliable in production. ai &amp; mlops enterprise ai fundamentals" data-topic="AI &amp; MLOps" href="/insights/aiml-rag-and-prompting/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgaimlragandpr" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6d4aff" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#5837e0" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#6d4aff" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgaimlragandpr)"/>
+  <line x1="558.0" y1="238.5" x2="507.0" y2="307.9" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="558.0" y1="238.5" x2="533.9" y2="248.6" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="558.0" y1="238.5" x2="454.4" y2="262.2" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="558.0" y1="238.5" x2="526.7" y2="294.6" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="277.7" y1="133.5" x2="137.5" y2="170.9" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="277.7" y1="133.5" x2="299.0" y2="98.8" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="277.7" y1="133.5" x2="296.8" y2="225.1" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="277.7" y1="133.5" x2="183.4" y2="237.5" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="277.7" y1="133.5" x2="375.6" y2="73.2" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="137.5" y1="170.9" x2="183.4" y2="237.5" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="137.5" y1="170.9" x2="59.8" y2="301.1" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="137.5" y1="170.9" x2="120.6" y2="58.1" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="507.0" y1="307.9" x2="533.9" y2="248.6" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="507.0" y1="307.9" x2="454.4" y2="262.2" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="507.0" y1="307.9" x2="526.7" y2="294.6" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="533.9" y1="248.6" x2="454.4" y2="262.2" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="533.9" y1="248.6" x2="526.7" y2="294.6" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="299.0" y1="98.8" x2="296.8" y2="225.1" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="299.0" y1="98.8" x2="375.6" y2="73.2" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="296.8" y1="225.1" x2="183.4" y2="237.5" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="296.8" y1="225.1" x2="454.4" y2="262.2" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="183.4" y1="237.5" x2="59.8" y2="301.1" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="454.4" y1="262.2" x2="526.7" y2="294.6" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><circle cx="558.0" cy="238.5" r="5" fill="#6d4aff" fill-opacity=".9"/><circle cx="277.7" cy="133.5" r="8.5" fill="#5837e0" fill-opacity=".9"/><circle cx="137.5" cy="170.9" r="12" fill="#6d4aff" fill-opacity=".9"/><circle cx="507.0" cy="307.9" r="5" fill="#5837e0" fill-opacity=".9"/><circle cx="533.9" cy="248.6" r="8.5" fill="#6d4aff" fill-opacity=".9"/><circle cx="299.0" cy="98.8" r="12" fill="#5837e0" fill-opacity=".9"/><circle cx="296.8" cy="225.1" r="5" fill="#6d4aff" fill-opacity=".9"/><circle cx="183.4" cy="237.5" r="8.5" fill="#5837e0" fill-opacity=".9"/><circle cx="59.8" cy="301.1" r="12" fill="#6d4aff" fill-opacity=".9"/><circle cx="375.6" cy="73.2" r="5" fill="#5837e0" fill-opacity=".9"/><circle cx="454.4" cy="262.2" r="8.5" fill="#6d4aff" fill-opacity=".9"/><circle cx="526.7" cy="294.6" r="12" fill="#5837e0" fill-opacity=".9"/><circle cx="120.6" cy="58.1" r="5" fill="#6d4aff" fill-opacity=".9"/>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">AI &amp; MLOps</span>
+    <h3 class="card-title">RAG, Prompting, and Building Applications on LLMs: The Practitioner&#39;s Guide</h3>
+    <p class="card-desc">Retrieval-augmented generation, system prompts, few-shot examples, chain-of-thought, structured output, and the engineering patterns that make LLM applications reliable in production.</p>
+    <div class="card-meta"><time datetime="2026-08-25">25 Aug 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
+  </div>
+</a></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap-narrow cta-panel">
+      <h2 class="h2">Working on this in production?</h2>
+      <p class="lede" style="margin-top:.7rem">We do this work directly alongside engineering teams — architecture review, migration, and hands-on enablement.</p>
+      <div class="row" style="margin-top:1.4rem">
+        <a class="btn" href="/contact/">Engage engineering <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="btn btn-ghost" href="/services/">See what we do</a>
+      </div>
+    </div>
+  </section>
+</article>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="grid g-4" style="gap:2rem">
+      <div>
+        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem">
+          <img src="/images/ajna-logo.png" alt="" width="32" height="32">
+          <span class="brand-name">Ajna<span style="color:#6f9bff">CS</span></span>
+        </a>
+        <p style="font-size:.88rem;line-height:1.65;color:#9fb0d0;max-width:30ch">
+          Specialised engineering partner for enterprise architecture, AI &amp; MLOps, and technical enablement.
+        </p>
+        <div class="social" style="margin-top:1.1rem">
+          <a href="https://www.youtube.com/@TechKnowen" rel="noopener" aria-label="YouTube"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 12s0-3.8-.5-5.6a2.9 2.9 0 0 0-2-2C18.7 4 12 4 12 4s-6.7 0-8.5.4a2.9 2.9 0 0 0-2 2C1 8.2 1 12 1 12s0 3.8.5 5.6a2.9 2.9 0 0 0 2 2C5.3 20 12 20 12 20s6.7 0 8.5-.4a2.9 2.9 0 0 0 2-2C23 15.8 23 12 23 12zM9.8 15.4V8.6l5.9 3.4z"/></svg></a>
+          <a href="https://techknowen.com" rel="noopener" aria-label="TechKnowen blog"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 3h16v3H4zm0 5h16v13l-8-4-8 4z"/></svg></a>
+          <a href="/feed.xml" aria-label="RSS feed"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="6.2" cy="17.8" r="2.2"/><path d="M4 10.2v3a6.6 6.6 0 0 1 6.6 6.6h3A9.6 9.6 0 0 0 4 10.2zM4 4v3c7.2 0 13 5.8 13 13h3C20 11.2 12.8 4 4 4z"/></svg></a>
+        </div>
+      </div>
+      <div>
+        <h4>Services</h4>
+        <ul>
+          <li><a href="/services/#architecture">Enterprise architecture</a></li>
+          <li><a href="/services/#ai">AI &amp; MLOps</a></li>
+          <li><a href="/services/#training">Technical enablement</a></li>
+          <li><a href="/case-studies/">Case studies</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Insights</h4>
+        <ul>
+          <li><a href="/insights/">All articles</a></li>
+          <li><a href="/series/">Series</a></li>
+          <li><a href="/topics/">Topics</a></li>
+          <li><a href="/notes/">Personal notes</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
+          <li><a href="/contact/">Start an engagement</a></li>
+          <li><a href="/about/">About</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span id="yr">2026</span> Ajna Consulting Services. All rights reserved.</span>
+      <span style="display:flex;gap:1.2rem"><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a></span>
+    </div>
+  </div>
+</footer>
+<script src="/assets/js/site.js" defer></script>
+</body>
+</html>

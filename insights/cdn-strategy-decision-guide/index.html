@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CDN Strategy: Choosing the Right Approach for Your Architecture | Ajna CS</title>
+<meta name="description" content="CDN selection is more than picking the fastest network. Origin configuration, cache invalidation, edge compute capabilities, and the overlap between your C…">
+<meta name="author" content="Chandra Lanka">
+<link rel="canonical" href="https://ajnacs.com/insights/cdn-strategy-decision-guide/">
+<meta name="robots" content="index, follow, max-image-preview:large">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Ajna Consulting Services">
+<meta property="og:title" content="CDN Strategy: Choosing the Right Approach for Your Architecture">
+<meta property="og:description" content="CDN selection is more than picking the fastest network. Origin configuration, cache invalidation, edge compute capabilities, and the overlap between your C…">
+<meta property="og:url" content="https://ajnacs.com/insights/cdn-strategy-decision-guide/">
+<meta property="og:image" content="https://ajnacs.com/assets/og/insights-cdn-strategy-decision-guide.svg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="CDN Strategy: Choosing the Right Approach for Your Architecture">
+<meta name="twitter:description" content="CDN selection is more than picking the fastest network. Origin configuration, cache invalidation, edge compute capabilities, and the overlap between your C…">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/insights-cdn-strategy-decision-guide.svg">
+
+<link rel="icon" href="/images/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="/images/ajna-logo.png">
+<meta name="theme-color" content="#0a1020">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="/assets/css/site.css">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<script>
+/* Set the theme before first paint so the page never flashes the wrong one. */
+(function(){try{var t=localStorage.getItem('acs-theme');
+if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"CDN Strategy: Choosing the Right Approach for Your Architecture","description":"CDN selection is more than picking the fastest network. Origin configuration, cache invalidation, edge compute capabilities, and the overlap between your CDN and your cloud provider's services all affect the right choice. Here's how to think through it.","datePublished":"2025-03-13","dateModified":"2025-03-13","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/cdn-strategy-decision-guide/","image":"https://ajnacs.com/assets/og/insights-cdn-strategy-decision-guide.svg","keywords":"CDN & Caching, Cloud Architecture, Infrastructure","articleSection":"Cloud Architecture","wordCount":907}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"CDN Strategy: Choosing the Right Approach for Your Architecture"}]}</script>
+</head>
+<body class="" data-topic="Cloud Architecture">
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header" id="siteHeader">
+  <div class="wrap" style="display:flex;align-items:center;width:min(1220px,100% - var(--gutter)*2)">
+    <a class="brand" href="/">
+      <img src="/images/ajna-logo.png" alt="" width="32" height="32">
+      <span class="brand-name">Ajna<span>CS</span></span>
+    </a>
+    <nav class="nav" id="nav" aria-label="Primary">
+      <a href="/services/">Services</a>
+      <a href="/insights/" aria-current="page">Insights</a>
+      <a href="/series/">Series</a>
+      <a href="/case-studies/">Case studies</a>
+      <a href="/about/">About</a>
+      <a class="btn btn-sm" href="/contact/" style="margin-left:.4rem">Engage engineering</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn" id="themeBtn" type="button" aria-label="Switch to dark mode" aria-pressed="false"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg></button>
+      <button class="icon-btn nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+
+<div class="read-bar" aria-hidden="true"><span id="readBar"></span></div>
+<article class="article">
+  <header class="article-head">
+    <div class="wrap-narrow">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a> <span aria-hidden="true">/</span>
+        <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
+        <span>Cloud Architecture</span>
+      </nav>
+      <h1 class="h1">CDN Strategy: Choosing the Right Approach for Your Architecture</h1>
+      <p class="lede" style="margin-top:1rem">CDN selection is more than picking the fastest network. Origin configuration, cache invalidation, edge compute capabilities, and the overlap between your CDN and your cloud provider&#39;s services all affect the right choice. Here&#39;s how to think through it.</p>
+      <div class="article-meta">
+        <span class="chip">Cloud Architecture</span>
+        <time datetime="2025-03-13">13 Mar 2025</time>
+        <span class="dot"></span><span>4 min read</span>
+        <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="article-hero wrap-narrow" data-topic="Cloud Architecture"><svg viewBox="0 0 1200 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgcdnstrategyd" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0d9488" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#0b7a70" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#0d9488" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="420" fill="url(#bgcdnstrategyd)"/>
+  <rect x="86" y="92" width="66" height="32" rx="7" fill="#0d9488" fill-opacity="0.39" stroke="#0b7a70" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 108 H212" stroke="#0d9488" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="92" width="66" height="32" rx="7" fill="#0d9488" fill-opacity="0.33" stroke="#0b7a70" stroke-opacity=".5" stroke-width="1.1"/><rect x="338" y="92" width="66" height="32" rx="7" fill="#0d9488" fill-opacity="0.62" stroke="#0b7a70" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 108 H464" stroke="#0d9488" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="92" width="66" height="32" rx="7" fill="#0d9488" fill-opacity="0.45" stroke="#0b7a70" stroke-opacity=".5" stroke-width="1.1"/><rect x="86" y="156" width="66" height="32" rx="7" fill="#0d9488" fill-opacity="0.37" stroke="#0b7a70" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 172 H212" stroke="#0d9488" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="156" width="66" height="32" rx="7" fill="#0d9488" fill-opacity="0.22" stroke="#0b7a70" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 172 H338" stroke="#0d9488" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#0d9488" fill-opacity="0.25" stroke="#0b7a70" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 172 H464" stroke="#0d9488" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="86" y="220" width="66" height="32" rx="7" fill="#0d9488" fill-opacity="0.56" stroke="#0b7a70" stroke-opacity=".5" stroke-width="1.1"/><rect x="212" y="220" width="66" height="32" rx="7" fill="#0d9488" fill-opacity="0.40" stroke="#0b7a70" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 236 H338" stroke="#0d9488" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="220" width="66" height="32" rx="7" fill="#0d9488" fill-opacity="0.13" stroke="#0b7a70" stroke-opacity=".5" stroke-width="1.1"/>
+</svg></div>
+
+  <div class="wrap-narrow article-grid">
+    <nav class="toc" aria-label="On this page">
+  <p class="toc-title">On this page</p>
+  <ol><li><a href="#the-fundamental-decision-cloud-native-cdn-vs-specialist-cdn">The fundamental decision: cloud-native CDN vs. specialist CDN</a></li><li><a href="#cache-configuration-decisions-that-matter">Cache configuration decisions that matter</a></li><li><a href="#cache-invalidation-the-hard-part">Cache invalidation: the hard part</a></li><li><a href="#edge-compute-where-it-makes-sense">Edge compute: where it makes sense</a></li><li><a href="#performance-measurement-what-matters-and-what39s-noise">Performance measurement: what matters and what&amp;#39;s noise</a></li></ol>
+</nav>
+    <div class="prose">
+<p>A CDN solves a simple problem — content is faster when it&#39;s closer to the user — in increasingly complex ways. Modern CDNs aren&#39;t just caches; they&#39;re the place where TLS terminates, where bot traffic is filtered, where geolocation routing happens, where edge compute runs, and where rate limiting is enforced. The CDN decision has more surface area than most teams realise when they first evaluate it.</p>
+<h2 id="the-fundamental-decision-cloud-native-cdn-vs-specialist-cdn">The fundamental decision: cloud-native CDN vs. specialist CDN</h2>
+<p>Cloud providers offer CDN services that integrate tightly with their other services:</p>
+<ul>
+<li><strong>AWS CloudFront</strong>: integrates with S3, ALB, Lambda@Edge, and AWS WAF. Origin access control for S3 buckets. The natural choice if you&#39;re deeply invested in AWS.</li>
+<li><strong>Azure Front Door</strong>: integrates with Azure services, includes WAF, load balancing, and health probes. Supports global load distribution across Azure origins.</li>
+<li><strong>GCP Cloud CDN</strong>: integrates with Cloud Load Balancing and Cloud Storage. Simple to configure for GCP workloads.</li>
+</ul>
+<p>Specialist CDNs (Cloudflare, Fastly, Akamai) bring:</p>
+<ul>
+<li>Larger, more distributed PoP networks (Cloudflare has 300+ locations; CloudFront has ~600 PoPs but not all have full cache capability)</li>
+<li>More mature edge compute platforms (Cloudflare Workers, Fastly Compute)</li>
+<li>More advanced security and bot management</li>
+<li>Configuration that&#39;s independent of your cloud provider</li>
+</ul>
+<p>The choice is rarely &quot;cloud CDN vs. specialist CDN&quot; — it&#39;s often both. Cloudflare in front of AWS, with CloudFront for specific workloads, is a common production configuration.</p>
+<h2 id="cache-configuration-decisions-that-matter">Cache configuration decisions that matter</h2>
+<p><strong>What to cache</strong>: any publicly accessible content that changes less frequently than your cache TTL, and any content that&#39;s served at high volume. Static assets (CSS, JS, images) with long TTLs. API responses for publicly accessible data with shorter TTLs.</p>
+<p><strong>What not to cache at the CDN</strong>: authenticated responses (responses that are specific to a logged-in user), responses containing session data, payment and checkout flows. The CDN should skip caching these and pass directly to origin.</p>
+<p><strong>Origin caching headers</strong>: CDNs respect <code>Cache-Control</code> headers from origin. <code>Cache-Control: public, max-age=86400, s-maxage=3600</code> — <code>max-age</code> applies to browser caches, <code>s-maxage</code> applies to CDN caches. Use <code>s-maxage</code> to set longer CDN cache times while keeping browser cache shorter (so users see fresh content after a CDN cache hit expires).</p>
+<p><strong>Stale-while-revalidate</strong>: <code>Cache-Control: max-age=60, stale-while-revalidate=600</code> — serve the cached object for up to 60 seconds, then revalidate in the background. For up to 600 additional seconds, serve the stale object while waiting for the background refresh. This improves perceived performance by eliminating cache misses.</p>
+<h2 id="cache-invalidation-the-hard-part">Cache invalidation: the hard part</h2>
+<p>CDN cache invalidation is one of the &quot;two hard problems&quot; in computer science for a reason. A file cached at 300 PoPs needs to be invalidated at all 300 PoPs. Approaches:</p>
+<p><strong>Versioned URLs</strong>: <code>app.a3b8f2.js</code> instead of <code>app.js</code>. The content is immutable by construction — when the file changes, the URL changes. No cache invalidation needed; the old URL simply expires naturally. This is the right approach for build artifacts and static assets.</p>
+<p><strong>Surrogate keys / cache tags</strong>: attach metadata to cached objects that allows bulk invalidation. Cloudflare&#39;s Cache Tags, Fastly&#39;s Surrogate-Key header, and Akamai&#39;s Edge-Control header all support this pattern. Tag all product page variants with <code>product-{id}</code> — when a product is updated, invalidate all objects with that tag. Faster and more precise than path-based invalidation.</p>
+<p><strong>Path-based purge</strong>: invalidate <code>https://cdn.example.com/api/products/*</code>. Works for hierarchical URL structures. Slower than surrogate keys for large invalidation jobs.</p>
+<p><strong>Wildcard purge / full cache purge</strong>: use as a last resort. A full CDN cache purge sends all traffic to origin until the cache repopulates — this is a self-inflicted origin overload.</p>
+<h2 id="edge-compute-where-it-makes-sense">Edge compute: where it makes sense</h2>
+<p>CDN edge compute runs your code at PoPs rather than in your origin datacenter. The use cases where it provides genuine value:</p>
+<ul>
+<li><strong>A/B testing</strong>: split traffic at the edge without a round-trip to origin. Cloudflare Workers or Lambda@Edge intercept the request, assign a variant, and route accordingly.</li>
+<li><strong>Request transformation</strong>: rewrite URLs, add/strip headers, modify request bodies before they reach origin.</li>
+<li><strong>Authentication at the edge</strong>: verify JWTs and block unauthenticated requests before they consume origin resources.</li>
+<li><strong>Personalisation via cookie</strong>: redirect users to locale-specific content based on cookies or geolocation without an origin round-trip.</li>
+<li><strong>Synthetic responses</strong>: return responses for common cases (redirects, health checks, static error pages) without hitting origin at all.</li>
+</ul>
+<p>Edge compute is constrained: CPU time limits, limited memory, no persistent connections to databases. It&#39;s for logic that can be expressed as a short, stateless function. Attempts to do more than this — maintaining state, complex business logic, database queries — run into the constraints and should stay at origin.</p>
+<h2 id="performance-measurement-what-matters-and-what39s-noise">Performance measurement: what matters and what&#39;s noise</h2>
+<p><strong>TTFB from origin</strong>: the latency from CDN edge to your origin. This is what the CDN can&#39;t fix — if your origin is slow, the CDN only helps for cache hits.</p>
+<p><strong>Cache hit ratio</strong>: what percentage of requests are served from cache. Below 70% suggests something is preventing caching (too many uncacheable parameters, too many authenticated paths, TTLs too short).</p>
+<p><strong>Time to First Byte (TTFB) measured at edge</strong>: includes the CDN processing time and, for misses, the origin round-trip. This is the metric end users experience.</p>
+<p><strong>Real User Monitoring (RUM)</strong>: synthetic tests from monitoring locations don&#39;t capture the geographic distribution of your actual users. RUM data from user browsers, aggregated by geography, shows where performance is actually poor.</p>
+<p><em>Working through CDN selection or configuration for a specific architecture? The trade-offs vary a lot by workload. <a href="/contact">Happy to compare notes.</a></em></p>
+
+    </div>
+  </div>
+
+  
+
+  
+
+  <div class="wrap-narrow article-foot">
+    <div class="row" style="gap:.4rem">
+      <a class="chip chip-plain" href="/insights/?topic=CDN%20%26%20Caching">CDN &amp; Caching</a><a class="chip chip-plain" href="/insights/?topic=Cloud%20Architecture">Cloud Architecture</a><a class="chip chip-plain" href="/insights/?topic=Infrastructure">Infrastructure</a>
+    </div>
+    <nav class="prevnext" aria-label="More articles">
+      <a href="/insights/varnish-cache-configuration/"><span>Previous</span><strong>Varnish Cache Configuration: A Practical Guide to VCL and Caching Strategy</strong></a>
+      <a href="/insights/quick-take-ethernet-vs-infiniband/" class="next"><span>Next</span><strong>Ethernet vs. InfiniBand for AI Training: Why the Network Fabric Matters More Than You Think</strong></a>
+    </nav>
+  </div>
+
+  <section class="section surface hair" style="margin-top:4rem">
+    <div class="wrap">
+      <p class="eyebrow">Related</p>
+      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|FinOps|Cost Optimisation|Cloud Architecture|" data-search="cloud cost anomaly detection: catching runaway spend before it becomes a bill cloud cost overruns that show up in the monthly invoice are already weeks old. here&#39;s how to set up anomaly detection that catches cost spikes in hours, with enough context to diagnose the cause quickly. finops cost optimisation cloud architecture" data-topic="FinOps" href="/insights/finops-anomaly-detection/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgfinopsanomal" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e8a317" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#a9760a" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#e8a317" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgfinopsanomal)"/>
+  <rect x="86" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.39" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 108 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.41" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 108 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.21" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 108 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.13" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 172 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.17" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 172 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="86" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.23" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 236 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.54" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 236 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.51" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">FinOps</span>
+    <h3 class="card-title">Cloud Cost Anomaly Detection: Catching Runaway Spend Before It Becomes a Bill</h3>
+    <p class="card-desc">Cloud cost overruns that show up in the monthly invoice are already weeks old. Here&#39;s how to set up anomaly detection that catches cost spikes in hours, with enough context to diagnose the cause quickly.</p>
+    <div class="card-meta"><time datetime="2026-07-06">6 Jul 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
+  </div>
+</a>
+<a class="card" data-card data-topics="|FinOps|Cloud Architecture|Cost Optimisation|" data-search="cloud tagging policy template: the foundation finops actually requires a tagging policy that nobody enforces is worse than no tagging policy. here&#39;s how to design a tagging taxonomy that survives contact with real engineering teams — with enforcement mechanisms, exceptions handling, and the tags that actually drive cost allocation decisions. finops cloud architecture cost optimisation" data-topic="FinOps" href="/insights/finops-tagging-policy/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgfinopstaggin" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e8a317" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#a9760a" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#e8a317" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgfinopstaggin)"/>
+  <rect x="157.1" y="78" width="300.0" height="34" rx="8"
+      fill="#a9760a" fill-opacity="0.16"
+      stroke="#e8a317" stroke-opacity=".45" stroke-width="1.2"/><line x1="320" y1="112" x2="320" y2="134" stroke="#e8a317" stroke-opacity=".4" stroke-width="1.4"/><rect x="193.8" y="134" width="266.0" height="34" rx="8"
+      fill="#e8a317" fill-opacity="0.29"
+      stroke="#e8a317" stroke-opacity=".45" stroke-width="1.2"/><line x1="320" y1="168" x2="320" y2="190" stroke="#e8a317" stroke-opacity=".4" stroke-width="1.4"/><rect x="209.4" y="190" width="232.0" height="34" rx="8"
+      fill="#a9760a" fill-opacity="0.42"
+      stroke="#e8a317" stroke-opacity=".45" stroke-width="1.2"/><line x1="320" y1="224" x2="320" y2="246" stroke="#e8a317" stroke-opacity=".4" stroke-width="1.4"/><rect x="224.4" y="246" width="198.0" height="34" rx="8"
+      fill="#e8a317" fill-opacity="0.55"
+      stroke="#e8a317" stroke-opacity=".45" stroke-width="1.2"/>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">FinOps</span>
+    <h3 class="card-title">Cloud Tagging Policy Template: The Foundation FinOps Actually Requires</h3>
+    <p class="card-desc">A tagging policy that nobody enforces is worse than no tagging policy. Here&#39;s how to design a tagging taxonomy that survives contact with real engineering teams — with enforcement mechanisms, exceptions handling, and the tags that actually drive cost allocation decisions.</p>
+    <div class="card-meta"><time datetime="2026-06-12">12 Jun 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
+  </div>
+</a>
+<a class="card" data-card data-topics="|Cloud Architecture|Architecture|Reliability|Disaster Recovery|Distributed Systems|" data-search="multi-region architecture patterns: what you&#39;re actually buying at each tier active-passive, pilot light, active-active, and the data problem underneath them all. a tiered framework for multi-region design that matches architecture to actual availability requirements — and prices the tiers honestly. cloud architecture architecture reliability disaster recovery distributed systems" data-topic="Cloud Architecture" href="/insights/multi-region-architecture-patterns/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgmultiregiona" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0d9488" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#0b7a70" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#0d9488" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgmultiregiona)"/>
+  <rect x="179.8" y="78" width="300.0" height="34" rx="8"
+      fill="#0b7a70" fill-opacity="0.16"
+      stroke="#0d9488" stroke-opacity=".45" stroke-width="1.2"/><line x1="320" y1="112" x2="320" y2="134" stroke="#0d9488" stroke-opacity=".4" stroke-width="1.4"/><rect x="169.3" y="134" width="266.0" height="34" rx="8"
+      fill="#0d9488" fill-opacity="0.29"
+      stroke="#0d9488" stroke-opacity=".45" stroke-width="1.2"/><line x1="320" y1="168" x2="320" y2="190" stroke="#0d9488" stroke-opacity=".4" stroke-width="1.4"/><rect x="213.2" y="190" width="232.0" height="34" rx="8"
+      fill="#0b7a70" fill-opacity="0.42"
+      stroke="#0d9488" stroke-opacity=".45" stroke-width="1.2"/><line x1="320" y1="224" x2="320" y2="246" stroke="#0d9488" stroke-opacity=".4" stroke-width="1.4"/><rect x="237.0" y="246" width="198.0" height="34" rx="8"
+      fill="#0d9488" fill-opacity="0.55"
+      stroke="#0d9488" stroke-opacity=".45" stroke-width="1.2"/>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">Cloud Architecture</span>
+    <h3 class="card-title">Multi-Region Architecture Patterns: What You&#39;re Actually Buying at Each Tier</h3>
+    <p class="card-desc">Active-passive, pilot light, active-active, and the data problem underneath them all. A tiered framework for multi-region design that matches architecture to actual availability requirements — and prices the tiers honestly.</p>
+    <div class="card-meta"><time datetime="2026-02-12">12 Feb 2026</time><span class="dot"></span><span>5 min read</span></div>
+  </div>
+</a></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap-narrow cta-panel">
+      <h2 class="h2">Working on this in production?</h2>
+      <p class="lede" style="margin-top:.7rem">We do this work directly alongside engineering teams — architecture review, migration, and hands-on enablement.</p>
+      <div class="row" style="margin-top:1.4rem">
+        <a class="btn" href="/contact/">Engage engineering <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="btn btn-ghost" href="/services/">See what we do</a>
+      </div>
+    </div>
+  </section>
+</article>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="grid g-4" style="gap:2rem">
+      <div>
+        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem">
+          <img src="/images/ajna-logo.png" alt="" width="32" height="32">
+          <span class="brand-name">Ajna<span style="color:#6f9bff">CS</span></span>
+        </a>
+        <p style="font-size:.88rem;line-height:1.65;color:#9fb0d0;max-width:30ch">
+          Specialised engineering partner for enterprise architecture, AI &amp; MLOps, and technical enablement.
+        </p>
+        <div class="social" style="margin-top:1.1rem">
+          <a href="https://www.youtube.com/@TechKnowen" rel="noopener" aria-label="YouTube"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 12s0-3.8-.5-5.6a2.9 2.9 0 0 0-2-2C18.7 4 12 4 12 4s-6.7 0-8.5.4a2.9 2.9 0 0 0-2 2C1 8.2 1 12 1 12s0 3.8.5 5.6a2.9 2.9 0 0 0 2 2C5.3 20 12 20 12 20s6.7 0 8.5-.4a2.9 2.9 0 0 0 2-2C23 15.8 23 12 23 12zM9.8 15.4V8.6l5.9 3.4z"/></svg></a>
+          <a href="https://techknowen.com" rel="noopener" aria-label="TechKnowen blog"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 3h16v3H4zm0 5h16v13l-8-4-8 4z"/></svg></a>
+          <a href="/feed.xml" aria-label="RSS feed"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="6.2" cy="17.8" r="2.2"/><path d="M4 10.2v3a6.6 6.6 0 0 1 6.6 6.6h3A9.6 9.6 0 0 0 4 10.2zM4 4v3c7.2 0 13 5.8 13 13h3C20 11.2 12.8 4 4 4z"/></svg></a>
+        </div>
+      </div>
+      <div>
+        <h4>Services</h4>
+        <ul>
+          <li><a href="/services/#architecture">Enterprise architecture</a></li>
+          <li><a href="/services/#ai">AI &amp; MLOps</a></li>
+          <li><a href="/services/#training">Technical enablement</a></li>
+          <li><a href="/case-studies/">Case studies</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Insights</h4>
+        <ul>
+          <li><a href="/insights/">All articles</a></li>
+          <li><a href="/series/">Series</a></li>
+          <li><a href="/topics/">Topics</a></li>
+          <li><a href="/notes/">Personal notes</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
+          <li><a href="/contact/">Start an engagement</a></li>
+          <li><a href="/about/">About</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span id="yr">2026</span> Ajna Consulting Services. All rights reserved.</span>
+      <span style="display:flex;gap:1.2rem"><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a></span>
+    </div>
+  </div>
+</footer>
+<script src="/assets/js/site.js" defer></script>
+</body>
+</html>

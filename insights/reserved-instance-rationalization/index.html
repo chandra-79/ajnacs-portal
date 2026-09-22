@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Reserved Instance Rationalisation: How to Commit to the Right Resources | Ajna CS</title>
+<meta name="description" content="Committed use discounts (Reserved Instances, Savings Plans, CUDs) are one of the highest-return FinOps actions — but committing to the wrong shape or term…">
+<meta name="author" content="Chandra Lanka">
+<link rel="canonical" href="https://ajnacs.com/insights/reserved-instance-rationalization/">
+<meta name="robots" content="index, follow, max-image-preview:large">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Ajna Consulting Services">
+<meta property="og:title" content="Reserved Instance Rationalisation: How to Commit to the Right Resources">
+<meta property="og:description" content="Committed use discounts (Reserved Instances, Savings Plans, CUDs) are one of the highest-return FinOps actions — but committing to the wrong shape or term…">
+<meta property="og:url" content="https://ajnacs.com/insights/reserved-instance-rationalization/">
+<meta property="og:image" content="https://ajnacs.com/assets/og/insights-reserved-instance-rationalization.svg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Reserved Instance Rationalisation: How to Commit to the Right Resources">
+<meta name="twitter:description" content="Committed use discounts (Reserved Instances, Savings Plans, CUDs) are one of the highest-return FinOps actions — but committing to the wrong shape or term…">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/insights-reserved-instance-rationalization.svg">
+
+<link rel="icon" href="/images/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="/images/ajna-logo.png">
+<meta name="theme-color" content="#0a1020">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="/assets/css/site.css">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<script>
+/* Set the theme before first paint so the page never flashes the wrong one. */
+(function(){try{var t=localStorage.getItem('acs-theme');
+if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Reserved Instance Rationalisation: How to Commit to the Right Resources","description":"Committed use discounts (Reserved Instances, Savings Plans, CUDs) are one of the highest-return FinOps actions — but committing to the wrong shape or term locks in waste. Here's the analysis process for getting it right.","datePublished":"2025-11-20","dateModified":"2025-11-20","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/reserved-instance-rationalization/","image":"https://ajnacs.com/assets/og/insights-reserved-instance-rationalization.svg","keywords":"FinOps, Cost Optimisation, Cloud Architecture","articleSection":"FinOps","wordCount":859}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Reserved Instance Rationalisation: How to Commit to the Right Resources"}]}</script>
+</head>
+<body class="" data-topic="FinOps">
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header" id="siteHeader">
+  <div class="wrap" style="display:flex;align-items:center;width:min(1220px,100% - var(--gutter)*2)">
+    <a class="brand" href="/">
+      <img src="/images/ajna-logo.png" alt="" width="32" height="32">
+      <span class="brand-name">Ajna<span>CS</span></span>
+    </a>
+    <nav class="nav" id="nav" aria-label="Primary">
+      <a href="/services/">Services</a>
+      <a href="/insights/" aria-current="page">Insights</a>
+      <a href="/series/">Series</a>
+      <a href="/case-studies/">Case studies</a>
+      <a href="/about/">About</a>
+      <a class="btn btn-sm" href="/contact/" style="margin-left:.4rem">Engage engineering</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn" id="themeBtn" type="button" aria-label="Switch to dark mode" aria-pressed="false"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg></button>
+      <button class="icon-btn nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+
+<div class="read-bar" aria-hidden="true"><span id="readBar"></span></div>
+<article class="article">
+  <header class="article-head">
+    <div class="wrap-narrow">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a> <span aria-hidden="true">/</span>
+        <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
+        <span>FinOps</span>
+      </nav>
+      <h1 class="h1">Reserved Instance Rationalisation: How to Commit to the Right Resources</h1>
+      <p class="lede" style="margin-top:1rem">Committed use discounts (Reserved Instances, Savings Plans, CUDs) are one of the highest-return FinOps actions — but committing to the wrong shape or term locks in waste. Here&#39;s the analysis process for getting it right.</p>
+      <div class="article-meta">
+        <span class="chip">FinOps</span>
+        <time datetime="2025-11-20">20 Nov 2025</time>
+        <span class="dot"></span><span>4 min read</span>
+        <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="article-hero wrap-narrow" data-topic="FinOps"><svg viewBox="0 0 1200 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgreservedinst" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e8a317" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#a9760a" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#e8a317" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="420" fill="url(#bgreservedinst)"/>
+  <rect x="68" y="26" width="28" height="24" rx="5" fill="#a9760a" fill-opacity="0.69"/><rect x="148" y="26" width="28" height="24" rx="5" fill="#e8a317" fill-opacity="0.57"/><rect x="188" y="26" width="28" height="24" rx="5" fill="#e8a317" fill-opacity="0.51"/><rect x="228" y="26" width="28" height="24" rx="5" fill="#a9760a" fill-opacity="0.68"/><rect x="348" y="26" width="28" height="24" rx="5" fill="#a9760a" fill-opacity="0.69"/><rect x="428" y="26" width="28" height="24" rx="5" fill="#e8a317" fill-opacity="0.63"/><rect x="548" y="26" width="28" height="24" rx="5" fill="#e8a317" fill-opacity="0.50"/><rect x="228" y="62" width="28" height="24" rx="5" fill="#e8a317" fill-opacity="0.57"/><rect x="388" y="62" width="28" height="24" rx="5" fill="#e8a317" fill-opacity="0.47"/><rect x="428" y="62" width="28" height="24" rx="5" fill="#e8a317" fill-opacity="0.57"/><rect x="468" y="62" width="28" height="24" rx="5" fill="#a9760a" fill-opacity="0.74"/><rect x="148" y="98" width="28" height="24" rx="5" fill="#e8a317" fill-opacity="0.64"/><rect x="268" y="98" width="28" height="24" rx="5" fill="#e8a317" fill-opacity="0.56"/><rect x="348" y="98" width="28" height="24" rx="5" fill="#e8a317" fill-opacity="0.50"/><rect x="388" y="98" width="28" height="24" rx="5" fill="#e8a317" fill-opacity="0.52"/><rect x="468" y="98" width="28" height="24" rx="5" fill="#e8a317" fill-opacity="0.55"/><rect x="548" y="98" width="28" height="24" rx="5" fill="#e8a317" fill-opacity="0.61"/><rect x="588" y="98" width="28" height="24" rx="5" fill="#e8a317" fill-opacity="0.53"/><rect x="108" y="134" width="28" height="24" rx="5" fill="#a9760a" fill-opacity="0.74"/><rect x="148" y="134" width="28" height="24" rx="5" fill="#e8a317" fill-opacity="0.63"/><rect x="188" y="134" width="28" height="24" rx="5" fill="#e8a317" fill-opacity="0.60"/><rect x="308" y="134" width="28" height="24" rx="5" fill="#a9760a" fill-opacity="0.66"/><rect x="508" y="134" width="28" height="24" rx="5" fill="#a9760a" fill-opacity="0.65"/><rect x="548" y="134" width="28" height="24" rx="5" fill="#e8a317" fill-opacity="0.50"/><rect x="588" y="134" width="28" height="24" rx="5" fill="#e8a317" fill-opacity="0.58"/><rect x="68" y="170" width="28" height="24" rx="5" fill="#e8a317" fill-opacity="0.48"/><rect x="388" y="170" width="28" height="24" rx="5" fill="#e8a317" fill-opacity="0.58"/><rect x="428" y="170" width="28" height="24" rx="5" fill="#a9760a" fill-opacity="0.65"/><rect x="508" y="170" width="28" height="24" rx="5" fill="#e8a317" fill-opacity="0.54"/><rect x="68" y="206" width="28" height="24" rx="5" fill="#e8a317" fill-opacity="0.56"/><rect x="148" y="206" width="28" height="24" rx="5" fill="#a9760a" fill-opacity="0.68"/><rect x="268" y="206" width="28" height="24" rx="5" fill="#e8a317" fill-opacity="0.50"/><rect x="308" y="206" width="28" height="24" rx="5" fill="#e8a317" fill-opacity="0.63"/><rect x="428" y="206" width="28" height="24" rx="5" fill="#e8a317" fill-opacity="0.48"/><rect x="588" y="206" width="28" height="24" rx="5" fill="#e8a317" fill-opacity="0.57"/><rect x="108" y="242" width="28" height="24" rx="5" fill="#a9760a" fill-opacity="0.74"/><rect x="228" y="242" width="28" height="24" rx="5" fill="#a9760a" fill-opacity="0.73"/><rect x="108" y="278" width="28" height="24" rx="5" fill="#e8a317" fill-opacity="0.58"/><rect x="148" y="278" width="28" height="24" rx="5" fill="#e8a317" fill-opacity="0.57"/><rect x="228" y="278" width="28" height="24" rx="5" fill="#e8a317" fill-opacity="0.56"/><rect x="268" y="278" width="28" height="24" rx="5" fill="#e8a317" fill-opacity="0.54"/><rect x="308" y="278" width="28" height="24" rx="5" fill="#e8a317" fill-opacity="0.49"/><rect x="348" y="278" width="28" height="24" rx="5" fill="#e8a317" fill-opacity="0.54"/><rect x="468" y="278" width="28" height="24" rx="5" fill="#e8a317" fill-opacity="0.50"/><rect x="548" y="278" width="28" height="24" rx="5" fill="#e8a317" fill-opacity="0.50"/><rect x="28" y="314" width="28" height="24" rx="5" fill="#a9760a" fill-opacity="0.72"/><rect x="148" y="314" width="28" height="24" rx="5" fill="#e8a317" fill-opacity="0.59"/><rect x="308" y="314" width="28" height="24" rx="5" fill="#e8a317" fill-opacity="0.64"/><rect x="348" y="314" width="28" height="24" rx="5" fill="#e8a317" fill-opacity="0.57"/><rect x="508" y="314" width="28" height="24" rx="5" fill="#a9760a" fill-opacity="0.65"/>
+</svg></div>
+
+  <div class="wrap-narrow article-grid">
+    <nav class="toc" aria-label="On this page">
+  <p class="toc-title">On this page</p>
+  <ol><li><a href="#the-baseline-analysis-what39s-actually-steady-state">The baseline analysis: what&amp;#39;s actually steady-state?</a></li><li><a href="#savings-plans-vs-reserved-instances-aws-specific">Savings Plans vs Reserved Instances (AWS-specific)</a></li><li><a href="#the-coverage-vs-utilization-trade-off">The coverage vs utilization trade-off</a></li><li><a href="#the-right-cadence-for-reviewing-commitments">The right cadence for reviewing commitments</a></li><li><a href="#the-aws-marketplace-for-unwanted-ris">The AWS Marketplace for unwanted RIs</a></li></ol>
+</nav>
+    <div class="prose">
+<p>Committed use discounts go by different names across cloud providers — Reserved Instances (AWS), Reserved VM Instances and Committed Use Discounts (GCP), Reserved VM Instances (Azure) — but they all work on the same principle: commit to a minimum spend level or specific resource configuration for 1 or 3 years, receive a discount compared to on-demand pricing.</p>
+<p>On most instance types, the 1-year no-upfront Reserved Instance discount runs somewhere in the 35-40% range compared to on-demand. The 3-year equivalent often runs 55-65%. These are significant discounts for the right workloads.</p>
+<p>The risk: commit to an EC2 instance type that you end up not using (because you migrated to containers, or the workload scaled differently than expected, or a newer instance type became available), and you&#39;re paying for something you&#39;ve moved away from.</p>
+<p>The analysis that makes the difference is identifying what&#39;s genuinely stable — and being honest about what isn&#39;t.</p>
+<h2 id="the-baseline-analysis-what39s-actually-steady-state">The baseline analysis: what&#39;s actually steady-state?</h2>
+<aside class="keyfig">
+  <p class="keyfig-label">Key figure</p>
+  <p class="keyfig-text">On most instance types, the 1-year no-upfront Reserved Instance discount runs somewhere in the 35-<b>40%</b> range compared to on-demand.</p>
+</aside>
+<p>Before committing to anything, run three months of historical usage data through your cloud cost management tool (AWS Cost Explorer, Azure Cost Management, GCP Cost Recommender) and answer three questions:</p>
+<p><strong>1. Which instance families have been consistently running for the full 90 days?</strong></p>
+<p>Not &quot;we have a t3.large running&quot;, but &quot;this t3.large has been running at &gt; 80% of hours for the last 90 days&quot;. An instance that runs continuously is a commitment candidate. An instance that runs a few days a month is not.</p>
+<p><strong>2. What&#39;s the minimum stable footprint?</strong></p>
+<p>If you run between 5 and 12 m5.xlarge instances depending on load, the minimum stable footprint is 5 — commit to 5 Reserved Instances and run the variable portion on-demand or Spot. Never commit to the peak.</p>
+<p><strong>3. Is this workload likely to change in the commitment period?</strong></p>
+<p>Active migrations (from VMs to containers, from one instance family to another), planned growth that would require different instance sizes, and workloads being evaluated for decommissioning are all poor candidates for 3-year commitments. 1-year may still make sense; 3-year probably doesn&#39;t.</p>
+<h2 id="savings-plans-vs-reserved-instances-aws-specific">Savings Plans vs Reserved Instances (AWS-specific)</h2>
+<p>AWS offers both Reserved Instances (tied to a specific instance type, region, OS, and tenancy) and Savings Plans (a commitment to hourly spend, flexible across instance types and services).</p>
+<p><strong>Compute Savings Plans</strong> apply to EC2, Lambda, and Fargate. They&#39;re the most flexible — a $5/hour commitment applies automatically to whatever compute you&#39;re running. This flexibility has value when you&#39;re migrating from EC2 to containers or when your instance type mix is likely to shift.</p>
+<p><strong>EC2 Instance Savings Plans</strong> apply to a specific instance family in a region (e.g., all m5 instances in us-east-1, any size, any OS). Less flexible than Compute Savings Plans, but deeper discounts.</p>
+<p><strong>Reserved Instances</strong> require specifying the exact instance type, region, OS, and tenancy. The deepest discount, the least flexibility. Right for stable workloads where you know exactly what you&#39;ll be running.</p>
+<p>For most organizations that aren&#39;t in a static, fully-committed state, a mix works well: Compute Savings Plans for the baseline EC2/Lambda/Fargate spend, Reserved Instances for known stable configurations.</p>
+<h2 id="the-coverage-vs-utilization-trade-off">The coverage vs utilization trade-off</h2>
+<p>There are two metrics that matter for committed use discount programs:</p>
+<p><strong>Coverage</strong>: what percentage of your on-demand spend is covered by commitments? Higher is better, but not at the cost of committing to things you won&#39;t use.</p>
+<p><strong>Utilisation</strong>: what percentage of your commitments are actually being used? An unutilised Reserved Instance is wasted money. 100% utilization means you&#39;re using everything you committed to.</p>
+<p>The goal: high coverage on stable workloads, high utilization by not over-committing. These are in tension — pushing for higher coverage increases the risk of under-utilization.</p>
+<p>A reasonable initial target: 70-80% RI/Savings Plan coverage of steady-state EC2 spend, with &gt; 90% utilization. Increase coverage as you develop confidence in what&#39;s truly stable.</p>
+<h2 id="the-right-cadence-for-reviewing-commitments">The right cadence for reviewing commitments</h2>
+<p>Commitments should be reviewed quarterly:</p>
+<ul>
+<li>Are any 1-year commitments expiring in the next 90 days? Decide whether to renew.</li>
+<li>Has utilization dropped below 80% on any commitment? Investigate — workload may have migrated.</li>
+<li>Are there significant on-demand costs that have now stabilised enough to commit?</li>
+<li>Has the cloud provider released new instance types in the family that would suggest the current shape is being phased out?</li>
+</ul>
+<p>The cloud providers&#39; own tools (AWS Cost Explorer&#39;s RI recommendations, Azure Advisor&#39;s reservation recommendations) generate recommendations based on usage data. These are useful starting points, but review them with the context of your roadmap — the tools don&#39;t know you&#39;re planning to move the workload off EC2 next quarter.</p>
+<h2 id="the-aws-marketplace-for-unwanted-ris">The AWS Marketplace for unwanted RIs</h2>
+<p>If you have Reserved Instances you&#39;re not using, AWS&#39;s Reserved Instance Marketplace allows you to sell them to other AWS customers. The discount from the original purchase may be partially recovered. This is worth knowing about before you commit to a 3-year Reserved Instance for a workload you&#39;re not fully confident about — an exit exists, but it&#39;s not guaranteed (demand in the marketplace varies by instance type and region).</p>
+<p><em>Building a commitment strategy for your cloud spend? The right cadence and analytical approach matter more than any individual tool. <a href="/contact">Happy to think through your specific situation.</a></em></p>
+
+    </div>
+  </div>
+
+  
+
+  <div class="wrap-narrow" style="margin-top:3rem">
+    <aside class="series-box">
+      <p class="eyebrow">Series</p>
+      <h2 class="h3" style="margin:.5rem 0 1rem">FinOps from Zero to Production</h2>
+      <ol class="series-list">
+        <li><a href="/insights/finops-tagging-policy/">Cloud Tagging Policy Template: The Foundation FinOps Actually Requires</a></li>
+        <li aria-current="true"><a href="/insights/reserved-instance-rationalization/">Reserved Instance Rationalisation: How to Commit to the Right Resources</a></li>
+        <li><a href="/insights/cloud-unit-economics/">Cloud Unit Economics: The Metric That Makes Cloud Spend Conversations Productive</a></li>
+        <li><a href="/insights/finops-anomaly-detection/">Cloud Cost Anomaly Detection: Catching Runaway Spend Before It Becomes a Bill</a></li>
+      </ol>
+    </aside>
+  </div>
+
+  <div class="wrap-narrow article-foot">
+    <div class="row" style="gap:.4rem">
+      <a class="chip chip-plain" href="/insights/?topic=FinOps">FinOps</a><a class="chip chip-plain" href="/insights/?topic=Cost%20Optimisation">Cost Optimisation</a><a class="chip chip-plain" href="/insights/?topic=Cloud%20Architecture">Cloud Architecture</a>
+    </div>
+    <nav class="prevnext" aria-label="More articles">
+      <a href="/insights/gcp-cost-management/"><span>Previous</span><strong>GCP Cost Management: Committed Use Discounts, Recommenders, and What Cloud Billing Doesn&#39;t Show You</strong></a>
+      <a href="/insights/containers-kubernetes-fundamentals/" class="next"><span>Next</span><strong>Kubernetes Fundamentals: What It Is, What It Does, and When You Actually Need It</strong></a>
+    </nav>
+  </div>
+
+  <section class="section surface hair" style="margin-top:4rem">
+    <div class="wrap">
+      <p class="eyebrow">Related</p>
+      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|FinOps|Cost Optimisation|Cloud Architecture|" data-search="cloud cost anomaly detection: catching runaway spend before it becomes a bill cloud cost overruns that show up in the monthly invoice are already weeks old. here&#39;s how to set up anomaly detection that catches cost spikes in hours, with enough context to diagnose the cause quickly. finops cost optimisation cloud architecture" data-topic="FinOps" href="/insights/finops-anomaly-detection/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgfinopsanomal" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e8a317" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#a9760a" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#e8a317" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgfinopsanomal)"/>
+  <rect x="86" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.39" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 108 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.41" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 108 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.21" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 108 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.13" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 172 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.17" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 172 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="86" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.23" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 236 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.54" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 236 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.51" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">FinOps</span>
+    <h3 class="card-title">Cloud Cost Anomaly Detection: Catching Runaway Spend Before It Becomes a Bill</h3>
+    <p class="card-desc">Cloud cost overruns that show up in the monthly invoice are already weeks old. Here&#39;s how to set up anomaly detection that catches cost spikes in hours, with enough context to diagnose the cause quickly.</p>
+    <div class="card-meta"><time datetime="2026-07-06">6 Jul 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
+  </div>
+</a>
+<a class="card" data-card data-topics="|FinOps|Cloud Architecture|Cost Optimisation|" data-search="cloud tagging policy template: the foundation finops actually requires a tagging policy that nobody enforces is worse than no tagging policy. here&#39;s how to design a tagging taxonomy that survives contact with real engineering teams — with enforcement mechanisms, exceptions handling, and the tags that actually drive cost allocation decisions. finops cloud architecture cost optimisation" data-topic="FinOps" href="/insights/finops-tagging-policy/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgfinopstaggin" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e8a317" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#a9760a" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#e8a317" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgfinopstaggin)"/>
+  <rect x="157.1" y="78" width="300.0" height="34" rx="8"
+      fill="#a9760a" fill-opacity="0.16"
+      stroke="#e8a317" stroke-opacity=".45" stroke-width="1.2"/><line x1="320" y1="112" x2="320" y2="134" stroke="#e8a317" stroke-opacity=".4" stroke-width="1.4"/><rect x="193.8" y="134" width="266.0" height="34" rx="8"
+      fill="#e8a317" fill-opacity="0.29"
+      stroke="#e8a317" stroke-opacity=".45" stroke-width="1.2"/><line x1="320" y1="168" x2="320" y2="190" stroke="#e8a317" stroke-opacity=".4" stroke-width="1.4"/><rect x="209.4" y="190" width="232.0" height="34" rx="8"
+      fill="#a9760a" fill-opacity="0.42"
+      stroke="#e8a317" stroke-opacity=".45" stroke-width="1.2"/><line x1="320" y1="224" x2="320" y2="246" stroke="#e8a317" stroke-opacity=".4" stroke-width="1.4"/><rect x="224.4" y="246" width="198.0" height="34" rx="8"
+      fill="#e8a317" fill-opacity="0.55"
+      stroke="#e8a317" stroke-opacity=".45" stroke-width="1.2"/>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">FinOps</span>
+    <h3 class="card-title">Cloud Tagging Policy Template: The Foundation FinOps Actually Requires</h3>
+    <p class="card-desc">A tagging policy that nobody enforces is worse than no tagging policy. Here&#39;s how to design a tagging taxonomy that survives contact with real engineering teams — with enforcement mechanisms, exceptions handling, and the tags that actually drive cost allocation decisions.</p>
+    <div class="card-meta"><time datetime="2026-06-12">12 Jun 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
+  </div>
+</a>
+<a class="card" data-card data-topics="|Cloud Architecture|Architecture|Reliability|Disaster Recovery|Distributed Systems|" data-search="multi-region architecture patterns: what you&#39;re actually buying at each tier active-passive, pilot light, active-active, and the data problem underneath them all. a tiered framework for multi-region design that matches architecture to actual availability requirements — and prices the tiers honestly. cloud architecture architecture reliability disaster recovery distributed systems" data-topic="Cloud Architecture" href="/insights/multi-region-architecture-patterns/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgmultiregiona" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0d9488" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#0b7a70" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#0d9488" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgmultiregiona)"/>
+  <rect x="179.8" y="78" width="300.0" height="34" rx="8"
+      fill="#0b7a70" fill-opacity="0.16"
+      stroke="#0d9488" stroke-opacity=".45" stroke-width="1.2"/><line x1="320" y1="112" x2="320" y2="134" stroke="#0d9488" stroke-opacity=".4" stroke-width="1.4"/><rect x="169.3" y="134" width="266.0" height="34" rx="8"
+      fill="#0d9488" fill-opacity="0.29"
+      stroke="#0d9488" stroke-opacity=".45" stroke-width="1.2"/><line x1="320" y1="168" x2="320" y2="190" stroke="#0d9488" stroke-opacity=".4" stroke-width="1.4"/><rect x="213.2" y="190" width="232.0" height="34" rx="8"
+      fill="#0b7a70" fill-opacity="0.42"
+      stroke="#0d9488" stroke-opacity=".45" stroke-width="1.2"/><line x1="320" y1="224" x2="320" y2="246" stroke="#0d9488" stroke-opacity=".4" stroke-width="1.4"/><rect x="237.0" y="246" width="198.0" height="34" rx="8"
+      fill="#0d9488" fill-opacity="0.55"
+      stroke="#0d9488" stroke-opacity=".45" stroke-width="1.2"/>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">Cloud Architecture</span>
+    <h3 class="card-title">Multi-Region Architecture Patterns: What You&#39;re Actually Buying at Each Tier</h3>
+    <p class="card-desc">Active-passive, pilot light, active-active, and the data problem underneath them all. A tiered framework for multi-region design that matches architecture to actual availability requirements — and prices the tiers honestly.</p>
+    <div class="card-meta"><time datetime="2026-02-12">12 Feb 2026</time><span class="dot"></span><span>5 min read</span></div>
+  </div>
+</a></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap-narrow cta-panel">
+      <h2 class="h2">Working on this in production?</h2>
+      <p class="lede" style="margin-top:.7rem">We do this work directly alongside engineering teams — architecture review, migration, and hands-on enablement.</p>
+      <div class="row" style="margin-top:1.4rem">
+        <a class="btn" href="/contact/">Engage engineering <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="btn btn-ghost" href="/services/">See what we do</a>
+      </div>
+    </div>
+  </section>
+</article>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="grid g-4" style="gap:2rem">
+      <div>
+        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem">
+          <img src="/images/ajna-logo.png" alt="" width="32" height="32">
+          <span class="brand-name">Ajna<span style="color:#6f9bff">CS</span></span>
+        </a>
+        <p style="font-size:.88rem;line-height:1.65;color:#9fb0d0;max-width:30ch">
+          Specialised engineering partner for enterprise architecture, AI &amp; MLOps, and technical enablement.
+        </p>
+        <div class="social" style="margin-top:1.1rem">
+          <a href="https://www.youtube.com/@TechKnowen" rel="noopener" aria-label="YouTube"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 12s0-3.8-.5-5.6a2.9 2.9 0 0 0-2-2C18.7 4 12 4 12 4s-6.7 0-8.5.4a2.9 2.9 0 0 0-2 2C1 8.2 1 12 1 12s0 3.8.5 5.6a2.9 2.9 0 0 0 2 2C5.3 20 12 20 12 20s6.7 0 8.5-.4a2.9 2.9 0 0 0 2-2C23 15.8 23 12 23 12zM9.8 15.4V8.6l5.9 3.4z"/></svg></a>
+          <a href="https://techknowen.com" rel="noopener" aria-label="TechKnowen blog"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 3h16v3H4zm0 5h16v13l-8-4-8 4z"/></svg></a>
+          <a href="/feed.xml" aria-label="RSS feed"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="6.2" cy="17.8" r="2.2"/><path d="M4 10.2v3a6.6 6.6 0 0 1 6.6 6.6h3A9.6 9.6 0 0 0 4 10.2zM4 4v3c7.2 0 13 5.8 13 13h3C20 11.2 12.8 4 4 4z"/></svg></a>
+        </div>
+      </div>
+      <div>
+        <h4>Services</h4>
+        <ul>
+          <li><a href="/services/#architecture">Enterprise architecture</a></li>
+          <li><a href="/services/#ai">AI &amp; MLOps</a></li>
+          <li><a href="/services/#training">Technical enablement</a></li>
+          <li><a href="/case-studies/">Case studies</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Insights</h4>
+        <ul>
+          <li><a href="/insights/">All articles</a></li>
+          <li><a href="/series/">Series</a></li>
+          <li><a href="/topics/">Topics</a></li>
+          <li><a href="/notes/">Personal notes</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
+          <li><a href="/contact/">Start an engagement</a></li>
+          <li><a href="/about/">About</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span id="yr">2026</span> Ajna Consulting Services. All rights reserved.</span>
+      <span style="display:flex;gap:1.2rem"><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a></span>
+    </div>
+  </div>
+</footer>
+<script src="/assets/js/site.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+---
+title: "The Saga Pattern: Distributed Transactions Without Two-Phase Commit"
+description: "When a business transaction spans services, ACID stops being available and sagas become the discipline — local transactions, compensating actions, orchestration vs choreography, and the failure-handling design that separates working sagas from distributed spaghetti."
+date: 2025-02-25
+tags: ["Distributed Systems", "Programming", "Architecture", "Reliability"]
+format: article
+---
+
+Somewhere in every microservices migration there's a moment of quiet horror: the monolith's `@Transactional` method — reserve inventory, charge payment, create shipment, all-or-nothing, courtesy of the database — now spans three services and three databases, and the comfortable ACID guarantee has simply left the building. Two-phase commit across services is technically possible and practically rejected (blocking protocols, coordinator availability, locks held across network calls — the reasons XA never conquered the internet); what the industry converged on instead is the **saga**: a sequence of local transactions, each committed immediately, with **compensating actions** to semantically undo completed steps when a later step fails.
+
+That one sentence hides most of a design discipline. Here's the rest of it.
+
+## The core trade: atomicity out, compensation in
+
+A saga decomposes "reserve → charge → ship" into local transactions that each commit for real. If the charge fails after the reservation committed, nothing rolls back — instead the saga runs the reservation's *compensation* (release the hold). Three properties follow, and they're the ones teams must design for rather than discover:
+
+**Intermediate states are visible.** Between steps, the system is legitimately in "reserved but not yet charged" — other transactions can observe it. This isn't a bug to hide; it's a state to *model*: explicit statuses (PENDING_PAYMENT, not a boolean), and downstream consumers that understand them. The lost isolation of ACID is repaid with explicitness.
+
+**Compensation is semantic undo, not rollback.** You can't un-send an email or un-charge without a refund record; compensation creates a *new* action that counteracts (refund, release, cancel), and the business — not just the engineers — must agree on what counteracting means (does cancellation after shipment mean return-label workflow? that's a product decision wearing an architecture costume). The design heuristic that saves the most pain: **order the steps so the hardest-to-compensate step goes last.** Charging money is easier to compensate than shipping goods; put shipment after payment, and generally sort by reversibility — the *pivot* step (the one after which there's no going back) should be as late as possible, and everything after it must be retryable-until-success rather than compensatable.
+
+**Every step and every compensation must be idempotent and retryable** — sagas live on at-least-once message delivery, so the whole idempotency discipline (keys, dedup, absolute-state updates) is a prerequisite, not an optional extra. A saga built on non-idempotent steps is a duplicate-payment generator with orchestration.
+
+## Orchestration vs choreography: the real decision
+
+**Choreography** — each service reacts to the previous service's events (OrderCreated → payment service charges → PaymentCompleted → shipping ships) — has no central coordinator, minimal coupling, and reads beautifully at three steps. Its failure mode is emergent complexity: at six steps with two failure paths each, *no single place knows what the workflow is* — the process exists only as an implicit graph across event handlers, discovered by archaeology during incidents ("what happens if payment succeeds but the shipment event was never consumed?" — nobody knows, let's find out in production). Cyclic event dependencies and workflow changes that require coordinating deployments across four teams round out the pathology.
+
+**Orchestration** — a coordinator (the order service's saga component, or a workflow engine) explicitly commands each step and tracks state — makes the process *visible*: one place defines the sequence, the failure branches, the timeouts; one place answers "where is order 12345 stuck." The cost is the coordinator itself: a component to keep available, and a temptation toward the god-service that accumulates business logic that belongs in the steps.
+
+The field-tested guidance: **choreography for short, stable, genuinely decoupled reactions (two-three steps, rarely changing); orchestration for anything with real failure branches, sequencing rules, or more than a handful of steps** — which in practice means most business-critical sagas. And in the current era, "orchestration" increasingly means a **durable-execution engine** (Temporal-class platforms, or the cloud workflow services): the saga written as ordinary-looking code whose state survives crashes, with retries, timers, and history built in. These engines absorbed the hardest incidental complexity of sagas (state persistence, replay, visibility) and are the default answer now for new complex workflows — the hand-rolled saga state machine in a database table is legacy pattern except at the simplest tier.
+
+## The failure-handling design (where sagas earn their keep)
+
+The happy path of any saga is trivial; the product is the failure matrix. For each step: *retryable failure* (network blip, 503 — retry with backoff and idempotency), *business rejection* (insufficient funds — trigger compensation chain backward), *timeout/unknown outcome* (the charge call timed out: did it happen? — query or reconcile before deciding; this is where the idempotency key becomes the saga's best friend), and *compensation failure* — the one that separates serious designs from diagrams, because a failed refund can't just log-and-forget. The standard answer: compensations retry until success (they must be designed to eventually succeed — releasing a hold can't be "rejected"), and past a retry budget they escalate to a **human task queue with full context**, because at the bottom of every distributed transaction discipline is a small, honest operations workflow for the cases automation couldn't close. Budget for it existing; the estates that pretend it won't need staffing get the same queue anyway, in the form of support tickets.
+
+Cross-cutting requirements that make the matrix survivable: **saga state must be observable** (a queryable "where is this transaction, what's completed, what's pending" — the durable-execution platforms give this free; hand-rolled versions must build it), **every message carries the saga/correlation ID** end-to-end so tracing works, and **dashboards count stuck sagas by age and step** — a saga stuck 48 hours at "awaiting shipment confirmation" is an incident whether or not anything paged.
+
+## When not to saga
+
+The pattern has a gravitational pull that deserves resistance. Before reaching for it: **can the boundary move instead?** If two services transact together constantly, they may be one service wearing a network boundary — redrawing the boundary restores ACID and deletes the saga entirely, and it's the right answer more often than microservices pride admits. **Can the workflow tolerate eventual consistency without coordination?** Plenty of "transactions" are really pipelines where downstream steps just need to happen eventually (outbox + consumers, no compensation logic needed, because nothing ever "fails backward"). The saga is specifically for *multi-step processes with real all-or-nothing business semantics across genuine ownership boundaries* — where it's not optional, it's just the truth of the domain made explicit.
+
+Which is the closing reframe worth carrying into design reviews: sagas don't add complexity to distributed transactions — they *reveal* the complexity that was always there, hidden inside `@Transactional`'s comfortable lie that money movement, inventory, and fulfillment were ever one atomic thing. The monolith let you not think about partial failure; the saga makes the thinking mandatory and visible. Done well — steps ordered by reversibility, everything idempotent, orchestrated where it's complex, observable always, with a human escape hatch — it's less a pattern than the honest shape of the business process itself.

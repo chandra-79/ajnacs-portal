@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Redis in Production: Patterns That Work and Anti-patterns That Will Break You | Ajna CS</title>
+<meta name="description" content="Redis is fast until it isn&#39;t. Here are the caching patterns, data structure choices, and operational decisions that determine whether Redis is a performanc…">
+<meta name="author" content="Chandra Lanka">
+<link rel="canonical" href="https://ajnacs.com/insights/redis-production-patterns/">
+<meta name="robots" content="index, follow, max-image-preview:large">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Ajna Consulting Services">
+<meta property="og:title" content="Redis in Production: Patterns That Work and Anti-patterns That Will Break You">
+<meta property="og:description" content="Redis is fast until it isn&#39;t. Here are the caching patterns, data structure choices, and operational decisions that determine whether Redis is a performanc…">
+<meta property="og:url" content="https://ajnacs.com/insights/redis-production-patterns/">
+<meta property="og:image" content="https://ajnacs.com/assets/og/insights-redis-production-patterns.svg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Redis in Production: Patterns That Work and Anti-patterns That Will Break You">
+<meta name="twitter:description" content="Redis is fast until it isn&#39;t. Here are the caching patterns, data structure choices, and operational decisions that determine whether Redis is a performanc…">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/insights-redis-production-patterns.svg">
+
+<link rel="icon" href="/images/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="/images/ajna-logo.png">
+<meta name="theme-color" content="#0a1020">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="/assets/css/site.css">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<script>
+/* Set the theme before first paint so the page never flashes the wrong one. */
+(function(){try{var t=localStorage.getItem('acs-theme');
+if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Redis in Production: Patterns That Work and Anti-patterns That Will Break You","description":"Redis is fast until it isn't. Here are the caching patterns, data structure choices, and operational decisions that determine whether Redis is a performance multiplier or a fragile dependency.","datePublished":"2024-12-10","dateModified":"2024-12-10","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/redis-production-patterns/","image":"https://ajnacs.com/assets/og/insights-redis-production-patterns.svg","keywords":"Data Engineering, Redis, Architecture, Cloud Architecture","articleSection":"Data Engineering","wordCount":1156}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Redis in Production: Patterns That Work and Anti-patterns That Will Break You"}]}</script>
+</head>
+<body class="" data-topic="Data Engineering">
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header" id="siteHeader">
+  <div class="wrap" style="display:flex;align-items:center;width:min(1220px,100% - var(--gutter)*2)">
+    <a class="brand" href="/">
+      <img src="/images/ajna-logo.png" alt="" width="32" height="32">
+      <span class="brand-name">Ajna<span>CS</span></span>
+    </a>
+    <nav class="nav" id="nav" aria-label="Primary">
+      <a href="/services/">Services</a>
+      <a href="/insights/" aria-current="page">Insights</a>
+      <a href="/series/">Series</a>
+      <a href="/case-studies/">Case studies</a>
+      <a href="/about/">About</a>
+      <a class="btn btn-sm" href="/contact/" style="margin-left:.4rem">Engage engineering</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn" id="themeBtn" type="button" aria-label="Switch to dark mode" aria-pressed="false"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg></button>
+      <button class="icon-btn nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+
+<div class="read-bar" aria-hidden="true"><span id="readBar"></span></div>
+<article class="article">
+  <header class="article-head">
+    <div class="wrap-narrow">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a> <span aria-hidden="true">/</span>
+        <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
+        <span>Data Engineering</span>
+      </nav>
+      <h1 class="h1">Redis in Production: Patterns That Work and Anti-patterns That Will Break You</h1>
+      <p class="lede" style="margin-top:1rem">Redis is fast until it isn&#39;t. Here are the caching patterns, data structure choices, and operational decisions that determine whether Redis is a performance multiplier or a fragile dependency.</p>
+      <div class="article-meta">
+        <span class="chip">Data Engineering</span>
+        <time datetime="2024-12-10">10 Dec 2024</time>
+        <span class="dot"></span><span>5 min read</span>
+        <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="article-hero wrap-narrow" data-topic="Data Engineering"><svg viewBox="0 0 1200 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgredisproduct" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0891b2" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#076f87" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#0891b2" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="420" fill="url(#bgredisproduct)"/>
+  <line x1="230.7" y1="234.3" x2="235.8" y2="153.9" stroke="#0891b2" stroke-opacity=".28" stroke-width="1.4"/><line x1="230.7" y1="234.3" x2="228.5" y2="302.3" stroke="#0891b2" stroke-opacity=".28" stroke-width="1.4"/><line x1="230.7" y1="234.3" x2="268.5" y2="175.3" stroke="#0891b2" stroke-opacity=".28" stroke-width="1.4"/><line x1="230.7" y1="234.3" x2="368.5" y2="203.1" stroke="#0891b2" stroke-opacity=".28" stroke-width="1.4"/><line x1="516.9" y1="94.5" x2="509.0" y2="220.4" stroke="#0891b2" stroke-opacity=".28" stroke-width="1.4"/><line x1="516.9" y1="94.5" x2="566.3" y2="207.9" stroke="#0891b2" stroke-opacity=".28" stroke-width="1.4"/><line x1="516.9" y1="94.5" x2="374.6" y2="69.7" stroke="#0891b2" stroke-opacity=".28" stroke-width="1.4"/><line x1="516.9" y1="94.5" x2="497.3" y2="221.2" stroke="#0891b2" stroke-opacity=".28" stroke-width="1.4"/><line x1="516.9" y1="94.5" x2="449.4" y2="191.8" stroke="#0891b2" stroke-opacity=".28" stroke-width="1.4"/><line x1="235.8" y1="153.9" x2="228.5" y2="302.3" stroke="#0891b2" stroke-opacity=".28" stroke-width="1.4"/><line x1="235.8" y1="153.9" x2="235.6" y2="50.0" stroke="#0891b2" stroke-opacity=".28" stroke-width="1.4"/><line x1="235.8" y1="153.9" x2="374.6" y2="69.7" stroke="#0891b2" stroke-opacity=".28" stroke-width="1.4"/><line x1="235.8" y1="153.9" x2="268.5" y2="175.3" stroke="#0891b2" stroke-opacity=".28" stroke-width="1.4"/><line x1="235.8" y1="153.9" x2="115.6" y2="52.6" stroke="#0891b2" stroke-opacity=".28" stroke-width="1.4"/><line x1="235.8" y1="153.9" x2="368.5" y2="203.1" stroke="#0891b2" stroke-opacity=".28" stroke-width="1.4"/><line x1="509.0" y1="220.4" x2="566.3" y2="207.9" stroke="#0891b2" stroke-opacity=".28" stroke-width="1.4"/><line x1="509.0" y1="220.4" x2="497.3" y2="221.2" stroke="#0891b2" stroke-opacity=".28" stroke-width="1.4"/><line x1="509.0" y1="220.4" x2="368.5" y2="203.1" stroke="#0891b2" stroke-opacity=".28" stroke-width="1.4"/><line x1="509.0" y1="220.4" x2="449.4" y2="191.8" stroke="#0891b2" stroke-opacity=".28" stroke-width="1.4"/><line x1="228.5" y1="302.3" x2="268.5" y2="175.3" stroke="#0891b2" stroke-opacity=".28" stroke-width="1.4"/><line x1="235.6" y1="50.0" x2="374.6" y2="69.7" stroke="#0891b2" stroke-opacity=".28" stroke-width="1.4"/><line x1="235.6" y1="50.0" x2="268.5" y2="175.3" stroke="#0891b2" stroke-opacity=".28" stroke-width="1.4"/><line x1="235.6" y1="50.0" x2="115.6" y2="52.6" stroke="#0891b2" stroke-opacity=".28" stroke-width="1.4"/><line x1="566.3" y1="207.9" x2="497.3" y2="221.2" stroke="#0891b2" stroke-opacity=".28" stroke-width="1.4"/><line x1="566.3" y1="207.9" x2="449.4" y2="191.8" stroke="#0891b2" stroke-opacity=".28" stroke-width="1.4"/><line x1="374.6" y1="69.7" x2="268.5" y2="175.3" stroke="#0891b2" stroke-opacity=".28" stroke-width="1.4"/><line x1="374.6" y1="69.7" x2="368.5" y2="203.1" stroke="#0891b2" stroke-opacity=".28" stroke-width="1.4"/><line x1="374.6" y1="69.7" x2="449.4" y2="191.8" stroke="#0891b2" stroke-opacity=".28" stroke-width="1.4"/><line x1="268.5" y1="175.3" x2="368.5" y2="203.1" stroke="#0891b2" stroke-opacity=".28" stroke-width="1.4"/><line x1="497.3" y1="221.2" x2="368.5" y2="203.1" stroke="#0891b2" stroke-opacity=".28" stroke-width="1.4"/><line x1="497.3" y1="221.2" x2="449.4" y2="191.8" stroke="#0891b2" stroke-opacity=".28" stroke-width="1.4"/><line x1="368.5" y1="203.1" x2="449.4" y2="191.8" stroke="#0891b2" stroke-opacity=".28" stroke-width="1.4"/><circle cx="230.7" cy="234.3" r="5" fill="#0891b2" fill-opacity=".9"/><circle cx="516.9" cy="94.5" r="8.5" fill="#076f87" fill-opacity=".9"/><circle cx="235.8" cy="153.9" r="12" fill="#0891b2" fill-opacity=".9"/><circle cx="509.0" cy="220.4" r="5" fill="#076f87" fill-opacity=".9"/><circle cx="228.5" cy="302.3" r="8.5" fill="#0891b2" fill-opacity=".9"/><circle cx="235.6" cy="50.0" r="12" fill="#076f87" fill-opacity=".9"/><circle cx="566.3" cy="207.9" r="5" fill="#0891b2" fill-opacity=".9"/><circle cx="374.6" cy="69.7" r="8.5" fill="#076f87" fill-opacity=".9"/><circle cx="268.5" cy="175.3" r="12" fill="#0891b2" fill-opacity=".9"/><circle cx="497.3" cy="221.2" r="5" fill="#076f87" fill-opacity=".9"/><circle cx="115.6" cy="52.6" r="8.5" fill="#0891b2" fill-opacity=".9"/><circle cx="368.5" cy="203.1" r="12" fill="#076f87" fill-opacity=".9"/><circle cx="449.4" cy="191.8" r="5" fill="#0891b2" fill-opacity=".9"/>
+</svg></div>
+
+  <div class="wrap-narrow article-grid">
+    <nav class="toc" aria-label="On this page">
+  <p class="toc-title">On this page</p>
+  <ol><li><a href="#data-structure-selection-is-architectural">Data structure selection is architectural</a></li><li><a href="#ttl-is-not-optional">TTL is not optional</a></li><li><a href="#the-distributed-lock-problem">The distributed lock problem</a></li><li><a href="#memory-management-eviction-policies-and-memory-pressure">Memory management: eviction policies and memory pressure</a></li><li><a href="#the-hot-key-problem">The hot key problem</a></li><li><a href="#sentinel-vs-cluster-vs-managed-services">Sentinel vs. Cluster vs. managed services</a></li></ol>
+</nav>
+    <div class="prose">
+<p>Redis is the database most teams add without a meeting. You add it for caching, it works immediately, and six months later it&#39;s carrying session state, rate limiting, pub/sub messaging, distributed locks, and the leaderboard. The original cache is fine. The session store is fine. The distributed lock implementation is broken in a subtle way that only manifests under specific failure conditions.</p>
+<p>The patterns matter. Here&#39;s what I&#39;ve learned from running Redis at scale.</p>
+<h2 id="data-structure-selection-is-architectural">Data structure selection is architectural</h2>
+<aside class="keyfig">
+  <p class="keyfig-label">Key figure</p>
+  <p class="keyfig-text">Reduces Redis load by the request rate times <b>100ms</b>.</p>
+</aside>
+<p>Redis isn&#39;t a key-value store. It&#39;s a data structure server that happens to have strings. The data structure you choose affects performance, memory usage, and correctness.</p>
+<p><strong>Strings</strong>: for simple values, counters, and serialised JSON. Use <code>INCR</code> and <code>INCRBY</code> for counters — they&#39;re atomic. Don&#39;t store large JSON objects as strings if you frequently update single fields; you&#39;ll serialise/deserialise the whole object on every write.</p>
+<p><strong>Hashes</strong>: for objects with multiple fields where you update fields independently. A user profile stored as a Hash lets you <code>HSET user:123 email new@email.com</code> without touching the rest of the profile. Hashes are also memory-efficient for small collections — Redis uses a more compact encoding for hashes with fewer than 128 fields.</p>
+<p><strong>Sorted Sets</strong>: for leaderboards, priority queues, and range-by-score queries. <code>ZADD</code> and <code>ZRANGEBYSCORE</code> are O(log N). If you&#39;re building a leaderboard, a sorted set is the right structure — don&#39;t simulate it with strings and sorting in application code.</p>
+<p><strong>Sets</strong>: for unique collections, tag systems, and membership tests. <code>SMEMBERS</code>, <code>SUNION</code>, <code>SINTERSTORE</code>. The <code>SINTERSTORE</code> for computing the intersection of tag sets (e.g., &quot;articles tagged both &#39;cloud&#39; and &#39;finops&#39;&quot;) is fast and idiomatic.</p>
+<p><strong>Lists</strong>: for queues and stacks. <code>LPUSH</code> / <code>RPOP</code> for a FIFO queue. Be careful using Redis Lists as a production job queue for anything critical — consider using a purpose-built system (Kafka, SQS, RabbitMQ) for durability requirements.</p>
+<p><strong>Streams</strong>: added in Redis 5.0, these are the right structure for append-only event logs with consumer group support. If you&#39;re using Lists as a poor man&#39;s message queue, evaluate Streams as an upgrade path.</p>
+<h2 id="ttl-is-not-optional">TTL is not optional</h2>
+<p>Every key that isn&#39;t permanent state should have a TTL. This isn&#39;t about memory pressure (though it helps) — it&#39;s about correctness. A cached value without a TTL becomes stale data that persists indefinitely. A session key without a TTL becomes a session that never expires.</p>
+<p>The most common mistake: setting TTLs on new keys but forgetting to reset them on update. If you cache a user&#39;s permissions with a 15-minute TTL and then update the permissions, the cached value still has whatever time remains on the original TTL. Use <code>SET key value EX seconds</code> to set the value and TTL atomically, or explicitly <code>EXPIRE</code> the key after every update.</p>
+<p>The second most common mistake: all cache keys expiring at the same time. If you populate a cache at startup and set TTL=3600 on everything, one hour later your cache is empty and the database gets a spike of requests as everything misses simultaneously. Add jitter: <code>TTL = base_ttl + random(0, base_ttl * 0.1)</code>.</p>
+<h2 id="the-distributed-lock-problem">The distributed lock problem</h2>
+<p>Redis-based distributed locks are widely used and frequently implemented incorrectly.</p>
+<p>The pattern that looks correct but isn&#39;t:</p>
+<pre><code>SET lock:resource lock_id NX EX 30
+</code></pre>
+<p><code>NX</code> means &quot;set if not exists&quot; — only acquires the lock if it&#39;s not already held. <code>EX 30</code> means the lock expires after 30 seconds even if not released — prevents deadlocks if the holder crashes. The <code>lock_id</code> is a unique value generated by the lock holder — you only release a lock if the value matches (preventing releasing another process&#39;s lock).</p>
+<p>The release is:</p>
+<pre><code class="language-lua">if redis.call(&quot;get&quot;, KEYS[1]) == ARGV[1] then
+    return redis.call(&quot;del&quot;, KEYS[1])
+else
+    return 0
+end
+</code></pre>
+<p>The Lua script makes the check-and-delete atomic.</p>
+<p><strong>Why this is still not guaranteed safe</strong>: Redis is single-threaded but not instantaneous. Under partition scenarios (split-brain), two clients can both acquire the lock. For most applications this is an acceptable trade-off. For financial operations, inventory management, or any operation where double-execution has serious consequences — consider a different approach or use the Redlock algorithm (with understanding of its limitations).</p>
+<p>The Redlock algorithm requires acquiring the lock on a majority of N independent Redis nodes. It&#39;s more robust against single-node failures but adds complexity. Martin Kleppmann&#39;s critique of Redlock is worth reading before implementing it.</p>
+<h2 id="memory-management-eviction-policies-and-memory-pressure">Memory management: eviction policies and memory pressure</h2>
+<p>Redis stores everything in memory. When memory is full, the eviction policy determines what happens:</p>
+<ul>
+<li><code>noeviction</code>: return errors on write when memory is full. The right choice for a data store, never for a cache.</li>
+<li><code>allkeys-lru</code>: evict the least recently used key across all keys. The right choice for a general cache.</li>
+<li><code>volatile-lru</code>: evict the LRU key from keys with TTLs set. Preserves keys without TTLs (permanent data) while evicting cache entries.</li>
+<li><code>allkeys-lfu</code>: evict the least frequently used key. Often better than LRU for access patterns that are skewed (hot keys accessed very frequently).</li>
+</ul>
+<p>For cache use cases: <code>allkeys-lru</code> or <code>allkeys-lfu</code>. Set <code>maxmemory</code> to a value below the system memory limit (leave headroom for Redis&#39;s own memory management). Monitor <code>used_memory_rss</code> and <code>used_memory</code> — a large gap between them indicates fragmentation.</p>
+<h2 id="the-hot-key-problem">The hot key problem</h2>
+<p>Redis is single-threaded. A key accessed extremely frequently (a viral post&#39;s view count, a configuration value read on every request) can saturate a single Redis instance. Signs: CPU on the Redis node is high, latency for all operations increases, slow commands log shows fast commands taking milliseconds.</p>
+<p>Approaches:</p>
+<ul>
+<li><strong>Read replicas + read from replicas</strong>: valid for read-heavy hot keys, doesn&#39;t help write contention.</li>
+<li><strong>Local cache with short TTL</strong>: cache the value in process memory for 100ms. Reduces Redis load by the request rate times 100ms.</li>
+<li><strong>Key sharding</strong>: instead of one key <code>counter:popular_post_123</code>, use multiple keys <code>counter:popular_post_123:shard_{0..9}</code> and increment a random shard. Read by summing all shards. More complex, reduces write contention significantly.</li>
+</ul>
+<h2 id="sentinel-vs-cluster-vs-managed-services">Sentinel vs. Cluster vs. managed services</h2>
+<p><strong>Redis Sentinel</strong>: high availability for a single-primary setup. Sentinel processes monitor the primary, detect failures, and promote a replica. Simple to operate; limited throughput scaling.</p>
+<p><strong>Redis Cluster</strong>: horizontal scaling across multiple nodes. Data is partitioned across 16,384 hash slots. Supports multiple primaries with their own replicas. Operations involving multiple keys must map to the same hash slot (use hash tags: <code>{user:123}:profile</code> and <code>{user:123}:sessions</code> both map to the same slot).</p>
+<p><strong>Managed services</strong> (AWS ElastiCache, Azure Cache for Redis, GCP Memorystore): operational overhead handled by the cloud provider. Automatic failover, patching, monitoring. If you&#39;re running on cloud infrastructure, there&#39;s rarely a good reason to run self-managed Redis — the operational cost of self-managing doesn&#39;t justify the control you get.</p>
+<p>The choice between Sentinel and Cluster depends on throughput. If a single Redis instance handles your peak load comfortably with headroom, use Sentinel. If you&#39;re hitting single-instance CPU or memory limits, move to Cluster.</p>
+<p><em>Diagnosing Redis performance issues or planning a migration from single-node to cluster? <a href="/contact">Happy to talk through the specifics.</a></em></p>
+
+    </div>
+  </div>
+
+  <div class="wrap-narrow"><aside class="refs" aria-labelledby="refs-h">
+  <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
+  <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
+  <ul>
+    <li><a href="https://kafka.apache.org/documentation/" rel="noopener nofollow" target="_blank">Apache Kafka documentation</a><span>Partitioning, consumer groups and delivery semantics.</span></li>
+    <li><a href="https://redis.io/docs/latest/" rel="noopener nofollow" target="_blank">Redis documentation</a><span>Data types, persistence and eviction.</span></li>
+    <li><a href="https://www.finops.org/" rel="noopener nofollow" target="_blank">FinOps Foundation</a><span>Framework, capabilities and terminology.</span></li>
+  </ul>
+</aside></div>
+
+  
+
+  <div class="wrap-narrow article-foot">
+    <div class="row" style="gap:.4rem">
+      <a class="chip chip-plain" href="/insights/?topic=Data%20Engineering">Data Engineering</a><a class="chip chip-plain" href="/insights/?topic=Redis">Redis</a><a class="chip chip-plain" href="/insights/?topic=Architecture">Architecture</a><a class="chip chip-plain" href="/insights/?topic=Cloud%20Architecture">Cloud Architecture</a>
+    </div>
+    <nav class="prevnext" aria-label="More articles">
+      <a href="/insights/java-testing-cloud-microservices/"><span>Previous</span><strong>Java Testing Strategies for Cloud Microservices: What Actually Works in CI</strong></a>
+      <a href="/insights/mlops-pipelines-azure-sagemaker/" class="next"><span>Next</span><strong>MLOps Pipelines That Actually Work: Lessons from Azure ML and SageMaker</strong></a>
+    </nav>
+  </div>
+
+  <section class="section surface hair" style="margin-top:4rem">
+    <div class="wrap">
+      <p class="eyebrow">Related</p>
+      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|DevSecOps|Architecture|Fundamentals|" data-search="platform observability: building the visibility layer every application team gets automatically how platform teams build and operate the metrics, logging, and tracing infrastructure that application teams consume without configuring — and what good platform observability coverage actually looks like. devsecops architecture fundamentals" data-topic="DevSecOps" href="/insights/platform-eng-observability/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgplatformengo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e0473a" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#c03a2e" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#e0473a" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgplatformengo)"/>
+  <rect x="28" y="26" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.63"/><rect x="348" y="26" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.57"/><rect x="388" y="26" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.73"/><rect x="428" y="26" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.69"/><rect x="548" y="26" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.54"/><rect x="188" y="62" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.73"/><rect x="348" y="62" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.64"/><rect x="428" y="62" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.72"/><rect x="588" y="62" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.66"/><rect x="228" y="98" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.70"/><rect x="308" y="98" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.48"/><rect x="348" y="98" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.55"/><rect x="388" y="98" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.52"/><rect x="428" y="98" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.64"/><rect x="508" y="98" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.58"/><rect x="588" y="98" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.63"/><rect x="68" y="134" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.65"/><rect x="268" y="134" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.65"/><rect x="508" y="134" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.50"/><rect x="548" y="134" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.67"/><rect x="588" y="134" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.70"/><rect x="68" y="170" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.52"/><rect x="108" y="170" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.48"/><rect x="148" y="170" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.50"/><rect x="268" y="170" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.56"/><rect x="428" y="170" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.74"/><rect x="468" y="170" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.58"/><rect x="508" y="170" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.60"/><rect x="548" y="170" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.60"/><rect x="148" y="206" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.62"/><rect x="228" y="206" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.59"/><rect x="388" y="206" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.74"/><rect x="428" y="206" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.74"/><rect x="508" y="206" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.51"/><rect x="28" y="242" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.63"/><rect x="68" y="242" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.63"/><rect x="148" y="242" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.61"/><rect x="188" y="242" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.64"/><rect x="268" y="242" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.65"/><rect x="348" y="242" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.59"/><rect x="148" y="278" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.63"/><rect x="188" y="278" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.72"/><rect x="428" y="278" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.55"/><rect x="548" y="278" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.58"/><rect x="588" y="278" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.68"/><rect x="28" y="314" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.54"/><rect x="108" y="314" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.61"/><rect x="228" y="314" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.67"/><rect x="348" y="314" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.52"/><rect x="428" y="314" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.59"/><rect x="468" y="314" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.61"/><rect x="548" y="314" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.59"/>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">DevSecOps</span>
+    <h3 class="card-title">Platform Observability: Building the Visibility Layer Every Application Team Gets Automatically</h3>
+    <p class="card-desc">How platform teams build and operate the metrics, logging, and tracing infrastructure that application teams consume without configuring — and what good platform observability coverage actually looks like.</p>
+    <div class="card-meta"><time datetime="2026-09-16">16 Sept 2026</time><span class="dot"></span><span>3 min read</span><span class="dot"></span><span>Series</span></div>
+  </div>
+</a>
+<a class="card" data-card data-topics="|Engineering Leadership|Architecture|Fundamentals|" data-search="measuring platform engineering success: the metrics that actually matter dora metrics, developer experience scores, cognitive load measures, and the platform health indicators that tell you whether your internal platform is creating value or creating another bottleneck. engineering leadership architecture fundamentals" data-topic="Engineering Leadership" href="/insights/platform-eng-measuring-success/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgplatformengm" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0e7490" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#0b5f77" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#0e7490" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgplatformengm)"/>
+  <rect x="188.8" y="78" width="300.0" height="34" rx="8"
+      fill="#0b5f77" fill-opacity="0.16"
+      stroke="#0e7490" stroke-opacity=".45" stroke-width="1.2"/><line x1="320" y1="112" x2="320" y2="134" stroke="#0e7490" stroke-opacity=".4" stroke-width="1.4"/><rect x="185.1" y="134" width="266.0" height="34" rx="8"
+      fill="#0e7490" fill-opacity="0.29"
+      stroke="#0e7490" stroke-opacity=".45" stroke-width="1.2"/><line x1="320" y1="168" x2="320" y2="190" stroke="#0e7490" stroke-opacity=".4" stroke-width="1.4"/><rect x="199.2" y="190" width="232.0" height="34" rx="8"
+      fill="#0b5f77" fill-opacity="0.42"
+      stroke="#0e7490" stroke-opacity=".45" stroke-width="1.2"/><line x1="320" y1="224" x2="320" y2="246" stroke="#0e7490" stroke-opacity=".4" stroke-width="1.4"/><rect x="239.7" y="246" width="198.0" height="34" rx="8"
+      fill="#0e7490" fill-opacity="0.55"
+      stroke="#0e7490" stroke-opacity=".45" stroke-width="1.2"/>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">Engineering Leadership</span>
+    <h3 class="card-title">Measuring Platform Engineering Success: The Metrics That Actually Matter</h3>
+    <p class="card-desc">DORA metrics, developer experience scores, cognitive load measures, and the platform health indicators that tell you whether your internal platform is creating value or creating another bottleneck.</p>
+    <div class="card-meta"><time datetime="2026-07-21">21 Jul 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
+  </div>
+</a>
+<a class="card" data-card data-topics="|FinOps|Cost Optimisation|Cloud Architecture|" data-search="cloud cost anomaly detection: catching runaway spend before it becomes a bill cloud cost overruns that show up in the monthly invoice are already weeks old. here&#39;s how to set up anomaly detection that catches cost spikes in hours, with enough context to diagnose the cause quickly. finops cost optimisation cloud architecture" data-topic="FinOps" href="/insights/finops-anomaly-detection/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgfinopsanomal" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e8a317" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#a9760a" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#e8a317" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgfinopsanomal)"/>
+  <rect x="86" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.39" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 108 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.41" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 108 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.21" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 108 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.13" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 172 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.17" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 172 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="86" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.23" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 236 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.54" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 236 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.51" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">FinOps</span>
+    <h3 class="card-title">Cloud Cost Anomaly Detection: Catching Runaway Spend Before It Becomes a Bill</h3>
+    <p class="card-desc">Cloud cost overruns that show up in the monthly invoice are already weeks old. Here&#39;s how to set up anomaly detection that catches cost spikes in hours, with enough context to diagnose the cause quickly.</p>
+    <div class="card-meta"><time datetime="2026-07-06">6 Jul 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
+  </div>
+</a></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap-narrow cta-panel">
+      <h2 class="h2">Working on this in production?</h2>
+      <p class="lede" style="margin-top:.7rem">We do this work directly alongside engineering teams — architecture review, migration, and hands-on enablement.</p>
+      <div class="row" style="margin-top:1.4rem">
+        <a class="btn" href="/contact/">Engage engineering <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="btn btn-ghost" href="/services/">See what we do</a>
+      </div>
+    </div>
+  </section>
+</article>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="grid g-4" style="gap:2rem">
+      <div>
+        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem">
+          <img src="/images/ajna-logo.png" alt="" width="32" height="32">
+          <span class="brand-name">Ajna<span style="color:#6f9bff">CS</span></span>
+        </a>
+        <p style="font-size:.88rem;line-height:1.65;color:#9fb0d0;max-width:30ch">
+          Specialised engineering partner for enterprise architecture, AI &amp; MLOps, and technical enablement.
+        </p>
+        <div class="social" style="margin-top:1.1rem">
+          <a href="https://www.youtube.com/@TechKnowen" rel="noopener" aria-label="YouTube"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 12s0-3.8-.5-5.6a2.9 2.9 0 0 0-2-2C18.7 4 12 4 12 4s-6.7 0-8.5.4a2.9 2.9 0 0 0-2 2C1 8.2 1 12 1 12s0 3.8.5 5.6a2.9 2.9 0 0 0 2 2C5.3 20 12 20 12 20s6.7 0 8.5-.4a2.9 2.9 0 0 0 2-2C23 15.8 23 12 23 12zM9.8 15.4V8.6l5.9 3.4z"/></svg></a>
+          <a href="https://techknowen.com" rel="noopener" aria-label="TechKnowen blog"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 3h16v3H4zm0 5h16v13l-8-4-8 4z"/></svg></a>
+          <a href="/feed.xml" aria-label="RSS feed"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="6.2" cy="17.8" r="2.2"/><path d="M4 10.2v3a6.6 6.6 0 0 1 6.6 6.6h3A9.6 9.6 0 0 0 4 10.2zM4 4v3c7.2 0 13 5.8 13 13h3C20 11.2 12.8 4 4 4z"/></svg></a>
+        </div>
+      </div>
+      <div>
+        <h4>Services</h4>
+        <ul>
+          <li><a href="/services/#architecture">Enterprise architecture</a></li>
+          <li><a href="/services/#ai">AI &amp; MLOps</a></li>
+          <li><a href="/services/#training">Technical enablement</a></li>
+          <li><a href="/case-studies/">Case studies</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Insights</h4>
+        <ul>
+          <li><a href="/insights/">All articles</a></li>
+          <li><a href="/series/">Series</a></li>
+          <li><a href="/topics/">Topics</a></li>
+          <li><a href="/notes/">Personal notes</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
+          <li><a href="/contact/">Start an engagement</a></li>
+          <li><a href="/about/">About</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span id="yr">2026</span> Ajna Consulting Services. All rights reserved.</span>
+      <span style="display:flex;gap:1.2rem"><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a></span>
+    </div>
+  </div>
+</footer>
+<script src="/assets/js/site.js" defer></script>
+</body>
+</html>

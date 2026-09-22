@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Deployment Strategies Compared: Rolling, Blue-Green, Canary, and When Each Actually Fits | Ajna CS</title>
+<meta name="description" content="Rolling updates, blue-green switches, canary releases, and shadow traffic — what each strategy really costs, what each protects against, and the database p…">
+<meta name="author" content="Chandra Lanka">
+<link rel="canonical" href="https://ajnacs.com/insights/deployment-strategies-blue-green-canary/">
+<meta name="robots" content="index, follow, max-image-preview:large">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Ajna Consulting Services">
+<meta property="og:title" content="Deployment Strategies Compared: Rolling, Blue-Green, Canary, and When Each Actually Fits">
+<meta property="og:description" content="Rolling updates, blue-green switches, canary releases, and shadow traffic — what each strategy really costs, what each protects against, and the database p…">
+<meta property="og:url" content="https://ajnacs.com/insights/deployment-strategies-blue-green-canary/">
+<meta property="og:image" content="https://ajnacs.com/assets/og/insights-deployment-strategies-blue-green-canary.svg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Deployment Strategies Compared: Rolling, Blue-Green, Canary, and When Each Actually Fits">
+<meta name="twitter:description" content="Rolling updates, blue-green switches, canary releases, and shadow traffic — what each strategy really costs, what each protects against, and the database p…">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/insights-deployment-strategies-blue-green-canary.svg">
+
+<link rel="icon" href="/images/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="/images/ajna-logo.png">
+<meta name="theme-color" content="#0a1020">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="/assets/css/site.css">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<script>
+/* Set the theme before first paint so the page never flashes the wrong one. */
+(function(){try{var t=localStorage.getItem('acs-theme');
+if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Deployment Strategies Compared: Rolling, Blue-Green, Canary, and When Each Actually Fits","description":"Rolling updates, blue-green switches, canary releases, and shadow traffic — what each strategy really costs, what each protects against, and the database problem that constrains all of them.","datePublished":"2026-03-20","dateModified":"2026-03-20","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/deployment-strategies-blue-green-canary/","image":"https://ajnacs.com/assets/og/insights-deployment-strategies-blue-green-canary.svg","keywords":"Deployment, Platform Engineering, Engineering Practice, Containers, Reliability","articleSection":"Platform Engineering","wordCount":1035}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Deployment Strategies Compared: Rolling, Blue-Green, Canary, and When Each Actually Fits"}]}</script>
+</head>
+<body class="" data-topic="Platform Engineering">
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header" id="siteHeader">
+  <div class="wrap" style="display:flex;align-items:center;width:min(1220px,100% - var(--gutter)*2)">
+    <a class="brand" href="/">
+      <img src="/images/ajna-logo.png" alt="" width="32" height="32">
+      <span class="brand-name">Ajna<span>CS</span></span>
+    </a>
+    <nav class="nav" id="nav" aria-label="Primary">
+      <a href="/services/">Services</a>
+      <a href="/insights/" aria-current="page">Insights</a>
+      <a href="/series/">Series</a>
+      <a href="/case-studies/">Case studies</a>
+      <a href="/about/">About</a>
+      <a class="btn btn-sm" href="/contact/" style="margin-left:.4rem">Engage engineering</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn" id="themeBtn" type="button" aria-label="Switch to dark mode" aria-pressed="false"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg></button>
+      <button class="icon-btn nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+
+<div class="read-bar" aria-hidden="true"><span id="readBar"></span></div>
+<article class="article">
+  <header class="article-head">
+    <div class="wrap-narrow">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a> <span aria-hidden="true">/</span>
+        <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
+        <span>Platform Engineering</span>
+      </nav>
+      <h1 class="h1">Deployment Strategies Compared: Rolling, Blue-Green, Canary, and When Each Actually Fits</h1>
+      <p class="lede" style="margin-top:1rem">Rolling updates, blue-green switches, canary releases, and shadow traffic — what each strategy really costs, what each protects against, and the database problem that constrains all of them.</p>
+      <div class="article-meta">
+        <span class="chip">Platform Engineering</span>
+        <time datetime="2026-03-20">20 Mar 2026</time>
+        <span class="dot"></span><span>5 min read</span>
+        <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="article-hero wrap-narrow" data-topic="Platform Engineering"><svg viewBox="0 0 1200 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgdeploymentst" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#7c3aed" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#5b21b6" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#7c3aed" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="420" fill="url(#bgdeploymentst)"/>
+  <path d="M0 70 L0 63.8 L16 52.0 L32 41.0 L48 31.2 L64 23.0 L80 16.8 L96 12.8 L112 11.3 L128 12.2 L144 15.5 L160 21.1 L176 28.7 L192 38.1 L208 48.8 L224 60.4 L240 72.5 L256 84.4 L272 95.7 L288 105.9 L304 114.6 L320 121.5 L336 126.2 L352 128.5 L368 128.4 L384 125.8 L400 120.9 L416 113.9 L432 105.0 L448 94.7 L464 83.3 L480 71.3 L496 59.4 L512 47.8 L528 37.2 L544 28.0 L560 20.5 L576 15.1 L592 12.0 L608 11.3 L624 13.1 L640 17.3" fill="none" stroke="#7c3aed" stroke-opacity="0.50" stroke-width="2.2" stroke-linecap="round"/><path d="M0 116 L0 133.9 L16 138.4 L32 141.9 L48 144.3 L64 145.5 L80 145.5 L96 144.3 L112 141.9 L128 138.4 L144 133.9 L160 128.7 L176 123.0 L192 117.0 L208 110.9 L224 105.0 L240 99.6 L256 94.9 L272 91.1 L288 88.3 L304 86.7 L320 86.3 L336 87.2 L352 89.2 L368 92.4 L384 96.6 L400 101.6 L416 107.2 L432 113.1 L448 119.2 L464 125.2 L480 130.7 L496 135.7 L512 139.8 L528 142.9 L544 144.9 L560 145.7 L576 145.2 L592 143.5 L608 140.7 L624 136.8 L640 132.1" fill="none" stroke="#5b21b6" stroke-opacity="0.43" stroke-width="2.0" stroke-linecap="round"/><path d="M0 162 L0 134.8 L16 135.6 L32 137.6 L48 140.6 L64 144.4 L80 149.0 L96 154.2 L112 159.7 L128 165.3 L144 170.7 L160 175.8 L176 180.3 L192 184.0 L208 186.8 L224 188.6 L240 189.3 L256 188.8 L272 187.2 L288 184.5 L304 180.9 L320 176.5 L336 171.5 L352 166.1 L368 160.5 L384 155.0 L400 149.8 L416 145.1 L432 141.1 L448 137.9 L464 135.8 L480 134.8 L496 135.0 L512 136.2 L528 138.6 L544 141.9 L560 146.1 L576 150.9 L592 156.2 L608 161.7 L624 167.3 L640 172.6" fill="none" stroke="#7c3aed" stroke-opacity="0.36" stroke-width="1.7" stroke-linecap="round"/><path d="M0 208 L0 196.3 L16 209.1 L32 222.0 L48 234.2 L64 245.4 L80 254.9 L96 262.6 L112 267.9 L128 270.7 L144 270.9 L160 268.4 L176 263.4 L192 256.1 L208 246.8 L224 235.9 L240 223.7 L256 210.9 L272 198.0 L288 185.6 L304 174.0 L320 163.9 L336 155.6 L352 149.5 L368 145.9 L384 144.9 L400 146.5 L416 150.7 L432 157.3 L448 166.1 L464 176.5 L480 188.4 L496 201.0 L512 213.9 L528 226.6 L544 238.5 L560 249.1 L576 258.0 L592 264.8 L608 269.2 L624 271.1 L640 270.3" fill="none" stroke="#5b21b6" stroke-opacity="0.29" stroke-width="1.5" stroke-linecap="round"/><path d="M0 254 L0 266.4 L16 274.6 L32 281.9 L48 288.1 L64 292.8 L80 295.9 L96 297.2 L112 296.8 L128 294.5 L144 290.6 L160 285.1 L176 278.3 L192 270.5 L208 262.0 L224 253.1 L240 244.3 L256 235.9 L272 228.3 L288 221.7 L304 216.5 L320 212.9 L336 211.0 L352 210.9 L368 212.6 L384 216.0 L400 221.0 L416 227.4 L432 235.0 L448 243.3 L464 252.1 L480 260.9 L496 269.5 L512 277.4 L528 284.3 L544 290.0 L560 294.1 L576 296.6 L592 297.3 L608 296.2 L624 293.3 L640 288.7" fill="none" stroke="#7c3aed" stroke-opacity="0.22" stroke-width="1.2" stroke-linecap="round"/>
+</svg></div>
+
+  <div class="wrap-narrow article-grid">
+    <nav class="toc" aria-label="On this page">
+  <p class="toc-title">On this page</p>
+  <ol><li><a href="#the-baseline-rolling-updates">The baseline: rolling updates</a></li><li><a href="#blue-green-the-binary-switch">Blue-green: the binary switch</a></li><li><a href="#canary-measured-exposure">Canary: measured exposure</a></li><li><a href="#the-constraint-underneath-all-of-them-the-database">The constraint underneath all of them: the database</a></li><li><a href="#choosing-and-the-maturity-path">Choosing, and the maturity path</a></li></ol>
+</nav>
+    <div class="prose">
+<p>Deployment strategy discussions have a way of floating free of their constraints. Teams debate blue-green versus canary as if choosing a philosophy, when the real determinants are unglamorous: how many instances you run, whether your traffic layer can split by percentage, what your observability can detect in five minutes, and — above all — whether your database schema can serve two application versions at once.</p>
+<p>Here&#39;s the strategy landscape with the constraints attached.</p>
+<h2 id="the-baseline-rolling-updates">The baseline: rolling updates</h2>
+<aside class="keyfig">
+  <p class="keyfig-label">Key figure</p>
+  <p class="keyfig-text">During a rollout, both versions serve mixed traffic with no control over who gets what — you can&#39;t aim the new version at <b>1%</b> or at internal users first.</p>
+</aside>
+<p>Replace instances a few at a time behind a load balancer until the fleet runs the new version. This is Kubernetes&#39; default and the industry&#39;s workhorse, and its virtues are real: no extra capacity beyond a surge margin, no traffic-management sophistication required, built into every orchestrator.</p>
+<p>Its limits define why the other strategies exist. During a rollout, <strong>both versions serve mixed traffic with no control over who gets what</strong> — you can&#39;t aim the new version at 1% or at internal users first. Detection is coarse: by the time your error-rate alert fires, the rollout may be 60% complete. And &quot;rollback&quot; is a second rolling deployment, taking as long as the first, during which the bad version keeps serving.</p>
+<p>Rolling is the right answer when changes are low-risk, releases are frequent and small, and your test pipeline catches most problems pre-production. Its two non-negotiables: real <strong>readiness checks</strong> (traffic must not arrive before warmup — a JVM serving requests during class-loading is a self-inflicted incident) and <strong>graceful termination</strong> (drain connections before killing instances; the deploy-time 502 blip that teams learn to ignore is almost always a draining bug, and learned alarm-ignoring is expensive).</p>
+<h2 id="blue-green-the-binary-switch">Blue-green: the binary switch</h2>
+<p>Run two complete environments; deploy to the idle one, smoke-test it against production infrastructure, then flip traffic atomically at the router. Rollback is flipping back — seconds, not minutes.</p>
+<p>What you&#39;re buying: <strong>instant, rehearsed rollback</strong> and the ability to validate the real artifact on real infrastructure before any user meets it. What you&#39;re paying: double capacity (transient in cloud/Kubernetes, where &quot;environments&quot; are just deployments and the cost is an hour of duplicate pods, not a second data center), and — the underrated one — <strong>all-at-once exposure</strong>: when you flip, 100% of users hit the new version simultaneously, so anything your smoke tests missed hits everyone at once. Blue-green trades blast-radius control for rollback speed.</p>
+<p>Operational details that decide success: long-lived connections (websockets, streaming) need a drain story at flip time; background workers and schedulers must not double-run while both environments exist; and the idle environment&#39;s configuration must be <em>provably</em> identical — drift between blue and green converts your rollback plan into a second incident.</p>
+<p>Blue-green fits when releases are infrequent and chunky, rollback speed is the dominant requirement (payments, trading windows), or compliance demands a validated-then-promoted artifact with a clean audit line.</p>
+<h2 id="canary-measured-exposure">Canary: measured exposure</h2>
+<p>Route a small slice of traffic — 1%, then 5%, 25%, 100% — to the new version, comparing its health against the stable fleet at each step, with automatic rollback on regression. This is the strategy hyperscalers converge on, because it converts deployment risk into a controlled experiment: worst case, 1% of users saw the bug for four minutes.</p>
+<p>The honest cost is that <strong>canary is an observability program wearing a deployment costume.</strong> To progress safely you need per-version metrics (latency, errors, saturation, and ideally one business metric — orders completed, not just HTTP 200s), traffic splitting finer than instance granularity (a service mesh or L7 load balancer; ingress percentage routing), and <em>automated</em> analysis — humans watching dashboards do not reliably catch a 2% error-rate delta at step three of a 2 AM rollout. Tooling exists precisely for this (Argo Rollouts and Flagger drive the analysis loop against Prometheus/Datadog queries in Kubernetes-land); adopting the tool without defining the metrics is the common half-implementation.</p>
+<p>Two sharp edges: <strong>session affinity</strong> (a user bouncing between versions mid-session must be safe, or you need sticky routing), and <strong>sample size</strong> — at 1% traffic on a modest service, rare failure modes simply won&#39;t occur during the canary window; size steps and durations against actual request volumes, not round numbers.</p>
+<p>A canary&#39;s quieter sibling deserves mention: <strong>shadow traffic</strong> — mirror production requests to the new version and <em>discard its responses</em>. Zero user risk, superb for validating performance and error behavior of risky rewrites; useless for anything with side effects unless you can stub them. Rewrites and migrations should shadow before they canary.</p>
+<h2 id="the-constraint-underneath-all-of-them-the-database">The constraint underneath all of them: the database</h2>
+<p>Every strategy above assumes two application versions can coexist against one database. That assumption — not the traffic mechanics — is where zero-downtime deployment is actually won or lost. The discipline is <strong>expand/contract</strong>: additive schema changes first (new columns nullable or defaulted, new tables, dual-write where needed), deploy code that works with both shapes, backfill, then contract (drop the old shape) releases later, after rollback windows close. The moment a deployment requires a schema change and a code change to land <em>together</em>, you&#39;ve bought an outage window regardless of your traffic strategy. Schema review — &quot;can version N-1 run against this?&quot; — belongs in the pipeline as a gate, not in the post-incident review as a finding.</p>
+<p>The same coexistence test applies to queues (old consumers meeting new message schemas), caches (serialization compatibility), and any singleton background jobs.</p>
+<h2 id="choosing-and-the-maturity-path">Choosing, and the maturity path</h2>
+<p>The selection heuristic in one breath: <strong>rolling</strong> for routine low-risk changes with good pre-prod coverage; <strong>blue-green</strong> when rollback-in-seconds is the requirement and all-at-once exposure is acceptable after smoke tests; <strong>canary</strong> when user-facing risk must be bounded and you have (or will build) the observability to automate judgment; <strong>shadow</strong> before big rewrites. These compose — plenty of mature shops blue-green the infrastructure layer while canarying application releases through it.</p>
+<p>And note what all four strategies quietly assume: <strong>decoupling deploy from release</strong>. Feature flags let code ship dark and activate independently, which shrinks deployment risk to &quot;does the binary run&quot; while product risk is managed per-feature. Teams that internalize that separation stop needing deployment strategies to carry product risk at all — which is the actual end state worth aiming for: deploys so routine and reversible that the strategy discussion gets boring. Boring is the win condition.</p>
+
+    </div>
+  </div>
+
+  <div class="wrap-narrow"><aside class="refs" aria-labelledby="refs-h">
+  <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
+  <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
+  <ul>
+    <li><a href="https://kubernetes.io/docs/" rel="noopener nofollow" target="_blank">Kubernetes documentation</a><span>Primary reference for the concepts used here.</span></li>
+    <li><a href="https://prometheus.io/docs/" rel="noopener nofollow" target="_blank">Prometheus</a><span>Query language and operational guidance.</span></li>
+  </ul>
+</aside></div>
+
+  
+
+  <div class="wrap-narrow article-foot">
+    <div class="row" style="gap:.4rem">
+      <a class="chip chip-plain" href="/insights/?topic=Deployment">Deployment</a><a class="chip chip-plain" href="/insights/?topic=Platform%20Engineering">Platform Engineering</a><a class="chip chip-plain" href="/insights/?topic=Engineering%20Practice">Engineering Practice</a><a class="chip chip-plain" href="/insights/?topic=Containers">Containers</a><a class="chip chip-plain" href="/insights/?topic=Reliability">Reliability</a>
+    </div>
+    <nav class="prevnext" aria-label="More articles">
+      <a href="/insights/java-legacy-modernization-roadmap/"><span>Previous</span><strong>Modernizing Legacy Java: A Roadmap from Java 8 to 21+ Without Stopping the Business</strong></a>
+      <a href="/insights/back-of-envelope-system-design/" class="next"><span>Next</span><strong>Back-of-Envelope Engineering: The Estimation Skill That Filters Bad Architectures in Minutes</strong></a>
+    </nav>
+  </div>
+
+  <section class="section surface hair" style="margin-top:4rem">
+    <div class="wrap">
+      <p class="eyebrow">Related</p>
+      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|DevSecOps|Containers|Security|" data-search="kubernetes security hardening: the controls that actually reduce attack surface default kubernetes configurations are not production-secure. here are the specific hardening controls — rbac, pod security standards, network policies, image policies, secrets management — that reduce attack surface and what each actually protects against. devsecops containers security" data-topic="DevSecOps" href="/insights/kubernetes-security-hardening/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgkubernetesse" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e0473a" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#c03a2e" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#e0473a" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgkubernetesse)"/>
+  <line x1="160.1" y1="66.2" x2="89.3" y2="179.6" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="160.1" y1="66.2" x2="326.4" y2="48.2" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="160.1" y1="66.2" x2="253.8" y2="203.1" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="160.1" y1="66.2" x2="78.7" y2="178.3" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="160.1" y1="66.2" x2="199.0" y2="215.6" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="160.1" y1="66.2" x2="61.3" y2="182.8" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="89.3" y1="179.6" x2="79.3" y2="245.1" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="89.3" y1="179.6" x2="144.1" y2="305.3" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="89.3" y1="179.6" x2="253.8" y2="203.1" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="89.3" y1="179.6" x2="78.7" y2="178.3" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="89.3" y1="179.6" x2="148.8" y2="246.4" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="89.3" y1="179.6" x2="199.0" y2="215.6" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="89.3" y1="179.6" x2="61.3" y2="182.8" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="79.3" y1="245.1" x2="144.1" y2="305.3" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="79.3" y1="245.1" x2="78.7" y2="178.3" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="79.3" y1="245.1" x2="148.8" y2="246.4" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="79.3" y1="245.1" x2="199.0" y2="215.6" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="79.3" y1="245.1" x2="61.3" y2="182.8" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="144.1" y1="305.3" x2="253.8" y2="203.1" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="144.1" y1="305.3" x2="78.7" y2="178.3" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="144.1" y1="305.3" x2="148.8" y2="246.4" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="144.1" y1="305.3" x2="199.0" y2="215.6" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="144.1" y1="305.3" x2="61.3" y2="182.8" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="253.8" y1="203.1" x2="148.8" y2="246.4" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="253.8" y1="203.1" x2="199.0" y2="215.6" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="78.7" y1="178.3" x2="148.8" y2="246.4" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="78.7" y1="178.3" x2="199.0" y2="215.6" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="78.7" y1="178.3" x2="61.3" y2="182.8" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="422.7" y1="206.1" x2="488.8" y2="117.3" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="148.8" y1="246.4" x2="199.0" y2="215.6" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="148.8" y1="246.4" x2="61.3" y2="182.8" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="563.2" y1="71.1" x2="488.8" y2="117.3" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><line x1="199.0" y1="215.6" x2="61.3" y2="182.8" stroke="#e0473a" stroke-opacity=".28" stroke-width="1.4"/><circle cx="160.1" cy="66.2" r="5" fill="#e0473a" fill-opacity=".9"/><circle cx="89.3" cy="179.6" r="8.5" fill="#c03a2e" fill-opacity=".9"/><circle cx="326.4" cy="48.2" r="12" fill="#e0473a" fill-opacity=".9"/><circle cx="79.3" cy="245.1" r="5" fill="#c03a2e" fill-opacity=".9"/><circle cx="144.1" cy="305.3" r="8.5" fill="#e0473a" fill-opacity=".9"/><circle cx="253.8" cy="203.1" r="12" fill="#c03a2e" fill-opacity=".9"/><circle cx="78.7" cy="178.3" r="5" fill="#e0473a" fill-opacity=".9"/><circle cx="422.7" cy="206.1" r="8.5" fill="#c03a2e" fill-opacity=".9"/><circle cx="148.8" cy="246.4" r="12" fill="#e0473a" fill-opacity=".9"/><circle cx="563.2" cy="71.1" r="5" fill="#c03a2e" fill-opacity=".9"/><circle cx="488.8" cy="117.3" r="8.5" fill="#e0473a" fill-opacity=".9"/><circle cx="199.0" cy="215.6" r="12" fill="#c03a2e" fill-opacity=".9"/><circle cx="61.3" cy="182.8" r="5" fill="#e0473a" fill-opacity=".9"/>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">DevSecOps</span>
+    <h3 class="card-title">Kubernetes Security Hardening: The Controls That Actually Reduce Attack Surface</h3>
+    <p class="card-desc">Default Kubernetes configurations are not production-secure. Here are the specific hardening controls — RBAC, Pod Security Standards, network policies, image policies, secrets management — that reduce attack surface and what each actually protects against.</p>
+    <div class="card-meta"><time datetime="2026-04-13">13 Apr 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
+  </div>
+</a>
+<a class="card" data-card data-topics="|Java|Modernization|Technical Debt|Architecture|Engineering Practice|" data-search="modernizing legacy java: a roadmap from java 8 to 21+ without stopping the business most enterprise java still runs on versions the ecosystem has left behind. a staged roadmap for moving java 8 estates to 21+ — what breaks, what to automate, how to sequence framework upgrades, and how to sell the work to the business. java modernization technical debt architecture engineering practice" data-topic="Architecture" href="/insights/java-legacy-modernization-roadmap/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgjavalegacymo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2f6fed" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#1b4fc4" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#2f6fed" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgjavalegacymo)"/>
+  <line x1="199.8" y1="157.8" x2="217.9" y2="145.8" stroke="#2f6fed" stroke-opacity=".28" stroke-width="1.4"/><line x1="199.8" y1="157.8" x2="144.3" y2="55.8" stroke="#2f6fed" stroke-opacity=".28" stroke-width="1.4"/><line x1="199.8" y1="157.8" x2="341.3" y2="190.0" stroke="#2f6fed" stroke-opacity=".28" stroke-width="1.4"/><line x1="199.8" y1="157.8" x2="87.0" y2="277.0" stroke="#2f6fed" stroke-opacity=".28" stroke-width="1.4"/><line x1="199.8" y1="157.8" x2="333.6" y2="219.6" stroke="#2f6fed" stroke-opacity=".28" stroke-width="1.4"/><line x1="199.8" y1="157.8" x2="78.4" y2="265.0" stroke="#2f6fed" stroke-opacity=".28" stroke-width="1.4"/><line x1="199.8" y1="157.8" x2="334.4" y2="162.4" stroke="#2f6fed" stroke-opacity=".28" stroke-width="1.4"/><line x1="402.6" y1="263.8" x2="357.7" y2="308.1" stroke="#2f6fed" stroke-opacity=".28" stroke-width="1.4"/><line x1="402.6" y1="263.8" x2="341.3" y2="190.0" stroke="#2f6fed" stroke-opacity=".28" stroke-width="1.4"/><line x1="402.6" y1="263.8" x2="376.1" y2="121.2" stroke="#2f6fed" stroke-opacity=".28" stroke-width="1.4"/><line x1="402.6" y1="263.8" x2="333.6" y2="219.6" stroke="#2f6fed" stroke-opacity=".28" stroke-width="1.4"/><line x1="402.6" y1="263.8" x2="334.4" y2="162.4" stroke="#2f6fed" stroke-opacity=".28" stroke-width="1.4"/><line x1="402.6" y1="263.8" x2="361.4" y2="260.7" stroke="#2f6fed" stroke-opacity=".28" stroke-width="1.4"/><line x1="217.9" y1="145.8" x2="144.3" y2="55.8" stroke="#2f6fed" stroke-opacity=".28" stroke-width="1.4"/><line x1="217.9" y1="145.8" x2="341.3" y2="190.0" stroke="#2f6fed" stroke-opacity=".28" stroke-width="1.4"/><line x1="217.9" y1="145.8" x2="376.1" y2="121.2" stroke="#2f6fed" stroke-opacity=".28" stroke-width="1.4"/><line x1="217.9" y1="145.8" x2="333.6" y2="219.6" stroke="#2f6fed" stroke-opacity=".28" stroke-width="1.4"/><line x1="217.9" y1="145.8" x2="334.4" y2="162.4" stroke="#2f6fed" stroke-opacity=".28" stroke-width="1.4"/><line x1="357.7" y1="308.1" x2="341.3" y2="190.0" stroke="#2f6fed" stroke-opacity=".28" stroke-width="1.4"/><line x1="357.7" y1="308.1" x2="333.6" y2="219.6" stroke="#2f6fed" stroke-opacity=".28" stroke-width="1.4"/><line x1="357.7" y1="308.1" x2="334.4" y2="162.4" stroke="#2f6fed" stroke-opacity=".28" stroke-width="1.4"/><line x1="357.7" y1="308.1" x2="361.4" y2="260.7" stroke="#2f6fed" stroke-opacity=".28" stroke-width="1.4"/><line x1="341.3" y1="190.0" x2="376.1" y2="121.2" stroke="#2f6fed" stroke-opacity=".28" stroke-width="1.4"/><line x1="341.3" y1="190.0" x2="333.6" y2="219.6" stroke="#2f6fed" stroke-opacity=".28" stroke-width="1.4"/><line x1="341.3" y1="190.0" x2="334.4" y2="162.4" stroke="#2f6fed" stroke-opacity=".28" stroke-width="1.4"/><line x1="341.3" y1="190.0" x2="361.4" y2="260.7" stroke="#2f6fed" stroke-opacity=".28" stroke-width="1.4"/><line x1="341.3" y1="190.0" x2="442.6" y2="92.1" stroke="#2f6fed" stroke-opacity=".28" stroke-width="1.4"/><line x1="87.0" y1="277.0" x2="78.4" y2="265.0" stroke="#2f6fed" stroke-opacity=".28" stroke-width="1.4"/><line x1="376.1" y1="121.2" x2="333.6" y2="219.6" stroke="#2f6fed" stroke-opacity=".28" stroke-width="1.4"/><line x1="376.1" y1="121.2" x2="334.4" y2="162.4" stroke="#2f6fed" stroke-opacity=".28" stroke-width="1.4"/><line x1="376.1" y1="121.2" x2="361.4" y2="260.7" stroke="#2f6fed" stroke-opacity=".28" stroke-width="1.4"/><line x1="376.1" y1="121.2" x2="442.6" y2="92.1" stroke="#2f6fed" stroke-opacity=".28" stroke-width="1.4"/><line x1="333.6" y1="219.6" x2="334.4" y2="162.4" stroke="#2f6fed" stroke-opacity=".28" stroke-width="1.4"/><line x1="333.6" y1="219.6" x2="361.4" y2="260.7" stroke="#2f6fed" stroke-opacity=".28" stroke-width="1.4"/><line x1="333.6" y1="219.6" x2="442.6" y2="92.1" stroke="#2f6fed" stroke-opacity=".28" stroke-width="1.4"/><line x1="334.4" y1="162.4" x2="361.4" y2="260.7" stroke="#2f6fed" stroke-opacity=".28" stroke-width="1.4"/><line x1="334.4" y1="162.4" x2="442.6" y2="92.1" stroke="#2f6fed" stroke-opacity=".28" stroke-width="1.4"/><circle cx="199.8" cy="157.8" r="5" fill="#2f6fed" fill-opacity=".9"/><circle cx="402.6" cy="263.8" r="8.5" fill="#1b4fc4" fill-opacity=".9"/><circle cx="217.9" cy="145.8" r="12" fill="#2f6fed" fill-opacity=".9"/><circle cx="357.7" cy="308.1" r="5" fill="#1b4fc4" fill-opacity=".9"/><circle cx="144.3" cy="55.8" r="8.5" fill="#2f6fed" fill-opacity=".9"/><circle cx="341.3" cy="190.0" r="12" fill="#1b4fc4" fill-opacity=".9"/><circle cx="87.0" cy="277.0" r="5" fill="#2f6fed" fill-opacity=".9"/><circle cx="376.1" cy="121.2" r="8.5" fill="#1b4fc4" fill-opacity=".9"/><circle cx="333.6" cy="219.6" r="12" fill="#2f6fed" fill-opacity=".9"/><circle cx="78.4" cy="265.0" r="5" fill="#1b4fc4" fill-opacity=".9"/><circle cx="334.4" cy="162.4" r="8.5" fill="#2f6fed" fill-opacity=".9"/><circle cx="361.4" cy="260.7" r="12" fill="#1b4fc4" fill-opacity=".9"/><circle cx="442.6" cy="92.1" r="5" fill="#2f6fed" fill-opacity=".9"/>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">Architecture</span>
+    <h3 class="card-title">Modernizing Legacy Java: A Roadmap from Java 8 to 21+ Without Stopping the Business</h3>
+    <p class="card-desc">Most enterprise Java still runs on versions the ecosystem has left behind. A staged roadmap for moving Java 8 estates to 21+ — what breaks, what to automate, how to sequence framework upgrades, and how to sell the work to the business.</p>
+    <div class="card-meta"><time datetime="2026-03-10">10 Mar 2026</time><span class="dot"></span><span>5 min read</span></div>
+  </div>
+</a>
+<a class="card" data-card data-topics="|Cloud Architecture|Architecture|Reliability|Disaster Recovery|Distributed Systems|" data-search="multi-region architecture patterns: what you&#39;re actually buying at each tier active-passive, pilot light, active-active, and the data problem underneath them all. a tiered framework for multi-region design that matches architecture to actual availability requirements — and prices the tiers honestly. cloud architecture architecture reliability disaster recovery distributed systems" data-topic="Cloud Architecture" href="/insights/multi-region-architecture-patterns/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgmultiregiona" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0d9488" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#0b7a70" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#0d9488" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgmultiregiona)"/>
+  <rect x="179.8" y="78" width="300.0" height="34" rx="8"
+      fill="#0b7a70" fill-opacity="0.16"
+      stroke="#0d9488" stroke-opacity=".45" stroke-width="1.2"/><line x1="320" y1="112" x2="320" y2="134" stroke="#0d9488" stroke-opacity=".4" stroke-width="1.4"/><rect x="169.3" y="134" width="266.0" height="34" rx="8"
+      fill="#0d9488" fill-opacity="0.29"
+      stroke="#0d9488" stroke-opacity=".45" stroke-width="1.2"/><line x1="320" y1="168" x2="320" y2="190" stroke="#0d9488" stroke-opacity=".4" stroke-width="1.4"/><rect x="213.2" y="190" width="232.0" height="34" rx="8"
+      fill="#0b7a70" fill-opacity="0.42"
+      stroke="#0d9488" stroke-opacity=".45" stroke-width="1.2"/><line x1="320" y1="224" x2="320" y2="246" stroke="#0d9488" stroke-opacity=".4" stroke-width="1.4"/><rect x="237.0" y="246" width="198.0" height="34" rx="8"
+      fill="#0d9488" fill-opacity="0.55"
+      stroke="#0d9488" stroke-opacity=".45" stroke-width="1.2"/>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">Cloud Architecture</span>
+    <h3 class="card-title">Multi-Region Architecture Patterns: What You&#39;re Actually Buying at Each Tier</h3>
+    <p class="card-desc">Active-passive, pilot light, active-active, and the data problem underneath them all. A tiered framework for multi-region design that matches architecture to actual availability requirements — and prices the tiers honestly.</p>
+    <div class="card-meta"><time datetime="2026-02-12">12 Feb 2026</time><span class="dot"></span><span>5 min read</span></div>
+  </div>
+</a></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap-narrow cta-panel">
+      <h2 class="h2">Working on this in production?</h2>
+      <p class="lede" style="margin-top:.7rem">We do this work directly alongside engineering teams — architecture review, migration, and hands-on enablement.</p>
+      <div class="row" style="margin-top:1.4rem">
+        <a class="btn" href="/contact/">Engage engineering <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="btn btn-ghost" href="/services/">See what we do</a>
+      </div>
+    </div>
+  </section>
+</article>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="grid g-4" style="gap:2rem">
+      <div>
+        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem">
+          <img src="/images/ajna-logo.png" alt="" width="32" height="32">
+          <span class="brand-name">Ajna<span style="color:#6f9bff">CS</span></span>
+        </a>
+        <p style="font-size:.88rem;line-height:1.65;color:#9fb0d0;max-width:30ch">
+          Specialised engineering partner for enterprise architecture, AI &amp; MLOps, and technical enablement.
+        </p>
+        <div class="social" style="margin-top:1.1rem">
+          <a href="https://www.youtube.com/@TechKnowen" rel="noopener" aria-label="YouTube"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 12s0-3.8-.5-5.6a2.9 2.9 0 0 0-2-2C18.7 4 12 4 12 4s-6.7 0-8.5.4a2.9 2.9 0 0 0-2 2C1 8.2 1 12 1 12s0 3.8.5 5.6a2.9 2.9 0 0 0 2 2C5.3 20 12 20 12 20s6.7 0 8.5-.4a2.9 2.9 0 0 0 2-2C23 15.8 23 12 23 12zM9.8 15.4V8.6l5.9 3.4z"/></svg></a>
+          <a href="https://techknowen.com" rel="noopener" aria-label="TechKnowen blog"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 3h16v3H4zm0 5h16v13l-8-4-8 4z"/></svg></a>
+          <a href="/feed.xml" aria-label="RSS feed"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="6.2" cy="17.8" r="2.2"/><path d="M4 10.2v3a6.6 6.6 0 0 1 6.6 6.6h3A9.6 9.6 0 0 0 4 10.2zM4 4v3c7.2 0 13 5.8 13 13h3C20 11.2 12.8 4 4 4z"/></svg></a>
+        </div>
+      </div>
+      <div>
+        <h4>Services</h4>
+        <ul>
+          <li><a href="/services/#architecture">Enterprise architecture</a></li>
+          <li><a href="/services/#ai">AI &amp; MLOps</a></li>
+          <li><a href="/services/#training">Technical enablement</a></li>
+          <li><a href="/case-studies/">Case studies</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Insights</h4>
+        <ul>
+          <li><a href="/insights/">All articles</a></li>
+          <li><a href="/series/">Series</a></li>
+          <li><a href="/topics/">Topics</a></li>
+          <li><a href="/notes/">Personal notes</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
+          <li><a href="/contact/">Start an engagement</a></li>
+          <li><a href="/about/">About</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span id="yr">2026</span> Ajna Consulting Services. All rights reserved.</span>
+      <span style="display:flex;gap:1.2rem"><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a></span>
+    </div>
+  </div>
+</footer>
+<script src="/assets/js/site.js" defer></script>
+</body>
+</html>

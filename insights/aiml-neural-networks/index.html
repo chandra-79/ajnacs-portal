@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Neural Networks Explained: What They Are, How They Learn, and Why They Work | Ajna CS</title>
+<meta name="description" content="Neurons, layers, weights, activation functions, backpropagation, and gradient descent — the actual mechanics of how a neural network learns from data, expl…">
+<meta name="author" content="Chandra Lanka">
+<link rel="canonical" href="https://ajnacs.com/insights/aiml-neural-networks/">
+<meta name="robots" content="index, follow, max-image-preview:large">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Ajna Consulting Services">
+<meta property="og:title" content="Neural Networks Explained: What They Are, How They Learn, and Why They Work">
+<meta property="og:description" content="Neurons, layers, weights, activation functions, backpropagation, and gradient descent — the actual mechanics of how a neural network learns from data, expl…">
+<meta property="og:url" content="https://ajnacs.com/insights/aiml-neural-networks/">
+<meta property="og:image" content="https://ajnacs.com/assets/og/insights-aiml-neural-networks.svg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Neural Networks Explained: What They Are, How They Learn, and Why They Work">
+<meta name="twitter:description" content="Neurons, layers, weights, activation functions, backpropagation, and gradient descent — the actual mechanics of how a neural network learns from data, expl…">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/insights-aiml-neural-networks.svg">
+
+<link rel="icon" href="/images/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="/images/ajna-logo.png">
+<meta name="theme-color" content="#0a1020">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="/assets/css/site.css">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<script>
+/* Set the theme before first paint so the page never flashes the wrong one. */
+(function(){try{var t=localStorage.getItem('acs-theme');
+if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Neural Networks Explained: What They Are, How They Learn, and Why They Work","description":"Neurons, layers, weights, activation functions, backpropagation, and gradient descent — the actual mechanics of how a neural network learns from data, explained without the mathematics becoming the obstacle.","datePublished":"2026-09-04","dateModified":"2026-09-04","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/aiml-neural-networks/","image":"https://ajnacs.com/assets/og/insights-aiml-neural-networks.svg","keywords":"AI & MLOps, Fundamentals","articleSection":"AI & MLOps","wordCount":777}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Neural Networks Explained: What They Are, How They Learn, and Why They Work"}]}</script>
+</head>
+<body class="" data-topic="AI &amp; MLOps">
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header" id="siteHeader">
+  <div class="wrap" style="display:flex;align-items:center;width:min(1220px,100% - var(--gutter)*2)">
+    <a class="brand" href="/">
+      <img src="/images/ajna-logo.png" alt="" width="32" height="32">
+      <span class="brand-name">Ajna<span>CS</span></span>
+    </a>
+    <nav class="nav" id="nav" aria-label="Primary">
+      <a href="/services/">Services</a>
+      <a href="/insights/" aria-current="page">Insights</a>
+      <a href="/series/">Series</a>
+      <a href="/case-studies/">Case studies</a>
+      <a href="/about/">About</a>
+      <a class="btn btn-sm" href="/contact/" style="margin-left:.4rem">Engage engineering</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn" id="themeBtn" type="button" aria-label="Switch to dark mode" aria-pressed="false"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg></button>
+      <button class="icon-btn nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+
+<div class="read-bar" aria-hidden="true"><span id="readBar"></span></div>
+<article class="article">
+  <header class="article-head">
+    <div class="wrap-narrow">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a> <span aria-hidden="true">/</span>
+        <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
+        <span>AI &amp; MLOps</span>
+      </nav>
+      <h1 class="h1">Neural Networks Explained: What They Are, How They Learn, and Why They Work</h1>
+      <p class="lede" style="margin-top:1rem">Neurons, layers, weights, activation functions, backpropagation, and gradient descent — the actual mechanics of how a neural network learns from data, explained without the mathematics becoming the obstacle.</p>
+      <div class="article-meta">
+        <span class="chip">AI &amp; MLOps</span>
+        <time datetime="2026-09-04">4 Sept 2026</time>
+        <span class="dot"></span><span>3 min read</span>
+        <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="article-hero wrap-narrow" data-topic="AI &amp; MLOps"><svg viewBox="0 0 1200 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgaimlneuralne" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6d4aff" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#5837e0" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#6d4aff" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="420" fill="url(#bgaimlneuralne)"/>
+  <rect x="86" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.51" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="464" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.45" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="212" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.45" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 172 H338" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.60" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 172 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.40" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="338" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.32" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 236 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.39" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/>
+</svg></div>
+
+  <div class="wrap-narrow article-grid">
+    <nav class="toc" aria-label="On this page">
+  <p class="toc-title">On this page</p>
+  <ol><li><a href="#the-basic-unit-the-artificial-neuron">The Basic Unit: The Artificial Neuron</a></li><li><a href="#why-activation-functions-matter">Why Activation Functions Matter</a></li><li><a href="#layers-organising-neurons-into-networks">Layers: Organising Neurons into Networks</a></li><li><a href="#how-learning-works-loss-gradient-descent-backpropagation">How Learning Works: Loss, Gradient Descent, Backpropagation</a></li><li><a href="#what-quottrainingquot-looks-like-operationally">What &amp;quot;Training&amp;quot; Looks Like Operationally</a></li><li><a href="#why-neural-networks-generalise">Why Neural Networks Generalise</a></li></ol>
+</nav>
+    <div class="prose">
+<p>Neural networks have produced most of the significant AI results of the last decade: image recognition that surpasses human accuracy, protein structure prediction that eluded biology for fifty years, and language models that can write, reason, and code. Understanding the basic mechanics — why neural networks are capable of learning complex functions — is foundational for any engineer working with modern AI systems.</p>
+<h2 id="the-basic-unit-the-artificial-neuron">The Basic Unit: The Artificial Neuron</h2>
+<p>An artificial neuron performs a simple computation: it takes multiple input values, multiplies each by a weight, sums the weighted inputs, adds a bias, and passes the result through an activation function.</p>
+<pre><code>output = activation_function(w1*x1 + w2*x2 + w3*x3 + ... + bias)
+</code></pre>
+<p>Where:</p>
+<ul>
+<li><code>x1, x2, x3...</code> are the inputs</li>
+<li><code>w1, w2, w3...</code> are the weights (learned during training)</li>
+<li><code>bias</code> is an offset term (also learned)</li>
+<li><code>activation_function</code> introduces non-linearity</li>
+</ul>
+<p>The weights and bias are the parameters that training adjusts. A single neuron can learn a linear decision boundary. Networks of neurons can learn arbitrarily complex functions.</p>
+<h2 id="why-activation-functions-matter">Why Activation Functions Matter</h2>
+<p>Without activation functions, a stack of neurons computes a linear function, regardless of depth. Linear functions cannot capture the complex, non-linear patterns in real data.</p>
+<p><strong>ReLU</strong> (Rectified Linear Unit): <code>f(x) = max(0, x)</code>. The most commonly used activation in hidden layers. Simple, computationally cheap, and empirically effective.</p>
+<p><strong>Sigmoid</strong>: <code>f(x) = 1 / (1 + e^(-x))</code>. Squashes output to (0, 1). Used in binary classification output layers.</p>
+<p><strong>Softmax</strong>: normalises a vector of values to probabilities that sum to 1. Used in multi-class classification output layers.</p>
+<p><strong>GELU</strong> (Gaussian Error Linear Unit): used in transformer models (GPT, BERT). Smoother than ReLU; empirically performs better for language tasks.</p>
+<h2 id="layers-organising-neurons-into-networks">Layers: Organising Neurons into Networks</h2>
+<p>Neurons are organised into layers:</p>
+<ul>
+<li><strong>Input layer</strong>: one node per input feature (or per pixel for image input)</li>
+<li><strong>Hidden layers</strong>: intermediate computation layers — the &quot;deep&quot; in deep learning</li>
+<li><strong>Output layer</strong>: produces the prediction (one node for regression, N nodes for N-class classification)</li>
+</ul>
+<p>A &quot;deep&quot; neural network simply has multiple hidden layers. The depth allows the network to learn hierarchical representations: early layers learn simple patterns (edges in images, common word patterns in text), later layers compose these into complex concepts.</p>
+<pre><code class="language-python">## A simple neural network in PyTorch
+import torch
+import torch.nn as nn
+
+class SimpleNetwork(nn.Module):
+    def __init__(self, input_size, hidden_size, output_size):
+        super().__init__()
+        self.layers = nn.Sequential(
+            nn.Linear(input_size, hidden_size),   # input → hidden
+            nn.ReLU(),                             # activation
+            nn.Linear(hidden_size, hidden_size),  # hidden → hidden
+            nn.ReLU(),
+            nn.Linear(hidden_size, output_size),  # hidden → output
+        )
+
+    def forward(self, x):
+        return self.layers(x)
+</code></pre>
+<h2 id="how-learning-works-loss-gradient-descent-backpropagation">How Learning Works: Loss, Gradient Descent, Backpropagation</h2>
+<p>Training adjusts the weights and biases to minimise prediction error. The process:</p>
+<p><strong>1. Forward pass</strong>: run the input through the network, get a prediction.</p>
+<p><strong>2. Calculate loss</strong>: measure how wrong the prediction was. Common loss functions:</p>
+<ul>
+<li>Mean Squared Error (regression): average of squared differences between predicted and actual values</li>
+<li>Cross-Entropy Loss (classification): measures divergence between predicted probability distribution and true labels</li>
+</ul>
+<p><strong>3. Backward pass (backpropagation)</strong>: calculate how much each weight contributed to the error, using the chain rule of calculus. This gives the gradient — the direction and magnitude of change needed in each weight to reduce the loss.</p>
+<p><strong>4. Update weights</strong>: adjust each weight in the direction that reduces loss, by a step size called the <strong>learning rate</strong>.</p>
+<pre><code>new_weight = old_weight - learning_rate × gradient
+</code></pre>
+<p><strong>5. Repeat</strong>: for many examples, many times (multiple epochs). The network gradually learns to minimise prediction error.</p>
+<h2 id="what-quottrainingquot-looks-like-operationally">What &quot;Training&quot; Looks Like Operationally</h2>
+<pre><code class="language-python">## Training loop skeleton
+optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+loss_function = nn.CrossEntropyLoss()
+
+for epoch in range(num_epochs):
+    for batch_inputs, batch_labels in dataloader:
+        # Forward pass
+        predictions = model(batch_inputs)
+
+        # Calculate loss
+        loss = loss_function(predictions, batch_labels)
+
+        # Backward pass
+        optimizer.zero_grad()   # clear previous gradients
+        loss.backward()         # compute gradients
+
+        # Update weights
+        optimizer.step()
+
+    print(f&quot;Epoch {epoch}: loss = {loss.item():.4f}&quot;)
+</code></pre>
+<h2 id="why-neural-networks-generalise">Why Neural Networks Generalise</h2>
+<p>The universal approximation theorem shows that a sufficiently large neural network can approximate any continuous function. But approximating the training data is easy — the interesting question is why neural networks often generalise well to new data.</p>
+<p>The empirical answer: neural networks, when trained correctly with regularisation (dropout, weight decay), tend to learn compressed, generalisable representations of patterns rather than memorising specific examples. The large parameter count is offset by the regularisation pressure and the gradient descent dynamics that favour smooth, generalisable solutions over sharp, overfit ones.</p>
+<p>Understanding this tension — between fitting the training data and generalising to new data — is the central challenge of every supervised learning project. The next lesson applies these foundations to the architecture that produced the current generation of AI systems: the transformer.</p>
+
+    </div>
+  </div>
+
+  <div class="wrap-narrow"><aside class="refs" aria-labelledby="refs-h">
+  <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
+  <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
+  <ul>
+    <li><a href="https://pytorch.org/docs/stable/" rel="noopener nofollow" target="_blank">PyTorch</a><span>Reference for the APIs discussed.</span></li>
+  </ul>
+</aside></div>
+
+  <div class="wrap-narrow" style="margin-top:3rem">
+    <aside class="series-box">
+      <p class="eyebrow">Series</p>
+      <h2 class="h3" style="margin:.5rem 0 1rem">AI, ML, LLMs, and Neural Networks: A Practitioner&#39;s Introduction</h2>
+      <ol class="series-list">
+        <li><a href="/insights/aiml-what-is-machine-learning/">What Machine Learning Actually Is — Before the Hype and After the Buzzwords</a></li>
+        <li aria-current="true"><a href="/insights/aiml-neural-networks/">Neural Networks Explained: What They Are, How They Learn, and Why They Work</a></li>
+        <li><a href="/insights/aiml-rag-and-prompting/">RAG, Prompting, and Building Applications on LLMs: The Practitioner&#39;s Guide</a></li>
+        <li><a href="/insights/aiml-production-ai/">Putting AI in Production: What Enterprise AI Deployment Actually Requires</a></li>
+      </ol>
+    </aside>
+  </div>
+
+  <div class="wrap-narrow article-foot">
+    <div class="row" style="gap:.4rem">
+      <a class="chip chip-plain" href="/insights/?topic=AI%20%26%20MLOps">AI &amp; MLOps</a><a class="chip chip-plain" href="/insights/?topic=Fundamentals">Fundamentals</a>
+    </div>
+    <nav class="prevnext" aria-label="More articles">
+      <a href="/insights/aiml-rag-and-prompting/"><span>Previous</span><strong>RAG, Prompting, and Building Applications on LLMs: The Practitioner&#39;s Guide</strong></a>
+      <a href="/insights/platform-eng-observability/" class="next"><span>Next</span><strong>Platform Observability: Building the Visibility Layer Every Application Team Gets Automatically</strong></a>
+    </nav>
+  </div>
+
+  <section class="section surface hair" style="margin-top:4rem">
+    <div class="wrap">
+      <p class="eyebrow">Related</p>
+      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|DevSecOps|Architecture|Fundamentals|" data-search="platform observability: building the visibility layer every application team gets automatically how platform teams build and operate the metrics, logging, and tracing infrastructure that application teams consume without configuring — and what good platform observability coverage actually looks like. devsecops architecture fundamentals" data-topic="DevSecOps" href="/insights/platform-eng-observability/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgplatformengo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e0473a" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#c03a2e" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#e0473a" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgplatformengo)"/>
+  <rect x="28" y="26" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.63"/><rect x="348" y="26" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.57"/><rect x="388" y="26" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.73"/><rect x="428" y="26" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.69"/><rect x="548" y="26" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.54"/><rect x="188" y="62" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.73"/><rect x="348" y="62" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.64"/><rect x="428" y="62" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.72"/><rect x="588" y="62" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.66"/><rect x="228" y="98" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.70"/><rect x="308" y="98" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.48"/><rect x="348" y="98" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.55"/><rect x="388" y="98" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.52"/><rect x="428" y="98" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.64"/><rect x="508" y="98" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.58"/><rect x="588" y="98" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.63"/><rect x="68" y="134" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.65"/><rect x="268" y="134" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.65"/><rect x="508" y="134" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.50"/><rect x="548" y="134" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.67"/><rect x="588" y="134" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.70"/><rect x="68" y="170" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.52"/><rect x="108" y="170" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.48"/><rect x="148" y="170" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.50"/><rect x="268" y="170" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.56"/><rect x="428" y="170" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.74"/><rect x="468" y="170" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.58"/><rect x="508" y="170" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.60"/><rect x="548" y="170" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.60"/><rect x="148" y="206" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.62"/><rect x="228" y="206" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.59"/><rect x="388" y="206" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.74"/><rect x="428" y="206" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.74"/><rect x="508" y="206" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.51"/><rect x="28" y="242" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.63"/><rect x="68" y="242" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.63"/><rect x="148" y="242" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.61"/><rect x="188" y="242" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.64"/><rect x="268" y="242" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.65"/><rect x="348" y="242" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.59"/><rect x="148" y="278" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.63"/><rect x="188" y="278" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.72"/><rect x="428" y="278" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.55"/><rect x="548" y="278" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.58"/><rect x="588" y="278" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.68"/><rect x="28" y="314" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.54"/><rect x="108" y="314" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.61"/><rect x="228" y="314" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.67"/><rect x="348" y="314" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.52"/><rect x="428" y="314" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.59"/><rect x="468" y="314" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.61"/><rect x="548" y="314" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.59"/>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">DevSecOps</span>
+    <h3 class="card-title">Platform Observability: Building the Visibility Layer Every Application Team Gets Automatically</h3>
+    <p class="card-desc">How platform teams build and operate the metrics, logging, and tracing infrastructure that application teams consume without configuring — and what good platform observability coverage actually looks like.</p>
+    <div class="card-meta"><time datetime="2026-09-16">16 Sept 2026</time><span class="dot"></span><span>3 min read</span><span class="dot"></span><span>Series</span></div>
+  </div>
+</a>
+<a class="card" data-card data-topics="|AI &amp; MLOps|Enterprise AI|Fundamentals|" data-search="rag, prompting, and building applications on llms: the practitioner&#39;s guide retrieval-augmented generation, system prompts, few-shot examples, chain-of-thought, structured output, and the engineering patterns that make llm applications reliable in production. ai &amp; mlops enterprise ai fundamentals" data-topic="AI &amp; MLOps" href="/insights/aiml-rag-and-prompting/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgaimlragandpr" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6d4aff" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#5837e0" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#6d4aff" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgaimlragandpr)"/>
+  <line x1="558.0" y1="238.5" x2="507.0" y2="307.9" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="558.0" y1="238.5" x2="533.9" y2="248.6" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="558.0" y1="238.5" x2="454.4" y2="262.2" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="558.0" y1="238.5" x2="526.7" y2="294.6" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="277.7" y1="133.5" x2="137.5" y2="170.9" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="277.7" y1="133.5" x2="299.0" y2="98.8" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="277.7" y1="133.5" x2="296.8" y2="225.1" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="277.7" y1="133.5" x2="183.4" y2="237.5" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="277.7" y1="133.5" x2="375.6" y2="73.2" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="137.5" y1="170.9" x2="183.4" y2="237.5" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="137.5" y1="170.9" x2="59.8" y2="301.1" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="137.5" y1="170.9" x2="120.6" y2="58.1" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="507.0" y1="307.9" x2="533.9" y2="248.6" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="507.0" y1="307.9" x2="454.4" y2="262.2" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="507.0" y1="307.9" x2="526.7" y2="294.6" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="533.9" y1="248.6" x2="454.4" y2="262.2" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="533.9" y1="248.6" x2="526.7" y2="294.6" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="299.0" y1="98.8" x2="296.8" y2="225.1" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="299.0" y1="98.8" x2="375.6" y2="73.2" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="296.8" y1="225.1" x2="183.4" y2="237.5" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="296.8" y1="225.1" x2="454.4" y2="262.2" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="183.4" y1="237.5" x2="59.8" y2="301.1" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="454.4" y1="262.2" x2="526.7" y2="294.6" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><circle cx="558.0" cy="238.5" r="5" fill="#6d4aff" fill-opacity=".9"/><circle cx="277.7" cy="133.5" r="8.5" fill="#5837e0" fill-opacity=".9"/><circle cx="137.5" cy="170.9" r="12" fill="#6d4aff" fill-opacity=".9"/><circle cx="507.0" cy="307.9" r="5" fill="#5837e0" fill-opacity=".9"/><circle cx="533.9" cy="248.6" r="8.5" fill="#6d4aff" fill-opacity=".9"/><circle cx="299.0" cy="98.8" r="12" fill="#5837e0" fill-opacity=".9"/><circle cx="296.8" cy="225.1" r="5" fill="#6d4aff" fill-opacity=".9"/><circle cx="183.4" cy="237.5" r="8.5" fill="#5837e0" fill-opacity=".9"/><circle cx="59.8" cy="301.1" r="12" fill="#6d4aff" fill-opacity=".9"/><circle cx="375.6" cy="73.2" r="5" fill="#5837e0" fill-opacity=".9"/><circle cx="454.4" cy="262.2" r="8.5" fill="#6d4aff" fill-opacity=".9"/><circle cx="526.7" cy="294.6" r="12" fill="#5837e0" fill-opacity=".9"/><circle cx="120.6" cy="58.1" r="5" fill="#6d4aff" fill-opacity=".9"/>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">AI &amp; MLOps</span>
+    <h3 class="card-title">RAG, Prompting, and Building Applications on LLMs: The Practitioner&#39;s Guide</h3>
+    <p class="card-desc">Retrieval-augmented generation, system prompts, few-shot examples, chain-of-thought, structured output, and the engineering patterns that make LLM applications reliable in production.</p>
+    <div class="card-meta"><time datetime="2026-08-25">25 Aug 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
+  </div>
+</a>
+<a class="card" data-card data-topics="|AI &amp; MLOps|Enterprise AI|Fundamentals|" data-search="putting ai in production: what enterprise ai deployment actually requires model serving, latency, cost, monitoring, governance, and the operational discipline that separates a proof of concept from an ai system that runs reliably at enterprise scale. ai &amp; mlops enterprise ai fundamentals" data-topic="AI &amp; MLOps" href="/insights/aiml-production-ai/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgaimlproducti" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6d4aff" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#5837e0" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#6d4aff" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgaimlproducti)"/>
+  <rect x="338" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.12" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 108 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.51" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="86" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.36" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 172 H212" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.51" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="464" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.14" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="338" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.22" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 236 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">AI &amp; MLOps</span>
+    <h3 class="card-title">Putting AI in Production: What Enterprise AI Deployment Actually Requires</h3>
+    <p class="card-desc">Model serving, latency, cost, monitoring, governance, and the operational discipline that separates a proof of concept from an AI system that runs reliably at enterprise scale.</p>
+    <div class="card-meta"><time datetime="2026-08-11">11 Aug 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
+  </div>
+</a></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap-narrow cta-panel">
+      <h2 class="h2">Working on this in production?</h2>
+      <p class="lede" style="margin-top:.7rem">We do this work directly alongside engineering teams — architecture review, migration, and hands-on enablement.</p>
+      <div class="row" style="margin-top:1.4rem">
+        <a class="btn" href="/contact/">Engage engineering <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="btn btn-ghost" href="/services/">See what we do</a>
+      </div>
+    </div>
+  </section>
+</article>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="grid g-4" style="gap:2rem">
+      <div>
+        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem">
+          <img src="/images/ajna-logo.png" alt="" width="32" height="32">
+          <span class="brand-name">Ajna<span style="color:#6f9bff">CS</span></span>
+        </a>
+        <p style="font-size:.88rem;line-height:1.65;color:#9fb0d0;max-width:30ch">
+          Specialised engineering partner for enterprise architecture, AI &amp; MLOps, and technical enablement.
+        </p>
+        <div class="social" style="margin-top:1.1rem">
+          <a href="https://www.youtube.com/@TechKnowen" rel="noopener" aria-label="YouTube"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 12s0-3.8-.5-5.6a2.9 2.9 0 0 0-2-2C18.7 4 12 4 12 4s-6.7 0-8.5.4a2.9 2.9 0 0 0-2 2C1 8.2 1 12 1 12s0 3.8.5 5.6a2.9 2.9 0 0 0 2 2C5.3 20 12 20 12 20s6.7 0 8.5-.4a2.9 2.9 0 0 0 2-2C23 15.8 23 12 23 12zM9.8 15.4V8.6l5.9 3.4z"/></svg></a>
+          <a href="https://techknowen.com" rel="noopener" aria-label="TechKnowen blog"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 3h16v3H4zm0 5h16v13l-8-4-8 4z"/></svg></a>
+          <a href="/feed.xml" aria-label="RSS feed"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="6.2" cy="17.8" r="2.2"/><path d="M4 10.2v3a6.6 6.6 0 0 1 6.6 6.6h3A9.6 9.6 0 0 0 4 10.2zM4 4v3c7.2 0 13 5.8 13 13h3C20 11.2 12.8 4 4 4z"/></svg></a>
+        </div>
+      </div>
+      <div>
+        <h4>Services</h4>
+        <ul>
+          <li><a href="/services/#architecture">Enterprise architecture</a></li>
+          <li><a href="/services/#ai">AI &amp; MLOps</a></li>
+          <li><a href="/services/#training">Technical enablement</a></li>
+          <li><a href="/case-studies/">Case studies</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Insights</h4>
+        <ul>
+          <li><a href="/insights/">All articles</a></li>
+          <li><a href="/series/">Series</a></li>
+          <li><a href="/topics/">Topics</a></li>
+          <li><a href="/notes/">Personal notes</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
+          <li><a href="/contact/">Start an engagement</a></li>
+          <li><a href="/about/">About</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span id="yr">2026</span> Ajna Consulting Services. All rights reserved.</span>
+      <span style="display:flex;gap:1.2rem"><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a></span>
+    </div>
+  </div>
+</footer>
+<script src="/assets/js/site.js" defer></script>
+</body>
+</html>

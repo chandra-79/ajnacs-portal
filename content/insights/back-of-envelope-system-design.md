@@ -1,0 +1,33 @@
+---
+title: "Back-of-Envelope Engineering: The Estimation Skill That Filters Bad Architectures in Minutes"
+description: "Before the design review argues about frameworks, arithmetic should have eliminated half the options. The latency numbers worth memorizing, the estimation moves — traffic, storage, bandwidth, cost — and worked habits that turn guesses into engineering."
+date: 2024-10-14
+tags: ["Architecture", "Performance", "Engineering Leadership", "Capacity Planning"]
+format: article
+---
+
+There's a moment in good design reviews that separates engineering from opinion: someone does thirty seconds of arithmetic and an entire architectural option quietly dies. "That's 40 billion writes a month — at DynamoDB pricing that's six figures annually; next option." "Each request fans out to 30 services at 2ms each — sequentially that's your whole latency budget; this needs parallelism or fewer hops." Back-of-envelope calculation is the cheapest analysis in the field — no prototypes, no benchmarks, no meetings — and it's systematically undertaught, treated as interview theater rather than what it is: the daily filter that keeps designs tethered to physics and prices before anyone writes code.
+
+## The numbers worth carrying
+
+The method needs a small mental almanac — order-of-magnitude values, not precision: **latency's ladder** (L1 cache ~1ns; RAM ~100ns; NVMe read ~100μs; same-zone network round trip ~0.5ms; cross-region ~50–150ms; disk-vs-memory is three orders of magnitude, and *cross-region-vs-same-zone is two* — the number underneath every data-locality and multi-region argument), **throughput's anchors** (a modern server pushes millions of simple ops/sec in memory, tens-of-thousands of database transactions/sec; a single Postgres comfortably serves thousands of mixed QPS before architecture is the answer; NICs are 10–100Gbps and rarely the bottleneck you think), **time's conversions** (1 day ≈ 86,400s — so 1M requests/day ≈ 12/sec, a number that has ended a thousand premature-scaling conversations; 1 month ≈ 2.6M seconds; a year of 1/sec ≈ 31M events), **storage's scale** (1KB per event × 1B events = 1TB — the "can this fit in one Postgres" arithmetic; RAM-per-node in the hundreds-of-GB means "just cache it all" is often literal), and **cost's handles** (object storage ~$0.02/GB-month; the egress multiple; a vCPU-hour's rough price; the 10–100× spread between hot-database and cold-object storage per GB — the tiering economics in one ratio). Precision is the enemy here: these move yearly, but their *ratios* — the orders of magnitude between tiers — are the stable furniture of judgment.
+
+## The moves: a repeatable sequence
+
+Real estimation is four moves run in order, each a one-liner:
+
+**1. Traffic, decomposed.** DAU × actions/user/day ÷ 86,400 = average RPS; multiply by the peak factor (2–5× for consumer diurnal patterns, more for event-driven spikes — the burst-shape honesty from capacity practice); split reads from writes (the ratio drives everything downstream — a 100:1 read-heavy system is a caching problem, a write-heavy one is a partitioning problem).
+
+**2. Data, integrated over time.** Payload size × write rate × retention = storage; growth rate versus the single-node comfort zone tells you *when* sharding becomes real rather than whether it's fashionable (the "we'll need it in year four" answer that reprioritizes a roadmap). Don't forget the multipliers: replication factor, index overhead, the derived copies every projection pattern creates.
+
+**3. Bandwidth and fan-out.** Response size × RPS = egress (and its bill); per-request internal fan-out × hop latency, sequential versus parallel, against the latency budget (the arithmetic that turns "microservices" from an org-chart preference into a numbers conversation — the six-hop-99.9% composite-availability math belongs here too: six sequential 99.9% dependencies ≈ 99.4%, a number that redesigns diagrams).
+
+**4. Dollars, always.** Every resource estimate gets a unit price and an annual figure — because "technically feasible" and "economically sane" diverge exactly where envelope math is cheapest to run (the build-vs-buy and serving-cost disciplines all begin as this move), and because a cost-per-request estimate is the number that lets product and engineering argue productively.
+
+Then the two hygiene habits that make it engineering rather than numerology: **write the assumptions down** (the envelope's value is auditable reasoning — "assumed 2KB events, 90-day retention, 3× replication" is checkable and updatable; a bare conclusion is neither), and **bracket instead of point-guessing** (run the pessimistic and optimistic cases; if both land on the same side of the decision, the decision is robust to your ignorance — the calibrated-range discipline from estimation practice, applied to systems).
+
+## Where it earns its keep
+
+The applications beyond the design review: **sanity-checking vendor claims and benchmarks** (does the promised throughput exceed what the instance's memory bandwidth could physically deliver? — marketing decks fail envelope math at an instructive rate), **incident triage** ("the queue is growing at 5k/sec and drains at 3k/sec — we have 40 minutes of buffer" is envelope math under adrenaline, and the responders who do it steer better), **capacity and headroom reasoning** (the time-to-wall trajectory from capacity planning is an envelope calculation maintained quarterly), **prioritization** ("this optimization saves 2ms on a path that runs 100 times/day" versus "0.2ms on one that runs 10k/sec" — total-time thinking, the profiler's lesson, computable before profiling), and — increasingly — **AI-era feasibility** (tokens × price × volume is the new storage-math; many an LLM feature has died or been re-scoped in one line of per-request cost arithmetic, exactly as it should).
+
+The deeper case for the habit is cultural: teams that estimate publicly develop a shared sense of *scale* — the collective instinct for what's big, what's cheap, what's absurd — which is the actual foundation under every judgment this series describes: choosing databases by working set, deployment strategies by blast radius, architectures by fan-out, tools by workload shape. None of those judgments require precision; all of them require knowing the orders of magnitude, and orders of magnitude are exactly what the envelope delivers. Thirty seconds of arithmetic before every consequential choice — assumptions written, ranges bracketed, dollars attached — is the highest-return ritual available to a technical organization. The prototype confirms; the envelope *decides*.

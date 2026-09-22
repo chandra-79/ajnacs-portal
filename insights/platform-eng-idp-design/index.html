@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Designing an Internal Developer Platform: Abstraction Layers, Golden Paths, and the Governance Balance | Ajna CS</title>
+<meta name="description" content="How to design the abstraction layer between your platform and your application teams — what to hide, what to expose, and how to build the golden paths that…">
+<meta name="author" content="Chandra Lanka">
+<link rel="canonical" href="https://ajnacs.com/insights/platform-eng-idp-design/">
+<meta name="robots" content="index, follow, max-image-preview:large">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Ajna Consulting Services">
+<meta property="og:title" content="Designing an Internal Developer Platform: Abstraction Layers, Golden Paths, and the Governance Balance">
+<meta property="og:description" content="How to design the abstraction layer between your platform and your application teams — what to hide, what to expose, and how to build the golden paths that…">
+<meta property="og:url" content="https://ajnacs.com/insights/platform-eng-idp-design/">
+<meta property="og:image" content="https://ajnacs.com/assets/og/insights-platform-eng-idp-design.svg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Designing an Internal Developer Platform: Abstraction Layers, Golden Paths, and the Governance Balance">
+<meta name="twitter:description" content="How to design the abstraction layer between your platform and your application teams — what to hide, what to expose, and how to build the golden paths that…">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/insights-platform-eng-idp-design.svg">
+
+<link rel="icon" href="/images/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="/images/ajna-logo.png">
+<meta name="theme-color" content="#0a1020">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="/assets/css/site.css">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<script>
+/* Set the theme before first paint so the page never flashes the wrong one. */
+(function(){try{var t=localStorage.getItem('acs-theme');
+if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Designing an Internal Developer Platform: Abstraction Layers, Golden Paths, and the Governance Balance","description":"How to design the abstraction layer between your platform and your application teams — what to hide, what to expose, and how to build the golden paths that make good practices the easy practices.","datePublished":"2026-05-19","dateModified":"2026-05-19","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/platform-eng-idp-design/","image":"https://ajnacs.com/assets/og/insights-platform-eng-idp-design.svg","keywords":"Engineering Leadership, Architecture, Fundamentals","articleSection":"Engineering Leadership","wordCount":878}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Designing an Internal Developer Platform: Abstraction Layers, Golden Paths, and the Governance Balance"}]}</script>
+</head>
+<body class="" data-topic="Engineering Leadership">
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header" id="siteHeader">
+  <div class="wrap" style="display:flex;align-items:center;width:min(1220px,100% - var(--gutter)*2)">
+    <a class="brand" href="/">
+      <img src="/images/ajna-logo.png" alt="" width="32" height="32">
+      <span class="brand-name">Ajna<span>CS</span></span>
+    </a>
+    <nav class="nav" id="nav" aria-label="Primary">
+      <a href="/services/">Services</a>
+      <a href="/insights/" aria-current="page">Insights</a>
+      <a href="/series/">Series</a>
+      <a href="/case-studies/">Case studies</a>
+      <a href="/about/">About</a>
+      <a class="btn btn-sm" href="/contact/" style="margin-left:.4rem">Engage engineering</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn" id="themeBtn" type="button" aria-label="Switch to dark mode" aria-pressed="false"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg></button>
+      <button class="icon-btn nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+
+<div class="read-bar" aria-hidden="true"><span id="readBar"></span></div>
+<article class="article">
+  <header class="article-head">
+    <div class="wrap-narrow">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a> <span aria-hidden="true">/</span>
+        <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
+        <span>Engineering Leadership</span>
+      </nav>
+      <h1 class="h1">Designing an Internal Developer Platform: Abstraction Layers, Golden Paths, and the Governance Balance</h1>
+      <p class="lede" style="margin-top:1rem">How to design the abstraction layer between your platform and your application teams — what to hide, what to expose, and how to build the golden paths that make good practices the easy practices.</p>
+      <div class="article-meta">
+        <span class="chip">Engineering Leadership</span>
+        <time datetime="2026-05-19">19 May 2026</time>
+        <span class="dot"></span><span>4 min read</span>
+        <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="article-hero wrap-narrow" data-topic="Engineering Leadership"><svg viewBox="0 0 1200 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgplatformengi" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0e7490" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#0b5f77" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#0e7490" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="420" fill="url(#bgplatformengi)"/>
+  <line x1="190.3" y1="52.4" x2="86.5" y2="158.7" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="190.3" y1="52.4" x2="230.9" y2="208.1" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="190.3" y1="52.4" x2="116.0" y2="91.0" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="190.3" y1="52.4" x2="178.2" y2="201.8" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="86.5" y1="158.7" x2="230.9" y2="208.1" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="86.5" y1="158.7" x2="116.0" y2="91.0" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="86.5" y1="158.7" x2="140.8" y2="229.3" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="86.5" y1="158.7" x2="77.1" y2="309.4" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="86.5" y1="158.7" x2="102.5" y2="229.8" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="86.5" y1="158.7" x2="178.2" y2="201.8" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="432.0" y1="161.7" x2="379.2" y2="246.9" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="432.0" y1="161.7" x2="533.8" y2="281.4" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="432.0" y1="161.7" x2="366.1" y2="236.9" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="230.9" y1="208.1" x2="116.0" y2="91.0" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="230.9" y1="208.1" x2="379.2" y2="246.9" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="230.9" y1="208.1" x2="140.8" y2="229.3" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="230.9" y1="208.1" x2="289.4" y2="274.8" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="230.9" y1="208.1" x2="102.5" y2="229.8" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="230.9" y1="208.1" x2="366.1" y2="236.9" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="230.9" y1="208.1" x2="178.2" y2="201.8" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="116.0" y1="91.0" x2="140.8" y2="229.3" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="116.0" y1="91.0" x2="102.5" y2="229.8" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="116.0" y1="91.0" x2="178.2" y2="201.8" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="379.2" y1="246.9" x2="289.4" y2="274.8" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="379.2" y1="246.9" x2="533.8" y2="281.4" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="379.2" y1="246.9" x2="366.1" y2="236.9" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="140.8" y1="229.3" x2="289.4" y2="274.8" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="140.8" y1="229.3" x2="77.1" y2="309.4" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="140.8" y1="229.3" x2="102.5" y2="229.8" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="140.8" y1="229.3" x2="178.2" y2="201.8" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="289.4" y1="274.8" x2="366.1" y2="236.9" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="289.4" y1="274.8" x2="178.2" y2="201.8" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="77.1" y1="309.4" x2="102.5" y2="229.8" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="77.1" y1="309.4" x2="178.2" y2="201.8" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><line x1="102.5" y1="229.8" x2="178.2" y2="201.8" stroke="#0e7490" stroke-opacity=".28" stroke-width="1.4"/><circle cx="190.3" cy="52.4" r="5" fill="#0e7490" fill-opacity=".9"/><circle cx="86.5" cy="158.7" r="8.5" fill="#0b5f77" fill-opacity=".9"/><circle cx="432.0" cy="161.7" r="12" fill="#0e7490" fill-opacity=".9"/><circle cx="230.9" cy="208.1" r="5" fill="#0b5f77" fill-opacity=".9"/><circle cx="116.0" cy="91.0" r="8.5" fill="#0e7490" fill-opacity=".9"/><circle cx="379.2" cy="246.9" r="12" fill="#0b5f77" fill-opacity=".9"/><circle cx="140.8" cy="229.3" r="5" fill="#0e7490" fill-opacity=".9"/><circle cx="289.4" cy="274.8" r="8.5" fill="#0b5f77" fill-opacity=".9"/><circle cx="77.1" cy="309.4" r="12" fill="#0e7490" fill-opacity=".9"/><circle cx="533.8" cy="281.4" r="5" fill="#0b5f77" fill-opacity=".9"/><circle cx="102.5" cy="229.8" r="8.5" fill="#0e7490" fill-opacity=".9"/><circle cx="366.1" cy="236.9" r="12" fill="#0b5f77" fill-opacity=".9"/><circle cx="178.2" cy="201.8" r="5" fill="#0e7490" fill-opacity=".9"/>
+</svg></div>
+
+  <div class="wrap-narrow article-grid">
+    <nav class="toc" aria-label="On this page">
+  <p class="toc-title">On this page</p>
+  <ol><li><a href="#the-golden-path-concept">The Golden Path Concept</a></li><li><a href="#what-to-abstract-vs-what-to-expose">What to Abstract vs What to Expose</a></li><li><a href="#the-escape-hatch-design-decision">The Escape Hatch Design Decision</a></li><li><a href="#service-catalogues-making-the-platform-discoverable">Service Catalogues: Making the Platform Discoverable</a></li><li><a href="#policy-as-code-governance-without-bureaucracy">Policy as Code: Governance Without Bureaucracy</a></li></ol>
+</nav>
+    <div class="prose">
+<p>The design of a platform&#39;s abstraction layer determines whether developers adopt it or route around it. Abstract too much and developers cannot do what they need; developers write workarounds that bypass the platform. Abstract too little and the platform is just documentation — developers face the same complexity they had before. The right abstraction hides complexity developers should not need to manage and exposes control over the things that vary legitimately between services.</p>
+<h2 id="the-golden-path-concept">The Golden Path Concept</h2>
+<aside class="keyfig">
+  <p class="keyfig-label">Key figure</p>
+  <p class="keyfig-text">If <b>30%</b> of services are using Tier 3 regularly, that is a signal that the golden path does not cover a common requirement — time to add it to Tier 2.</p>
+</aside>
+<p>A golden path is an opinionated, supported route through the platform — the recommended way to deploy a service, set up monitoring, or manage a secret. It is not the only way, but it is the way that is documented, tested, and automatically compliant with security and operational standards.</p>
+<p>The golden path removes decision fatigue from developers. Instead of evaluating 15 options for CI/CD configuration, the developer follows the golden path and gets a working, compliant pipeline. The platform team has made the decisions that are the same for every service; the developer makes the decisions that are specific to their service.</p>
+<pre><code>Golden path for deploying a service:
+1. Run: platform service create my-service --template api-service
+   → Creates repository with standard structure
+   → Configures CI pipeline with security gates
+   → Creates Kubernetes namespace with resource quotas
+   → Sets up basic monitoring (RED metrics, logs, traces)
+   → Registers service in the service catalogue
+
+2. Write your application code
+3. Push to main → automated deployment to staging
+4. platform deploy my-service --env production → production deployment with approval gate
+</code></pre>
+<p>The developer writes application code. The platform handles infrastructure, compliance, and observability.</p>
+<h2 id="what-to-abstract-vs-what-to-expose">What to Abstract vs What to Expose</h2>
+<p>A useful design heuristic: abstract whatever is the same for all services; expose control over whatever varies legitimately between services.</p>
+<p><strong>Abstract</strong> (same for all services, hide the complexity):</p>
+<ul>
+<li>Kubernetes deployment YAML structure</li>
+<li>Container registry authentication</li>
+<li>TLS certificate provisioning</li>
+<li>Default network policies</li>
+<li>Standard observability configuration (log format, metric endpoints)</li>
+<li>Security scanning in CI</li>
+</ul>
+<p><strong>Expose</strong> (legitimately varies between services, give developers control):</p>
+<ul>
+<li>Resource requests and limits (services have different load profiles)</li>
+<li>Scaling configuration (autoscaling thresholds differ by workload)</li>
+<li>Environment-specific configuration (connection strings, feature flags)</li>
+<li>Service dependencies (what services does this service depend on?)</li>
+<li>Custom alerting thresholds (what constitutes a problem for this service)</li>
+</ul>
+<p>The platform interface should be simple enough that a new developer can deploy their first service within one day without reading infrastructure documentation. Every hour spent debugging platform configuration is an hour not spent on product work.</p>
+<h2 id="the-escape-hatch-design-decision">The Escape Hatch Design Decision</h2>
+<p>Rigid platforms break when developers encounter legitimate requirements outside the golden path. Every platform needs escape hatches: defined ways to access the underlying infrastructure when the abstraction is insufficient.</p>
+<p><strong>Tiered access model</strong>:</p>
+<ul>
+<li><strong>Tier 1 (default)</strong>: use the golden path. Fully managed, compliant, no infrastructure knowledge required.</li>
+<li><strong>Tier 2 (advanced)</strong>: customise parameters within the golden path. Override specific resource limits, add custom health check paths, configure environment-specific variables.</li>
+<li><strong>Tier 3 (escape hatch)</strong>: access the underlying infrastructure directly, with approval and documentation requirements. &quot;I need a sidecar container for X reason&quot; or &quot;I need a custom network policy for Y integration.&quot;</li>
+</ul>
+<p>Escape hatches prevent the platform from becoming an obstacle while keeping usage visible. If 30% of services are using Tier 3 regularly, that is a signal that the golden path does not cover a common requirement — time to add it to Tier 2.</p>
+<h2 id="service-catalogues-making-the-platform-discoverable">Service Catalogues: Making the Platform Discoverable</h2>
+<p>A service catalogue is the discovery layer for the platform. It answers: what services exist, who owns them, what do they depend on, and how do they behave?</p>
+<p>Backstage (from Spotify, now a CNCF project) is the most widely adopted open-source service catalogue. It provides:</p>
+<ul>
+<li>A registry of all services with ownership, contact, and documentation</li>
+<li>Integration with CI/CD pipelines to show deployment status</li>
+<li>Plugin ecosystem for integrating monitoring, on-call schedules, and runbooks</li>
+<li>Software templates that generate new services from golden paths</li>
+</ul>
+<pre><code class="language-yaml">## backstage/catalog-info.yaml — registered with the catalogue
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: billing-service
+  description: Processes billing events and generates invoices
+  annotations:
+    github.com/project-slug: org/billing-service
+    pagerduty.com/integration-key: abc123
+    grafana/dashboard-url: https://grafana.internal/d/billing
+spec:
+  type: service
+  lifecycle: production
+  owner: billing-team
+  dependsOn:
+    - component:payment-service
+    - component:customer-service
+    - resource:billing-database
+</code></pre>
+<h2 id="policy-as-code-governance-without-bureaucracy">Policy as Code: Governance Without Bureaucracy</h2>
+<p>The platform enforces governance automatically, not through approval gates. Security, compliance, and operational standards are encoded as policies that evaluate every deployment:</p>
+<pre><code class="language-yaml">## OPA/Gatekeeper policy: no containers running as root
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sNoRoot
+metadata:
+  name: no-root-containers
+spec:
+  match:
+    kinds:
+    - apiGroups: [&quot;&quot;]
+      kinds: [&quot;Pod&quot;]
+    namespaces: [&quot;production&quot;, &quot;staging&quot;]
+</code></pre>
+<p>When a developer deploys a container configured to run as root, the deployment is rejected automatically with a clear error message: &quot;Container &#39;my-api&#39; is configured to run as root (uid 0). Use a non-root user. See platform documentation for the correct pattern.&quot;</p>
+<p>The developer does not need to talk to a security team; the platform enforces the standard and explains how to comply. The security team focuses on defining policies, not enforcing them manually.</p>
+<p>The right platform design produces the opposite of bureaucracy: developers move faster because they do not have to think about infrastructure, and governance is stronger because it is automated rather than manual.</p>
+
+    </div>
+  </div>
+
+  <div class="wrap-narrow"><aside class="refs" aria-labelledby="refs-h">
+  <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
+  <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
+  <ul>
+    <li><a href="https://backstage.io/" rel="noopener nofollow" target="_blank">Backstage</a><span>Open-source developer portal, now a CNCF project.</span></li>
+    <li><a href="https://www.cncf.io/" rel="noopener nofollow" target="_blank">Cloud Native Computing Foundation</a><span>Project landscape and graduation status.</span></li>
+    <li><a href="https://kubernetes.io/docs/" rel="noopener nofollow" target="_blank">Kubernetes documentation</a><span>Primary reference for the concepts used here.</span></li>
+    <li><a href="https://www.openpolicyagent.org/docs/" rel="noopener nofollow" target="_blank">Open Policy Agent</a><span>Policy engine and the Rego language.</span></li>
+  </ul>
+</aside></div>
+
+  <div class="wrap-narrow" style="margin-top:3rem">
+    <aside class="series-box">
+      <p class="eyebrow">Series</p>
+      <h2 class="h3" style="margin:.5rem 0 1rem">Platform Engineering: From Concept to Internal Developer Platform</h2>
+      <ol class="series-list">
+        <li aria-current="true"><a href="/insights/platform-eng-idp-design/">Designing an Internal Developer Platform: Abstraction Layers, Golden Paths, and the Governance Balance</a></li>
+        <li><a href="/insights/platform-eng-self-service/">Self-Service Infrastructure: How to Build It Without Losing Operational Control</a></li>
+        <li><a href="/insights/platform-eng-observability/">Platform Observability: Building the Visibility Layer Every Application Team Gets Automatically</a></li>
+        <li><a href="/insights/platform-eng-measuring-success/">Measuring Platform Engineering Success: The Metrics That Actually Matter</a></li>
+      </ol>
+    </aside>
+  </div>
+
+  <div class="wrap-narrow article-foot">
+    <div class="row" style="gap:.4rem">
+      <a class="chip chip-plain" href="/insights/?topic=Engineering%20Leadership">Engineering Leadership</a><a class="chip chip-plain" href="/insights/?topic=Architecture">Architecture</a><a class="chip chip-plain" href="/insights/?topic=Fundamentals">Fundamentals</a>
+    </div>
+    <nav class="prevnext" aria-label="More articles">
+      <a href="/insights/platform-eng-self-service/"><span>Previous</span><strong>Self-Service Infrastructure: How to Build It Without Losing Operational Control</strong></a>
+      <a href="/insights/os-namespaces-cgroups/" class="next"><span>Next</span><strong>Linux Namespaces and cgroups: The Foundation of Containers</strong></a>
+    </nav>
+  </div>
+
+  <section class="section surface hair" style="margin-top:4rem">
+    <div class="wrap">
+      <p class="eyebrow">Related</p>
+      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|DevSecOps|Architecture|Fundamentals|" data-search="platform observability: building the visibility layer every application team gets automatically how platform teams build and operate the metrics, logging, and tracing infrastructure that application teams consume without configuring — and what good platform observability coverage actually looks like. devsecops architecture fundamentals" data-topic="DevSecOps" href="/insights/platform-eng-observability/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgplatformengo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e0473a" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#c03a2e" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#e0473a" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgplatformengo)"/>
+  <rect x="28" y="26" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.63"/><rect x="348" y="26" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.57"/><rect x="388" y="26" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.73"/><rect x="428" y="26" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.69"/><rect x="548" y="26" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.54"/><rect x="188" y="62" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.73"/><rect x="348" y="62" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.64"/><rect x="428" y="62" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.72"/><rect x="588" y="62" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.66"/><rect x="228" y="98" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.70"/><rect x="308" y="98" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.48"/><rect x="348" y="98" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.55"/><rect x="388" y="98" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.52"/><rect x="428" y="98" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.64"/><rect x="508" y="98" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.58"/><rect x="588" y="98" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.63"/><rect x="68" y="134" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.65"/><rect x="268" y="134" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.65"/><rect x="508" y="134" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.50"/><rect x="548" y="134" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.67"/><rect x="588" y="134" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.70"/><rect x="68" y="170" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.52"/><rect x="108" y="170" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.48"/><rect x="148" y="170" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.50"/><rect x="268" y="170" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.56"/><rect x="428" y="170" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.74"/><rect x="468" y="170" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.58"/><rect x="508" y="170" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.60"/><rect x="548" y="170" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.60"/><rect x="148" y="206" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.62"/><rect x="228" y="206" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.59"/><rect x="388" y="206" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.74"/><rect x="428" y="206" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.74"/><rect x="508" y="206" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.51"/><rect x="28" y="242" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.63"/><rect x="68" y="242" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.63"/><rect x="148" y="242" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.61"/><rect x="188" y="242" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.64"/><rect x="268" y="242" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.65"/><rect x="348" y="242" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.59"/><rect x="148" y="278" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.63"/><rect x="188" y="278" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.72"/><rect x="428" y="278" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.55"/><rect x="548" y="278" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.58"/><rect x="588" y="278" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.68"/><rect x="28" y="314" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.54"/><rect x="108" y="314" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.61"/><rect x="228" y="314" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.67"/><rect x="348" y="314" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.52"/><rect x="428" y="314" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.59"/><rect x="468" y="314" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.61"/><rect x="548" y="314" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.59"/>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">DevSecOps</span>
+    <h3 class="card-title">Platform Observability: Building the Visibility Layer Every Application Team Gets Automatically</h3>
+    <p class="card-desc">How platform teams build and operate the metrics, logging, and tracing infrastructure that application teams consume without configuring — and what good platform observability coverage actually looks like.</p>
+    <div class="card-meta"><time datetime="2026-09-16">16 Sept 2026</time><span class="dot"></span><span>3 min read</span><span class="dot"></span><span>Series</span></div>
+  </div>
+</a>
+<a class="card" data-card data-topics="|AI &amp; MLOps|Fundamentals|" data-search="neural networks explained: what they are, how they learn, and why they work neurons, layers, weights, activation functions, backpropagation, and gradient descent — the actual mechanics of how a neural network learns from data, explained without the mathematics becoming the obstacle. ai &amp; mlops fundamentals" data-topic="AI &amp; MLOps" href="/insights/aiml-neural-networks/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgaimlneuralne" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6d4aff" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#5837e0" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#6d4aff" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgaimlneuralne)"/>
+  <rect x="86" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.51" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="464" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.45" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="212" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.45" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 172 H338" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.60" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 172 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.40" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="338" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.32" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 236 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.39" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">AI &amp; MLOps</span>
+    <h3 class="card-title">Neural Networks Explained: What They Are, How They Learn, and Why They Work</h3>
+    <p class="card-desc">Neurons, layers, weights, activation functions, backpropagation, and gradient descent — the actual mechanics of how a neural network learns from data, explained without the mathematics becoming the obstacle.</p>
+    <div class="card-meta"><time datetime="2026-09-04">4 Sept 2026</time><span class="dot"></span><span>3 min read</span><span class="dot"></span><span>Series</span></div>
+  </div>
+</a>
+<a class="card" data-card data-topics="|AI &amp; MLOps|Enterprise AI|Fundamentals|" data-search="rag, prompting, and building applications on llms: the practitioner&#39;s guide retrieval-augmented generation, system prompts, few-shot examples, chain-of-thought, structured output, and the engineering patterns that make llm applications reliable in production. ai &amp; mlops enterprise ai fundamentals" data-topic="AI &amp; MLOps" href="/insights/aiml-rag-and-prompting/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgaimlragandpr" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6d4aff" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#5837e0" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#6d4aff" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgaimlragandpr)"/>
+  <line x1="558.0" y1="238.5" x2="507.0" y2="307.9" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="558.0" y1="238.5" x2="533.9" y2="248.6" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="558.0" y1="238.5" x2="454.4" y2="262.2" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="558.0" y1="238.5" x2="526.7" y2="294.6" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="277.7" y1="133.5" x2="137.5" y2="170.9" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="277.7" y1="133.5" x2="299.0" y2="98.8" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="277.7" y1="133.5" x2="296.8" y2="225.1" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="277.7" y1="133.5" x2="183.4" y2="237.5" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="277.7" y1="133.5" x2="375.6" y2="73.2" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="137.5" y1="170.9" x2="183.4" y2="237.5" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="137.5" y1="170.9" x2="59.8" y2="301.1" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="137.5" y1="170.9" x2="120.6" y2="58.1" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="507.0" y1="307.9" x2="533.9" y2="248.6" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="507.0" y1="307.9" x2="454.4" y2="262.2" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="507.0" y1="307.9" x2="526.7" y2="294.6" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="533.9" y1="248.6" x2="454.4" y2="262.2" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="533.9" y1="248.6" x2="526.7" y2="294.6" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="299.0" y1="98.8" x2="296.8" y2="225.1" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="299.0" y1="98.8" x2="375.6" y2="73.2" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="296.8" y1="225.1" x2="183.4" y2="237.5" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="296.8" y1="225.1" x2="454.4" y2="262.2" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="183.4" y1="237.5" x2="59.8" y2="301.1" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="454.4" y1="262.2" x2="526.7" y2="294.6" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><circle cx="558.0" cy="238.5" r="5" fill="#6d4aff" fill-opacity=".9"/><circle cx="277.7" cy="133.5" r="8.5" fill="#5837e0" fill-opacity=".9"/><circle cx="137.5" cy="170.9" r="12" fill="#6d4aff" fill-opacity=".9"/><circle cx="507.0" cy="307.9" r="5" fill="#5837e0" fill-opacity=".9"/><circle cx="533.9" cy="248.6" r="8.5" fill="#6d4aff" fill-opacity=".9"/><circle cx="299.0" cy="98.8" r="12" fill="#5837e0" fill-opacity=".9"/><circle cx="296.8" cy="225.1" r="5" fill="#6d4aff" fill-opacity=".9"/><circle cx="183.4" cy="237.5" r="8.5" fill="#5837e0" fill-opacity=".9"/><circle cx="59.8" cy="301.1" r="12" fill="#6d4aff" fill-opacity=".9"/><circle cx="375.6" cy="73.2" r="5" fill="#5837e0" fill-opacity=".9"/><circle cx="454.4" cy="262.2" r="8.5" fill="#6d4aff" fill-opacity=".9"/><circle cx="526.7" cy="294.6" r="12" fill="#5837e0" fill-opacity=".9"/><circle cx="120.6" cy="58.1" r="5" fill="#6d4aff" fill-opacity=".9"/>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">AI &amp; MLOps</span>
+    <h3 class="card-title">RAG, Prompting, and Building Applications on LLMs: The Practitioner&#39;s Guide</h3>
+    <p class="card-desc">Retrieval-augmented generation, system prompts, few-shot examples, chain-of-thought, structured output, and the engineering patterns that make LLM applications reliable in production.</p>
+    <div class="card-meta"><time datetime="2026-08-25">25 Aug 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
+  </div>
+</a></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap-narrow cta-panel">
+      <h2 class="h2">Working on this in production?</h2>
+      <p class="lede" style="margin-top:.7rem">We do this work directly alongside engineering teams — architecture review, migration, and hands-on enablement.</p>
+      <div class="row" style="margin-top:1.4rem">
+        <a class="btn" href="/contact/">Engage engineering <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="btn btn-ghost" href="/services/">See what we do</a>
+      </div>
+    </div>
+  </section>
+</article>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="grid g-4" style="gap:2rem">
+      <div>
+        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem">
+          <img src="/images/ajna-logo.png" alt="" width="32" height="32">
+          <span class="brand-name">Ajna<span style="color:#6f9bff">CS</span></span>
+        </a>
+        <p style="font-size:.88rem;line-height:1.65;color:#9fb0d0;max-width:30ch">
+          Specialised engineering partner for enterprise architecture, AI &amp; MLOps, and technical enablement.
+        </p>
+        <div class="social" style="margin-top:1.1rem">
+          <a href="https://www.youtube.com/@TechKnowen" rel="noopener" aria-label="YouTube"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 12s0-3.8-.5-5.6a2.9 2.9 0 0 0-2-2C18.7 4 12 4 12 4s-6.7 0-8.5.4a2.9 2.9 0 0 0-2 2C1 8.2 1 12 1 12s0 3.8.5 5.6a2.9 2.9 0 0 0 2 2C5.3 20 12 20 12 20s6.7 0 8.5-.4a2.9 2.9 0 0 0 2-2C23 15.8 23 12 23 12zM9.8 15.4V8.6l5.9 3.4z"/></svg></a>
+          <a href="https://techknowen.com" rel="noopener" aria-label="TechKnowen blog"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 3h16v3H4zm0 5h16v13l-8-4-8 4z"/></svg></a>
+          <a href="/feed.xml" aria-label="RSS feed"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="6.2" cy="17.8" r="2.2"/><path d="M4 10.2v3a6.6 6.6 0 0 1 6.6 6.6h3A9.6 9.6 0 0 0 4 10.2zM4 4v3c7.2 0 13 5.8 13 13h3C20 11.2 12.8 4 4 4z"/></svg></a>
+        </div>
+      </div>
+      <div>
+        <h4>Services</h4>
+        <ul>
+          <li><a href="/services/#architecture">Enterprise architecture</a></li>
+          <li><a href="/services/#ai">AI &amp; MLOps</a></li>
+          <li><a href="/services/#training">Technical enablement</a></li>
+          <li><a href="/case-studies/">Case studies</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Insights</h4>
+        <ul>
+          <li><a href="/insights/">All articles</a></li>
+          <li><a href="/series/">Series</a></li>
+          <li><a href="/topics/">Topics</a></li>
+          <li><a href="/notes/">Personal notes</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
+          <li><a href="/contact/">Start an engagement</a></li>
+          <li><a href="/about/">About</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span id="yr">2026</span> Ajna Consulting Services. All rights reserved.</span>
+      <span style="display:flex;gap:1.2rem"><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a></span>
+    </div>
+  </div>
+</footer>
+<script src="/assets/js/site.js" defer></script>
+</body>
+</html>

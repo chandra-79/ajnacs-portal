@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Software Supply Chain Security: SBOM, Dependency Auditing, and What Actually Reduces Risk | Ajna CS</title>
+<meta name="description" content="The software supply chain attack surface is large and growing. SBOMs, dependency scanning, and provenance verification are the practical measures that redu…">
+<meta name="author" content="Chandra Lanka">
+<link rel="canonical" href="https://ajnacs.com/insights/supply-chain-security-sbom/">
+<meta name="robots" content="index, follow, max-image-preview:large">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Ajna Consulting Services">
+<meta property="og:title" content="Software Supply Chain Security: SBOM, Dependency Auditing, and What Actually Reduces Risk">
+<meta property="og:description" content="The software supply chain attack surface is large and growing. SBOMs, dependency scanning, and provenance verification are the practical measures that redu…">
+<meta property="og:url" content="https://ajnacs.com/insights/supply-chain-security-sbom/">
+<meta property="og:image" content="https://ajnacs.com/assets/og/insights-supply-chain-security-sbom.svg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Software Supply Chain Security: SBOM, Dependency Auditing, and What Actually Reduces Risk">
+<meta name="twitter:description" content="The software supply chain attack surface is large and growing. SBOMs, dependency scanning, and provenance verification are the practical measures that redu…">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/insights-supply-chain-security-sbom.svg">
+
+<link rel="icon" href="/images/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="/images/ajna-logo.png">
+<meta name="theme-color" content="#0a1020">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="/assets/css/site.css">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<script>
+/* Set the theme before first paint so the page never flashes the wrong one. */
+(function(){try{var t=localStorage.getItem('acs-theme');
+if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Software Supply Chain Security: SBOM, Dependency Auditing, and What Actually Reduces Risk","description":"The software supply chain attack surface is large and growing. SBOMs, dependency scanning, and provenance verification are the practical measures that reduce real risk — here's what each covers and where the gaps are.","datePublished":"2025-10-27","dateModified":"2025-10-27","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/supply-chain-security-sbom/","image":"https://ajnacs.com/assets/og/insights-supply-chain-security-sbom.svg","keywords":"DevSecOps, Architecture","articleSection":"DevSecOps","wordCount":779}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Software Supply Chain Security: SBOM, Dependency Auditing, and What Actually Reduces Risk"}]}</script>
+</head>
+<body class="" data-topic="DevSecOps">
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header" id="siteHeader">
+  <div class="wrap" style="display:flex;align-items:center;width:min(1220px,100% - var(--gutter)*2)">
+    <a class="brand" href="/">
+      <img src="/images/ajna-logo.png" alt="" width="32" height="32">
+      <span class="brand-name">Ajna<span>CS</span></span>
+    </a>
+    <nav class="nav" id="nav" aria-label="Primary">
+      <a href="/services/">Services</a>
+      <a href="/insights/" aria-current="page">Insights</a>
+      <a href="/series/">Series</a>
+      <a href="/case-studies/">Case studies</a>
+      <a href="/about/">About</a>
+      <a class="btn btn-sm" href="/contact/" style="margin-left:.4rem">Engage engineering</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn" id="themeBtn" type="button" aria-label="Switch to dark mode" aria-pressed="false"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg></button>
+      <button class="icon-btn nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+
+<div class="read-bar" aria-hidden="true"><span id="readBar"></span></div>
+<article class="article">
+  <header class="article-head">
+    <div class="wrap-narrow">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a> <span aria-hidden="true">/</span>
+        <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
+        <span>DevSecOps</span>
+      </nav>
+      <h1 class="h1">Software Supply Chain Security: SBOM, Dependency Auditing, and What Actually Reduces Risk</h1>
+      <p class="lede" style="margin-top:1rem">The software supply chain attack surface is large and growing. SBOMs, dependency scanning, and provenance verification are the practical measures that reduce real risk — here&#39;s what each covers and where the gaps are.</p>
+      <div class="article-meta">
+        <span class="chip">DevSecOps</span>
+        <time datetime="2025-10-27">27 Oct 2025</time>
+        <span class="dot"></span><span>3 min read</span>
+        <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="article-hero wrap-narrow" data-topic="DevSecOps"><svg viewBox="0 0 1200 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgsupplychains" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e0473a" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#c03a2e" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#e0473a" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="420" fill="url(#bgsupplychains)"/>
+  <rect x="72" y="146.1" width="30" height="161.9" rx="6" fill="#c03a2e" fill-opacity="0.66"/><rect x="128" y="109.2" width="30" height="198.8" rx="6" fill="#e0473a" fill-opacity="0.74"/><rect x="184" y="103.5" width="30" height="204.5" rx="6" fill="#e0473a" fill-opacity="0.75"/><rect x="240" y="112.1" width="30" height="195.9" rx="6" fill="#c03a2e" fill-opacity="0.73"/><rect x="296" y="203.7" width="30" height="104.3" rx="6" fill="#e0473a" fill-opacity="0.54"/><rect x="352" y="271.5" width="30" height="36.5" rx="6" fill="#e0473a" fill-opacity="0.40"/><rect x="408" y="208.2" width="30" height="99.8" rx="6" fill="#c03a2e" fill-opacity="0.53"/><rect x="464" y="220.8" width="30" height="87.2" rx="6" fill="#e0473a" fill-opacity="0.50"/><rect x="520" y="121.5" width="30" height="186.5" rx="6" fill="#e0473a" fill-opacity="0.71"/><line x1="52" y1="308" x2="600" y2="308" stroke="#e0473a" stroke-opacity=".42" stroke-width="1.4"/>
+</svg></div>
+
+  <div class="wrap-narrow article-grid">
+    <nav class="toc" aria-label="On this page">
+  <p class="toc-title">On this page</p>
+  <ol><li><a href="#what-an-sbom-actually-is">What an SBOM actually is</a></li><li><a href="#generating-an-sbom">Generating an SBOM</a></li><li><a href="#vulnerability-scanning-against-the-sbom">Vulnerability scanning against the SBOM</a></li><li><a href="#provenance-and-build-attestation">Provenance and build attestation</a></li><li><a href="#dependency-management-hygiene">Dependency management hygiene</a></li></ol>
+</nav>
+    <div class="prose">
+<p>The SolarWinds and Log4Shell incidents changed how the industry thinks about software supply chain risk. Both showed the same vulnerability: organizations had extensive perimeter controls and almost no visibility into what software they were actually running and whether it contained known vulnerabilities.</p>
+<p>Software Bill of Materials (SBOM) and supply chain security practices exist to address this. The challenge is that the tooling is maturing, the standards are still evolving, and the gap between &quot;we generate an SBOM&quot; and &quot;we have meaningful supply chain security&quot; is significant.</p>
+<h2 id="what-an-sbom-actually-is">What an SBOM actually is</h2>
+<p>A Software Bill of Materials is a formal, machine-readable list of the components in a piece of software — libraries, frameworks, and their transitive dependencies — with version information and license data. Think of it as the ingredient list for software.</p>
+<p>SBOM formats:</p>
+<ul>
+<li><strong>SPDX</strong> (Software Package Data Exchange) — Linux Foundation standard, widely supported</li>
+<li><strong>CycloneDX</strong> — OWASP standard, focused on security use cases, strong tooling ecosystem</li>
+</ul>
+<p>Most software today ships without a published SBOM. The US Executive Order on Cybersecurity (May 2021) created requirements for software sold to the US federal government; this has accelerated adoption in commercial software as well.</p>
+<h2 id="generating-an-sbom">Generating an SBOM</h2>
+<p>SBOM generation is now straightforward for most technology stacks:</p>
+<pre><code class="language-bash">## For container images using Syft
+syft ubuntu:latest -o cyclonedx-json &gt; sbom.json
+
+## For Node.js projects
+npx @cyclonedx/cyclonedx-npm --output-format JSON &gt; sbom.json
+
+## For Python projects
+pip-audit --format=cyclonedx-json &gt; sbom.json
+
+## For Java/Maven
+mvn org.cyclonedx:cyclonedx-maven-plugin:makeAggregateBom
+</code></pre>
+<p>The SBOM should be generated as part of the build pipeline and stored alongside the artifact it describes. If you are releasing version 2.1.4 of your service, the corresponding SBOM should be retrievable for that specific version.</p>
+<h2 id="vulnerability-scanning-against-the-sbom">Vulnerability scanning against the SBOM</h2>
+<p>A generated SBOM is primarily useful for vulnerability scanning: cross-referencing the component list against known vulnerability databases (NVD, OSV, GHSA).</p>
+<pre><code class="language-bash">## Grype vulnerability scanner against a generated SBOM
+grype sbom:sbom.json
+
+## Or directly against an image
+grype my-app:latest
+</code></pre>
+<p>The important distinction: vulnerability presence is not the same as vulnerability exploitability. A critical CVE in a library is only exploitable if the vulnerable code path is reachable in your application. Grype and similar scanners report presence; determining exploitability requires more analysis. Start by prioritizing CVSS score above 7 and direct dependencies over transitive ones.</p>
+<p>Integrate scanning into CI:</p>
+<pre><code class="language-yaml">## GitHub Actions example
+- name: Scan for vulnerabilities
+  uses: anchore/scan-action@v3
+  with:
+    image: &quot;${{ steps.build.outputs.image }}&quot;
+    fail-build: true
+    severity-cutoff: critical
+</code></pre>
+<h2 id="provenance-and-build-attestation">Provenance and build attestation</h2>
+<p>Knowing what is in your software is different from knowing that your software was built from the code you think it was. Supply chain attacks like the SolarWinds compromise tamper with build artifacts after code review but before deployment.</p>
+<p>SLSA (Supply chain Levels for Software Artifacts) is a framework that defines levels of build integrity:</p>
+<ul>
+<li><strong>SLSA Level 1</strong>: build process is scripted; SBOM and provenance are generated</li>
+<li><strong>SLSA Level 2</strong>: version control, build service generates provenance</li>
+<li><strong>SLSA Level 3</strong>: hardened build environment, non-falsifiable provenance</li>
+</ul>
+<p>In practice for most organizations: SLSA Level 2 provides meaningful protection. Build in a controlled CI environment (not developer laptops), sign artifacts cryptographically, and generate provenance attestation that records what source commit was built and by what build process.</p>
+<p>Sigstore/Cosign has become the standard toolchain for signing container images and recording provenance:</p>
+<pre><code class="language-bash">## Sign a container image
+cosign sign --key cosign.key my-registry/my-app:v1.2.3
+
+## Verify a signed image
+cosign verify --key cosign.pub my-registry/my-app:v1.2.3
+</code></pre>
+<h2 id="dependency-management-hygiene">Dependency management hygiene</h2>
+<p>SBOMs and scanning are detective controls. The preventive controls that reduce supply chain risk:</p>
+<p><strong>Pin dependencies to specific versions</strong> rather than ranges. <code>requests==2.31.0</code> not <code>requests&gt;=2.20</code>. Unpinned dependencies allow supply chain attacks via a malicious version being published to a package registry.</p>
+<p><strong>Lock files</strong>: <code>package-lock.json</code>, <code>poetry.lock</code>, <code>Pipfile.lock</code>, <code>go.sum</code>. These record the exact resolved versions of all transitive dependencies. Without them, <code>npm install</code> in CI may resolve to different package versions than what was tested locally.</p>
+<p><strong>Private package mirror with allowlist</strong>: mirror approved packages to an internal registry (JFrog Artifactory, AWS CodeArtifact, GitHub Packages). Builds pull from your mirror only. This blocks dependency confusion attacks and gives you a control point for new package approvals.</p>
+<p><strong>Automated dependency updates</strong>: tools like Dependabot and Renovate automatically open PRs when dependencies release new versions. Keeping dependencies current significantly reduces the window of exposure to known vulnerabilities.</p>
+<p>The supply chain security posture that matters: knowing what you&#39;re running, knowing whether it has known vulnerabilities, and having a process to respond when new vulnerabilities are disclosed for components you depend on.</p>
+<p><em>Building out a supply chain security program or integrating SBOM generation into an existing CI/CD pipeline? <a href="/contact">Happy to share what the implementation looks like at scale.</a></em></p>
+
+    </div>
+  </div>
+
+  <div class="wrap-narrow"><aside class="refs" aria-labelledby="refs-h">
+  <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
+  <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
+  <ul>
+    <li><a href="https://owasp.org/" rel="noopener nofollow" target="_blank">OWASP</a><span>Application security guidance and the Top 10.</span></li>
+    <li><a href="https://slsa.dev/" rel="noopener nofollow" target="_blank">SLSA</a><span>Supply-chain levels for software artifacts.</span></li>
+    <li><a href="https://www.sigstore.dev/" rel="noopener nofollow" target="_blank">Sigstore</a><span>Signing and verification for artifacts.</span></li>
+  </ul>
+</aside></div>
+
+  
+
+  <div class="wrap-narrow article-foot">
+    <div class="row" style="gap:.4rem">
+      <a class="chip chip-plain" href="/insights/?topic=DevSecOps">DevSecOps</a><a class="chip chip-plain" href="/insights/?topic=Architecture">Architecture</a>
+    </div>
+    <nav class="prevnext" aria-label="More articles">
+      <a href="/insights/cloud-unit-economics/"><span>Previous</span><strong>Cloud Unit Economics: The Metric That Makes Cloud Spend Conversations Productive</strong></a>
+      <a href="/insights/gcp-cost-management/" class="next"><span>Next</span><strong>GCP Cost Management: Committed Use Discounts, Recommenders, and What Cloud Billing Doesn&#39;t Show You</strong></a>
+    </nav>
+  </div>
+
+  <section class="section surface hair" style="margin-top:4rem">
+    <div class="wrap">
+      <p class="eyebrow">Related</p>
+      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|DevSecOps|Architecture|Fundamentals|" data-search="platform observability: building the visibility layer every application team gets automatically how platform teams build and operate the metrics, logging, and tracing infrastructure that application teams consume without configuring — and what good platform observability coverage actually looks like. devsecops architecture fundamentals" data-topic="DevSecOps" href="/insights/platform-eng-observability/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgplatformengo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e0473a" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#c03a2e" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#e0473a" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgplatformengo)"/>
+  <rect x="28" y="26" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.63"/><rect x="348" y="26" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.57"/><rect x="388" y="26" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.73"/><rect x="428" y="26" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.69"/><rect x="548" y="26" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.54"/><rect x="188" y="62" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.73"/><rect x="348" y="62" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.64"/><rect x="428" y="62" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.72"/><rect x="588" y="62" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.66"/><rect x="228" y="98" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.70"/><rect x="308" y="98" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.48"/><rect x="348" y="98" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.55"/><rect x="388" y="98" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.52"/><rect x="428" y="98" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.64"/><rect x="508" y="98" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.58"/><rect x="588" y="98" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.63"/><rect x="68" y="134" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.65"/><rect x="268" y="134" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.65"/><rect x="508" y="134" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.50"/><rect x="548" y="134" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.67"/><rect x="588" y="134" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.70"/><rect x="68" y="170" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.52"/><rect x="108" y="170" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.48"/><rect x="148" y="170" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.50"/><rect x="268" y="170" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.56"/><rect x="428" y="170" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.74"/><rect x="468" y="170" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.58"/><rect x="508" y="170" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.60"/><rect x="548" y="170" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.60"/><rect x="148" y="206" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.62"/><rect x="228" y="206" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.59"/><rect x="388" y="206" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.74"/><rect x="428" y="206" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.74"/><rect x="508" y="206" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.51"/><rect x="28" y="242" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.63"/><rect x="68" y="242" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.63"/><rect x="148" y="242" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.61"/><rect x="188" y="242" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.64"/><rect x="268" y="242" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.65"/><rect x="348" y="242" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.59"/><rect x="148" y="278" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.63"/><rect x="188" y="278" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.72"/><rect x="428" y="278" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.55"/><rect x="548" y="278" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.58"/><rect x="588" y="278" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.68"/><rect x="28" y="314" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.54"/><rect x="108" y="314" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.61"/><rect x="228" y="314" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.67"/><rect x="348" y="314" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.52"/><rect x="428" y="314" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.59"/><rect x="468" y="314" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.61"/><rect x="548" y="314" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.59"/>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">DevSecOps</span>
+    <h3 class="card-title">Platform Observability: Building the Visibility Layer Every Application Team Gets Automatically</h3>
+    <p class="card-desc">How platform teams build and operate the metrics, logging, and tracing infrastructure that application teams consume without configuring — and what good platform observability coverage actually looks like.</p>
+    <div class="card-meta"><time datetime="2026-09-16">16 Sept 2026</time><span class="dot"></span><span>3 min read</span><span class="dot"></span><span>Series</span></div>
+  </div>
+</a>
+<a class="card" data-card data-topics="|DevSecOps|Fundamentals|" data-search="what containers actually are — not the marketing version containers are not lightweight vms. they are processes with resource constraints and namespace isolation. understanding the actual mechanism makes you a better user of docker, kubernetes, and every container runtime. devsecops fundamentals" data-topic="DevSecOps" href="/insights/containers-what-they-actually-are/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgcontainerswh" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e0473a" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#c03a2e" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#e0473a" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgcontainerswh)"/>
+  <path d="M0 70 L0 35.0 L16 36.2 L32 38.8 L48 42.7 L64 47.8 L80 53.8 L96 60.5 L112 67.6 L128 74.7 L144 81.7 L160 88.2 L176 93.9 L192 98.6 L208 102.2 L224 104.3 L240 105.1 L256 104.3 L272 102.2 L288 98.6 L304 93.9 L320 88.2 L336 81.7 L352 74.7 L368 67.5 L384 60.5 L400 53.8 L416 47.8 L432 42.7 L448 38.8 L464 36.2 L480 35.0 L496 35.3 L512 37.0 L528 40.1 L544 44.5 L560 49.9 L576 56.2 L592 63.1 L608 70.2 L624 77.3 L640 84.2" fill="none" stroke="#e0473a" stroke-opacity="0.50" stroke-width="2.2" stroke-linecap="round"/><path d="M0 116 L0 62.4 L16 66.1 L32 71.8 L48 79.4 L64 88.5 L80 98.7 L96 109.7 L112 121.0 L128 132.0 L144 142.4 L160 151.7 L176 159.5 L192 165.4 L208 169.3 L224 170.9 L240 170.3 L256 167.3 L272 162.2 L288 155.2 L304 146.5 L320 136.6 L336 125.8 L352 114.6 L368 103.4 L384 92.8 L400 83.1 L416 74.8 L432 68.3 L448 63.7 L464 61.3 L480 61.3 L496 63.5 L512 67.9 L528 74.4 L544 82.6 L560 92.2 L576 102.7 L592 113.9 L608 125.1 L624 136.0 L640 146.0" fill="none" stroke="#c03a2e" stroke-opacity="0.43" stroke-width="2.0" stroke-linecap="round"/><path d="M0 162 L0 144.6 L16 135.8 L32 128.1 L48 121.8 L64 117.2 L80 114.4 L96 113.7 L112 115.0 L128 118.2 L144 123.3 L160 130.0 L176 138.1 L192 147.1 L208 156.8 L224 166.7 L240 176.4 L256 185.5 L272 193.6 L288 200.4 L304 205.6 L320 208.9 L336 210.3 L352 209.7 L368 207.0 L384 202.5 L400 196.2 L416 188.6 L432 179.8 L448 170.3 L464 160.4 L480 150.6 L496 141.3 L512 132.8 L528 125.6 L544 119.9 L560 115.9 L576 113.9 L592 113.9 L608 115.9 L624 119.9 L640 125.6" fill="none" stroke="#e0473a" stroke-opacity="0.36" stroke-width="1.7" stroke-linecap="round"/><path d="M0 208 L0 152.0 L16 150.1 L32 150.7 L48 153.7 L64 158.9 L80 166.3 L96 175.3 L112 185.8 L128 197.1 L144 208.9 L160 220.7 L176 232.0 L192 242.2 L208 251.0 L224 258.0 L240 262.9 L256 265.5 L272 265.7 L288 263.5 L304 258.9 L320 252.2 L336 243.7 L352 233.7 L368 222.5 L384 210.8 L400 199.0 L416 187.5 L432 176.9 L448 167.6 L464 160.0 L480 154.4 L496 151.0 L512 150.1 L528 151.5 L544 155.4 L560 161.4 L576 169.4 L592 179.0 L608 189.9 L624 201.5 L640 213.3" fill="none" stroke="#c03a2e" stroke-opacity="0.29" stroke-width="1.5" stroke-linecap="round"/><path d="M0 254 L0 292.2 L16 299.2 L32 304.3 L48 307.3 L64 308.0 L80 306.6 L96 302.9 L112 297.1 L128 289.5 L144 280.5 L160 270.3 L176 259.5 L192 248.4 L208 237.6 L224 227.4 L240 218.4 L256 210.9 L272 205.1 L288 201.4 L304 199.9 L320 200.7 L336 203.8 L352 208.9 L368 215.9 L384 224.5 L400 234.4 L416 245.0 L432 256.1 L448 267.0 L464 277.5 L480 286.9 L496 295.0 L512 301.3 L528 305.6 L544 307.8 L560 307.8 L576 305.4 L592 301.0 L608 294.5 L624 286.4 L640 276.9" fill="none" stroke="#e0473a" stroke-opacity="0.22" stroke-width="1.2" stroke-linecap="round"/>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">DevSecOps</span>
+    <h3 class="card-title">What Containers Actually Are — Not the Marketing Version</h3>
+    <p class="card-desc">Containers are not lightweight VMs. They are processes with resource constraints and namespace isolation. Understanding the actual mechanism makes you a better user of Docker, Kubernetes, and every container runtime.</p>
+    <div class="card-meta"><time datetime="2026-07-30">30 Jul 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
+  </div>
+</a>
+<a class="card" data-card data-topics="|Engineering Leadership|Architecture|Fundamentals|" data-search="measuring platform engineering success: the metrics that actually matter dora metrics, developer experience scores, cognitive load measures, and the platform health indicators that tell you whether your internal platform is creating value or creating another bottleneck. engineering leadership architecture fundamentals" data-topic="Engineering Leadership" href="/insights/platform-eng-measuring-success/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgplatformengm" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0e7490" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#0b5f77" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#0e7490" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgplatformengm)"/>
+  <rect x="188.8" y="78" width="300.0" height="34" rx="8"
+      fill="#0b5f77" fill-opacity="0.16"
+      stroke="#0e7490" stroke-opacity=".45" stroke-width="1.2"/><line x1="320" y1="112" x2="320" y2="134" stroke="#0e7490" stroke-opacity=".4" stroke-width="1.4"/><rect x="185.1" y="134" width="266.0" height="34" rx="8"
+      fill="#0e7490" fill-opacity="0.29"
+      stroke="#0e7490" stroke-opacity=".45" stroke-width="1.2"/><line x1="320" y1="168" x2="320" y2="190" stroke="#0e7490" stroke-opacity=".4" stroke-width="1.4"/><rect x="199.2" y="190" width="232.0" height="34" rx="8"
+      fill="#0b5f77" fill-opacity="0.42"
+      stroke="#0e7490" stroke-opacity=".45" stroke-width="1.2"/><line x1="320" y1="224" x2="320" y2="246" stroke="#0e7490" stroke-opacity=".4" stroke-width="1.4"/><rect x="239.7" y="246" width="198.0" height="34" rx="8"
+      fill="#0e7490" fill-opacity="0.55"
+      stroke="#0e7490" stroke-opacity=".45" stroke-width="1.2"/>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">Engineering Leadership</span>
+    <h3 class="card-title">Measuring Platform Engineering Success: The Metrics That Actually Matter</h3>
+    <p class="card-desc">DORA metrics, developer experience scores, cognitive load measures, and the platform health indicators that tell you whether your internal platform is creating value or creating another bottleneck.</p>
+    <div class="card-meta"><time datetime="2026-07-21">21 Jul 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
+  </div>
+</a></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap-narrow cta-panel">
+      <h2 class="h2">Working on this in production?</h2>
+      <p class="lede" style="margin-top:.7rem">We do this work directly alongside engineering teams — architecture review, migration, and hands-on enablement.</p>
+      <div class="row" style="margin-top:1.4rem">
+        <a class="btn" href="/contact/">Engage engineering <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="btn btn-ghost" href="/services/">See what we do</a>
+      </div>
+    </div>
+  </section>
+</article>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="grid g-4" style="gap:2rem">
+      <div>
+        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem">
+          <img src="/images/ajna-logo.png" alt="" width="32" height="32">
+          <span class="brand-name">Ajna<span style="color:#6f9bff">CS</span></span>
+        </a>
+        <p style="font-size:.88rem;line-height:1.65;color:#9fb0d0;max-width:30ch">
+          Specialised engineering partner for enterprise architecture, AI &amp; MLOps, and technical enablement.
+        </p>
+        <div class="social" style="margin-top:1.1rem">
+          <a href="https://www.youtube.com/@TechKnowen" rel="noopener" aria-label="YouTube"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 12s0-3.8-.5-5.6a2.9 2.9 0 0 0-2-2C18.7 4 12 4 12 4s-6.7 0-8.5.4a2.9 2.9 0 0 0-2 2C1 8.2 1 12 1 12s0 3.8.5 5.6a2.9 2.9 0 0 0 2 2C5.3 20 12 20 12 20s6.7 0 8.5-.4a2.9 2.9 0 0 0 2-2C23 15.8 23 12 23 12zM9.8 15.4V8.6l5.9 3.4z"/></svg></a>
+          <a href="https://techknowen.com" rel="noopener" aria-label="TechKnowen blog"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 3h16v3H4zm0 5h16v13l-8-4-8 4z"/></svg></a>
+          <a href="/feed.xml" aria-label="RSS feed"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="6.2" cy="17.8" r="2.2"/><path d="M4 10.2v3a6.6 6.6 0 0 1 6.6 6.6h3A9.6 9.6 0 0 0 4 10.2zM4 4v3c7.2 0 13 5.8 13 13h3C20 11.2 12.8 4 4 4z"/></svg></a>
+        </div>
+      </div>
+      <div>
+        <h4>Services</h4>
+        <ul>
+          <li><a href="/services/#architecture">Enterprise architecture</a></li>
+          <li><a href="/services/#ai">AI &amp; MLOps</a></li>
+          <li><a href="/services/#training">Technical enablement</a></li>
+          <li><a href="/case-studies/">Case studies</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Insights</h4>
+        <ul>
+          <li><a href="/insights/">All articles</a></li>
+          <li><a href="/series/">Series</a></li>
+          <li><a href="/topics/">Topics</a></li>
+          <li><a href="/notes/">Personal notes</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
+          <li><a href="/contact/">Start an engagement</a></li>
+          <li><a href="/about/">About</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span id="yr">2026</span> Ajna Consulting Services. All rights reserved.</span>
+      <span style="display:flex;gap:1.2rem"><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a></span>
+    </div>
+  </div>
+</footer>
+<script src="/assets/js/site.js" defer></script>
+</body>
+</html>

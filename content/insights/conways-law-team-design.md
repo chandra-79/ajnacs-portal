@@ -1,0 +1,35 @@
+---
+title: "Conway's Law as a Design Tool: Team Topologies and the Architecture You'll Ship Anyway"
+description: "Your org chart is your architecture's first draft — so design it on purpose. The inverse Conway maneuver, the four team types and three interaction modes, cognitive load as the sizing constraint, and the reorg mistakes that ship themselves as coupling."
+date: 2024-11-04
+tags: ["Engineering Leadership", "Architecture", "Team Topologies", "Platform Engineering", "Engineering Practice"]
+format: article
+---
+
+Conway's Law — systems mirror the communication structures of the organizations that build them — has graduated from conference-slide curiosity to the most practically consequential observation in software architecture, for one reason: it's not a tendency you can discipline away, it's closer to a conservation law. Two teams *will* produce two components with an interface shaped like their meeting cadence; a shared database *will* emerge wherever ownership is ambiguous; the microservices of a centralized organization *will* converge into a distributed monolith requiring synchronized releases. Architects who ignore the law design systems that the org chart quietly redesigns behind them. The mature move is the inversion: **since organization shapes architecture anyway, design the organization as deliberately as the architecture** — the "inverse Conway maneuver," and the core of the Team Topologies vocabulary that operationalized it.
+
+## The mechanism, and the sizing constraint underneath
+
+The law works through communication cost: interfaces requiring constant negotiation stay fluid within a team (cheap communication) and calcify between teams (expensive communication) — so component boundaries drift toward team boundaries regardless of the diagram. The design implication runs through **cognitive load**: a team can genuinely own only what fits in its collective head — the domain complexity, the operational surface, the toolchain. Overloaded teams don't fail loudly; they fail *architecturally* — shedding load as shortcuts, shared kludges, and neglected corners that surface as coupling and incidents. Which yields the first design rule: **size service boundaries to team cognitive capacity, not to domain aesthetics.** The famous "two-pizza team owning a service end-to-end" works not because of pizza economics but because it aligns the unit of ownership, the unit of deployment, and the unit of communication — Conway's Law harnessed instead of fought. (And its corollary explains the microservices hangover: forty services across six teams means each team context-switches across seven operational surfaces — the architecture exceeded the organization, and the organization won, as it always does.)
+
+## The vocabulary: four team types, three interaction modes
+
+Team Topologies' lasting contribution is a small, strict taxonomy that makes org design discussable:
+
+**Stream-aligned teams** — the default and the majority — own a flow of business value end-to-end (a product area, a customer journey): build, ship, run. Every other team type exists to make these teams faster.
+
+**Platform teams** own the internal products (deployment, observability, data infrastructure, the golden paths of platform-engineering practice) that reduce stream-aligned cognitive load — success measured by *adoption and reduced load*, not by mandate (the internal-product discipline).
+
+**Enabling teams** are temporary capability injectors — the SRE coaching pod, the security enablement group — embedding to upskill stream teams, then *leaving* (permanence is the failure signal; an enabling team that never leaves has become a dependency, the opposite of enablement).
+
+**Complicated-subsystem teams** own the rare components needing deep specialism (the pricing engine, the ML core, the codec) — justified only where the specialism is real and the interface can be kept narrow.
+
+The **interaction modes** matter as much as the types: **X-as-a-service** (consume via API/self-service — the low-bandwidth ideal for steady state), **collaboration** (high-bandwidth joint work — powerful, expensive, and *deliberately temporary*: for discovery, not operation), and **facilitating** (the enabling mode). The diagnostic power is in the mismatches: two teams in permanent collaboration mode are one team wearing two badges (or a boundary drawn wrong); a platform consumed only through tickets and meetings isn't a platform, it's a dependency with a backlog; a stream team blocked quarterly on a "shared service" team is Conway's Law invoicing you for an ownership boundary nobody designed.
+
+## The maneuver in practice
+
+Applying the inversion when architecture change is the goal: **draw the target architecture's seams first, then restructure teams to match them, and let the law do the enforcement.** Want the monolith decomposed along business capabilities? Reorganize into capability-aligned teams *before or with* the decomposition (the strangler program's org-design half) — teams will pull their code apart along the new boundaries because the communication structure now rewards it. Want a platform? Charter the platform team with product discipline before mandating the migration. The anti-pattern is architectural aspiration with contradicting org structure — the "microservices initiative" run by layer-organized teams (frontend team, backend team, DBA team) produces distributed layers, not services, every time, because each request's path still crosses every team.
+
+Three implementation warnings from the scar tissue. **Reorgs are architecture changes and inherit their physics** — frequent reorgs produce the coupling equivalent of churn (half-calcified boundaries from each era layered like sediment); reorganize deliberately, rarely, and with the architecture diagram on the same table. **Ownership must be total to work** — "you build it, you run it" is the enforcement mechanism of the whole model; teams that build but don't operate (or own code but not its data, per the data-ownership struggles of every integration pattern discussed elsewhere) sit in ambiguity zones where the law manufactures shared kludges. **And the communication *tooling* counts as structure** — the shared-everything chat channel, the mandatory cross-team design review, the architecture guild: each is a communication pathway that will leave its imprint; prune the ones whose imprint you don't want, and protect the narrow, well-defined interfaces (API contracts, schema registries, SLO agreements) that let teams *not* talk — because in the Conway frame, a good interface is precisely a conversation you no longer need to have.
+
+The executive summary: the org chart is a first-class architectural artifact — the one that wins every conflict with the intended design. Inventory your team boundaries, interaction modes, and cognitive loads with the same rigor as your service inventory; align them with the architecture you actually want; and treat every persistent inter-team friction not as a people problem but as what it almost always is — a boundary, drawn by default, shipping itself into your system one sprint at a time.

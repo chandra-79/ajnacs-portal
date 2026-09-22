@@ -1,1105 +1,443 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <title>Ajna Consulting Services | Enterprise IT Architecture & AI Integration</title>
-    <meta name="title" content="Ajna Consulting Services | Enterprise IT Architecture & AI Integration">
-    <meta name="description" content="Ajna Consulting Services provides specialized enterprise IT architecture, AI integration, MLOps, and corporate technical enablement for global organizations.">
-    <meta name="keywords" content="Enterprise Architecture, Cloud Native, Kubernetes, MLOps, FinOps, IT Consulting, Zero-Trust Security, Event-Driven Microservices, Corporate IT Training">
-    <meta name="author" content="Ajna Consulting Services">
-    
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://ajnacs.com/">
-    <meta property="og:title" content="Ajna Consulting Services | Enterprise Architecture & AI">
-    <meta property="og:description" content="Specialized engineering organization delivering cloud modernization, AI observability, and expert technical enablement.">
-    <meta property="og:image" content="https://ajnacs.com/images/ajna-logo.png">
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon.ico">
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700;800&family=Quintessential&display=swap" rel="stylesheet">
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        heading: ['Montserrat', 'sans-serif'],
-                        brand: ['"Quintessential"', '"Apple Chancery"', 'cursive'],
-                    },
-                    colors: {
-                        gblue: '#4285F4',
-                        gred: '#EA4335',
-                        gyellow: '#FBBC05',
-                        ggreen: '#34A853',
-                        ajna: {
-                            dark: '#0F265C',
-                            blue: '#0F265C',
-                            red: '#E1251B'
-                        },
-                        social: {
-                            youtube: '#FF0000',
-                            x: '#000000',
-                            medium: '#000000',
-                            instagram: '#E1306C',
-                            substack: '#FF6719',
-                            bluesky: '#0085ff'
-                        }
-                    },
-                    animation: {
-                        'blob': 'blob 10s infinite',
-                        'scroll-fast': 'scroll 35s linear infinite',
-                    },
-                    keyframes: {
-                        blob: {
-                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
-                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
-                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
-                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
-                        },
-                        scroll: {
-                            '0%': { transform: 'translateX(0)' },
-                            '100%': { transform: 'translateX(-50%)' },
-                        }
-                    }
-                }
-            }
-        }
-    </script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ajna Consulting Services | Enterprise Architecture, AI &amp; MLOps</title>
+<meta name="description" content="Ajna Consulting Services is a specialised engineering partner for enterprise architecture, AI and MLOps, and corporate technical enablement.">
+<meta name="author" content="Chandra Lanka">
+<link rel="canonical" href="https://ajnacs.com/">
+<meta name="robots" content="index, follow, max-image-preview:large">
 
-    <style>
-        body {
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            background-color: #ffffff; 
-            color: #475569;
-        }
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Ajna Consulting Services">
+<meta property="og:title" content="Ajna Consulting Services | Enterprise Architecture, AI &amp; MLOps">
+<meta property="og:description" content="Ajna Consulting Services is a specialised engineering partner for enterprise architecture, AI and MLOps, and corporate technical enablement.">
+<meta property="og:url" content="https://ajnacs.com/">
+<meta property="og:image" content="https://ajnacs.com/assets/og/default.svg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Ajna Consulting Services | Enterprise Architecture, AI &amp; MLOps">
+<meta name="twitter:description" content="Ajna Consulting Services is a specialised engineering partner for enterprise architecture, AI and MLOps, and corporate technical enablement.">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/default.svg">
 
-        .bg-google-gradient {
-            background: linear-gradient(90deg, #4285F4, #EA4335, #FBBC05, #34A853);
-        }
-        .text-google-gradient {
-            background: linear-gradient(90deg, #4285F4, #EA4335, #FBBC05, #34A853);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
+<link rel="icon" href="/images/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="/images/ajna-logo.png">
+<meta name="theme-color" content="#0a1020">
 
-        .bg-pattern-grid {
-            background-image: url('data:image/svg+xml,%3Csvg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath d="M0 0h40v40H0V0zm1 1h38v38H1V1z" fill="%23e2e8f0" fill-opacity="0.6" fill-rule="evenodd"/%3E%3C/svg%3E');
-        }
-        .bg-pattern-dots {
-            background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
-            background-size: 24px 24px;
-            background-color: #f8fafc;
-        }
-        .bg-pattern-stripes {
-            background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(15, 38, 92, 0.02) 10px, rgba(15, 38, 92, 0.02) 20px);
-            background-color: #ffffff;
-        }
-
-        .glass-header {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(16px);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-        }
-
-        .text-glow-hot {
-            text-shadow: 0 0 20px rgba(225, 37, 27, 0.4);
-        }
-
-        .nav-link { position: relative; }
-        .nav-link::after {
-            content: ''; position: absolute;
-            width: 0; height: 2px;
-            bottom: -4px; left: 0;
-            background: linear-gradient(90deg, #4285F4, #EA4335);
-            transition: width 0.3s ease-in-out;
-            border-radius: 2px;
-        }
-        .nav-link:hover::after { width: 100%; }
-
-        .tech-card {
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            background: #ffffff;
-            border: 1px solid #f1f5f9;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-        }
-        .tech-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
-        }
-
-        .tech-pill { transition: all 0.3s ease; }
-        .tech-pill:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
-        }
-
-        .social-card { transition: all 0.3s ease; }
-        .social-card:hover { transform: translateY(-4px); }
-
-        .carousel-container { position: relative; overflow: hidden; }
-        .carousel-slide {
-            position: absolute; top: 0; left: 0;
-            width: 100%; height: 100%;
-            opacity: 0; transition: opacity 1s ease-in-out;
-            background-size: cover; background-position: center;
-        }
-        .carousel-slide.active { opacity: 1; z-index: 10; }
-
-        .content-carousel-container { display: grid; }
-        .content-slide {
-            grid-area: 1 / 1;
-            opacity: 0;
-            transition: all 0.8s ease-in-out;
-            transform: translateY(15px);
-            pointer-events: none;
-            z-index: 0;
-        }
-        .content-slide.active {
-            opacity: 1; transform: translateY(0);
-            pointer-events: auto; z-index: 10;
-        }
-
-        .scrolling-wrapper {
-            overflow: hidden; white-space: nowrap;
-            display: flex; align-items: center; width: 100%;
-            padding: 1rem 0;
-        }
-        .scrolling-wrapper:hover .animate-scroll-fast {
-            animation-play-state: paused;
-        }
-
-        .gradient-text {
-            background: linear-gradient(90deg, #E1251B, #F3A92A);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .gradient-text-alt {
-            background: linear-gradient(90deg, #0F265C, #E1251B);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .animation-delay-2000 { animation-delay: 2s; }
-        .animation-delay-4000 { animation-delay: 4s; }
-        .animation-delay-6000 { animation-delay: 6s; }
-
-        #leadModal { transition: opacity 0.3s ease; }
-        #leadModal.hidden { opacity: 0; pointer-events: none; }
-    </style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="/assets/css/site.css">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<script>
+/* Set the theme before first paint so the page never flashes the wrong one. */
+(function(){try{var t=localStorage.getItem('acs-theme');
+if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","@id":"https://ajnacs.com/#org","name":"Ajna Consulting Services","url":"https://ajnacs.com","email":"info@ajnacs.com","logo":"https://ajnacs.com/images/ajna-logo.png","description":"Specialised engineering partner for enterprise architecture, AI and MLOps, and corporate technical enablement.","sameAs":["https://www.youtube.com/@TechKnowen","https://techknowen.com"],"founder":{"@type":"Person","name":"Chandra Lanka"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","url":"https://ajnacs.com","name":"Ajna Consulting Services","potentialAction":{"@type":"SearchAction","target":"https://ajnacs.com/insights/?topic={search_term_string}","query-input":"required name=search_term_string"}}</script>
 </head>
-<body class="bg-slate-50 font-sans selection:bg-gblue selection:text-white">
+<body class="">
+<a class="skip-link" href="#main">Skip to content</a>
 
-    <header class="fixed w-full top-0 z-50 transition-all duration-500 ease-in-out bg-transparent py-3 md:py-4 border-b border-transparent" id="header">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center transition-all duration-500" id="header-container">
-                
-                <a href="#" class="flex items-center gap-3 sm:gap-4 group">
-                    <div class="bg-white p-2 rounded-xl border border-slate-200 group-hover:border-ajna-red/40 transition-colors shadow-sm">
-                        <img src="images/ajna-logo.png" alt="Ajna Consulting Services" class="w-8 h-8 md:w-14 md:h-14 object-contain transition-transform duration-300 group-hover:scale-105" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'48\' height=\'48\' viewBox=\'0 0 48 48\' fill=\'none\' stroke=\'%23E1251B\' stroke-width=\'2\'><rect width=\'40\' height=\'40\' x=\'4\' y=\'4\' rx=\'4\'/><path d=\'M12 24l12-12 12 12-12 12z\'/></svg>'">
-                    </div>
-                    <div class="flex flex-col justify-center">
-                        <span class="font-brand text-xl md:text-3xl lg:text-4xl text-ajna-red font-bold leading-none tracking-tight transition-all duration-300 text-glow-hot">Ajna Consulting Services</span>
-                    </div>
-                </a>
-
-                <nav class="hidden lg:flex items-center gap-5 xl:gap-8">
-                    <a href="#about" class="nav-link font-heading text-sm font-semibold text-slate-700 hover:text-gblue transition-colors">Core Competencies</a>
-                    <a href="#consulting" class="nav-link font-heading text-sm font-semibold text-slate-700 hover:text-gred transition-colors">Architecture</a>
-                    <a href="#ai-world" class="nav-link font-heading text-sm font-semibold text-slate-700 hover:text-gyellow transition-colors">AI & MLOps</a>
-                    <a href="#training" class="nav-link font-heading text-sm font-semibold text-slate-700 hover:text-ggreen transition-colors">Enablement</a>
-                    <button onclick="openModal()" class="font-heading bg-gblue text-white px-6 xl:px-7 py-2.5 rounded-lg text-sm font-bold hover:bg-blue-600 transition-all shadow-md hover:shadow-lg hover:shadow-gblue/30 transform hover:-translate-y-0.5">
-                        Engage Engineering
-                    </button>
-                </nav>
-
-                <button class="lg:hidden flex flex-col gap-1.5 p-3 focus:outline-none" onclick="toggleMobileMenu()" aria-label="Toggle Navigation">
-                    <span class="w-6 h-0.5 bg-slate-800 rounded-full transition-transform duration-300" id="line1"></span>
-                    <span class="w-6 h-0.5 bg-slate-800 rounded-full transition-opacity duration-300" id="line2"></span>
-                    <span class="w-6 h-0.5 bg-slate-800 rounded-full transition-transform duration-300" id="line3"></span>
-                </button>
-            </div>
-        </div>
-
-        <div id="mobileMenu" class="hidden lg:hidden bg-white/95 backdrop-blur-xl border-t border-slate-100 absolute w-full shadow-2xl mt-4 pb-4">
-            <div class="flex flex-col px-4 py-4 gap-2">
-                <a href="#about" class="font-heading text-base font-semibold text-slate-700 p-3 hover:bg-slate-50 hover:text-gblue rounded-lg transition-colors" onclick="toggleMobileMenu()">Core Competencies</a>
-                <a href="#consulting" class="font-heading text-base font-semibold text-slate-700 p-3 hover:bg-slate-50 hover:text-gred rounded-lg transition-colors" onclick="toggleMobileMenu()">Enterprise Architecture</a>
-                <a href="#ai-world" class="font-heading text-base font-semibold text-slate-700 p-3 hover:bg-slate-50 hover:text-gyellow rounded-lg transition-colors" onclick="toggleMobileMenu()">AI & MLOps</a>
-                <a href="#training" class="font-heading text-base font-semibold text-slate-700 p-3 hover:bg-slate-50 hover:text-ggreen rounded-lg transition-colors" onclick="toggleMobileMenu()">Corporate Enablement</a>
-                <a href="#community" class="font-heading text-base font-semibold text-slate-700 p-3 hover:bg-slate-50 hover:text-gblue rounded-lg transition-colors" onclick="toggleMobileMenu()">Industry Insights</a>
-                <button onclick="openModal(); toggleMobileMenu();" class="w-full mt-2 font-heading bg-gblue text-white px-6 py-4 rounded-lg text-center font-bold shadow-md">
-                    Engage Engineering
-                </button>
-            </div>
-        </div>
-    </header>
-
-    <section class="relative min-h-[90vh] flex items-center pt-24 overflow-hidden bg-slate-50 bg-pattern-grid">
-        <div class="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0">
-            <div class="absolute top-10 -left-10 w-72 h-72 bg-gblue rounded-full mix-blend-multiply filter blur-[100px] opacity-20 animate-blob"></div>
-            <div class="absolute top-0 -right-4 w-72 h-72 bg-gred rounded-full mix-blend-multiply filter blur-[100px] opacity-20 animate-blob animation-delay-2000"></div>
-            <div class="absolute -bottom-8 left-20 w-72 h-72 bg-gyellow rounded-full mix-blend-multiply filter blur-[100px] opacity-20 animate-blob animation-delay-4000"></div>
-            <div class="absolute -bottom-10 right-20 w-72 h-72 bg-ggreen rounded-full mix-blend-multiply filter blur-[100px] opacity-20 animate-blob animation-delay-6000"></div>
-            <div class="absolute inset-0 bg-white/40 backdrop-blur-[1px]"></div>
-        </div>
-
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full py-16 md:py-20">
-            <div class="content-carousel-container max-w-4xl" id="heroContentCarousel">
-                
-                <div class="content-slide active">
-                    <div class="inline-flex items-center gap-2 border border-gblue/20 bg-gblue/5 px-4 py-2 rounded-full text-gblue text-xs font-bold tracking-widest uppercase mb-6 md:mb-8 backdrop-blur-md shadow-sm">
-                        <span class="w-2 h-2 rounded-full bg-gblue animate-pulse"></span>
-                        Next-Gen Enterprise Architecture
-                    </div>
-                    <h1 class="font-heading text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-900 leading-[1.15] mb-6 md:mb-8 tracking-tight drop-shadow-sm">
-                        Architecting Resilient <br>
-                        <span class="text-google-gradient">Enterprise Infrastructure.</span>
-                    </h1>
-                    <p class="text-base md:text-lg lg:text-xl text-slate-600 mb-8 md:mb-10 max-w-2xl leading-relaxed font-normal">
-                        Ajna Consulting Services provides specialized enterprise IT architecture and technical enablement. We modernize legacy systems, enforce zero-trust security frameworks, and scale globally distributed applications.
-                    </p>
-                    <div class="flex flex-col sm:flex-row gap-4">
-                        <a href="#consulting" class="font-heading bg-gblue text-white px-8 py-4 rounded-lg font-bold hover:bg-blue-600 transition-all shadow-lg hover:shadow-xl hover:shadow-gblue/30 flex justify-center items-center gap-2 group transform hover:-translate-y-0.5">
-                            Review Capabilities
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transform group-hover:translate-x-1 transition-transform" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
-                        </a>
-                        <button onclick="openModal()" class="font-heading border border-slate-300 bg-white text-slate-700 px-8 py-4 rounded-lg font-semibold hover:bg-slate-50 hover:border-gblue hover:text-gblue transition-colors text-center shadow-sm">
-                            Engage Engineering
-                        </button>
-                    </div>
-                </div>
-
-                <div class="content-slide">
-                    <div class="inline-flex items-center gap-2 border border-gred/20 bg-gred/5 px-4 py-2 rounded-full text-gred text-xs font-bold tracking-widest uppercase mb-6 md:mb-8 backdrop-blur-md shadow-sm">
-                        <span class="w-2 h-2 rounded-full bg-gred animate-pulse"></span>
-                        Machine Learning Operations
-                    </div>
-                    <h1 class="font-heading text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-900 leading-[1.15] mb-6 md:mb-8 tracking-tight drop-shadow-sm">
-                        Enterprise AI & <br>
-                        <span class="text-google-gradient">MLOps Architecture.</span>
-                    </h1>
-                    <p class="text-base md:text-lg lg:text-xl text-slate-600 mb-8 md:mb-10 max-w-2xl leading-relaxed font-normal">
-                        Deploy production-grade AI frameworks, enforce rigorous MLOps pipelines, and integrate predictive models directly into core business applications to drive measurable ROI.
-                    </p>
-                    <div class="flex flex-col sm:flex-row gap-4">
-                        <a href="#ai-world" class="font-heading bg-gred text-white px-8 py-4 rounded-lg font-bold hover:bg-red-600 transition-all shadow-lg hover:shadow-xl hover:shadow-gred/30 flex justify-center items-center gap-2 group transform hover:-translate-y-0.5">
-                            Explore MLOps Integration
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transform group-hover:translate-x-1 transition-transform" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
-                        </a>
-                        <button onclick="openModal()" class="font-heading border border-slate-300 bg-white text-slate-700 px-8 py-4 rounded-lg font-semibold hover:bg-slate-50 hover:border-gred hover:text-gred transition-colors text-center shadow-sm">
-                            Engage Engineering
-                        </button>
-                    </div>
-                </div>
-
-                <div class="content-slide">
-                    <div class="inline-flex items-center gap-2 border border-ggreen/30 bg-ggreen/5 px-4 py-2 rounded-full text-ggreen text-xs font-bold tracking-widest uppercase mb-6 md:mb-8 backdrop-blur-md shadow-sm">
-                        <span class="w-2 h-2 rounded-full bg-ggreen animate-pulse"></span>
-                        Technical Enablement
-                    </div>
-                    <h1 class="font-heading text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-900 leading-[1.15] mb-6 md:mb-8 tracking-tight drop-shadow-sm">
-                        Corporate IT Enablement <br>
-                        <span class="text-google-gradient">& Technical Training.</span>
-                    </h1>
-                    <p class="text-base md:text-lg lg:text-xl text-slate-600 mb-8 md:mb-10 max-w-2xl leading-relaxed font-normal">
-                        Equip your engineering teams with empirical, lab-based technical training. We provide customized curriculum across Cloud Native architecture, data engineering, and enterprise middleware.
-                    </p>
-                    <div class="flex flex-col sm:flex-row gap-4">
-                        <a href="#training" class="font-heading bg-ggreen text-white px-8 py-4 rounded-lg font-bold hover:bg-green-600 transition-all shadow-lg hover:shadow-xl hover:shadow-ggreen/30 flex justify-center items-center gap-2 group transform hover:-translate-y-0.5">
-                            Review Training Syllabi
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transform group-hover:translate-x-1 transition-transform" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
-                        </a>
-                        <button onclick="openModal()" class="font-heading border border-slate-300 bg-white text-slate-700 px-8 py-4 rounded-lg font-semibold hover:bg-slate-50 hover:border-ggreen hover:text-ggreen transition-colors text-center shadow-sm">
-                            Request Instruction
-                        </button>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <div class="relative z-20 shadow-[0_10px_30px_-10px_rgba(15,38,92,0.6)] overflow-hidden border-b border-ajna-dark">
-        <div class="h-1 w-full bg-google-gradient"></div>
-        <div class="bg-gradient-to-r from-ajna-blue via-[#17387d] to-ajna-blue py-6">
-            <div class="scrolling-wrapper">
-                <div class="scrolling-content animate-scroll-fast gap-6 px-6 items-center flex">
-                    
-                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading text-sm md:text-base font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gblue">Generative AI</div>
-                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading text-sm md:text-base font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gred">AWS</div>
-                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading text-sm md:text-base font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gyellow">Azure</div>
-                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading text-sm md:text-base font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-ggreen">Google Cloud</div>
-                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading text-sm md:text-base font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gblue">Kubernetes</div>
-                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading text-sm md:text-base font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gred">Docker</div>
-                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading text-sm md:text-base font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gyellow">Terraform</div>
-                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading text-sm md:text-base font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-ggreen">Ansible</div>
-                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading text-sm md:text-base font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gblue">LLMs</div>
-                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading text-sm md:text-base font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gred">PyTorch</div>
-                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading text-sm md:text-base font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gyellow">Apache Kafka</div>
-                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading text-sm md:text-base font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-ggreen">Snowflake</div>
-                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading text-sm md:text-base font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gblue">WebLogic</div>
-                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading text-sm md:text-base font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gred">Oracle FMW</div>
-                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading text-sm md:text-base font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gyellow">Java EE</div>
-                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading text-sm md:text-base font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-ggreen">Spring Boot</div>
-                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading text-sm md:text-base font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gblue">Python</div>
-                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading text-sm md:text-base font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gred">React</div>
-                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading text-sm md:text-base font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gyellow">PostgreSQL</div>
-                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading text-sm md:text-base font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-ggreen">Redis</div>
-                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading text-sm md:text-base font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gblue">Hadoop</div>
-                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading text-sm md:text-base font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gred">Apache Spark</div>
-                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading text-sm md:text-base font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gyellow">OpenTelemetry</div>
-                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading text-sm md:text-base font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-ggreen">Zero-Trust IAM</div>
-                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading text-sm md:text-base font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gblue">FinOps</div>
-
-                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading text-sm md:text-base font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gblue">Generative AI</div>
-                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading text-sm md:text-base font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gred">AWS</div>
-                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading text-sm md:text-base font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gyellow">Azure</div>
-                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading text-sm md:text-base font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-ggreen">Google Cloud</div>
-                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading text-sm md:text-base font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gblue">Kubernetes</div>
-                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading text-sm md:text-base font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gred">Docker</div>
-                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading text-sm md:text-base font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gyellow">Terraform</div>
-                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading text-sm md:text-base font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-ggreen">Ansible</div>
-                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading text-sm md:text-base font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gblue">LLMs</div>
-                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading text-sm md:text-base font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gred">PyTorch</div>
-                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading text-sm md:text-base font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gyellow">Apache Kafka</div>
-                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading text-sm md:text-base font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-ggreen">Snowflake</div>
-                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading text-sm md:text-base font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gblue">WebLogic</div>
-                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading text-sm md:text-base font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gred">Oracle FMW</div>
-                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading text-sm md:text-base font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gyellow">Java EE</div>
-                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading text-sm md:text-base font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-ggreen">Spring Boot</div>
-                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading text-sm md:text-base font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gblue">Python</div>
-                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading text-sm md:text-base font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gred">React</div>
-                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading text-sm md:text-base font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gyellow">PostgreSQL</div>
-                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading text-sm md:text-base font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-ggreen">Redis</div>
-                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading text-sm md:text-base font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gblue">Hadoop</div>
-                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading text-sm md:text-base font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gred">Apache Spark</div>
-                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading text-sm md:text-base font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gyellow">OpenTelemetry</div>
-                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading text-sm md:text-base font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-ggreen">Zero-Trust IAM</div>
-                    <div class="tech-pill px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white font-heading text-sm md:text-base font-medium tracking-wide whitespace-nowrap cursor-default hover:bg-white hover:text-gblue">FinOps</div>
-                </div>
-            </div>
-        </div>
+<header class="site-header" id="siteHeader">
+  <div class="wrap" style="display:flex;align-items:center;width:min(1220px,100% - var(--gutter)*2)">
+    <a class="brand" href="/">
+      <img src="/images/ajna-logo.png" alt="" width="32" height="32">
+      <span class="brand-name">Ajna<span>CS</span></span>
+    </a>
+    <nav class="nav" id="nav" aria-label="Primary">
+      <a href="/services/">Services</a>
+      <a href="/insights/">Insights</a>
+      <a href="/series/">Series</a>
+      <a href="/case-studies/">Case studies</a>
+      <a href="/about/">About</a>
+      <a class="btn btn-sm" href="/contact/" style="margin-left:.4rem">Engage engineering</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn" id="themeBtn" type="button" aria-label="Switch to dark mode" aria-pressed="false"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg></button>
+      <button class="icon-btn nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
     </div>
+  </div>
+</header>
 
-    <section id="about" class="bg-pattern-dots relative z-10 border-b border-slate-200">
-        <div class="py-16 md:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-                <div>
-                    <h2 class="font-heading text-gblue font-bold tracking-widest uppercase text-sm mb-3">Core Competencies</h2>
-                    <h3 class="font-heading text-3xl md:text-4xl font-bold text-slate-900 mb-6">Specialized Enterprise IT Architecture & Engineering.</h3>
-                    <p class="text-slate-600 text-base md:text-lg mb-6 leading-relaxed">
-                        Ajna Consulting Services operates as a dedicated engineering partner. Our technical leadership team possesses extensive experience designing, securing, and recovering mission-critical infrastructure for Tier-1 financial, telecommunications, and aviation organizations.
-                    </p>
-                    <p class="text-slate-600 text-base md:text-lg mb-8 leading-relaxed">
-                        We specialize in transitioning complex legacy architectures into highly distributed, event-driven microservices. We engage directly alongside client engineering teams to execute deployments, configure CI/CD pipelines, and establish strict operational governance.
-                    </p>
-                </div>
-                
-                <div class="relative">
-                    <div class="absolute -inset-4 bg-gradient-to-r from-gblue/10 to-gred/10 blur-2xl rounded-full"></div>
-                    <div class="relative bg-white border border-slate-100 rounded-2xl p-6 md:p-10 shadow-xl">
-                        <h4 class="font-heading text-xl md:text-2xl font-bold text-slate-900 mb-6 border-b border-slate-100 pb-4">The Ajna Methodology</h4>
-                        <ul class="space-y-6">
-                            <li class="flex gap-4">
-                                <div class="w-10 h-10 rounded-full bg-gblue/10 border border-gblue/20 text-gblue flex items-center justify-center flex-shrink-0 font-bold">1</div>
-                                <div>
-                                    <h5 class="font-heading text-slate-900 font-bold mb-1">Assess & Audit</h5>
-                                    <p class="text-sm text-slate-600">Technical audits of existing middleware, cloud expenditure, and systemic bottlenecks.</p>
-                                </div>
-                            </li>
-                            <li class="flex gap-4">
-                                <div class="w-10 h-10 rounded-full bg-gred/10 border border-gred/20 text-gred flex items-center justify-center flex-shrink-0 font-bold">2</div>
-                                <div>
-                                    <h5 class="font-heading text-slate-900 font-bold mb-1">Architect & Modernize</h5>
-                                    <p class="text-sm text-slate-600">Designing resilient, decoupled cloud-native architectures utilizing Kubernetes and serverless frameworks.</p>
-                                </div>
-                            </li>
-                            <li class="flex gap-4">
-                                <div class="w-10 h-10 rounded-full bg-gyellow/10 border border-gyellow/20 text-gyellow flex items-center justify-center flex-shrink-0 font-bold">3</div>
-                                <div>
-                                    <h5 class="font-heading text-slate-900 font-bold mb-1">Automate & Govern</h5>
-                                    <p class="text-sm text-slate-600">Implementing CI/CD, MLOps, and FinOps pipelines to ensure self-sustaining operational excellence.</p>
-                                </div>
-                            </li>
-                            <li class="flex gap-4">
-                                <div class="w-10 h-10 rounded-full bg-ggreen/10 border border-ggreen/20 text-ggreen flex items-center justify-center flex-shrink-0 font-bold">4</div>
-                                <div>
-                                    <h5 class="font-heading text-slate-900 font-bold mb-1">Educate & Empower</h5>
-                                    <p class="text-sm text-slate-600">Upskilling internal workforces through structured technical training to ensure operational independence.</p>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
+<main id="main" tabindex="-1">
 
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
-            <div class="bg-white rounded-2xl shadow-xl p-8 md:p-12 relative overflow-hidden border border-slate-100">
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 relative z-10 text-center divide-y md:divide-y-0 md:divide-x divide-slate-100">
-                    <div class="pb-6 md:pb-0">
-                        <div class="font-heading text-4xl md:text-5xl font-black text-slate-900 mb-2">35<span class="text-gblue">%</span></div>
-                        <div class="font-heading text-xs text-slate-500 font-bold uppercase tracking-wider">Faster Releases</div>
-                    </div>
-                    <div class="pb-6 md:pb-0 pt-6 md:pt-0">
-                        <div class="font-heading text-4xl md:text-5xl font-black text-slate-900 mb-2">45<span class="text-gred">%</span></div>
-                        <div class="font-heading text-xs text-slate-500 font-bold uppercase tracking-wider">MTTR Reduction</div>
-                    </div>
-                    <div class="pb-6 md:pb-0 pt-6 md:pt-0">
-                        <div class="font-heading text-4xl md:text-5xl font-black text-slate-900 mb-2">25<span class="text-gyellow">%</span></div>
-                        <div class="font-heading text-xs text-slate-500 font-bold uppercase tracking-wider">OpEx Savings</div>
-                    </div>
-                    <div class="pt-6 md:pt-0">
-                        <div class="font-heading text-4xl md:text-5xl font-black text-slate-900 mb-2">99.9<span class="text-ggreen">%</span></div>
-                        <div class="font-heading text-xs text-slate-500 font-bold uppercase tracking-wider">Availability Target</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="pb-16 md:pb-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-4xl mx-auto mb-12">
-                <h2 class="font-heading text-gred font-bold tracking-widest uppercase text-sm mb-3">Why Us</h2>
-                <h3 class="font-heading text-3xl md:text-4xl font-bold text-slate-900 mb-6">Ensuring High-Availability IT Operations.</h3>
-                <p class="text-slate-600 text-base md:text-lg leading-relaxed">We leverage advanced technical expertise, direct execution, and established methodologies to minimize downtime, optimize capital expenditure, and provide engineering teams with actionable telemetry.</p>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-                
-                <div class="tech-card p-6 md:p-8 rounded-2xl text-center hover:border-gblue">
-                    <div class="w-16 h-16 mx-auto bg-gblue/10 text-gblue rounded-full flex items-center justify-center mb-6 border border-gblue/20">
-                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-                    </div>
-                    <h4 class="font-heading text-xl font-bold text-slate-900 mb-2">Rapid Modernization</h4>
-                    <p class="text-slate-600 text-sm">Accelerating legacy transformation and cloud migration across multi-region deployments.</p>
-                </div>
-                
-                <div class="tech-card p-6 md:p-8 rounded-2xl text-center hover:border-gred">
-                    <div class="w-16 h-16 mx-auto bg-gred/10 text-gred rounded-full flex items-center justify-center mb-6 border border-gred/20">
-                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
-                    </div>
-                    <h4 class="font-heading text-xl font-bold text-slate-900 mb-2">Zero-Trust Security</h4>
-                    <p class="text-slate-600 text-sm">Implementing rigorous IAM and governance policies to protect critical corporate assets.</p>
-                </div>
-                
-                <div class="tech-card p-6 md:p-8 rounded-2xl text-center hover:border-gyellow">
-                    <div class="w-16 h-16 mx-auto bg-gyellow/10 text-gyellow rounded-full flex items-center justify-center mb-6 border border-gyellow/20">
-                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
-                    </div>
-                    <h4 class="font-heading text-xl font-bold text-slate-900 mb-2">Actionable Observability</h4>
-                    <p class="text-slate-600 text-sm">Proactive monitoring with telemetry insights to systematically reduce mean-time-to-resolution (MTTR).</p>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <section id="consulting" class="py-16 md:py-24 bg-pattern-stripes relative border-b border-slate-200">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            
-            <div class="text-center max-w-3xl mx-auto mb-12 md:mb-16">
-                <h2 class="font-heading text-gyellow font-bold tracking-widest uppercase text-sm mb-3">Enterprise Architecture</h2>
-                <h3 class="font-heading text-3xl md:text-4xl font-bold text-slate-900 mb-6">Strategic IT Execution & Infrastructure Modernization.</h3>
-                <p class="text-slate-600 text-base md:text-lg bg-white/80 backdrop-blur px-4 py-2 rounded-lg inline-block shadow-sm">We provide technical direction to reduce architectural debt, align capital expenditure with performance requirements, and systematically improve overall application reliability.</p>
-            </div>
-
-            <div class="w-full h-48 md:h-80 rounded-2xl overflow-hidden mb-12 md:mb-16 relative shadow-lg group bg-white border border-slate-200">
-                <div id="consultingCarousel" class="absolute inset-0">
-                    <div class="carousel-slide active" style="background-image: url('images/service1.jpg');"></div>
-                    <div class="carousel-slide" style="background-image: url('images/service2.png');"></div>
-                    <div class="carousel-slide" style="background-image: url('images/service3.jpg');"></div>
-                    <div class="absolute inset-0 bg-ajna-dark mix-blend-multiply opacity-20"></div>
-                </div>
-                <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
-                    <span class="font-heading text-white font-bold tracking-widest uppercase text-lg md:text-2xl backdrop-blur-md bg-black/30 px-6 md:px-8 py-3 rounded-xl border border-white/30 shadow-lg">Architecture Execution</span>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-                <div class="tech-card p-6 md:p-8 rounded-2xl flex flex-col h-full relative overflow-hidden group hover:border-gblue">
-                    <div class="absolute top-0 right-0 p-6 opacity-5 text-gblue transform group-hover:scale-110 transition-transform">
-                        <svg class="w-24 h-24 md:w-32 md:h-32" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>
-                    </div>
-                    <div class="w-12 h-12 md:w-14 md:h-14 bg-gblue/10 rounded-xl flex items-center justify-center mb-6 border border-gblue/20">
-                        <svg class="w-6 h-6 md:w-7 md:h-7 text-gblue" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>
-                    </div>
-                    <h4 class="font-heading text-xl md:text-2xl font-bold text-slate-900 mb-3 relative z-10">Cloud Modernization</h4>
-                    <p class="text-slate-600 mb-6 flex-grow leading-relaxed relative z-10 text-sm md:text-base">We orchestrate multi-regional digital transformations. By decoupling monolithic legacy assets into scalable, event-driven microservices, engineering teams accelerate product release cycles by up to 35%.</p>
-                </div>
-
-                <div class="tech-card p-6 md:p-8 rounded-2xl flex flex-col h-full relative overflow-hidden group hover:border-gred">
-                    <div class="absolute top-0 right-0 p-6 opacity-5 text-gred transform group-hover:scale-110 transition-transform">
-                        <svg class="w-24 h-24 md:w-32 md:h-32" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-                    </div>
-                    <div class="w-12 h-12 md:w-14 md:h-14 bg-gred/10 rounded-xl flex items-center justify-center mb-6 border border-gred/20">
-                        <svg class="w-6 h-6 md:w-7 md:h-7 text-gred" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-                    </div>
-                    <h4 class="font-heading text-xl md:text-2xl font-bold text-slate-900 mb-3 relative z-10">Resilient IT Operations</h4>
-                    <p class="text-slate-600 mb-6 flex-grow leading-relaxed relative z-10 text-sm md:text-base">We deploy robust observability control planes using OpenTelemetry and Prometheus to implement predictive incident detection, enabling organizations to enforce strict 99.9% uptime SLAs.</p>
-                </div>
-
-                <div class="tech-card p-6 md:p-8 rounded-2xl flex flex-col h-full relative overflow-hidden group hover:border-gyellow">
-                    <div class="absolute top-0 right-0 p-6 opacity-5 text-gyellow transform group-hover:scale-110 transition-transform">
-                         <svg class="w-24 h-24 md:w-32 md:h-32" fill="none" stroke="currentColor" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                    </div>
-                    <div class="w-12 h-12 md:w-14 md:h-14 bg-gyellow/10 rounded-xl flex items-center justify-center mb-6 border border-gyellow/20">
-                        <svg class="w-6 h-6 md:w-7 md:h-7 text-gyellow" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                    </div>
-                    <h4 class="font-heading text-xl md:text-2xl font-bold text-slate-900 mb-3 relative z-10">FinOps & Cost Governance</h4>
-                    <p class="text-slate-600 mb-6 flex-grow leading-relaxed relative z-10 text-sm md:text-base">Unchecked cloud resource allocation introduces unnecessary expense. We institutionalize FinOps frameworks to align engineering resources with business value, consistently delivering optimized infrastructure savings.</p>
-                </div>
-
-                <div class="tech-card p-6 md:p-8 rounded-2xl flex flex-col h-full relative overflow-hidden group hover:border-ggreen">
-                     <div class="absolute top-0 right-0 p-6 opacity-5 text-ggreen transform group-hover:scale-110 transition-transform">
-                         <svg class="w-24 h-24 md:w-32 md:h-32" fill="none" stroke="currentColor" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-                    </div>
-                    <div class="w-12 h-12 md:w-14 md:h-14 bg-ggreen/10 rounded-xl flex items-center justify-center mb-6 border border-ggreen/20">
-                        <svg class="w-6 h-6 md:w-7 md:h-7 text-ggreen" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-                    </div>
-                    <h4 class="font-heading text-xl md:text-2xl font-bold text-slate-900 mb-3 relative z-10">DevOps & Automation</h4>
-                    <p class="text-slate-600 mb-6 flex-grow leading-relaxed relative z-10 text-sm md:text-base">We automate the software development lifecycle from code repository to production clusters. By leveraging infrastructure-as-code (IaC), we ensure engineering teams deploy consistently and with complete auditability.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="ai-world" class="py-16 md:py-24 bg-pattern-grid relative border-b border-slate-200">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            
-            <div class="text-center max-w-3xl mx-auto mb-12 md:mb-16">
-                <h2 class="font-heading text-ggreen font-bold tracking-widest uppercase text-sm mb-3">AI & MLOps Architecture</h2>
-                <h3 class="font-heading text-3xl md:text-4xl font-bold text-slate-900 mb-6">Scalable Enterprise AI Integration.</h3>
-                <p class="text-slate-600 text-base md:text-lg bg-white/80 backdrop-blur px-4 py-2 rounded-lg inline-block shadow-sm">Transition AI operations from theoretical experimentation to production-grade deployments. We architect resilient MLOps pipelines and integrate data-driven agents securely within corporate networks.</p>
-            </div>
-
-            <div class="w-full h-48 md:h-80 rounded-2xl overflow-hidden mb-12 md:mb-16 relative shadow-lg group bg-white border border-slate-200">
-                <div id="aiCarousel" class="absolute inset-0">
-                    <div class="carousel-slide active" style="background-image: url('images/pexels-googledeepmind-25626446.jpg');"></div>
-                    <div class="carousel-slide" style="background-image: url('images/service5.png');"></div>
-                    <div class="carousel-slide" style="background-image: url('images/service7.png');"></div>
-                    <div class="absolute inset-0 bg-ajna-dark mix-blend-multiply opacity-10"></div>
-                </div>
-                <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
-                    <span class="font-heading text-white font-bold tracking-widest uppercase text-lg md:text-2xl backdrop-blur-md bg-black/40 px-6 md:px-8 py-3 rounded-xl border border-white/30 shadow-lg">Intelligence at Scale</span>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div class="tech-card p-6 rounded-2xl flex flex-col h-full hover:border-gblue">
-                    <div class="w-10 h-10 bg-gblue/10 text-gblue rounded-lg flex items-center justify-center mb-4 border border-gblue/20">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>
-                    </div>
-                    <h4 class="font-heading text-lg font-bold text-slate-900 mb-3">Agentic AI Workflows</h4>
-                    <p class="text-sm text-slate-600">Architect and deploy autonomous AI agents capable of complex decision-routing and secure task execution across internal APIs.</p>
-                </div>
-                <div class="tech-card p-6 rounded-2xl flex flex-col h-full hover:border-gred">
-                    <div class="w-10 h-10 bg-gred/10 text-gred rounded-lg flex items-center justify-center mb-4 border border-gred/20">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7-4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
-                    </div>
-                    <h4 class="font-heading text-lg font-bold text-slate-900 mb-3">MLOps Data Pipelines</h4>
-                    <p class="text-sm text-slate-600">Standardize machine learning lifecycles with strict version control, automated model testing, and continuous deployment tracking.</p>
-                </div>
-                <div class="tech-card p-6 rounded-2xl flex flex-col h-full hover:border-gyellow">
-                    <div class="w-10 h-10 bg-gyellow/10 text-gyellow rounded-lg flex items-center justify-center mb-4 border border-gyellow/20">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-                    </div>
-                    <h4 class="font-heading text-lg font-bold text-slate-900 mb-3">Predictive Analytics</h4>
-                    <p class="text-sm text-slate-600">Process massive datasets utilizing Apache Spark and modern data ecosystems to generate actionable business intelligence.</p>
-                </div>
-                <div class="tech-card p-6 rounded-2xl flex flex-col h-full hover:border-ggreen">
-                    <div class="w-10 h-10 bg-ggreen/10 text-ggreen rounded-lg flex items-center justify-center mb-4 border border-ggreen/20">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                    </div>
-                    <h4 class="font-heading text-lg font-bold text-slate-900 mb-3">AI Security & IAM</h4>
-                    <p class="text-sm text-slate-600">Protect corporate intellectual property by implementing rigorous Zero-Trust policies and data classification across all AI interactions.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="training" class="py-16 md:py-24 bg-pattern-stripes relative border-b border-slate-200">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            
-            <div class="flex flex-col lg:flex-row justify-between items-start lg:items-end mb-12 gap-8">
-                <div class="max-w-3xl">
-                    <h2 class="font-heading text-gblue font-bold tracking-widest uppercase text-sm mb-3">Corporate IT Enablement</h2>
-                    <h3 class="font-heading text-3xl md:text-4xl font-bold text-slate-900 mb-6">World-Class Technical Training.</h3>
-                    <p class="text-slate-600 text-base md:text-lg bg-white/80 backdrop-blur px-4 py-2 rounded-lg inline-block shadow-sm">We provide customized, lab-intensive technical curriculums. Our instruction is rooted in active, real-world deployment experience, designed to upskill enterprise software teams efficiently.</p>
-                </div>
-                <button onclick="openModal()" class="font-heading w-full lg:w-auto flex-shrink-0 bg-white border-2 border-gblue text-gblue hover:bg-gblue hover:text-white px-8 py-3.5 rounded-lg font-bold transition-all shadow-sm hover:shadow-md">
-                    Request Syllabi
-                </button>
-            </div>
-
-            <div class="w-full h-48 md:h-64 rounded-2xl overflow-hidden mb-12 md:mb-16 relative shadow-lg group bg-white border border-slate-200">
-                <div id="trainingCarousel" class="absolute inset-0">
-                    <div class="carousel-slide active" style="background-image: url('images/service4.jpg');"></div>
-                    <div class="carousel-slide" style="background-image: url('images/service4.png');"></div>
-                    <div class="absolute inset-0 bg-ajna-dark mix-blend-multiply opacity-10"></div>
-                </div>
-                <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
-                    <span class="font-heading text-white font-bold tracking-widest uppercase text-lg md:text-2xl backdrop-blur-md bg-black/30 px-6 md:px-8 py-3 rounded-xl border border-white/40 shadow-lg">Hands-on Lab Environments</span>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="tech-card p-6 md:p-8 rounded-2xl flex flex-col h-full hover:border-gred">
-                    <h4 class="font-heading text-xl font-bold text-slate-900 mb-4">Enterprise Middleware</h4>
-                    <p class="text-sm text-slate-600 mb-6 line-clamp-3">Architectural deep-dives into integration methodologies, high-availability clustering, and legacy Oracle stacks.</p>
-                    <ul class="text-sm text-slate-700 space-y-3 font-medium">
-                        <li class="flex items-center gap-3">
-                            <svg class="w-4 h-4 text-gred" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg> 
-                            WebLogic 12c Administration
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <svg class="w-4 h-4 text-gred" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
-                            Oracle SOA & OSB Architecture
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <svg class="w-4 h-4 text-gred" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
-                            Exalogic Elastic Cloud
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="tech-card p-6 md:p-8 rounded-2xl flex flex-col h-full hover:border-gyellow relative overflow-hidden">
-                    <div class="absolute top-0 right-0 bg-gyellow text-white text-xs font-bold px-4 py-1.5 rounded-bl-lg shadow-sm">POPULAR</div>
-                    <h4 class="font-heading text-xl font-bold text-slate-900 mb-4">Cloud Native Infrastructure</h4>
-                    <p class="text-sm text-slate-600 mb-6 line-clamp-3">Comprehensive instruction on distributed networking, platform security, and container orchestration.</p>
-                    <ul class="text-sm text-slate-700 space-y-3 font-medium">
-                        <li class="flex items-center gap-3">
-                            <svg class="w-4 h-4 text-gyellow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg> 
-                            AWS, Azure, GCP Topologies
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <svg class="w-4 h-4 text-gyellow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
-                            Kubernetes Administration (CKA)
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <svg class="w-4 h-4 text-gyellow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
-                            Enterprise Linux System Admin
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="tech-card p-6 md:p-8 rounded-2xl flex flex-col h-full hover:border-ggreen">
-                    <h4 class="font-heading text-xl font-bold text-slate-900 mb-4">Software Engineering</h4>
-                    <p class="text-sm text-slate-600 mb-6 line-clamp-3">Application development principles, modern RESTful API design, and resilient backend microservices construction.</p>
-                    <ul class="text-sm text-slate-700 space-y-3 font-medium">
-                        <li class="flex items-center gap-3">
-                            <svg class="w-4 h-4 text-ggreen" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg> 
-                            Advanced Java EE
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <svg class="w-4 h-4 text-ggreen" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
-                            Spring Boot Microservices
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <svg class="w-4 h-4 text-ggreen" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
-                            Modern Frontend (React/Node)
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="py-16 md:py-24 relative overflow-hidden bg-ajna-dark text-white border-b border-blue-900 bg-grid-pattern-dark">
-        <div class="max-w-7xl mx-auto px-4 relative z-10">
-            <div class="text-center max-w-3xl mx-auto mb-12 md:mb-16">
-                <h2 class="font-heading text-gred font-bold tracking-widest uppercase text-sm mb-3">Industry Acclaim</h2>
-                <h3 class="font-heading text-3xl md:text-4xl font-bold text-white mb-6">Trusted by Global Enterprises.</h3>
-                <p class="text-blue-200 text-base md:text-lg">Review feedback from executive stakeholders regarding our consulting, migration, and corporate training engagements.</p>
-            </div>
-
-            <div class="content-carousel-container max-w-5xl mx-auto relative h-[380px] md:h-72">
-                
-                <div class="carousel-slide active bg-slate-900/60 backdrop-blur-md p-6 md:p-12 rounded-2xl border border-white/10 shadow-2xl flex flex-col justify-center text-center">
-                    <div class="font-brand text-6xl md:text-8xl text-white/5 absolute top-2 md:top-4 left-4 md:left-6 leading-none">"</div>
-                    <p class="text-blue-100 text-sm md:text-xl italic mb-6 relative z-10 pt-4 leading-relaxed">"Delivered high-impact architecture solutions and exceptional technical leadership, consistently exceeding enterprise operational targets."</p>
-                    <div class="flex flex-col items-center">
-                        <p class="font-heading font-bold text-white text-xs md:text-sm uppercase tracking-wide">VP of Engineering</p>
-                        <p class="text-xs text-gblue font-medium mt-1">Global Operations</p>
-                    </div>
-                </div>
-
-                <div class="carousel-slide bg-slate-900/60 backdrop-blur-md p-6 md:p-12 rounded-2xl border border-white/10 shadow-2xl flex flex-col justify-center text-center">
-                    <div class="font-brand text-6xl md:text-8xl text-white/5 absolute top-2 md:top-4 left-4 md:left-6 leading-none">"</div>
-                    <p class="text-blue-100 text-sm md:text-xl italic mb-6 relative z-10 pt-4 leading-relaxed">"Recognized for driving successful enterprise platform migrations, resolving complex technical challenges, and maintaining rigorous stakeholder confidence."</p>
-                    <div class="flex flex-col items-center">
-                        <p class="font-heading font-bold text-white text-xs md:text-sm uppercase tracking-wide">Project Sponsor</p>
-                        <p class="text-xs text-gred font-medium mt-1">Financial Institution</p>
-                    </div>
-                </div>
-
-                <div class="carousel-slide bg-slate-900/60 backdrop-blur-md p-6 md:p-12 rounded-2xl border border-white/10 shadow-2xl flex flex-col justify-center text-center">
-                    <div class="font-brand text-6xl md:text-8xl text-white/5 absolute top-2 md:top-4 left-4 md:left-6 leading-none">"</div>
-                    <p class="text-blue-100 text-sm md:text-xl italic mb-6 relative z-10 pt-4 leading-relaxed">"Instrumental in achieving consulting and delivery benchmarks through structured customer engagement, technical execution, and strict architectural ownership."</p>
-                    <div class="flex flex-col items-center">
-                        <p class="font-heading font-bold text-white text-xs md:text-sm uppercase tracking-wide">Delivery Director</p>
-                        <p class="text-xs text-gyellow font-medium mt-1">Technology Provider</p>
-                    </div>
-                </div>
-
-                <div class="carousel-slide bg-slate-900/60 backdrop-blur-md p-6 md:p-12 rounded-2xl border border-white/10 shadow-2xl flex flex-col justify-center text-center">
-                    <div class="font-brand text-6xl md:text-8xl text-white/5 absolute top-2 md:top-4 left-4 md:left-6 leading-none">"</div>
-                    <p class="text-blue-100 text-sm md:text-xl italic mb-6 relative z-10 pt-4 leading-relaxed">"Praised for professionalism, strategic methodology, and the ability to translate complex architecture concepts into highly actionable technical outcomes."</p>
-                    <div class="flex flex-col items-center">
-                        <p class="font-heading font-bold text-white text-xs md:text-sm uppercase tracking-wide">Chief Architect</p>
-                        <p class="text-xs text-ggreen font-medium mt-1">Cloud Infrastructure</p>
-                    </div>
-                </div>
-
-                <div class="carousel-slide bg-slate-900/60 backdrop-blur-md p-6 md:p-12 rounded-2xl border border-white/10 shadow-2xl flex flex-col justify-center text-center">
-                    <div class="font-brand text-6xl md:text-8xl text-white/5 absolute top-2 md:top-4 left-4 md:left-6 leading-none">"</div>
-                    <p class="text-blue-100 text-sm md:text-xl italic mb-6 relative z-10 pt-4 leading-relaxed">"Highly regarded enterprise instructor possessing deep domain expertise, real-world deployment insights, and an exceptionally rigorous teaching standard."</p>
-                    <div class="flex flex-col items-center">
-                        <p class="font-heading font-bold text-white text-xs md:text-sm uppercase tracking-wide">Senior Developer</p>
-                        <p class="text-xs text-gblue font-medium mt-1">Corporate Training Participant</p>
-                    </div>
-                </div>
-
-                <div class="carousel-slide bg-slate-900/60 backdrop-blur-md p-6 md:p-12 rounded-2xl border border-white/10 shadow-2xl flex flex-col justify-center text-center">
-                    <div class="font-brand text-6xl md:text-8xl text-white/5 absolute top-2 md:top-4 left-4 md:left-6 leading-none">"</div>
-                    <p class="text-blue-100 text-sm md:text-xl italic mb-6 relative z-10 pt-4 leading-relaxed">"Known for precise architectural documentation and scenario-based labs, significantly improving our engineering team's systemic understanding and operational readiness."</p>
-                    <div class="flex flex-col items-center">
-                        <p class="font-heading font-bold text-white text-xs md:text-sm uppercase tracking-wide">Engineering Lead</p>
-                        <p class="text-xs text-gred font-medium mt-1">Logistics Sector</p>
-                    </div>
-                </div>
-                
-                <div class="carousel-slide bg-slate-900/60 backdrop-blur-md p-6 md:p-12 rounded-2xl border border-white/10 shadow-2xl flex flex-col justify-center text-center">
-                    <div class="font-brand text-6xl md:text-8xl text-white/5 absolute top-2 md:top-4 left-4 md:left-6 leading-none">"</div>
-                    <p class="text-blue-100 text-sm md:text-xl italic mb-6 relative z-10 pt-4 leading-relaxed">"Recognized for exceptional infrastructure troubleshooting skills, practical guidance, and enforcing industry best-practices well beyond the standard IT curriculum."</p>
-                    <div class="flex flex-col items-center">
-                        <p class="font-heading font-bold text-white text-xs md:text-sm uppercase tracking-wide">Technical Director</p>
-                        <p class="text-xs text-gyellow font-medium mt-1">Aviation IT</p>
-                    </div>
-                </div>
-
-                <div class="carousel-slide bg-slate-900/60 backdrop-blur-md p-6 md:p-12 rounded-2xl border border-white/10 shadow-2xl flex flex-col justify-center text-center">
-                    <div class="font-brand text-6xl md:text-8xl text-white/5 absolute top-2 md:top-4 left-4 md:left-6 leading-none">"</div>
-                    <p class="text-blue-100 text-sm md:text-xl italic mb-6 relative z-10 pt-4 leading-relaxed">"Authoritative technical leadership combined with precise communication skills, consistently rated highest by our internal engineering and deployment teams."</p>
-                    <div class="flex flex-col items-center">
-                        <p class="font-heading font-bold text-white text-xs md:text-sm uppercase tracking-wide">Training & Enablement Manager</p>
-                        <p class="text-xs text-ggreen font-medium mt-1">Telecom Group</p>
-                    </div>
-                </div>
-
-            </div>
-            
-            <div class="flex justify-center gap-2 mt-8" id="acclaimDots"></div>
-        </div>
-    </section>
-
-    <section id="community" class="py-16 md:py-24 bg-pattern-grid relative">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-3xl mx-auto mb-12 md:mb-16">
-                <h2 class="font-heading text-gyellow font-bold tracking-widest uppercase text-sm mb-3">Industry Contributions</h2>
-                <h3 class="font-heading text-3xl md:text-4xl font-bold text-slate-900 mb-6">Open Source Knowledge Sharing.</h3>
-                <p class="text-slate-600 text-base md:text-lg bg-white/80 backdrop-blur px-4 py-2 rounded-lg inline-block shadow-sm">Our engineering team regularly contributes technical documentation, architectural patterns, and open-source tutorials to the wider IT community to drive industry standards.</p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                
-                <a href="https://techknowen.com" target="_blank" rel="noopener noreferrer" class="social-card md:col-span-2 lg:col-span-2 bg-gradient-to-br from-white to-orange-50 border-2 border-social-substack/20 hover:border-social-substack p-6 md:p-8 rounded-2xl flex flex-col justify-center shadow-sm hover:shadow-lg">
-                    <div class="flex items-center gap-4 mb-4">
-                        <div class="w-10 h-10 md:w-12 md:h-12 bg-social-substack text-white rounded-xl flex items-center justify-center shadow-md flex-shrink-0">
-                            <svg class="w-6 h-6 md:w-7 md:h-7" viewBox="0 0 24 24" fill="currentColor"><path d="M22.539 8.242H1.46V5.406h21.08v2.836zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46zM22.54 0H1.46v2.836h21.08V0z"/></svg>
-                        </div>
-                        <h4 class="font-heading text-xl md:text-2xl font-bold text-slate-900">Techknowen Blog</h4>
-                    </div>
-                    <p class="text-slate-600 text-sm md:text-base font-medium">Review our comprehensive technical deep-dives and engineering documentation hosted at techknowen.com.</p>
-                </a>
-
-                <a href="https://www.youtube.com/@TechKnowen" target="_blank" rel="noopener noreferrer" class="social-card bg-white border border-slate-200 hover:border-social-youtube p-6 rounded-2xl flex flex-col shadow-sm hover:shadow-md">
-                    <div class="w-10 h-10 bg-social-youtube/10 text-social-youtube rounded-lg flex items-center justify-center mb-4">
-                        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-                    </div>
-                    <h4 class="font-heading text-lg font-bold text-slate-900 mb-2">YouTube</h4>
-                    <p class="text-sm text-slate-600">Video demonstrations, coding environments, and technical tutorials.</p>
-                </a>
-
-                <a href="#" target="_blank" rel="noopener noreferrer" class="social-card bg-white border border-slate-200 hover:border-social-x p-6 rounded-2xl flex flex-col shadow-sm hover:shadow-md">
-                    <div class="w-10 h-10 bg-slate-100 text-social-x rounded-lg flex items-center justify-center mb-4">
-                        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 22.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                    </div>
-                    <h4 class="font-heading text-lg font-bold text-slate-900 mb-2">X (Twitter)</h4>
-                    <p class="text-sm text-slate-600">Real-time architectural commentary and framework updates.</p>
-                </a>
-
-                <a href="#" target="_blank" rel="noopener noreferrer" class="social-card bg-white border border-slate-200 hover:border-social-medium p-6 rounded-2xl flex flex-col shadow-sm hover:shadow-md">
-                    <div class="w-10 h-10 bg-slate-100 text-social-medium rounded-lg flex items-center justify-center mb-4">
-                        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M13.54 12a6.8 6.8 0 01-6.77 6.82A6.8 6.8 0 010 12a6.8 6.8 0 016.77-6.82A6.8 6.8 0 0113.54 12zM20.96 12c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z"/></svg>
-                    </div>
-                    <h4 class="font-heading text-lg font-bold text-slate-900 mb-2">Medium</h4>
-                    <p class="text-sm text-slate-600">Long-form engineering essays and enterprise IT case studies.</p>
-                </a>
-
-                <a href="#" target="_blank" rel="noopener noreferrer" class="social-card bg-white border border-slate-200 hover:border-social-bluesky p-6 rounded-2xl flex flex-col shadow-sm hover:shadow-md">
-                    <div class="w-10 h-10 bg-social-bluesky/10 text-social-bluesky rounded-lg flex items-center justify-center mb-4">
-                        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.905C2.566 1.075-.246 2.448.016 5.617c.231 2.784.975 6.784 1.258 7.37.79 1.638 2.822 2.063 4.887 1.638-2.616.713-5.32 2.21-4.708 5.438.563 2.97 4.148 2.83 6.945.05L12 16.5l3.602 3.613c2.797 2.78 6.382 2.92 6.945-.05.612-3.228-2.092-4.725-4.708-5.438 2.065.425 4.097 0 4.887-1.638.283-.586 1.027-4.586 1.258-7.37.262-3.17-2.55-4.542-5.186-2.722C16.046 4.747 13.087 8.686 12 10.8z"/></svg>
-                    </div>
-                    <h4 class="font-heading text-lg font-bold text-slate-900 mb-2">Bluesky</h4>
-                    <p class="text-sm text-slate-600">Decentralized technical discussions and framework news.</p>
-                </a>
-
-                <a href="#" target="_blank" rel="noopener noreferrer" class="social-card bg-white border border-slate-200 hover:border-social-instagram p-6 rounded-2xl flex flex-col shadow-sm hover:shadow-md">
-                    <div class="w-10 h-10 bg-social-instagram/10 text-social-instagram rounded-lg flex items-center justify-center mb-4">
-                        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-                    </div>
-                    <h4 class="font-heading text-lg font-bold text-slate-900 mb-2">Instagram</h4>
-                    <p class="text-sm text-slate-600">Internal engineering culture and event documentation.</p>
-                </a>
-
-                <div class="bg-slate-50 border border-slate-200 p-6 rounded-2xl flex flex-col opacity-60 cursor-not-allowed relative">
-                    <div class="absolute top-4 right-4 text-[0.65rem] font-bold tracking-wider uppercase text-slate-500 bg-slate-200 px-2 py-1 rounded">Soon</div>
-                    <div class="w-10 h-10 bg-slate-200 text-slate-400 rounded-lg flex items-center justify-center mb-4">
-                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
-                    </div>
-                    <h4 class="font-heading text-lg font-bold text-slate-500 mb-2">Discord</h4>
-                    <p class="text-sm text-slate-500">Interactive architectural community server.</p>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <div class="h-2 w-full bg-google-gradient"></div>
-    <footer class="bg-ajna-dark text-blue-100 py-12 md:py-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-12 mb-10 md:mb-12">
-                
-                <div>
-                    <div class="flex items-center gap-4 mb-4 md:mb-6">
-                        <div class="bg-white p-2 rounded-lg">
-                            <img src="images/ajna-logo.png" alt="AjnaCS Logo" class="w-6 h-6 md:w-8 md:h-8" onerror="this.style.display='none'">
-                        </div>
-                        <span class="font-brand text-2xl md:text-3xl text-white font-bold tracking-tight">Ajna CS</span>
-                    </div>
-                    <p class="text-sm leading-relaxed text-slate-300 max-w-sm">
-                        Specialized engineering firm providing architecture consulting, cloud strategy, and corporate technical training.
-                    </p>
-                </div>
-
-                <div>
-                    <h4 class="font-heading text-white font-bold mb-4 md:mb-6 uppercase text-sm tracking-wider">Corporate Contact</h4>
-                    <ul class="space-y-3 text-sm text-slate-300">
-                        <li class="flex items-center gap-3">
-                            <svg class="w-5 h-5 text-gyellow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                            <a href="mailto:info@ajnacs.com" class="hover:text-white transition-colors">info@ajnacs.com</a>
-                        </li>
-                    </ul>
-                    
-                    <div class="flex gap-4 mt-6">
-                        <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-gred transition-colors text-white" aria-label="YouTube">
-                            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-                        </a>
-                        <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-gblue transition-colors text-white" aria-label="X (Twitter)">
-                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 22.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                        </a>
-                        <a href="https://techknowen.com" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-gyellow transition-colors text-white" aria-label="Substack">
-                            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M22.539 8.242H1.46V5.406h21.08v2.836zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46zM22.54 0H1.46v2.836h21.08V0z"/></svg>
-                        </a>
-                    </div>
-                </div>
-
-                <div>
-                    <h4 class="font-heading text-white font-bold mb-4 md:mb-6 uppercase text-sm tracking-wider">Technical Newsletter</h4>
-                    <p class="text-sm text-slate-300 mb-4">Receive engineering patterns and documentation updates directly to your inbox.</p>
-                    <form class="flex flex-col sm:flex-row gap-2" onsubmit="event.preventDefault(); window.open('https://techknowen.com', '_blank');">
-                        <input type="email" placeholder="Corporate email" required class="bg-slate-800/50 border border-slate-700 text-white px-4 py-2.5 rounded-lg focus:outline-none focus:border-gblue flex-grow text-sm">
-                        <button type="submit" class="bg-gblue text-white font-bold px-4 py-2.5 rounded-lg hover:bg-blue-600 transition-colors text-sm whitespace-nowrap">Subscribe</button>
-                    </form>
-                </div>
-
-            </div>
-
-            <div class="pt-8 border-t border-slate-800 text-xs md:text-sm flex flex-col md:flex-row justify-between items-center text-slate-400 gap-4 md:gap-0">
-                <p>&copy; <script>document.write(new Date().getFullYear())</script> Ajna Consulting Services. All rights reserved.</p>
-                <div class="space-x-4 md:space-x-6">
-                    <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
-                    <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <div id="leadModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-slate-900/80 backdrop-blur-sm p-4">
-        <div class="bg-white border border-slate-200 rounded-xl shadow-2xl w-full max-w-md overflow-hidden transform transition-all">
-            
-            <div class="bg-slate-50 px-5 py-4 md:px-6 md:py-5 border-b border-slate-200 flex justify-between items-center">
-                <h3 class="font-heading text-lg md:text-xl font-bold text-slate-900">Engage Engineering</h3>
-                <button onclick="closeModal()" class="text-slate-400 hover:text-gred focus:outline-none transition-colors p-1">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                </button>
-            </div>
-            
-            <div class="p-5 md:p-6">
-                <p class="text-sm text-slate-600 mb-6">Submit your requirements and an Enterprise Architect will coordinate a consultation.</p>
-                
-                <form id="contactForm" onsubmit="handleFormSubmit(event)" class="space-y-4 md:space-y-5">
-                    <div>
-                        <label for="name" class="block text-sm font-medium text-slate-700 mb-1.5">Full Name</label>
-                        <input type="text" id="name" required class="w-full px-4 py-3 bg-white border border-slate-300 text-slate-900 rounded-lg focus:ring-1 focus:ring-gblue focus:border-gblue outline-none transition-all shadow-sm">
-                    </div>
-                    <div>
-                        <label for="email" class="block text-sm font-medium text-slate-700 mb-1.5">Corporate Email</label>
-                        <input type="email" id="email" required class="w-full px-4 py-3 bg-white border border-slate-300 text-slate-900 rounded-lg focus:ring-1 focus:ring-gblue focus:border-gblue outline-none transition-all shadow-sm">
-                    </div>
-                    <div>
-                        <label for="phone" class="block text-sm font-medium text-slate-700 mb-1.5">Phone Number</label>
-                        <input type="tel" id="phone" class="w-full px-4 py-3 bg-white border border-slate-300 text-slate-900 rounded-lg focus:ring-1 focus:ring-gblue focus:border-gblue outline-none transition-all shadow-sm">
-                    </div>
-                    <div>
-                        <label for="interest" class="block text-sm font-medium text-slate-700 mb-1.5">Engagement Area</label>
-                        <select id="interest" class="w-full px-4 py-3 bg-white border border-slate-300 text-slate-900 rounded-lg focus:ring-1 focus:ring-gblue focus:border-gblue outline-none transition-all appearance-none shadow-sm cursor-pointer">
-                            <option value="Enterprise Architecture Consulting">Architecture Consulting</option>
-                            <option value="AI / MLOps Integration">AI & MLOps Integration</option>
-                            <option value="Corporate Technical Training">Corporate Training</option>
-                            <option value="Other">Other</option>
-                        </select>
-                    </div>
-                    <div class="pt-4">
-                        <button type="submit" class="font-heading w-full bg-google-gradient text-white font-bold py-3.5 px-4 rounded-lg hover:opacity-90 transition-opacity shadow-sm">
-                            Submit Request
-                        </button>
-                    </div>
-                </form>
-
-                <div id="successMessage" class="hidden text-center py-6 md:py-8">
-                    <div class="w-16 h-16 bg-ggreen/10 border border-ggreen/20 text-ggreen rounded-full flex items-center justify-center mx-auto mb-5">
-                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                    </div>
-                    <h4 class="font-heading text-xl md:text-2xl font-bold text-slate-900 mb-2">Request Processed</h4>
-                    <p class="text-slate-600 text-sm mb-6">An architect will contact you shortly at <br><span id="confirmEmail" class="font-medium text-slate-900"></span>.</p>
-                    <button onclick="closeModal()" class="font-heading text-gblue font-semibold hover:text-white transition-colors border border-gblue hover:bg-gblue px-6 py-2 rounded-lg w-full sm:w-auto">Close Window</button>
-                </div>
-            </div>
-        </div>
+<section class="hero mesh">
+  <div class="grid-bg" aria-hidden="true"></div>
+  <div class="wrap hero-inner">
+    <p class="eyebrow">Specialised engineering partner</p>
+    <h1 class="h-display">Architecture that survives<br>contact with production.</h1>
+    <p class="lede" style="max-width:58ch;margin-top:1.4rem">
+      We modernise legacy systems, put AI into production, and train the engineers who have to run it afterwards.
+      We work alongside your team, in your codebase — not from a deck.
+    </p>
+    <div class="row" style="margin-top:2rem;gap:.8rem">
+      <a class="btn btn-lg" href="/contact/">Engage engineering <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      <a class="btn btn-ghost btn-lg" href="/insights/">Read our writing</a>
     </div>
+    <div class="stat-strip" style="margin-top:3.4rem">
+      <div class="stat"><div class="stat-val">35%</div><div class="stat-lbl">Faster releases</div></div><div class="stat"><div class="stat-val">45%</div><div class="stat-lbl">MTTR reduction</div></div><div class="stat"><div class="stat-val">25%</div><div class="stat-lbl">OpEx savings</div></div><div class="stat"><div class="stat-val">99.9%</div><div class="stat-lbl">Availability target</div></div>
+    </div>
+    <p class="small muted center" style="margin-top:.9rem">Typical results across modernisation engagements.</p>
+  </div>
+</section>
 
-    <script>
-        window.addEventListener('scroll', () => {
-            const header = document.getElementById('header');
-            const headerContainer = document.getElementById('header-container');
-            
-            if (window.scrollY > 50) {
-                header.classList.add('bg-white/95', 'backdrop-blur-xl', 'border-slate-200', 'shadow-sm');
-                header.classList.remove('bg-transparent', 'border-transparent');
-                headerContainer.classList.add('h-16');
-                headerContainer.classList.remove('h-24');
-            } else {
-                header.classList.remove('bg-white/95', 'backdrop-blur-xl', 'border-slate-200', 'shadow-sm');
-                header.classList.add('bg-transparent', 'border-transparent');
-                headerContainer.classList.add('h-24');
-                headerContainer.classList.remove('h-16');
-            }
-        });
+<section class="marquee-wrap hair" aria-label="Technologies we work in">
+  <div class="marquee">
+    <div class="marquee-track">
+      <span>Kubernetes</span><span>Terraform</span><span>AWS</span><span>Azure</span><span>Google Cloud</span><span>Apache Kafka</span><span>OpenTelemetry</span><span>PostgreSQL</span><span>Snowflake</span><span>Apache Spark</span><span>PyTorch</span><span>WebLogic</span><span>Oracle FMW</span><span>Spring Boot</span><span>Docker</span><span>Ansible</span><span>Redis</span><span>Zero-Trust IAM</span><span>Kubernetes</span><span>Terraform</span><span>AWS</span><span>Azure</span><span>Google Cloud</span><span>Apache Kafka</span><span>OpenTelemetry</span><span>PostgreSQL</span><span>Snowflake</span><span>Apache Spark</span><span>PyTorch</span><span>WebLogic</span><span>Oracle FMW</span><span>Spring Boot</span><span>Docker</span><span>Ansible</span><span>Redis</span><span>Zero-Trust IAM</span>
+    </div>
+  </div>
+</section>
 
-        function toggleMobileMenu() {
-            const menu = document.getElementById('mobileMenu');
-            const l1 = document.getElementById('line1');
-            const l2 = document.getElementById('line2');
-            const l3 = document.getElementById('line3');
-            
-            menu.classList.toggle('hidden');
-            
-            if(!menu.classList.contains('hidden')) {
-                l1.style.transform = 'translateY(8px) rotate(45deg)';
-                l2.style.opacity = '0';
-                l3.style.transform = 'translateY(-8px) rotate(-45deg)';
-            } else {
-                l1.style.transform = 'none';
-                l2.style.opacity = '1';
-                l3.style.transform = 'none';
-            }
-        }
+<section class="section" id="services">
+  <div class="wrap">
+    <div class="between" style="align-items:flex-end">
+      <div>
+        <p class="eyebrow">What we do</p>
+        <h2 class="h1" style="margin-top:.8rem;max-width:20ch">Three things, done properly.</h2>
+      </div>
+      <a class="link-arrow" href="/services/">All services <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    </div>
+    <div class="grid g-2" style="margin-top:2.6rem">
+      <article class="svc-card" data-topic="Architecture">
+        <p class="eyebrow">Enterprise Architecture</p>
+        <h3 class="h3" style="margin-top:.8rem">Strategic IT execution and infrastructure modernisation</h3>
+        <p class="muted" style="margin-top:.7rem;font-size:.95rem">Technical direction that reduces architectural debt, aligns capital expenditure with performance requirements, and improves application reliability.</p>
+        <ul class="tick-list"><li>Cloud modernisation</li><li>Resilient IT operations</li><li>FinOps and cost governance</li></ul>
+        <a class="link-arrow" href="/services/#architecture" style="margin-top:1.2rem">Detail <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </article>
+<article class="svc-card" data-topic="Enterprise AI">
+        <p class="eyebrow">AI &amp; MLOps Architecture</p>
+        <h3 class="h3" style="margin-top:.8rem">Scalable enterprise AI integration</h3>
+        <p class="muted" style="margin-top:.7rem;font-size:.95rem">Moving AI from experimentation to production deployment: resilient MLOps pipelines and data-driven agents integrated securely inside corporate networks.</p>
+        <ul class="tick-list"><li>Agentic AI workflows</li><li>MLOps data pipelines</li><li>Predictive analytics</li></ul>
+        <a class="link-arrow" href="/services/#ai" style="margin-top:1.2rem">Detail <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </article>
+<article class="svc-card" data-topic="Engineering Leadership">
+        <p class="eyebrow">Corporate IT Enablement</p>
+        <h3 class="h3" style="margin-top:.8rem">Technical training built on delivery experience</h3>
+        <p class="muted" style="margin-top:.7rem;font-size:.95rem">Customised, lab-intensive curriculum. Instruction rooted in real deployment work rather than slideware.</p>
+        <ul class="tick-list"><li>Enterprise middleware</li><li>Cloud native infrastructure</li><li>Software engineering</li></ul>
+        <a class="link-arrow" href="/services/#training" style="margin-top:1.2rem">Detail <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </article>
+    </div>
+  </div>
+</section>
 
-        function initCarousel(containerId, intervalTime = 5000, slideClass = '.carousel-slide', createDots = false) {
-            const container = document.getElementById(containerId);
-            if (!container) return;
-            
-            const slides = container.querySelectorAll(slideClass);
-            if (slides.length <= 1) return;
+<section class="section surface hair">
+  <div class="wrap">
+    <p class="eyebrow">The Ajna methodology</p>
+    <h2 class="h1" style="margin-top:.8rem;max-width:22ch">How an engagement actually runs.</h2>
+    <ol class="method">
+      <li><span class="n">01</span><strong>Assess &amp; audit</strong><p>Technical audits of existing middleware, cloud expenditure and systemic bottlenecks.</p></li>
+      <li><span class="n">02</span><strong>Architect &amp; modernise</strong><p>Resilient, decoupled cloud-native architecture on Kubernetes and serverless frameworks.</p></li>
+      <li><span class="n">03</span><strong>Automate &amp; govern</strong><p>CI/CD, MLOps and FinOps pipelines that keep operational excellence self-sustaining.</p></li>
+      <li><span class="n">04</span><strong>Educate &amp; empower</strong><p>Upskilling internal teams so the capability stays after we leave.</p></li>
+    </ol>
+  </div>
+</section>
 
-            let currentIndex = 0;
-            let dotsContainer = null;
-            const dotColors = ['bg-gblue', 'bg-gred', 'bg-gyellow', 'bg-ggreen', 'bg-gblue', 'bg-gred', 'bg-gyellow', 'bg-ggreen'];
+<section class="section">
+  <div class="wrap">
+    <div class="between" style="align-items:flex-end">
+      <div>
+        <p class="eyebrow">Insights</p>
+        <h2 class="h1" style="margin-top:.8rem;max-width:20ch">We write down what we learn.</h2>
+      </div>
+      <a class="link-arrow" href="/insights/">All 60 articles <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    </div>
+    <div class="grid g-3" style="margin-top:2.6rem">
+      <a class="card" data-card data-topics="|DevSecOps|Architecture|Fundamentals|" data-search="platform observability: building the visibility layer every application team gets automatically how platform teams build and operate the metrics, logging, and tracing infrastructure that application teams consume without configuring — and what good platform observability coverage actually looks like. devsecops architecture fundamentals" data-topic="DevSecOps" href="/insights/platform-eng-observability/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgplatformengo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e0473a" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#c03a2e" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#e0473a" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgplatformengo)"/>
+  <rect x="28" y="26" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.63"/><rect x="348" y="26" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.57"/><rect x="388" y="26" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.73"/><rect x="428" y="26" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.69"/><rect x="548" y="26" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.54"/><rect x="188" y="62" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.73"/><rect x="348" y="62" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.64"/><rect x="428" y="62" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.72"/><rect x="588" y="62" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.66"/><rect x="228" y="98" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.70"/><rect x="308" y="98" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.48"/><rect x="348" y="98" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.55"/><rect x="388" y="98" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.52"/><rect x="428" y="98" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.64"/><rect x="508" y="98" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.58"/><rect x="588" y="98" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.63"/><rect x="68" y="134" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.65"/><rect x="268" y="134" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.65"/><rect x="508" y="134" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.50"/><rect x="548" y="134" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.67"/><rect x="588" y="134" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.70"/><rect x="68" y="170" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.52"/><rect x="108" y="170" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.48"/><rect x="148" y="170" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.50"/><rect x="268" y="170" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.56"/><rect x="428" y="170" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.74"/><rect x="468" y="170" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.58"/><rect x="508" y="170" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.60"/><rect x="548" y="170" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.60"/><rect x="148" y="206" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.62"/><rect x="228" y="206" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.59"/><rect x="388" y="206" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.74"/><rect x="428" y="206" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.74"/><rect x="508" y="206" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.51"/><rect x="28" y="242" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.63"/><rect x="68" y="242" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.63"/><rect x="148" y="242" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.61"/><rect x="188" y="242" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.64"/><rect x="268" y="242" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.65"/><rect x="348" y="242" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.59"/><rect x="148" y="278" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.63"/><rect x="188" y="278" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.72"/><rect x="428" y="278" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.55"/><rect x="548" y="278" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.58"/><rect x="588" y="278" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.68"/><rect x="28" y="314" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.54"/><rect x="108" y="314" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.61"/><rect x="228" y="314" width="28" height="24" rx="5" fill="#c03a2e" fill-opacity="0.67"/><rect x="348" y="314" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.52"/><rect x="428" y="314" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.59"/><rect x="468" y="314" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.61"/><rect x="548" y="314" width="28" height="24" rx="5" fill="#e0473a" fill-opacity="0.59"/>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">DevSecOps</span>
+    <h3 class="card-title">Platform Observability: Building the Visibility Layer Every Application Team Gets Automatically</h3>
+    <p class="card-desc">How platform teams build and operate the metrics, logging, and tracing infrastructure that application teams consume without configuring — and what good platform observability coverage actually looks like.</p>
+    <div class="card-meta"><time datetime="2026-09-16">16 Sept 2026</time><span class="dot"></span><span>3 min read</span><span class="dot"></span><span>Series</span></div>
+  </div>
+</a>
+<a class="card" data-card data-topics="|AI &amp; MLOps|Fundamentals|" data-search="neural networks explained: what they are, how they learn, and why they work neurons, layers, weights, activation functions, backpropagation, and gradient descent — the actual mechanics of how a neural network learns from data, explained without the mathematics becoming the obstacle. ai &amp; mlops fundamentals" data-topic="AI &amp; MLOps" href="/insights/aiml-neural-networks/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgaimlneuralne" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6d4aff" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#5837e0" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#6d4aff" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgaimlneuralne)"/>
+  <rect x="86" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.51" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="464" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.45" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="212" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.45" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 172 H338" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.60" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 172 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.40" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="338" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.32" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 236 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.39" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">AI &amp; MLOps</span>
+    <h3 class="card-title">Neural Networks Explained: What They Are, How They Learn, and Why They Work</h3>
+    <p class="card-desc">Neurons, layers, weights, activation functions, backpropagation, and gradient descent — the actual mechanics of how a neural network learns from data, explained without the mathematics becoming the obstacle.</p>
+    <div class="card-meta"><time datetime="2026-09-04">4 Sept 2026</time><span class="dot"></span><span>3 min read</span><span class="dot"></span><span>Series</span></div>
+  </div>
+</a>
+<a class="card" data-card data-topics="|AI &amp; MLOps|Enterprise AI|Fundamentals|" data-search="rag, prompting, and building applications on llms: the practitioner&#39;s guide retrieval-augmented generation, system prompts, few-shot examples, chain-of-thought, structured output, and the engineering patterns that make llm applications reliable in production. ai &amp; mlops enterprise ai fundamentals" data-topic="AI &amp; MLOps" href="/insights/aiml-rag-and-prompting/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgaimlragandpr" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6d4aff" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#5837e0" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#6d4aff" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgaimlragandpr)"/>
+  <line x1="558.0" y1="238.5" x2="507.0" y2="307.9" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="558.0" y1="238.5" x2="533.9" y2="248.6" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="558.0" y1="238.5" x2="454.4" y2="262.2" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="558.0" y1="238.5" x2="526.7" y2="294.6" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="277.7" y1="133.5" x2="137.5" y2="170.9" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="277.7" y1="133.5" x2="299.0" y2="98.8" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="277.7" y1="133.5" x2="296.8" y2="225.1" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="277.7" y1="133.5" x2="183.4" y2="237.5" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="277.7" y1="133.5" x2="375.6" y2="73.2" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="137.5" y1="170.9" x2="183.4" y2="237.5" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="137.5" y1="170.9" x2="59.8" y2="301.1" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="137.5" y1="170.9" x2="120.6" y2="58.1" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="507.0" y1="307.9" x2="533.9" y2="248.6" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="507.0" y1="307.9" x2="454.4" y2="262.2" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="507.0" y1="307.9" x2="526.7" y2="294.6" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="533.9" y1="248.6" x2="454.4" y2="262.2" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="533.9" y1="248.6" x2="526.7" y2="294.6" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="299.0" y1="98.8" x2="296.8" y2="225.1" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="299.0" y1="98.8" x2="375.6" y2="73.2" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="296.8" y1="225.1" x2="183.4" y2="237.5" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="296.8" y1="225.1" x2="454.4" y2="262.2" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="183.4" y1="237.5" x2="59.8" y2="301.1" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="454.4" y1="262.2" x2="526.7" y2="294.6" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><circle cx="558.0" cy="238.5" r="5" fill="#6d4aff" fill-opacity=".9"/><circle cx="277.7" cy="133.5" r="8.5" fill="#5837e0" fill-opacity=".9"/><circle cx="137.5" cy="170.9" r="12" fill="#6d4aff" fill-opacity=".9"/><circle cx="507.0" cy="307.9" r="5" fill="#5837e0" fill-opacity=".9"/><circle cx="533.9" cy="248.6" r="8.5" fill="#6d4aff" fill-opacity=".9"/><circle cx="299.0" cy="98.8" r="12" fill="#5837e0" fill-opacity=".9"/><circle cx="296.8" cy="225.1" r="5" fill="#6d4aff" fill-opacity=".9"/><circle cx="183.4" cy="237.5" r="8.5" fill="#5837e0" fill-opacity=".9"/><circle cx="59.8" cy="301.1" r="12" fill="#6d4aff" fill-opacity=".9"/><circle cx="375.6" cy="73.2" r="5" fill="#5837e0" fill-opacity=".9"/><circle cx="454.4" cy="262.2" r="8.5" fill="#6d4aff" fill-opacity=".9"/><circle cx="526.7" cy="294.6" r="12" fill="#5837e0" fill-opacity=".9"/><circle cx="120.6" cy="58.1" r="5" fill="#6d4aff" fill-opacity=".9"/>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">AI &amp; MLOps</span>
+    <h3 class="card-title">RAG, Prompting, and Building Applications on LLMs: The Practitioner&#39;s Guide</h3>
+    <p class="card-desc">Retrieval-augmented generation, system prompts, few-shot examples, chain-of-thought, structured output, and the engineering patterns that make LLM applications reliable in production.</p>
+    <div class="card-meta"><time datetime="2026-08-25">25 Aug 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
+  </div>
+</a>
+<a class="card" data-card data-topics="|AI &amp; MLOps|Enterprise AI|Fundamentals|" data-search="putting ai in production: what enterprise ai deployment actually requires model serving, latency, cost, monitoring, governance, and the operational discipline that separates a proof of concept from an ai system that runs reliably at enterprise scale. ai &amp; mlops enterprise ai fundamentals" data-topic="AI &amp; MLOps" href="/insights/aiml-production-ai/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgaimlproducti" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6d4aff" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#5837e0" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#6d4aff" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgaimlproducti)"/>
+  <rect x="338" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.12" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 108 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.51" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="86" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.36" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 172 H212" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.51" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="464" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.14" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="338" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.22" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 236 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">AI &amp; MLOps</span>
+    <h3 class="card-title">Putting AI in Production: What Enterprise AI Deployment Actually Requires</h3>
+    <p class="card-desc">Model serving, latency, cost, monitoring, governance, and the operational discipline that separates a proof of concept from an AI system that runs reliably at enterprise scale.</p>
+    <div class="card-meta"><time datetime="2026-08-11">11 Aug 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
+  </div>
+</a>
+<a class="card" data-card data-topics="|DevSecOps|Fundamentals|" data-search="what containers actually are — not the marketing version containers are not lightweight vms. they are processes with resource constraints and namespace isolation. understanding the actual mechanism makes you a better user of docker, kubernetes, and every container runtime. devsecops fundamentals" data-topic="DevSecOps" href="/insights/containers-what-they-actually-are/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgcontainerswh" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e0473a" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#c03a2e" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#e0473a" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgcontainerswh)"/>
+  <path d="M0 70 L0 35.0 L16 36.2 L32 38.8 L48 42.7 L64 47.8 L80 53.8 L96 60.5 L112 67.6 L128 74.7 L144 81.7 L160 88.2 L176 93.9 L192 98.6 L208 102.2 L224 104.3 L240 105.1 L256 104.3 L272 102.2 L288 98.6 L304 93.9 L320 88.2 L336 81.7 L352 74.7 L368 67.5 L384 60.5 L400 53.8 L416 47.8 L432 42.7 L448 38.8 L464 36.2 L480 35.0 L496 35.3 L512 37.0 L528 40.1 L544 44.5 L560 49.9 L576 56.2 L592 63.1 L608 70.2 L624 77.3 L640 84.2" fill="none" stroke="#e0473a" stroke-opacity="0.50" stroke-width="2.2" stroke-linecap="round"/><path d="M0 116 L0 62.4 L16 66.1 L32 71.8 L48 79.4 L64 88.5 L80 98.7 L96 109.7 L112 121.0 L128 132.0 L144 142.4 L160 151.7 L176 159.5 L192 165.4 L208 169.3 L224 170.9 L240 170.3 L256 167.3 L272 162.2 L288 155.2 L304 146.5 L320 136.6 L336 125.8 L352 114.6 L368 103.4 L384 92.8 L400 83.1 L416 74.8 L432 68.3 L448 63.7 L464 61.3 L480 61.3 L496 63.5 L512 67.9 L528 74.4 L544 82.6 L560 92.2 L576 102.7 L592 113.9 L608 125.1 L624 136.0 L640 146.0" fill="none" stroke="#c03a2e" stroke-opacity="0.43" stroke-width="2.0" stroke-linecap="round"/><path d="M0 162 L0 144.6 L16 135.8 L32 128.1 L48 121.8 L64 117.2 L80 114.4 L96 113.7 L112 115.0 L128 118.2 L144 123.3 L160 130.0 L176 138.1 L192 147.1 L208 156.8 L224 166.7 L240 176.4 L256 185.5 L272 193.6 L288 200.4 L304 205.6 L320 208.9 L336 210.3 L352 209.7 L368 207.0 L384 202.5 L400 196.2 L416 188.6 L432 179.8 L448 170.3 L464 160.4 L480 150.6 L496 141.3 L512 132.8 L528 125.6 L544 119.9 L560 115.9 L576 113.9 L592 113.9 L608 115.9 L624 119.9 L640 125.6" fill="none" stroke="#e0473a" stroke-opacity="0.36" stroke-width="1.7" stroke-linecap="round"/><path d="M0 208 L0 152.0 L16 150.1 L32 150.7 L48 153.7 L64 158.9 L80 166.3 L96 175.3 L112 185.8 L128 197.1 L144 208.9 L160 220.7 L176 232.0 L192 242.2 L208 251.0 L224 258.0 L240 262.9 L256 265.5 L272 265.7 L288 263.5 L304 258.9 L320 252.2 L336 243.7 L352 233.7 L368 222.5 L384 210.8 L400 199.0 L416 187.5 L432 176.9 L448 167.6 L464 160.0 L480 154.4 L496 151.0 L512 150.1 L528 151.5 L544 155.4 L560 161.4 L576 169.4 L592 179.0 L608 189.9 L624 201.5 L640 213.3" fill="none" stroke="#c03a2e" stroke-opacity="0.29" stroke-width="1.5" stroke-linecap="round"/><path d="M0 254 L0 292.2 L16 299.2 L32 304.3 L48 307.3 L64 308.0 L80 306.6 L96 302.9 L112 297.1 L128 289.5 L144 280.5 L160 270.3 L176 259.5 L192 248.4 L208 237.6 L224 227.4 L240 218.4 L256 210.9 L272 205.1 L288 201.4 L304 199.9 L320 200.7 L336 203.8 L352 208.9 L368 215.9 L384 224.5 L400 234.4 L416 245.0 L432 256.1 L448 267.0 L464 277.5 L480 286.9 L496 295.0 L512 301.3 L528 305.6 L544 307.8 L560 307.8 L576 305.4 L592 301.0 L608 294.5 L624 286.4 L640 276.9" fill="none" stroke="#e0473a" stroke-opacity="0.22" stroke-width="1.2" stroke-linecap="round"/>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">DevSecOps</span>
+    <h3 class="card-title">What Containers Actually Are — Not the Marketing Version</h3>
+    <p class="card-desc">Containers are not lightweight VMs. They are processes with resource constraints and namespace isolation. Understanding the actual mechanism makes you a better user of Docker, Kubernetes, and every container runtime.</p>
+    <div class="card-meta"><time datetime="2026-07-30">30 Jul 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
+  </div>
+</a>
+<a class="card" data-card data-topics="|Engineering Leadership|Architecture|Fundamentals|" data-search="measuring platform engineering success: the metrics that actually matter dora metrics, developer experience scores, cognitive load measures, and the platform health indicators that tell you whether your internal platform is creating value or creating another bottleneck. engineering leadership architecture fundamentals" data-topic="Engineering Leadership" href="/insights/platform-eng-measuring-success/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgplatformengm" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0e7490" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#0b5f77" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#0e7490" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgplatformengm)"/>
+  <rect x="188.8" y="78" width="300.0" height="34" rx="8"
+      fill="#0b5f77" fill-opacity="0.16"
+      stroke="#0e7490" stroke-opacity=".45" stroke-width="1.2"/><line x1="320" y1="112" x2="320" y2="134" stroke="#0e7490" stroke-opacity=".4" stroke-width="1.4"/><rect x="185.1" y="134" width="266.0" height="34" rx="8"
+      fill="#0e7490" fill-opacity="0.29"
+      stroke="#0e7490" stroke-opacity=".45" stroke-width="1.2"/><line x1="320" y1="168" x2="320" y2="190" stroke="#0e7490" stroke-opacity=".4" stroke-width="1.4"/><rect x="199.2" y="190" width="232.0" height="34" rx="8"
+      fill="#0b5f77" fill-opacity="0.42"
+      stroke="#0e7490" stroke-opacity=".45" stroke-width="1.2"/><line x1="320" y1="224" x2="320" y2="246" stroke="#0e7490" stroke-opacity=".4" stroke-width="1.4"/><rect x="239.7" y="246" width="198.0" height="34" rx="8"
+      fill="#0e7490" fill-opacity="0.55"
+      stroke="#0e7490" stroke-opacity=".45" stroke-width="1.2"/>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">Engineering Leadership</span>
+    <h3 class="card-title">Measuring Platform Engineering Success: The Metrics That Actually Matter</h3>
+    <p class="card-desc">DORA metrics, developer experience scores, cognitive load measures, and the platform health indicators that tell you whether your internal platform is creating value or creating another bottleneck.</p>
+    <div class="card-meta"><time datetime="2026-07-21">21 Jul 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
+  </div>
+</a>
+    </div>
+  </div>
+</section>
 
-            if(createDots) {
-                dotsContainer = document.getElementById(containerId.replace('Carousel', 'Dots'));
-                if(dotsContainer) {
-                    slides.forEach((_, i) => {
-                        const dot = document.createElement('div');
-                        dot.className = `w-2.5 h-2.5 rounded-full transition-all duration-300 ${i === 0 ? dotColors[0] + ' w-6' : 'bg-white/20'}`;
-                        dotsContainer.appendChild(dot);
-                    });
-                }
-            }
+<section class="section surface hair">
+  <div class="wrap">
+    <p class="eyebrow">Series</p>
+    <h2 class="h1" style="margin-top:.8rem;max-width:22ch">Longer arcs, in order.</h2>
+    <div class="grid g-3" style="margin-top:2.4rem">
+      <a class="card" data-topic="Engineering Leadership" href="/series/platform-engineering-from-concept-to-internal-developer-plat/">
+        <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgplatformengi" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0e7490" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#0b5f77" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#0e7490" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgplatformengi)"/>
+  <path d="M0 70 L0 125.2 L16 119.2 L32 111.1 L48 101.3 L64 90.2 L80 78.2 L96 65.9 L112 53.8 L128 42.3 L144 32.0 L160 23.3 L176 16.6 L192 12.1 L208 10.0 L224 10.4 L240 13.4 L256 18.7 L272 26.2 L288 35.5 L304 46.2 L320 57.9 L336 70.2 L352 82.4 L368 94.2 L384 104.9 L400 114.1 L416 121.5 L432 126.7 L448 129.6 L464 130.0 L480 127.8 L496 123.2 L512 116.4 L528 107.7 L544 97.3 L560 85.8 L576 73.7 L592 61.4 L608 49.4 L624 38.4 L640 28.6" fill="none" stroke="#0e7490" stroke-opacity="0.50" stroke-width="2.2" stroke-linecap="round"/><path d="M0 116 L0 152.9 L16 156.8 L32 159.0 L48 159.4 L64 157.9 L80 154.7 L96 149.9 L112 143.7 L128 136.3 L144 128.0 L160 119.3 L176 110.4 L192 101.7 L208 93.7 L224 86.6 L240 80.7 L256 76.3 L272 73.5 L288 72.6 L304 73.4 L320 76.1 L336 80.4 L352 86.2 L368 93.3 L384 101.3 L400 109.9 L416 118.8 L432 127.6 L448 135.9 L464 143.3 L480 149.6 L496 154.5 L512 157.8 L528 159.3 L544 159.0 L560 156.9 L576 153.1 L592 147.8 L608 141.1 L624 133.3 L640 124.8" fill="none" stroke="#0b5f77" stroke-opacity="0.43" stroke-width="2.0" stroke-linecap="round"/><path d="M0 162 L0 128.9 L16 140.4 L32 152.7 L48 165.4 L64 178.0 L80 189.9 L96 200.6 L112 209.8 L128 216.9 L144 221.7 L160 224.0 L176 223.7 L192 220.8 L208 215.5 L224 207.9 L240 198.4 L256 187.4 L272 175.3 L288 162.6 L304 149.9 L320 137.7 L336 126.6 L352 116.9 L368 109.1 L384 103.6 L400 100.4 L416 99.9 L432 102.0 L448 106.6 L464 113.5 L480 122.4 L496 133.0 L512 144.8 L528 157.4 L544 170.1 L560 182.5 L576 194.0 L592 204.2 L608 212.6 L624 218.9 L640 222.9" fill="none" stroke="#0e7490" stroke-opacity="0.36" stroke-width="1.7" stroke-linecap="round"/><path d="M0 208 L0 214.8 L16 208.7 L32 202.6 L48 196.7 L64 191.3 L80 186.6 L96 182.7 L112 180.0 L128 178.4 L144 178.1 L160 179.0 L176 181.1 L192 184.3 L208 188.6 L224 193.7 L240 199.3 L256 205.3 L272 211.5 L288 217.5 L304 223.1 L320 228.0 L336 232.2 L352 235.3 L368 237.2 L384 238.0 L400 237.5 L416 235.7 L432 232.8 L448 228.8 L464 224.0 L480 218.5 L496 212.6 L512 206.4 L528 200.4 L544 194.6 L560 189.5 L576 185.0 L592 181.6 L608 179.3 L624 178.1 L640 178.2" fill="none" stroke="#0b5f77" stroke-opacity="0.29" stroke-width="1.5" stroke-linecap="round"/><path d="M0 254 L0 276.9 L16 266.1 L32 254.8 L48 243.4 L64 232.5 L80 222.5 L96 213.8 L112 206.8 L128 201.8 L144 198.9 L160 198.4 L176 200.2 L192 204.3 L208 210.4 L224 218.4 L240 227.9 L256 238.4 L272 249.7 L288 261.0 L304 272.1 L320 282.5 L336 291.6 L352 299.2 L368 304.9 L384 308.4 L400 309.7 L416 308.6 L432 305.2 L448 299.7 L464 292.3 L480 283.2 L496 273.0 L512 261.9 L528 250.5 L544 239.3 L560 228.7 L576 219.1 L592 211.0 L608 204.7 L624 200.5 L640 198.5" fill="none" stroke="#0e7490" stroke-opacity="0.22" stroke-width="1.2" stroke-linecap="round"/>
+</svg></div>
+        <div class="card-body"><span class="chip">4 parts</span>
+        <h3 class="card-title">Platform Engineering: From Concept to Internal Developer Platform</h3></div></a>
+<a class="card" data-topic="AI &amp; MLOps" href="/series/ai-ml-llms-and-neural-networks-a-practitioner-s-introduction/">
+        <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgaimlllmsandn" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6d4aff" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#5837e0" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#6d4aff" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgaimlllmsandn)"/>
+  <rect x="156.0" y="78" width="300.0" height="34" rx="8"
+      fill="#5837e0" fill-opacity="0.16"
+      stroke="#6d4aff" stroke-opacity=".45" stroke-width="1.2"/><line x1="320" y1="112" x2="320" y2="134" stroke="#6d4aff" stroke-opacity=".4" stroke-width="1.4"/><rect x="193.5" y="134" width="266.0" height="34" rx="8"
+      fill="#6d4aff" fill-opacity="0.29"
+      stroke="#6d4aff" stroke-opacity=".45" stroke-width="1.2"/><line x1="320" y1="168" x2="320" y2="190" stroke="#6d4aff" stroke-opacity=".4" stroke-width="1.4"/><rect x="186.5" y="190" width="232.0" height="34" rx="8"
+      fill="#5837e0" fill-opacity="0.42"
+      stroke="#6d4aff" stroke-opacity=".45" stroke-width="1.2"/><line x1="320" y1="224" x2="320" y2="246" stroke="#6d4aff" stroke-opacity=".4" stroke-width="1.4"/><rect x="234.5" y="246" width="198.0" height="34" rx="8"
+      fill="#6d4aff" fill-opacity="0.55"
+      stroke="#6d4aff" stroke-opacity=".45" stroke-width="1.2"/>
+</svg></div>
+        <div class="card-body"><span class="chip">4 parts</span>
+        <h3 class="card-title">AI, ML, LLMs, and Neural Networks: A Practitioner&#39;s Introduction</h3></div></a>
+<a class="card" data-topic="DevSecOps" href="/series/containerization-from-the-ground-up/">
+        <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgcontaineriza" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e0473a" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#c03a2e" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#e0473a" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgcontaineriza)"/>
+  <rect x="86" y="92" width="66" height="32" rx="7" fill="#e0473a" fill-opacity="0.61" stroke="#c03a2e" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 108 H212" stroke="#e0473a" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="92" width="66" height="32" rx="7" fill="#e0473a" fill-opacity="0.53" stroke="#c03a2e" stroke-opacity=".5" stroke-width="1.1"/><rect x="86" y="156" width="66" height="32" rx="7" fill="#e0473a" fill-opacity="0.51" stroke="#c03a2e" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 172 H212" stroke="#e0473a" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="156" width="66" height="32" rx="7" fill="#e0473a" fill-opacity="0.55" stroke="#c03a2e" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 172 H338" stroke="#e0473a" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#e0473a" fill-opacity="0.24" stroke="#c03a2e" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 172 H464" stroke="#e0473a" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="156" width="66" height="32" rx="7" fill="#e0473a" fill-opacity="0.44" stroke="#c03a2e" stroke-opacity=".5" stroke-width="1.1"/><rect x="212" y="220" width="66" height="32" rx="7" fill="#e0473a" fill-opacity="0.15" stroke="#c03a2e" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 236 H338" stroke="#e0473a" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/>
+</svg></div>
+        <div class="card-body"><span class="chip">4 parts</span>
+        <h3 class="card-title">Containerization from the Ground Up</h3></div></a>
+    </div>
+  </div>
+</section>
 
-            setInterval(() => {
-                slides[currentIndex].classList.remove('active');
-                if(dotsContainer) dotsContainer.children[currentIndex].className = 'w-2.5 h-2.5 rounded-full bg-white/20 transition-all duration-300';
-                
-                currentIndex = (currentIndex + 1) % slides.length;
-                
-                slides[currentIndex].classList.add('active');
-                if(dotsContainer) dotsContainer.children[currentIndex].className = `w-6 h-2.5 rounded-full ${dotColors[currentIndex]} transition-all duration-300`;
-            }, intervalTime);
-        }
+<section class="section">
+  <div class="wrap">
+    <p class="eyebrow">Industry acclaim</p>
+    <h2 class="h1" style="margin-top:.8rem;max-width:24ch">What stakeholders say.</h2>
+    <div class="grid g-3" style="margin-top:2.4rem">
+      <figure class="quote">
+        <blockquote>Delivered high-impact architecture solutions and exceptional technical leadership, consistently exceeding enterprise operational targets.</blockquote>
+        <figcaption><strong>VP of Engineering</strong><span>Global operations</span></figcaption>
+      </figure>
+<figure class="quote">
+        <blockquote>Recognised for driving successful enterprise platform migrations, resolving complex technical challenges, and maintaining rigorous stakeholder confidence.</blockquote>
+        <figcaption><strong>Project Sponsor</strong><span>Financial institution</span></figcaption>
+      </figure>
+<figure class="quote">
+        <blockquote>Known for precise architectural documentation and scenario-based labs, significantly improving our engineering team&#39;s systemic understanding.</blockquote>
+        <figcaption><strong>Engineering Lead</strong><span>Logistics sector</span></figcaption>
+      </figure>
+    </div>
+    <p class="small muted" style="margin-top:1.2rem">Feedback from engagement stakeholders. Names withheld under client confidentiality.</p>
+  </div>
+</section>
 
-        document.addEventListener('DOMContentLoaded', () => {
-            initCarousel('heroContentCarousel', 8000, '.content-slide'); 
-            initCarousel('acclaimCarousel', 7000, '.carousel-slide', true); 
-            initCarousel('consultingCarousel', 4000); 
-            initCarousel('aiCarousel', 4200); 
-            initCarousel('trainingCarousel', 4500); 
-        });
+<section class="section">
+  <div class="wrap cta-panel cta-wide">
+    <div>
+      <h2 class="h1" style="max-width:18ch">Tell us what is breaking.</h2>
+      <p class="lede" style="margin-top:1rem;max-width:48ch">Architecture review, migration, AI in production, or training your team to run it. Start with the constraint you actually have.</p>
+    </div>
+    <a class="btn btn-lg" href="/contact/">Engage engineering <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+  </div>
+</section>
+</main>
 
-        const modal = document.getElementById('leadModal');
-        const form = document.getElementById('contactForm');
-        const successMsg = document.getElementById('successMessage');
-
-        function openModal() {
-            modal.classList.remove('hidden');
-            form.classList.remove('hidden');
-            successMsg.classList.add('hidden');
-            form.reset();
-        }
-
-        function closeModal() {
-            modal.classList.add('hidden');
-        }
-
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) closeModal();
-        });
-
-        function handleFormSubmit(e) {
-            e.preventDefault();
-            
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const phone = document.getElementById('phone').value;
-            const interest = document.getElementById('interest').value;
-
-            const subject = encodeURIComponent(`Corporate Inquiry: ${interest}`);
-            const body = encodeURIComponent(`Name: ${name}\nCorporate Email: ${email}\nPhone: ${phone}\nEngagement Area: ${interest}\n\nDetails:\n`);
-            
-            window.location.href = `mailto:info@ajnacs.com?subject=${subject}&body=${body}`;
-
-            document.getElementById('confirmEmail').innerText = email;
-            form.classList.add('hidden');
-            successMsg.classList.remove('hidden');
-        }
-    </script>
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="grid g-4" style="gap:2rem">
+      <div>
+        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem">
+          <img src="/images/ajna-logo.png" alt="" width="32" height="32">
+          <span class="brand-name">Ajna<span style="color:#6f9bff">CS</span></span>
+        </a>
+        <p style="font-size:.88rem;line-height:1.65;color:#9fb0d0;max-width:30ch">
+          Specialised engineering partner for enterprise architecture, AI &amp; MLOps, and technical enablement.
+        </p>
+        <div class="social" style="margin-top:1.1rem">
+          <a href="https://www.youtube.com/@TechKnowen" rel="noopener" aria-label="YouTube"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 12s0-3.8-.5-5.6a2.9 2.9 0 0 0-2-2C18.7 4 12 4 12 4s-6.7 0-8.5.4a2.9 2.9 0 0 0-2 2C1 8.2 1 12 1 12s0 3.8.5 5.6a2.9 2.9 0 0 0 2 2C5.3 20 12 20 12 20s6.7 0 8.5-.4a2.9 2.9 0 0 0 2-2C23 15.8 23 12 23 12zM9.8 15.4V8.6l5.9 3.4z"/></svg></a>
+          <a href="https://techknowen.com" rel="noopener" aria-label="TechKnowen blog"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 3h16v3H4zm0 5h16v13l-8-4-8 4z"/></svg></a>
+          <a href="/feed.xml" aria-label="RSS feed"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="6.2" cy="17.8" r="2.2"/><path d="M4 10.2v3a6.6 6.6 0 0 1 6.6 6.6h3A9.6 9.6 0 0 0 4 10.2zM4 4v3c7.2 0 13 5.8 13 13h3C20 11.2 12.8 4 4 4z"/></svg></a>
+        </div>
+      </div>
+      <div>
+        <h4>Services</h4>
+        <ul>
+          <li><a href="/services/#architecture">Enterprise architecture</a></li>
+          <li><a href="/services/#ai">AI &amp; MLOps</a></li>
+          <li><a href="/services/#training">Technical enablement</a></li>
+          <li><a href="/case-studies/">Case studies</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Insights</h4>
+        <ul>
+          <li><a href="/insights/">All articles</a></li>
+          <li><a href="/series/">Series</a></li>
+          <li><a href="/topics/">Topics</a></li>
+          <li><a href="/notes/">Personal notes</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
+          <li><a href="/contact/">Start an engagement</a></li>
+          <li><a href="/about/">About</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span id="yr">2026</span> Ajna Consulting Services. All rights reserved.</span>
+      <span style="display:flex;gap:1.2rem"><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a></span>
+    </div>
+  </div>
+</footer>
+<script src="/assets/js/site.js" defer></script>
 </body>
 </html>

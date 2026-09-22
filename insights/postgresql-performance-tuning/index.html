@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PostgreSQL Performance Tuning: The Settings and Patterns That Actually Matter | Ajna CS</title>
+<meta name="description" content="PostgreSQL&#39;s default configuration is conservative, designed for small deployments. For production workloads, the settings that control memory, parallelism…">
+<meta name="author" content="Chandra Lanka">
+<link rel="canonical" href="https://ajnacs.com/insights/postgresql-performance-tuning/">
+<meta name="robots" content="index, follow, max-image-preview:large">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Ajna Consulting Services">
+<meta property="og:title" content="PostgreSQL Performance Tuning: The Settings and Patterns That Actually Matter">
+<meta property="og:description" content="PostgreSQL&#39;s default configuration is conservative, designed for small deployments. For production workloads, the settings that control memory, parallelism…">
+<meta property="og:url" content="https://ajnacs.com/insights/postgresql-performance-tuning/">
+<meta property="og:image" content="https://ajnacs.com/assets/og/insights-postgresql-performance-tuning.svg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="PostgreSQL Performance Tuning: The Settings and Patterns That Actually Matter">
+<meta name="twitter:description" content="PostgreSQL&#39;s default configuration is conservative, designed for small deployments. For production workloads, the settings that control memory, parallelism…">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/insights-postgresql-performance-tuning.svg">
+
+<link rel="icon" href="/images/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="/images/ajna-logo.png">
+<meta name="theme-color" content="#0a1020">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="/assets/css/site.css">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<script>
+/* Set the theme before first paint so the page never flashes the wrong one. */
+(function(){try{var t=localStorage.getItem('acs-theme');
+if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"PostgreSQL Performance Tuning: The Settings and Patterns That Actually Matter","description":"PostgreSQL's default configuration is conservative, designed for small deployments. For production workloads, the settings that control memory, parallelism, WAL behavior, and connection handling need explicit tuning. Here's where to start.","datePublished":"2025-12-26","dateModified":"2025-12-26","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/postgresql-performance-tuning/","image":"https://ajnacs.com/assets/og/insights-postgresql-performance-tuning.svg","keywords":"Data Engineering, Programming, Cloud Architecture","articleSection":"Data Engineering","wordCount":973}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"PostgreSQL Performance Tuning: The Settings and Patterns That Actually Matter"}]}</script>
+</head>
+<body class="" data-topic="Data Engineering">
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header" id="siteHeader">
+  <div class="wrap" style="display:flex;align-items:center;width:min(1220px,100% - var(--gutter)*2)">
+    <a class="brand" href="/">
+      <img src="/images/ajna-logo.png" alt="" width="32" height="32">
+      <span class="brand-name">Ajna<span>CS</span></span>
+    </a>
+    <nav class="nav" id="nav" aria-label="Primary">
+      <a href="/services/">Services</a>
+      <a href="/insights/" aria-current="page">Insights</a>
+      <a href="/series/">Series</a>
+      <a href="/case-studies/">Case studies</a>
+      <a href="/about/">About</a>
+      <a class="btn btn-sm" href="/contact/" style="margin-left:.4rem">Engage engineering</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn" id="themeBtn" type="button" aria-label="Switch to dark mode" aria-pressed="false"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg></button>
+      <button class="icon-btn nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+
+<div class="read-bar" aria-hidden="true"><span id="readBar"></span></div>
+<article class="article">
+  <header class="article-head">
+    <div class="wrap-narrow">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a> <span aria-hidden="true">/</span>
+        <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
+        <span>Data Engineering</span>
+      </nav>
+      <h1 class="h1">PostgreSQL Performance Tuning: The Settings and Patterns That Actually Matter</h1>
+      <p class="lede" style="margin-top:1rem">PostgreSQL&#39;s default configuration is conservative, designed for small deployments. For production workloads, the settings that control memory, parallelism, WAL behavior, and connection handling need explicit tuning. Here&#39;s where to start.</p>
+      <div class="article-meta">
+        <span class="chip">Data Engineering</span>
+        <time datetime="2025-12-26">26 Dec 2025</time>
+        <span class="dot"></span><span>4 min read</span>
+        <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="article-hero wrap-narrow" data-topic="Data Engineering"><svg viewBox="0 0 1200 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgpostgresqlpe" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0891b2" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#076f87" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#0891b2" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="420" fill="url(#bgpostgresqlpe)"/>
+  <path d="M0 70 L0 26.0 L16 26.5 L32 28.8 L48 32.9 L64 38.5 L80 45.4 L96 53.3 L112 62.0 L128 71.0 L144 79.9 L160 88.5 L176 96.2 L192 102.9 L208 108.1 L224 111.8 L240 113.7 L256 113.8 L272 112.1 L288 108.6 L304 103.4 L320 96.9 L336 89.3 L352 80.8 L368 71.9 L384 62.9 L400 54.2 L416 46.1 L432 39.1 L448 33.4 L464 29.2 L480 26.7 L496 26.0 L512 27.2 L528 30.1 L544 34.8 L560 40.9 L576 48.2 L592 56.5 L608 65.3 L624 74.3 L640 83.1" fill="none" stroke="#0891b2" stroke-opacity="0.50" stroke-width="2.2" stroke-linecap="round"/><path d="M0 116 L0 102.7 L16 107.6 L32 112.8 L48 118.1 L64 123.4 L80 128.3 L96 132.8 L112 136.5 L128 139.4 L144 141.3 L160 142.1 L176 141.8 L192 140.5 L208 138.1 L224 134.8 L240 130.7 L256 126.0 L272 120.9 L288 115.6 L304 110.3 L320 105.2 L336 100.6 L352 96.6 L368 93.4 L384 91.2 L400 90.1 L416 90.0 L432 91.0 L448 93.0 L464 96.1 L480 99.9 L496 104.4 L512 109.5 L528 114.7 L544 120.1 L560 125.3 L576 130.0 L592 134.2 L608 137.7 L624 140.2 L640 141.7" fill="none" stroke="#076f87" stroke-opacity="0.43" stroke-width="2.0" stroke-linecap="round"/><path d="M0 162 L0 164.2 L16 169.7 L32 174.9 L48 179.5 L64 183.5 L80 186.5 L96 188.5 L112 189.4 L128 189.1 L144 187.7 L160 185.2 L176 181.8 L192 177.5 L208 172.6 L224 167.2 L240 161.6 L256 156.0 L272 150.7 L288 145.9 L304 141.7 L320 138.4 L336 136.0 L352 134.8 L368 134.7 L384 135.7 L400 137.9 L416 141.0 L432 145.1 L448 149.8 L464 155.1 L480 160.6 L496 166.2 L512 171.7 L528 176.7 L544 181.1 L560 184.7 L576 187.4 L592 189.0 L608 189.4 L624 188.7 L640 186.9" fill="none" stroke="#0891b2" stroke-opacity="0.36" stroke-width="1.7" stroke-linecap="round"/><path d="M0 208 L0 203.2 L16 193.0 L32 183.4 L48 174.8 L64 167.6 L80 162.2 L96 158.6 L112 157.1 L128 157.8 L144 160.5 L160 165.3 L176 171.8 L192 179.9 L208 189.1 L224 199.1 L240 209.5 L256 219.9 L272 229.7 L288 238.6 L304 246.3 L320 252.3 L336 256.5 L352 258.6 L368 258.7 L384 256.6 L400 252.4 L416 246.4 L432 238.8 L448 229.9 L464 220.1 L480 209.8 L496 199.4 L512 189.3 L528 180.1 L544 172.0 L560 165.4 L576 160.6 L592 157.8 L608 157.1 L624 158.6 L640 162.1" fill="none" stroke="#076f87" stroke-opacity="0.29" stroke-width="1.5" stroke-linecap="round"/><path d="M0 254 L0 276.3 L16 281.2 L32 285.0 L48 287.4 L64 288.5 L80 288.2 L96 286.4 L112 283.2 L128 278.8 L144 273.4 L160 267.2 L176 260.4 L192 253.3 L208 246.3 L224 239.6 L240 233.5 L256 228.3 L272 224.1 L288 221.2 L304 219.7 L320 219.6 L336 220.9 L352 223.7 L368 227.7 L384 232.8 L400 238.8 L416 245.4 L432 252.4 L448 259.5 L464 266.3 L480 272.7 L496 278.2 L512 282.7 L528 286.0 L544 288.0 L560 288.6 L576 287.7 L592 285.3 L608 281.7 L624 276.9 L640 271.2" fill="none" stroke="#0891b2" stroke-opacity="0.22" stroke-width="1.2" stroke-linecap="round"/>
+</svg></div>
+
+  <div class="wrap-narrow article-grid">
+    <nav class="toc" aria-label="On this page">
+  <p class="toc-title">On this page</p>
+  <ol><li><a href="#memory-settings-the-biggest-wins">Memory settings: the biggest wins</a></li><li><a href="#wal-and-checkpoint-tuning">WAL and checkpoint tuning</a></li><li><a href="#connection-management-don39t-skip-pgbouncer">Connection management: don&amp;#39;t skip PgBouncer</a></li><li><a href="#indexing-the-most-common-performance-problems">Indexing: the most common performance problems</a></li><li><a href="#query-analysis-with-explain-analyze">Query analysis with EXPLAIN ANALYZE</a></li></ol>
+</nav>
+    <div class="prose">
+<p>PostgreSQL ships with defaults that are deliberately conservative — tuned for a server with 256MB of RAM to avoid out-of-memory failures on resource-constrained machines. Production deployments on modern hardware leave most of that performance on the table.</p>
+<p>This isn&#39;t a comprehensive tuning guide (PostgreSQL&#39;s performance characteristics depend heavily on workload, hardware, and access patterns). It&#39;s the settings that matter most for most production workloads, with the reasoning behind each.</p>
+<h2 id="memory-settings-the-biggest-wins">Memory settings: the biggest wins</h2>
+<aside class="keyfig">
+  <p class="keyfig-label">Key figure</p>
+  <p class="keyfig-text">On a dedicated database server, set to <b>25%</b> of total RAM.</p>
+</aside>
+<p><strong><code>shared_buffers</code></strong>: the amount of memory PostgreSQL uses for caching data pages. Default is 128MB. On a dedicated database server, set to 25% of total RAM. On a 32GB server: <code>shared_buffers = 8GB</code>.</p>
+<p>This is the single most impactful setting. Queries that hit the shared buffer cache (in-memory) are orders of magnitude faster than queries that require disk I/O.</p>
+<p><strong><code>effective_cache_size</code></strong>: not a memory allocation — an estimate that tells the query planner how much memory is available for caching (shared buffers + OS page cache). Set to 50-75% of total RAM. On a 32GB server: <code>effective_cache_size = 24GB</code>. This influences whether the planner chooses index scans vs sequential scans.</p>
+<p><strong><code>work_mem</code></strong>: the memory available per sort and hash operation, per query. Default is 4MB. For analytical workloads with complex queries, increase this. For OLTP workloads with many concurrent connections, be careful — a query with 10 sort operations and 100 concurrent connections could use <code>10 × 100 × work_mem</code> of memory.</p>
+<p>For OLTP: <code>work_mem = 16MB</code>. For analytical queries (manually or via session-level <code>SET work_mem</code>): 64-256MB.</p>
+<p><strong><code>maintenance_work_mem</code></strong>: memory for maintenance operations (VACUUM, CREATE INDEX, ALTER TABLE). Default is 64MB. Set to 256MB-1GB — these operations run infrequently and benefit from more memory.</p>
+<h2 id="wal-and-checkpoint-tuning">WAL and checkpoint tuning</h2>
+<p><strong><code>wal_buffers</code></strong>: WAL write buffer. Default is usually auto-tuned to 1/32 of shared_buffers (max 16MB). <code>wal_buffers = 16MB</code> is fine for most workloads.</p>
+<p><strong><code>checkpoint_completion_target</code></strong>: spreads checkpoint writes over a fraction of the checkpoint interval. Default is 0.9 (90%). Keep this at 0.9 — it prevents I/O spikes from checkpoint activity.</p>
+<p><strong><code>max_wal_size</code></strong>: controls how large the WAL can grow between checkpoints. Default is 1GB. For write-heavy workloads, increasing this reduces checkpoint frequency: <code>max_wal_size = 4GB</code>.</p>
+<p><strong><code>synchronous_commit</code></strong>: whether transactions wait for WAL to be durably written to disk before returning. Default <code>on</code> provides maximum durability. <code>synchronous_commit = off</code> improves write throughput significantly by making commits asynchronous — with the trade-off that up to <code>wal_writer_delay</code> (200ms by default) of committed transactions can be lost in a crash. Acceptable for some workloads (logging, analytics); never acceptable for financial or critical data.</p>
+<h2 id="connection-management-don39t-skip-pgbouncer">Connection management: don&#39;t skip PgBouncer</h2>
+<p>PostgreSQL&#39;s connection model is one-process-per-connection. Each connection creates a backend process that consumes ~5-10MB of memory. A PostgreSQL instance with 500 direct connections has committed 2.5-5GB of memory to connection overhead before a single query runs.</p>
+<p><code>max_connections = 100</code> (the default) is surprisingly low for many applications. Increasing it directly has diminishing returns — the memory overhead grows, and PostgreSQL&#39;s connection management doesn&#39;t scale linearly.</p>
+<p>The right solution: <strong>PgBouncer</strong> (or pgpool-II) as a connection pooler in front of PostgreSQL. PgBouncer maintains a small pool of PostgreSQL connections and multiplexes many client connections onto them. Your application connects to PgBouncer; PgBouncer manages the actual PostgreSQL connections.</p>
+<p>With PgBouncer:</p>
+<ul>
+<li>PostgreSQL <code>max_connections = 100</code> (or whatever your server can comfortably handle)</li>
+<li>PgBouncer <code>pool_size = 20</code> per database (connections to PostgreSQL)</li>
+<li>Applications can have 1000+ connections to PgBouncer without overwhelming PostgreSQL</li>
+</ul>
+<p>Transaction-mode pooling (the most common PgBouncer mode) releases the PostgreSQL connection back to the pool after each transaction — efficient, but incompatible with session-level features (prepared statements with protocol-level binding, advisory locks, <code>SET LOCAL</code>).</p>
+<h2 id="indexing-the-most-common-performance-problems">Indexing: the most common performance problems</h2>
+<p><strong>Missing indexes on foreign keys</strong>: PostgreSQL doesn&#39;t automatically create indexes on foreign key columns (unlike some other databases). A query that JOINs on a foreign key column without an index causes a sequential scan of the referenced table. Check for this:</p>
+<pre><code class="language-sql">SELECT conrelid::regclass AS table, conname AS fk_name, 
+       a.attname AS column
+FROM pg_constraint c
+JOIN pg_attribute a ON a.attrelid = c.conrelid AND a.attnum = ANY(c.conkey)
+WHERE c.contype = &#39;f&#39;
+AND NOT EXISTS (
+    SELECT 1 FROM pg_index i 
+    WHERE i.indrelid = c.conrelid AND a.attnum = ANY(i.indkey)
+);
+</code></pre>
+<p><strong>Partial indexes</strong>: for queries that always include a WHERE clause on a status field (e.g., <code>WHERE status = &#39;pending&#39;</code>), a partial index is smaller and faster than a full index:</p>
+<pre><code class="language-sql">CREATE INDEX idx_orders_pending ON orders(created_at) WHERE status = &#39;pending&#39;;
+</code></pre>
+<p><strong>Index bloat</strong>: indexes grow as rows are updated and deleted. <code>pg_stat_user_indexes</code> and tools like <code>pgstattuple</code> identify bloated indexes. <code>REINDEX CONCURRENTLY</code> rebuilds without locking.</p>
+<p><strong>Index usage</strong>: queries that appear to use an index but run slowly often have a type mismatch between the parameter and the indexed column (implicit cast prevents index use) or use a function on the indexed column (<code>WHERE LOWER(email) = ...</code> doesn&#39;t use an index on <code>email</code> — use a functional index: <code>CREATE INDEX ON users(LOWER(email))</code>).</p>
+<h2 id="query-analysis-with-explain-analyze">Query analysis with EXPLAIN ANALYZE</h2>
+<p><code>EXPLAIN ANALYZE</code> is the primary tool for understanding why a query is slow:</p>
+<pre><code class="language-sql">EXPLAIN (ANALYZE, BUFFERS, FORMAT TEXT) 
+SELECT * FROM orders WHERE customer_id = 123 AND status = &#39;pending&#39;;
+</code></pre>
+<p>Key things to look for:</p>
+<ul>
+<li><code>Seq Scan</code> on a large table: missing index or planner chose sequential scan despite an index (check row estimates)</li>
+<li><code>Rows Removed by Filter</code>: rows scanned but not returned — index isn&#39;t selective enough</li>
+<li><code>Buffers hit vs read</code>: <code>hit</code> is from shared_buffers (fast), <code>read</code> is from disk (slow). High read count means the working set exceeds cache.</li>
+<li><code>actual rows</code> vs <code>rows</code> (estimated): large discrepancies mean stale statistics — run <code>ANALYZE tablename</code></li>
+</ul>
+<p><code>pg_stat_statements</code> extension (enable in <code>shared_preload_libraries</code>) records query execution statistics across all connections. The query with the highest <code>total_exec_time</code> divided by <code>calls</code> is your first optimization target.</p>
+<p><em>Working through a PostgreSQL performance problem or setting up a production database configuration? <a href="/contact">Happy to look at specifics.</a></em></p>
+
+    </div>
+  </div>
+
+  <div class="wrap-narrow"><aside class="refs" aria-labelledby="refs-h">
+  <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
+  <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
+  <ul>
+    <li><a href="https://www.postgresql.org/docs/current/" rel="noopener nofollow" target="_blank">PostgreSQL documentation</a><span>Configuration and planner behaviour.</span></li>
+  </ul>
+</aside></div>
+
+  
+
+  <div class="wrap-narrow article-foot">
+    <div class="row" style="gap:.4rem">
+      <a class="chip chip-plain" href="/insights/?topic=Data%20Engineering">Data Engineering</a><a class="chip chip-plain" href="/insights/?topic=Programming">Programming</a><a class="chip chip-plain" href="/insights/?topic=Cloud%20Architecture">Cloud Architecture</a>
+    </div>
+    <nav class="prevnext" aria-label="More articles">
+      <a href="/insights/ai-cost-management-production/"><span>Previous</span><strong>AI Cost Management in Production: Controlling Token Spend Without Degrading Quality</strong></a>
+      <a href="/insights/designing-for-failure-resilience-patterns/" class="next"><span>Next</span><strong>Designing for Failure: Resilience Patterns That Actually Hold in Production</strong></a>
+    </nav>
+  </div>
+
+  <section class="section surface hair" style="margin-top:4rem">
+    <div class="wrap">
+      <p class="eyebrow">Related</p>
+      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|FinOps|Cost Optimisation|Cloud Architecture|" data-search="cloud cost anomaly detection: catching runaway spend before it becomes a bill cloud cost overruns that show up in the monthly invoice are already weeks old. here&#39;s how to set up anomaly detection that catches cost spikes in hours, with enough context to diagnose the cause quickly. finops cost optimisation cloud architecture" data-topic="FinOps" href="/insights/finops-anomaly-detection/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgfinopsanomal" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e8a317" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#a9760a" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#e8a317" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgfinopsanomal)"/>
+  <rect x="86" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.39" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 108 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.41" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 108 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.21" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 108 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.13" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 172 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.17" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 172 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="86" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.23" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 236 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.54" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 236 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.51" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">FinOps</span>
+    <h3 class="card-title">Cloud Cost Anomaly Detection: Catching Runaway Spend Before It Becomes a Bill</h3>
+    <p class="card-desc">Cloud cost overruns that show up in the monthly invoice are already weeks old. Here&#39;s how to set up anomaly detection that catches cost spikes in hours, with enough context to diagnose the cause quickly.</p>
+    <div class="card-meta"><time datetime="2026-07-06">6 Jul 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
+  </div>
+</a>
+<a class="card" data-card data-topics="|FinOps|Cloud Architecture|Cost Optimisation|" data-search="cloud tagging policy template: the foundation finops actually requires a tagging policy that nobody enforces is worse than no tagging policy. here&#39;s how to design a tagging taxonomy that survives contact with real engineering teams — with enforcement mechanisms, exceptions handling, and the tags that actually drive cost allocation decisions. finops cloud architecture cost optimisation" data-topic="FinOps" href="/insights/finops-tagging-policy/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgfinopstaggin" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e8a317" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#a9760a" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#e8a317" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgfinopstaggin)"/>
+  <rect x="157.1" y="78" width="300.0" height="34" rx="8"
+      fill="#a9760a" fill-opacity="0.16"
+      stroke="#e8a317" stroke-opacity=".45" stroke-width="1.2"/><line x1="320" y1="112" x2="320" y2="134" stroke="#e8a317" stroke-opacity=".4" stroke-width="1.4"/><rect x="193.8" y="134" width="266.0" height="34" rx="8"
+      fill="#e8a317" fill-opacity="0.29"
+      stroke="#e8a317" stroke-opacity=".45" stroke-width="1.2"/><line x1="320" y1="168" x2="320" y2="190" stroke="#e8a317" stroke-opacity=".4" stroke-width="1.4"/><rect x="209.4" y="190" width="232.0" height="34" rx="8"
+      fill="#a9760a" fill-opacity="0.42"
+      stroke="#e8a317" stroke-opacity=".45" stroke-width="1.2"/><line x1="320" y1="224" x2="320" y2="246" stroke="#e8a317" stroke-opacity=".4" stroke-width="1.4"/><rect x="224.4" y="246" width="198.0" height="34" rx="8"
+      fill="#e8a317" fill-opacity="0.55"
+      stroke="#e8a317" stroke-opacity=".45" stroke-width="1.2"/>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">FinOps</span>
+    <h3 class="card-title">Cloud Tagging Policy Template: The Foundation FinOps Actually Requires</h3>
+    <p class="card-desc">A tagging policy that nobody enforces is worse than no tagging policy. Here&#39;s how to design a tagging taxonomy that survives contact with real engineering teams — with enforcement mechanisms, exceptions handling, and the tags that actually drive cost allocation decisions.</p>
+    <div class="card-meta"><time datetime="2026-06-12">12 Jun 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
+  </div>
+</a>
+<a class="card" data-card data-topics="|Programming|Fundamentals|" data-search="linux namespaces and cgroups: the foundation of containers how linux namespaces isolate processes, filesystems, networks, and users — and how cgroups enforce resource limits. the primitives that docker, kubernetes, and every container runtime are built on. programming fundamentals" data-topic="Programming" href="/insights/os-namespaces-cgroups/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgosnamespaces" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4f46e5" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#3730a3" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#4f46e5" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgosnamespaces)"/>
+  <line x1="109.0" y1="104.1" x2="273.3" y2="115.5" stroke="#4f46e5" stroke-opacity=".28" stroke-width="1.4"/><line x1="109.0" y1="104.1" x2="165.1" y2="137.9" stroke="#4f46e5" stroke-opacity=".28" stroke-width="1.4"/><line x1="109.0" y1="104.1" x2="117.0" y2="249.2" stroke="#4f46e5" stroke-opacity=".28" stroke-width="1.4"/><line x1="109.0" y1="104.1" x2="217.8" y2="163.1" stroke="#4f46e5" stroke-opacity=".28" stroke-width="1.4"/><line x1="109.0" y1="104.1" x2="77.7" y2="176.0" stroke="#4f46e5" stroke-opacity=".28" stroke-width="1.4"/><line x1="481.9" y1="286.1" x2="494.9" y2="143.9" stroke="#4f46e5" stroke-opacity=".28" stroke-width="1.4"/><line x1="481.9" y1="286.1" x2="361.6" y2="253.5" stroke="#4f46e5" stroke-opacity=".28" stroke-width="1.4"/><line x1="273.3" y1="115.5" x2="165.1" y2="137.9" stroke="#4f46e5" stroke-opacity=".28" stroke-width="1.4"/><line x1="273.3" y1="115.5" x2="361.6" y2="253.5" stroke="#4f46e5" stroke-opacity=".28" stroke-width="1.4"/><line x1="273.3" y1="115.5" x2="355.0" y2="152.8" stroke="#4f46e5" stroke-opacity=".28" stroke-width="1.4"/><line x1="273.3" y1="115.5" x2="217.8" y2="163.1" stroke="#4f46e5" stroke-opacity=".28" stroke-width="1.4"/><line x1="273.3" y1="115.5" x2="251.6" y2="215.1" stroke="#4f46e5" stroke-opacity=".28" stroke-width="1.4"/><line x1="165.1" y1="137.9" x2="117.0" y2="249.2" stroke="#4f46e5" stroke-opacity=".28" stroke-width="1.4"/><line x1="165.1" y1="137.9" x2="217.8" y2="163.1" stroke="#4f46e5" stroke-opacity=".28" stroke-width="1.4"/><line x1="165.1" y1="137.9" x2="77.7" y2="176.0" stroke="#4f46e5" stroke-opacity=".28" stroke-width="1.4"/><line x1="165.1" y1="137.9" x2="251.6" y2="215.1" stroke="#4f46e5" stroke-opacity=".28" stroke-width="1.4"/><line x1="117.0" y1="249.2" x2="102.1" y2="298.0" stroke="#4f46e5" stroke-opacity=".28" stroke-width="1.4"/><line x1="117.0" y1="249.2" x2="217.8" y2="163.1" stroke="#4f46e5" stroke-opacity=".28" stroke-width="1.4"/><line x1="117.0" y1="249.2" x2="77.7" y2="176.0" stroke="#4f46e5" stroke-opacity=".28" stroke-width="1.4"/><line x1="117.0" y1="249.2" x2="251.6" y2="215.1" stroke="#4f46e5" stroke-opacity=".28" stroke-width="1.4"/><line x1="494.9" y1="143.9" x2="355.0" y2="152.8" stroke="#4f46e5" stroke-opacity=".28" stroke-width="1.4"/><line x1="494.9" y1="143.9" x2="565.9" y2="58.2" stroke="#4f46e5" stroke-opacity=".28" stroke-width="1.4"/><line x1="361.6" y1="253.5" x2="355.0" y2="152.8" stroke="#4f46e5" stroke-opacity=".28" stroke-width="1.4"/><line x1="361.6" y1="253.5" x2="251.6" y2="215.1" stroke="#4f46e5" stroke-opacity=".28" stroke-width="1.4"/><line x1="102.1" y1="298.0" x2="77.7" y2="176.0" stroke="#4f46e5" stroke-opacity=".28" stroke-width="1.4"/><line x1="355.0" y1="152.8" x2="217.8" y2="163.1" stroke="#4f46e5" stroke-opacity=".28" stroke-width="1.4"/><line x1="355.0" y1="152.8" x2="251.6" y2="215.1" stroke="#4f46e5" stroke-opacity=".28" stroke-width="1.4"/><line x1="217.8" y1="163.1" x2="77.7" y2="176.0" stroke="#4f46e5" stroke-opacity=".28" stroke-width="1.4"/><line x1="217.8" y1="163.1" x2="251.6" y2="215.1" stroke="#4f46e5" stroke-opacity=".28" stroke-width="1.4"/><circle cx="109.0" cy="104.1" r="5" fill="#4f46e5" fill-opacity=".9"/><circle cx="481.9" cy="286.1" r="8.5" fill="#3730a3" fill-opacity=".9"/><circle cx="273.3" cy="115.5" r="12" fill="#4f46e5" fill-opacity=".9"/><circle cx="165.1" cy="137.9" r="5" fill="#3730a3" fill-opacity=".9"/><circle cx="117.0" cy="249.2" r="8.5" fill="#4f46e5" fill-opacity=".9"/><circle cx="494.9" cy="143.9" r="12" fill="#3730a3" fill-opacity=".9"/><circle cx="361.6" cy="253.5" r="5" fill="#4f46e5" fill-opacity=".9"/><circle cx="102.1" cy="298.0" r="8.5" fill="#3730a3" fill-opacity=".9"/><circle cx="355.0" cy="152.8" r="12" fill="#4f46e5" fill-opacity=".9"/><circle cx="217.8" cy="163.1" r="5" fill="#3730a3" fill-opacity=".9"/><circle cx="77.7" cy="176.0" r="8.5" fill="#4f46e5" fill-opacity=".9"/><circle cx="565.9" cy="58.2" r="12" fill="#3730a3" fill-opacity=".9"/><circle cx="251.6" cy="215.1" r="5" fill="#4f46e5" fill-opacity=".9"/>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">Programming</span>
+    <h3 class="card-title">Linux Namespaces and cgroups: The Foundation of Containers</h3>
+    <p class="card-desc">How Linux namespaces isolate processes, filesystems, networks, and users — and how cgroups enforce resource limits. The primitives that Docker, Kubernetes, and every container runtime are built on.</p>
+    <div class="card-meta"><time datetime="2026-06-02">2 Jun 2026</time><span class="dot"></span><span>5 min read</span><span class="dot"></span><span>Series</span></div>
+  </div>
+</a></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap-narrow cta-panel">
+      <h2 class="h2">Working on this in production?</h2>
+      <p class="lede" style="margin-top:.7rem">We do this work directly alongside engineering teams — architecture review, migration, and hands-on enablement.</p>
+      <div class="row" style="margin-top:1.4rem">
+        <a class="btn" href="/contact/">Engage engineering <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="btn btn-ghost" href="/services/">See what we do</a>
+      </div>
+    </div>
+  </section>
+</article>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="grid g-4" style="gap:2rem">
+      <div>
+        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem">
+          <img src="/images/ajna-logo.png" alt="" width="32" height="32">
+          <span class="brand-name">Ajna<span style="color:#6f9bff">CS</span></span>
+        </a>
+        <p style="font-size:.88rem;line-height:1.65;color:#9fb0d0;max-width:30ch">
+          Specialised engineering partner for enterprise architecture, AI &amp; MLOps, and technical enablement.
+        </p>
+        <div class="social" style="margin-top:1.1rem">
+          <a href="https://www.youtube.com/@TechKnowen" rel="noopener" aria-label="YouTube"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 12s0-3.8-.5-5.6a2.9 2.9 0 0 0-2-2C18.7 4 12 4 12 4s-6.7 0-8.5.4a2.9 2.9 0 0 0-2 2C1 8.2 1 12 1 12s0 3.8.5 5.6a2.9 2.9 0 0 0 2 2C5.3 20 12 20 12 20s6.7 0 8.5-.4a2.9 2.9 0 0 0 2-2C23 15.8 23 12 23 12zM9.8 15.4V8.6l5.9 3.4z"/></svg></a>
+          <a href="https://techknowen.com" rel="noopener" aria-label="TechKnowen blog"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 3h16v3H4zm0 5h16v13l-8-4-8 4z"/></svg></a>
+          <a href="/feed.xml" aria-label="RSS feed"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="6.2" cy="17.8" r="2.2"/><path d="M4 10.2v3a6.6 6.6 0 0 1 6.6 6.6h3A9.6 9.6 0 0 0 4 10.2zM4 4v3c7.2 0 13 5.8 13 13h3C20 11.2 12.8 4 4 4z"/></svg></a>
+        </div>
+      </div>
+      <div>
+        <h4>Services</h4>
+        <ul>
+          <li><a href="/services/#architecture">Enterprise architecture</a></li>
+          <li><a href="/services/#ai">AI &amp; MLOps</a></li>
+          <li><a href="/services/#training">Technical enablement</a></li>
+          <li><a href="/case-studies/">Case studies</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Insights</h4>
+        <ul>
+          <li><a href="/insights/">All articles</a></li>
+          <li><a href="/series/">Series</a></li>
+          <li><a href="/topics/">Topics</a></li>
+          <li><a href="/notes/">Personal notes</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
+          <li><a href="/contact/">Start an engagement</a></li>
+          <li><a href="/about/">About</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span id="yr">2026</span> Ajna Consulting Services. All rights reserved.</span>
+      <span style="display:flex;gap:1.2rem"><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a></span>
+    </div>
+  </div>
+</footer>
+<script src="/assets/js/site.js" defer></script>
+</body>
+</html>

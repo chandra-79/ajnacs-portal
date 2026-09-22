@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ethernet vs. InfiniBand for AI Training: Why the Network Fabric Matters More Than You Think | Ajna CS</title>
+<meta name="description" content="Most AI infrastructure decisions focus on GPUs and storage. Network fabric is the variable that determines whether your training cluster runs at 90% effici…">
+<meta name="author" content="Chandra Lanka">
+<link rel="canonical" href="https://ajnacs.com/insights/quick-take-ethernet-vs-infiniband/">
+<meta name="robots" content="index, follow, max-image-preview:large">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Ajna Consulting Services">
+<meta property="og:title" content="Ethernet vs. InfiniBand for AI Training: Why the Network Fabric Matters More Than You Think">
+<meta property="og:description" content="Most AI infrastructure decisions focus on GPUs and storage. Network fabric is the variable that determines whether your training cluster runs at 90% effici…">
+<meta property="og:url" content="https://ajnacs.com/insights/quick-take-ethernet-vs-infiniband/">
+<meta property="og:image" content="https://ajnacs.com/assets/og/insights-quick-take-ethernet-vs-infiniband.svg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Ethernet vs. InfiniBand for AI Training: Why the Network Fabric Matters More Than You Think">
+<meta name="twitter:description" content="Most AI infrastructure decisions focus on GPUs and storage. Network fabric is the variable that determines whether your training cluster runs at 90% effici…">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/insights-quick-take-ethernet-vs-infiniband.svg">
+
+<link rel="icon" href="/images/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="/images/ajna-logo.png">
+<meta name="theme-color" content="#0a1020">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="/assets/css/site.css">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<script>
+/* Set the theme before first paint so the page never flashes the wrong one. */
+(function(){try{var t=localStorage.getItem('acs-theme');
+if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Ethernet vs. InfiniBand for AI Training: Why the Network Fabric Matters More Than You Think","description":"Most AI infrastructure decisions focus on GPUs and storage. Network fabric is the variable that determines whether your training cluster runs at 90% efficiency or 40%.","datePublished":"2025-03-25","dateModified":"2025-03-25","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/quick-take-ethernet-vs-infiniband/","image":"https://ajnacs.com/assets/og/insights-quick-take-ethernet-vs-infiniband.svg","keywords":"Systems, Enterprise AI, Infrastructure","articleSection":"Enterprise AI","wordCount":431}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Ethernet vs. InfiniBand for AI Training: Why the Network Fabric Matters More Than You Think"}]}</script>
+</head>
+<body class="" data-topic="Enterprise AI">
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header" id="siteHeader">
+  <div class="wrap" style="display:flex;align-items:center;width:min(1220px,100% - var(--gutter)*2)">
+    <a class="brand" href="/">
+      <img src="/images/ajna-logo.png" alt="" width="32" height="32">
+      <span class="brand-name">Ajna<span>CS</span></span>
+    </a>
+    <nav class="nav" id="nav" aria-label="Primary">
+      <a href="/services/">Services</a>
+      <a href="/insights/" aria-current="page">Insights</a>
+      <a href="/series/">Series</a>
+      <a href="/case-studies/">Case studies</a>
+      <a href="/about/">About</a>
+      <a class="btn btn-sm" href="/contact/" style="margin-left:.4rem">Engage engineering</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn" id="themeBtn" type="button" aria-label="Switch to dark mode" aria-pressed="false"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg></button>
+      <button class="icon-btn nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+
+<div class="read-bar" aria-hidden="true"><span id="readBar"></span></div>
+<article class="article">
+  <header class="article-head">
+    <div class="wrap-narrow">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a> <span aria-hidden="true">/</span>
+        <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
+        <span>Enterprise AI</span>
+      </nav>
+      <h1 class="h1">Ethernet vs. InfiniBand for AI Training: Why the Network Fabric Matters More Than You Think</h1>
+      <p class="lede" style="margin-top:1rem">Most AI infrastructure decisions focus on GPUs and storage. Network fabric is the variable that determines whether your training cluster runs at 90% efficiency or 40%.</p>
+      <div class="article-meta">
+        <span class="chip">Enterprise AI</span>
+        <time datetime="2025-03-25">25 Mar 2025</time>
+        <span class="dot"></span><span>2 min read</span>
+        <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="article-hero wrap-narrow" data-topic="Enterprise AI"><svg viewBox="0 0 1200 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgquicktakeeth" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6d4aff" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#5837e0" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#6d4aff" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="420" fill="url(#bgquicktakeeth)"/>
+  <rect x="154.6" y="78" width="300.0" height="34" rx="8"
+      fill="#5837e0" fill-opacity="0.16"
+      stroke="#6d4aff" stroke-opacity=".45" stroke-width="1.2"/><line x1="320" y1="112" x2="320" y2="134" stroke="#6d4aff" stroke-opacity=".4" stroke-width="1.4"/><rect x="179.0" y="134" width="266.0" height="34" rx="8"
+      fill="#6d4aff" fill-opacity="0.29"
+      stroke="#6d4aff" stroke-opacity=".45" stroke-width="1.2"/><line x1="320" y1="168" x2="320" y2="190" stroke="#6d4aff" stroke-opacity=".4" stroke-width="1.4"/><rect x="185.5" y="190" width="232.0" height="34" rx="8"
+      fill="#5837e0" fill-opacity="0.42"
+      stroke="#6d4aff" stroke-opacity=".45" stroke-width="1.2"/><line x1="320" y1="224" x2="320" y2="246" stroke="#6d4aff" stroke-opacity=".4" stroke-width="1.4"/><rect x="231.7" y="246" width="198.0" height="34" rx="8"
+      fill="#6d4aff" fill-opacity="0.55"
+      stroke="#6d4aff" stroke-opacity=".45" stroke-width="1.2"/>
+</svg></div>
+
+  <div class="wrap-narrow article-grid">
+    <nav class="toc" aria-label="On this page">
+  <p class="toc-title">On this page</p>
+  <ol><li><a href="#why-distributed-ai-training-is-a-network-problem">Why distributed AI training is a network problem</a></li><li><a href="#infiniband-vs-ethernet-the-real-differences">InfiniBand vs. Ethernet: the real differences</a></li><li><a href="#the-practical-implication-for-training-efficiency">The practical implication for training efficiency</a></li><li><a href="#the-cloud-context">The cloud context</a></li></ol>
+</nav>
+    <div class="prose">
+<p>The GPU cluster is provisioned. 256 A100s. Expensive, powerful, and sitting at 42% GPU utilization during distributed training.</p>
+<p>The bottleneck is not the GPUs. The bottleneck is the network.</p>
+<h2 id="why-distributed-ai-training-is-a-network-problem">Why distributed AI training is a network problem</h2>
+<aside class="keyfig">
+  <p class="keyfig-label">Key figure</p>
+  <p class="keyfig-text">Expensive, powerful, and sitting at <b>42%</b> GPU utilization during distributed training.</p>
+</aside>
+<p>Modern large model training uses distributed data parallelism or tensor parallelism, which requires frequent synchronization of gradients or activations across GPUs. The synchronization involves a lot of data moving very fast:</p>
+<p>A GPT-scale model with 100 billion parameters has approximately 400GB of gradient data (in FP32) that needs to be averaged across all nodes after each backward pass. With 128-node training, each node sends and receives approximately 6GB per step. At 1,000 steps per minute, that is 100GB/s of sustained bidirectional traffic per node.</p>
+<p>Standard 100GbE (100 gigabit Ethernet) provides approximately 12.5 GB/s unidirectional. The arithmetic does not work.</p>
+<h2 id="infiniband-vs-ethernet-the-real-differences">InfiniBand vs. Ethernet: the real differences</h2>
+<p><strong>InfiniBand HDR (200 Gb/s)</strong> — the standard for serious AI training infrastructure — provides:</p>
+<ul>
+<li>200 Gb/s bandwidth per port (25 GB/s)</li>
+<li>Sub-microsecond latency (1–2 microseconds)</li>
+<li>RDMA (Remote Direct Memory Access) — data moves directly between GPU memory on different nodes without CPU involvement</li>
+<li>Congestion control designed for HPC all-reduce patterns</li>
+</ul>
+<p><strong>High-speed Ethernet (400GbE RoCE)</strong> — the cloud-friendly alternative:</p>
+<ul>
+<li>400 Gb/s bandwidth (50 GB/s) on current-generation switches</li>
+<li>2–5 microsecond latency</li>
+<li>RDMA over Converged Ethernet (RoCE v2) — requires careful ECN configuration to avoid congestion collapse</li>
+<li>Available in all major cloud providers (AWS EFA, Azure InfiniBand, GCP GPUDirect TCPX)</li>
+</ul>
+<h2 id="the-practical-implication-for-training-efficiency">The practical implication for training efficiency</h2>
+<p>All-reduce communication efficiency (the collective operation that averages gradients) degrades sharply with latency and becomes network-bound when bandwidth is insufficient. The MFU (model flops utilization) of a training run on InfiniBand-connected H100s is typically 40–50% higher than the same run on standard Ethernet-connected nodes.</p>
+<p>This means:</p>
+<ul>
+<li>Training the same model takes 40% more calendar time on Ethernet</li>
+<li>Using 40% more GPU-hours</li>
+<li>Spending 40% more on compute cost</li>
+</ul>
+<p>At the scale of serious training runs — weeks to months of GPU time — 40% is not a small difference.</p>
+<h2 id="the-cloud-context">The cloud context</h2>
+<p>AWS Elastic Fabric Adapter (EFA), Azure InfiniBand, and GCP GPUDirect all provide high-speed fabric options in their GPU instances. Using a P4d or P5 instance on AWS without placing instances in a cluster placement group and enabling EFA leaves the high-speed fabric unused. The instance has the capability; the configuration has to explicitly use it.</p>
+<p>The engineers who optimize GPU selection and storage and then deploy on standard instance networking are leaving a large fraction of the cluster&#39;s performance unused.</p>
+
+    </div>
+  </div>
+
+  
+
+  
+
+  <div class="wrap-narrow article-foot">
+    <div class="row" style="gap:.4rem">
+      <a class="chip chip-plain" href="/insights/?topic=Systems">Systems</a><a class="chip chip-plain" href="/insights/?topic=Enterprise%20AI">Enterprise AI</a><a class="chip chip-plain" href="/insights/?topic=Infrastructure">Infrastructure</a>
+    </div>
+    <nav class="prevnext" aria-label="More articles">
+      <a href="/insights/cdn-strategy-decision-guide/"><span>Previous</span><strong>CDN Strategy: Choosing the Right Approach for Your Architecture</strong></a>
+      <a href="/insights/ai-training-cluster-networking/" class="next"><span>Next</span><strong>AI Training Cluster Networking: Architecture for Large-Scale Model Training</strong></a>
+    </nav>
+  </div>
+
+  <section class="section surface hair" style="margin-top:4rem">
+    <div class="wrap">
+      <p class="eyebrow">Related</p>
+      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|AI &amp; MLOps|Enterprise AI|Fundamentals|" data-search="rag, prompting, and building applications on llms: the practitioner&#39;s guide retrieval-augmented generation, system prompts, few-shot examples, chain-of-thought, structured output, and the engineering patterns that make llm applications reliable in production. ai &amp; mlops enterprise ai fundamentals" data-topic="AI &amp; MLOps" href="/insights/aiml-rag-and-prompting/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgaimlragandpr" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6d4aff" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#5837e0" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#6d4aff" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgaimlragandpr)"/>
+  <line x1="558.0" y1="238.5" x2="507.0" y2="307.9" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="558.0" y1="238.5" x2="533.9" y2="248.6" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="558.0" y1="238.5" x2="454.4" y2="262.2" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="558.0" y1="238.5" x2="526.7" y2="294.6" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="277.7" y1="133.5" x2="137.5" y2="170.9" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="277.7" y1="133.5" x2="299.0" y2="98.8" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="277.7" y1="133.5" x2="296.8" y2="225.1" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="277.7" y1="133.5" x2="183.4" y2="237.5" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="277.7" y1="133.5" x2="375.6" y2="73.2" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="137.5" y1="170.9" x2="183.4" y2="237.5" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="137.5" y1="170.9" x2="59.8" y2="301.1" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="137.5" y1="170.9" x2="120.6" y2="58.1" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="507.0" y1="307.9" x2="533.9" y2="248.6" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="507.0" y1="307.9" x2="454.4" y2="262.2" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="507.0" y1="307.9" x2="526.7" y2="294.6" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="533.9" y1="248.6" x2="454.4" y2="262.2" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="533.9" y1="248.6" x2="526.7" y2="294.6" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="299.0" y1="98.8" x2="296.8" y2="225.1" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="299.0" y1="98.8" x2="375.6" y2="73.2" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="296.8" y1="225.1" x2="183.4" y2="237.5" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="296.8" y1="225.1" x2="454.4" y2="262.2" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="183.4" y1="237.5" x2="59.8" y2="301.1" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="454.4" y1="262.2" x2="526.7" y2="294.6" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><circle cx="558.0" cy="238.5" r="5" fill="#6d4aff" fill-opacity=".9"/><circle cx="277.7" cy="133.5" r="8.5" fill="#5837e0" fill-opacity=".9"/><circle cx="137.5" cy="170.9" r="12" fill="#6d4aff" fill-opacity=".9"/><circle cx="507.0" cy="307.9" r="5" fill="#5837e0" fill-opacity=".9"/><circle cx="533.9" cy="248.6" r="8.5" fill="#6d4aff" fill-opacity=".9"/><circle cx="299.0" cy="98.8" r="12" fill="#5837e0" fill-opacity=".9"/><circle cx="296.8" cy="225.1" r="5" fill="#6d4aff" fill-opacity=".9"/><circle cx="183.4" cy="237.5" r="8.5" fill="#5837e0" fill-opacity=".9"/><circle cx="59.8" cy="301.1" r="12" fill="#6d4aff" fill-opacity=".9"/><circle cx="375.6" cy="73.2" r="5" fill="#5837e0" fill-opacity=".9"/><circle cx="454.4" cy="262.2" r="8.5" fill="#6d4aff" fill-opacity=".9"/><circle cx="526.7" cy="294.6" r="12" fill="#5837e0" fill-opacity=".9"/><circle cx="120.6" cy="58.1" r="5" fill="#6d4aff" fill-opacity=".9"/>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">AI &amp; MLOps</span>
+    <h3 class="card-title">RAG, Prompting, and Building Applications on LLMs: The Practitioner&#39;s Guide</h3>
+    <p class="card-desc">Retrieval-augmented generation, system prompts, few-shot examples, chain-of-thought, structured output, and the engineering patterns that make LLM applications reliable in production.</p>
+    <div class="card-meta"><time datetime="2026-08-25">25 Aug 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
+  </div>
+</a>
+<a class="card" data-card data-topics="|AI &amp; MLOps|Enterprise AI|Fundamentals|" data-search="putting ai in production: what enterprise ai deployment actually requires model serving, latency, cost, monitoring, governance, and the operational discipline that separates a proof of concept from an ai system that runs reliably at enterprise scale. ai &amp; mlops enterprise ai fundamentals" data-topic="AI &amp; MLOps" href="/insights/aiml-production-ai/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgaimlproducti" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6d4aff" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#5837e0" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#6d4aff" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgaimlproducti)"/>
+  <rect x="338" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.12" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 108 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.51" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="86" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.36" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 172 H212" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.51" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="464" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.14" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="338" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.22" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 236 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">AI &amp; MLOps</span>
+    <h3 class="card-title">Putting AI in Production: What Enterprise AI Deployment Actually Requires</h3>
+    <p class="card-desc">Model serving, latency, cost, monitoring, governance, and the operational discipline that separates a proof of concept from an AI system that runs reliably at enterprise scale.</p>
+    <div class="card-meta"><time datetime="2026-08-11">11 Aug 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
+  </div>
+</a>
+<a class="card" data-card data-topics="|Cloud Architecture|Infrastructure|Observability|" data-search="designing for failure: resilience patterns that actually hold in production circuit breakers, bulkheads, retry logic, chaos engineering — the resilience patterns that genuinely reduce mttr and the ones that look good on architecture diagrams but fail when things get real. cloud architecture infrastructure observability" data-topic="Cloud Architecture" href="/insights/designing-for-failure-resilience-patterns/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgdesigningfor" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0d9488" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#0b7a70" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#0d9488" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgdesigningfor)"/>
+  <path d="M0 70 L0 20.7 L16 22.8 L32 26.9 L48 32.8 L64 40.2 L80 48.9 L96 58.5 L112 68.5 L128 78.7 L144 88.4 L160 97.4 L176 105.2 L192 111.6 L208 116.2 L224 118.9 L240 119.5 L256 118.0 L272 114.6 L288 109.3 L304 102.3 L320 93.9 L336 84.6 L352 74.7 L368 64.5 L384 54.6 L400 45.3 L416 37.1 L432 30.2 L448 25.1 L464 21.8 L480 20.5 L496 21.3 L512 24.1 L528 28.9 L544 35.4 L560 43.3 L576 52.4 L592 62.2 L608 72.3 L624 82.3 L640 91.8" fill="none" stroke="#0d9488" stroke-opacity="0.50" stroke-width="2.2" stroke-linecap="round"/><path d="M0 116 L0 117.5 L16 111.4 L32 105.5 L48 100.1 L64 95.3 L80 91.4 L96 88.5 L112 86.8 L128 86.3 L144 87.1 L160 89.0 L176 92.1 L192 96.2 L208 101.1 L224 106.7 L240 112.6 L256 118.7 L272 124.7 L288 130.3 L304 135.3 L320 139.5 L336 142.7 L352 144.8 L368 145.7 L384 145.3 L400 143.7 L416 141.0 L432 137.2 L448 132.5 L464 127.1 L480 121.3 L496 115.2 L512 109.2 L528 103.4 L544 98.2 L560 93.7 L576 90.2 L592 87.7 L608 86.5 L624 86.4 L640 87.6" fill="none" stroke="#0b7a70" stroke-opacity="0.43" stroke-width="2.0" stroke-linecap="round"/><path d="M0 162 L0 121.3 L16 120.5 L32 121.4 L48 124.0 L64 128.2 L80 133.8 L96 140.6 L112 148.3 L128 156.5 L144 165.0 L160 173.4 L176 181.3 L192 188.4 L208 194.4 L224 199.0 L240 202.1 L256 203.4 L272 203.1 L288 201.0 L304 197.3 L320 192.1 L336 185.7 L352 178.2 L368 170.1 L384 161.6 L400 153.2 L416 145.1 L432 137.7 L448 131.4 L464 126.3 L480 122.7 L496 120.8 L512 120.6 L528 122.1 L544 125.4 L560 130.1 L576 136.2 L592 143.3 L608 151.3 L624 159.7 L640 168.2" fill="none" stroke="#0d9488" stroke-opacity="0.36" stroke-width="1.7" stroke-linecap="round"/><path d="M0 208 L0 228.2 L16 235.3 L32 241.2 L48 245.7 L64 248.7 L80 249.9 L96 249.4 L112 247.1 L128 243.2 L144 237.8 L160 231.2 L176 223.6 L192 215.4 L208 206.8 L224 198.3 L240 190.2 L256 182.8 L272 176.5 L288 171.5 L304 168.1 L320 166.3 L336 166.3 L352 168.0 L368 171.4 L384 176.3 L400 182.6 L416 189.9 L432 198.0 L448 206.5 L464 215.1 L480 223.3 L496 231.0 L512 237.6 L528 243.0 L544 247.0 L560 249.3 L576 249.9 L592 248.7 L608 245.9 L624 241.4 L640 235.5" fill="none" stroke="#0b7a70" stroke-opacity="0.29" stroke-width="1.5" stroke-linecap="round"/><path d="M0 254 L0 274.7 L16 262.2 L32 249.3 L48 236.7 L64 224.7 L80 214.0 L96 205.0 L112 198.0 L128 193.4 L144 191.3 L160 191.8 L176 195.0 L192 200.6 L208 208.4 L224 218.2 L240 229.5 L256 241.8 L272 254.6 L288 267.4 L304 279.6 L320 290.8 L336 300.4 L352 308.0 L368 313.4 L384 316.3 L400 316.6 L416 314.3 L432 309.4 L448 302.3 L464 293.0 L480 282.2 L496 270.2 L512 257.5 L528 244.6 L544 232.2 L560 220.6 L576 210.5 L592 202.2 L608 196.0 L624 192.3 L640 191.2" fill="none" stroke="#0d9488" stroke-opacity="0.22" stroke-width="1.2" stroke-linecap="round"/>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">Cloud Architecture</span>
+    <h3 class="card-title">Designing for Failure: Resilience Patterns That Actually Hold in Production</h3>
+    <p class="card-desc">Circuit breakers, bulkheads, retry logic, chaos engineering — the resilience patterns that genuinely reduce MTTR and the ones that look good on architecture diagrams but fail when things get real.</p>
+    <div class="card-meta"><time datetime="2026-01-07">7 Jan 2026</time><span class="dot"></span><span>6 min read</span></div>
+  </div>
+</a></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap-narrow cta-panel">
+      <h2 class="h2">Working on this in production?</h2>
+      <p class="lede" style="margin-top:.7rem">We do this work directly alongside engineering teams — architecture review, migration, and hands-on enablement.</p>
+      <div class="row" style="margin-top:1.4rem">
+        <a class="btn" href="/contact/">Engage engineering <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="btn btn-ghost" href="/services/">See what we do</a>
+      </div>
+    </div>
+  </section>
+</article>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="grid g-4" style="gap:2rem">
+      <div>
+        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem">
+          <img src="/images/ajna-logo.png" alt="" width="32" height="32">
+          <span class="brand-name">Ajna<span style="color:#6f9bff">CS</span></span>
+        </a>
+        <p style="font-size:.88rem;line-height:1.65;color:#9fb0d0;max-width:30ch">
+          Specialised engineering partner for enterprise architecture, AI &amp; MLOps, and technical enablement.
+        </p>
+        <div class="social" style="margin-top:1.1rem">
+          <a href="https://www.youtube.com/@TechKnowen" rel="noopener" aria-label="YouTube"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 12s0-3.8-.5-5.6a2.9 2.9 0 0 0-2-2C18.7 4 12 4 12 4s-6.7 0-8.5.4a2.9 2.9 0 0 0-2 2C1 8.2 1 12 1 12s0 3.8.5 5.6a2.9 2.9 0 0 0 2 2C5.3 20 12 20 12 20s6.7 0 8.5-.4a2.9 2.9 0 0 0 2-2C23 15.8 23 12 23 12zM9.8 15.4V8.6l5.9 3.4z"/></svg></a>
+          <a href="https://techknowen.com" rel="noopener" aria-label="TechKnowen blog"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 3h16v3H4zm0 5h16v13l-8-4-8 4z"/></svg></a>
+          <a href="/feed.xml" aria-label="RSS feed"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="6.2" cy="17.8" r="2.2"/><path d="M4 10.2v3a6.6 6.6 0 0 1 6.6 6.6h3A9.6 9.6 0 0 0 4 10.2zM4 4v3c7.2 0 13 5.8 13 13h3C20 11.2 12.8 4 4 4z"/></svg></a>
+        </div>
+      </div>
+      <div>
+        <h4>Services</h4>
+        <ul>
+          <li><a href="/services/#architecture">Enterprise architecture</a></li>
+          <li><a href="/services/#ai">AI &amp; MLOps</a></li>
+          <li><a href="/services/#training">Technical enablement</a></li>
+          <li><a href="/case-studies/">Case studies</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Insights</h4>
+        <ul>
+          <li><a href="/insights/">All articles</a></li>
+          <li><a href="/series/">Series</a></li>
+          <li><a href="/topics/">Topics</a></li>
+          <li><a href="/notes/">Personal notes</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
+          <li><a href="/contact/">Start an engagement</a></li>
+          <li><a href="/about/">About</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span id="yr">2026</span> Ajna Consulting Services. All rights reserved.</span>
+      <span style="display:flex;gap:1.2rem"><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a></span>
+    </div>
+  </div>
+</footer>
+<script src="/assets/js/site.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AI Training Cluster Networking: Architecture for Large-Scale Model Training | Ajna CS</title>
+<meta name="description" content="Training large models at scale requires network architecture that most data centres aren&#39;t built for. Here&#39;s how to think about the networking stack for AI…">
+<meta name="author" content="Chandra Lanka">
+<link rel="canonical" href="https://ajnacs.com/insights/ai-training-cluster-networking/">
+<meta name="robots" content="index, follow, max-image-preview:large">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Ajna Consulting Services">
+<meta property="og:title" content="AI Training Cluster Networking: Architecture for Large-Scale Model Training">
+<meta property="og:description" content="Training large models at scale requires network architecture that most data centres aren&#39;t built for. Here&#39;s how to think about the networking stack for AI…">
+<meta property="og:url" content="https://ajnacs.com/insights/ai-training-cluster-networking/">
+<meta property="og:image" content="https://ajnacs.com/assets/og/insights-ai-training-cluster-networking.svg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AI Training Cluster Networking: Architecture for Large-Scale Model Training">
+<meta name="twitter:description" content="Training large models at scale requires network architecture that most data centres aren&#39;t built for. Here&#39;s how to think about the networking stack for AI…">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/insights-ai-training-cluster-networking.svg">
+
+<link rel="icon" href="/images/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="/images/ajna-logo.png">
+<meta name="theme-color" content="#0a1020">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="/assets/css/site.css">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<script>
+/* Set the theme before first paint so the page never flashes the wrong one. */
+(function(){try{var t=localStorage.getItem('acs-theme');
+if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"AI Training Cluster Networking: Architecture for Large-Scale Model Training","description":"Training large models at scale requires network architecture that most data centres aren't built for. Here's how to think about the networking stack for AI training clusters — topology, bandwidth requirements, collective operations, and the trade-offs between InfiniBand and high-speed Ethernet.","datePublished":"2025-04-08","dateModified":"2025-04-08","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/ai-training-cluster-networking/","image":"https://ajnacs.com/assets/og/insights-ai-training-cluster-networking.svg","keywords":"Systems, AI & MLOps, HPC","articleSection":"AI & MLOps","wordCount":889}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"AI Training Cluster Networking: Architecture for Large-Scale Model Training"}]}</script>
+</head>
+<body class="" data-topic="AI &amp; MLOps">
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header" id="siteHeader">
+  <div class="wrap" style="display:flex;align-items:center;width:min(1220px,100% - var(--gutter)*2)">
+    <a class="brand" href="/">
+      <img src="/images/ajna-logo.png" alt="" width="32" height="32">
+      <span class="brand-name">Ajna<span>CS</span></span>
+    </a>
+    <nav class="nav" id="nav" aria-label="Primary">
+      <a href="/services/">Services</a>
+      <a href="/insights/" aria-current="page">Insights</a>
+      <a href="/series/">Series</a>
+      <a href="/case-studies/">Case studies</a>
+      <a href="/about/">About</a>
+      <a class="btn btn-sm" href="/contact/" style="margin-left:.4rem">Engage engineering</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn" id="themeBtn" type="button" aria-label="Switch to dark mode" aria-pressed="false"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg></button>
+      <button class="icon-btn nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+
+<div class="read-bar" aria-hidden="true"><span id="readBar"></span></div>
+<article class="article">
+  <header class="article-head">
+    <div class="wrap-narrow">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a> <span aria-hidden="true">/</span>
+        <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
+        <span>AI &amp; MLOps</span>
+      </nav>
+      <h1 class="h1">AI Training Cluster Networking: Architecture for Large-Scale Model Training</h1>
+      <p class="lede" style="margin-top:1rem">Training large models at scale requires network architecture that most data centres aren&#39;t built for. Here&#39;s how to think about the networking stack for AI training clusters — topology, bandwidth requirements, collective operations, and the trade-offs between InfiniBand and high-speed Ethernet.</p>
+      <div class="article-meta">
+        <span class="chip">AI &amp; MLOps</span>
+        <time datetime="2025-04-08">8 Apr 2025</time>
+        <span class="dot"></span><span>4 min read</span>
+        <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="article-hero wrap-narrow" data-topic="AI &amp; MLOps"><svg viewBox="0 0 1200 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgaitrainingcl" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6d4aff" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#5837e0" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#6d4aff" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="420" fill="url(#bgaitrainingcl)"/>
+  <rect x="338" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.14" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 108 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.18" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="86" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.18" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 172 H212" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.46" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="86" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.24" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 236 H212" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.28" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 236 H338" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.52" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 236 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.25" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/>
+</svg></div>
+
+  <div class="wrap-narrow article-grid">
+    <nav class="toc" aria-label="On this page">
+  <p class="toc-title">On this page</p>
+  <ol><li><a href="#why-training-clusters-need-different-networking">Why training clusters need different networking</a></li><li><a href="#topology-for-training-clusters">Topology for training clusters</a></li><li><a href="#infiniband-vs-roce-at-training-scale">InfiniBand vs. RoCE at training scale</a></li><li><a href="#intra-node-interconnect-nvlink-and-nvswitch">Intra-node interconnect: NVLink and NVSwitch</a></li><li><a href="#bandwidth-requirements-in-practice">Bandwidth requirements in practice</a></li><li><a href="#storage-networking-for-ai-workloads">Storage networking for AI workloads</a></li></ol>
+</nav>
+    <div class="prose">
+<p>Training large language models and diffusion models at scale is a fundamentally different networking problem from running web services. The workload characteristics are different: very high bandwidth between adjacent nodes, synchronisation points that require all nodes in a group to communicate simultaneously, and sensitivity to network variance that doesn&#39;t matter in loosely-coupled microservice architectures.</p>
+<p>A slow network in a web service deployment slightly increases response time. A slow network in a distributed model training job slows the entire job to the speed of the slowest link, because all nodes must synchronise at each gradient exchange.</p>
+<h2 id="why-training-clusters-need-different-networking">Why training clusters need different networking</h2>
+<aside class="keyfig">
+  <p class="keyfig-label">Key figure</p>
+  <p class="keyfig-text">NVLink Gen4 (used in H100) provides <b>900 GB</b>/s total GPU-to-GPU bandwidth within a node via NVSwitch — orders of magnitude more than PCIe would provide.</p>
+</aside>
+<p>Distributed training breaks a model&#39;s computation across multiple GPUs and nodes. Two dominant parallelism strategies:</p>
+<p><strong>Data parallelism</strong>: each GPU trains on a different batch of data with the same model parameters. After each batch, gradients are synchronised across all GPUs via an all-reduce collective. The bandwidth requirement scales with model size — for a model with billions of parameters, the all-reduce requires exchanging hundreds of gigabytes per step, hundreds of times per second.</p>
+<p><strong>Tensor/pipeline parallelism</strong>: for models too large to fit in a single GPU&#39;s memory, the model itself is split across GPUs. Layers or tensor slices are distributed. Each forward pass requires data to move from one GPU to the next in the pipeline, and from one rank to another for tensor-parallel operations. Latency between adjacent stages directly adds to step time.</p>
+<p>Both patterns require:</p>
+<ul>
+<li><strong>High bandwidth</strong>: enough to exchange gradients without becoming the training bottleneck</li>
+<li><strong>Low latency</strong>: especially for tight synchronisation points in pipeline and tensor parallelism</li>
+<li><strong>Low variance</strong>: a single slow link in a ring all-reduce makes every GPU wait for the slowest link</li>
+</ul>
+<h2 id="topology-for-training-clusters">Topology for training clusters</h2>
+<p><strong>Fat-tree / Clos topology</strong>: the standard for large-scale training. A three-tier Clos (leaf-spine-core or ToR-aggregate-core) provides full bisection bandwidth — any-to-any communication at full line rate. For training clusters, full bisection bandwidth ensures that inter-node communication doesn&#39;t bottleneck regardless of which nodes are assigned to a job.</p>
+<p><strong>Rail-optimized topology</strong>: a specialised topology for training at scale. Multiple independent networks (rails) connect all nodes, and the training framework distributes all-reduce traffic across rails. A 4-rail design with 400GbE links per rail provides 1.6 Tbps of aggregate bandwidth per node — comparable to multi-rail NVLink bandwidth within a node. Used by large-scale cloud AI clusters (AWS Trainium, Google TPU pods).</p>
+<p><strong>InfiniBand non-blocking fabric</strong>: InfiniBand topologies (fat-tree with HDR/NDR) are non-blocking within the fabric — a switch can forward traffic from all ports simultaneously at line rate. Many HPC and AI training clusters use InfiniBand with EDR (100 Gbps), HDR (200 Gbps), or NDR (400 Gbps) links.</p>
+<h2 id="infiniband-vs-roce-at-training-scale">InfiniBand vs. RoCE at training scale</h2>
+<p><strong>InfiniBand</strong> remains the preferred choice for the largest training clusters:</p>
+<ul>
+<li>Native RDMA without the Ethernet compatibility overhead</li>
+<li>SHARP (Scalable Hierarchical Aggregation and Reduction Protocol) performs in-network all-reduce — the reduction happens in the switches, reducing the volume of data that needs to traverse the network</li>
+<li>Consistent, predictable latency</li>
+<li>Managed fabric with centralised subnet management</li>
+</ul>
+<p><strong>RoCE</strong> (RDMA over Converged Ethernet) is viable at scale with proper configuration:</p>
+<ul>
+<li>Requires lossless Ethernet (Priority Flow Control + DCQCN)</li>
+<li>Works with standard Ethernet switching infrastructure</li>
+<li>Increasingly competitive with InfiniBand at 400GbE for many training workloads</li>
+<li>Cloudscale AI clusters (AWS, Microsoft, Google) use RoCE in various configurations</li>
+</ul>
+<p>The performance gap between InfiniBand and high-speed RoCE has narrowed at 400GbE speeds. For new buildouts without existing InfiniBand infrastructure, RoCE on 400GbE Ethernet is often the more economical choice when combined with good switch silicon (Spectrum-4, Tomahawk 5).</p>
+<h2 id="intra-node-interconnect-nvlink-and-nvswitch">Intra-node interconnect: NVLink and NVSwitch</h2>
+<p>Within a node, GPU-to-GPU communication uses NVLink rather than PCIe. NVLink Gen4 (used in H100) provides 900 GB/s total GPU-to-GPU bandwidth within a node via NVSwitch — orders of magnitude more than PCIe would provide.</p>
+<p>This asymmetry (high-bandwidth intra-node, relatively lower-bandwidth inter-node) drives the tensor/pipeline parallelism decomposition strategy: operations that require frequent, high-volume communication (tensor-parallel) stay within a node; operations that require less frequent synchronisation (data-parallel all-reduce) span nodes.</p>
+<h2 id="bandwidth-requirements-in-practice">Bandwidth requirements in practice</h2>
+<p>A rule of thumb for all-reduce bandwidth requirements in data-parallel training:</p>
+<pre><code>Required network bandwidth (per node) ≈ (2 * model_parameters * bytes_per_parameter) / step_time
+</code></pre>
+<p>For a 70B parameter model with bf16 (2 bytes) and a target step time of 1 second:</p>
+<pre><code>(2 * 70e9 * 2) / 1 = 280 GB/s per node
+</code></pre>
+<p>This exceeds what even 400GbE can provide — which is why large model training uses multiple nodes per NVLink domain (tensor parallelism within nodes) to reduce the inter-node all-reduce volume, and why SHARP in-network reduction (which reduces traffic on the switches) is valuable.</p>
+<h2 id="storage-networking-for-ai-workloads">Storage networking for AI workloads</h2>
+<p>Training clusters need fast access to training data (petabyte-scale datasets) and checkpoint storage. The storage network is often separate from the training interconnect:</p>
+<ul>
+<li><strong>Training data</strong>: parallel file systems (GPFS, Lustre, WekaFS) or object storage (S3, GCS) with high-throughput access. Storage bandwidth needs to keep all GPUs fed without bottlenecking on data loading.</li>
+<li><strong>Checkpoints</strong>: regular writes of model state to durable storage. Checkpoint frequency and size (hundreds of GB for large models) determine storage I/O requirements. NVMe over Fabrics (NVMe-oF) or high-throughput object storage are common patterns.</li>
+</ul>
+<p><em>Designing networking for an AI training cluster or evaluating whether your existing infrastructure is suitable? <a href="/contact">Happy to compare configurations.</a></em></p>
+
+    </div>
+  </div>
+
+  
+
+  
+
+  <div class="wrap-narrow article-foot">
+    <div class="row" style="gap:.4rem">
+      <a class="chip chip-plain" href="/insights/?topic=Systems">Systems</a><a class="chip chip-plain" href="/insights/?topic=AI%20%26%20MLOps">AI &amp; MLOps</a><a class="chip chip-plain" href="/insights/?topic=HPC">HPC</a>
+    </div>
+    <nav class="prevnext" aria-label="More articles">
+      <a href="/insights/quick-take-ethernet-vs-infiniband/"><span>Previous</span><strong>Ethernet vs. InfiniBand for AI Training: Why the Network Fabric Matters More Than You Think</strong></a>
+      <a href="/insights/oracle-db-performance-tuning/" class="next"><span>Next</span><strong>Oracle DB Performance Tuning: The 10 Things That Actually Move the Needle</strong></a>
+    </nav>
+  </div>
+
+  <section class="section surface hair" style="margin-top:4rem">
+    <div class="wrap">
+      <p class="eyebrow">Related</p>
+      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|AI &amp; MLOps|Fundamentals|" data-search="neural networks explained: what they are, how they learn, and why they work neurons, layers, weights, activation functions, backpropagation, and gradient descent — the actual mechanics of how a neural network learns from data, explained without the mathematics becoming the obstacle. ai &amp; mlops fundamentals" data-topic="AI &amp; MLOps" href="/insights/aiml-neural-networks/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgaimlneuralne" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6d4aff" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#5837e0" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#6d4aff" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgaimlneuralne)"/>
+  <rect x="86" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.51" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="464" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.45" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="212" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.45" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 172 H338" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.60" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 172 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.40" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="338" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.32" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 236 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.39" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">AI &amp; MLOps</span>
+    <h3 class="card-title">Neural Networks Explained: What They Are, How They Learn, and Why They Work</h3>
+    <p class="card-desc">Neurons, layers, weights, activation functions, backpropagation, and gradient descent — the actual mechanics of how a neural network learns from data, explained without the mathematics becoming the obstacle.</p>
+    <div class="card-meta"><time datetime="2026-09-04">4 Sept 2026</time><span class="dot"></span><span>3 min read</span><span class="dot"></span><span>Series</span></div>
+  </div>
+</a>
+<a class="card" data-card data-topics="|AI &amp; MLOps|Enterprise AI|Fundamentals|" data-search="rag, prompting, and building applications on llms: the practitioner&#39;s guide retrieval-augmented generation, system prompts, few-shot examples, chain-of-thought, structured output, and the engineering patterns that make llm applications reliable in production. ai &amp; mlops enterprise ai fundamentals" data-topic="AI &amp; MLOps" href="/insights/aiml-rag-and-prompting/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgaimlragandpr" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6d4aff" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#5837e0" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#6d4aff" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgaimlragandpr)"/>
+  <line x1="558.0" y1="238.5" x2="507.0" y2="307.9" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="558.0" y1="238.5" x2="533.9" y2="248.6" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="558.0" y1="238.5" x2="454.4" y2="262.2" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="558.0" y1="238.5" x2="526.7" y2="294.6" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="277.7" y1="133.5" x2="137.5" y2="170.9" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="277.7" y1="133.5" x2="299.0" y2="98.8" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="277.7" y1="133.5" x2="296.8" y2="225.1" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="277.7" y1="133.5" x2="183.4" y2="237.5" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="277.7" y1="133.5" x2="375.6" y2="73.2" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="137.5" y1="170.9" x2="183.4" y2="237.5" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="137.5" y1="170.9" x2="59.8" y2="301.1" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="137.5" y1="170.9" x2="120.6" y2="58.1" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="507.0" y1="307.9" x2="533.9" y2="248.6" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="507.0" y1="307.9" x2="454.4" y2="262.2" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="507.0" y1="307.9" x2="526.7" y2="294.6" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="533.9" y1="248.6" x2="454.4" y2="262.2" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="533.9" y1="248.6" x2="526.7" y2="294.6" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="299.0" y1="98.8" x2="296.8" y2="225.1" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="299.0" y1="98.8" x2="375.6" y2="73.2" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="296.8" y1="225.1" x2="183.4" y2="237.5" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="296.8" y1="225.1" x2="454.4" y2="262.2" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="183.4" y1="237.5" x2="59.8" y2="301.1" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="454.4" y1="262.2" x2="526.7" y2="294.6" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><circle cx="558.0" cy="238.5" r="5" fill="#6d4aff" fill-opacity=".9"/><circle cx="277.7" cy="133.5" r="8.5" fill="#5837e0" fill-opacity=".9"/><circle cx="137.5" cy="170.9" r="12" fill="#6d4aff" fill-opacity=".9"/><circle cx="507.0" cy="307.9" r="5" fill="#5837e0" fill-opacity=".9"/><circle cx="533.9" cy="248.6" r="8.5" fill="#6d4aff" fill-opacity=".9"/><circle cx="299.0" cy="98.8" r="12" fill="#5837e0" fill-opacity=".9"/><circle cx="296.8" cy="225.1" r="5" fill="#6d4aff" fill-opacity=".9"/><circle cx="183.4" cy="237.5" r="8.5" fill="#5837e0" fill-opacity=".9"/><circle cx="59.8" cy="301.1" r="12" fill="#6d4aff" fill-opacity=".9"/><circle cx="375.6" cy="73.2" r="5" fill="#5837e0" fill-opacity=".9"/><circle cx="454.4" cy="262.2" r="8.5" fill="#6d4aff" fill-opacity=".9"/><circle cx="526.7" cy="294.6" r="12" fill="#5837e0" fill-opacity=".9"/><circle cx="120.6" cy="58.1" r="5" fill="#6d4aff" fill-opacity=".9"/>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">AI &amp; MLOps</span>
+    <h3 class="card-title">RAG, Prompting, and Building Applications on LLMs: The Practitioner&#39;s Guide</h3>
+    <p class="card-desc">Retrieval-augmented generation, system prompts, few-shot examples, chain-of-thought, structured output, and the engineering patterns that make LLM applications reliable in production.</p>
+    <div class="card-meta"><time datetime="2026-08-25">25 Aug 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
+  </div>
+</a>
+<a class="card" data-card data-topics="|AI &amp; MLOps|Enterprise AI|Fundamentals|" data-search="putting ai in production: what enterprise ai deployment actually requires model serving, latency, cost, monitoring, governance, and the operational discipline that separates a proof of concept from an ai system that runs reliably at enterprise scale. ai &amp; mlops enterprise ai fundamentals" data-topic="AI &amp; MLOps" href="/insights/aiml-production-ai/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgaimlproducti" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6d4aff" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#5837e0" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#6d4aff" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgaimlproducti)"/>
+  <rect x="338" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.12" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 108 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.51" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="86" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.36" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 172 H212" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.51" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="464" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.14" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="338" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.22" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 236 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">AI &amp; MLOps</span>
+    <h3 class="card-title">Putting AI in Production: What Enterprise AI Deployment Actually Requires</h3>
+    <p class="card-desc">Model serving, latency, cost, monitoring, governance, and the operational discipline that separates a proof of concept from an AI system that runs reliably at enterprise scale.</p>
+    <div class="card-meta"><time datetime="2026-08-11">11 Aug 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
+  </div>
+</a></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap-narrow cta-panel">
+      <h2 class="h2">Working on this in production?</h2>
+      <p class="lede" style="margin-top:.7rem">We do this work directly alongside engineering teams — architecture review, migration, and hands-on enablement.</p>
+      <div class="row" style="margin-top:1.4rem">
+        <a class="btn" href="/contact/">Engage engineering <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="btn btn-ghost" href="/services/">See what we do</a>
+      </div>
+    </div>
+  </section>
+</article>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="grid g-4" style="gap:2rem">
+      <div>
+        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem">
+          <img src="/images/ajna-logo.png" alt="" width="32" height="32">
+          <span class="brand-name">Ajna<span style="color:#6f9bff">CS</span></span>
+        </a>
+        <p style="font-size:.88rem;line-height:1.65;color:#9fb0d0;max-width:30ch">
+          Specialised engineering partner for enterprise architecture, AI &amp; MLOps, and technical enablement.
+        </p>
+        <div class="social" style="margin-top:1.1rem">
+          <a href="https://www.youtube.com/@TechKnowen" rel="noopener" aria-label="YouTube"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 12s0-3.8-.5-5.6a2.9 2.9 0 0 0-2-2C18.7 4 12 4 12 4s-6.7 0-8.5.4a2.9 2.9 0 0 0-2 2C1 8.2 1 12 1 12s0 3.8.5 5.6a2.9 2.9 0 0 0 2 2C5.3 20 12 20 12 20s6.7 0 8.5-.4a2.9 2.9 0 0 0 2-2C23 15.8 23 12 23 12zM9.8 15.4V8.6l5.9 3.4z"/></svg></a>
+          <a href="https://techknowen.com" rel="noopener" aria-label="TechKnowen blog"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 3h16v3H4zm0 5h16v13l-8-4-8 4z"/></svg></a>
+          <a href="/feed.xml" aria-label="RSS feed"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="6.2" cy="17.8" r="2.2"/><path d="M4 10.2v3a6.6 6.6 0 0 1 6.6 6.6h3A9.6 9.6 0 0 0 4 10.2zM4 4v3c7.2 0 13 5.8 13 13h3C20 11.2 12.8 4 4 4z"/></svg></a>
+        </div>
+      </div>
+      <div>
+        <h4>Services</h4>
+        <ul>
+          <li><a href="/services/#architecture">Enterprise architecture</a></li>
+          <li><a href="/services/#ai">AI &amp; MLOps</a></li>
+          <li><a href="/services/#training">Technical enablement</a></li>
+          <li><a href="/case-studies/">Case studies</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Insights</h4>
+        <ul>
+          <li><a href="/insights/">All articles</a></li>
+          <li><a href="/series/">Series</a></li>
+          <li><a href="/topics/">Topics</a></li>
+          <li><a href="/notes/">Personal notes</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
+          <li><a href="/contact/">Start an engagement</a></li>
+          <li><a href="/about/">About</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span id="yr">2026</span> Ajna Consulting Services. All rights reserved.</span>
+      <span style="display:flex;gap:1.2rem"><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a></span>
+    </div>
+  </div>
+</footer>
+<script src="/assets/js/site.js" defer></script>
+</body>
+</html>

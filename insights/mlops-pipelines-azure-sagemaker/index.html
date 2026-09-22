@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MLOps Pipelines That Actually Work: Lessons from Azure ML and SageMaker | Ajna CS</title>
+<meta name="description" content="Training a model is the easy part. Getting it into production reliably, keeping it there, and knowing when it&#39;s degrading — that&#39;s the engineering. Here&#39;s…">
+<meta name="author" content="Chandra Lanka">
+<link rel="canonical" href="https://ajnacs.com/insights/mlops-pipelines-azure-sagemaker/">
+<meta name="robots" content="index, follow, max-image-preview:large">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Ajna Consulting Services">
+<meta property="og:title" content="MLOps Pipelines That Actually Work: Lessons from Azure ML and SageMaker">
+<meta property="og:description" content="Training a model is the easy part. Getting it into production reliably, keeping it there, and knowing when it&#39;s degrading — that&#39;s the engineering. Here&#39;s…">
+<meta property="og:url" content="https://ajnacs.com/insights/mlops-pipelines-azure-sagemaker/">
+<meta property="og:image" content="https://ajnacs.com/assets/og/insights-mlops-pipelines-azure-sagemaker.svg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="MLOps Pipelines That Actually Work: Lessons from Azure ML and SageMaker">
+<meta name="twitter:description" content="Training a model is the easy part. Getting it into production reliably, keeping it there, and knowing when it&#39;s degrading — that&#39;s the engineering. Here&#39;s…">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/insights-mlops-pipelines-azure-sagemaker.svg">
+
+<link rel="icon" href="/images/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="/images/ajna-logo.png">
+<meta name="theme-color" content="#0a1020">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="/assets/css/site.css">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<script>
+/* Set the theme before first paint so the page never flashes the wrong one. */
+(function(){try{var t=localStorage.getItem('acs-theme');
+if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"MLOps Pipelines That Actually Work: Lessons from Azure ML and SageMaker","description":"Training a model is the easy part. Getting it into production reliably, keeping it there, and knowing when it's degrading — that's the engineering. Here's what I've found building MLOps pipelines on Azure ML and AWS SageMaker.","datePublished":"2024-12-19","dateModified":"2024-12-19","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/mlops-pipelines-azure-sagemaker/","image":"https://ajnacs.com/assets/og/insights-mlops-pipelines-azure-sagemaker.svg","keywords":"AI & MLOps, Cloud Architecture","articleSection":"AI & MLOps","wordCount":1030}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"MLOps Pipelines That Actually Work: Lessons from Azure ML and SageMaker"}]}</script>
+</head>
+<body class="" data-topic="AI &amp; MLOps">
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header" id="siteHeader">
+  <div class="wrap" style="display:flex;align-items:center;width:min(1220px,100% - var(--gutter)*2)">
+    <a class="brand" href="/">
+      <img src="/images/ajna-logo.png" alt="" width="32" height="32">
+      <span class="brand-name">Ajna<span>CS</span></span>
+    </a>
+    <nav class="nav" id="nav" aria-label="Primary">
+      <a href="/services/">Services</a>
+      <a href="/insights/" aria-current="page">Insights</a>
+      <a href="/series/">Series</a>
+      <a href="/case-studies/">Case studies</a>
+      <a href="/about/">About</a>
+      <a class="btn btn-sm" href="/contact/" style="margin-left:.4rem">Engage engineering</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn" id="themeBtn" type="button" aria-label="Switch to dark mode" aria-pressed="false"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg></button>
+      <button class="icon-btn nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+
+<div class="read-bar" aria-hidden="true"><span id="readBar"></span></div>
+<article class="article">
+  <header class="article-head">
+    <div class="wrap-narrow">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a> <span aria-hidden="true">/</span>
+        <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
+        <span>AI &amp; MLOps</span>
+      </nav>
+      <h1 class="h1">MLOps Pipelines That Actually Work: Lessons from Azure ML and SageMaker</h1>
+      <p class="lede" style="margin-top:1rem">Training a model is the easy part. Getting it into production reliably, keeping it there, and knowing when it&#39;s degrading — that&#39;s the engineering. Here&#39;s what I&#39;ve found building MLOps pipelines on Azure ML and AWS SageMaker.</p>
+      <div class="article-meta">
+        <span class="chip">AI &amp; MLOps</span>
+        <time datetime="2024-12-19">19 Dec 2024</time>
+        <span class="dot"></span><span>5 min read</span>
+        <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="article-hero wrap-narrow" data-topic="AI &amp; MLOps"><svg viewBox="0 0 1200 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgmlopspipelin" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6d4aff" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#5837e0" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#6d4aff" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="420" fill="url(#bgmlopspipelin)"/>
+  <rect x="72" y="270.6" width="30" height="37.4" rx="6" fill="#5837e0" fill-opacity="0.40"/><rect x="128" y="248.2" width="30" height="59.8" rx="6" fill="#6d4aff" fill-opacity="0.45"/><rect x="184" y="192.6" width="30" height="115.4" rx="6" fill="#6d4aff" fill-opacity="0.56"/><rect x="240" y="233.8" width="30" height="74.2" rx="6" fill="#5837e0" fill-opacity="0.48"/><rect x="296" y="124.6" width="30" height="183.4" rx="6" fill="#6d4aff" fill-opacity="0.71"/><rect x="352" y="182.6" width="30" height="125.4" rx="6" fill="#6d4aff" fill-opacity="0.59"/><rect x="408" y="138.4" width="30" height="169.6" rx="6" fill="#5837e0" fill-opacity="0.68"/><rect x="464" y="156.5" width="30" height="151.5" rx="6" fill="#6d4aff" fill-opacity="0.64"/><rect x="520" y="148.3" width="30" height="159.7" rx="6" fill="#6d4aff" fill-opacity="0.66"/><line x1="52" y1="308" x2="600" y2="308" stroke="#6d4aff" stroke-opacity=".42" stroke-width="1.4"/>
+</svg></div>
+
+  <div class="wrap-narrow article-grid">
+    <nav class="toc" aria-label="On this page">
+  <p class="toc-title">On this page</p>
+  <ol><li><a href="#the-five-components-that-matter">The five components that matter</a></li><li><a href="#azure-ml-what-it-does-well">Azure ML: what it does well</a></li><li><a href="#sagemaker-what-it-does-well">SageMaker: what it does well</a></li><li><a href="#what-neither-platform-handles-well-out-of-the-box">What neither platform handles well out of the box</a></li><li><a href="#the-monitoring-gap-that-bites-everyone">The monitoring gap that bites everyone</a></li><li><a href="#the-practical-recommendation">The practical recommendation</a></li></ol>
+</nav>
+    <div class="prose">
+<p>There&#39;s a version of ML engineering that stops at model accuracy. Build the model, hit the target metric, hand it to someone else to &quot;deploy&quot;. That workflow produces models that make it to production once and are never touched again — until they silently degrade and someone notices six months later that the predictions have been wrong.</p>
+<p>MLOps exists to close that loop. Here&#39;s what the loop actually looks like when it&#39;s working.</p>
+<hr>
+<h2 id="the-five-components-that-matter">The five components that matter</h2>
+<p>Before getting into platform specifics: the components of a working MLOps pipeline don&#39;t change much regardless of what platform you&#39;re on.</p>
+<ol>
+<li><strong>Data pipeline</strong> — ingesting, validating, and transforming data for training and inference. If your data is wrong, everything downstream is wrong.</li>
+<li><strong>Training pipeline</strong> — reproducible, parameterised, tracked. Any training run should be reproducible from its logged parameters.</li>
+<li><strong>Model registry</strong> — a versioned store of trained models with metadata (training date, dataset version, metrics, who approved it).</li>
+<li><strong>Deployment pipeline</strong> — the path from model registry to serving endpoint, with appropriate testing gates.</li>
+<li><strong>Monitoring</strong> — tracking model performance in production, detecting drift, alerting when intervention is needed.</li>
+</ol>
+<p>Most teams have 1 and 2. Teams with mature MLOps have all five.</p>
+<hr>
+<h2 id="azure-ml-what-it-does-well">Azure ML: what it does well</h2>
+<p>Azure ML is a complete MLOps platform with deep integration into the Azure ecosystem. The things I&#39;ve found it does particularly well:</p>
+<p><strong>Pipelines as YAML.</strong> Azure ML pipelines are defined declaratively in YAML, versioned in Git, and triggered via Azure DevOps or GitHub Actions. This makes ML pipelines first-class citizens of your existing CI/CD practices rather than something separate.</p>
+<p><strong>Managed endpoints.</strong> Deploying a registered model to a real-time or batch endpoint is straightforward. The platform handles the compute, scaling, and blue/green deployment. You define the scoring script and the environment; Azure handles the rest.</p>
+<p><strong>Data versioning.</strong> Azure ML datasets support versioning natively. This means you can pin a training run to a specific version of your dataset and reproduce it exactly later.</p>
+<p><strong>The model registry.</strong> Straightforward, well-integrated, supports tagging and metadata. You can promote models through environments (dev → staging → production) with approval gates.</p>
+<p><strong>Where it gets complicated:</strong> Azure ML&#39;s compute configuration can be opaque, and debugging failures in remote training jobs is harder than it should be. Local development that mirrors cloud behavior requires careful setup. The SDK has also changed significantly across versions — documentation sometimes reflects older patterns.</p>
+<hr>
+<h2 id="sagemaker-what-it-does-well">SageMaker: what it does well</h2>
+<p>AWS SageMaker is broader — it encompasses everything from data labelling to model training to inference. The parts I&#39;ve found most useful in production:</p>
+<p><strong>SageMaker Pipelines.</strong> Similar to Azure ML pipelines in concept, defined in Python using the SageMaker SDK. More flexible than YAML-based definitions but requires more code.</p>
+<p><strong>Training jobs.</strong> SageMaker&#39;s managed training infrastructure handles distributed training well. The spot instance integration for training jobs is genuinely useful for cost — training jobs that can tolerate interruption are significantly cheaper.</p>
+<p><strong>Model Monitor.</strong> The built-in monitoring capability detects data drift and model quality degradation. It runs as a scheduled job, compares current inference data against a baseline, and generates reports. Not perfect, but a reasonable starting point for production monitoring.</p>
+<p><strong>Batch Transform.</strong> For offline batch inference on large datasets, SageMaker&#39;s batch transform is simpler than running your own batch processing infrastructure.</p>
+<p><strong>Where it gets complicated:</strong> SageMaker&#39;s breadth is also its complexity. There are multiple ways to do most things, and the right path isn&#39;t always obvious. The IAM configuration is genuinely intricate — getting permissions right across SageMaker, S3, ECR, and KMS takes more effort than it should. The local SageMaker runtime helps but doesn&#39;t fully mirror the cloud environment.</p>
+<hr>
+<h2 id="what-neither-platform-handles-well-out-of-the-box">What neither platform handles well out of the box</h2>
+<p><strong>Feature stores across training and inference.</strong> Both platforms have feature store offerings (Azure ML feature store, SageMaker Feature Store), but in my experience they require significant investment to use effectively and the consistency guarantees between training-time and inference-time features are something you have to think through carefully.</p>
+<p><strong>A/B testing for models.</strong> Routing a percentage of production traffic to a new model version alongside the current one, measuring performance on real traffic, and automatically promoting or rolling back — this exists conceptually on both platforms but requires custom implementation to do properly.</p>
+<p><strong>Explaining model decisions.</strong> Both platforms have integrations with explainability tools (SHAP, LIME), but wiring these into a production pipeline where you can audit the decision on a specific prediction is still significant custom work.</p>
+<p><strong>Cross-team governance.</strong> Who can promote a model to production? What approvals are needed? What happens when a model in production needs to be rolled back? These governance questions aren&#39;t answered by the platforms — you need to build processes and tooling around them.</p>
+<hr>
+<h2 id="the-monitoring-gap-that-bites-everyone">The monitoring gap that bites everyone</h2>
+<p>The most common MLOps failure mode I&#39;ve encountered: teams invest in training pipelines and deployment pipelines, and then treat production as &quot;done&quot;. The model is deployed. It&#39;s generating predictions. End of story.</p>
+<p>What&#39;s not being tracked: whether the distribution of incoming data has changed relative to the training distribution, whether prediction accuracy has degraded on recent data, whether the model is encountering inputs it wasn&#39;t trained on.</p>
+<p>Model drift is quiet. It doesn&#39;t throw exceptions. It generates subtly wrong answers that only become visible when a business metric eventually degrades or a user complains.</p>
+<p>At a minimum: log a sample of inputs and predictions to a durable store, compute drift metrics on a schedule, and alert when drift metrics cross a threshold. The implementation doesn&#39;t need to be sophisticated — but it does need to exist.</p>
+<hr>
+<h2 id="the-practical-recommendation">The practical recommendation</h2>
+<p>Start with the platform your team already knows. If you&#39;re on Azure, use Azure ML — the integration with your existing Azure infrastructure, DevOps pipelines, and identity management is genuinely valuable. If you&#39;re on AWS, SageMaker gives you enough to build a production-grade pipeline without introducing a separate tool.</p>
+<p>The framework matters less than the discipline: versioned data, tracked experiments, a model registry, deployment gates, and production monitoring. Get these five things working before worrying about anything else.</p>
+<p><em>Building or reviewing an MLOps setup? <a href="/about">Happy to think through specific design questions.</a></em></p>
+
+    </div>
+  </div>
+
+  
+
+  
+
+  <div class="wrap-narrow article-foot">
+    <div class="row" style="gap:.4rem">
+      <a class="chip chip-plain" href="/insights/?topic=AI%20%26%20MLOps">AI &amp; MLOps</a><a class="chip chip-plain" href="/insights/?topic=Cloud%20Architecture">Cloud Architecture</a>
+    </div>
+    <nav class="prevnext" aria-label="More articles">
+      <a href="/insights/redis-production-patterns/"><span>Previous</span><strong>Redis in Production: Patterns That Work and Anti-patterns That Will Break You</strong></a>
+      <a href="/insights/observability-opentelemetry-2026/" class="next"><span>Next</span><strong>Observability with OpenTelemetry: Getting the Three Pillars Working Together</strong></a>
+    </nav>
+  </div>
+
+  <section class="section surface hair" style="margin-top:4rem">
+    <div class="wrap">
+      <p class="eyebrow">Related</p>
+      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|AI &amp; MLOps|Fundamentals|" data-search="neural networks explained: what they are, how they learn, and why they work neurons, layers, weights, activation functions, backpropagation, and gradient descent — the actual mechanics of how a neural network learns from data, explained without the mathematics becoming the obstacle. ai &amp; mlops fundamentals" data-topic="AI &amp; MLOps" href="/insights/aiml-neural-networks/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgaimlneuralne" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6d4aff" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#5837e0" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#6d4aff" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgaimlneuralne)"/>
+  <rect x="86" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.51" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="464" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.45" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="212" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.45" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 172 H338" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.60" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 172 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.40" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="338" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.32" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 236 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.39" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">AI &amp; MLOps</span>
+    <h3 class="card-title">Neural Networks Explained: What They Are, How They Learn, and Why They Work</h3>
+    <p class="card-desc">Neurons, layers, weights, activation functions, backpropagation, and gradient descent — the actual mechanics of how a neural network learns from data, explained without the mathematics becoming the obstacle.</p>
+    <div class="card-meta"><time datetime="2026-09-04">4 Sept 2026</time><span class="dot"></span><span>3 min read</span><span class="dot"></span><span>Series</span></div>
+  </div>
+</a>
+<a class="card" data-card data-topics="|AI &amp; MLOps|Enterprise AI|Fundamentals|" data-search="rag, prompting, and building applications on llms: the practitioner&#39;s guide retrieval-augmented generation, system prompts, few-shot examples, chain-of-thought, structured output, and the engineering patterns that make llm applications reliable in production. ai &amp; mlops enterprise ai fundamentals" data-topic="AI &amp; MLOps" href="/insights/aiml-rag-and-prompting/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgaimlragandpr" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6d4aff" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#5837e0" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#6d4aff" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgaimlragandpr)"/>
+  <line x1="558.0" y1="238.5" x2="507.0" y2="307.9" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="558.0" y1="238.5" x2="533.9" y2="248.6" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="558.0" y1="238.5" x2="454.4" y2="262.2" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="558.0" y1="238.5" x2="526.7" y2="294.6" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="277.7" y1="133.5" x2="137.5" y2="170.9" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="277.7" y1="133.5" x2="299.0" y2="98.8" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="277.7" y1="133.5" x2="296.8" y2="225.1" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="277.7" y1="133.5" x2="183.4" y2="237.5" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="277.7" y1="133.5" x2="375.6" y2="73.2" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="137.5" y1="170.9" x2="183.4" y2="237.5" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="137.5" y1="170.9" x2="59.8" y2="301.1" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="137.5" y1="170.9" x2="120.6" y2="58.1" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="507.0" y1="307.9" x2="533.9" y2="248.6" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="507.0" y1="307.9" x2="454.4" y2="262.2" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="507.0" y1="307.9" x2="526.7" y2="294.6" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="533.9" y1="248.6" x2="454.4" y2="262.2" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="533.9" y1="248.6" x2="526.7" y2="294.6" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="299.0" y1="98.8" x2="296.8" y2="225.1" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="299.0" y1="98.8" x2="375.6" y2="73.2" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="296.8" y1="225.1" x2="183.4" y2="237.5" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="296.8" y1="225.1" x2="454.4" y2="262.2" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="183.4" y1="237.5" x2="59.8" y2="301.1" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><line x1="454.4" y1="262.2" x2="526.7" y2="294.6" stroke="#6d4aff" stroke-opacity=".28" stroke-width="1.4"/><circle cx="558.0" cy="238.5" r="5" fill="#6d4aff" fill-opacity=".9"/><circle cx="277.7" cy="133.5" r="8.5" fill="#5837e0" fill-opacity=".9"/><circle cx="137.5" cy="170.9" r="12" fill="#6d4aff" fill-opacity=".9"/><circle cx="507.0" cy="307.9" r="5" fill="#5837e0" fill-opacity=".9"/><circle cx="533.9" cy="248.6" r="8.5" fill="#6d4aff" fill-opacity=".9"/><circle cx="299.0" cy="98.8" r="12" fill="#5837e0" fill-opacity=".9"/><circle cx="296.8" cy="225.1" r="5" fill="#6d4aff" fill-opacity=".9"/><circle cx="183.4" cy="237.5" r="8.5" fill="#5837e0" fill-opacity=".9"/><circle cx="59.8" cy="301.1" r="12" fill="#6d4aff" fill-opacity=".9"/><circle cx="375.6" cy="73.2" r="5" fill="#5837e0" fill-opacity=".9"/><circle cx="454.4" cy="262.2" r="8.5" fill="#6d4aff" fill-opacity=".9"/><circle cx="526.7" cy="294.6" r="12" fill="#5837e0" fill-opacity=".9"/><circle cx="120.6" cy="58.1" r="5" fill="#6d4aff" fill-opacity=".9"/>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">AI &amp; MLOps</span>
+    <h3 class="card-title">RAG, Prompting, and Building Applications on LLMs: The Practitioner&#39;s Guide</h3>
+    <p class="card-desc">Retrieval-augmented generation, system prompts, few-shot examples, chain-of-thought, structured output, and the engineering patterns that make LLM applications reliable in production.</p>
+    <div class="card-meta"><time datetime="2026-08-25">25 Aug 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
+  </div>
+</a>
+<a class="card" data-card data-topics="|AI &amp; MLOps|Enterprise AI|Fundamentals|" data-search="putting ai in production: what enterprise ai deployment actually requires model serving, latency, cost, monitoring, governance, and the operational discipline that separates a proof of concept from an ai system that runs reliably at enterprise scale. ai &amp; mlops enterprise ai fundamentals" data-topic="AI &amp; MLOps" href="/insights/aiml-production-ai/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgaimlproducti" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6d4aff" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#5837e0" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#6d4aff" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgaimlproducti)"/>
+  <rect x="338" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.12" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 108 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.51" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="86" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.36" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 172 H212" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.51" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="464" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.14" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="338" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.22" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 236 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">AI &amp; MLOps</span>
+    <h3 class="card-title">Putting AI in Production: What Enterprise AI Deployment Actually Requires</h3>
+    <p class="card-desc">Model serving, latency, cost, monitoring, governance, and the operational discipline that separates a proof of concept from an AI system that runs reliably at enterprise scale.</p>
+    <div class="card-meta"><time datetime="2026-08-11">11 Aug 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
+  </div>
+</a></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap-narrow cta-panel">
+      <h2 class="h2">Working on this in production?</h2>
+      <p class="lede" style="margin-top:.7rem">We do this work directly alongside engineering teams — architecture review, migration, and hands-on enablement.</p>
+      <div class="row" style="margin-top:1.4rem">
+        <a class="btn" href="/contact/">Engage engineering <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="btn btn-ghost" href="/services/">See what we do</a>
+      </div>
+    </div>
+  </section>
+</article>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="grid g-4" style="gap:2rem">
+      <div>
+        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem">
+          <img src="/images/ajna-logo.png" alt="" width="32" height="32">
+          <span class="brand-name">Ajna<span style="color:#6f9bff">CS</span></span>
+        </a>
+        <p style="font-size:.88rem;line-height:1.65;color:#9fb0d0;max-width:30ch">
+          Specialised engineering partner for enterprise architecture, AI &amp; MLOps, and technical enablement.
+        </p>
+        <div class="social" style="margin-top:1.1rem">
+          <a href="https://www.youtube.com/@TechKnowen" rel="noopener" aria-label="YouTube"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 12s0-3.8-.5-5.6a2.9 2.9 0 0 0-2-2C18.7 4 12 4 12 4s-6.7 0-8.5.4a2.9 2.9 0 0 0-2 2C1 8.2 1 12 1 12s0 3.8.5 5.6a2.9 2.9 0 0 0 2 2C5.3 20 12 20 12 20s6.7 0 8.5-.4a2.9 2.9 0 0 0 2-2C23 15.8 23 12 23 12zM9.8 15.4V8.6l5.9 3.4z"/></svg></a>
+          <a href="https://techknowen.com" rel="noopener" aria-label="TechKnowen blog"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 3h16v3H4zm0 5h16v13l-8-4-8 4z"/></svg></a>
+          <a href="/feed.xml" aria-label="RSS feed"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="6.2" cy="17.8" r="2.2"/><path d="M4 10.2v3a6.6 6.6 0 0 1 6.6 6.6h3A9.6 9.6 0 0 0 4 10.2zM4 4v3c7.2 0 13 5.8 13 13h3C20 11.2 12.8 4 4 4z"/></svg></a>
+        </div>
+      </div>
+      <div>
+        <h4>Services</h4>
+        <ul>
+          <li><a href="/services/#architecture">Enterprise architecture</a></li>
+          <li><a href="/services/#ai">AI &amp; MLOps</a></li>
+          <li><a href="/services/#training">Technical enablement</a></li>
+          <li><a href="/case-studies/">Case studies</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Insights</h4>
+        <ul>
+          <li><a href="/insights/">All articles</a></li>
+          <li><a href="/series/">Series</a></li>
+          <li><a href="/topics/">Topics</a></li>
+          <li><a href="/notes/">Personal notes</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
+          <li><a href="/contact/">Start an engagement</a></li>
+          <li><a href="/about/">About</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span id="yr">2026</span> Ajna Consulting Services. All rights reserved.</span>
+      <span style="display:flex;gap:1.2rem"><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a></span>
+    </div>
+  </div>
+</footer>
+<script src="/assets/js/site.js" defer></script>
+</body>
+</html>

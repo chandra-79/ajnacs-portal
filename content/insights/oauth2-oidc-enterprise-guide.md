@@ -1,0 +1,39 @@
+---
+title: "OAuth 2 and OIDC for Architects: The Mental Model That Makes It All Click"
+description: "OAuth is delegation, OIDC is identity on top of it, and most integration confusion comes from blurring the two. The flows that matter in 2026, token handling that survives security review, and the enterprise patterns for services, SPAs, and machine-to-machine."
+date: 2025-01-27
+tags: ["Security", "API Design", "Identity", "Architecture", "Programming"]
+format: article
+---
+
+OAuth has a documentation problem that became an architecture problem: a decade of tutorials teaching deprecated flows, blog posts conflating authentication with authorization, and enterprise systems built on whichever grant type the first Stack Overflow answer mentioned. The result is that "we use OAuth" describes systems ranging from exemplary to quietly broken — and the difference is almost always conceptual, not implementational. Get the mental model right and the specs become obvious; get it wrong and no amount of library correctness saves you.
+
+## The mental model: delegation first, identity second
+
+**OAuth 2 answers exactly one question: how does a user grant an application limited access to resources, without sharing their password?** The cast: the *resource owner* (user), the *client* (the app wanting access), the *authorization server* (issues tokens), and the *resource server* (the API holding the goods). The output is an **access token** — a credential that says "the bearer may do these things" — and critically, it says nothing reliable about *who is currently using the app*. OAuth is a valet key, not an ID card.
+
+**OIDC (OpenID Connect) is the identity layer bolted on top:** same flows, same servers, plus an **ID token** — a signed JWT of claims *about the authentication event* ("this user, authenticated at this time, by this provider, for this client") — and a standard userinfo endpoint. The two-sentence disambiguation that untangles most confused designs: *the ID token tells the client who logged in; the access token tells the API what the bearer may do. ID tokens are never sent to APIs; access tokens are never treated as proof of identity.* Systems that send ID tokens to resource servers, or that "authenticate" users by possession of an access token, are running on category errors — often successfully, until they aren't.
+
+## The flows that matter now (and the graveyard)
+
+The current guidance (consolidated in the OAuth 2.1 effort and years of BCP documents) has pruned the flow zoo to a short list. **Authorization Code + PKCE** is *the* flow for anything with a user present — web apps, SPAs, mobile, desktop. PKCE (a per-request dynamically generated proof, originally for mobile) is now recommended universally, killing the code-interception class of attack; confidential clients (server-side apps) add their client secret, public clients (SPA/mobile) rely on PKCE alone. **Client Credentials** is the flow for machine-to-machine — no user, the client acts as itself (the service account of the OAuth world). **Device Authorization** covers input-constrained devices (TVs, CLIs — "visit this URL, enter this code"). The graveyard, deprecated with cause: the **Implicit flow** (tokens in URL fragments — leaky by design; its SPA use case is fully served by Code+PKCE) and **Resource Owner Password Credentials** (the app collects the user's password — the anti-pattern OAuth exists to eliminate; its persistence in enterprise "API integration" guides is a standing security finding).
+
+For enterprise SSO across your application portfolio, OIDC's Authorization Code flow against a central IdP is the whole story — SAML's remaining territory (legacy B2B federation) shrinks annually, and new builds have little reason to touch it.
+
+## Token mechanics: where implementations earn or lose their security review
+
+**Access tokens: short-lived, always.** Minutes-to-an-hour, because bearer tokens are cash — whoever holds one spends it — and lifetime is your blast-radius dial. Longevity needs belong to **refresh tokens**, which get their own discipline: confidential storage server-side, and for public clients, **rotation** (each use issues a new one and invalidates the old — replay of a rotated token signals theft and should nuke the session family). The emerging upgrade worth tracking into your roadmap: **sender-constrained tokens** (DPoP), which bind tokens to a key so a stolen token alone is useless — moving from "bearer = cash" toward "token = signed check," and increasingly available in mainstream providers.
+
+**Validation is the resource server's job, done right or not at all:** JWTs validated for signature (against the IdP's published keys, with rotation handled), issuer, audience (*the* commonly-skipped check — a token minted for API A must not work at API B; audience scoping is what makes your token estate partitionable), expiry, and required scopes/claims. Opaque tokens trade local validation for introspection calls — fine at moderate scale, a latency/availability coupling to price consciously at high scale.
+
+**Scopes are coarse-grained *consent* language, not your authorization system.** `orders:read` belongs in a scope; "may this user see *this* order" is application authorization (policy engines, row-level checks) that no token can answer. Designs that try to encode fine-grained permissions into scopes produce token bloat, consent-screen absurdity, and staleness bugs (permissions changed, token says otherwise until expiry). Token claims carry *identity and coarse entitlement context*; the resource evaluates *policy* per request.
+
+## Enterprise patterns: the three architectures that recur
+
+**The SPA/backend split** — current best practice has swung firmly toward **Backend-for-Frontend (BFF)**: the browser never holds tokens at all; a thin server-side component runs the code flow, keeps tokens server-side, and gives the SPA a plain session cookie (HttpOnly, SameSite). This deletes the entire token-in-browser problem class (XSS exfiltration of localStorage tokens being the perennial pentest finding) at the cost of a small server component — a trade that looks better every year.
+
+**Service-to-service** — client credentials with per-service identities (never shared "integration user" credentials), scoped audiences per target API, and — inside mature platforms — increasingly delegated to workload identity/mTLS at the mesh layer, with OAuth reserved for crossing trust domains. The anti-pattern to hunt: services passing along *the user's* token to downstream calls it was never audienced for; the correct tool is **token exchange** (RFC 8693) — trading an inbound token for a properly-scoped downstream one, preserving the "on behalf of" chain auditably.
+
+**The central IdP as product** — at enterprise scale, the authorization server (Entra, Okta, Keycloak, et al.) is a tier-zero platform deserving platform treatment: client registrations as reviewed configuration-as-code (every sloppy redirect URI wildcard is a token-theft vector), token lifetime and rotation policies set centrally, structured claims governance (teams *will* request custom claims until tokens are kilobytes — govern like the API surface it is), and logout/revocation flows actually tested, because "we'll just expire in an hour" is an incident-response answer nobody enjoys giving.
+
+The compact summary for the design review: user present → code flow with PKCE; no user → client credentials; browser apps → BFF, tokens out of the browser; access tokens short and audience-scoped; refresh tokens rotated; scopes for consent, policy engines for permissions; ID tokens for the client's eyes only. OAuth's reputation for complexity is mostly the residue of its deprecated past — the current core, understood as *delegation with an identity layer*, is small enough to hold in your head and strict enough to keep you out of the breach reports.

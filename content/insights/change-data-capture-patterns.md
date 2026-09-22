@@ -1,0 +1,39 @@
+---
+title: "Change Data Capture: The Pattern That Quietly Rewired Enterprise Data Flow"
+description: "CDC turns the database's own log into an event stream — powering search indexes, caches, warehouses, and microservice integration without dual-writes or batch lag. How log-based CDC works, the Debezium-shaped architecture, and the consistency fine print."
+date: 2024-10-23
+tags: ["Data Engineering", "Distributed Systems", "Integration"]
+format: article
+---
+
+Every enterprise data architecture eventually faces the same shape of problem: the operational database holds the truth, and a growing crowd of other systems — the search index, the cache, the warehouse, the fraud model, the notification service — need to *know when the truth changes*. The historical answers all had famous flaws: dual-writes from the application (the atomicity lie: one write succeeds, the other doesn't, the systems drift — the exact dual-write problem the outbox pattern exists for), polling queries ("changes since last check" — lag, load, and missed hard deletes), and nightly batch ETL (a day of staleness as a permanent feature). Change Data Capture is the answer that won: **read the database's own replication log — the write-ahead log that already records every committed change, in order — and publish it as a stream.**
+
+## Why log-based CDC is the right trick
+
+The transaction log is the one place where every change *provably* appears, exactly as committed, in commit order, with no cooperation required from application code. Tapping it (Postgres logical decoding, MySQL binlog, Oracle redo-mining, SQL Server CDC — every serious engine exposes a mechanism) gives properties none of the alternatives can offer simultaneously: **completeness** (every insert, update, and delete — including the deletes polling can't see), **low latency** (changes stream in near-real-time, not at batch cadence), **zero application changes** (legacy systems that nobody dares modify become event publishers without knowing it — the reason CDC is the workhorse of legacy modernization and strangler-pattern migrations), and **negligible source load** (log reading, unlike polling, doesn't compete with production queries).
+
+The canonical architecture is Debezium-shaped whether or not it's literally Debezium: a connector per source database reads the log and publishes change events (before/after images, operation type, transaction metadata) to Kafka-class topics — one topic per table, keyed by primary key — where any number of consumers independently build what they need: the Elasticsearch indexer maintaining the search projection, the cache invalidator, the warehouse loader (streaming into the lakehouse in minutes instead of nightly), the analytics enricher, the microservice keeping its local read model current. The source system remains blissfully unaware; consumers scale and evolve independently — which is exactly the log-semantics promise from messaging practice, with the database itself as the producer.
+
+## The fine print: what CDC consumers must understand
+
+CDC's power comes with semantics that bite the unprepared:
+
+**Initial state plus changes.** The stream starts *now*; consumers also need *history* — so every CDC pipeline pairs an initial **snapshot** (a consistent read of existing data, emitted as synthetic events) with the ongoing log tail, and the handoff between them must be seamless (the tooling handles this; operators must understand it, especially for re-snapshots after schema surgery or consumer rebuilds — incremental snapshot capabilities have made "re-bootstrap this table without stopping the stream" routine, and you'll need it).
+
+**At-least-once, ordered per key.** The usual weather: duplicates on connector restarts (consumers idempotent, as ever — the upsert-by-primary-key consumer is naturally so), ordering guaranteed within a key/partition but not across tables — which matters because…
+
+**Transactions arrive dismembered.** A source transaction touching three tables becomes events on three topics with no atomic delivery; consumers see intermediate states (the order-header event before its line-items). For most projections (search, cache, analytics) this eventual convergence is fine; for consumers needing transactional coherence, the metadata exists (transaction markers) to reassemble — at real complexity cost. Design consumers to converge per-key rather than demanding cross-table atomicity, and the problem mostly dissolves.
+
+**Schema changes ride the stream.** ALTER TABLE at the source becomes schema evolution downstream — the schema-registry-and-compatibility-rules discipline from messaging governance, mandatory here because the "producer" is a DBA's migration script. The expand/contract habits pay off doubly: additive-first schema changes keep CDC consumers unbroken by construction.
+
+**And deletes deserve explicit design:** the tombstone event (and its retention/compaction interplay in Kafka) is how downstream systems learn to forget — the projection that never processes deletes grows a graveyard of ghost records, discovered during the compliance audit.
+
+## CDC vs the outbox: complementary, not competing
+
+A recurring architecture confusion worth settling: CDC captures *what changed in the tables*; the **outbox pattern** captures *what the application meant* — domain events with intention ("OrderPlaced", with its curated payload) written transactionally alongside the state change, then relayed (often *by* CDC, tailing the outbox table — the patterns compose). The placement rule: **table-level CDC for data integration** (projections, replication, analytics — consumers that want the data), **outbox for domain integration** (consumers that want the business event, decoupled from your schema — because raw CDC events *are* your schema, and publishing them to other teams couples every consumer to your table design; the anti-corruption transform or the outbox restores the boundary). Estates that skip this distinction end up with forty consumers parsing an internal table's before/after images, and a database schema that can never change again — the coupling CDC was supposed to prevent, reintroduced at the data layer.
+
+## Running it: the operational vitals
+
+CDC pipelines are production infrastructure with a distinctive failure physics: **replication-slot/log-retention pressure** (a stalled connector means the source database retains log indefinitely — the Postgres replication slot that quietly fills the disk is the classic CDC incident; alert on slot lag and log retention *at the source*, because the failure lands there, not downstream), **end-to-end lag** as the product SLO (change-committed to projection-updated, per consumer — dashboard it, alert on it, publish it so downstream teams design against honest numbers), **connector high-availability and exactly-once-ish resumption** (offsets, snapshots, and failover tested, not assumed), and **the rebuild path as a rehearsed operation** — the whole architecture's superpower is that projections are *derived* and therefore rebuildable (re-snapshot, replay, cut over); estates that have never rebuilt a projection own untested backups, same genre.
+
+The strategic summary: CDC converts the database's private diary into the estate's public circulatory system — real-time, complete, application-invisible — and it has quietly become the default answer to "how do systems find out what happened" wherever event-driven rewrites are impractical, which is most places. Treat the stream as an API (schema governance, coupling discipline, outbox where intention matters), treat the pipeline as tier-one infrastructure (lag SLOs, slot alarms, rehearsed rebuilds), and the pattern pays compounding dividends: every new consumer of change — and there's always a new consumer of change — becomes a subscription instead of a project.

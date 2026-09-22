@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Oracle DB Performance Tuning: The 10 Things That Actually Move the Needle | Ajna CS</title>
+<meta name="description" content="Twenty years of Oracle DB work distilled into the tuning decisions that produce real, measurable improvements — and the ones that look good on paper but do…">
+<meta name="author" content="Chandra Lanka">
+<link rel="canonical" href="https://ajnacs.com/insights/oracle-db-performance-tuning/">
+<meta name="robots" content="index, follow, max-image-preview:large">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Ajna Consulting Services">
+<meta property="og:title" content="Oracle DB Performance Tuning: The 10 Things That Actually Move the Needle">
+<meta property="og:description" content="Twenty years of Oracle DB work distilled into the tuning decisions that produce real, measurable improvements — and the ones that look good on paper but do…">
+<meta property="og:url" content="https://ajnacs.com/insights/oracle-db-performance-tuning/">
+<meta property="og:image" content="https://ajnacs.com/assets/og/insights-oracle-db-performance-tuning.svg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Oracle DB Performance Tuning: The 10 Things That Actually Move the Needle">
+<meta name="twitter:description" content="Twenty years of Oracle DB work distilled into the tuning decisions that produce real, measurable improvements — and the ones that look good on paper but do…">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/insights-oracle-db-performance-tuning.svg">
+
+<link rel="icon" href="/images/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="/images/ajna-logo.png">
+<meta name="theme-color" content="#0a1020">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="/assets/css/site.css">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<script>
+/* Set the theme before first paint so the page never flashes the wrong one. */
+(function(){try{var t=localStorage.getItem('acs-theme');
+if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Oracle DB Performance Tuning: The 10 Things That Actually Move the Needle","description":"Twenty years of Oracle DB work distilled into the tuning decisions that produce real, measurable improvements — and the ones that look good on paper but don't.","datePublished":"2025-04-18","dateModified":"2025-04-18","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/oracle-db-performance-tuning/","image":"https://ajnacs.com/assets/og/insights-oracle-db-performance-tuning.svg","keywords":"Data Engineering, Oracle, Performance","articleSection":"Data Engineering","wordCount":921}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Oracle DB Performance Tuning: The 10 Things That Actually Move the Needle"}]}</script>
+</head>
+<body class="" data-topic="Data Engineering">
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header" id="siteHeader">
+  <div class="wrap" style="display:flex;align-items:center;width:min(1220px,100% - var(--gutter)*2)">
+    <a class="brand" href="/">
+      <img src="/images/ajna-logo.png" alt="" width="32" height="32">
+      <span class="brand-name">Ajna<span>CS</span></span>
+    </a>
+    <nav class="nav" id="nav" aria-label="Primary">
+      <a href="/services/">Services</a>
+      <a href="/insights/" aria-current="page">Insights</a>
+      <a href="/series/">Series</a>
+      <a href="/case-studies/">Case studies</a>
+      <a href="/about/">About</a>
+      <a class="btn btn-sm" href="/contact/" style="margin-left:.4rem">Engage engineering</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn" id="themeBtn" type="button" aria-label="Switch to dark mode" aria-pressed="false"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg></button>
+      <button class="icon-btn nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+
+<div class="read-bar" aria-hidden="true"><span id="readBar"></span></div>
+<article class="article">
+  <header class="article-head">
+    <div class="wrap-narrow">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a> <span aria-hidden="true">/</span>
+        <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
+        <span>Data Engineering</span>
+      </nav>
+      <h1 class="h1">Oracle DB Performance Tuning: The 10 Things That Actually Move the Needle</h1>
+      <p class="lede" style="margin-top:1rem">Twenty years of Oracle DB work distilled into the tuning decisions that produce real, measurable improvements — and the ones that look good on paper but don&#39;t.</p>
+      <div class="article-meta">
+        <span class="chip">Data Engineering</span>
+        <time datetime="2025-04-18">18 Apr 2025</time>
+        <span class="dot"></span><span>4 min read</span>
+        <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="article-hero wrap-narrow" data-topic="Data Engineering"><svg viewBox="0 0 1200 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgoracledbperf" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0891b2" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#076f87" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#0891b2" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="420" fill="url(#bgoracledbperf)"/>
+  <rect x="183.5" y="78" width="300.0" height="34" rx="8"
+      fill="#076f87" fill-opacity="0.16"
+      stroke="#0891b2" stroke-opacity=".45" stroke-width="1.2"/><line x1="320" y1="112" x2="320" y2="134" stroke="#0891b2" stroke-opacity=".4" stroke-width="1.4"/><rect x="175.1" y="134" width="266.0" height="34" rx="8"
+      fill="#0891b2" fill-opacity="0.29"
+      stroke="#0891b2" stroke-opacity=".45" stroke-width="1.2"/><line x1="320" y1="168" x2="320" y2="190" stroke="#0891b2" stroke-opacity=".4" stroke-width="1.4"/><rect x="184.1" y="190" width="232.0" height="34" rx="8"
+      fill="#076f87" fill-opacity="0.42"
+      stroke="#0891b2" stroke-opacity=".45" stroke-width="1.2"/><line x1="320" y1="224" x2="320" y2="246" stroke="#0891b2" stroke-opacity=".4" stroke-width="1.4"/><rect x="225.6" y="246" width="198.0" height="34" rx="8"
+      fill="#0891b2" fill-opacity="0.55"
+      stroke="#0891b2" stroke-opacity=".45" stroke-width="1.2"/>
+</svg></div>
+
+  <div class="wrap-narrow article-grid">
+    <nav class="toc" aria-label="On this page">
+  <p class="toc-title">On this page</p>
+  <ol><li><a href="#1-identify-the-top-sql-statements-by-resource-consumption-fi">1. Identify the Top SQL Statements by Resource Consumption First</a></li><li><a href="#2-use-dbmsxplandisplaycursor-not-explain-plan">2. Use DBMS_XPLAN.DISPLAY_CURSOR, Not EXPLAIN PLAN</a></li><li><a href="#3-index-design-is-query-specific-not-table-specific">3. Index Design Is Query-Specific, Not Table-Specific</a></li><li><a href="#4-statistics-matter-more-than-most-people-realise">4. Statistics Matter More Than Most People Realise</a></li><li><a href="#5-bind-variables-for-everything-that-runs-more-than-once">5. Bind Variables for Everything That Runs More Than Once</a></li><li><a href="#6-sga-sizing-memory-is-not-the-first-answer">6. SGA Sizing: Memory Is Not the First Answer</a></li><li><a href="#7-redo-log-sizing-for-write-heavy-workloads">7. Redo Log Sizing for Write-Heavy Workloads</a></li><li><a href="#8-partitioning-for-large-tables-with-range-based-queries">8. Partitioning for Large Tables with Range-Based Queries</a></li><li><a href="#9-awr-snapshots-are-non-negotiable-in-production">9. AWR Snapshots Are Non-Negotiable in Production</a></li><li><a href="#10-wait-event-analysis-what-is-the-database-actually-waiting">10. Wait Event Analysis: What Is the Database Actually Waiting For?</a></li></ol>
+</nav>
+    <div class="prose">
+<p>Oracle DB performance tuning has a reputation for being arcane — and parts of it are. But in my experience, the improvements that actually move the needle on production workloads come from a small set of decisions that are well-established, repeatable, and don&#39;t require deep specialisation to implement.</p>
+<p>Twenty years and a significant number of production Oracle databases later, here are the ten things I keep coming back to.</p>
+<h2 id="1-identify-the-top-sql-statements-by-resource-consumption-fi">1. Identify the Top SQL Statements by Resource Consumption First</h2>
+<aside class="keyfig">
+  <p class="keyfig-label">Key figure</p>
+  <p class="keyfig-text">Statistics older than <b>24 hours</b> for high-change tables are often the root cause when performance degrades after batch processing.</p>
+</aside>
+<p>Before any other tuning activity, run an AWR (Automatic Workload Repository) report and identify the top SQL statements by CPU, elapsed time, physical reads, and logical reads. Ninety percent of performance problems in production Oracle databases come from fewer than twenty SQL statements.</p>
+<p>Fix the top 10 before touching any configuration parameter. Nothing else has as high a return per unit of effort.</p>
+<pre><code class="language-sql">SELECT * FROM (
+    SELECT sql_text, executions,
+           elapsed_time/1000000 elapsed_secs,
+           cpu_time/1000000 cpu_secs,
+           buffer_gets
+    FROM v$sql
+    ORDER BY elapsed_time DESC
+) WHERE ROWNUM &lt;= 20;
+</code></pre>
+<h2 id="2-use-dbmsxplandisplaycursor-not-explain-plan">2. Use DBMS_XPLAN.DISPLAY_CURSOR, Not EXPLAIN PLAN</h2>
+<p><code>EXPLAIN PLAN</code> shows you what the optimiser intends to do. <code>DBMS_XPLAN.DISPLAY_CURSOR</code> shows you what it actually did — including cardinality estimates and actual row counts. The gap between estimated and actual cardinality is where most performance problems originate.</p>
+<p>Always use DISPLAY_CURSOR for performance analysis. The estimated plan can diverge significantly from the execution plan under real workload conditions.</p>
+<h2 id="3-index-design-is-query-specific-not-table-specific">3. Index Design Is Query-Specific, Not Table-Specific</h2>
+<p>The most common indexing mistake: indexing columns in isolation rather than query patterns.</p>
+<p>Composite indexes should match query predicates in the order they&#39;re most selective. A query filtering on <code>(status, created_date)</code> where <code>status</code> has 5 distinct values and <code>created_date</code> has millions performs better with a composite index <code>(status, created_date)</code> than with separate indexes on each column.</p>
+<p>The second most common mistake: too many indexes on high-write tables. Every index is a write overhead. On tables with high insert/update rates, index maintenance cost can exceed query benefit.</p>
+<h2 id="4-statistics-matter-more-than-most-people-realise">4. Statistics Matter More Than Most People Realise</h2>
+<p>The CBO (Cost-Based Optimiser) makes execution plan decisions based on object statistics. Stale statistics produce bad execution plans. This is behind a larger fraction of performance regressions than any configuration issue.</p>
+<p>For most workloads, automated statistics collection is sufficient. For tables with non-uniform data distributions or frequent bulk loads, manual statistics collection with appropriate sample sizes and histograms is worth the investment.</p>
+<p>Check statistics age with <code>DBA_TAB_STATISTICS.LAST_ANALYZED</code>. Statistics older than 24 hours for high-change tables are often the root cause when performance degrades after batch processing.</p>
+<h2 id="5-bind-variables-for-everything-that-runs-more-than-once">5. Bind Variables for Everything That Runs More Than Once</h2>
+<p>Hard-parsing SQL on every execution consumes significant CPU and creates shared pool contention at scale. This is one of the most common performance killers in Java applications using string concatenation to build SQL.</p>
+<p>Every query that runs more than once should use bind variables — not just for security, but for performance. The shared pool cursor cache reuses execution plans for identical SQL text. Bind variables make SQL identical across different parameter values.</p>
+<p>In Java/Spring applications: parameterised queries and PreparedStatement exclusively. Never concatenate parameters into SQL strings.</p>
+<h2 id="6-sga-sizing-memory-is-not-the-first-answer">6. SGA Sizing: Memory Is Not the First Answer</h2>
+<p>SGA sizing is frequently where Oracle performance tuning conversations start. It&#39;s rarely where the actual problem is.</p>
+<p>The buffer cache should be sized to hold the hot working set of your most frequently accessed data. For OLTP workloads, a buffer cache hit ratio below 95% is a signal to investigate — but investigate whether the reads are necessary before throwing memory at them.</p>
+<p>Shared pool undersizing is more common than buffer cache undersizing in my experience. Shared pool pressure manifests as high library cache latch contention and ORA-04031 errors.</p>
+<h2 id="7-redo-log-sizing-for-write-heavy-workloads">7. Redo Log Sizing for Write-Heavy Workloads</h2>
+<p>Undersized redo log groups cause frequent log switches, which force checkpoints and increase I/O on write-heavy workloads. The target is log switches no more frequently than every 20–30 minutes under normal load.</p>
+<p>Check log switch frequency and increase redo log group sizes if you&#39;re switching more than twice per hour.</p>
+<h2 id="8-partitioning-for-large-tables-with-range-based-queries">8. Partitioning for Large Tables with Range-Based Queries</h2>
+<p>Partition pruning can eliminate entire segments from query evaluation. For tables with tens of millions of rows and queries that always filter on a date or range column, range or interval partitioning produces dramatic performance improvements — often more than index optimization alone.</p>
+<p>The key: partition key must align with the most common query predicate. Partitioning on <code>created_date</code> with queries filtering on <code>customer_id</code> produces no pruning benefit.</p>
+<h2 id="9-awr-snapshots-are-non-negotiable-in-production">9. AWR Snapshots Are Non-Negotiable in Production</h2>
+<p>If you&#39;re running Oracle in production without AWR configured, you&#39;re flying blind. AWR provides the historical performance data required to diagnose intermittent issues, identify regression points after change events, and trend performance over time.</p>
+<p>The default AWR retention of 8 days is often insufficient. Extend to 30+ days for production environments where performance investigations often span business cycles.</p>
+<h2 id="10-wait-event-analysis-what-is-the-database-actually-waiting">10. Wait Event Analysis: What Is the Database Actually Waiting For?</h2>
+<pre><code class="language-sql">SELECT event, total_waits, time_waited, average_wait
+FROM v$system_event
+WHERE wait_class != &#39;Idle&#39;
+ORDER BY time_waited DESC;
+</code></pre>
+<p>Every performance problem manifests as wait events. <code>db file sequential read</code> is I/O-bound single-block reads (index scans, single-row lookups). <code>db file scattered read</code> is multiblock reads (full table scans). <code>log file sync</code> is commit performance. <code>library cache lock</code> is shared pool contention.</p>
+<p>The wait event profile tells you where to look. Everything else is detective work in that direction.</p>
+<hr>
+<p><em>Working on Oracle DB performance challenges or planning a migration? <a href="/contact">Happy to discuss.</a></em></p>
+
+    </div>
+  </div>
+
+  
+
+  
+
+  <div class="wrap-narrow article-foot">
+    <div class="row" style="gap:.4rem">
+      <a class="chip chip-plain" href="/insights/?topic=Data%20Engineering">Data Engineering</a><a class="chip chip-plain" href="/insights/?topic=Oracle">Oracle</a><a class="chip chip-plain" href="/insights/?topic=Performance">Performance</a>
+    </div>
+    <nav class="prevnext" aria-label="More articles">
+      <a href="/insights/ai-training-cluster-networking/"><span>Previous</span><strong>AI Training Cluster Networking: Architecture for Large-Scale Model Training</strong></a>
+      <a href="/insights/os-disk-io-performance/" class="next"><span>Next</span><strong>Disk I/O Performance Analysis on Linux</strong></a>
+    </nav>
+  </div>
+
+  <section class="section surface hair" style="margin-top:4rem">
+    <div class="wrap">
+      <p class="eyebrow">Related</p>
+      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|Architecture|Performance|Engineering Leadership|Capacity Planning|" data-search="back-of-envelope engineering: the estimation skill that filters bad architectures in minutes before the design review argues about frameworks, arithmetic should have eliminated half the options. the latency numbers worth memorizing, the estimation moves — traffic, storage, bandwidth, cost — and worked habits that turn guesses into engineering. architecture performance engineering leadership capacity planning" data-topic="Architecture" href="/insights/back-of-envelope-system-design/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgbackofenvelo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2f6fed" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#1b4fc4" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#2f6fed" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgbackofenvelo)"/>
+  <rect x="156.0" y="78" width="300.0" height="34" rx="8"
+      fill="#1b4fc4" fill-opacity="0.16"
+      stroke="#2f6fed" stroke-opacity=".45" stroke-width="1.2"/><line x1="320" y1="112" x2="320" y2="134" stroke="#2f6fed" stroke-opacity=".4" stroke-width="1.4"/><rect x="170.3" y="134" width="266.0" height="34" rx="8"
+      fill="#2f6fed" fill-opacity="0.29"
+      stroke="#2f6fed" stroke-opacity=".45" stroke-width="1.2"/><line x1="320" y1="168" x2="320" y2="190" stroke="#2f6fed" stroke-opacity=".4" stroke-width="1.4"/><rect x="185.0" y="190" width="232.0" height="34" rx="8"
+      fill="#1b4fc4" fill-opacity="0.42"
+      stroke="#2f6fed" stroke-opacity=".45" stroke-width="1.2"/><line x1="320" y1="224" x2="320" y2="246" stroke="#2f6fed" stroke-opacity=".4" stroke-width="1.4"/><rect x="224.5" y="246" width="198.0" height="34" rx="8"
+      fill="#2f6fed" fill-opacity="0.55"
+      stroke="#2f6fed" stroke-opacity=".45" stroke-width="1.2"/>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">Architecture</span>
+    <h3 class="card-title">Back-of-Envelope Engineering: The Estimation Skill That Filters Bad Architectures in Minutes</h3>
+    <p class="card-desc">Before the design review argues about frameworks, arithmetic should have eliminated half the options. The latency numbers worth memorizing, the estimation moves — traffic, storage, bandwidth, cost — and worked habits that turn guesses into engineering.</p>
+    <div class="card-meta"><time datetime="2026-04-01">1 Apr 2026</time><span class="dot"></span><span>4 min read</span></div>
+  </div>
+</a>
+<a class="card" data-card data-topics="|Java|JVM|Concurrency|Performance|Architecture|" data-search="virtual threads in the enterprise: what changes, what doesn&#39;t, and what breaks java 21&#39;s virtual threads promise massive concurrency without reactive complexity. here&#39;s what actually changes in enterprise services — thread pool math, pinning pitfalls, connection pools as the new bottleneck, and when reactive still wins. java jvm concurrency performance architecture" data-topic="Performance" href="/insights/java-virtual-threads-enterprise/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgjavavirtualt" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ea580c" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#b8450b" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#ea580c" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgjavavirtualt)"/>
+  <line x1="234.6" y1="122.1" x2="170.9" y2="186.9" stroke="#ea580c" stroke-opacity=".28" stroke-width="1.4"/><line x1="234.6" y1="122.1" x2="85.6" y2="160.6" stroke="#ea580c" stroke-opacity=".28" stroke-width="1.4"/><line x1="234.6" y1="122.1" x2="118.4" y2="131.8" stroke="#ea580c" stroke-opacity=".28" stroke-width="1.4"/><line x1="234.6" y1="122.1" x2="145.6" y2="212.7" stroke="#ea580c" stroke-opacity=".28" stroke-width="1.4"/><line x1="234.6" y1="122.1" x2="271.6" y2="237.4" stroke="#ea580c" stroke-opacity=".28" stroke-width="1.4"/><line x1="455.9" y1="141.4" x2="489.0" y2="130.2" stroke="#ea580c" stroke-opacity=".28" stroke-width="1.4"/><line x1="455.9" y1="141.4" x2="494.2" y2="300.2" stroke="#ea580c" stroke-opacity=".28" stroke-width="1.4"/><line x1="455.9" y1="141.4" x2="545.1" y2="191.4" stroke="#ea580c" stroke-opacity=".28" stroke-width="1.4"/><line x1="455.9" y1="141.4" x2="405.1" y2="197.8" stroke="#ea580c" stroke-opacity=".28" stroke-width="1.4"/><line x1="170.9" y1="186.9" x2="85.6" y2="160.6" stroke="#ea580c" stroke-opacity=".28" stroke-width="1.4"/><line x1="170.9" y1="186.9" x2="113.6" y2="294.6" stroke="#ea580c" stroke-opacity=".28" stroke-width="1.4"/><line x1="170.9" y1="186.9" x2="118.4" y2="131.8" stroke="#ea580c" stroke-opacity=".28" stroke-width="1.4"/><line x1="170.9" y1="186.9" x2="145.6" y2="212.7" stroke="#ea580c" stroke-opacity=".28" stroke-width="1.4"/><line x1="170.9" y1="186.9" x2="271.6" y2="237.4" stroke="#ea580c" stroke-opacity=".28" stroke-width="1.4"/><line x1="170.9" y1="186.9" x2="187.8" y2="307.7" stroke="#ea580c" stroke-opacity=".28" stroke-width="1.4"/><line x1="85.6" y1="160.6" x2="113.6" y2="294.6" stroke="#ea580c" stroke-opacity=".28" stroke-width="1.4"/><line x1="85.6" y1="160.6" x2="118.4" y2="131.8" stroke="#ea580c" stroke-opacity=".28" stroke-width="1.4"/><line x1="85.6" y1="160.6" x2="145.6" y2="212.7" stroke="#ea580c" stroke-opacity=".28" stroke-width="1.4"/><line x1="489.0" y1="130.2" x2="545.1" y2="191.4" stroke="#ea580c" stroke-opacity=".28" stroke-width="1.4"/><line x1="489.0" y1="130.2" x2="405.1" y2="197.8" stroke="#ea580c" stroke-opacity=".28" stroke-width="1.4"/><line x1="494.2" y1="300.2" x2="545.1" y2="191.4" stroke="#ea580c" stroke-opacity=".28" stroke-width="1.4"/><line x1="494.2" y1="300.2" x2="405.1" y2="197.8" stroke="#ea580c" stroke-opacity=".28" stroke-width="1.4"/><line x1="113.6" y1="294.6" x2="118.4" y2="131.8" stroke="#ea580c" stroke-opacity=".28" stroke-width="1.4"/><line x1="113.6" y1="294.6" x2="145.6" y2="212.7" stroke="#ea580c" stroke-opacity=".28" stroke-width="1.4"/><line x1="113.6" y1="294.6" x2="187.8" y2="307.7" stroke="#ea580c" stroke-opacity=".28" stroke-width="1.4"/><line x1="118.4" y1="131.8" x2="145.6" y2="212.7" stroke="#ea580c" stroke-opacity=".28" stroke-width="1.4"/><line x1="145.6" y1="212.7" x2="271.6" y2="237.4" stroke="#ea580c" stroke-opacity=".28" stroke-width="1.4"/><line x1="145.6" y1="212.7" x2="187.8" y2="307.7" stroke="#ea580c" stroke-opacity=".28" stroke-width="1.4"/><line x1="271.6" y1="237.4" x2="187.8" y2="307.7" stroke="#ea580c" stroke-opacity=".28" stroke-width="1.4"/><line x1="271.6" y1="237.4" x2="405.1" y2="197.8" stroke="#ea580c" stroke-opacity=".28" stroke-width="1.4"/><line x1="545.1" y1="191.4" x2="405.1" y2="197.8" stroke="#ea580c" stroke-opacity=".28" stroke-width="1.4"/><circle cx="234.6" cy="122.1" r="5" fill="#ea580c" fill-opacity=".9"/><circle cx="455.9" cy="141.4" r="8.5" fill="#b8450b" fill-opacity=".9"/><circle cx="170.9" cy="186.9" r="12" fill="#ea580c" fill-opacity=".9"/><circle cx="85.6" cy="160.6" r="5" fill="#b8450b" fill-opacity=".9"/><circle cx="489.0" cy="130.2" r="8.5" fill="#ea580c" fill-opacity=".9"/><circle cx="494.2" cy="300.2" r="12" fill="#b8450b" fill-opacity=".9"/><circle cx="113.6" cy="294.6" r="5" fill="#ea580c" fill-opacity=".9"/><circle cx="118.4" cy="131.8" r="8.5" fill="#b8450b" fill-opacity=".9"/><circle cx="145.6" cy="212.7" r="12" fill="#ea580c" fill-opacity=".9"/><circle cx="271.6" cy="237.4" r="5" fill="#b8450b" fill-opacity=".9"/><circle cx="187.8" cy="307.7" r="8.5" fill="#ea580c" fill-opacity=".9"/><circle cx="545.1" cy="191.4" r="12" fill="#b8450b" fill-opacity=".9"/><circle cx="405.1" cy="197.8" r="5" fill="#ea580c" fill-opacity=".9"/>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">Performance</span>
+    <h3 class="card-title">Virtual Threads in the Enterprise: What Changes, What Doesn&#39;t, and What Breaks</h3>
+    <p class="card-desc">Java 21&#39;s virtual threads promise massive concurrency without reactive complexity. Here&#39;s what actually changes in enterprise services — thread pool math, pinning pitfalls, connection pools as the new bottleneck, and when reactive still wins.</p>
+    <div class="card-meta"><time datetime="2026-02-24">24 Feb 2026</time><span class="dot"></span><span>5 min read</span></div>
+  </div>
+</a>
+<a class="card" data-card data-topics="|Performance|Capacity Planning|Reliability|Distributed Systems|Architecture|" data-search="queueing theory for engineers: why everything melts at 80% utilization little&#39;s law, the utilization-latency curve, and variability&#39;s tax — the three results that explain most capacity mysteries, from connection pools to on-call load. no calculus required, just the intuitions that make systems behavior predictable. performance capacity planning reliability distributed systems architecture" data-topic="Performance" href="/insights/queueing-theory-for-engineers/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgqueueingtheo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ea580c" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#b8450b" stop-opacity=".22"/>
+    </linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#ea580c" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgqueueingtheo)"/>
+  <rect x="176.6" y="78" width="300.0" height="34" rx="8"
+      fill="#b8450b" fill-opacity="0.16"
+      stroke="#ea580c" stroke-opacity=".45" stroke-width="1.2"/><line x1="320" y1="112" x2="320" y2="134" stroke="#ea580c" stroke-opacity=".4" stroke-width="1.4"/><rect x="172.0" y="134" width="266.0" height="34" rx="8"
+      fill="#ea580c" fill-opacity="0.29"
+      stroke="#ea580c" stroke-opacity=".45" stroke-width="1.2"/><line x1="320" y1="168" x2="320" y2="190" stroke="#ea580c" stroke-opacity=".4" stroke-width="1.4"/><rect x="205.0" y="190" width="232.0" height="34" rx="8"
+      fill="#b8450b" fill-opacity="0.42"
+      stroke="#ea580c" stroke-opacity=".45" stroke-width="1.2"/><line x1="320" y1="224" x2="320" y2="246" stroke="#ea580c" stroke-opacity=".4" stroke-width="1.4"/><rect x="232.5" y="246" width="198.0" height="34" rx="8"
+      fill="#ea580c" fill-opacity="0.55"
+      stroke="#ea580c" stroke-opacity=".45" stroke-width="1.2"/>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">Performance</span>
+    <h3 class="card-title">Queueing Theory for Engineers: Why Everything Melts at 80% Utilization</h3>
+    <p class="card-desc">Little&#39;s Law, the utilization-latency curve, and variability&#39;s tax — the three results that explain most capacity mysteries, from connection pools to on-call load. No calculus required, just the intuitions that make systems behavior predictable.</p>
+    <div class="card-meta"><time datetime="2026-02-03">3 Feb 2026</time><span class="dot"></span><span>4 min read</span></div>
+  </div>
+</a></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap-narrow cta-panel">
+      <h2 class="h2">Working on this in production?</h2>
+      <p class="lede" style="margin-top:.7rem">We do this work directly alongside engineering teams — architecture review, migration, and hands-on enablement.</p>
+      <div class="row" style="margin-top:1.4rem">
+        <a class="btn" href="/contact/">Engage engineering <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="btn btn-ghost" href="/services/">See what we do</a>
+      </div>
+    </div>
+  </section>
+</article>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="grid g-4" style="gap:2rem">
+      <div>
+        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem">
+          <img src="/images/ajna-logo.png" alt="" width="32" height="32">
+          <span class="brand-name">Ajna<span style="color:#6f9bff">CS</span></span>
+        </a>
+        <p style="font-size:.88rem;line-height:1.65;color:#9fb0d0;max-width:30ch">
+          Specialised engineering partner for enterprise architecture, AI &amp; MLOps, and technical enablement.
+        </p>
+        <div class="social" style="margin-top:1.1rem">
+          <a href="https://www.youtube.com/@TechKnowen" rel="noopener" aria-label="YouTube"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 12s0-3.8-.5-5.6a2.9 2.9 0 0 0-2-2C18.7 4 12 4 12 4s-6.7 0-8.5.4a2.9 2.9 0 0 0-2 2C1 8.2 1 12 1 12s0 3.8.5 5.6a2.9 2.9 0 0 0 2 2C5.3 20 12 20 12 20s6.7 0 8.5-.4a2.9 2.9 0 0 0 2-2C23 15.8 23 12 23 12zM9.8 15.4V8.6l5.9 3.4z"/></svg></a>
+          <a href="https://techknowen.com" rel="noopener" aria-label="TechKnowen blog"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 3h16v3H4zm0 5h16v13l-8-4-8 4z"/></svg></a>
+          <a href="/feed.xml" aria-label="RSS feed"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="6.2" cy="17.8" r="2.2"/><path d="M4 10.2v3a6.6 6.6 0 0 1 6.6 6.6h3A9.6 9.6 0 0 0 4 10.2zM4 4v3c7.2 0 13 5.8 13 13h3C20 11.2 12.8 4 4 4z"/></svg></a>
+        </div>
+      </div>
+      <div>
+        <h4>Services</h4>
+        <ul>
+          <li><a href="/services/#architecture">Enterprise architecture</a></li>
+          <li><a href="/services/#ai">AI &amp; MLOps</a></li>
+          <li><a href="/services/#training">Technical enablement</a></li>
+          <li><a href="/case-studies/">Case studies</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Insights</h4>
+        <ul>
+          <li><a href="/insights/">All articles</a></li>
+          <li><a href="/series/">Series</a></li>
+          <li><a href="/topics/">Topics</a></li>
+          <li><a href="/notes/">Personal notes</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
+          <li><a href="/contact/">Start an engagement</a></li>
+          <li><a href="/about/">About</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span id="yr">2026</span> Ajna Consulting Services. All rights reserved.</span>
+      <span style="display:flex;gap:1.2rem"><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a></span>
+    </div>
+  </div>
+</footer>
+<script src="/assets/js/site.js" defer></script>
+</body>
+</html>

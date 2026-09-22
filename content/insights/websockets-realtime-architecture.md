@@ -1,0 +1,41 @@
+---
+title: "Real-Time Architecture: WebSockets, SSE, and the State Problem Nobody Mentions"
+description: "Choosing between WebSockets, Server-Sent Events, and polling is the easy part. The hard parts are what long-lived connections do to load balancing, deployment, scaling, and state — the operational architecture of real-time systems."
+date: 2025-04-15
+tags: ["Programming", "Distributed Systems", "API Design", "Performance", "Architecture"]
+format: article
+---
+
+Real-time features — live dashboards, collaborative editing, chat, notifications, streaming AI responses — all begin with the same innocent-sounding decision ("WebSockets or something else?") and all eventually discover the same truth: the transport choice is the smallest part of the problem. **Long-lived connections invert the assumptions your entire HTTP infrastructure was built on** — statelessness, short requests, cheap retries, load balancing by request — and the real architecture work is managing that inversion. Here's the full picture, transport first, then the parts that actually fill the incident channel.
+
+## The transport decision, briskly
+
+**Server-Sent Events (SSE)** — one-directional server→client streaming over plain HTTP. Automatic reconnection with last-event-ID resume built into the browser API, friendly to every proxy and CDN that understands HTTP, trivially debuggable (it's a text stream you can curl). If your feature is *the server pushing updates* — feeds, notifications, dashboards, LLM token streaming (SSE is the de facto standard for AI streaming responses for exactly these reasons) — SSE does the job with a fraction of WebSockets' operational surface. It's the most underused tool in this space; the reflex that skips it costs teams real complexity.
+
+**WebSockets** — full bidirectional messaging over a persistent connection. The right tool when clients genuinely *send* at interactive frequency: chat, collaborative editing, multiplayer state, terminal sessions. The cost: a distinct protocol lifecycle (upgrade handshake, ping/pong keepalives, close semantics) that infrastructure must explicitly support — every proxy, load balancer, and gateway in the path needs configuration for upgrade handling and long idle timeouts, and it steps outside the HTTP toolbox (standard auth middleware, caching, per-request observability all need re-plumbing).
+
+**Long polling** survives as the compatibility fallback under restrictive middleboxes, and **WebTransport** is the emerging HTTP/3-based option for the low-latency frontier — but the practical 2026 default is simpler than the option list suggests: *SSE for push, WebSockets for genuine bidirectionality, and a managed real-time service when you'd rather buy the following sections than build them.*
+
+## What long-lived connections break
+
+**Load balancing stops balancing.** Requests distribute per-arrival; connections distribute per-*connect* and then stay put — so a restarted server rejoins the pool empty while its former connections pile onto survivors, and a scale-up adds capacity that receives only *new* connections. Real-time fleets need connection-aware balancing (least-connections at minimum), and more importantly **connection draining and rebalancing as designed behaviors**: servers that can tell clients "reconnect elsewhere" gracefully, and clients built to comply.
+
+**Deployment becomes a disconnection event.** Every deploy of a connection-holding service severs every connection it holds — at fleet scale, a rolling restart is a self-inflicted reconnection storm. The disciplines: graceful shutdown with generous drain windows (stop accepting, notify clients, drain over minutes), deploy waves sized against reconnect capacity, and — architecturally — **keeping connection-holding servers thin and rarely-deployed**: a gateway tier that holds sockets and forwards messages, with business logic behind it deploying freely, decouples release velocity from connection stability. This tier split is the single most consequential design decision in the space.
+
+**Reconnection is a stampede generator.** Any blip — a load balancer failover, a network hiccup, that deploy — sends thousands of clients reconnecting *simultaneously*, each performing a handshake and auth and state resync far more expensive than a steady-state message. Clients must reconnect with **exponential backoff and jitter** (the retry-storm discipline, now on the client side), and servers must treat resync as a first-class cheap path: which brings up the real boss fight.
+
+**Message delivery during disconnection.** A client that was offline for 40 seconds missed messages; a client that reconnected to a *different server* missed whatever the old server had queued locally. Real-time systems need an answer to "what did I miss?" — and the robust one is the same shape everywhere: **sequence numbers per stream/channel, server-side retention of a recent window (a log, a Redis stream, a ring buffer), and resume-from-cursor on reconnect**, with a fallback to full state resync when the gap exceeds retention. Systems that skip this ship a UI that silently loses messages, discovered one confused user at a time. (Notice the shape: it's the log-vs-queue insight again — real-time delivery is an optimization over a resumable stream, exactly as webhooks are an optimization over a reconcilable API.)
+
+## The state problem: who's connected where, and who gets what
+
+At one server, "broadcast to room X" is a loop. At N servers, connection state is *sharded by accident of connection*, and message routing becomes the defining problem: user A on server 3 sends to a room whose members sit on servers 1, 4, and 9. The standard answer is a **pub/sub backplane** — Redis pub/sub tier for modest scale, Kafka-class or purpose-built brokers beyond — with servers subscribing to the channels their connections care about and fanning out locally. The design points that determine whether it scales: **subscription granularity** (per-user channels multiply broker load; per-room aggregates it; hierarchical topics balance), **presence** ("who's online" is distributed state with TTL-heartbeat semantics — build it eventually-consistent and lease-based, not as a strongly-consistent registry, which the earlier coordination discussion explains the futility of), and **fan-out amplification** (one message to a 50k-subscriber channel is 50k sends — big-room broadcast wants dedicated paths and batching, not the same machinery as 1:1 chat).
+
+Above it all, the same at-least-once truth as every messaging layer: dedupe by message ID client-side, make handlers idempotent, and design ordering per-channel (sequence numbers again) rather than globally.
+
+## The operational rim, and the buy option
+
+Run real-time tiers with their own vitals — concurrent connections per node, connect/disconnect rates (the stampede detector), message latency end-to-end (inject-to-deliver, not just server processing), backplane lag, and per-channel fan-out cost. Capacity-plan on *memory and file descriptors per connection* (the usual binding constraints — hundreds of thousands of mostly-idle connections per node is achievable and OS-tunable) and on *reconnect throughput* (the constraint that actually fails during incidents). Test the ugly paths deliberately: kill a node and watch the stampede, deploy under load, partition the backplane.
+
+And weigh the buy option honestly: managed real-time platforms (the Pusher/Ably tier, cloud pub/sub-over-WebSocket services) sell precisely the hard parts — global connection fleets, resume semantics, presence, fan-out — and at small-to-mid scale they're routinely cheaper than the engineering above. The build case strengthens with scale, latency specificity, and data-locality constraints; just make it a case, not a reflex.
+
+The compact summary: pick SSE unless you need true bidirectionality; split the socket-holding gateway from the logic tier; make reconnection resumable with sequences and retention windows; route via a pub/sub backplane with deliberate channel granularity; treat presence as leased, eventually-consistent state; capacity-plan for the stampede, not the steady state — and remember throughout that a real-time system is just a distributed log with impatient subscribers, which means every discipline from the messaging world applies, plus a dial tone.

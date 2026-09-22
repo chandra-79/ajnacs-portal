@@ -1,0 +1,37 @@
+---
+title: "Context Engineering: The Discipline That Replaced Prompt Engineering"
+description: "As LLM applications matured from prompts to systems, the craft moved from wording instructions to architecting everything the model sees — retrieval, memory, tool results, and token budgets. The principles of context engineering for production AI systems."
+date: 2024-10-31
+tags: ["AI Adoption", "LLM", "Enterprise AI", "Architecture", "AI & MLOps"]
+format: article
+---
+
+Prompt engineering had its moment as the defining skill of the LLM era, and the moment passed — not because wording stopped mattering, but because production systems revealed the real surface area. A deployed LLM application assembles, for every single call, a context window containing some mixture of: system instructions, conversation history, retrieved documents, tool definitions and their results, user data, and examples. *That assembly* — what goes in, in what form, in what order, within what budget, refreshed by what rules — determines behavior far more than any clever phrasing. The industry's name for this discipline is **context engineering**, and it's best understood as the information architecture of AI systems.
+
+## The mental model: the context window is a working set, not a transcript
+
+The naive model of an LLM call is conversational: everything so far, plus the new question. The engineering model is different: the context window is a **scarce, expensive, per-call working set** — like a CPU cache or a working memory — that you populate deliberately with the minimum sufficient information for *this* step. Three properties drive everything:
+
+**Attention is finite and unevenly distributed.** Models attend more reliably to the beginning and end of context than the middle (the well-documented lost-in-the-middle effect, mitigated but not erased in current generations); relevance dilution is real — a correct fact buried in 80,000 tokens of near-relevant material is *less available* to the model than the same fact in 2,000 tokens of curated material. Bigger windows raised the ceiling, not the discipline: "we have a million tokens, ship everything" produces systems that are simultaneously expensive and *less* accurate than their curated competitors.
+
+**Cost and latency scale with what you send.** Every token in context is paid for on every call — prefill compute, per-token pricing, time-to-first-token — and conversation-style accumulation makes cost quadratic-ish over long sessions. Context discipline *is* cost engineering (and pairs directly with prefix-caching economics: stable content first, volatile content last, so the cacheable prefix stays cacheable).
+
+**The context is the model's entire epistemic world for that call.** Whatever's absent, the model fills from priors — the hallucination engine. Whatever's present, it treats as relevant — including the injected instruction in the retrieved document (the security dimension covered under prompt injection). Curation is therefore both an accuracy and a safety function.
+
+## The craft: what to include, and in what shape
+
+The working questions of context engineering, in the order they pay:
+
+**Selection over accumulation.** Retrieval (the RAG stack) is one selector among several: recency windows over conversation history, summarization of older turns (a running compressed state instead of raw transcript), tool-result truncation with drill-down affordances ("the query returned 4,000 rows; here are the first 20 and the aggregates — ask for more"), and per-step task framing in agentic loops (each step gets *its* relevant slice, not the whole odyssey). The recurring anti-pattern is the append-only context — sessions that degrade over an hour as the window silts up with stale tool output and dead conversational branches; production systems need **context hygiene**: pruning, summarizing, and resetting as first-class operations.
+
+**Structure beats prose.** Models parse delimited, labeled, consistently formatted context far more reliably than undifferentiated text: mark sections (instructions vs data vs examples vs history), tag provenance on retrieved material (source, date, trust tier — which also enables the model to cite and the system to audit), prefer schemas (JSON, tables) for structured facts, and keep instructions *out* of data channels as thoroughly as your architecture allows — the same separation the security layer wants for injection resistance turns out to be what accuracy wants too. It's parameterized queries all over again, one abstraction level up.
+
+**Position deliberately.** Stable system content and definitions up front (cache-friendly, high-attention), the current task and the most decision-relevant material near the end (recency-attention), the middle for the bulk it must carry. And **budget explicitly**: a production context assembly should be a composed pipeline with per-section token budgets and eviction rules — "instructions 1k, tools 2k, retrieved 6k with rerank-then-truncate, history 4k summarized past 10 turns" — not a string concatenation that grows until something breaks.
+
+**Memory is a database problem wearing a novelty costume.** Long-running assistants need state across sessions — user preferences, accumulated facts, task progress — and the mature pattern treats this as *storage with retrieval policies* (write summaries and structured facts to a store; retrieve selectively into future contexts) rather than ever-longer transcripts. All the boring data-engineering questions apply — freshness, conflict (the user changed their mind), provenance, deletion (very much including the compliance kind) — and teams that pretend memory is "just more context" meet those questions in production instead of design review.
+
+## Making it an engineering practice
+
+What separates context engineering from context vibes is the loop around it. **Observability**: log the *assembled context* (or its recipe and hashes — mind the sensitivity) per call, because "why did the model say that?" is unanswerable without knowing what it saw; trace token spend by section to find what's eating the budget for no lift. **Evaluation**: context changes are behavior changes — the same eval-gate discipline as model or serving changes; retrieval quality gets measured *separately* from generation quality (was the answer wrong because the context lacked the fact, or because the model missed it in context? — the diagnosis fork that directs all improvement effort). **And ablation as a habit**: the cheapest experiment in the field is removing a context section and measuring — teams are routinely surprised by how much of their carefully assembled context is inert, and every inert token removed is money, latency, and attention returned.
+
+The strategic reframe for architects: the model is becoming the *commodity* layer in these systems, swapped as vendors leapfrog; the durable, differentiating asset is the context system — the retrieval quality, the memory architecture, the assembly pipeline, the evaluation harness around it all. That's where the engineering hours compound, and it's also — conveniently — the layer that transfers when the next model generation arrives. Prompt engineering asked "what should I say to the model?" Context engineering asks the systems question: "what should this component know, from where, in what form, at what cost, verified how?" — which is to say, it asks the question software architecture has always asked, about the newest component in the stack.
