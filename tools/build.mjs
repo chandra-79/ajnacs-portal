@@ -5,7 +5,8 @@ import { readFile, writeFile, mkdir, rm } from "node:fs/promises";
 import path from "node:path";
 import { SITE, esc, fmtDate, readingTime, seriesSlug, primaryTopic, PRIMARY_TOPICS, icon, parseFront } from "./lib.mjs";
 import { page } from "./shell.mjs";
-import { artwork, ogCard, colorFor } from "./visuals.mjs";
+import { artwork, colorFor } from "./visuals.mjs";
+import { ogSlug } from "./ogcards.mjs";
 import { makeRenderer, extractStats, statStrip, barChart, injectAfterFirstH2, tableOfContents, headingAnchors } from "./render.mjs";
 import { staticPages } from "./pages.mjs";
 import { referencesFor, referencesBlock } from "./references.mjs";
@@ -20,8 +21,12 @@ const insights = live.filter(m => m.section === "insights");
 const notes = live.filter(m => m.section === "notes");
 
 const out = async (rel, html) => {
-  const p = rel.endsWith(".xml") || rel.endsWith(".txt") || rel.endsWith(".html")
-    ? rel : path.join(rel, "index.html");
+  // Anything with a file extension is written as a file. The old whitelist
+  // was .xml/.txt/.html, so every OG card landed at foo.svg/index.html and
+  // the URL in the meta tag answered 301 text/html — no social preview on
+  // the site resolved to an image. No slug contains a dot, so extension
+  // detection is safe here.
+  const p = /\.[a-z0-9]{2,5}$/i.test(path.basename(rel)) ? rel : path.join(rel, "index.html");
   await mkdir(path.dirname(p), { recursive: true });
   await writeFile(p, html, "utf8");
 };
@@ -60,8 +65,10 @@ for (const m of live) {
   const tocHtml = tableOfContents(headings);
   const refsHtml = m.section === "insights" ? referencesBlock(referencesFor(body)) : "";
 
-  const ogPath = `/assets/og/${m.section}-${m.slug}.svg`;
-  await out(`assets/og/${m.section}-${m.slug}.svg`.replace(/\.svg$/, ".svg"), ogCard(m.title, topic, m.tags));
+  /* One card per topic, generated once by tools/ogcards.mjs. A per-article
+     card would mean the scheduled publisher had to rasterise one for every
+     article it releases, years from now, in CI. */
+  const ogPath = `/assets/og/${ogSlug(topic)}.jpg`;
 
   const idx = live.filter(x => x.section === m.section);
   const pos = idx.findIndex(x => x.slug === m.slug);
@@ -433,7 +440,7 @@ Allow: /
 Sitemap: ${SITE.url}/sitemap.xml
 `);
 
-await out("assets/og/default.svg", ogCard(SITE.name, "Enterprise Engineering", ["Architecture"]));
+
 
 console.log(`built ${built} article pages`);
 console.log(`  insights live: ${insights.length} | notes live: ${notes.length} | series: ${seriesMap.size}`);

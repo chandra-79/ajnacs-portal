@@ -135,33 +135,3 @@ export function artwork(slug, tags, { w = W, h = H, calm = false } = {}) {
 </svg>`;
 }
 
-/* A larger, text-bearing card for social previews. */
-export function ogCard(title, topic, tags) {
-  const [c1, c2] = colorFor(tags);
-  const r = seeded(title);
-  const words = String(title).split(/\s+/);
-  const lines = []; let cur = "";
-  for (const w of words) {
-    if ((cur + " " + w).trim().length > 30) { lines.push(cur.trim()); cur = w; } else cur += " " + w;
-    if (lines.length === 3) break;
-  }
-  if (cur.trim() && lines.length < 3) lines.push(cur.trim());
-  const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-  return `<svg viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <marker id="ahog" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
-      <path d="M0 0 L7 3.5 L0 7 z" fill="${c1}" fill-opacity=".5"/>
-    </marker>
-    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#0a1020"/><stop offset="1" stop-color="#16203a"/>
-    </linearGradient>
-  </defs>
-  <rect width="1200" height="630" fill="url(#g)"/>
-  <g opacity=".34" transform="translate(690,150) scale(1.35)">${MOTIFS[Math.floor(r() * MOTIFS.length)](seeded(title + "x"), c1, c2, "og")}</g>
-  <rect x="0" y="0" width="1200" height="8" fill="${c1}"/>
-  <text x="78" y="128" font-family="Montserrat,sans-serif" font-size="25" font-weight="800" fill="${c1}" letter-spacing="3.4">${esc(String(topic || "INSIGHTS").toUpperCase())}</text>
-  ${lines.map((l, i) => `<text x="78" y="${228 + i * 74}" font-family="Montserrat,sans-serif" font-size="58" font-weight="800" fill="#ffffff" letter-spacing="-1.4">${esc(l)}</text>`).join("\n  ")}
-  <text x="78" y="556" font-family="Inter,sans-serif" font-size="27" fill="#9fb0d0">ajnacs.com</text>
-  <text x="1122" y="556" text-anchor="end" font-family="Montserrat,sans-serif" font-size="27" font-weight="700" fill="#ffffff">Ajna Consulting</text>
-</svg>`;
-}

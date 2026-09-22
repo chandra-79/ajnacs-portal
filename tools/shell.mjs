@@ -12,7 +12,7 @@ const NAV = [
 
 export function page({
   title, description, path: urlPath, body,
-  ogImage = "/assets/og/default.svg", type = "website",
+  ogImage = "/assets/og/default.jpg", type = "website",
   jsonld = [], bodyClass = "", topic = null, canonical = null,
 }) {
   const url = SITE.url + urlPath;
@@ -39,6 +39,7 @@ export function page({
 <meta property="og:image" content="${esc(SITE.url + ogImage)}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/jpeg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${esc(title)}">
 <meta name="twitter:description" content="${esc(metaShort)}">

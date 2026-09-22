@@ -23,8 +23,11 @@ const LEAF = `M ${C} ${C} Q ${C - 10} ${C - 18} ${C} ${C - 36} Q ${C + 10} ${C -
 
 export function mark({ size = 40, uid = "m", ink = "currentColor", title = "", still = false } = {}) {
   const g = `lit-${uid}`;
+  const spin = (a) => still
+    ? `transform="rotate(${a} ${C} ${C})"`
+    : `class="am-petal" style="--a:${a}deg"`;
   const petals = [0, 90, 180, 270].map((a, i) =>
-    `<g class="am-petal" style="--a:${a}deg">`
+    `<g ${spin(a)}>`
     + `<path d="${TRI}" fill="${MARK_COLOURS[i]}"/>`
     + `<path d="${TRI}" fill="url(#${g})"/>`
     + `<path d="${CUT}" stroke="#000" stroke-width="1" opacity=".16" fill="none"/>`

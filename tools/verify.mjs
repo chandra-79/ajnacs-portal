@@ -202,6 +202,22 @@ console.log("\nAssets");
   if (broken.length) fail(`${broken.length} broken local reference(s): ${broken.slice(0, 3).join("; ")}`);
   else ok(`${refs} local references all resolve`);
 
+  // og:image lives in a meta content attribute, so the href/src sweep above
+  // never sees it. Every card a page points at has to exist, and it has to
+  // be a raster format: no major platform renders SVG for a social preview.
+  const cards = new Set();
+  for (const f of pages) {
+    const h = await readFile(f, "utf8");
+    for (const m of h.matchAll(/(?:og:image|twitter:image)" content="[^"]*?(\/assets\/og\/[^"]+)"/g)) cards.add(m[1]);
+  }
+  const missingCards = [];
+  for (const c of cards) { try { await access(c.replace(/^\//, ""), constants.R_OK); } catch { missingCards.push(c); } }
+  if (missingCards.length) fail(`${missingCards.length} social card(s) missing: ${missingCards.slice(0, 4).join(", ")}`);
+  else ok(`${cards.size} social cards all present`);
+  const svgCards = [...cards].filter(c => c.endsWith(".svg"));
+  if (svgCards.length) fail(`${svgCards.length} social card(s) still SVG; no platform renders those`);
+  else ok("social cards are a raster format");
+
   const ingest = await readFile("tools/ingest.mjs", "utf8");
   if (!/const NOT_OURS = new Set\(/.test(ingest))
     fail("the third-party image blocklist is gone; a re-ingest will pull vendor press photos back in");
