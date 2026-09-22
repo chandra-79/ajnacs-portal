@@ -1,7 +1,7 @@
 ---
 title: "Service Mesh in Practice: When Istio or Linkerd Is Worth the Complexity"
 description: "Service meshes promise mTLS, traffic management, and observability without code changes. They deliver, but the operational overhead is real. Here's how to decide if a service mesh belongs in your architecture — and which one if so."
-date: 2026-07-27
+date: 2025-01-14
 tags: ["Cloud Architecture", "Containers", "Systems"]
 format: article
 ---

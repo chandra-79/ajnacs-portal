@@ -1,7 +1,7 @@
 ---
 title: "Designing Tools for AI Agents: API Design's Newest Consumer"
 description: "Agents are becoming a primary consumer of enterprise APIs, and they fail differently than developers do — the tool-description contract, error messages as steering, the safety tiers for consequential actions, and why agent-legible design is just good API design under pressure."
-date: 2024-11-14
+date: 2028-03-15
 tags: ["AI Adoption", "API Design", "LLM", "Architecture", "Security"]
 format: article
 ---

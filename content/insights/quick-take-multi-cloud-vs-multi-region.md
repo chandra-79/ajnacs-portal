@@ -1,7 +1,7 @@
 ---
 title: "Multi-Cloud vs. Multi-Region: Two Different Strategies for Two Different Problems"
 description: "Multi-cloud distributes workloads across cloud providers. Multi-region distributes workloads across geographic locations. They address different failure modes and have different cost and complexity profiles."
-date: 2025-10-10
+date: 2028-02-04
 tags: ["Cloud Architecture"]
 format: article
 ---

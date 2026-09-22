@@ -1,7 +1,7 @@
 ---
 title: "SQL Window Functions: The Analytics Superpower Hiding in Standard SQL"
 description: "Running totals, rankings, deduplication, sessionization, period-over-period — the queries that send engineers to pandas or application code are one OVER clause away. The mental model, the workhorse patterns, and the performance notes that keep them fast."
-date: 2025-03-10
+date: 2028-06-02
 tags: ["Data Engineering", "Analytics", "Programming"]
 format: article
 ---

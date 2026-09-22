@@ -1,7 +1,7 @@
 ---
 title: "Designing On-Call That People Don't Quit Over: Structure, Load, and the Feedback Loop"
 description: "On-call is a system you design, not a hardship you distribute. Rotation structure, page-load budgets, compensation honesty, the follow-the-sun question, and the feedback loop that turns pages into engineering work instead of attrition."
-date: 2024-11-12
+date: 2027-10-20
 tags: ["Reliability", "Engineering Leadership", "On-Call", "Platform Engineering"]
 format: article
 ---

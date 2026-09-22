@@ -1,7 +1,7 @@
 ---
 title: "LLM Application Security: Prompt Injection and the New Trust Boundary"
 description: "Prompt injection is not a bug to patch but a property of how LLMs work — and agentic systems raise the stakes from embarrassing outputs to unauthorized actions. The threat model, the lethal trifecta, and the architectural defenses that actually hold."
-date: 2025-01-08
+date: 2027-06-21
 tags: ["AI Adoption", "Security", "LLM", "Architecture", "Enterprise AI"]
 format: article
 ---

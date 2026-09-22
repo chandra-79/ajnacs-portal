@@ -1,7 +1,7 @@
 ---
 title: "Reserved Instances Are Commitments, Not Discounts — and That Distinction Changes Every Decision"
 description: "Reserved instances and savings plans reduce cloud costs by 30–70%. The cost is a financial commitment that persists even if your usage decreases. Here is how to make RI decisions well."
-date: 2025-08-25
+date: 2028-02-23
 tags: ["FinOps"]
 format: article
 ---

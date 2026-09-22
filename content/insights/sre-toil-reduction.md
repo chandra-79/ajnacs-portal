@@ -1,7 +1,7 @@
 ---
 title: "SRE Toil: What It Is, How to Measure It, and How to Reduce It"
 description: "Toil is the manual, repetitive, automatable work that keeps systems running without actually improving them. SRE practice says: measure toil, set a ceiling, and invest engineering effort in eliminating it."
-date: 2025-07-18
+date: 2026-10-09
 tags: ["Engineering Leadership", "DevSecOps", "Cloud Architecture"]
 format: article
 ---

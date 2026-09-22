@@ -1,7 +1,7 @@
 ---
 title: "A/B Testing at Enterprise Scale: The Statistics, the Platform, and the Culture of Losing"
 description: "Experimentation is the only honest arbiter of product change — when the assignment is sound, the metrics are pre-declared, and the organization can hear 'no effect.' The engineering of trustworthy experiments and the failure modes that fake significance."
-date: 2024-10-01
+date: 2027-11-08
 tags: ["Experimentation", "Data Engineering", "Product Engineering", "Statistics", "Engineering Leadership"]
 format: article
 ---

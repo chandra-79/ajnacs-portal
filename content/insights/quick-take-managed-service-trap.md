@@ -1,7 +1,7 @@
 ---
 title: "Managed Services Eliminate Operational Burden — They Don't Eliminate Operational Responsibility"
 description: "Choosing RDS over self-managed PostgreSQL removes the database administration work. It does not remove the need to understand database performance, connection management, or failover behavior."
-date: 2025-12-09
+date: 2028-06-16
 tags: ["Cloud Architecture", "Infrastructure"]
 format: article
 ---

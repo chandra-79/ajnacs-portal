@@ -1,7 +1,7 @@
 ---
 title: "Graceful Degradation: Designing What Breaks First"
 description: "Systems under stress fail either by design or by discovery. Load shedding's honest math, the criticality ladder that decides who gets served, feature degradation as product decisions made early, brownout patterns, and testing the failure ladder before it tests you."
-date: 2024-12-11
+date: 2027-02-24
 tags: ["Reliability", "Distributed Systems", "Architecture", "Programming"]
 format: article
 ---

@@ -1,7 +1,7 @@
 ---
 title: "Terraform at Scale: Module Composition, State Management, and the Patterns That Hold Up"
 description: "Terraform is straightforward to start with and increasingly complex to maintain at scale. The patterns that solve state sprawl, module coupling, and pipeline friction are learnable — here's what works."
-date: 2026-09-03
+date: 2027-08-20
 tags: ["DevSecOps", "Cloud Architecture", "Architecture"]
 format: article
 ---

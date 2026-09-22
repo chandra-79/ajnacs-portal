@@ -1,7 +1,7 @@
 ---
 title: "Feature Engineering for Production ML: What Makes the Difference Between a Model That Works and One That Ships"
 description: "Most ML model failures in production are not model failures — they are feature failures. The features are inconsistent between training and inference, stale, or encode information the model shouldn't have access to."
-date: 2026-04-06
+date: 2027-08-30
 tags: ["AI & MLOps", "Data Engineering"]
 format: article
 ---

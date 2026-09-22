@@ -1,7 +1,7 @@
 ---
 title: "The Inner Loop: Engineering the Minutes Between Keystroke and Feedback"
 description: "Build times, test speed, local environments, and preview deployments — the feedback cycle developers run hundreds of times daily is the highest-leverage productivity surface in engineering, and the least owned. The physics of flow, the loop audit, and what platform teams should fix first."
-date: 2024-11-18
+date: 2028-04-07
 tags: ["Developer Experience", "Platform Engineering", "Engineering Practice", "Engineering Leadership", "Performance"]
 format: article
 ---

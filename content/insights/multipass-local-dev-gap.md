@@ -1,7 +1,7 @@
 ---
 title: "The gap between local development and cloud deployment is wider than Docker makes it appear"
 description: "Docker is an excellent tool for application-layer portability.…"
-date: 2026-05-25
+date: 2029-05-11
 tags: ["Developer Tools", "Infrastructure", "Cloud Architecture"]
 format: note
 derived: true

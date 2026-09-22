@@ -1,7 +1,7 @@
 ---
 title: "Cloud Landing Zone Design: The Foundation That Everything Else Depends On"
 description: "A landing zone is the account, network, identity, and governance baseline that cloud workloads run in. Getting it right at the beginning is much cheaper than retrofitting it after workloads are deployed."
-date: 2025-11-05
+date: 2027-10-27
 tags: ["Cloud Architecture", "DevSecOps"]
 format: article
 ---

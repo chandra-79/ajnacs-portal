@@ -1,7 +1,7 @@
 ---
 title: "AI is not replacing junior developers. It is changing what a junior developer needs to be good at."
 description: "AI coding assistants have demonstrably changed what a junior developer's first six months looks like."
-date: 2025-08-27
+date: 2029-04-02
 tags: ["AI & MLOps", "Engineering Leadership"]
 format: note
 derived: true

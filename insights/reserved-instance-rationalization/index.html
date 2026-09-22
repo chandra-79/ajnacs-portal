@@ -105,7 +105,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#e8a317" stop-opacity=".10"/>
       <stop offset="1" stop-color="#a9760a" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahreservedinst" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e8a317" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -126,7 +126,7 @@ if(d.getAttribute('data-rface')==='serif'){
 <p>On most instance types, the 1-year no-upfront Reserved Instance discount runs somewhere in the 35-40% range compared to on-demand. The 3-year equivalent often runs 55-65%. These are significant discounts for the right workloads.</p>
 <p>The risk: commit to an EC2 instance type that you end up not using (because you migrated to containers, or the workload scaled differently than expected, or a newer instance type became available), and you&#39;re paying for something you&#39;ve moved away from.</p>
 <p>The analysis that makes the difference is identifying what&#39;s genuinely stable — and being honest about what isn&#39;t.</p>
-<h2 id="the-baseline-analysis-what39s-actually-steady-state"><a class="h-anchor" href="#the-baseline-analysis-what39s-actually-steady-state" aria-label="Link to this section">#</a>The baseline analysis: what&#39;s actually steady-state?</h2>
+<h2 id="the-baseline-analysis-what39s-actually-steady-state"><a class="h-anchor" href="#the-baseline-analysis-what39s-actually-steady-state" aria-hidden="true" tabindex="-1">#</a>The baseline analysis: what&#39;s actually steady-state?</h2>
 <aside class="keyfig">
   <p class="keyfig-label">Key figure</p>
   <p class="keyfig-text">On most instance types, the 1-year no-upfront Reserved Instance discount runs somewhere in the 35-<b>40%</b> range compared to on-demand.</p>
@@ -138,19 +138,19 @@ if(d.getAttribute('data-rface')==='serif'){
 <p>If you run between 5 and 12 m5.xlarge instances depending on load, the minimum stable footprint is 5 — commit to 5 Reserved Instances and run the variable portion on-demand or Spot. Never commit to the peak.</p>
 <p><strong>3. Is this workload likely to change in the commitment period?</strong></p>
 <p>Active migrations (from VMs to containers, from one instance family to another), planned growth that would require different instance sizes, and workloads being evaluated for decommissioning are all poor candidates for 3-year commitments. 1-year may still make sense; 3-year probably doesn&#39;t.</p>
-<h2 id="savings-plans-vs-reserved-instances-aws-specific"><a class="h-anchor" href="#savings-plans-vs-reserved-instances-aws-specific" aria-label="Link to this section">#</a>Savings Plans vs Reserved Instances (AWS-specific)</h2>
+<h2 id="savings-plans-vs-reserved-instances-aws-specific"><a class="h-anchor" href="#savings-plans-vs-reserved-instances-aws-specific" aria-hidden="true" tabindex="-1">#</a>Savings Plans vs Reserved Instances (AWS-specific)</h2>
 <p>AWS offers both Reserved Instances (tied to a specific instance type, region, OS, and tenancy) and Savings Plans (a commitment to hourly spend, flexible across instance types and services).</p>
 <p><strong>Compute Savings Plans</strong> apply to EC2, Lambda, and Fargate. They&#39;re the most flexible — a $5/hour commitment applies automatically to whatever compute you&#39;re running. This flexibility has value when you&#39;re migrating from EC2 to containers or when your instance type mix is likely to shift.</p>
 <p><strong>EC2 Instance Savings Plans</strong> apply to a specific instance family in a region (e.g., all m5 instances in us-east-1, any size, any OS). Less flexible than Compute Savings Plans, but deeper discounts.</p>
 <p><strong>Reserved Instances</strong> require specifying the exact instance type, region, OS, and tenancy. The deepest discount, the least flexibility. Right for stable workloads where you know exactly what you&#39;ll be running.</p>
 <p>For most organizations that aren&#39;t in a static, fully-committed state, a mix works well: Compute Savings Plans for the baseline EC2/Lambda/Fargate spend, Reserved Instances for known stable configurations.</p>
-<h2 id="the-coverage-vs-utilization-trade-off"><a class="h-anchor" href="#the-coverage-vs-utilization-trade-off" aria-label="Link to this section">#</a>The coverage vs utilization trade-off</h2>
+<h2 id="the-coverage-vs-utilization-trade-off"><a class="h-anchor" href="#the-coverage-vs-utilization-trade-off" aria-hidden="true" tabindex="-1">#</a>The coverage vs utilization trade-off</h2>
 <p>There are two metrics that matter for committed use discount programs:</p>
 <p><strong>Coverage</strong>: what percentage of your on-demand spend is covered by commitments? Higher is better, but not at the cost of committing to things you won&#39;t use.</p>
 <p><strong>Utilisation</strong>: what percentage of your commitments are actually being used? An unutilised Reserved Instance is wasted money. 100% utilization means you&#39;re using everything you committed to.</p>
 <p>The goal: high coverage on stable workloads, high utilization by not over-committing. These are in tension — pushing for higher coverage increases the risk of under-utilization.</p>
 <p>A reasonable initial target: 70-80% RI/Savings Plan coverage of steady-state EC2 spend, with &gt; 90% utilization. Increase coverage as you develop confidence in what&#39;s truly stable.</p>
-<h2 id="the-right-cadence-for-reviewing-commitments"><a class="h-anchor" href="#the-right-cadence-for-reviewing-commitments" aria-label="Link to this section">#</a>The right cadence for reviewing commitments</h2>
+<h2 id="the-right-cadence-for-reviewing-commitments"><a class="h-anchor" href="#the-right-cadence-for-reviewing-commitments" aria-hidden="true" tabindex="-1">#</a>The right cadence for reviewing commitments</h2>
 <p>Commitments should be reviewed quarterly:</p>
 <ul>
 <li>Are any 1-year commitments expiring in the next 90 days? Decide whether to renew.</li>
@@ -159,7 +159,7 @@ if(d.getAttribute('data-rface')==='serif'){
 <li>Has the cloud provider released new instance types in the family that would suggest the current shape is being phased out?</li>
 </ul>
 <p>The cloud providers&#39; own tools (AWS Cost Explorer&#39;s RI recommendations, Azure Advisor&#39;s reservation recommendations) generate recommendations based on usage data. These are useful starting points, but review them with the context of your roadmap — the tools don&#39;t know you&#39;re planning to move the workload off EC2 next quarter.</p>
-<h2 id="the-aws-marketplace-for-unwanted-ris"><a class="h-anchor" href="#the-aws-marketplace-for-unwanted-ris" aria-label="Link to this section">#</a>The AWS Marketplace for unwanted RIs</h2>
+<h2 id="the-aws-marketplace-for-unwanted-ris"><a class="h-anchor" href="#the-aws-marketplace-for-unwanted-ris" aria-hidden="true" tabindex="-1">#</a>The AWS Marketplace for unwanted RIs</h2>
 <p>If you have Reserved Instances you&#39;re not using, AWS&#39;s Reserved Instance Marketplace allows you to sell them to other AWS customers. The discount from the original purchase may be partially recovered. This is worth knowing about before you commit to a 3-year Reserved Instance for a workload you&#39;re not fully confident about — an exit exists, but it&#39;s not guaranteed (demand in the marketplace varies by instance type and region).</p>
 <p><em>Building a commitment strategy for your cloud spend? The right cadence and analytical approach matter more than any individual tool. <a href="/contact">Happy to think through your specific situation.</a></em></p>
 
@@ -190,12 +190,12 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#e8a317" stop-opacity=".10"/>
       <stop offset="1" stop-color="#a9760a" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahfinopsanomal" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e8a317" fill-opacity=".5"/>
     </marker>
   </defs>
   <rect width="640" height="360" fill="url(#bgfinopsanomal)"/>
-  <rect x="86" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.39" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 108 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.41" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 108 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.21" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 108 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.13" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 172 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.17" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 172 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="86" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.23" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 236 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.54" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 236 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.51" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/>
+  <rect x="86" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.39" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 108 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="212" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.41" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 108 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="338" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.21" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 108 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="212" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.13" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 172 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.17" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 172 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="86" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.23" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 236 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="212" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.54" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 236 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="464" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.51" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/>
 </svg></div>
   <div class="card-body">
     <span class="chip">FinOps</span>
@@ -211,7 +211,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#e8a317" stop-opacity=".10"/>
       <stop offset="1" stop-color="#a9760a" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahfinopstaggin" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e8a317" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -240,7 +240,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#0d9488" stop-opacity=".10"/>
       <stop offset="1" stop-color="#0b7a70" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahmultiregiona" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#0d9488" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -338,7 +338,7 @@ if(d.getAttribute('data-rface')==='serif'){
         </div>
       </div>
       <div>
-        <h4>Services</h4>
+        <h2 class="foot-title">Services</h2>
         <ul>
           <li><a href="/services/#architecture">Enterprise architecture</a></li>
           <li><a href="/services/#ai">AI &amp; MLOps</a></li>
@@ -347,7 +347,7 @@ if(d.getAttribute('data-rface')==='serif'){
         </ul>
       </div>
       <div>
-        <h4>Insights</h4>
+        <h2 class="foot-title">Insights</h2>
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/series/">Series</a></li>
@@ -356,7 +356,7 @@ if(d.getAttribute('data-rface')==='serif'){
         </ul>
       </div>
       <div>
-        <h4>Contact</h4>
+        <h2 class="foot-title">Contact</h2>
         <ul>
           <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
           <li><a href="/contact/">Start an engagement</a></li>

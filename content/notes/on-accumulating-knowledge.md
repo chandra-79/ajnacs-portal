@@ -1,7 +1,7 @@
 ---
 title: "On Accumulating Knowledge at 25 Years In"
 description: "At some point in a long career, your relationship with learning changes."
-date: 2025-06-23
+date: 2024-11-04
 tags: ["Personal", "Career", "Learning"]
 format: article
 derived: true

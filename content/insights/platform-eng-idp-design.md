@@ -1,7 +1,7 @@
 ---
 title: "Designing an Internal Developer Platform: Abstraction Layers, Golden Paths, and the Governance Balance"
 description: "How to design the abstraction layer between your platform and your application teams — what to hide, what to expose, and how to build the golden paths that make good practices the easy practices."
-date: 2026-07-15
+date: 2026-05-19
 tags: ["Engineering Leadership", "Architecture", "Fundamentals"]
 series: "Platform Engineering: From Concept to Internal Developer Platform"
 seriesOrder: 2

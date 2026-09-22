@@ -1,7 +1,7 @@
 ---
 title: "Runbooks That Work at 3 AM: Design, Decay, and the Automation Ladder"
 description: "Every operational discipline ends with 'consult the runbook' — and most runbooks are stale wikis that fail exactly when needed. Writing for the degraded reader, executable documentation, the automation ladder from prose to platform, and the decay-fighting loop."
-date: 2025-02-24
+date: 2028-03-06
 tags: ["Reliability", "Incident Management", "Platform Engineering", "Documentation", "Automation"]
 format: article
 ---

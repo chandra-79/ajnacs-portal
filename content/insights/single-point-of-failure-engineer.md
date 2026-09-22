@@ -1,7 +1,7 @@
 ---
 title: "The engineer who solves every hard problem is also the single point of failure your system cannot afford"
 description: "The most dangerous kind of technical dependency in an organization isn't a legacy system or an undocumented API."
-date: 2026-03-25
+date: 2029-08-01
 tags: ["Engineering Leadership"]
 format: note
 derived: true

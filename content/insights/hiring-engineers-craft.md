@@ -1,7 +1,7 @@
 ---
 title: "Hiring Engineers: The Signal That Matters and the Noise That Doesn't"
 description: "Engineering hiring is expensive, consequential, and full of biases disguised as judgment. Here's what the research and experience actually support when it comes to identifying strong engineers."
-date: 2025-05-19
+date: 2028-09-08
 tags: ["Engineering Leadership"]
 format: article
 ---

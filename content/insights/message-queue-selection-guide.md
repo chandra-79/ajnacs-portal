@@ -1,7 +1,7 @@
 ---
 title: "Choosing a Message Queue: Kafka, RabbitMQ, SQS, and the Questions That Actually Decide It"
 description: "The messaging landscape sorted by what systems actually need — log vs queue semantics, ordering and replay requirements, operational cost, and a decision framework that survives vendor slideware."
-date: 2025-01-15
+date: 2027-03-17
 tags: ["Distributed Systems", "Messaging", "Programming", "Architecture"]
 format: article
 ---

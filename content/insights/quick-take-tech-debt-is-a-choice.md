@@ -1,7 +1,7 @@
 ---
 title: "Technical Debt Is a Choice — Usually the Right One, Until It Isn't"
 description: "Most technical debt is not the result of bad engineering. It is the result of deliberate trade-offs made under constraint. The problem is not making the choice — it is forgetting that you made it."
-date: 2025-10-30
+date: 2028-11-29
 tags: ["Engineering Leadership", "Software Engineering", "Career"]
 format: article
 ---

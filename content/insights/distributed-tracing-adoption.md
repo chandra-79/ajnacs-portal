@@ -1,7 +1,7 @@
 ---
 title: "Distributed tracing is the observability investment with the longest payback and the shortest patience."
 description: "Distributed tracing has a specific adoption dynamic that differentiates it from most observability investments."
-date: 2025-07-10
+date: 2028-10-18
 tags: ["DevSecOps", "Cloud Architecture"]
 format: article
 derived: true

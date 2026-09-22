@@ -1,7 +1,7 @@
 ---
 title: "What an Operating System Actually Does — and Why Every Engineer Should Know"
 description: "The OS sits between your code and the hardware. Understanding what it manages — processes, memory, files, network — makes you a better programmer, a better architect, and a better debugger."
-date: 2025-05-26
+date: 2028-05-05
 tags: ["Programming", "Fundamentals"]
 series: "Operating Systems for Engineers"
 seriesOrder: 1

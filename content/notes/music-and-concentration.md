@@ -1,7 +1,7 @@
 ---
 title: "What I listen to when I'm actually trying to think"
 description: "People ask about productivity systems and I want to talk about music instead."
-date: 2025-12-25
+date: 2026-01-13
 tags: ["Music", "Focus", "Work"]
 format: article
 derived: true

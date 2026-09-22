@@ -1,7 +1,7 @@
 ---
 title: "The cloud bill without a named owner grows until it becomes a crisis"
 description: "Cloud spend without a named owner follows a predictable arc. In the early months it's small enough that nobody prioritises it."
-date: 2026-05-13
+date: 2029-05-28
 tags: ["FinOps", "Engineering Leadership"]
 format: note
 derived: true

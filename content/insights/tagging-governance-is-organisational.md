@@ -1,7 +1,7 @@
 ---
 title: "Your cloud tagging problem is an organizational problem, not a technical one"
 description: "Most enterprises have a tagging standard. Most enterprises also have significant tagging gaps. The standard exists; the compliance doesn't."
-date: 2025-12-05
+date: 2029-03-16
 tags: ["FinOps", "Cloud Architecture", "Engineering Leadership"]
 format: note
 derived: true

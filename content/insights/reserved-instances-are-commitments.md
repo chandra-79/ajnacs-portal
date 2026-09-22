@@ -1,7 +1,7 @@
 ---
 title: "Reserved instances are not discounts — they're financial commitments, and that distinction changes every RI decision"
 description: "The \"discount\" framing for reserved instances creates bad purchasing decisions. A discount is unambiguously good — you pay less for the same thing."
-date: 2025-12-01
+date: 2029-01-29
 tags: ["FinOps"]
 format: note
 derived: true

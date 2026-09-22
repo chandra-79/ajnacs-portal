@@ -1,7 +1,7 @@
 ---
 title: "Reaching for Next.js for a content site is like hiring a software architect to write a blog post"
 description: "js is a well-designed framework for building web applications."
-date: 2026-06-01
+date: 2029-07-23
 tags: ["Programming", "Software Engineering", "Developer Tools"]
 format: article
 derived: true

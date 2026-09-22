@@ -1,7 +1,7 @@
 ---
 title: "Linux Audit Framework and Compliance Logging"
 description: "Configuring auditd to log who ran what command, file access by privileged accounts, and network activity — and turning those logs into evidence for SOC 2, PCI DSS, and security incident investigations."
-date: 2026-08-31
+date: 2027-04-16
 tags: ["Programming", "Fundamentals"]
 series: "Linux: A Complete Practical Course"
 seriesOrder: 22

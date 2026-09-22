@@ -1,7 +1,7 @@
 ---
 title: "Consistent Hashing: The Quiet Algorithm Under Every Distributed System You Use"
 description: "Caches, databases, load balancers, and message brokers all face the same question — which node owns this key, especially when nodes come and go. Why modulo hashing fails, how the ring and its refinements work, and where the pattern shows up in systems you already run."
-date: 2024-10-30
+date: 2027-04-23
 tags: ["Distributed Systems", "Algorithms", "Programming", "Caching", "Architecture"]
 format: article
 ---

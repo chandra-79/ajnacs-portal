@@ -1,7 +1,7 @@
 ---
 title: "HTTP/3 and QUIC: What Changed Under the Web, and What Engineers Should Do About It"
 description: "The transport layer got its first real replacement in decades — QUIC moves reliability, encryption, and streams into one UDP-based protocol. Head-of-line blocking's actual death, connection migration, deployment realities, and who benefits how much."
-date: 2024-12-23
+date: 2027-12-03
 tags: ["Systems", "Performance", "Web Performance", "Cloud Architecture", "Protocols"]
 format: article
 ---

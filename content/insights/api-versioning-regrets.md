@@ -1,7 +1,7 @@
 ---
 title: "API versioning decisions made quickly will haunt you for years"
 description: "The API versioning decision you make before you ship v1 will affect your engineering priorities five years later."
-date: 2025-12-31
+date: 2029-07-30
 tags: ["API Design", "Software Engineering", "Programming"]
 format: note
 derived: true

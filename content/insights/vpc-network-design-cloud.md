@@ -1,7 +1,7 @@
 ---
 title: "Cloud Network Design: VPCs, IP Math, and the Topology Decisions You Can't Cheaply Undo"
 description: "Network architecture is the cloud's least reversible layer — CIDR plans outlive re-orgs, and hub-and-spoke decisions shape a decade of connectivity. Address-space discipline, segmentation models, the private-connectivity toolkit, and the egress economics."
-date: 2025-03-31
+date: 2027-07-12
 tags: ["Cloud Architecture", "Systems", "Architecture", "Security", "FinOps"]
 format: article
 ---

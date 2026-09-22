@@ -1,7 +1,7 @@
 ---
 title: "API Pagination Done Right: Offsets, Cursors, and the Consistency You're Promising"
 description: "Pagination looks like a solved problem until page 40,000 times out or a deleted row shifts everyone's results. Offset vs cursor mechanics, the keyset queries underneath, sync endpoints as pagination's grown-up sibling, and the contract clients actually need."
-date: 2024-10-07
+date: 2028-01-12
 tags: ["API Design", "Programming", "Data Engineering", "Performance", "Distributed Systems"]
 format: article
 ---

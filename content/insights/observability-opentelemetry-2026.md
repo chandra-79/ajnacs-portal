@@ -1,7 +1,7 @@
 ---
 title: "Observability with OpenTelemetry: Getting the Three Pillars Working Together"
 description: "Metrics, logs, and traces are only useful when they're correlated. OpenTelemetry provides the standard for instrumenting your services — here's how to implement it, connect the signals, and build the observability that actually reduces diagnosis time."
-date: 2026-07-27
+date: 2024-12-31
 tags: ["Observability", "Cloud Architecture", "DevSecOps"]
 format: article
 ---

@@ -1,7 +1,7 @@
 ---
 title: "Linux Storage Management: Disks, Partitions, LVM, Filesystems, and Mounting"
 description: "How Linux storage works from physical disk to mounted filesystem — block devices, partition tables, LVM for flexible volume management, filesystem creation and tuning, and NFS for network storage."
-date: 2026-08-10
+date: 2024-10-08
 tags: ["Programming", "Fundamentals"]
 series: "Linux: A Complete Practical Course"
 seriesOrder: 12

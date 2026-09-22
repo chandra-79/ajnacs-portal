@@ -105,7 +105,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#0d9488" stop-opacity=".10"/>
       <stop offset="1" stop-color="#0b7a70" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahservicemeshi" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#0d9488" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -121,7 +121,7 @@ if(d.getAttribute('data-rface')==='serif'){
     <div class="prose">
 <p>A service mesh intercepts all traffic between services in a cluster via sidecar proxies (or, in newer implementations, node-level proxies), giving you mTLS encryption, fine-grained traffic management, and automatic observability on every service-to-service call — without any changes to the services themselves.</p>
 <p>The proposition is genuinely powerful. The operational reality is that service meshes add significant complexity, and that complexity has a cost that&#39;s easy to underestimate before you&#39;re running one in production.</p>
-<h2 id="what-a-service-mesh-actually-provides"><a class="h-anchor" href="#what-a-service-mesh-actually-provides" aria-label="Link to this section">#</a>What a service mesh actually provides</h2>
+<h2 id="what-a-service-mesh-actually-provides"><a class="h-anchor" href="#what-a-service-mesh-actually-provides" aria-hidden="true" tabindex="-1">#</a>What a service mesh actually provides</h2>
 <aside class="keyfig">
   <p class="keyfig-label">Key figure</p>
   <p class="keyfig-text">A service mesh enables precise control — route <b>1%</b> to v2, monitor error rates, gradually increase — that&#39;s hard to achieve reliably without one.</p>
@@ -130,23 +130,23 @@ if(d.getAttribute('data-rface')==='serif'){
 <p><strong>Traffic management</strong>: weighted traffic splitting (send 5% of traffic to the new version of a service), circuit breaking, retry policies, timeout configuration, fault injection for testing. All configured in the mesh&#39;s control plane rather than in application code.</p>
 <p><strong>Observability without instrumentation</strong>: because the sidecar proxies intercept all traffic, they can generate metrics (request rate, error rate, latency per service pair) and traces (spans for every service-to-service call) without any code changes. This is the feature that often sells the mesh to teams that haven&#39;t yet invested in application instrumentation.</p>
 <p><strong>Policy enforcement</strong>: AuthorizationPolicy resources (in Istio&#39;s model) define which services can communicate with which. A payments service can be locked down to only accept traffic from the API gateway and the order service.</p>
-<h2 id="when-a-service-mesh-is-worth-it"><a class="h-anchor" href="#when-a-service-mesh-is-worth-it" aria-label="Link to this section">#</a>When a service mesh is worth it</h2>
+<h2 id="when-a-service-mesh-is-worth-it"><a class="h-anchor" href="#when-a-service-mesh-is-worth-it" aria-hidden="true" tabindex="-1">#</a>When a service mesh is worth it</h2>
 <p><strong>You have a security requirement for service-to-service encryption</strong>: in regulated environments where all traffic must be encrypted (PCI DSS, HIPAA), mTLS across the cluster is a requirement. A service mesh is the most operationally feasible way to achieve this at scale.</p>
 <p><strong>You need fine-grained traffic management for progressive delivery</strong>: canary deployments and blue/green releases at the traffic level (not the infrastructure level) require traffic splitting. A service mesh enables precise control — route 1% to v2, monitor error rates, gradually increase — that&#39;s hard to achieve reliably without one.</p>
 <p><strong>You have many services with inconsistent instrumentation</strong>: if you have 50 microservices with varying observability coverage, a mesh gives you a baseline visibility floor — you can see latency and errors on every service-to-service call even for services with no custom instrumentation.</p>
 <p><strong>You&#39;re at a scale where per-service policy management is unmanageable</strong>: enforcing &quot;service X can only be called by services in namespace Y&quot; across a large cluster is operationally difficult without a mesh&#39;s policy model.</p>
-<h2 id="when-a-service-mesh-is-probably-not-worth-it"><a class="h-anchor" href="#when-a-service-mesh-is-probably-not-worth-it" aria-label="Link to this section">#</a>When a service mesh is probably not worth it</h2>
+<h2 id="when-a-service-mesh-is-probably-not-worth-it"><a class="h-anchor" href="#when-a-service-mesh-is-probably-not-worth-it" aria-hidden="true" tabindex="-1">#</a>When a service mesh is probably not worth it</h2>
 <p><strong>Small number of services</strong>: for 5-10 services, the operational overhead of running a mesh control plane, debugging proxy misconfigurations, and understanding how the mesh interacts with your networking is not justified. Handle mTLS at the application level or with cert-manager.</p>
 <p><strong>Teams not yet comfortable with Kubernetes internals</strong>: a service mesh adds a layer of abstraction that makes debugging harder when things go wrong. If the team doesn&#39;t have strong Kubernetes fundamentals, a mesh adds cognitive load without the maturity to benefit from it.</p>
 <p><strong>Performance-sensitive workloads with strict latency budgets</strong>: every request through a sidecar proxy adds latency — typically 1-5ms per hop. For services with P99 SLOs under 10ms, this matters. Measure before deploying.</p>
 <p><strong>You primarily want observability</strong>: if observability is the main driver, OpenTelemetry auto-instrumentation provides comparable signal with less overhead than running a full mesh.</p>
-<h2 id="istio-vs-linkerd"><a class="h-anchor" href="#istio-vs-linkerd" aria-label="Link to this section">#</a>Istio vs Linkerd</h2>
+<h2 id="istio-vs-linkerd"><a class="h-anchor" href="#istio-vs-linkerd" aria-hidden="true" tabindex="-1">#</a>Istio vs Linkerd</h2>
 <p><strong>Istio</strong>: the more feature-rich option. Built on Envoy proxy (a mature, high-performance proxy also used by Cloudflare, AWS App Mesh, and many others). Comprehensive traffic management, extensive extensibility via EnvoyFilter and WASM plugins, strong RBAC and policy model, multicluster support.</p>
 <p>The downsides: Envoy is complex to debug, the control plane (Istiod) is resource-intensive, and Istio&#39;s configuration API has more surface area than most teams need.</p>
 <p><strong>Linkerd</strong>: opinionated simplicity. Uses a lightweight Rust proxy (linkerd2-proxy) that&#39;s significantly smaller and faster than Envoy. Much simpler configuration model — good defaults that cover most use cases without the full complexity of Istio.</p>
 <p>Linkerd doesn&#39;t have Istio&#39;s traffic management depth (less support for complex routing rules, no WASM extensibility), but for teams whose primary needs are mTLS, observability, and basic traffic splitting, Linkerd&#39;s simplicity is a genuine advantage.</p>
 <p><strong>Cilium Service Mesh</strong>: a newer entrant that uses eBPF rather than sidecar proxies for networking and policy. No sidecar overhead, deep kernel-level visibility, CNI and mesh in one. Increasingly capable and worth evaluating for new deployments — the architectural model (eBPF at the node level rather than Envoy in every pod) may become the dominant approach.</p>
-<h2 id="the-migration-path-if-you-decide-to-adopt"><a class="h-anchor" href="#the-migration-path-if-you-decide-to-adopt" aria-label="Link to this section">#</a>The migration path if you decide to adopt</h2>
+<h2 id="the-migration-path-if-you-decide-to-adopt"><a class="h-anchor" href="#the-migration-path-if-you-decide-to-adopt" aria-hidden="true" tabindex="-1">#</a>The migration path if you decide to adopt</h2>
 <ol>
 <li>Deploy the mesh in ambient or permissive mode first — mTLS is available but not enforced</li>
 <li>Verify that existing services work correctly with the mesh installed (diagnose and fix any issues)</li>
@@ -191,12 +191,12 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#e8a317" stop-opacity=".10"/>
       <stop offset="1" stop-color="#a9760a" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahfinopsanomal" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e8a317" fill-opacity=".5"/>
     </marker>
   </defs>
   <rect width="640" height="360" fill="url(#bgfinopsanomal)"/>
-  <rect x="86" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.39" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 108 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.41" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 108 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.21" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 108 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.13" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 172 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.17" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 172 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="86" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.23" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 236 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.54" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 236 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.51" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/>
+  <rect x="86" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.39" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 108 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="212" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.41" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 108 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="338" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.21" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 108 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="212" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.13" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 172 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.17" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 172 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="86" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.23" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 236 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="212" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.54" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 236 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="464" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.51" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/>
 </svg></div>
   <div class="card-body">
     <span class="chip">FinOps</span>
@@ -212,7 +212,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#e8a317" stop-opacity=".10"/>
       <stop offset="1" stop-color="#a9760a" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahfinopstaggin" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e8a317" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -241,7 +241,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#e0473a" stop-opacity=".10"/>
       <stop offset="1" stop-color="#c03a2e" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahkubernetesse" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e0473a" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -321,7 +321,7 @@ if(d.getAttribute('data-rface')==='serif'){
         </div>
       </div>
       <div>
-        <h4>Services</h4>
+        <h2 class="foot-title">Services</h2>
         <ul>
           <li><a href="/services/#architecture">Enterprise architecture</a></li>
           <li><a href="/services/#ai">AI &amp; MLOps</a></li>
@@ -330,7 +330,7 @@ if(d.getAttribute('data-rface')==='serif'){
         </ul>
       </div>
       <div>
-        <h4>Insights</h4>
+        <h2 class="foot-title">Insights</h2>
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/series/">Series</a></li>
@@ -339,7 +339,7 @@ if(d.getAttribute('data-rface')==='serif'){
         </ul>
       </div>
       <div>
-        <h4>Contact</h4>
+        <h2 class="foot-title">Contact</h2>
         <ul>
           <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
           <li><a href="/contact/">Start an engagement</a></li>

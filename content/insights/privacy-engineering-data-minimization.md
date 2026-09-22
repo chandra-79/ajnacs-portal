@@ -1,7 +1,7 @@
 ---
 title: "Privacy Engineering: Building Data Protection Into the Architecture"
 description: "Privacy moved from legal review to engineering discipline — deletion that actually deletes, minimization as design constraint, anonymization honesty, and the data-inventory infrastructure that makes compliance a query instead of a quarterly panic."
-date: 2025-02-05
+date: 2027-06-28
 tags: ["Privacy", "Security", "Data Engineering", "Compliance", "Architecture"]
 format: article
 ---

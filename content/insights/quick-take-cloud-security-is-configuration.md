@@ -1,7 +1,7 @@
 ---
 title: "Cloud Security Is a Configuration Problem, Not a Sophistication Problem"
 description: "Most cloud security incidents trace to misconfiguration: public S3 buckets, overly permissive IAM roles, open security groups. Understanding the pattern is the first step to preventing it."
-date: 2025-09-10
+date: 2028-08-02
 tags: ["DevSecOps", "Cloud Architecture"]
 format: article
 ---

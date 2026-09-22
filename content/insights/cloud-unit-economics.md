@@ -1,7 +1,7 @@
 ---
 title: "Cloud Unit Economics: The Metric That Makes Cloud Spend Conversations Productive"
 description: "Talking about cloud spend in absolute dollars rarely leads anywhere useful. Unit economics — cost per transaction, cost per user, cost per GB processed — creates the context that turns 'we spend too much on cloud' into an actionable conversation."
-date: 2025-06-04
+date: 2025-10-15
 tags: ["FinOps", "Cost Optimisation", "Engineering Leadership"]
 series: "FinOps from Zero to Production"
 seriesOrder: 3

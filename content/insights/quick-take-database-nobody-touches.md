@@ -1,7 +1,7 @@
 ---
 title: "The Database Nobody Touches Contains the Most Critical Data"
 description: "Every enterprise has a database that is too important to modify, too fragile to migrate, and too poorly documented to fully understand. Here is why this happens and what to do about it."
-date: 2026-01-05
+date: 2028-11-10
 tags: ["Data Engineering", "Engineering Leadership"]
 format: article
 ---

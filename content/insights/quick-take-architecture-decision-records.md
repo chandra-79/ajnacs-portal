@@ -1,7 +1,7 @@
 ---
 title: "Architecture Decision Records: Why They Fail and How to Make Them Work"
 description: "ADRs are one of the highest-value low-cost engineering practices. Most teams either do not write them or write them in a way that makes them useless. Here is the difference."
-date: 2025-11-18
+date: 2028-11-13
 tags: ["Software Engineering", "Engineering Leadership"]
 format: article
 ---

@@ -1,7 +1,7 @@
 ---
 title: "Infrastructure as code is not automated infrastructure management. It is version-controlled infrastructure creation."
 description: "Infrastructure as code is widely adopted and frequently misunderstood in terms of what it provides."
-date: 2025-07-16
+date: 2028-12-08
 tags: ["DevSecOps", "Cloud Architecture"]
 format: article
 derived: true

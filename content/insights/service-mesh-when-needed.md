@@ -1,7 +1,7 @@
 ---
 title: "Do You Actually Need a Service Mesh? The Adoption Question Behind the Technology"
 description: "The mesh delivers mTLS, traffic policy, and observability as platform properties — at real operational cost. What the sidecar-vs-ambient shift changes, the capability-by-capability alternatives audit, and the estate signals that say yes, not yet, or never."
-date: 2025-03-03
+date: 2027-10-25
 tags: ["Containers", "Service Mesh", "Platform Engineering", "Security", "Distributed Systems"]
 format: article
 ---

@@ -1,7 +1,7 @@
 ---
 title: "Accessibility as Engineering Practice: Beyond the Audit-Panic Cycle"
 description: "Most organizations do accessibility as periodic remediation — an audit, a panic, a backlog, a decay. The engineering version: semantic foundations, the design-system leverage point, testing's honest automation ceiling, and the regulatory clock that changed the budget conversation."
-date: 2024-10-02
+date: 2028-10-25
 tags: ["Accessibility", "Programming", "Developer Experience", "Compliance", "Product Engineering"]
 format: article
 ---

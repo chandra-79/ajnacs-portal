@@ -1,7 +1,7 @@
 ---
 title: "GraalVM Native Image for Enterprise Java: When Compiling Ahead of Time Pays"
 description: "Native Image turns Java applications into instant-starting, memory-lean executables — at the cost of a closed-world assumption that fights two decades of Java dynamism. Where native compilation genuinely wins, what breaks, and a decision framework."
-date: 2024-12-30
+date: 2026-10-26
 tags: ["Java", "JVM", "GraalVM", "Cloud Architecture", "Performance"]
 format: article
 ---

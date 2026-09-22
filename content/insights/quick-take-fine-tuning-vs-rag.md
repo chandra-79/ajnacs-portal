@@ -1,7 +1,7 @@
 ---
 title: "Fine-Tuning vs. RAG: How to Know Which One You Actually Need"
 description: "Fine-tuning changes what a model knows and how it behaves. RAG changes what information a model can access at inference time. Most teams reach for the wrong one."
-date: 2026-01-05
+date: 2028-02-09
 tags: ["Enterprise AI", "AI & MLOps"]
 format: article
 ---

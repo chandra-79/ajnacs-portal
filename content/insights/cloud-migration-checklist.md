@@ -1,7 +1,7 @@
 ---
 title: "A cloud migration checklist that stops before operational readiness is half a checklist."
 description: "Cloud migrations are consistently evaluated against infrastructure and application checklists. Compute is provisioned, application is running, data is migrated, traffic is routing."
-date: 2026-03-30
+date: 2028-12-29
 tags: ["Cloud Architecture", "Engineering Leadership"]
 format: article
 derived: true

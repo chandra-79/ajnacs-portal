@@ -1,7 +1,7 @@
 ---
 title: "Ethernet vs. InfiniBand for AI Training: Why the Network Fabric Matters More Than You Think"
 description: "Most AI infrastructure decisions focus on GPUs and storage. Network fabric is the variable that determines whether your training cluster runs at 90% efficiency or 40%."
-date: 2026-04-13
+date: 2025-03-25
 tags: ["Systems", "Enterprise AI", "Infrastructure"]
 format: article
 ---

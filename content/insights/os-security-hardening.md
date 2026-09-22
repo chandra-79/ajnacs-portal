@@ -1,7 +1,7 @@
 ---
 title: "Linux Security Hardening: A Production Server Checklist"
 description: "The practical steps to harden a Linux server before production — from SSH configuration and user privilege reduction to kernel parameter tuning, audit logging, and fail2ban."
-date: 2026-08-27
+date: 2027-10-18
 tags: ["Programming", "Fundamentals"]
 series: "Linux: A Complete Practical Course"
 seriesOrder: 20

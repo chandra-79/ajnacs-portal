@@ -1,7 +1,7 @@
 ---
 title: "Prompt engineering is not dead. It just grew up and stopped calling itself prompt engineering."
 description: "The lifecycle of \"prompt engineering is dead\" as a claim tracks closely with major model capability releases."
-date: 2026-03-10
+date: 2029-05-04
 tags: ["AI & MLOps", "Enterprise AI"]
 format: note
 derived: true

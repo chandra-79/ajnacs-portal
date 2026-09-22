@@ -1,7 +1,7 @@
 ---
 title: "OCI Architect Associate Study Guide: What the Exam Actually Tests"
 description: "A practitioner's guide to the Oracle Cloud Infrastructure Architect Associate exam — the topics that get the most questions, the OCI-specific concepts that differ from AWS/Azure, and a focused study path for engineers with prior cloud experience."
-date: 2026-07-20
+date: 2025-01-24
 tags: ["Cloud Architecture", "OCI", "Certifications"]
 format: article
 ---

@@ -1,7 +1,7 @@
 ---
 title: "Data Mesh in Practice: What Changes and What Stays Hard"
 description: "Data mesh shifts data ownership to domain teams and treats data products as first-class artifacts. The architectural principles are sound. The organizational change required is larger than most technology-first implementations anticipate."
-date: 2026-08-12
+date: 2027-11-19
 tags: ["Data Engineering", "Cloud Architecture", "Engineering Leadership"]
 format: article
 ---

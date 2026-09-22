@@ -1,7 +1,7 @@
 ---
 title: "Reserved Instance Rationalisation: How to Commit to the Right Resources"
 description: "Committed use discounts (Reserved Instances, Savings Plans, CUDs) are one of the highest-return FinOps actions — but committing to the wrong shape or term locks in waste. Here's the analysis process for getting it right."
-date: 2025-05-14
+date: 2025-11-20
 tags: ["FinOps", "Cost Optimisation", "Cloud Architecture"]
 series: "FinOps from Zero to Production"
 seriesOrder: 2

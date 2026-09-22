@@ -1,7 +1,7 @@
 ---
 title: "The Observability Bill: Controlling the Cost of Knowing What Your Systems Do"
 description: "Telemetry spend became a top-line infrastructure cost, sometimes rivaling compute — driven by cardinality, retention, and volume decisions nobody owns. The cost model of metrics-logs-traces, the cardinality trap, the pipeline-processing tier, and value-based retention."
-date: 2025-01-27
+date: 2027-07-28
 tags: ["Observability", "FinOps", "Reliability", "Cloud Architecture", "Engineering Leadership"]
 format: article
 ---

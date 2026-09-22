@@ -1,7 +1,7 @@
 ---
 title: "RAG Architecture for Enterprise Knowledge Bases: What Works, What Doesn't"
 description: "Retrieval-Augmented Generation sounds simple — retrieve relevant documents, pass them to an LLM, get better answers. The implementation decisions that make it work in production are less obvious."
-date: 2025-06-02
+date: 2026-12-30
 tags: ["AI & MLOps", "Architecture", "Enterprise AI"]
 format: article
 ---

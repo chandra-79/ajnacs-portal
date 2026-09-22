@@ -1,7 +1,7 @@
 ---
 title: "The Quantum Computing Race: What's Actually Happening in 2025"
 description: "From Google Sycamore's first supremacy claim in 2019 to Microsoft's Majorana-1 topological chip in 2025 — a plain-language guide to what each milestone actually means and where the field is heading."
-date: 2026-07-03
+date: 2027-07-21
 tags: ["Quantum Computing", "Enterprise AI", "Emerging Technology"]
 format: article
 ---
@@ -10,7 +10,6 @@ Quantum computing gets announced every few months as "a breakthrough" — and ea
 
 Here's what's actually happened in the past six years and what to make of it.
 
-![Quantum computing chips timeline](/images/qc-race.png)
 
 ---
 
@@ -18,7 +17,6 @@ Here's what's actually happened in the past six years and what to make of it.
 
 ### Google Sycamore — October 2019
 
-![Google Sycamore chip](/images/google-sycamore.jpg)
 
 The chip that started the modern conversation. Google claimed Sycamore completed a specific computation in 200 seconds that would take a classical supercomputer 10,000 years.
 
@@ -30,7 +28,6 @@ What it actually proved: you can build a 53-qubit system where quantum effects a
 
 ### D-Wave Advantage2 — June 2022
 
-![D-Wave Advantage2](/images/dwave-advantage2.jpg)
 
 D-Wave takes a different approach: quantum annealing rather than gate-based quantum computing. The Advantage2 has over 7,000 qubits — far more than any gate-based system — but they're a different type of qubit, optimized for optimization problems (scheduling, logistics, molecular simulation) rather than general computation.
 
@@ -42,7 +39,6 @@ D-Wave's approach is actually closer to commercial application for specific doma
 
 ### IBM Heron — December 2023
 
-![IBM Heron chip](/images/ibm-heron.jpg)
 
 IBM's Heron processor (133 qubits) was notable less for qubit count and more for architecture improvements — specifically, reduced cross-talk between qubits and improved gate fidelity. In quantum computing, **error rates matter more than qubit counts**.
 
@@ -52,7 +48,6 @@ A 100-qubit system with 99.9% gate fidelity is vastly more useful than a 1000-qu
 
 ### Google Willow — December 2024
 
-![Google Willow chip](/images/google-willow.png)
 
 This one was genuinely significant. Google's Willow chip demonstrated something the field has been working toward for years: **below-threshold error correction**. As they added more qubits to form larger logical qubits, the error rate went *down* — not up.
 
@@ -64,7 +59,6 @@ Willow also ran a benchmark that Google claimed would take a classical supercomp
 
 ### Amazon Ocelot — February 2025
 
-![Amazon Ocelot chip](/images/amazon-ocelot.jpg)
 
 Amazon's Ocelot takes a different physical approach: **cat qubits**. The name comes from Schrödinger's cat — these qubits are designed to suppress one type of error (bit flips) naturally, which means error correction resources can focus on the remaining error type (phase flips).
 
@@ -74,7 +68,6 @@ The claim: 90% reduction in resources needed for error correction compared to co
 
 ### PsiQuantum Omega — February 2025
 
-![PsiQuantum Omega](/images/psiquantum-omega.png)
 
 PsiQuantum's approach is photonic — using photons rather than superconducting circuits or trapped ions as the physical qubit substrate. The advantage: photons don't require the extreme cooling (near absolute zero) that most other approaches need.
 
@@ -84,7 +77,6 @@ Omega is a manufacturing milestone as much as a science one — PsiQuantum is fa
 
 ### Microsoft Majorana-1 — February 2025
 
-![Microsoft Majorana-1](/images/ms-majorana-1.jpg)
 
 The most talked-about of the 2025 announcements, and the most technically distinctive. Majorana-1 uses **topological qubits** — a fundamentally different physical implementation based on Majorana fermions (a type of particle that is its own antiparticle).
 

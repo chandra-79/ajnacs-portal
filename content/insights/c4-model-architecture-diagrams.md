@@ -1,7 +1,7 @@
 ---
 title: "Architecture Diagrams That Communicate: The C4 Model and Diagrams-as-Code"
 description: "Most architecture diagrams fail as communication — mixed abstraction levels, undefined arrows, and instant staleness. C4's zoom-level discipline, the notation rules that carry the weight, diagrams-as-code for drift resistance, and what diagrams still can't do."
-date: 2024-10-17
+date: 2027-06-14
 tags: ["Architecture", "Documentation", "Engineering Practice", "Developer Experience"]
 format: article
 ---

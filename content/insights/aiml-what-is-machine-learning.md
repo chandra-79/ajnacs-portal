@@ -1,7 +1,7 @@
 ---
 title: "What Machine Learning Actually Is — Before the Hype and After the Buzzwords"
 description: "A precise definition of machine learning, the difference between supervised, unsupervised, and reinforcement learning, and why understanding the category matters before choosing an approach."
-date: 2025-04-22
+date: 2025-07-23
 tags: ["AI & MLOps", "Fundamentals"]
 series: "AI, ML, LLMs, and Neural Networks: A Practitioner's Introduction"
 seriesOrder: 1

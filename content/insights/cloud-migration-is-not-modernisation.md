@@ -1,7 +1,7 @@
 ---
 title: "Lifting and shifting to the cloud is relocation, not modernisation"
 description: "Lift-and-shift is a legitimate cloud migration strategy. But when organizations call it \"cloud transformation,\" they're setting expectations that a server relocation cannot meet."
-date: 2025-10-20
+date: 2029-04-09
 tags: ["Cloud Architecture", "Infrastructure"]
 format: note
 derived: true

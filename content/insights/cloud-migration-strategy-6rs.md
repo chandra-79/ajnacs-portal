@@ -1,7 +1,7 @@
 ---
 title: "Cloud Migration Strategy: Applying the 6 Rs Beyond the Whiteboard"
 description: "Rehost, Replatform, Refactor, Repurchase, Retire, Retain — the 6 Rs framework is well-known. Less discussed is how to apply it at portfolio scale, sequence workloads correctly, and avoid the migration anti-patterns that create more work than they solve."
-date: 2026-05-08
+date: 2027-07-16
 tags: ["Cloud Architecture", "Engineering Leadership"]
 format: article
 ---

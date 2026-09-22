@@ -1,7 +1,7 @@
 ---
 title: "Technical writing is an engineering skill. Not a soft skill. An engineering skill."
 description: "The framing of writing as a \"soft skill\" in engineering has produced decades of engineers who regard documentation as an obligation to be minimised and clear communication as optional."
-date: 2025-09-24
+date: 2029-02-14
 tags: ["Engineering Leadership"]
 format: article
 derived: true

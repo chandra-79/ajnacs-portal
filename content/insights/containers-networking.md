@@ -1,7 +1,7 @@
 ---
 title: "Container Networking: How Containers Talk to Each Other and to the Outside World"
 description: "Bridge networks, overlay networks, DNS-based service discovery, port publishing, and the iptables rules that make container networking work — and fail."
-date: 2026-06-26
+date: 2026-04-28
 tags: ["DevSecOps", "Fundamentals"]
 series: "Containerization from the Ground Up"
 seriesOrder: 3

@@ -105,7 +105,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#ea580c" stop-opacity=".10"/>
       <stop offset="1" stop-color="#b8450b" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahjavavirtualt" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#ea580c" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -121,31 +121,31 @@ if(d.getAttribute('data-rface')==='serif'){
     <div class="prose">
 <p>Virtual threads are the biggest change to Java&#39;s concurrency model since the language shipped, and they arrived with an unusual property for a big-ticket feature: the migration story is mostly <em>deleting</em> things. Thread pools, reactive adapters, callback chains — the machinery we built to work around expensive threads becomes optional.</p>
 <p>But &quot;mostly deleting things&quot; is not &quot;free.&quot; Two years into mainstream adoption, the patterns — and the failure modes — are clear. Here&#39;s the enterprise field guide.</p>
-<h2 id="the-core-idea-in-one-paragraph"><a class="h-anchor" href="#the-core-idea-in-one-paragraph" aria-label="Link to this section">#</a>The core idea in one paragraph</h2>
+<h2 id="the-core-idea-in-one-paragraph"><a class="h-anchor" href="#the-core-idea-in-one-paragraph" aria-hidden="true" tabindex="-1">#</a>The core idea in one paragraph</h2>
 <aside class="keyfig">
   <p class="keyfig-label">Key figure</p>
   <p class="keyfig-text">Thread-per-request stops being a scalability ceiling. The classic sizing exercise — &quot;200 Tomcat threads, so 200 concurrent requests, so at <b>500 ms</b> per downstream call we saturate at 400 req/s&quot; — evaporates.</p>
 </aside>
 <p>Platform threads map 1:1 to OS threads: expensive to create (~1 MB stack), capped in the low thousands per host. Virtual threads are JVM-managed: cheap (bytes of initial footprint), scheduled onto a small pool of OS carrier threads, and <em>unmounted</em> from the carrier whenever they block on I/O. A million virtual threads waiting on HTTP responses costs almost nothing; the carriers stay busy running whichever threads are actually runnable. The result: you write plain, blocking, debuggable code and get the concurrency scaling that previously required reactive frameworks.</p>
-<h2 id="what-changes-in-practice"><a class="h-anchor" href="#what-changes-in-practice" aria-label="Link to this section">#</a>What changes in practice</h2>
+<h2 id="what-changes-in-practice"><a class="h-anchor" href="#what-changes-in-practice" aria-hidden="true" tabindex="-1">#</a>What changes in practice</h2>
 <p><strong>Thread-per-request stops being a scalability ceiling.</strong> The classic sizing exercise — &quot;200 Tomcat threads, so 200 concurrent requests, so at 500 ms per downstream call we saturate at 400 req/s&quot; — evaporates. With virtual threads (one property in Spring Boot 3.2+: <code>spring.threads.virtual.enabled=true</code>; similar switches in Helidon, Quarkus, and modern Tomcat/Jetty), concurrent requests are bounded by memory and downstream capacity, not thread count.</p>
 <p><strong>Don&#39;t pool virtual threads.</strong> Pooling exists to amortize thread creation cost; virtual threads have none. <code>Executors.newVirtualThreadPerTaskExecutor()</code> and create one per task. Pools of virtual threads are a category error — and where you previously used a pool <em>as a concurrency limiter</em>, replace it with an explicit <code>Semaphore</code>, which says what it means.</p>
 <p><strong>Blocking code stops being a sin.</strong> The JDBC call, the <code>RestClient</code> call, <code>Thread.sleep</code> in a retry loop — all fine. The years of contorting business logic into reactive pipelines to avoid blocking a precious thread are over for the standard CRUD-and-call-things service. Stack traces are readable again, debuggers step normally, and the intern can understand the codebase.</p>
-<h2 id="what-doesn39t-change"><a class="h-anchor" href="#what-doesn39t-change" aria-label="Link to this section">#</a>What doesn&#39;t change</h2>
+<h2 id="what-doesn39t-change"><a class="h-anchor" href="#what-doesn39t-change" aria-hidden="true" tabindex="-1">#</a>What doesn&#39;t change</h2>
 <p><strong>The database doesn&#39;t get faster.</strong> Virtual threads move the bottleneck; they don&#39;t remove it. Your service that could previously exert 200 concurrent requests of pressure can now exert 50,000 — straight at a connection pool of 30 and a database that was sized for the old world. Concurrency limits, timeouts, and backpressure move from &quot;implicit in the thread pool size&quot; to &quot;your explicit job.&quot; Services that flipped the virtual-threads switch and immediately fell over didn&#39;t hit a virtual thread bug; they removed a governor they&#39;d forgotten was load-bearing.</p>
 <p><strong>CPU-bound work gains nothing.</strong> Virtual threads shine when threads <em>wait</em>. Image encoding, crypto, big serialization jobs still belong on a bounded platform-thread executor sized to cores.</p>
 <p><strong>Memory per request still matters.</strong> A million concurrent requests each holding a 2 MB object graph is still 2 TB. The thread stack stopped being the constraint; your allocations didn&#39;t.</p>
-<h2 id="the-failure-modes-to-design-against"><a class="h-anchor" href="#the-failure-modes-to-design-against" aria-label="Link to this section">#</a>The failure modes to design against</h2>
+<h2 id="the-failure-modes-to-design-against"><a class="h-anchor" href="#the-failure-modes-to-design-against" aria-hidden="true" tabindex="-1">#</a>The failure modes to design against</h2>
 <p><strong>Pinning.</strong> A virtual thread that blocks while it cannot unmount <em>pins</em> its carrier, and enough pinned carriers starve the whole scheduler. The historical big one — blocking inside a <code>synchronized</code> block — was fixed in <strong>JDK 24</strong> (synchronized no longer pins), but two sources remain relevant: blocking inside native/JNI calls, and older JDKs where the synchronized fix hasn&#39;t arrived; on JDK 21 LTS, pinning via synchronized-around-I/O is still the top production issue. Detect it with <code>-Djdk.tracePinnedThreads=full</code> or JFR&#39;s <code>jdk.VirtualThreadPinned</code> event; fix it by replacing synchronized-around-I/O with <code>ReentrantLock</code> or upgrading. Audit third-party libraries — connection pools and drivers were the usual offenders; current HikariCP, JDBC drivers, and Apache HttpClient are fine, but that ancient SOAP client in the corner of the estate may not be.</p>
 <p><strong>ThreadLocal abuse.</strong> ThreadLocals <em>work</em> on virtual threads, but patterns that assume few, long-lived threads — caching a 50 KB buffer per thread, say — turn into a memory bomb across a million short-lived ones. The replacement is <strong>ScopedValues (final in JDK 25)</strong> for request context, or just passing context explicitly. Audit anything stashing expensive state in ThreadLocals, including frameworks doing it on your behalf.</p>
 <p><strong>Unbounded spawn.</strong> <code>virtualThreadPerTaskExecutor</code> will happily create ten million threads if your queue feeds it that many. Every ingress point needs an explicit concurrency bound — semaphore, rate limiter, or bounded queue — because the thread pool is no longer accidentally providing one.</p>
 <p><strong>Observability drift.</strong> Dashboards that counted platform threads, thread-pool utilization alerts, APM agents that assumed thread identity equals request identity — all need revisiting. JFR has first-class virtual thread events; make sure your APM version does too.</p>
-<h2 id="structured-concurrency-the-other-half"><a class="h-anchor" href="#structured-concurrency-the-other-half" aria-label="Link to this section">#</a>Structured concurrency: the other half</h2>
+<h2 id="structured-concurrency-the-other-half"><a class="h-anchor" href="#structured-concurrency-the-other-half" aria-hidden="true" tabindex="-1">#</a>Structured concurrency: the other half</h2>
 <p><code>StructuredTaskScope</code> (finalized in the JDK 25 era) is what makes mass concurrency <em>manageable</em>: fork subtasks, join with a policy (fail-fast on first error, race for first success), and cancellation propagates automatically when the scope exits. It replaces the sprawl of <code>CompletableFuture</code> graphs whose error and cancellation semantics nobody could state confidently. The fan-out call — query three services, take all results or fail together within a deadline — collapses into a dozen readable lines. If virtual threads make blocking cheap, structured concurrency makes <em>coordinated</em> blocking correct.</p>
-<h2 id="so-is-reactive-dead"><a class="h-anchor" href="#so-is-reactive-dead" aria-label="Link to this section">#</a>So is reactive dead?</h2>
+<h2 id="so-is-reactive-dead"><a class="h-anchor" href="#so-is-reactive-dead" aria-hidden="true" tabindex="-1">#</a>So is reactive dead?</h2>
 <p>Mostly, for the median enterprise service — the REST API that calls databases and other services. Thread-per-request on virtual threads matches its throughput with a fraction of its complexity, and complexity is a cost paid by every engineer forever.</p>
 <p>Reactive retains real ground where its model is the point rather than a workaround: streaming with sophisticated backpressure and windowing (Kafka Streams, Flux-based pipelines), and codebases already fluent in it where a rewrite has no payback. Choose per workload, but the default has flipped: reactive now needs the justification, not blocking.</p>
-<h2 id="an-adoption-sequence-that-works"><a class="h-anchor" href="#an-adoption-sequence-that-works" aria-label="Link to this section">#</a>An adoption sequence that works</h2>
+<h2 id="an-adoption-sequence-that-works"><a class="h-anchor" href="#an-adoption-sequence-that-works" aria-hidden="true" tabindex="-1">#</a>An adoption sequence that works</h2>
 <p>Upgrade to a current JDK first — 21 LTS minimum, 25 LTS ideally, since the synchronized-pinning fix and ScopedValues remove the two biggest sharp edges. Then: enable virtual threads for the request-handling path in one low-risk service; add explicit concurrency limits at ingress and verify connection pool sizing against the new concurrency reality; load-test past saturation and watch JFR for pinning; audit ThreadLocal usage; then roll outward service by service. Retire custom thread-pool tuning as you go — every deleted <code>ThreadPoolExecutor</code> configuration block is a small monument to a constraint that no longer exists.</p>
 <p>The strategic summary for the architecture review: virtual threads let enterprises write the simple code again at the scale that used to require the complicated code. The catches are real but enumerable — pinning on older JDKs, missing backpressure, downstream systems meeting unthrottled concurrency. Handle those three, and this is the rare platform upgrade that reduces both latency <em>and</em> codebase complexity.</p>
 
@@ -182,7 +182,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#e0473a" stop-opacity=".10"/>
       <stop offset="1" stop-color="#c03a2e" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahplatformengo" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e0473a" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -203,7 +203,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#0e7490" stop-opacity=".10"/>
       <stop offset="1" stop-color="#0b5f77" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahplatformengm" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#0e7490" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -232,7 +232,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#0e7490" stop-opacity=".10"/>
       <stop offset="1" stop-color="#0b5f77" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahplatformengi" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#0e7490" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -312,7 +312,7 @@ if(d.getAttribute('data-rface')==='serif'){
         </div>
       </div>
       <div>
-        <h4>Services</h4>
+        <h2 class="foot-title">Services</h2>
         <ul>
           <li><a href="/services/#architecture">Enterprise architecture</a></li>
           <li><a href="/services/#ai">AI &amp; MLOps</a></li>
@@ -321,7 +321,7 @@ if(d.getAttribute('data-rface')==='serif'){
         </ul>
       </div>
       <div>
-        <h4>Insights</h4>
+        <h2 class="foot-title">Insights</h2>
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/series/">Series</a></li>
@@ -330,7 +330,7 @@ if(d.getAttribute('data-rface')==='serif'){
         </ul>
       </div>
       <div>
-        <h4>Contact</h4>
+        <h2 class="foot-title">Contact</h2>
         <ul>
           <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
           <li><a href="/contact/">Start an engagement</a></li>

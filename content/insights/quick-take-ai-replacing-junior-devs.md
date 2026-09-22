@@ -1,7 +1,7 @@
 ---
 title: "AI is Not Replacing Junior Developers — It's Changing What Junior Means"
 description: "The real impact of AI coding tools on early-career engineers is not elimination — it is a shift in which foundational skills matter and how quickly proficiency develops."
-date: 2026-03-23
+date: 2028-07-03
 tags: ["AI & MLOps", "Engineering Leadership"]
 format: article
 ---

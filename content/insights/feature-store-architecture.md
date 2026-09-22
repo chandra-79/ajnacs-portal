@@ -1,7 +1,7 @@
 ---
 title: "Feature Stores for Enterprise ML: When They're Worth the Investment"
 description: "Feature stores solve a real problem in ML at scale. They're also overkill for most teams until the specific pain points that justify them are present. Here's how to tell the difference."
-date: 2026-07-29
+date: 2027-05-26
 tags: ["Enterprise AI", "AI & MLOps", "Data Engineering", "Cloud Architecture"]
 format: article
 ---

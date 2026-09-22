@@ -1,7 +1,7 @@
 ---
 title: "Ghost VMs: The Invisible Waste Sitting Inside Every Enterprise Cloud Estate"
 description: "Every cloud estate has virtual machines that nobody claims — still running, still billing, with no owner, no traffic, and no purpose. Finding and eliminating them is the fastest FinOps win most organizations haven't taken seriously."
-date: 2026-09-04
+date: 2027-01-20
 tags: ["FinOps", "Cloud Architecture"]
 format: article
 ---

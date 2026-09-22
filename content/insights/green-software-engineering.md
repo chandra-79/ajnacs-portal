@@ -1,7 +1,7 @@
 ---
 title: "Green Software Engineering: Carbon as a Nonfunctional Requirement"
 description: "Software's energy footprint became a board-level line item — and the good news is that carbon efficiency and cost efficiency are mostly the same work. Measurement realities, the carbon-aware patterns that matter, the AI elephant, and what to skip."
-date: 2024-12-16
+date: 2026-11-13
 tags: ["Sustainability", "Cloud Architecture", "FinOps", "Engineering Leadership", "Architecture"]
 format: article
 ---

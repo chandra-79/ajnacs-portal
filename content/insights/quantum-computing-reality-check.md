@@ -1,7 +1,7 @@
 ---
 title: "In 6 months in 2025, four companies announced quantum computing breakthroughs from four completely different physical approaches. That's not noise — that's a field genuinely not knowing yet which path wins."
 description: "In 6 months in 2025, four companies announced quantum computing breakthroughs — from four completely different physical approaches:"
-date: 2026-04-06
+date: 2029-08-06
 tags: ["Quantum Computing", "Emerging Technology"]
 format: note
 derived: true

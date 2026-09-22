@@ -1,7 +1,7 @@
 ---
 title: "Neural Networks Explained: What They Are, How They Learn, and Why They Work"
 description: "Neurons, layers, weights, activation functions, backpropagation, and gradient descent — the actual mechanics of how a neural network learns from data, explained without the mathematics becoming the obstacle."
-date: 2026-07-06
+date: 2026-09-04
 tags: ["AI & MLOps", "Fundamentals"]
 series: "AI, ML, LLMs, and Neural Networks: A Practitioner's Introduction"
 seriesOrder: 2

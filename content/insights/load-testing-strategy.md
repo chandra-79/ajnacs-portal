@@ -1,7 +1,7 @@
 ---
 title: "Load Testing That Predicts Production: Strategy, Workload Modeling, and the Metrics That Don't Lie"
 description: "Most load tests measure the test harness, not the system — closed-loop artifacts, unrealistic data, and averages hiding the truth. How to model workloads honestly, choose test shapes deliberately, avoid coordinated omission, and make performance testing continuous."
-date: 2025-01-13
+date: 2027-04-21
 tags: ["Performance", "Programming", "Reliability"]
 format: article
 ---

@@ -1,7 +1,7 @@
 ---
 title: "Typed Python at Enterprise Scale: Making mypy and pyright Pay Their Way"
 description: "Gradual typing turned Python into a language large teams can refactor with confidence — when adopted deliberately. Strictness levels, the migration path for legacy codebases, runtime validation with Pydantic, and where typing effort actually pays."
-date: 2025-02-14
+date: 2028-05-26
 tags: ["Python", "Type Safety", "Engineering Practice", "Developer Experience", "Quality Engineering"]
 format: article
 ---

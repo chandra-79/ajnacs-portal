@@ -1,7 +1,7 @@
 ---
 title: "DuckDB and the Embedded Analytics Shift: When the Warehouse Is a Library Import"
 description: "An in-process columnar engine that queries Parquet at warehouse speed changed the default answer for a surprising share of analytics — local pipelines, lakehouse reads, application-embedded OLAP. What DuckDB actually is, where it displaces heavier stacks, and its honest ceilings."
-date: 2024-11-25
+date: 2027-03-12
 tags: ["Data Engineering", "Analytics", "Python", "Architecture"]
 format: article
 ---

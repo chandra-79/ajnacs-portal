@@ -1,7 +1,7 @@
 ---
 title: "The enterprise case for local LLM inference is stronger than most cloud-first conversations acknowledge"
 description: "The default assumption in enterprise AI conversations is that inference runs against cloud APIs."
-date: 2026-04-27
+date: 2029-05-07
 tags: ["Enterprise AI", "Emerging Technology"]
 format: note
 derived: true

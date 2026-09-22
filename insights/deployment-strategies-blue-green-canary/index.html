@@ -105,7 +105,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#7c3aed" stop-opacity=".10"/>
       <stop offset="1" stop-color="#5b21b6" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahdeploymentst" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#7c3aed" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -121,7 +121,7 @@ if(d.getAttribute('data-rface')==='serif'){
     <div class="prose">
 <p>Deployment strategy discussions have a way of floating free of their constraints. Teams debate blue-green versus canary as if choosing a philosophy, when the real determinants are unglamorous: how many instances you run, whether your traffic layer can split by percentage, what your observability can detect in five minutes, and — above all — whether your database schema can serve two application versions at once.</p>
 <p>Here&#39;s the strategy landscape with the constraints attached.</p>
-<h2 id="the-baseline-rolling-updates"><a class="h-anchor" href="#the-baseline-rolling-updates" aria-label="Link to this section">#</a>The baseline: rolling updates</h2>
+<h2 id="the-baseline-rolling-updates"><a class="h-anchor" href="#the-baseline-rolling-updates" aria-hidden="true" tabindex="-1">#</a>The baseline: rolling updates</h2>
 <aside class="keyfig">
   <p class="keyfig-label">Key figure</p>
   <p class="keyfig-text">During a rollout, both versions serve mixed traffic with no control over who gets what — you can&#39;t aim the new version at <b>1%</b> or at internal users first.</p>
@@ -129,20 +129,20 @@ if(d.getAttribute('data-rface')==='serif'){
 <p>Replace instances a few at a time behind a load balancer until the fleet runs the new version. This is Kubernetes&#39; default and the industry&#39;s workhorse, and its virtues are real: no extra capacity beyond a surge margin, no traffic-management sophistication required, built into every orchestrator.</p>
 <p>Its limits define why the other strategies exist. During a rollout, <strong>both versions serve mixed traffic with no control over who gets what</strong> — you can&#39;t aim the new version at 1% or at internal users first. Detection is coarse: by the time your error-rate alert fires, the rollout may be 60% complete. And &quot;rollback&quot; is a second rolling deployment, taking as long as the first, during which the bad version keeps serving.</p>
 <p>Rolling is the right answer when changes are low-risk, releases are frequent and small, and your test pipeline catches most problems pre-production. Its two non-negotiables: real <strong>readiness checks</strong> (traffic must not arrive before warmup — a JVM serving requests during class-loading is a self-inflicted incident) and <strong>graceful termination</strong> (drain connections before killing instances; the deploy-time 502 blip that teams learn to ignore is almost always a draining bug, and learned alarm-ignoring is expensive).</p>
-<h2 id="blue-green-the-binary-switch"><a class="h-anchor" href="#blue-green-the-binary-switch" aria-label="Link to this section">#</a>Blue-green: the binary switch</h2>
+<h2 id="blue-green-the-binary-switch"><a class="h-anchor" href="#blue-green-the-binary-switch" aria-hidden="true" tabindex="-1">#</a>Blue-green: the binary switch</h2>
 <p>Run two complete environments; deploy to the idle one, smoke-test it against production infrastructure, then flip traffic atomically at the router. Rollback is flipping back — seconds, not minutes.</p>
 <p>What you&#39;re buying: <strong>instant, rehearsed rollback</strong> and the ability to validate the real artifact on real infrastructure before any user meets it. What you&#39;re paying: double capacity (transient in cloud/Kubernetes, where &quot;environments&quot; are just deployments and the cost is an hour of duplicate pods, not a second data center), and — the underrated one — <strong>all-at-once exposure</strong>: when you flip, 100% of users hit the new version simultaneously, so anything your smoke tests missed hits everyone at once. Blue-green trades blast-radius control for rollback speed.</p>
 <p>Operational details that decide success: long-lived connections (websockets, streaming) need a drain story at flip time; background workers and schedulers must not double-run while both environments exist; and the idle environment&#39;s configuration must be <em>provably</em> identical — drift between blue and green converts your rollback plan into a second incident.</p>
 <p>Blue-green fits when releases are infrequent and chunky, rollback speed is the dominant requirement (payments, trading windows), or compliance demands a validated-then-promoted artifact with a clean audit line.</p>
-<h2 id="canary-measured-exposure"><a class="h-anchor" href="#canary-measured-exposure" aria-label="Link to this section">#</a>Canary: measured exposure</h2>
+<h2 id="canary-measured-exposure"><a class="h-anchor" href="#canary-measured-exposure" aria-hidden="true" tabindex="-1">#</a>Canary: measured exposure</h2>
 <p>Route a small slice of traffic — 1%, then 5%, 25%, 100% — to the new version, comparing its health against the stable fleet at each step, with automatic rollback on regression. This is the strategy hyperscalers converge on, because it converts deployment risk into a controlled experiment: worst case, 1% of users saw the bug for four minutes.</p>
 <p>The honest cost is that <strong>canary is an observability program wearing a deployment costume.</strong> To progress safely you need per-version metrics (latency, errors, saturation, and ideally one business metric — orders completed, not just HTTP 200s), traffic splitting finer than instance granularity (a service mesh or L7 load balancer; ingress percentage routing), and <em>automated</em> analysis — humans watching dashboards do not reliably catch a 2% error-rate delta at step three of a 2 AM rollout. Tooling exists precisely for this (Argo Rollouts and Flagger drive the analysis loop against Prometheus/Datadog queries in Kubernetes-land); adopting the tool without defining the metrics is the common half-implementation.</p>
 <p>Two sharp edges: <strong>session affinity</strong> (a user bouncing between versions mid-session must be safe, or you need sticky routing), and <strong>sample size</strong> — at 1% traffic on a modest service, rare failure modes simply won&#39;t occur during the canary window; size steps and durations against actual request volumes, not round numbers.</p>
 <p>A canary&#39;s quieter sibling deserves mention: <strong>shadow traffic</strong> — mirror production requests to the new version and <em>discard its responses</em>. Zero user risk, superb for validating performance and error behavior of risky rewrites; useless for anything with side effects unless you can stub them. Rewrites and migrations should shadow before they canary.</p>
-<h2 id="the-constraint-underneath-all-of-them-the-database"><a class="h-anchor" href="#the-constraint-underneath-all-of-them-the-database" aria-label="Link to this section">#</a>The constraint underneath all of them: the database</h2>
+<h2 id="the-constraint-underneath-all-of-them-the-database"><a class="h-anchor" href="#the-constraint-underneath-all-of-them-the-database" aria-hidden="true" tabindex="-1">#</a>The constraint underneath all of them: the database</h2>
 <p>Every strategy above assumes two application versions can coexist against one database. That assumption — not the traffic mechanics — is where zero-downtime deployment is actually won or lost. The discipline is <strong>expand/contract</strong>: additive schema changes first (new columns nullable or defaulted, new tables, dual-write where needed), deploy code that works with both shapes, backfill, then contract (drop the old shape) releases later, after rollback windows close. The moment a deployment requires a schema change and a code change to land <em>together</em>, you&#39;ve bought an outage window regardless of your traffic strategy. Schema review — &quot;can version N-1 run against this?&quot; — belongs in the pipeline as a gate, not in the post-incident review as a finding.</p>
 <p>The same coexistence test applies to queues (old consumers meeting new message schemas), caches (serialization compatibility), and any singleton background jobs.</p>
-<h2 id="choosing-and-the-maturity-path"><a class="h-anchor" href="#choosing-and-the-maturity-path" aria-label="Link to this section">#</a>Choosing, and the maturity path</h2>
+<h2 id="choosing-and-the-maturity-path"><a class="h-anchor" href="#choosing-and-the-maturity-path" aria-hidden="true" tabindex="-1">#</a>Choosing, and the maturity path</h2>
 <p>The selection heuristic in one breath: <strong>rolling</strong> for routine low-risk changes with good pre-prod coverage; <strong>blue-green</strong> when rollback-in-seconds is the requirement and all-at-once exposure is acceptable after smoke tests; <strong>canary</strong> when user-facing risk must be bounded and you have (or will build) the observability to automate judgment; <strong>shadow</strong> before big rewrites. These compose — plenty of mature shops blue-green the infrastructure layer while canarying application releases through it.</p>
 <p>And note what all four strategies quietly assume: <strong>decoupling deploy from release</strong>. Feature flags let code ship dark and activate independently, which shrinks deployment risk to &quot;does the binary run&quot; while product risk is managed per-feature. Teams that internalize that separation stop needing deployment strategies to carry product risk at all — which is the actual end state worth aiming for: deploys so routine and reversible that the strategy discussion gets boring. Boring is the win condition.</p>
 
@@ -180,7 +180,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#e0473a" stop-opacity=".10"/>
       <stop offset="1" stop-color="#c03a2e" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahkubernetesse" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e0473a" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -201,7 +201,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#2f6fed" stop-opacity=".10"/>
       <stop offset="1" stop-color="#1b4fc4" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahjavalegacymo" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#2f6fed" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -222,7 +222,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#0d9488" stop-opacity=".10"/>
       <stop offset="1" stop-color="#0b7a70" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahmultiregiona" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#0d9488" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -310,7 +310,7 @@ if(d.getAttribute('data-rface')==='serif'){
         </div>
       </div>
       <div>
-        <h4>Services</h4>
+        <h2 class="foot-title">Services</h2>
         <ul>
           <li><a href="/services/#architecture">Enterprise architecture</a></li>
           <li><a href="/services/#ai">AI &amp; MLOps</a></li>
@@ -319,7 +319,7 @@ if(d.getAttribute('data-rface')==='serif'){
         </ul>
       </div>
       <div>
-        <h4>Insights</h4>
+        <h2 class="foot-title">Insights</h2>
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/series/">Series</a></li>
@@ -328,7 +328,7 @@ if(d.getAttribute('data-rface')==='serif'){
         </ul>
       </div>
       <div>
-        <h4>Contact</h4>
+        <h2 class="foot-title">Contact</h2>
         <ul>
           <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
           <li><a href="/contact/">Start an engagement</a></li>

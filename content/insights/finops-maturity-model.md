@@ -1,7 +1,7 @@
 ---
 title: "The FinOps Maturity Model — Where Most Teams Actually Stall"
 description: "The Crawl/Walk/Run framework is right. The transitions are harder than the model implies. Here's where most FinOps programs stall, and why."
-date: 2025-05-15
+date: 2027-11-10
 tags: ["FinOps", "Cloud Architecture"]
 format: article
 ---

@@ -1,7 +1,7 @@
 ---
 title: "Retrospectives that produce no action items are team therapy, not process improvement."
 description: "The retrospective is one of the most widely adopted engineering practices and one of the least consistently effective."
-date: 2025-08-19
+date: 2029-02-07
 tags: ["Engineering Leadership"]
 format: article
 derived: true

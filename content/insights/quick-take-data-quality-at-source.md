@@ -1,7 +1,7 @@
 ---
 title: "Data Quality Problems Are Upstream Problems. Fixing Them Downstream Is Expensive."
 description: "Every hour spent cleaning data downstream represents a failure to fix the source system that produced bad data. The cost compounds. Here is why upstream fixes are always the correct investment."
-date: 2025-08-18
+date: 2028-10-13
 tags: ["Data Engineering", "Engineering Leadership"]
 format: article
 ---

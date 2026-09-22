@@ -1,7 +1,7 @@
 ---
 title: "End-to-End Testing That Teams Don't Abandon: A Playwright-Era Strategy"
 description: "E2E suites follow a lifecycle — enthusiasm, growth, flake, abandonment — unless engineered against it. The thin-and-critical scoping rule, the determinism toolkit that killed most flakiness, test data as the real boss fight, and where E2E fits against the testing pyramid."
-date: 2024-11-26
+date: 2028-03-03
 tags: ["Programming", "Engineering Practice", "Quality Engineering", "Developer Experience"]
 format: article
 ---

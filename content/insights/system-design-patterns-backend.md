@@ -1,7 +1,7 @@
 ---
 title: "System Design Patterns Every Backend Engineer Should Know"
 description: "CQRS, event sourcing, saga pattern, outbox pattern — the patterns that solve specific distributed systems problems, what trade-offs they introduce, and when the simpler option is actually the right one."
-date: 2025-06-06
+date: 2026-10-28
 tags: ["Programming", "Architecture", "Cloud Architecture"]
 format: article
 ---

@@ -1,7 +1,7 @@
 ---
 title: "The Hidden Cost of Platform Abstraction Layers"
 description: "Every abstraction your platform team builds has a maintenance cost, a documentation cost, and an expertise requirement. The question is never whether to abstract — it is whether the abstraction produces more value than it costs."
-date: 2025-12-29
+date: 2028-08-14
 tags: ["Engineering Leadership", "Architecture"]
 format: article
 ---

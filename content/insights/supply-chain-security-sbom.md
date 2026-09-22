@@ -1,7 +1,7 @@
 ---
 title: "Software Supply Chain Security: SBOM, Dependency Auditing, and What Actually Reduces Risk"
 description: "The software supply chain attack surface is large and growing. SBOMs, dependency scanning, and provenance verification are the practical measures that reduce real risk — here's what each covers and where the gaps are."
-date: 2025-08-18
+date: 2025-10-27
 tags: ["DevSecOps", "Architecture"]
 format: article
 ---

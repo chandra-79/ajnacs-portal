@@ -1,7 +1,7 @@
 ---
 title: "The database migration nobody tested is the one that runs in production at 11pm."
 description: "The most common pattern in database migration incidents: the migration worked perfectly in every environment that was not production."
-date: 2025-09-01
+date: 2029-07-18
 tags: ["Data Engineering", "Engineering Leadership"]
 format: note
 derived: true

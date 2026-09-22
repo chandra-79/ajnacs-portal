@@ -1,7 +1,7 @@
 ---
 title: "RAG Solves the Knowledge Problem. It Does Not Solve the Reasoning Problem."
 description: "Retrieval-Augmented Generation gives LLMs access to current, relevant information. It does not improve their ability to reason over that information accurately. Understanding the boundary is essential for scoping RAG applications."
-date: 2026-03-17
+date: 2028-06-30
 tags: ["Enterprise AI", "Emerging Technology"]
 format: article
 ---

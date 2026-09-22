@@ -1,7 +1,7 @@
 ---
 title: "Disk I/O Performance Analysis on Linux"
 description: "Using iostat, iotop, and fio to measure disk throughput, latency, and queue depth — and diagnosing the I/O bottlenecks that silently degrade production databases."
-date: 2026-08-24
+date: 2025-04-30
 tags: ["Programming", "Fundamentals"]
 series: "Linux: A Complete Practical Course"
 seriesOrder: 17

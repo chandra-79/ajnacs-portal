@@ -1,7 +1,7 @@
 ---
 title: "Your staging environment is lying to you and you've learned to live with it"
 description: "The gap between staging and production is well understood and consistently underestimated. Every engineering team knows their staging environment isn't production-faithful."
-date: 2025-07-14
+date: 2029-06-25
 tags: ["DevSecOps", "Engineering Leadership"]
 format: note
 derived: true

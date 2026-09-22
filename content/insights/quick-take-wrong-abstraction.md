@@ -1,7 +1,7 @@
 ---
 title: "The Wrong Abstraction Is More Expensive Than No Abstraction"
 description: "An abstraction that does not match the problem domain forces every user of that abstraction to work against it. The cost is paid continuously and compounds with every new user."
-date: 2026-01-19
+date: 2028-06-21
 tags: ["Architecture", "Engineering Leadership"]
 format: article
 ---

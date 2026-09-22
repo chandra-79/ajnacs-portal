@@ -1,7 +1,7 @@
 ---
 title: "Kernel Tuning with sysctl: Memory, Networking, and I/O"
 description: "The sysctl parameters that actually matter in production — VM reclaim tuning, TCP stack optimisation, file descriptor limits, and the settings that separate a well-tuned server from a default install."
-date: 2026-09-07
+date: 2026-09-30
 tags: ["Programming", "Fundamentals"]
 series: "Linux: A Complete Practical Course"
 seriesOrder: 23

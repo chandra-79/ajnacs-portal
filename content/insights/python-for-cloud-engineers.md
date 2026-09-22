@@ -1,7 +1,7 @@
 ---
 title: "Python for Cloud Engineers: The Parts That Actually Matter"
 description: "You don't need to be a data scientist to get serious value from Python as a cloud practitioner. Here's what actually matters — and what you can safely skip."
-date: 2026-03-06
+date: 2026-10-19
 tags: ["Programming", "Python", "Cloud Architecture", "DevSecOps"]
 format: article
 ---

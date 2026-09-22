@@ -1,7 +1,7 @@
 ---
 title: "GCP Cost Management: Committed Use Discounts, Recommenders, and What Cloud Billing Doesn't Show You"
 description: "Google Cloud's cost optimization tools are extensive but spread across multiple products. Here's how Committed Use Discounts, the Recommender API, and billing export to BigQuery work together for a complete FinOps practice."
-date: 2025-06-30
+date: 2025-11-11
 tags: ["FinOps", "Cloud Architecture"]
 format: article
 ---

@@ -1,7 +1,7 @@
 ---
 title: "Prompt engineering is software engineering with worse feedback loops"
 description: "Writing prompts for LLMs is software engineering. The feedback loops are worse, the determinism is lower, and the testing practices are less mature — but the discipline is the same."
-date: 2025-11-17
+date: 2029-04-20
 tags: ["Enterprise AI"]
 format: note
 derived: true

@@ -1,7 +1,7 @@
 ---
 title: "PostgreSQL Performance Tuning: The Settings and Patterns That Actually Matter"
 description: "PostgreSQL's default configuration is conservative, designed for small deployments. For production workloads, the settings that control memory, parallelism, WAL behavior, and connection handling need explicit tuning. Here's where to start."
-date: 2025-05-30
+date: 2025-12-26
 tags: ["Data Engineering", "Programming", "Cloud Architecture"]
 format: article
 ---

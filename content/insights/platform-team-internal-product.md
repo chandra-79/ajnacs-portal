@@ -1,7 +1,7 @@
 ---
 title: "Running a Platform Team as an Internal Product Team"
 description: "Platform teams that operate as internal service desks accumulate backlogs, frustrate users, and fail to improve. Platform teams that operate as product teams building toward clear outcomes are fundamentally different. Here's what the shift looks like."
-date: 2026-02-12
+date: 2027-11-15
 tags: ["Engineering Leadership", "Architecture"]
 format: article
 ---

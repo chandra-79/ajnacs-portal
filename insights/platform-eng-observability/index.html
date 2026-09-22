@@ -105,7 +105,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#e0473a" stop-opacity=".10"/>
       <stop offset="1" stop-color="#c03a2e" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahplatformengo" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e0473a" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -124,7 +124,7 @@ if(d.getAttribute('data-rface')==='serif'){
     <div class="prose">
 <p>One of the highest-value things a platform team can provide: every service deployed through the platform is observable from day one without the developer writing a single line of observability configuration. Logs flow to the central system, RED metrics (rate, errors, duration) are collected and displayed, distributed traces connect requests across services, and default alerts fire before issues become incidents.</p>
 <p>This is achievable. Here is how to build it.</p>
-<h2 id="the-three-pillars-and-how-to-automate-them"><a class="h-anchor" href="#the-three-pillars-and-how-to-automate-them" aria-label="Link to this section">#</a>The Three Pillars and How to Automate Them</h2>
+<h2 id="the-three-pillars-and-how-to-automate-them"><a class="h-anchor" href="#the-three-pillars-and-how-to-automate-them" aria-hidden="true" tabindex="-1">#</a>The Three Pillars and How to Automate Them</h2>
 <aside class="keyfig">
   <p class="keyfig-label">Key figure</p>
   <p class="keyfig-text">RED metrics are visible in a pre-built dashboard within <b>5 minutes</b> of the first request 3.</p>
@@ -172,7 +172,7 @@ metadata:
     instrumentation.opentelemetry.io/inject-python: &quot;true&quot;
 </code></pre>
 <p><strong>Traces</strong>: the same OpenTelemetry auto-instrumentation that collects metrics also injects distributed tracing. HTTP clients and servers, database drivers, and message queue clients are instrumented automatically. Traces flow to Jaeger, Tempo, or a managed tracing backend.</p>
-<h2 id="the-default-dashboard"><a class="h-anchor" href="#the-default-dashboard" aria-label="Link to this section">#</a>The Default Dashboard</h2>
+<h2 id="the-default-dashboard"><a class="h-anchor" href="#the-default-dashboard" aria-hidden="true" tabindex="-1">#</a>The Default Dashboard</h2>
 <p>Every service deployed through the platform should have a working dashboard without the developer building one. The platform pre-builds dashboard templates for common service types:</p>
 <ul>
 <li><strong>API service dashboard</strong>: request rate, error rate, p50/p95/p99 latency, pod count, CPU/memory usage, saturation indicators</li>
@@ -192,7 +192,7 @@ resource &quot;grafana_dashboard&quot; &quot;api_service_template&quot; {
   folder = grafana_folder.teams[each.value.team].id
 }
 </code></pre>
-<h2 id="default-alerting-rules"><a class="h-anchor" href="#default-alerting-rules" aria-label="Link to this section">#</a>Default Alerting Rules</h2>
+<h2 id="default-alerting-rules"><a class="h-anchor" href="#default-alerting-rules" aria-hidden="true" tabindex="-1">#</a>Default Alerting Rules</h2>
 <p>Auto-provisioned alerting rules for every service:</p>
 <pre><code class="language-yaml">## Prometheus rules auto-applied to all services via the platform
 groups:
@@ -220,7 +220,7 @@ groups:
       summary: &quot;{{ $labels.pod }} is crash looping&quot;
 </code></pre>
 <p>Teams receive these default alerts automatically. They can override thresholds or add additional alerts specific to their service&#39;s business metrics.</p>
-<h2 id="observability-slos-at-the-platform-layer"><a class="h-anchor" href="#observability-slos-at-the-platform-layer" aria-label="Link to this section">#</a>Observability SLOs at the Platform Layer</h2>
+<h2 id="observability-slos-at-the-platform-layer"><a class="h-anchor" href="#observability-slos-at-the-platform-layer" aria-hidden="true" tabindex="-1">#</a>Observability SLOs at the Platform Layer</h2>
 <p>Beyond individual service alerts, the platform maintains SLOs for its own services — the CI/CD pipeline, the secrets manager, the service registry. Application teams depend on these; their reliability is the platform team&#39;s operational responsibility.</p>
 <pre><code class="language-yaml">## Platform team SLOs
 - service: ci-pipeline
@@ -235,7 +235,7 @@ groups:
   slo: 99.9% availability for image pulls
 </code></pre>
 <p>The platform team is on-call for its own infrastructure. Application team reliability cannot be bottlenecked by platform infrastructure that is not reliably operated.</p>
-<h2 id="what-good-platform-observability-coverage-looks-like"><a class="h-anchor" href="#what-good-platform-observability-coverage-looks-like" aria-label="Link to this section">#</a>What Good Platform Observability Coverage Looks Like</h2>
+<h2 id="what-good-platform-observability-coverage-looks-like"><a class="h-anchor" href="#what-good-platform-observability-coverage-looks-like" aria-hidden="true" tabindex="-1">#</a>What Good Platform Observability Coverage Looks Like</h2>
 <p>A platform observability implementation is complete when:</p>
 <ol>
 <li>Any service deployed through the platform has logs in the central log system within 60 seconds of deployment</li>
@@ -282,12 +282,12 @@ groups:
       <stop offset="0" stop-color="#6d4aff" stop-opacity=".10"/>
       <stop offset="1" stop-color="#5837e0" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahaimlneuralne" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#6d4aff" fill-opacity=".5"/>
     </marker>
   </defs>
   <rect width="640" height="360" fill="url(#bgaimlneuralne)"/>
-  <rect x="86" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.51" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="464" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.45" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="212" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.45" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 172 H338" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.60" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 172 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.40" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="338" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.32" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 236 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.39" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/>
+  <rect x="86" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.51" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="464" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.45" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="212" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.45" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 172 H338" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahaimlneuralne)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.60" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 172 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahaimlneuralne)"/><rect x="464" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.40" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="338" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.32" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 236 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahaimlneuralne)"/><rect x="464" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.39" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/>
 </svg></div>
   <div class="card-body">
     <span class="chip">AI &amp; MLOps</span>
@@ -303,7 +303,7 @@ groups:
       <stop offset="0" stop-color="#6d4aff" stop-opacity=".10"/>
       <stop offset="1" stop-color="#5837e0" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahaimlragandpr" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#6d4aff" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -324,12 +324,12 @@ groups:
       <stop offset="0" stop-color="#6d4aff" stop-opacity=".10"/>
       <stop offset="1" stop-color="#5837e0" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahaimlproducti" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#6d4aff" fill-opacity=".5"/>
     </marker>
   </defs>
   <rect width="640" height="360" fill="url(#bgaimlproducti)"/>
-  <rect x="338" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.12" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 108 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.51" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="86" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.36" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 172 H212" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.51" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="464" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.14" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="338" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.22" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 236 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/>
+  <rect x="338" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.12" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 108 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahaimlproducti)"/><rect x="464" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.51" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="86" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.36" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 172 H212" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahaimlproducti)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.51" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="464" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.14" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="338" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.22" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 236 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahaimlproducti)"/>
 </svg></div>
   <div class="card-body">
     <span class="chip">AI &amp; MLOps</span>
@@ -414,7 +414,7 @@ groups:
         </div>
       </div>
       <div>
-        <h4>Services</h4>
+        <h2 class="foot-title">Services</h2>
         <ul>
           <li><a href="/services/#architecture">Enterprise architecture</a></li>
           <li><a href="/services/#ai">AI &amp; MLOps</a></li>
@@ -423,7 +423,7 @@ groups:
         </ul>
       </div>
       <div>
-        <h4>Insights</h4>
+        <h2 class="foot-title">Insights</h2>
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/series/">Series</a></li>
@@ -432,7 +432,7 @@ groups:
         </ul>
       </div>
       <div>
-        <h4>Contact</h4>
+        <h2 class="foot-title">Contact</h2>
         <ul>
           <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
           <li><a href="/contact/">Start an engagement</a></li>

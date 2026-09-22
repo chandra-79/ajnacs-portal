@@ -1,7 +1,7 @@
 ---
 title: "Mentorship is the highest-leverage activity an experienced engineer does. Most treat it as optional."
 description: "The most experienced engineers in any organisation have accumulated something that is difficult to reproduce from documentation: the pattern recognition that comes from having been wrong…"
-date: 2025-06-27
+date: 2029-05-30
 tags: ["Engineering Leadership"]
 format: article
 derived: true

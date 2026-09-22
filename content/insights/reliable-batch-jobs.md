@@ -1,7 +1,7 @@
 ---
 title: "Reliable Batch Jobs: Engineering the Workloads Nobody Watches"
 description: "The nightly job is production software with the worst observability, the least review, and the longest failure-detection time in the estate. Idempotent reruns, checkpointing, the missed-run problem, dependency-aware scheduling, and monitoring for absence."
-date: 2025-02-24
+date: 2027-07-30
 tags: ["Programming", "Reliability", "Data Engineering", "Architecture"]
 format: article
 ---

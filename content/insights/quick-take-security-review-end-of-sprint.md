@@ -1,7 +1,7 @@
 ---
 title: "Security Review at the End of the Sprint Is Too Late"
 description: "Security review after code is written, tested, and ready to ship catches real problems at the moment when fixing them is most expensive. Here is where in the development cycle security input actually belongs."
-date: 2025-09-22
+date: 2028-10-04
 tags: ["DevSecOps", "Security"]
 format: article
 ---

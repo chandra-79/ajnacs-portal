@@ -1,7 +1,7 @@
 ---
 title: "Why Cloud Migrations Fail: The Pattern Behind the Common Failures"
 description: "Cloud migrations that fail share recognisable patterns — lift-and-shift with no optimization, underestimated dependency complexity, inadequate cost modeling. Understanding these patterns before starting is preventable failure."
-date: 2025-05-01
+date: 2025-07-11
 tags: ["Cloud Architecture", "Engineering Leadership"]
 format: article
 ---

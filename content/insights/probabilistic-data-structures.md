@@ -1,7 +1,7 @@
 ---
 title: "Probabilistic Data Structures: Trading Certainty for Orders of Magnitude"
 description: "Bloom filters, HyperLogLog, count-min sketches, and t-digests answer huge questions in tiny space by being slightly, controllably wrong. Where each one hides in the systems you run, and how to reason about the error you're buying."
-date: 2025-02-06
+date: 2027-03-05
 tags: ["Algorithms", "Distributed Systems", "Performance", "Data Engineering", "Programming"]
 format: article
 ---

@@ -1,7 +1,7 @@
 ---
 title: "Every system has one query that explains 40% of the database load. You already know which one it is."
 description: "The query everyone knows about is usually not mysterious."
-date: 2025-07-15
+date: 2029-03-26
 tags: ["Data Engineering", "Architecture"]
 format: note
 derived: true

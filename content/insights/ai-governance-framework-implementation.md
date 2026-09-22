@@ -1,7 +1,7 @@
 ---
 title: "Implementing AI Governance Frameworks That Don't Kill Velocity"
 description: "The governance frameworks that work in enterprise AI aren't the ones that are most comprehensive — they're the ones that get followed. Here's the design pattern that threads that needle."
-date: 2026-04-23
+date: 2027-03-29
 tags: ["Enterprise AI", "Governance", "Cloud Architecture", "Engineering Leadership"]
 format: article
 ---

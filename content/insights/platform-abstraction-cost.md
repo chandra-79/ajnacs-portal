@@ -1,7 +1,7 @@
 ---
 title: "Every abstraction layer your platform team builds has a maintenance cost that compounds."
 description: "Platform engineering abstractions solve a real problem at a real cost."
-date: 2025-08-01
+date: 2028-11-08
 tags: ["Engineering Leadership", "Architecture"]
 format: article
 derived: true

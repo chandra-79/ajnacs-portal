@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes is the right answer for fewer problems than its adoption rate suggests"
 description: "Kubernetes is genuinely impressive engineering."
-date: 2026-02-09
+date: 2029-04-27
 tags: ["Cloud Architecture", "Infrastructure", "DevSecOps"]
 format: note
 derived: true

@@ -1,7 +1,7 @@
 ---
 title: "Migrating WebLogic Workloads to the Cloud: Rehost, Replatform, or Rewrite"
 description: "A decision framework for moving WebLogic estates to cloud — lift-and-shift onto IaaS, WebLogic on Kubernetes with the operator, managed offerings, and when to finally rewrite to Spring Boot. Costs, traps, and sequencing from real migrations."
-date: 2025-04-14
+date: 2026-11-27
 tags: ["Java", "WebLogic", "Cloud Migration", "Containers", "Architecture"]
 format: article
 ---

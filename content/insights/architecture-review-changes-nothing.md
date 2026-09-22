@@ -1,7 +1,7 @@
 ---
 title: "The architecture review that happens after the design is done changes nothing and everyone knows it"
 description: "Architecture reviews work when they happen early enough to influence decisions."
-date: 2025-07-29
+date: 2029-03-12
 tags: ["Architecture", "Engineering Leadership"]
 format: note
 derived: true

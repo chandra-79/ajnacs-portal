@@ -1,7 +1,7 @@
 ---
 title: "SLOs are a conversation between engineering and the business, not a monitoring configuration"
 description: "An SLO programme that only engineering reads is not an SLO programme. It's a set of internal metrics dressed in SLO terminology."
-date: 2026-03-09
+date: 2029-06-01
 tags: ["DevSecOps", "Observability", "Engineering Leadership"]
 format: note
 derived: true

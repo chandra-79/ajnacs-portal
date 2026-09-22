@@ -1,7 +1,7 @@
 ---
 title: "Database Indexing, Actually Explained: B-Trees, Composite Keys, and the Query Planner's Point of View"
 description: "Indexes are the highest-leverage performance tool in most systems and the least systematically understood. How B-tree indexes really work, composite index design rules, why the planner ignores your index, and the write-cost accounting nobody does."
-date: 2024-11-05
+date: 2027-05-03
 tags: ["Data Engineering", "Performance", "Programming"]
 format: article
 ---

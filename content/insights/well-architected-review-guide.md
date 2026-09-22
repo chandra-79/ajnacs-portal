@@ -1,7 +1,7 @@
 ---
 title: "The Well-Architected Review: How to Run One That Actually Produces Improvements"
 description: "AWS Well-Architected Reviews, Azure Architecture Reviews, and Google's architecture review frameworks all use the same pattern. Here's how to run a review that produces actionable findings rather than a list of best practices you already knew."
-date: 2025-06-09
+date: 2026-12-21
 tags: ["Cloud Architecture", "Engineering Leadership"]
 format: article
 ---

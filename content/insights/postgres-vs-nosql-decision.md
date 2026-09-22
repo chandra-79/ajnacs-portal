@@ -1,7 +1,7 @@
 ---
 title: "PostgreSQL vs NoSQL: How to Make the Database Decision Without Regretting It"
 description: "The PostgreSQL vs NoSQL decision is made too often on the wrong criteria — data model novelty rather than operational requirements, scale trajectory, and query patterns. Here's the framework that produces decisions that hold up."
-date: 2025-05-29
+date: 2027-05-17
 tags: ["Data Engineering", "Architecture"]
 format: article
 ---

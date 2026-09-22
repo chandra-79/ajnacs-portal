@@ -1,7 +1,7 @@
 ---
 title: "Always run showback before chargeback — the conversation it starts is the point"
 description: "Chargeback programmes create the most friction when teams encounter them without context."
-date: 2025-12-08
+date: 2029-06-13
 tags: ["FinOps", "Engineering Leadership"]
 format: note
 derived: true

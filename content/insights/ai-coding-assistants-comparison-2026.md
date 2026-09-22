@@ -1,7 +1,7 @@
 ---
 title: "AI Coding Assistants in 2026: A Practical Comparison"
 description: "GitHub Copilot, Amazon Q, Codeium, Tabnine, Cody, Refact.ai, and more — what each one actually does well, where they fall short, and how to pick the right one for your team."
-date: 2026-05-04
+date: 2026-11-16
 tags: ["Programming", "Enterprise AI", "Developer Tools"]
 format: article
 ---

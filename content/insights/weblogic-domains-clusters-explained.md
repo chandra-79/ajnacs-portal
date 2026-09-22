@@ -1,7 +1,7 @@
 ---
 title: "WebLogic Domains, Clusters, and Managed Servers: The Architecture Explained"
 description: "Admin servers, managed servers, clusters, machines, and Node Manager — the WebLogic domain model explained for people who have to run it, not just pass the exam. What each piece does, how they fit together, and where production deployments go wrong."
-date: 2025-04-07
+date: 2025-09-09
 tags: ["Java", "WebLogic", "Middleware", "Architecture"]
 format: article
 ---

@@ -1,7 +1,7 @@
 ---
 title: "HPC Network Topology Patterns: Fat-Tree, Torus, and Dragonfly Explained"
 description: "The network topology of an HPC or AI training cluster determines its bandwidth, latency, cost, and how well it scales. Here's how fat-tree, torus, and dragonfly topologies work, their trade-offs, and which workloads each suits best."
-date: 2026-03-24
+date: 2026-10-30
 tags: ["Systems", "HPC", "AI & MLOps"]
 format: article
 ---

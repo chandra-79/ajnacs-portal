@@ -1,7 +1,7 @@
 ---
 title: "The AI feature your team spent three months building has a 4% adoption rate. Here's why."
 description: "AI adoption inside enterprise products fails in predictable ways, and the failure pattern is almost never about the underlying model capability."
-date: 2025-07-07
+date: 2029-02-05
 tags: ["Enterprise AI", "Engineering Leadership"]
 format: note
 derived: true

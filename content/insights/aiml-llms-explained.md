@@ -1,7 +1,7 @@
 ---
 title: "Large Language Models: What They Are, How They Are Built, and What They Cannot Do"
 description: "Transformers, attention, pretraining, fine-tuning, RLHF — the architecture and training pipeline behind GPT, Claude, Llama, and every other modern LLM, explained for engineers who need to use and evaluate these systems."
-date: 2026-07-07
+date: 2026-10-21
 tags: ["AI & MLOps", "Enterprise AI", "Fundamentals"]
 series: "AI, ML, LLMs, and Neural Networks: A Practitioner's Introduction"
 seriesOrder: 3

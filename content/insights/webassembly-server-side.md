@@ -1,7 +1,7 @@
 ---
 title: "Server-Side WebAssembly: The Sandbox That Wants to Be a Platform"
 description: "Wasm escaped the browser with a compelling pitch — near-native speed, microsecond cold starts, capability-based security, any language. Where server-side WebAssembly genuinely fits today (plugins, edge, sandboxed extensions), what WASI changes, and the honest maturity map."
-date: 2025-04-02
+date: 2027-10-04
 tags: ["WebAssembly", "Cloud Architecture", "Platform Engineering", "Edge Computing", "Architecture"]
 format: article
 ---

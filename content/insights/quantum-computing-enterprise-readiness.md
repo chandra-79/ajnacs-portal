@@ -1,7 +1,7 @@
 ---
 title: "Quantum Computing for Enterprise Leaders: A Readiness Framework Beyond the Hype"
 description: "What quantum computing can and cannot do for enterprises today — the honest state of hardware, the workloads with genuine quantum advantage potential, and a low-cost readiness posture that avoids both FOMO spending and strategic blindness."
-date: 2025-02-17
+date: 2027-06-30
 tags: ["Quantum Computing", "Architecture", "Technology Strategy", "Innovation"]
 format: article
 ---

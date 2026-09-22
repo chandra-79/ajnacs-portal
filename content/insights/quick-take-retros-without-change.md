@@ -1,7 +1,7 @@
 ---
 title: "Retrospectives Without Action Items Are Team Therapy"
 description: "A retrospective that surfaces genuine problems and produces no committed changes is a release valve, not a process improvement tool. Here is what makes retrospectives produce real change."
-date: 2025-12-15
+date: 2029-01-03
 tags: ["Engineering Leadership"]
 format: article
 ---

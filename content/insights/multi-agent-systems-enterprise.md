@@ -1,7 +1,7 @@
 ---
 title: "Multi-Agent AI Systems: When They Add Value and When They Add Complexity"
 description: "Multi-agent architectures are generating significant interest. Before adopting one, it helps to be clear about what problem they solve, what they cost in complexity and reliability, and what simpler alternatives look like."
-date: 2026-09-18
+date: 2024-10-22
 tags: ["AI & MLOps", "Enterprise AI", "Architecture"]
 format: article
 ---

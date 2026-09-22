@@ -1,7 +1,7 @@
 ---
 title: "Zero Trust Network Access: Implementation Over Buzzword"
 description: "Zero trust is one of the most overloaded terms in enterprise security. Here's what it actually means architecturally, which specific controls implement it, and how to move from perimeter-based thinking to continuous verification without breaking existing workflows."
-date: 2025-06-13
+date: 2028-02-16
 tags: ["DevSecOps", "Security", "Systems"]
 series: "DevSecOps Pipeline"
 seriesOrder: 3

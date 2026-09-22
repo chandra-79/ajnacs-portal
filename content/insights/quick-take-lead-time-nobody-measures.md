@@ -1,7 +1,7 @@
 ---
 title: "Every Team Measures Time to Deploy. Almost None Measure Time to Value."
 description: "Deployment frequency and lead time for changes measure how fast code moves through the pipeline. They do not measure how long it takes for that code to produce value for the user. The gap between them is where strategy fails."
-date: 2026-02-16
+date: 2028-06-28
 tags: ["Engineering Leadership", "Architecture"]
 format: article
 ---

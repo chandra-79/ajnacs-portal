@@ -105,7 +105,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#0d9488" stop-opacity=".10"/>
       <stop offset="1" stop-color="#0b7a70" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahcloudmigrati" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#0d9488" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -121,7 +121,7 @@ if(d.getAttribute('data-rface')==='serif'){
     <div class="prose">
 <p>Cloud migration success rates are worse than most organizations expect. Projects run over budget, over time, and sometimes deliver infrastructure that is more expensive and less reliable than what was replaced. The causes are usually not technical failures — they are planning failures that the technology cannot compensate for.</p>
 <p>The patterns behind failed migrations are well-documented at this point. Most of them are avoidable.</p>
-<h2 id="lift-and-shift-with-no-optimization-plan"><a class="h-anchor" href="#lift-and-shift-with-no-optimization-plan" aria-label="Link to this section">#</a>Lift-and-shift with no optimization plan</h2>
+<h2 id="lift-and-shift-with-no-optimization-plan"><a class="h-anchor" href="#lift-and-shift-with-no-optimization-plan" aria-hidden="true" tabindex="-1">#</a>Lift-and-shift with no optimization plan</h2>
 <aside class="keyfig">
   <p class="keyfig-label">Key figure</p>
   <p class="keyfig-text">A 16-core, <b>64GB</b> VM running on-premises at 20% utilization costs roughly the same as running it in the cloud — but in the cloud you are also paying for the 80% you are not using, with no depreciation benefit.</p>
@@ -130,11 +130,11 @@ if(d.getAttribute('data-rface')==='serif'){
 <p>On-premises workloads are designed around the economics of owned hardware: large, always-on, provisioned for peak load. Cloud economics reward elasticity, managed services, and right-sizing. A 16-core, 64GB VM running on-premises at 20% utilization costs roughly the same as running it in the cloud — but in the cloud you are also paying for the 80% you are not using, with no depreciation benefit.</p>
 <p>Lift-and-shift is a migration phase, not a final state. Organizations that treat it as the end goal pay on-premises prices for cloud infrastructure without the reliability, flexibility, or managed service benefits that justify cloud investment.</p>
 <p>The migration plans that succeed treat lift-and-shift as a transitional phase with a defined optimization roadmap: which services will be modernized to PaaS or SaaS, which will be right-sized, which will adopt cloud-native patterns, and on what timeline.</p>
-<h2 id="underestimating-dependency-complexity"><a class="h-anchor" href="#underestimating-dependency-complexity" aria-label="Link to this section">#</a>Underestimating dependency complexity</h2>
+<h2 id="underestimating-dependency-complexity"><a class="h-anchor" href="#underestimating-dependency-complexity" aria-hidden="true" tabindex="-1">#</a>Underestimating dependency complexity</h2>
 <p>Application dependencies are almost always more complex than the dependency map suggests. An application that appears to depend on three services in the migration assessment may actually depend on twelve services, some of which are undocumented, some of which are dependencies of dependencies.</p>
 <p>Undiscovered dependencies surface during migration in the form of broken connectivity: the application is in the cloud and the dependency is not, and the application fails silently until an engineer investigates.</p>
 <p>The dependency mapping investment before migration is undervalued. Automated discovery tools (AWS Migration Hub, Azure Migrate, third-party tools) can identify network-level dependencies that manual documentation misses. Thorough dependency mapping takes time and delays the start of migration; it almost always reduces the total time to completed migration by avoiding dependency-related incidents.</p>
-<h2 id="inadequate-cost-modeling"><a class="h-anchor" href="#inadequate-cost-modeling" aria-label="Link to this section">#</a>Inadequate cost modeling</h2>
+<h2 id="inadequate-cost-modeling"><a class="h-anchor" href="#inadequate-cost-modeling" aria-hidden="true" tabindex="-1">#</a>Inadequate cost modeling</h2>
 <p>Cloud costs are genuinely hard to model accurately before migration, which leads to two failure modes: under-estimating costs and being surprised by the bill, or over-estimating costs and being unable to justify the migration business case.</p>
 <p>The costs that are consistently underestimated:</p>
 <ul>
@@ -143,11 +143,11 @@ if(d.getAttribute('data-rface')==='serif'){
 <li>Operations tooling: monitoring, security, backup, and compliance tooling that was handled by on-premises infrastructure teams.</li>
 </ul>
 <p>The correct approach: build a cloud cost model using the cloud provider&#39;s pricing calculator, add 20-30% for unmodeled costs, validate against a pilot workload, and use the pilot actuals to recalibrate the full migration estimate.</p>
-<h2 id="missing-the-security-and-compliance-handoff"><a class="h-anchor" href="#missing-the-security-and-compliance-handoff" aria-label="Link to this section">#</a>Missing the security and compliance handoff</h2>
+<h2 id="missing-the-security-and-compliance-handoff"><a class="h-anchor" href="#missing-the-security-and-compliance-handoff" aria-hidden="true" tabindex="-1">#</a>Missing the security and compliance handoff</h2>
 <p>On-premises environments have accumulated security controls over years: network segmentation, access controls, patch management, monitoring. These controls are not automatically replicated when workloads move to cloud.</p>
 <p>The failure mode: a migration that is technically successful (applications are running in cloud) but security controls are incomplete. The cloud environment has default security configurations rather than the controls required by compliance frameworks or security policy.</p>
 <p>Security and compliance requirements for the cloud environment should be defined before the first workload migrates, not after. The cloud landing zone — the account structure, network architecture, identity configuration, logging, and monitoring baseline — must be established first. Workloads migrate into a secure environment, not one built concurrently with migration.</p>
-<h2 id="insufficient-testing-before-cutover"><a class="h-anchor" href="#insufficient-testing-before-cutover" aria-label="Link to this section">#</a>Insufficient testing before cutover</h2>
+<h2 id="insufficient-testing-before-cutover"><a class="h-anchor" href="#insufficient-testing-before-cutover" aria-hidden="true" tabindex="-1">#</a>Insufficient testing before cutover</h2>
 <p>Cutover is the moment of highest risk in any migration. The application is in the cloud; the on-premises system is decommissioned; user traffic is switching. If something is wrong, you are in an incident, not a deployment.</p>
 <p>Migrations that are underprepared for cutover often have not tested the cloud environment under production-representative load, have not verified that monitoring and alerting are configured correctly, and have not tested the rollback procedure.</p>
 <p>A cutover without a tested rollback is not a deployment — it is a bet. Rollback procedures are worth as much investment as the forward migration.</p>
@@ -180,7 +180,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#0e7490" stop-opacity=".10"/>
       <stop offset="1" stop-color="#0b5f77" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahplatformengm" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#0e7490" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -209,12 +209,12 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#e8a317" stop-opacity=".10"/>
       <stop offset="1" stop-color="#a9760a" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahfinopsanomal" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e8a317" fill-opacity=".5"/>
     </marker>
   </defs>
   <rect width="640" height="360" fill="url(#bgfinopsanomal)"/>
-  <rect x="86" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.39" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 108 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.41" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 108 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.21" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 108 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.13" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 172 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.17" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 172 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="86" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.23" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 236 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.54" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 236 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.51" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/>
+  <rect x="86" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.39" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 108 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="212" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.41" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 108 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="338" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.21" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 108 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="212" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.13" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 172 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.17" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 172 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="86" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.23" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 236 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="212" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.54" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 236 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="464" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.51" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/>
 </svg></div>
   <div class="card-body">
     <span class="chip">FinOps</span>
@@ -230,7 +230,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#e8a317" stop-opacity=".10"/>
       <stop offset="1" stop-color="#a9760a" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahfinopstaggin" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e8a317" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -318,7 +318,7 @@ if(d.getAttribute('data-rface')==='serif'){
         </div>
       </div>
       <div>
-        <h4>Services</h4>
+        <h2 class="foot-title">Services</h2>
         <ul>
           <li><a href="/services/#architecture">Enterprise architecture</a></li>
           <li><a href="/services/#ai">AI &amp; MLOps</a></li>
@@ -327,7 +327,7 @@ if(d.getAttribute('data-rface')==='serif'){
         </ul>
       </div>
       <div>
-        <h4>Insights</h4>
+        <h2 class="foot-title">Insights</h2>
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/series/">Series</a></li>
@@ -336,7 +336,7 @@ if(d.getAttribute('data-rface')==='serif'){
         </ul>
       </div>
       <div>
-        <h4>Contact</h4>
+        <h2 class="foot-title">Contact</h2>
         <ul>
           <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
           <li><a href="/contact/">Start an engagement</a></li>

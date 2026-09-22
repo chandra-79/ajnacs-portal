@@ -1,7 +1,7 @@
 ---
 title: "DNS is the root cause of more production incidents than teams give it credit for"
 description: "DNS failures are underrepresented in post-mortems because DNS failures often don't look like DNS failures."
-date: 2025-06-19
+date: 2029-07-20
 tags: ["Systems", "Infrastructure", "Observability"]
 format: note
 derived: true

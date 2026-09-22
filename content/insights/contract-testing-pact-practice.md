@@ -1,7 +1,7 @@
 ---
 title: "Contract Testing in Practice: Killing the Integration-Environment Bottleneck"
 description: "The gap between 'both services pass their tests' and 'they work together' is where microservice estates bleed — and end-to-end environments don't scale to close it. Consumer-driven contracts, the broker workflow, provider verification, and the honest limits."
-date: 2024-11-01
+date: 2028-05-12
 tags: ["Programming", "Distributed Systems", "API Design", "Engineering Practice", "CI/CD"]
 format: article
 ---

@@ -1,7 +1,7 @@
 ---
 title: "Raft, Actually Understood: Consensus for Engineers Who Operate It"
 description: "etcd, Consul, Kafka's KRaft, CockroachDB — the coordination layer of modern infrastructure runs on Raft. Leader election, log replication, and quorums explained for operators: why odd-numbered clusters, what happens in partitions, and the failure modes that page you."
-date: 2025-02-19
+date: 2027-01-04
 tags: ["Distributed Systems", "Consensus", "Containers", "Reliability", "Architecture"]
 format: article
 ---

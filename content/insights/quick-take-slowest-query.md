@@ -1,7 +1,7 @@
 ---
 title: "Every System Has One Query That Explains 40% of the Database Load"
 description: "Database performance optimization follows the 80/20 rule more extremely than almost any other engineering domain. Finding and fixing the one worst query produces more improvement than everything else combined."
-date: 2025-11-19
+date: 2028-01-05
 tags: ["Data Engineering", "Architecture"]
 format: article
 ---

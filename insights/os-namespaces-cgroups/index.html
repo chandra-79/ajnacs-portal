@@ -105,7 +105,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#4f46e5" stop-opacity=".10"/>
       <stop offset="1" stop-color="#3730a3" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahosnamespaces" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#4f46e5" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -123,7 +123,7 @@ if(d.getAttribute('data-rface')==='serif'){
     </nav></div>
     <div class="prose">
 <p>Containers are not a Linux feature. There is no <code>container</code> system call. What containers are is a combination of two existing kernel primitives — namespaces and cgroups — wrapped in a user-space runtime. Understanding these primitives explains why containers work, what their security boundaries actually are, and what happens when they fail.</p>
-<h2 id="namespaces"><a class="h-anchor" href="#namespaces" aria-label="Link to this section">#</a>Namespaces</h2>
+<h2 id="namespaces"><a class="h-anchor" href="#namespaces" aria-hidden="true" tabindex="-1">#</a>Namespaces</h2>
 <aside class="keyfig">
   <p class="keyfig-label">Key figure</p>
   <p class="keyfig-text">A container can be limited to 2 CPUs and <b>1GB</b> of RAM using cgroups.</p>
@@ -165,7 +165,7 @@ whoami     # root
 ## On the host, this process still runs as the original user
 exit
 </code></pre>
-<h2 id="cgroups-v2"><a class="h-anchor" href="#cgroups-v2" aria-label="Link to this section">#</a>cgroups v2</h2>
+<h2 id="cgroups-v2"><a class="h-anchor" href="#cgroups-v2" aria-hidden="true" tabindex="-1">#</a>cgroups v2</h2>
 <p>cgroups (control groups) enforce resource limits on groups of processes. They do not isolate — they constrain. A container can be limited to 2 CPUs and 1GB of RAM using cgroups.</p>
 <pre><code class="language-bash">## Check cgroup version
 stat -fc %T /sys/fs/cgroup
@@ -201,7 +201,7 @@ echo $$ &gt; /sys/fs/cgroup/my-limited-group/cgroup.procs
 stress-ng --cpu 4 --vm 1 --vm-bytes 600M --timeout 10s
 ## Memory allocation above 512MB will be OOM-killed by the kernel
 </code></pre>
-<h2 id="systemd-and-cgroups"><a class="h-anchor" href="#systemd-and-cgroups" aria-label="Link to this section">#</a>systemd and cgroups</h2>
+<h2 id="systemd-and-cgroups"><a class="h-anchor" href="#systemd-and-cgroups" aria-hidden="true" tabindex="-1">#</a>systemd and cgroups</h2>
 <p>systemd is a cgroup manager. Every systemd service lives in its own cgroup slice.</p>
 <pre><code class="language-bash">## View the cgroup tree
 systemd-cgls
@@ -224,7 +224,7 @@ systemctl restart myapp
 cat /sys/fs/cgroup/system.slice/myapp.service/memory.max
 cat /sys/fs/cgroup/system.slice/myapp.service/cpu.max
 </code></pre>
-<h2 id="how-container-runtimes-use-these-primitives"><a class="h-anchor" href="#how-container-runtimes-use-these-primitives" aria-label="Link to this section">#</a>How Container Runtimes Use These Primitives</h2>
+<h2 id="how-container-runtimes-use-these-primitives"><a class="h-anchor" href="#how-container-runtimes-use-these-primitives" aria-hidden="true" tabindex="-1">#</a>How Container Runtimes Use These Primitives</h2>
 <p>A container is:</p>
 <ol>
 <li>A new set of namespaces (pid, net, mnt, uts, ipc, user)</li>
@@ -251,7 +251,7 @@ sudo nsenter -t &lt;container-PID&gt; --net -- ip link
 sudo nsenter -t &lt;container-PID&gt; --pid --net --mnt --uts --ipc bash
 ## This is essentially what docker exec does
 </code></pre>
-<h2 id="seccomp-syscall-filtering"><a class="h-anchor" href="#seccomp-syscall-filtering" aria-label="Link to this section">#</a>Seccomp — syscall filtering</h2>
+<h2 id="seccomp-syscall-filtering"><a class="h-anchor" href="#seccomp-syscall-filtering" aria-hidden="true" tabindex="-1">#</a>Seccomp — syscall filtering</h2>
 <p>Seccomp (Secure Computing Mode) restricts which system calls a process can make. It is the third pillar of container isolation alongside namespaces and cgroups.</p>
 <pre><code class="language-bash">## Check if a process has a Seccomp filter
 cat /proc/&lt;PID&gt;/status | grep Seccomp
@@ -274,7 +274,7 @@ docker run --security-opt seccomp=/path/to/profile.json myimage
 ## spec.securityContext.seccompProfile.type: RuntimeDefault
 ## or: Localhost (custom profile)
 </code></pre>
-<h2 id="container-escape-via-cgroup-and-namespace-abuse"><a class="h-anchor" href="#container-escape-via-cgroup-and-namespace-abuse" aria-label="Link to this section">#</a>Container Escape via cgroup and Namespace Abuse</h2>
+<h2 id="container-escape-via-cgroup-and-namespace-abuse"><a class="h-anchor" href="#container-escape-via-cgroup-and-namespace-abuse" aria-hidden="true" tabindex="-1">#</a>Container Escape via cgroup and Namespace Abuse</h2>
 <p>Understanding the attack surface of namespaces and cgroups is essential for anyone running containers in production.</p>
 <pre><code class="language-bash">## Check if running in a privileged container (dangerous)
 cat /proc/self/status | grep CapEff
@@ -339,7 +339,7 @@ ls /proc | wc -l
       <stop offset="0" stop-color="#e0473a" stop-opacity=".10"/>
       <stop offset="1" stop-color="#c03a2e" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahplatformengo" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e0473a" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -360,12 +360,12 @@ ls /proc | wc -l
       <stop offset="0" stop-color="#6d4aff" stop-opacity=".10"/>
       <stop offset="1" stop-color="#5837e0" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahaimlneuralne" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#6d4aff" fill-opacity=".5"/>
     </marker>
   </defs>
   <rect width="640" height="360" fill="url(#bgaimlneuralne)"/>
-  <rect x="86" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.51" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="464" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.45" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="212" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.45" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 172 H338" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.60" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 172 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.40" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="338" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.32" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 236 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.39" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/>
+  <rect x="86" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.51" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="464" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.45" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="212" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.45" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 172 H338" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahaimlneuralne)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.60" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 172 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahaimlneuralne)"/><rect x="464" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.40" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="338" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.32" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 236 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahaimlneuralne)"/><rect x="464" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.39" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/>
 </svg></div>
   <div class="card-body">
     <span class="chip">AI &amp; MLOps</span>
@@ -381,7 +381,7 @@ ls /proc | wc -l
       <stop offset="0" stop-color="#6d4aff" stop-opacity=".10"/>
       <stop offset="1" stop-color="#5837e0" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahaimlragandpr" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#6d4aff" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -471,7 +471,7 @@ ls /proc | wc -l
         </div>
       </div>
       <div>
-        <h4>Services</h4>
+        <h2 class="foot-title">Services</h2>
         <ul>
           <li><a href="/services/#architecture">Enterprise architecture</a></li>
           <li><a href="/services/#ai">AI &amp; MLOps</a></li>
@@ -480,7 +480,7 @@ ls /proc | wc -l
         </ul>
       </div>
       <div>
-        <h4>Insights</h4>
+        <h2 class="foot-title">Insights</h2>
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/series/">Series</a></li>
@@ -489,7 +489,7 @@ ls /proc | wc -l
         </ul>
       </div>
       <div>
-        <h4>Contact</h4>
+        <h2 class="foot-title">Contact</h2>
         <ul>
           <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
           <li><a href="/contact/">Start an engagement</a></li>

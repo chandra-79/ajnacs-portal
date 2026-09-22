@@ -1,7 +1,7 @@
 ---
 title: "WebLogic Deployment Strategies: Staging Modes, Deployment Plans, and Zero-Downtime Redeployment"
 description: "How WebLogic application deployment actually works — staging modes, deployment plans, production redeployment with versioned applications, and the release patterns that avoid 2 AM maintenance windows."
-date: 2025-04-07
+date: 2027-06-02
 tags: ["Java", "WebLogic", "Middleware", "Deployment", "Platform Engineering"]
 format: article
 ---

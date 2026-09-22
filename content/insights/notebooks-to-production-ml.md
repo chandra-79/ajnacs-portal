@@ -1,7 +1,7 @@
 ---
 title: "From Notebook to Production: The Path ML Work Actually Needs"
 description: "The notebook is where data science thinks and where production reliability goes to die — the answer is neither banning notebooks nor deploying them. The extraction discipline, the reproducibility ladder, pipeline-ization, and the org design that stops the handoff wars."
-date: 2025-01-22
+date: 2027-06-23
 tags: ["AI & MLOps", "Python", "Data Engineering", "Engineering Practice", "AI Adoption"]
 format: article
 ---

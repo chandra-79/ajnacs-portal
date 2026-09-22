@@ -1,7 +1,7 @@
 ---
 title: "Cloud Native vs. Cloud Hosted: The Distinction That Changes Everything"
 description: "A workload running on cloud VMs is cloud hosted. A workload built to use managed services, autoscaling, and cloud-native patterns is cloud native. Confusing them produces the worst of both worlds."
-date: 2025-07-28
+date: 2028-02-02
 tags: ["Cloud Architecture"]
 format: article
 ---

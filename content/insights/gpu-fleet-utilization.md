@@ -1,7 +1,7 @@
 ---
 title: "GPU Fleet Economics: Utilization, Scheduling, and the Most Expensive Idle Time in Computing"
 description: "GPU fleets are capacity planning with the stakes multiplied — scarce supply, brutal unit costs, and utilization numbers that would embarrass any CPU estate. The measurement honesty problem, the scheduling and sharing toolkit, and the organizational allocation that actually moves the number."
-date: 2024-12-10
+date: 2027-02-22
 tags: ["AI Adoption", "FinOps", "Cloud Architecture", "Capacity Planning", "AI & MLOps"]
 format: article
 ---

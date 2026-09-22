@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes for Small Teams: When to Wait and When to Invest"
 description: "A small team that adopts Kubernetes before they understand why often learns the hard way. Here is how to know whether you are at the point where Kubernetes investment makes sense."
-date: 2025-07-03
+date: 2028-03-24
 tags: ["Cloud Architecture", "Engineering Leadership"]
 format: article
 ---

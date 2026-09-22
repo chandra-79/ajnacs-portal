@@ -1,7 +1,7 @@
 ---
 title: "Policy-as-Code Without Organisational Champions: Why It Fails to Stick"
 description: "Policy-as-code is a powerful practice for encoding security, compliance, and operational requirements in enforceable rules. Without people who own and maintain it, it becomes configuration files nobody reads."
-date: 2025-11-24
+date: 2028-08-28
 tags: ["DevSecOps", "Policy-as-Code", "Engineering Leadership"]
 format: article
 ---

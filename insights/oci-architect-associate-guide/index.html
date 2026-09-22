@@ -105,7 +105,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#0d9488" stop-opacity=".10"/>
       <stop offset="1" stop-color="#0b7a70" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahociarchitect" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#0d9488" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -129,7 +129,7 @@ if(d.getAttribute('data-rface')==='serif'){
     <div class="prose">
 <p>The OCI Architect Associate exam (1Z0-1072) tests Oracle Cloud Infrastructure-specific architecture knowledge. If you&#39;re coming from AWS or Azure, most of the concepts are familiar — compute, storage, networking, IAM — but Oracle&#39;s naming, structure, and defaults differ enough that familiarity with cloud fundamentals doesn&#39;t mean you&#39;ll pass without OCI-specific preparation.</p>
 <p>Here&#39;s what the exam emphasises, organised by weight.</p>
-<h2 id="tenancy-and-iam-the-foundation-the-exam-builds-on"><a class="h-anchor" href="#tenancy-and-iam-the-foundation-the-exam-builds-on" aria-label="Link to this section">#</a>Tenancy and IAM: the foundation the exam builds on</h2>
+<h2 id="tenancy-and-iam-the-foundation-the-exam-builds-on"><a class="h-anchor" href="#tenancy-and-iam-the-foundation-the-exam-builds-on" aria-hidden="true" tabindex="-1">#</a>Tenancy and IAM: the foundation the exam builds on</h2>
 <p>OCI&#39;s identity model is compartment-based. Everything in OCI lives in a compartment — a logical grouping of resources that forms the boundary for policies, quotas, and access control. Understanding the compartment hierarchy and how policies attach to compartments (not individual resources) is fundamental to OCI IAM.</p>
 <p><strong>Policies</strong> grant permissions to groups, not users. The syntax is explicit:</p>
 <pre><code>Allow group &lt;group-name&gt; to &lt;verb&gt; &lt;resource-type&gt; in &lt;location&gt;
@@ -137,13 +137,13 @@ if(d.getAttribute('data-rface')==='serif'){
 <p>Verbs matter: <code>inspect</code> (list), <code>read</code> (inspect + get), <code>use</code> (read + update operations), <code>manage</code> (full control). The exam tests whether you know which verb allows which actions.</p>
 <p><strong>Dynamic Groups</strong> allow compute instances, functions, and other OCI resources to authenticate with IAM and call OCI APIs. This is the OCI equivalent of AWS IAM Roles for EC2 — essential for any architecture where a compute resource needs to access Object Storage, Secrets Manager, or other services without stored credentials.</p>
 <p><strong>Federation</strong> with identity providers (IDCS, Microsoft Entra ID, Okta) is frequently tested. Know how to set up a federation, understand the difference between IDCS (Oracle&#39;s native identity service) and external providers, and understand group mappings.</p>
-<h2 id="compute-and-networking-the-exam39s-heaviest-section"><a class="h-anchor" href="#compute-and-networking-the-exam39s-heaviest-section" aria-label="Link to this section">#</a>Compute and networking: the exam&#39;s heaviest section</h2>
+<h2 id="compute-and-networking-the-exam39s-heaviest-section"><a class="h-anchor" href="#compute-and-networking-the-exam39s-heaviest-section" aria-hidden="true" tabindex="-1">#</a>Compute and networking: the exam&#39;s heaviest section</h2>
 <p><strong>Compute shapes</strong> come in four families: Standard (general purpose), Optimised (high CPU frequency), GPU, and Dense I/O (NVMe-attached storage). The Flex shapes (VM.Standard.E4.Flex, VM.Standard3.Flex) let you specify OCPUs and memory independently — know how these work and the ratio limits.</p>
 <p><strong>Virtual Cloud Network (VCN)</strong> architecture: VCN → subnets (public or private) → security lists or network security groups. The difference between security lists and network security groups is tested — security lists are attached to subnets and apply to all resources in the subnet; NSGs are attached to individual VNICs and give per-resource control. NSGs are more flexible; new architectures should prefer them.</p>
 <p><strong>Route tables</strong> control traffic flow. Know the default route table, know how to add a route for internet-bound traffic (through an Internet Gateway), and know how Private IPs in different subnets route to each other. The exam includes routing scenarios.</p>
 <p><strong>Load Balancer vs Network Load Balancer</strong>: OCI Load Balancer (Layer 7, HTTP/HTTPS) vs Network Load Balancer (Layer 4, TCP/UDP). Know which to choose for which use case. The exam tests this.</p>
 <p><strong>FastConnect</strong> (dedicated connectivity, similar to AWS Direct Connect) and <strong>VPN Connect</strong> (IPSec VPN) for hybrid connectivity. Know the architecture of each and when to choose one over the other.</p>
-<h2 id="storage-the-types-and-their-use-cases"><a class="h-anchor" href="#storage-the-types-and-their-use-cases" aria-label="Link to this section">#</a>Storage: the types and their use cases</h2>
+<h2 id="storage-the-types-and-their-use-cases"><a class="h-anchor" href="#storage-the-types-and-their-use-cases" aria-hidden="true" tabindex="-1">#</a>Storage: the types and their use cases</h2>
 <ul>
 <li><strong>Block Volume</strong>: persistent block storage for compute instances. Boot volumes and data volumes. Know about volume performance tiers (Lower Cost, Balanced, High Performance), volume backup policies, and cross-region replication.</li>
 <li><strong>Object Storage</strong>: Standard, Infrequent Access, and Archive tiers. Lifecycle policies automate tier transitions. Pre-Authenticated Requests (PARs) allow temporary access to objects without credentials.</li>
@@ -151,7 +151,7 @@ if(d.getAttribute('data-rface')==='serif'){
 <li><strong>Local NVMe</strong>: included with Dense I/O shapes, ephemeral, very high IOPS. Data is lost when instance terminates.</li>
 </ul>
 <p>The exam frequently asks about when to use which storage type. Block Volume for OS and database, Object Storage for unstructured data and backups, File Storage for shared file systems.</p>
-<h2 id="database-services"><a class="h-anchor" href="#database-services" aria-label="Link to this section">#</a>Database services</h2>
+<h2 id="database-services"><a class="h-anchor" href="#database-services" aria-hidden="true" tabindex="-1">#</a>Database services</h2>
 <p>OCI&#39;s database offerings are distinct from other clouds because of the Autonomous Database. Know these:</p>
 <ul>
 <li><strong>Autonomous Database</strong>: Oracle&#39;s managed database service with automated tuning, patching, and scaling. Two workload types: OLTP (Autonomous Transaction Processing) and Analytics (Autonomous Data Warehouse). The exam tests the differences.</li>
@@ -159,11 +159,11 @@ if(d.getAttribute('data-rface')==='serif'){
 <li><strong>Exadata</strong>: Oracle&#39;s high-performance database platform. Know the infrastructure architecture (DB Servers + Storage Servers + RDMA network).</li>
 <li><strong>MySQL HeatWave</strong>: managed MySQL with the HeatWave in-memory query accelerator for analytics on the transactional database without ETL.</li>
 </ul>
-<h2 id="high-availability-and-disaster-recovery"><a class="h-anchor" href="#high-availability-and-disaster-recovery" aria-label="Link to this section">#</a>High availability and disaster recovery</h2>
+<h2 id="high-availability-and-disaster-recovery"><a class="h-anchor" href="#high-availability-and-disaster-recovery" aria-hidden="true" tabindex="-1">#</a>High availability and disaster recovery</h2>
 <p>OCI&#39;s physical structure: <strong>Region</strong> → <strong>Availability Domains (ADs)</strong> → <strong>Fault Domains (FDs)</strong>. Most OCI regions have 3 ADs (some have 1 AD). Each AD has 3 Fault Domains.</p>
 <p>The key architectural pattern: distribute resources across multiple ADs for region-level HA, distribute within an AD across multiple FDs for AD-level HA. For a 3-AD region, running a 3-node cluster with one node per AD gives you protection against AD failure.</p>
 <p><strong>Remote Peering</strong> connects VCNs across regions. Know the use cases for intra-region peering (Local Peering Gateway) vs cross-region peering (Remote Peering Connection via DRG).</p>
-<h2 id="the-study-approach-for-engineers-with-cloud-experience"><a class="h-anchor" href="#the-study-approach-for-engineers-with-cloud-experience" aria-label="Link to this section">#</a>The study approach for engineers with cloud experience</h2>
+<h2 id="the-study-approach-for-engineers-with-cloud-experience"><a class="h-anchor" href="#the-study-approach-for-engineers-with-cloud-experience" aria-hidden="true" tabindex="-1">#</a>The study approach for engineers with cloud experience</h2>
 <p>For engineers already certified on AWS or Azure:</p>
 <ol>
 <li><strong>OCI concepts documentation</strong> (not the tutorials, the architecture reference) — read the IAM, Networking, and Compute sections carefully. The architecture is different enough to require careful reading.</li>
@@ -201,12 +201,12 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#e8a317" stop-opacity=".10"/>
       <stop offset="1" stop-color="#a9760a" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahfinopsanomal" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e8a317" fill-opacity=".5"/>
     </marker>
   </defs>
   <rect width="640" height="360" fill="url(#bgfinopsanomal)"/>
-  <rect x="86" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.39" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 108 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.41" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 108 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.21" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 108 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.13" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 172 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.17" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 172 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="86" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.23" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 236 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.54" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 236 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.51" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/>
+  <rect x="86" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.39" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 108 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="212" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.41" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 108 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="338" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.21" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 108 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="212" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.13" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 172 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.17" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 172 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="86" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.23" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 236 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="212" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.54" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 236 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="464" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.51" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/>
 </svg></div>
   <div class="card-body">
     <span class="chip">FinOps</span>
@@ -222,7 +222,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#e8a317" stop-opacity=".10"/>
       <stop offset="1" stop-color="#a9760a" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahfinopstaggin" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e8a317" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -251,7 +251,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#0d9488" stop-opacity=".10"/>
       <stop offset="1" stop-color="#0b7a70" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahmultiregiona" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#0d9488" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -339,7 +339,7 @@ if(d.getAttribute('data-rface')==='serif'){
         </div>
       </div>
       <div>
-        <h4>Services</h4>
+        <h2 class="foot-title">Services</h2>
         <ul>
           <li><a href="/services/#architecture">Enterprise architecture</a></li>
           <li><a href="/services/#ai">AI &amp; MLOps</a></li>
@@ -348,7 +348,7 @@ if(d.getAttribute('data-rface')==='serif'){
         </ul>
       </div>
       <div>
-        <h4>Insights</h4>
+        <h2 class="foot-title">Insights</h2>
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/series/">Series</a></li>
@@ -357,7 +357,7 @@ if(d.getAttribute('data-rface')==='serif'){
         </ul>
       </div>
       <div>
-        <h4>Contact</h4>
+        <h2 class="foot-title">Contact</h2>
         <ul>
           <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
           <li><a href="/contact/">Start an engagement</a></li>

@@ -1,7 +1,7 @@
 ---
 title: "Responsible AI in the Enterprise: Governance Beyond the Principles Document"
 description: "Most organizations have an AI principles document. Few have the processes, tooling, and accountability structures to make those principles operational. Here's what the gap looks like and how to close it."
-date: 2025-10-28
+date: 2027-04-09
 tags: ["AI & MLOps", "Enterprise AI", "Engineering Leadership"]
 format: article
 ---

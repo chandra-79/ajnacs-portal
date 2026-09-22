@@ -1,7 +1,7 @@
 ---
 title: "Shift left on security means catching problems earlier, not eliminating the security function."
 description: "The shift-left security movement produced a generation of security tooling embedded in developer workflows — static analysis, dependency vulnerability scanning, secrets detection…"
-date: 2026-06-09
+date: 2029-01-26
 tags: ["DevSecOps", "Engineering Leadership"]
 format: article
 derived: true

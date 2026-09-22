@@ -1,7 +1,7 @@
 ---
 title: "Virtual Threads in the Enterprise: What Changes, What Doesn't, and What Breaks"
 description: "Java 21's virtual threads promise massive concurrency without reactive complexity. Here's what actually changes in enterprise services — thread pool math, pinning pitfalls, connection pools as the new bottleneck, and when reactive still wins."
-date: 2025-01-03
+date: 2026-02-24
 tags: ["Java", "JVM", "Concurrency", "Performance", "Architecture"]
 format: article
 ---

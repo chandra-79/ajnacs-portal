@@ -1,7 +1,7 @@
 ---
 title: "LLM Inference Optimization: The Levers Behind Latency, Throughput, and the Bill"
 description: "Serving large language models is a systems problem wearing an AI costume — KV caches, continuous batching, quantization, speculative decoding, and routing. What each lever buys, what it costs in quality, and how to think about the serving stack."
-date: 2025-01-07
+date: 2027-02-12
 tags: ["AI Adoption", "LLM", "Performance", "Cloud Architecture", "AI & MLOps"]
 format: article
 ---

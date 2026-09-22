@@ -1,7 +1,7 @@
 ---
 title: "How to Choose an AI Coding Assistant: What Benchmarks Don't Tell You"
 description: "A practical breakdown of Copilot, Amazon Q, Codeium, Tabnine, Cody, and Qodo — what each is actually best at and how to run a real two-week trial."
-date: 2026-05-14
+date: 2028-05-19
 tags: ["Enterprise AI", "Developer Tools", "Programming"]
 format: article
 ---

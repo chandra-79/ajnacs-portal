@@ -1,7 +1,7 @@
 ---
 title: "Security review at the end of the sprint is too late to be useful"
 description: "When a security review happens at the end of a sprint, the findings that require architectural changes are almost guaranteed to get deferred."
-date: 2025-12-10
+date: 2029-07-02
 tags: ["DevSecOps", "Security"]
 format: note
 derived: true

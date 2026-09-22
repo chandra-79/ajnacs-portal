@@ -1,7 +1,7 @@
 ---
 title: "Multi-Region Architecture Patterns: What You're Actually Buying at Each Tier"
 description: "Active-passive, pilot light, active-active, and the data problem underneath them all. A tiered framework for multi-region design that matches architecture to actual availability requirements — and prices the tiers honestly."
-date: 2025-01-20
+date: 2026-02-12
 tags: ["Cloud Architecture", "Architecture", "Reliability", "Disaster Recovery", "Distributed Systems"]
 format: article
 ---

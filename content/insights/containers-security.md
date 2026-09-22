@@ -1,7 +1,7 @@
 ---
 title: "Container Security: The Specific Misconfigurations That Open Production Systems to Attack"
 description: "Running containers as root, privileged mode, unrestricted capabilities, exposed Docker sockets — the container security mistakes that appear in breach reports and how to prevent them systematically."
-date: 2026-07-01
+date: 2026-09-28
 tags: ["DevSecOps", "Fundamentals"]
 series: "Containerization from the Ground Up"
 seriesOrder: 5

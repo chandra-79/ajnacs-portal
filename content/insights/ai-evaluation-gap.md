@@ -1,7 +1,7 @@
 ---
 title: "The AI system went live without a systematic evaluation framework. That is the real risk."
 description: "Software engineering has decades of practice around automated testing."
-date: 2025-08-08
+date: 2028-11-24
 tags: ["AI & MLOps", "Enterprise AI"]
 format: article
 derived: true

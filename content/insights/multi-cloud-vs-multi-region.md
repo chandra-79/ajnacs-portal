@@ -1,7 +1,7 @@
 ---
 title: "Multi-cloud and multi-region are not the same strategy, and confusing them is expensive"
 description: "Multi-cloud and multi-region solve different problems. Confusing them means your architecture review is evaluating the wrong risks."
-date: 2025-10-16
+date: 2029-04-06
 tags: ["Cloud Architecture"]
 format: note
 derived: true

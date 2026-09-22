@@ -1,7 +1,7 @@
 ---
 title: "The Linux File System: Everything Is a File and Why That Matters"
 description: "Linux's 'everything is a file' philosophy, the directory hierarchy, permissions, inodes, and the proc and sys filesystems that expose the kernel's internals to any engineer who knows where to look."
-date: 2026-06-17
+date: 2027-07-19
 tags: ["Programming", "Fundamentals"]
 series: "Operating Systems for Engineers"
 seriesOrder: 4

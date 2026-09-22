@@ -1,7 +1,7 @@
 ---
 title: "Variables, Types, Control Flow, Functions: The Four Concepts That Run Every Program"
 description: "Every programming language is built from the same four building blocks. Master these in one language and you have transferred 80 percent of what you need to learn the next one."
-date: 2026-05-18
+date: 2028-02-11
 tags: ["Programming", "Fundamentals"]
 series: "Getting Started with Programming Languages"
 seriesOrder: 3

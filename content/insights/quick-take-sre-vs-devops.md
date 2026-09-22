@@ -1,7 +1,7 @@
 ---
 title: "SRE vs. DevOps: The Practices Matter More Than the Branding"
 description: "SRE and DevOps describe different approaches to the same underlying goal: reliable software delivery. Most of the debate between them is organizational politics. The practices that matter are largely shared."
-date: 2026-01-01
+date: 2028-07-14
 tags: ["DevSecOps", "Engineering Leadership"]
 format: article
 ---

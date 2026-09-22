@@ -164,6 +164,50 @@ console.log("\nBrand & reader");
   else ok("contents lists are not double-escaped");
 }
 
+console.log("\nAssets");
+{
+  // Every local reference in a built page has to resolve. An article that
+  // names an image ingest never copied ships a broken figure, and nothing
+  // else in the pipeline notices.
+  const { readdir: rd } = await import("node:fs/promises");
+  const walk = async (dir) => {
+    const out = [];
+    for (const e of await rd(dir, { withFileTypes: true })) {
+      if (e.name === "node_modules" || e.name.startsWith(".")) continue;
+      const full = path.join(dir, e.name);
+      if (e.isDirectory()) out.push(...await walk(full));
+      else if (e.name.endsWith(".html")) out.push(full);
+    }
+    return out;
+  };
+  const pages = await walk(".");
+  const resolve = async (p) => {
+    const clean = decodeURIComponent(p.replace(/^\//, "").split("#")[0].split("?")[0]) || "index.html";
+    for (const cand of [clean, path.join(clean, "index.html")]) {
+      try { await access(cand, constants.R_OK); return true; } catch {}
+    }
+    return false;
+  };
+  const broken = [];
+  let refs = 0;
+  for (const f of pages) {
+    const h = await readFile(f, "utf8");
+    for (const m of h.matchAll(/(?:href|src)="([^"]+)"/g)) {
+      const u = m[1];
+      if (/^(https?:|mailto:|tel:|data:|#|javascript:)/.test(u)) continue;
+      refs++;
+      if (!(await resolve(u))) broken.push(`${f} -> ${u}`);
+    }
+  }
+  if (broken.length) fail(`${broken.length} broken local reference(s): ${broken.slice(0, 3).join("; ")}`);
+  else ok(`${refs} local references all resolve`);
+
+  const ingest = await readFile("tools/ingest.mjs", "utf8");
+  if (!/const NOT_OURS = new Set\(/.test(ingest))
+    fail("the third-party image blocklist is gone; a re-ingest will pull vendor press photos back in");
+  else ok("third-party images stay stripped at ingest");
+}
+
 console.log("\nAccessibility");
 const sample = await readFile(`insights/${dirs[0].name}/index.html`, "utf8");
 for (const [re, what] of [

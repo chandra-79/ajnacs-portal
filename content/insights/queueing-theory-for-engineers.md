@@ -1,7 +1,7 @@
 ---
 title: "Queueing Theory for Engineers: Why Everything Melts at 80% Utilization"
 description: "Little's Law, the utilization-latency curve, and variability's tax — the three results that explain most capacity mysteries, from connection pools to on-call load. No calculus required, just the intuitions that make systems behavior predictable."
-date: 2025-02-17
+date: 2026-02-03
 tags: ["Performance", "Capacity Planning", "Reliability", "Distributed Systems", "Architecture"]
 format: article
 ---

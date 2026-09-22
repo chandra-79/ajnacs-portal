@@ -1,7 +1,7 @@
 ---
 title: "Multi-Region Is Not a Reliability Upgrade — It Is a Different Operational Model"
 description: "Adding a second region does not make an application more reliable if the team cannot operate a single region reliably. Multi-region multiplies complexity before it multiplies availability."
-date: 2025-08-11
+date: 2028-02-14
 tags: ["Cloud Architecture"]
 format: article
 ---

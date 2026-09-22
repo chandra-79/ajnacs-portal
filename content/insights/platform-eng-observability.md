@@ -1,7 +1,7 @@
 ---
 title: "Platform Observability: Building the Visibility Layer Every Application Team Gets Automatically"
 description: "How platform teams build and operate the metrics, logging, and tracing infrastructure that application teams consume without configuring — and what good platform observability coverage actually looks like."
-date: 2026-07-20
+date: 2026-09-16
 tags: ["DevSecOps", "Architecture", "Fundamentals"]
 series: "Platform Engineering: From Concept to Internal Developer Platform"
 seriesOrder: 4

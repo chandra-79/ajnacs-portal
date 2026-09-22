@@ -1,7 +1,7 @@
 ---
 title: "Change Data Capture: The Pattern That Quietly Rewired Enterprise Data Flow"
 description: "CDC turns the database's own log into an event stream — powering search indexes, caches, warehouses, and microservice integration without dual-writes or batch lag. How log-based CDC works, the Debezium-shaped architecture, and the consistency fine print."
-date: 2024-10-23
+date: 2028-01-14
 tags: ["Data Engineering", "Distributed Systems", "Integration"]
 format: article
 ---

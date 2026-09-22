@@ -1,7 +1,7 @@
 ---
 title: "NGINX as a Reverse Proxy and Load Balancer: A Practical Introduction"
 description: "What NGINX actually does, why it's everywhere, and how to configure it as a reverse proxy and load balancer — with practical config examples you can use."
-date: 2026-04-13
+date: 2026-12-09
 tags: ["Programming", "Infrastructure", "Systems", "Fundamentals"]
 format: article
 ---
@@ -20,13 +20,13 @@ That architecture is why NGINX is ubiquitous — it's efficient enough to handle
 
 The two roles it plays most often:
 
-![NGINX as a Reverse Proxy](/images/nginx-reverse-proxy.png)
+![NGINX as a Reverse Proxy](/images/nginx-reverse-proxy.svg)
 
 **Reverse proxy** — sits between clients and your application servers. Clients talk to NGINX; NGINX forwards requests to your backend and returns the response. The client never directly connects to your application.
 
 **Load balancer** — when you have multiple backend servers, NGINX distributes incoming requests across them, preventing any single server from being overwhelmed.
 
-![NGINX Load Balancing Architecture](/images/nginx-load-balancing.png)
+![NGINX Load Balancing Architecture](/images/nginx-load-balancing.svg)
 
 ---
 
@@ -102,7 +102,7 @@ In practice, most teams use Certbot with Let's Encrypt to manage certificates. C
 
 ## Load balancing configuration
 
-![NGINX Architecture: Reverse Proxy & Load Balancing](/images/nginx-architecture.png)
+![NGINX Architecture: Reverse Proxy & Load Balancing](/images/nginx-architecture.svg)
 
 When you have multiple backend servers, define an `upstream` block:
 

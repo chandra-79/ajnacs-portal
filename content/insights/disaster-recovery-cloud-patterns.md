@@ -1,7 +1,7 @@
 ---
 title: "Disaster Recovery in the Cloud: Patterns That Actually Get Tested"
 description: "Cloud DR documentation assumes you have an architect's weekend and perfect information. Here are the patterns that work in the reality of production engineering constraints."
-date: 2025-05-12
+date: 2027-01-08
 tags: ["Cloud Architecture", "Disaster Recovery", "Resilience"]
 format: article
 ---

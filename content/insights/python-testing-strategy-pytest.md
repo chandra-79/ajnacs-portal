@@ -1,7 +1,7 @@
 ---
 title: "A Python Testing Strategy That Scales: pytest Patterns for Real Codebases"
 description: "Beyond 'write some unit tests' — a testing strategy for Python services using pytest: fixture architecture, the mocking discipline that keeps tests honest, property-based testing, and the CI habits that keep suites fast and trusted."
-date: 2025-02-13
+date: 2028-04-17
 tags: ["Python", "Programming", "Engineering Practice", "Quality Engineering"]
 format: article
 ---

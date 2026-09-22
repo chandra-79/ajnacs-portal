@@ -1,7 +1,7 @@
 ---
 title: "Platform Engineering in 2026: What an Internal Developer Platform Actually Needs"
 description: "Every team is building a platform. Few are building one that developers actually want to use. Here's what separates an IDP that accelerates delivery from one that adds process overhead dressed up as self-service."
-date: 2026-08-17
+date: 2027-08-16
 tags: ["DevSecOps", "Cloud Architecture", "Engineering Leadership"]
 format: article
 ---

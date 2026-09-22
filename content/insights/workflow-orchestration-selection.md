@@ -1,7 +1,7 @@
 ---
 title: "Workflow Orchestration: Airflow, Temporal, Step Functions, and Choosing by Workload Shape"
 description: "Every estate accumulates multi-step processes that must survive failures — and three distinct tool families claim the job. Data pipelines vs transactional workflows vs cloud glue: the taxonomy that prevents the wrong orchestrator on the right problem."
-date: 2025-04-16
+date: 2027-01-06
 tags: ["Distributed Systems", "Data Engineering", "Programming", "Cloud Architecture", "Architecture"]
 format: article
 ---

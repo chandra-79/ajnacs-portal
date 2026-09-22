@@ -105,7 +105,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#0891b2" stop-opacity=".10"/>
       <stop offset="1" stop-color="#076f87" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahdatabasemigr" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#0891b2" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -129,7 +129,7 @@ if(d.getAttribute('data-rface')==='serif'){
     <div class="prose">
 <p>The migration that causes an outage is usually not the one that failed — it&#39;s the one that succeeded but not in the way anyone expected. A column renamed. A constraint applied. A backfill that took six hours instead of forty minutes.</p>
 <p>Zero-downtime database migrations are achievable, but they require treating schema changes and data movement as distinct operations with distinct risk profiles.</p>
-<h2 id="the-core-principle-schema-changes-must-be-backward-compatibl"><a class="h-anchor" href="#the-core-principle-schema-changes-must-be-backward-compatibl" aria-label="Link to this section">#</a>The core principle: schema changes must be backward compatible</h2>
+<h2 id="the-core-principle-schema-changes-must-be-backward-compatibl"><a class="h-anchor" href="#the-core-principle-schema-changes-must-be-backward-compatibl" aria-hidden="true" tabindex="-1">#</a>The core principle: schema changes must be backward compatible</h2>
 <aside class="keyfig">
   <p class="keyfig-label">Key figure</p>
   <p class="keyfig-text">For most production systems, a 15–<b>30 minute</b> cutover window (stop writes, verify, redirect, verify again) is achievable with proper preparation.</p>
@@ -152,13 +152,13 @@ if(d.getAttribute('data-rface')==='serif'){
 <li>Drop the old column (now unreferenced)</li>
 </ol>
 <p>This takes longer. It requires multiple deployments. It&#39;s the only approach that doesn&#39;t carry downtime risk.</p>
-<h2 id="the-expandcontract-pattern"><a class="h-anchor" href="#the-expandcontract-pattern" aria-label="Link to this section">#</a>The expand/contract pattern</h2>
+<h2 id="the-expandcontract-pattern"><a class="h-anchor" href="#the-expandcontract-pattern" aria-hidden="true" tabindex="-1">#</a>The expand/contract pattern</h2>
 <p>The formalization of this approach is called expand/contract (also called parallel change):</p>
 <p><strong>Expand phase</strong>: add new structure alongside old structure. New columns, new tables, new relationships. Old code continues to work. New code can optionally use the new structure.</p>
 <p><strong>Migrate phase</strong>: backfill data, run dual-writes, verify correctness. The database contains both old and new representations simultaneously.</p>
 <p><strong>Contract phase</strong>: remove old structure once all code has migrated to the new representation and old structure is confirmed unused.</p>
 <p>The contract phase is where most teams skip steps. Dropping a column that &quot;nobody is using anymore&quot; without confirming via query analysis or feature flags is how you get 3am incidents.</p>
-<h2 id="backfill-strategy-for-large-tables"><a class="h-anchor" href="#backfill-strategy-for-large-tables" aria-label="Link to this section">#</a>Backfill strategy for large tables</h2>
+<h2 id="backfill-strategy-for-large-tables"><a class="h-anchor" href="#backfill-strategy-for-large-tables" aria-hidden="true" tabindex="-1">#</a>Backfill strategy for large tables</h2>
 <p>Backfilling a column on a 50-million-row table with a single UPDATE statement will:</p>
 <ul>
 <li>Lock rows for the duration</li>
@@ -198,7 +198,7 @@ END $$;
   ROUND(100.0 * COUNT(*) FILTER (WHERE new_column IS NOT NULL) / COUNT(*), 1) AS pct
 FROM orders;
 </code></pre>
-<h2 id="online-schema-change-tools"><a class="h-anchor" href="#online-schema-change-tools" aria-label="Link to this section">#</a>Online schema change tools</h2>
+<h2 id="online-schema-change-tools"><a class="h-anchor" href="#online-schema-change-tools" aria-hidden="true" tabindex="-1">#</a>Online schema change tools</h2>
 <p>For MySQL, Percona&#39;s <code>pt-online-schema-change</code> or GitHub&#39;s <code>gh-ost</code> handle the shadow table pattern automatically:</p>
 <ul>
 <li>Create a shadow table with the new schema</li>
@@ -208,7 +208,7 @@ FROM orders;
 </ul>
 <p><code>gh-ost</code> is generally preferred for production use because it uses binary log streaming rather than triggers, which avoids the write amplification problem with trigger-based approaches on high-write tables.</p>
 <p>For PostgreSQL, <code>pglogical</code> replication or manual expand/contract is the standard approach. The <code>pg_repack</code> extension handles CLUSTER and VACUUM FULL equivalents online, but schema changes still require the manual pattern.</p>
-<h2 id="cross-database-migrations"><a class="h-anchor" href="#cross-database-migrations" aria-label="Link to this section">#</a>Cross-database migrations</h2>
+<h2 id="cross-database-migrations"><a class="h-anchor" href="#cross-database-migrations" aria-hidden="true" tabindex="-1">#</a>Cross-database migrations</h2>
 <p>Moving data between database engines (Oracle to PostgreSQL, SQL Server to Aurora) adds complexity:</p>
 <p><strong>Data type mapping</strong>: Oracle&#39;s VARCHAR2, DATE, and NUMBER types don&#39;t map cleanly. NUMBER(10) might be INTEGER, BIGINT, or DECIMAL depending on context. DATE in Oracle includes time; in PostgreSQL it doesn&#39;t.</p>
 <p><strong>Procedural code</strong>: PL/SQL doesn&#39;t port directly to PL/pgSQL. Function signatures, exception handling, cursor patterns, and built-in functions all differ. This code requires manual rewrite and testing, not automated conversion.</p>
@@ -221,7 +221,7 @@ FROM orders;
 <li><strong>Cutover</strong>: stop writes to source, verify CDC has caught up, redirect application connections to target, verify, open writes to target.</li>
 </ol>
 <p>The cutover window is the exposure period. For most production systems, a 15–30 minute cutover window (stop writes, verify, redirect, verify again) is achievable with proper preparation.</p>
-<h2 id="testing-the-rollback"><a class="h-anchor" href="#testing-the-rollback" aria-label="Link to this section">#</a>Testing the rollback</h2>
+<h2 id="testing-the-rollback"><a class="h-anchor" href="#testing-the-rollback" aria-hidden="true" tabindex="-1">#</a>Testing the rollback</h2>
 <p>The rollback plan that hasn&#39;t been tested is not a rollback plan. Before any significant migration, verify:</p>
 <ul>
 <li>The rollback procedure takes less than the defined RTO</li>
@@ -264,7 +264,7 @@ FROM orders;
       <stop offset="0" stop-color="#0e7490" stop-opacity=".10"/>
       <stop offset="1" stop-color="#0b5f77" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahplatformengm" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#0e7490" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -293,12 +293,12 @@ FROM orders;
       <stop offset="0" stop-color="#e8a317" stop-opacity=".10"/>
       <stop offset="1" stop-color="#a9760a" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahfinopsanomal" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e8a317" fill-opacity=".5"/>
     </marker>
   </defs>
   <rect width="640" height="360" fill="url(#bgfinopsanomal)"/>
-  <rect x="86" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.39" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 108 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.41" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 108 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.21" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 108 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.13" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 172 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.17" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 172 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="86" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.23" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 236 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.54" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 236 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.51" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/>
+  <rect x="86" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.39" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 108 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="212" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.41" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 108 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="338" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.21" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 108 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="212" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.13" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 172 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.17" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 172 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="86" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.23" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 236 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="212" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.54" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 236 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="464" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.51" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/>
 </svg></div>
   <div class="card-body">
     <span class="chip">FinOps</span>
@@ -314,7 +314,7 @@ FROM orders;
       <stop offset="0" stop-color="#e8a317" stop-opacity=".10"/>
       <stop offset="1" stop-color="#a9760a" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahfinopstaggin" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e8a317" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -402,7 +402,7 @@ FROM orders;
         </div>
       </div>
       <div>
-        <h4>Services</h4>
+        <h2 class="foot-title">Services</h2>
         <ul>
           <li><a href="/services/#architecture">Enterprise architecture</a></li>
           <li><a href="/services/#ai">AI &amp; MLOps</a></li>
@@ -411,7 +411,7 @@ FROM orders;
         </ul>
       </div>
       <div>
-        <h4>Insights</h4>
+        <h2 class="foot-title">Insights</h2>
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/series/">Series</a></li>
@@ -420,7 +420,7 @@ FROM orders;
         </ul>
       </div>
       <div>
-        <h4>Contact</h4>
+        <h2 class="foot-title">Contact</h2>
         <ul>
           <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
           <li><a href="/contact/">Start an engagement</a></li>

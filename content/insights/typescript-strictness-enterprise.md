@@ -1,7 +1,7 @@
 ---
 title: "TypeScript at Enterprise Scale: Strictness, Boundaries, and the Types That Pay Rent"
 description: "TypeScript won the frontend and half the backend — but 'we use TypeScript' spans everything from typed JavaScript to airtight contracts. The strictness ladder, runtime validation at the edges, type-level restraint, and the monorepo-scale compile-time economics."
-date: 2025-03-26
+date: 2028-08-30
 tags: ["TypeScript", "Programming", "Type Safety", "Developer Experience", "Engineering Practice"]
 format: article
 ---

@@ -1,7 +1,7 @@
 ---
 title: "Writing Technical Documents That Actually Get Read"
 description: "Most technical documentation is never read after it's written. The documents that get read and used share structural and stylistic patterns. Here's what distinguishes useful technical writing from documentation theater."
-date: 2025-06-12
+date: 2028-05-15
 tags: ["Engineering Leadership"]
 format: article
 ---

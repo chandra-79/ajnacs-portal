@@ -1,7 +1,7 @@
 ---
 title: "Sessions, Cookies, and JWTs: Web Authentication State Without the Cargo Cult"
 description: "The 'JWT vs session' debate is mostly a category confusion — stateful sessions and stateless tokens solve different problems with different revocation stories. Cookie security attributes that matter, token lifetimes, logout that actually logs out, and the architectures that get it right."
-date: 2025-03-04
+date: 2028-03-08
 tags: ["Security", "Programming", "API Design", "Identity", "Web Performance"]
 format: article
 ---

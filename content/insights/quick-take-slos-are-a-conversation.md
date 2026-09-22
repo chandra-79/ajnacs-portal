@@ -1,7 +1,7 @@
 ---
 title: "SLOs Are a Conversation Between Engineering and the Business, Not a Monitoring Config"
 description: "Service Level Objectives express what reliability means for your users. Setting them correctly requires understanding the business impact of downtime — which is a business conversation, not a technical one."
-date: 2026-01-21
+date: 2028-07-10
 tags: ["DevSecOps", "Observability", "Engineering Leadership"]
 format: article
 ---

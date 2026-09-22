@@ -1,7 +1,7 @@
 ---
 title: "Kafka in Production: Partitioning, Consumer Groups, and the Mistakes Everyone Makes"
 description: "Apache Kafka looks simple until you run it at scale. The production challenges — partition strategy, consumer lag, exactly-once semantics, schema evolution — are learnable but rarely covered in introductory material."
-date: 2025-07-04
+date: 2027-04-07
 tags: ["Data Engineering", "Cloud Architecture", "Architecture"]
 format: article
 ---

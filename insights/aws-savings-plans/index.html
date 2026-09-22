@@ -105,7 +105,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#e8a317" stop-opacity=".10"/>
       <stop offset="1" stop-color="#a9760a" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahawssavingspl" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e8a317" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -120,7 +120,7 @@ if(d.getAttribute('data-rface')==='serif'){
 </nav></div>
     <div class="prose">
 <p>AWS introduced Savings Plans in 2019 as a more flexible alternative to EC2 Reserved Instances. For most workloads, they are now the better choice. For some specific workloads, Reserved Instances still offer a price advantage. Understanding when each applies is the core FinOps decision for reducing AWS compute costs.</p>
-<h2 id="how-savings-plans-work"><a class="h-anchor" href="#how-savings-plans-work" aria-label="Link to this section">#</a>How Savings Plans work</h2>
+<h2 id="how-savings-plans-work"><a class="h-anchor" href="#how-savings-plans-work" aria-hidden="true" tabindex="-1">#</a>How Savings Plans work</h2>
 <aside class="keyfig">
   <p class="keyfig-label">Key figure</p>
   <p class="keyfig-text">Higher discount than Compute Savings Plans (up to <b>72%</b>) in exchange for the commitment to a specific instance family and region.</p>
@@ -130,7 +130,7 @@ if(d.getAttribute('data-rface')==='serif'){
 <p><strong>Compute Savings Plans</strong>: apply to EC2, Fargate, and Lambda. No restrictions on instance family, size, region, OS, or tenancy. The most flexible type. Discount: up to 66% vs. on-demand.</p>
 <p><strong>EC2 Instance Savings Plans</strong>: apply to EC2 in a specific instance family within a specific region (e.g., M5 in us-east-1). Higher discount than Compute Savings Plans (up to 72%) in exchange for the commitment to a specific instance family and region.</p>
 <p><strong>SageMaker Savings Plans</strong>: apply to SageMaker instance usage. Relevant if SageMaker is a significant cost driver.</p>
-<h2 id="how-reserved-instances-work"><a class="h-anchor" href="#how-reserved-instances-work" aria-label="Link to this section">#</a>How Reserved Instances work</h2>
+<h2 id="how-reserved-instances-work"><a class="h-anchor" href="#how-reserved-instances-work" aria-hidden="true" tabindex="-1">#</a>How Reserved Instances work</h2>
 <p>Reserved Instances reserve capacity for a specific instance type in a specific region (or Availability Zone). Standard RIs offer up to 72% off on-demand; Convertible RIs offer up to 66% with the ability to change instance type within the RI term.</p>
 <p><strong>Where RIs still have an advantage</strong>:</p>
 <ul>
@@ -141,7 +141,7 @@ if(d.getAttribute('data-rface')==='serif'){
 <li><p><strong>Specific instance family + region commitment with maximum discount</strong>: EC2 Instance Savings Plans and Standard RIs offer similar discounts for committed usage in a specific family/region, but RIs are slightly more flexible in instance size flexibility within the family.</p>
 </li>
 </ul>
-<h2 id="the-analysis-workflow"><a class="h-anchor" href="#the-analysis-workflow" aria-label="Link to this section">#</a>The analysis workflow</h2>
+<h2 id="the-analysis-workflow"><a class="h-anchor" href="#the-analysis-workflow" aria-hidden="true" tabindex="-1">#</a>The analysis workflow</h2>
 <p>Before purchasing, analyze the past 3-6 months of compute usage:</p>
 <ol>
 <li>Pull EC2, Fargate, and Lambda usage from AWS Cost Explorer, filtered to on-demand (exclude already-discounted usage)</li>
@@ -150,11 +150,11 @@ if(d.getAttribute('data-rface')==='serif'){
 <li>Apply Compute Savings Plans to the flexible baseline; consider EC2 Instance Savings Plans or RIs for the committed portion</li>
 </ol>
 <p><strong>The floor principle</strong>: commit to the amount you are confident you will use every hour for the term. Unused Savings Plans commitment is wasted. Better to under-commit initially, verify usage, and purchase more.</p>
-<h2 id="term-length-1-year-vs-3-year"><a class="h-anchor" href="#term-length-1-year-vs-3-year" aria-label="Link to this section">#</a>Term length: 1-year vs. 3-year</h2>
+<h2 id="term-length-1-year-vs-3-year"><a class="h-anchor" href="#term-length-1-year-vs-3-year" aria-hidden="true" tabindex="-1">#</a>Term length: 1-year vs. 3-year</h2>
 <p>1-year term: 30-40% discount depending on payment option. Lower commitment risk; good for workloads with uncertain future trajectory.</p>
 <p>3-year term: 50-66% discount. Better economics for stable, long-running workloads. Higher commitment risk — technology changes; workloads migrate; the AWS pricing landscape evolves.</p>
 <p>The 3-year term makes most sense for: core infrastructure workloads that have been running for 2+ years without significant change, workloads anchored to a specific cloud provider for regulatory or architectural reasons, and instance types that are unlikely to be displaced by a new generation within the term.</p>
-<h2 id="payment-options"><a class="h-anchor" href="#payment-options" aria-label="Link to this section">#</a>Payment options</h2>
+<h2 id="payment-options"><a class="h-anchor" href="#payment-options" aria-hidden="true" tabindex="-1">#</a>Payment options</h2>
 <ul>
 <li><strong>No upfront</strong>: no upfront cost; monthly charges at discounted rate. No cash flow impact; slightly lower discount.</li>
 <li><strong>Partial upfront</strong>: upfront payment for some of the term; monthly charges for the remainder. Better discount.</li>
@@ -196,12 +196,12 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#e8a317" stop-opacity=".10"/>
       <stop offset="1" stop-color="#a9760a" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahfinopsanomal" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e8a317" fill-opacity=".5"/>
     </marker>
   </defs>
   <rect width="640" height="360" fill="url(#bgfinopsanomal)"/>
-  <rect x="86" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.39" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 108 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.41" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 108 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.21" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 108 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.13" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 172 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.17" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 172 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="86" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.23" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 236 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.54" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 236 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.51" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/>
+  <rect x="86" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.39" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 108 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="212" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.41" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 108 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="338" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.21" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 108 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="212" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.13" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 172 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.17" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 172 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="86" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.23" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 236 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="212" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.54" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 236 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="464" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.51" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/>
 </svg></div>
   <div class="card-body">
     <span class="chip">FinOps</span>
@@ -217,7 +217,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#e8a317" stop-opacity=".10"/>
       <stop offset="1" stop-color="#a9760a" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahfinopstaggin" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e8a317" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -246,7 +246,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#0d9488" stop-opacity=".10"/>
       <stop offset="1" stop-color="#0b7a70" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahmultiregiona" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#0d9488" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -334,7 +334,7 @@ if(d.getAttribute('data-rface')==='serif'){
         </div>
       </div>
       <div>
-        <h4>Services</h4>
+        <h2 class="foot-title">Services</h2>
         <ul>
           <li><a href="/services/#architecture">Enterprise architecture</a></li>
           <li><a href="/services/#ai">AI &amp; MLOps</a></li>
@@ -343,7 +343,7 @@ if(d.getAttribute('data-rface')==='serif'){
         </ul>
       </div>
       <div>
-        <h4>Insights</h4>
+        <h2 class="foot-title">Insights</h2>
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/series/">Series</a></li>
@@ -352,7 +352,7 @@ if(d.getAttribute('data-rface')==='serif'){
         </ul>
       </div>
       <div>
-        <h4>Contact</h4>
+        <h2 class="foot-title">Contact</h2>
         <ul>
           <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
           <li><a href="/contact/">Start an engagement</a></li>

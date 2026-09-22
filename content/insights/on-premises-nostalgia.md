@@ -1,7 +1,7 @@
 ---
 title: "On-premises nostalgia is a real phenomenon and it is worth taking seriously."
 description: "The senior infrastructure engineers who managed physical data centres for fifteen years have a specific set of experiences that shape how they evaluate cloud."
-date: 2025-10-01
+date: 2028-12-13
 tags: ["Cloud Architecture", "Engineering Leadership"]
 format: article
 derived: true

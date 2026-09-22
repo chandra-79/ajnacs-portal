@@ -1,7 +1,7 @@
 ---
 title: "Helm in Production: Chart Design, Values Discipline, and Life Under GitOps"
 description: "Helm remains Kubernetes' package manager by default and its templating engine by necessity. How to design charts that stay maintainable, run a values hierarchy that scales past ten teams, and the umbrella-chart and hook pitfalls that fill postmortems."
-date: 2024-12-17
+date: 2028-01-17
 tags: ["Containers", "Helm", "Platform Engineering", "GitOps"]
 format: article
 ---

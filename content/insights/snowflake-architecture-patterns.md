@@ -1,7 +1,7 @@
 ---
 title: "Snowflake Architecture Patterns for Enterprise Data Platforms"
 description: "Snowflake's elasticity and separation of storage and compute change how data platforms are designed. The patterns for warehouse sizing, data sharing, and cost management are different from traditional data warehouses."
-date: 2025-10-14
+date: 2026-12-23
 tags: ["Data Engineering", "Cloud Architecture", "FinOps"]
 format: article
 ---

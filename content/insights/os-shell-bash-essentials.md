@@ -1,7 +1,7 @@
 ---
 title: "The Linux Shell: Bash, Navigation, and the Commands Every Engineer Uses Daily"
 description: "How the shell works, bash fundamentals, essential navigation commands, keyboard shortcuts, history, and the command-line patterns that make experienced Linux engineers fast."
-date: 2026-07-23
+date: 2027-08-09
 tags: ["Programming", "Fundamentals"]
 series: "Linux: A Complete Practical Course"
 seriesOrder: 6

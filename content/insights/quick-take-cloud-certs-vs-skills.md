@@ -1,7 +1,7 @@
 ---
 title: "Cloud Certifications vs. Cloud Skills: What Gets You In and What Gets You the Job"
 description: "Cloud certifications are a credible signal of foundational knowledge. Architecture judgment — knowing when not to use a service — is what separates certified engineers from hired ones."
-date: 2025-08-12
+date: 2028-01-03
 tags: ["Career", "Cloud Architecture", "Architecture"]
 format: article
 ---

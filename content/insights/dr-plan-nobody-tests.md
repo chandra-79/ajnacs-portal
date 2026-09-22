@@ -1,7 +1,7 @@
 ---
 title: "An untested disaster recovery plan is a fiction document"
 description: "Every DR plan has an RTO and an RPO. Most of them are estimates based on theory, not measurements based on practice."
-date: 2025-10-21
+date: 2029-04-11
 tags: ["Cloud Architecture", "Disaster Recovery", "Resilience"]
 format: note
 derived: true

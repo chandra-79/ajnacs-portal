@@ -1,7 +1,7 @@
 ---
 title: "Structured Outputs from LLMs: Engineering JSON You Can Actually Parse"
 description: "The gap between 'the model usually returns valid JSON' and 'this pipeline never breaks on malformed output' is where LLM features become production systems. Constrained decoding vs prompt-and-repair, schema design for model ergonomics, and the validation ladder."
-date: 2025-01-09
+date: 2027-02-15
 tags: ["LLM", "AI Adoption", "Programming", "API Design", "AI & MLOps"]
 format: article
 ---

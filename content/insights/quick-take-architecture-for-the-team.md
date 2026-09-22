@@ -1,7 +1,7 @@
 ---
 title: "The Right Architecture Is the One Your Team Can Actually Run"
 description: "System design textbooks describe ideal architectures. Production systems run on architectures the team can operate, debug, and evolve. The gap between these two things is where most architectural failures live."
-date: 2025-12-22
+date: 2027-12-13
 tags: ["Architecture", "Engineering Leadership"]
 format: article
 ---

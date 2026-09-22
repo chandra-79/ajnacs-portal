@@ -1,7 +1,7 @@
 ---
 title: "The Transition to Engineering Manager: What Changes and What Doesn't"
 description: "Moving from senior engineer to engineering manager is one of the more disorienting career transitions in technology. The work changes completely. The skills that made you effective as an engineer become, at best, less relevant. Here's what actually matters on the other side."
-date: 2025-05-12
+date: 2028-07-26
 tags: ["Engineering Leadership", "Programming"]
 format: article
 ---

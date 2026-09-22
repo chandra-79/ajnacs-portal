@@ -1,7 +1,7 @@
 ---
 title: "Multi-Tenancy Architecture: Isolation Models, Noisy Neighbors, and the Tiering Decision"
 description: "Every SaaS system is a promise that tenants can't see or starve each other — kept at the data layer, the compute layer, and the blast-radius layer. Pooled vs siloed models, the row-level-security toolkit, per-tenant cost accounting, and the enterprise-tier escape hatch."
-date: 2025-01-20
+date: 2027-05-31
 tags: ["SaaS", "Architecture", "Security", "Data Engineering", "Cloud Architecture"]
 format: article
 ---

@@ -1,7 +1,7 @@
 ---
 title: "GitOps in the Enterprise: Argo CD, Flux, and the Operating Model That Makes Them Work"
 description: "GitOps turned deployment from a push script into a reconciliation loop. What that actually changes operationally, how Argo CD and Flux differ, the repo structures that scale past ten teams, and the failure modes nobody puts in the demo."
-date: 2024-12-09
+date: 2027-11-03
 tags: ["Platform Engineering", "GitOps", "Containers", "Deployment"]
 format: article
 ---

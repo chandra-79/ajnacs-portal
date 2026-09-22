@@ -1,7 +1,7 @@
 ---
 title: "Back-of-Envelope Engineering: The Estimation Skill That Filters Bad Architectures in Minutes"
 description: "Before the design review argues about frameworks, arithmetic should have eliminated half the options. The latency numbers worth memorizing, the estimation moves — traffic, storage, bandwidth, cost — and worked habits that turn guesses into engineering."
-date: 2024-10-14
+date: 2026-04-01
 tags: ["Architecture", "Performance", "Engineering Leadership", "Capacity Planning"]
 format: article
 ---

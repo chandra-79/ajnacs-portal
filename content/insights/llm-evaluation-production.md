@@ -1,7 +1,7 @@
 ---
 title: "Evaluating LLMs in Production: Beyond Vibes and Benchmark Scores"
 description: "Selecting and monitoring LLMs based on benchmark scores and gut feeling leads to production surprises. A systematic evaluation framework tied to your specific use cases produces decisions you can justify and systems you can monitor."
-date: 2025-05-21
+date: 2027-04-28
 tags: ["AI & MLOps", "Enterprise AI"]
 format: article
 ---

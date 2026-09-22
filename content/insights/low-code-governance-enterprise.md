@@ -1,7 +1,7 @@
 ---
 title: "Low-Code Governance: Harnessing Citizen Development Without Inheriting Its Chaos"
 description: "The spreadsheet-that-runs-the-department found its successor in low-code platforms — real business value, built outside engineering, accumulating outside every discipline. The governance model that keeps the upside: tiers, guardrails, promotion paths, and the platform team's new tenant."
-date: 2025-01-13
+date: 2028-03-17
 tags: ["Low-Code", "Engineering Leadership", "Architecture", "Governance", "Shadow IT"]
 format: article
 ---

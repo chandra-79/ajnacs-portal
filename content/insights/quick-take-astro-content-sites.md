@@ -1,7 +1,7 @@
 ---
 title: "Why Astro Is the Right Tool for Content Sites (and When It Isn't)"
 description: "Astro ships zero JavaScript by default, generates static HTML, and handles content collections natively. Here is what that means in practice and when you should reach for something else."
-date: 2026-02-02
+date: 2029-01-19
 tags: ["Programming", "Software Engineering", "Developer Tools"]
 format: article
 ---

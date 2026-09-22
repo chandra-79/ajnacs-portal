@@ -1,7 +1,7 @@
 ---
 title: "Sprint velocity is the metric that most confidently measures the wrong thing."
 description: "Sprint velocity became ubiquitous in software engineering planning because it answered a real question — how much can this team deliver in a sprint — with a number that could be plotted…"
-date: 2025-09-17
+date: 2029-02-12
 tags: ["Engineering Leadership"]
 format: article
 derived: true

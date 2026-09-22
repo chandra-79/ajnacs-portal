@@ -1,7 +1,7 @@
 ---
 title: "FinOps Lessons from Running Multi-Cloud at Scale"
 description: "Hard-won lessons from architecting multi-cloud platforms across Azure, AWS, OCI, and GCP — and the FinOps practices that actually reduce spend."
-date: 2026-03-20
+date: 2027-05-28
 tags: ["FinOps", "Cloud Architecture"]
 format: article
 ---

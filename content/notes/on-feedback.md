@@ -1,7 +1,7 @@
 ---
 title: "On Giving and Receiving Feedback"
 description: "The feedback conversation is one of the most consistently handled poorly in professional settings."
-date: 2025-08-11
+date: 2025-04-16
 tags: ["Personal", "Career", "Engineering Leadership"]
 format: article
 derived: true

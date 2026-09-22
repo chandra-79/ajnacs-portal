@@ -1,7 +1,7 @@
 ---
 title: "Incident Communication Is an Engineering Skill — Here Is How to Develop It"
 description: "Most engineers receive no formal training in how to communicate during and after production incidents. The skill is teachable and has outsized impact on how incidents are perceived."
-date: 2026-01-08
+date: 2028-07-17
 tags: ["Engineering Leadership", "DevSecOps"]
 format: article
 ---

@@ -1,7 +1,7 @@
 ---
 title: "Database Migration Strategies: Moving Production Data Without Downtime"
 description: "Zero-downtime database migrations are possible but require discipline — dual-write patterns, schema compatibility phases, and a rollback plan that you've actually tested. Here's what works at production scale."
-date: 2025-05-07
+date: 2025-07-01
 tags: ["Data Engineering", "Cloud Architecture", "Engineering Leadership"]
 format: article
 ---

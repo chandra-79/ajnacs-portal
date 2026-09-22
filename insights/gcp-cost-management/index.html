@@ -105,7 +105,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#e8a317" stop-opacity=".10"/>
       <stop offset="1" stop-color="#a9760a" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahgcpcostmanag" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e8a317" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -120,7 +120,7 @@ if(d.getAttribute('data-rface')==='serif'){
 </nav></div>
     <div class="prose">
 <p>GCP cost management has a different character than AWS or Azure FinOps. GCP&#39;s pricing model (particularly Sustained Use Discounts and Committed Use Discounts) is less visible than AWS Reserved Instances but often results in lower effective compute prices for workloads with consistent usage. The tooling — Recommender API, Active Assist, billing export to BigQuery — is sophisticated once you know where to find it.</p>
-<h2 id="sustained-use-discounts-the-automatic-discount-nobody-talks-"><a class="h-anchor" href="#sustained-use-discounts-the-automatic-discount-nobody-talks-" aria-label="Link to this section">#</a>Sustained Use Discounts: the automatic discount nobody talks about</h2>
+<h2 id="sustained-use-discounts-the-automatic-discount-nobody-talks-"><a class="h-anchor" href="#sustained-use-discounts-the-automatic-discount-nobody-talks-" aria-hidden="true" tabindex="-1">#</a>Sustained Use Discounts: the automatic discount nobody talks about</h2>
 <aside class="keyfig">
   <p class="keyfig-label">Key figure</p>
   <p class="keyfig-text">A VM running for the full month receives a <b>30%</b> discount on the base price.</p>
@@ -128,7 +128,7 @@ if(d.getAttribute('data-rface')==='serif'){
 <p>GCP Compute Engine applies Sustained Use Discounts (SUDs) automatically for VMs that run for a significant portion of the month — no commitment required. A VM running for the full month receives a 30% discount on the base price. No RI purchase, no upfront commitment.</p>
 <p>This is a meaningful advantage for workloads with variable lifecycles. A VM that runs for 70% of a month gets a partial SUD; a VM that runs 100% gets the full 30%. The discount applies to vCPU and memory costs separately, which means a resized VM still accumulates usage toward the discount threshold.</p>
 <p>The implication: GCP on-demand pricing for compute is effectively lower than the list price for any workload running more than ~25% of the month. When comparing GCP to AWS or Azure pricing, use the SUD-adjusted price, not the list price.</p>
-<h2 id="committed-use-discounts"><a class="h-anchor" href="#committed-use-discounts" aria-label="Link to this section">#</a>Committed Use Discounts</h2>
+<h2 id="committed-use-discounts"><a class="h-anchor" href="#committed-use-discounts" aria-hidden="true" tabindex="-1">#</a>Committed Use Discounts</h2>
 <p>On top of SUDs, GCP offers Committed Use Discounts (CUDs) for 1 or 3-year commitments:</p>
 <ul>
 <li><p><strong>Resource-based CUDs</strong>: commit to a specific amount of vCPU and memory in a region. 37% discount for 1 year, 55% for 3 years. Applied to any VM in the committed region that matches the resource type, regardless of machine type.</p>
@@ -138,7 +138,7 @@ if(d.getAttribute('data-rface')==='serif'){
 </ul>
 <p>Resource-based CUDs are more flexible than AWS Reserved Instances — they apply to any VM in the region at or below the committed resource level, across different machine types. A commitment of 100 vCPU applies whether you run 100 n2-standard-1 instances or 10 n2-standard-10 instances.</p>
 <p>The analysis before committing: use the Cost Table export in BigQuery to understand your compute usage over the past 3-6 months. Identify the consistent baseline — the vCPU and memory that run every day regardless of demand spikes. Commit to the baseline; let the remainder run on SUD-adjusted on-demand pricing.</p>
-<h2 id="bigquery-billing-export"><a class="h-anchor" href="#bigquery-billing-export" aria-label="Link to this section">#</a>BigQuery billing export</h2>
+<h2 id="bigquery-billing-export"><a class="h-anchor" href="#bigquery-billing-export" aria-hidden="true" tabindex="-1">#</a>BigQuery billing export</h2>
 <p>GCP&#39;s most powerful cost management tool is often the least used: billing export to BigQuery. Every line item in your GCP bill, with full resource-level detail, lands in a BigQuery table that you can query with standard SQL.</p>
 <pre><code class="language-sql">-- Top 10 most expensive services last 30 days
 SELECT
@@ -160,7 +160,7 @@ LIMIT 10;
 <li>Alerting on specific cost thresholds per service or project</li>
 </ul>
 <p>This is substantially more powerful than the default Cloud Console billing view. Setting it up (a few hours) pays back in the first month of cost analysis.</p>
-<h2 id="the-recommender-api"><a class="h-anchor" href="#the-recommender-api" aria-label="Link to this section">#</a>The Recommender API</h2>
+<h2 id="the-recommender-api"><a class="h-anchor" href="#the-recommender-api" aria-hidden="true" tabindex="-1">#</a>The Recommender API</h2>
 <p>GCP&#39;s Recommender API surfaces actionable optimization recommendations across your infrastructure:</p>
 <ul>
 <li><strong>VM right-sizing recommendations</strong>: VMs where historical CPU and memory usage suggests a smaller machine type would be adequate</li>
@@ -177,7 +177,7 @@ gcloud recommender recommendations list \
   --format=&quot;table(name,description,primaryImpact.costProjection.cost)&quot;
 </code></pre>
 <p>Reviewing Recommender output monthly and actioning high-confidence recommendations typically produces 10-20% compute cost reduction without architectural changes.</p>
-<h2 id="labels-as-finops-infrastructure"><a class="h-anchor" href="#labels-as-finops-infrastructure" aria-label="Link to this section">#</a>Labels as FinOps infrastructure</h2>
+<h2 id="labels-as-finops-infrastructure"><a class="h-anchor" href="#labels-as-finops-infrastructure" aria-hidden="true" tabindex="-1">#</a>Labels as FinOps infrastructure</h2>
 <p>GCP labels (key-value metadata on resources) are how team-level cost attribution works. Without labels, every project&#39;s cost is visible at the project level, but not at the team or application level within a project.</p>
 <p>Standard label strategy:</p>
 <pre><code>environment: production | staging | development
@@ -222,12 +222,12 @@ cost-centre: engineering | data-science
       <stop offset="0" stop-color="#e8a317" stop-opacity=".10"/>
       <stop offset="1" stop-color="#a9760a" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahfinopsanomal" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e8a317" fill-opacity=".5"/>
     </marker>
   </defs>
   <rect width="640" height="360" fill="url(#bgfinopsanomal)"/>
-  <rect x="86" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.39" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 108 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.41" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 108 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.21" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 108 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.13" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 172 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.17" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 172 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="86" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.23" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 236 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.54" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 236 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.51" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/>
+  <rect x="86" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.39" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 108 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="212" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.41" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 108 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="338" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.21" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 108 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="212" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.13" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 172 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.17" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 172 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="86" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.23" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 236 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="212" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.54" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 236 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="464" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.51" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/>
 </svg></div>
   <div class="card-body">
     <span class="chip">FinOps</span>
@@ -243,7 +243,7 @@ cost-centre: engineering | data-science
       <stop offset="0" stop-color="#e8a317" stop-opacity=".10"/>
       <stop offset="1" stop-color="#a9760a" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahfinopstaggin" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e8a317" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -272,7 +272,7 @@ cost-centre: engineering | data-science
       <stop offset="0" stop-color="#0d9488" stop-opacity=".10"/>
       <stop offset="1" stop-color="#0b7a70" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahmultiregiona" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#0d9488" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -360,7 +360,7 @@ cost-centre: engineering | data-science
         </div>
       </div>
       <div>
-        <h4>Services</h4>
+        <h2 class="foot-title">Services</h2>
         <ul>
           <li><a href="/services/#architecture">Enterprise architecture</a></li>
           <li><a href="/services/#ai">AI &amp; MLOps</a></li>
@@ -369,7 +369,7 @@ cost-centre: engineering | data-science
         </ul>
       </div>
       <div>
-        <h4>Insights</h4>
+        <h2 class="foot-title">Insights</h2>
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/series/">Series</a></li>
@@ -378,7 +378,7 @@ cost-centre: engineering | data-science
         </ul>
       </div>
       <div>
-        <h4>Contact</h4>
+        <h2 class="foot-title">Contact</h2>
         <ul>
           <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
           <li><a href="/contact/">Start an engagement</a></li>

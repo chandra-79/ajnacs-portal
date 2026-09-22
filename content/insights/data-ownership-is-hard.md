@@ -1,7 +1,7 @@
 ---
 title: "Data ownership is the hardest part of data governance and nobody talks about it honestly."
 description: "Every data governance programme eventually arrives at the ownership question. The cataloguing, the lineage tooling, the quality monitoring — these are solvable."
-date: 2026-05-19
+date: 2029-03-05
 tags: ["Data Engineering", "Engineering Leadership"]
 format: article
 derived: true

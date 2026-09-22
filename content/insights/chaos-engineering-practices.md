@@ -1,7 +1,7 @@
 ---
 title: "Chaos Engineering: Testing Reliability Before Production Tests It For You"
 description: "Chaos engineering injects controlled failures to validate that systems actually behave as designed under real-world failure conditions. The gap between the architecture diagram and production behavior is where reliability lives."
-date: 2026-02-23
+date: 2026-11-11
 tags: ["Cloud Architecture", "DevSecOps"]
 format: article
 ---

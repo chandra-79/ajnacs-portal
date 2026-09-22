@@ -1,7 +1,7 @@
 ---
 title: "Deployment Strategies Compared: Rolling, Blue-Green, Canary, and When Each Actually Fits"
 description: "Rolling updates, blue-green switches, canary releases, and shadow traffic — what each strategy really costs, what each protects against, and the database problem that constrains all of them."
-date: 2024-11-11
+date: 2026-03-20
 tags: ["Deployment", "Platform Engineering", "Engineering Practice", "Containers", "Reliability"]
 format: article
 ---

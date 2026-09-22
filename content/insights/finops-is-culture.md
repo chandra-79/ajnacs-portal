@@ -1,7 +1,7 @@
 ---
 title: "FinOps is not a tooling problem. Every org that treats it as one discovers this expensively."
 description: "The FinOps tool procurement conversation happens at a recognisable moment in most cloud programs. The cloud bill has grown faster than expected."
-date: 2025-06-20
+date: 2029-06-04
 tags: ["FinOps", "Engineering Leadership"]
 format: note
 derived: true

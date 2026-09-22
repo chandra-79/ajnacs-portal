@@ -1,7 +1,7 @@
 ---
 title: "PostgreSQL at Scale: Lessons from High-Traffic Production"
 description: "PostgreSQL is a remarkable database. It develops specific failure modes at scale that catch teams by surprise. Here's what to know before you hit them."
-date: 2026-03-02
+date: 2027-08-04
 tags: ["Data Engineering", "Performance"]
 format: article
 ---

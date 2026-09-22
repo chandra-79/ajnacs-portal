@@ -1,7 +1,7 @@
 ---
 title: "Cloud Repatriation Without the Ideology: When Leaving (Partly) Makes Sense"
 description: "The repatriation headlines are real and the counter-examples are too — the decision was never cloud-vs-not but workload-by-workload economics. The cost shapes that favor owned infrastructure, the capabilities you must rebuild, the hybrid steady state, and the exit-readiness that pays either way."
-date: 2024-10-25
+date: 2026-11-18
 tags: ["Cloud Architecture", "FinOps", "Architecture", "Infrastructure", "Technology Strategy"]
 format: article
 ---

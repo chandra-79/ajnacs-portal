@@ -1,7 +1,7 @@
 ---
 title: "Webhooks Done Right: Designing Reliable Delivery on Both Sides of the POST"
 description: "Webhooks are the duct tape of system integration — simple to start, treacherous at scale. Provider-side delivery architecture, consumer-side hardening, signature verification, and the reconciliation loop that saves you when events go missing."
-date: 2025-04-04
+date: 2028-01-24
 tags: ["API Design", "Programming", "Distributed Systems", "Integration", "Reliability"]
 format: article
 ---

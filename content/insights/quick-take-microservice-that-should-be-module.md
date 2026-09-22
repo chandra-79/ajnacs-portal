@@ -1,7 +1,7 @@
 ---
 title: "The Microservice That Should Have Been a Module"
 description: "Decomposing a system into microservices is the right call at certain scale thresholds with certain team structures. Doing it earlier than that produces distributed systems complexity without the distributed systems benefits."
-date: 2025-11-03
+date: 2028-05-08
 tags: ["Software Engineering", "Distributed Systems", "Architecture"]
 format: article
 ---

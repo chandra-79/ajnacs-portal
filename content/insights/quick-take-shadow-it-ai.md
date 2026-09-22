@@ -1,7 +1,7 @@
 ---
 title: "Shadow IT Is Back. Now It Runs on ChatGPT."
 description: "The AI adoption wave has produced a new generation of shadow IT: employees using AI tools that IT has not approved, governance has not addressed, and security has not assessed."
-date: 2026-02-06
+date: 2028-06-26
 tags: ["Enterprise AI", "Engineering Leadership"]
 format: article
 ---

@@ -1,7 +1,7 @@
 ---
 title: "RAG solves the knowledge problem. It does not solve the reasoning problem."
 description: "…"
-date: 2025-11-21
+date: 2029-04-23
 tags: ["Enterprise AI", "Emerging Technology"]
 format: note
 derived: true

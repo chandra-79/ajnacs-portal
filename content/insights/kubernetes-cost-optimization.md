@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes Cost Visibility — The Gap That Kills FinOps Programs"
 description: "Kubernetes is one of the hardest places to apply FinOps discipline. Here's what actual cost visibility requires and where most teams fall short."
-date: 2026-06-01
+date: 2025-02-17
 tags: ["FinOps", "Containers", "Cloud Architecture"]
 format: article
 ---

@@ -1,7 +1,7 @@
 ---
 title: "AI Cost Management in Production: Controlling Token Spend Without Degrading Quality"
 description: "LLM API costs scale with usage in ways that surprise teams used to fixed infrastructure pricing. Here's how to build cost visibility, set sensible ceilings, and optimize prompt design without breaking the features that depend on it."
-date: 2026-08-17
+date: 2025-12-16
 tags: ["AI & MLOps", "FinOps", "Enterprise AI"]
 format: article
 ---

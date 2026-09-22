@@ -1,7 +1,7 @@
 ---
 title: "Monorepo vs Polyrepo: The Decision Is About Coordination, Not Git"
 description: "The repository question is really a question about how changes coordinate across team boundaries — atomic refactors vs independent lifecycles, tooling costs on both sides, and the honest middle ground most enterprises actually inhabit."
-date: 2025-01-20
+date: 2027-10-22
 tags: ["Engineering Practice", "Developer Experience", "Engineering Leadership", "Platform Engineering"]
 format: article
 ---

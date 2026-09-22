@@ -1,7 +1,7 @@
 ---
 title: "Cloud Egress Cost Reduction: The Bill Line Item Everyone Ignores Until It's Large"
 description: "Data transfer costs are often the most underestimated component of a cloud bill. They grow silently, resist easy attribution, and require architectural changes to address meaningfully."
-date: 2025-04-30
+date: 2027-02-08
 tags: ["FinOps", "Cloud Architecture"]
 format: article
 ---

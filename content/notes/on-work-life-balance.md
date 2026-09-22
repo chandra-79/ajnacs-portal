@@ -1,7 +1,7 @@
 ---
 title: "Work-life balance isn't a policy. It's a daily practice that most workplaces make harder than it needs to be."
 description: "There's a version of the work-life balance conversation that stays on the surface — flexible hours, remote work, unlimited PTO."
-date: 2025-11-25
+date: 2025-11-20
 tags: ["Work", "Life", "Reflection"]
 format: article
 derived: true

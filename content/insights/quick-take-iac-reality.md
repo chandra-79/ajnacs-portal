@@ -1,7 +1,7 @@
 ---
 title: "Infrastructure as Code Is Version Control for Creation, Not Management"
 description: "IaC describes what infrastructure should exist. It does not automatically manage, monitor, or maintain it. The gap between 'code defines it' and 'code manages it' is where operational confusion lives."
-date: 2025-09-15
+date: 2028-07-05
 tags: ["DevSecOps", "Cloud Architecture"]
 format: article
 ---

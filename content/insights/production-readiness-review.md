@@ -1,7 +1,7 @@
 ---
 title: "Production Readiness Reviews: The Checklist That Launches Services Instead of Blocking Them"
 description: "The PRR is where an organization's operational standards become enforceable — or become theater. The readiness dimensions that predict incidents, checklist design that scales past the founding SREs, scorecards for the existing fleet, and keeping the gate from becoming the bottleneck."
-date: 2025-02-07
+date: 2028-08-23
 tags: ["Reliability", "Platform Engineering", "Engineering Leadership", "Engineering Practice"]
 format: article
 ---

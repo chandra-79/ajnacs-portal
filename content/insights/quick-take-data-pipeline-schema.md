@@ -1,7 +1,7 @@
 ---
 title: "Your Data Pipeline Has Schema Assumptions Nobody Documented"
 description: "Every data pipeline has implicit contracts about field names, types, nullability, and value ranges. When upstream systems change and those contracts break, the failure is silent and the debugging is painful."
-date: 2025-08-28
+date: 2028-10-16
 tags: ["Data Engineering", "Infrastructure"]
 format: article
 ---

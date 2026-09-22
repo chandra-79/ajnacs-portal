@@ -1,7 +1,7 @@
 ---
 title: "Quantum Computing in 2025: What the Breakthroughs Actually Mean"
 description: "Four major quantum computing milestones in 2025, from four completely different physical approaches, in the same year. Here is what is actually happening and what engineers should pay attention to."
-date: 2025-12-01
+date: 2029-05-18
 tags: ["Quantum Computing", "Emerging Technology"]
 format: article
 ---

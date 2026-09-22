@@ -1,7 +1,7 @@
 ---
 title: "Microservices vs Monolith: Making the Decision That's Actually Right for Your Team"
 description: "The microservices-vs-monolith debate has been settled in conference talks for years. On the ground, the right answer still depends on context that most frameworks ignore."
-date: 2025-05-22
+date: 2027-01-27
 tags: ["Cloud Architecture", "Distributed Systems", "Software Engineering", "Programming"]
 format: article
 ---

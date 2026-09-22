@@ -1,7 +1,7 @@
 ---
 title: "The trap of managing the way you were managed."
 description: "Most first-time engineering managers manage the way their best manager managed them."
-date: 2025-12-22
+date: 2029-07-27
 tags: ["Engineering Leadership", "Career"]
 format: note
 derived: true

@@ -1,7 +1,7 @@
 ---
 title: "The big rewrite will take twice as long and deliver half as much as projected"
 description: "The pattern is consistent enough that I now treat \"we should rewrite this properly\" as a proposal that requires significant justification before any planning begins."
-date: 2026-04-09
+date: 2029-05-25
 tags: ["Software Engineering", "Engineering Leadership"]
 format: article
 derived: true

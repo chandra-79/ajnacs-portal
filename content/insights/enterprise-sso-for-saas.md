@@ -1,7 +1,7 @@
 ---
 title: "Building Enterprise SSO Into Your SaaS: The Feature That Gates Every Big Deal"
 description: "SSO support is the first line of every enterprise security questionnaire — and multi-tenant identity federation has sharp edges the OAuth tutorials skip. SAML's persistence, per-tenant IdP architecture, the JIT-provisioning and domain-verification traps, and the SSO tax debate."
-date: 2024-12-02
+date: 2027-09-13
 tags: ["Identity", "SaaS", "Security", "Architecture", "B2B"]
 format: article
 ---

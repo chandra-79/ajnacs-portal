@@ -1,7 +1,7 @@
 ---
 title: "Putting AI in Production: What Enterprise AI Deployment Actually Requires"
 description: "Model serving, latency, cost, monitoring, governance, and the operational discipline that separates a proof of concept from an AI system that runs reliably at enterprise scale."
-date: 2026-07-13
+date: 2026-08-11
 tags: ["AI & MLOps", "Enterprise AI", "Fundamentals"]
 series: "AI, ML, LLMs, and Neural Networks: A Practitioner's Introduction"
 seriesOrder: 5

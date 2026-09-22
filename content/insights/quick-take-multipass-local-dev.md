@@ -1,7 +1,7 @@
 ---
 title: "The Gap Between Local Development and Cloud Deployment (and How to Close It)"
 description: "Docker makes local development feel cloud-like. The gap between a Docker Compose environment and a production Kubernetes cluster is wider than most teams discover before their first production incident."
-date: 2025-09-29
+date: 2028-01-26
 tags: ["Developer Tools", "Infrastructure", "Cloud Architecture"]
 format: article
 ---

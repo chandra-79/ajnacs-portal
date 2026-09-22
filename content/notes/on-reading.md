@@ -1,7 +1,7 @@
 ---
 title: "On reading — and what I had to stop doing to do it better"
 description: "I read a lot — always have. But for most of my career, I read in the same way I approached most things: with efficiency as the primary goal."
-date: 2026-02-10
+date: 2026-05-04
 tags: ["Learning", "Reflection", "Books"]
 format: article
 derived: true

@@ -1,7 +1,7 @@
 ---
 title: "Most AI teams optimise compute and storage. The network fabric is often an afterthought — until training grinds to a halt."
 description: "Most AI teams spend months optimizing compute and storage. The network fabric is an afterthought — until distributed training grinds to a halt."
-date: 2026-06-08
+date: 2029-05-16
 tags: ["Systems", "Enterprise AI", "Infrastructure"]
 format: note
 derived: true

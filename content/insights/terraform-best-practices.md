@@ -1,7 +1,7 @@
 ---
 title: "Terraform at Scale: Practices That Hold Up in Enterprise Environments"
 description: "Terraform is easy to start with and hard to maintain at scale. Here are the practices that prevent the common failure modes: state file conflicts, module sprawl, drift, and dependency tangles that make changes feel risky."
-date: 2026-06-29
+date: 2026-11-23
 tags: ["DevSecOps", "Infrastructure as Code", "Cloud Architecture"]
 format: article
 ---

@@ -1,7 +1,7 @@
 ---
 title: "The AI pilot that never goes to production is the most common AI investment outcome"
 description: "The most common enterprise AI story isn't \"we deployed AI and it didn't work.\" It's \"we ran a successful pilot and it never went to production.\""
-date: 2025-06-16
+date: 2028-12-01
 tags: ["Enterprise AI", "Engineering Leadership"]
 format: article
 derived: true

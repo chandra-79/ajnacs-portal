@@ -1,7 +1,7 @@
 ---
 title: "Usage Metering and Billing: The Engineering Behind the Invoice"
 description: "Usage-based pricing turned billing into a data-engineering problem with legal stakes — every metering gap is revenue leakage or a customer dispute. Event capture without loss or double-count, aggregation pipelines, rating engines, and the reconciliation that keeps finance sane."
-date: 2025-03-28
+date: 2027-04-26
 tags: ["SaaS", "Data Engineering", "Programming", "FinOps", "Architecture"]
 format: article
 ---

@@ -1,7 +1,7 @@
 ---
 title: "Why AI Features Get Built and Not Used: The Adoption Gap Explained"
 description: "A 4% adoption rate on an AI feature is not bad luck. It is a predictable outcome of building around what the AI can do rather than what users actually need."
-date: 2025-07-07
+date: 2027-10-06
 tags: ["Enterprise AI", "Engineering Leadership"]
 format: article
 ---

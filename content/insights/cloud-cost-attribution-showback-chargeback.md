@@ -1,7 +1,7 @@
 ---
 title: "Showback vs Chargeback: Getting Engineering Teams to Own Cloud Cost"
 description: "The technical part of cloud cost attribution is solved. Getting teams to actually own the number is entirely organizational — and it's where most programs stall."
-date: 2026-04-20
+date: 2027-09-01
 tags: ["FinOps", "Cloud Architecture", "Engineering Leadership"]
 format: article
 ---

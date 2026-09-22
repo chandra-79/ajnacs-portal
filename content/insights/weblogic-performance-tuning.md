@@ -1,7 +1,7 @@
 ---
 title: "WebLogic Performance Tuning: Work Managers, Connection Pools, and the Knobs That Actually Matter"
 description: "A field guide to tuning WebLogic Server in production — the self-tuning thread pool, work managers, JDBC connection pools, JVM settings, and the diagnostic tools that tell you which knob to turn."
-date: 2025-04-09
+date: 2025-08-19
 tags: ["Java", "WebLogic", "Middleware", "Performance", "Architecture"]
 format: article
 ---

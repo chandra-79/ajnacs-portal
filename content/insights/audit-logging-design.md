@@ -1,7 +1,7 @@
 ---
 title: "Audit Logging: Designing the Record That Has to Hold Up Later"
 description: "Audit logs are the telemetry with legal stakes — different from debug logs in purpose, retention, and tamper posture. The event schema that answers investigations, immutability engineering, the coverage inventory, and the access rules for the log about access."
-date: 2024-10-10
+date: 2027-11-29
 tags: ["Security", "Compliance", "Observability", "Programming", "Architecture"]
 format: article
 ---

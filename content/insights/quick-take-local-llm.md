@@ -1,7 +1,7 @@
 ---
 title: "The Enterprise Case for Running LLMs Locally"
 description: "Cloud LLM APIs are convenient and capable. For specific enterprise use cases — data sensitivity, cost at scale, latency requirements, offline needs — local inference is genuinely the better choice."
-date: 2026-04-27
+date: 2028-08-16
 tags: ["Enterprise AI", "Emerging Technology"]
 format: article
 ---

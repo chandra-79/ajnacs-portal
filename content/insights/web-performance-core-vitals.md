@@ -1,7 +1,7 @@
 ---
 title: "Web Performance Engineering: Core Web Vitals and the Architecture Behind the Numbers"
 description: "Frontend performance became measurable, ranked, and revenue-linked — and most slow sites are slow architecturally, not incidentally. LCP, INP, and CLS as engineering targets, the rendering-strategy decision, JavaScript budgets, and the field-data discipline."
-date: 2025-03-31
+date: 2027-03-24
 tags: ["Web Performance", "Programming", "Performance", "Architecture", "Developer Experience"]
 format: article
 ---

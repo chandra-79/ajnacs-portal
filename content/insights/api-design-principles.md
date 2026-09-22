@@ -1,7 +1,7 @@
 ---
 title: "API Design for Long-Lived Systems: What Survives Five Years"
 description: "API design decisions made in week one can haunt a system for years. These are the principles I've seen hold up — and the ones that look right initially but don't."
-date: 2025-04-23
+date: 2028-01-07
 tags: ["Programming", "API Design", "Software Engineering", "Distributed Systems"]
 format: article
 ---

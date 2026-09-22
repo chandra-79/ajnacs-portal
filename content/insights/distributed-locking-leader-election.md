@@ -1,7 +1,7 @@
 ---
 title: "Distributed Locks and Leader Election: Coordination Without Lying to Yourself"
 description: "The 'only one of us should do this' problem shows up in every distributed system — and most solutions quietly don't work under the failures they exist for. Fencing tokens, lease semantics, the Redlock debate's lesson, and when to redesign instead of lock."
-date: 2024-11-19
+date: 2027-05-05
 tags: ["Distributed Systems", "Programming", "Reliability", "Architecture", "Containers"]
 format: article
 ---

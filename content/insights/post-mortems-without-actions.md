@@ -1,7 +1,7 @@
 ---
 title: "Post-mortems without action items are just storytelling with extra steps"
 description: "The post-mortem format exists to drive system improvement."
-date: 2026-01-22
+date: 2029-02-26
 tags: ["Engineering Leadership", "Observability", "Resilience"]
 format: article
 derived: true

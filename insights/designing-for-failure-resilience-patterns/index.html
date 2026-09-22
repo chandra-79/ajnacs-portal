@@ -105,7 +105,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#0d9488" stop-opacity=".10"/>
       <stop offset="1" stop-color="#0b7a70" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahdesigningfor" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#0d9488" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -122,21 +122,21 @@ if(d.getAttribute('data-rface')==='serif'){
 <p>Something shifts in how you think about system design after you&#39;ve been in enough production incidents. You stop trying to prevent all failure and start designing for recovery. The question changes from &quot;how do we make sure this never breaks&quot; to &quot;when this breaks — and it will — how fast do we get back?&quot;</p>
 <p>Here are the patterns I&#39;ve found worth investing in, and a few that sound better in theory than they perform under pressure.</p>
 <hr>
-<h2 id="the-circuit-breaker-useful-but-often-implemented-wrong"><a class="h-anchor" href="#the-circuit-breaker-useful-but-often-implemented-wrong" aria-label="Link to this section">#</a>The circuit breaker — useful, but often implemented wrong</h2>
+<h2 id="the-circuit-breaker-useful-but-often-implemented-wrong"><a class="h-anchor" href="#the-circuit-breaker-useful-but-often-implemented-wrong" aria-hidden="true" tabindex="-1">#</a>The circuit breaker — useful, but often implemented wrong</h2>
 <p>The circuit breaker pattern (from Michael Nygard&#39;s <em>Release It!</em>) is one of the most widely referenced resilience patterns, and one of the most frequently misconfigured.</p>
 <p>The idea: track failure rates for calls to a downstream service. When failures exceed a threshold, &quot;open&quot; the circuit and stop making calls — return a fast failure instead of waiting for timeouts. After a reset period, allow limited calls through to test if the downstream has recovered.</p>
 <p>Where it breaks down in practice: teams set thresholds too high (the circuit never trips until the damage is done), or the fallback for an open circuit isn&#39;t designed (an exception is thrown instead of graceful degradation), or the circuit opens and the team doesn&#39;t know because there&#39;s no alerting on state changes.</p>
 <p>A circuit breaker that opens without alerting is worse than no circuit breaker — it silently degrades service without anyone knowing why.</p>
 <p><strong>What makes it work:</strong> aggressive thresholds, tested fallback paths, and monitoring on circuit state. If your circuit breaker has never opened in production, you probably haven&#39;t tested it.</p>
 <hr>
-<h2 id="bulkheads-the-most-underused-pattern"><a class="h-anchor" href="#bulkheads-the-most-underused-pattern" aria-label="Link to this section">#</a>Bulkheads — the most underused pattern</h2>
+<h2 id="bulkheads-the-most-underused-pattern"><a class="h-anchor" href="#bulkheads-the-most-underused-pattern" aria-hidden="true" tabindex="-1">#</a>Bulkheads — the most underused pattern</h2>
 <p>Named after the watertight compartments in a ship&#39;s hull. If one compartment floods, the others remain intact.</p>
 <p>In software: isolate resources (thread pools, connection pools, process boundaries) so that failure in one part of the system doesn&#39;t cascade into others.</p>
 <p>The most common failure mode I&#39;ve seen: a single shared database connection pool. One slow query (or one database under load) backs up the connection pool, all queries queue waiting for connections, the entire application grinds to a halt — including endpoints that don&#39;t touch the slow part of the database.</p>
 <p>Bulkheads fix this by giving critical paths their own resource pools. Your user authentication endpoint has its own connection pool. Your analytics queries have theirs. When analytics are slow, authentication keeps working.</p>
 <p>This requires more configuration upfront and more resource allocation. It&#39;s worth it for anything on a critical path.</p>
 <hr>
-<h2 id="retry-logic-helpful-and-dangerous"><a class="h-anchor" href="#retry-logic-helpful-and-dangerous" aria-label="Link to this section">#</a>Retry logic — helpful and dangerous</h2>
+<h2 id="retry-logic-helpful-and-dangerous"><a class="h-anchor" href="#retry-logic-helpful-and-dangerous" aria-hidden="true" tabindex="-1">#</a>Retry logic — helpful and dangerous</h2>
 <p>Retrying failed requests is reasonable. Retrying without care causes thundering herd problems that make outages worse.</p>
 <p>The pattern that causes problems: naive retries with fixed delays. A downstream service fails. All clients retry simultaneously after 1 second. The downstream — which was just recovering — gets hit with a spike of concurrent retries and fails again. Loop repeats.</p>
 <p><strong>Exponential backoff with jitter</strong> breaks the synchronisation. Each retry waits exponentially longer, plus a random component that spreads retries across time rather than synchronising them. This is the implementation AWS, Google, and Azure all recommend in their SDKs, and it&#39;s the implementation most internal code gets wrong.</p>
@@ -155,13 +155,13 @@ def retry_with_backoff(func, max_retries=3, base_delay=1.0):
 </code></pre>
 <p>Also: retries are only safe for idempotent operations. Don&#39;t retry a payment initiation. Do retry a GET request or an idempotent PUT.</p>
 <hr>
-<h2 id="timeouts-the-most-basic-thing-that39s-most-often-misconfigur"><a class="h-anchor" href="#timeouts-the-most-basic-thing-that39s-most-often-misconfigur" aria-label="Link to this section">#</a>Timeouts — the most basic thing that&#39;s most often misconfigured</h2>
+<h2 id="timeouts-the-most-basic-thing-that39s-most-often-misconfigur"><a class="h-anchor" href="#timeouts-the-most-basic-thing-that39s-most-often-misconfigur" aria-hidden="true" tabindex="-1">#</a>Timeouts — the most basic thing that&#39;s most often misconfigured</h2>
 <p>Every external call your application makes should have a timeout. This sounds obvious. In practice, I&#39;ve found database connections without timeouts, HTTP clients using default settings that allow indefinite waits, and third-party SDK calls that can block a thread forever.</p>
 <p>A hung thread waiting for a timeout that never comes is a resource leak. Enough of them and your application stops processing new requests.</p>
 <p><strong>Default timeouts are almost always wrong.</strong> Cloud SDKs often default to no timeout or to very long timeouts. Set explicit values based on your SLO requirements and what&#39;s operationally acceptable. A user waiting more than 5 seconds for a response is already having a bad experience — there&#39;s no reason for your database timeout to be 30 seconds.</p>
 <p>The tricky part: timeouts need to be set at every layer. A 5-second HTTP timeout at the load balancer doesn&#39;t help if your application server waits 30 seconds for a database response before responding to the load balancer. Model the full call chain.</p>
 <hr>
-<h2 id="graceful-degradation-the-gap-between-theory-and-practice"><a class="h-anchor" href="#graceful-degradation-the-gap-between-theory-and-practice" aria-label="Link to this section">#</a>Graceful degradation — the gap between theory and practice</h2>
+<h2 id="graceful-degradation-the-gap-between-theory-and-practice"><a class="h-anchor" href="#graceful-degradation-the-gap-between-theory-and-practice" aria-hidden="true" tabindex="-1">#</a>Graceful degradation — the gap between theory and practice</h2>
 <p>The principle: when a non-critical dependency is unavailable, the system should continue functioning with reduced capability rather than failing entirely.</p>
 <p>In practice: teams add the circuit breaker, implement the fallback — and the fallback path is a stub that was written in 10 minutes and never tested. It throws a NullPointerException, or returns an empty object that downstream code wasn&#39;t written to handle, or logs an error message and returns a 500.</p>
 <p>Graceful degradation requires treating the degraded path as a first-class concern:</p>
@@ -172,13 +172,13 @@ def retry_with_backoff(func, max_retries=3, base_delay=1.0):
 </ul>
 <p>The systems that handle failures elegantly aren&#39;t the ones with the most sophisticated patterns — they&#39;re the ones where the degraded paths are actually used in drills and tested regularly.</p>
 <hr>
-<h2 id="chaos-engineering-valuable-but-start-small"><a class="h-anchor" href="#chaos-engineering-valuable-but-start-small" aria-label="Link to this section">#</a>Chaos engineering — valuable, but start small</h2>
+<h2 id="chaos-engineering-valuable-but-start-small"><a class="h-anchor" href="#chaos-engineering-valuable-but-start-small" aria-hidden="true" tabindex="-1">#</a>Chaos engineering — valuable, but start small</h2>
 <p>Netflix&#39;s Chaos Monkey made chaos engineering famous, and the concept is sound: intentionally introduce failures in controlled ways to verify your resilience assumptions before production does it for you.</p>
 <p>Where teams go wrong: they either don&#39;t do it at all (&quot;we&#39;ll do it when things are more stable&quot; — they never are), or they jump straight to large-scale chaos experiments on production systems before they&#39;ve built the observability to understand what they&#39;re seeing.</p>
 <p>A better starting point: chaos in staging, against known failure modes. Kill one instance and verify load balancing redistributes correctly. Delay one dependency and verify circuit breakers trip and fallbacks engage. Fill a disk and verify log rotation is working. These simple experiments surface surprising gaps.</p>
 <p>Grow to production experiments only when your monitoring is good enough to detect anomalies quickly and your team has practiced the response.</p>
 <hr>
-<h2 id="what-actually-moves-the-needle-on-mttr"><a class="h-anchor" href="#what-actually-moves-the-needle-on-mttr" aria-label="Link to this section">#</a>What actually moves the needle on MTTR</h2>
+<h2 id="what-actually-moves-the-needle-on-mttr"><a class="h-anchor" href="#what-actually-moves-the-needle-on-mttr" aria-hidden="true" tabindex="-1">#</a>What actually moves the needle on MTTR</h2>
 <p>The resilience patterns above matter. But in practice, when I&#39;ve seen MTTR improve meaningfully, it almost never came from one pattern landing well. It came from three operational investments happening together:</p>
 <p><strong>Observability first</strong> — Prometheus + Grafana + distributed tracing with OpenTelemetry, set up before anything else. You cannot recover fast from something you cannot see.</p>
 <p><strong>Runbooks for the top failure modes</strong> — documented, tested, and actually maintained. When an incident happens at 3am, the engineer on call should be following a tested procedure, not doing diagnosis from a blank state. Runbooks that are six months out of date are worse than no runbooks — they create false confidence.</p>
@@ -220,12 +220,12 @@ def retry_with_backoff(func, max_retries=3, base_delay=1.0):
       <stop offset="0" stop-color="#e8a317" stop-opacity=".10"/>
       <stop offset="1" stop-color="#a9760a" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahfinopsanomal" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e8a317" fill-opacity=".5"/>
     </marker>
   </defs>
   <rect width="640" height="360" fill="url(#bgfinopsanomal)"/>
-  <rect x="86" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.39" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 108 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.41" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 108 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.21" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 108 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.13" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 172 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.17" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 172 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="86" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.23" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 236 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.54" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 236 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.51" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/>
+  <rect x="86" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.39" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 108 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="212" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.41" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 108 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="338" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.21" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 108 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="212" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.13" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 172 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.17" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 172 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="86" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.23" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 236 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="212" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.54" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 236 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="464" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.51" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/>
 </svg></div>
   <div class="card-body">
     <span class="chip">FinOps</span>
@@ -241,7 +241,7 @@ def retry_with_backoff(func, max_retries=3, base_delay=1.0):
       <stop offset="0" stop-color="#e8a317" stop-opacity=".10"/>
       <stop offset="1" stop-color="#a9760a" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahfinopstaggin" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e8a317" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -270,7 +270,7 @@ def retry_with_backoff(func, max_retries=3, base_delay=1.0):
       <stop offset="0" stop-color="#0d9488" stop-opacity=".10"/>
       <stop offset="1" stop-color="#0b7a70" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahmultiregiona" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#0d9488" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -368,7 +368,7 @@ def retry_with_backoff(func, max_retries=3, base_delay=1.0):
         </div>
       </div>
       <div>
-        <h4>Services</h4>
+        <h2 class="foot-title">Services</h2>
         <ul>
           <li><a href="/services/#architecture">Enterprise architecture</a></li>
           <li><a href="/services/#ai">AI &amp; MLOps</a></li>
@@ -377,7 +377,7 @@ def retry_with_backoff(func, max_retries=3, base_delay=1.0):
         </ul>
       </div>
       <div>
-        <h4>Insights</h4>
+        <h2 class="foot-title">Insights</h2>
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/series/">Series</a></li>
@@ -386,7 +386,7 @@ def retry_with_backoff(func, max_retries=3, base_delay=1.0):
         </ul>
       </div>
       <div>
-        <h4>Contact</h4>
+        <h2 class="foot-title">Contact</h2>
         <ul>
           <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
           <li><a href="/contact/">Start an engagement</a></li>

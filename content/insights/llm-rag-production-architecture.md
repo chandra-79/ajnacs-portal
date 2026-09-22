@@ -1,7 +1,7 @@
 ---
 title: "RAG in Production: The Architecture Decisions That Separate Working Systems from Demos"
 description: "Retrieval-Augmented Generation demos are easy. Production RAG systems that answer accurately, handle edge cases, and stay within cost budgets are not. Here's the architecture that works at scale — chunking, embedding, retrieval, reranking, and the failure modes to design around."
-date: 2026-05-25
+date: 2026-12-18
 tags: ["AI & MLOps", "Architecture", "Cloud Architecture"]
 format: article
 ---

@@ -1,7 +1,7 @@
 ---
 title: "Shadow IT is back. It never left. Now it's running on ChatGPT."
 description: "Shadow IT is a demand signal, not a compliance failure. \\n\\nThe AI version of shadow IT is more consequential than previous iterations because the data exposure risk is higher."
-date: 2025-07-21
+date: 2029-03-28
 tags: ["Enterprise AI", "Engineering Leadership"]
 format: note
 derived: true

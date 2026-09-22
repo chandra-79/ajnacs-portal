@@ -1,7 +1,7 @@
 ---
 title: "Transaction Isolation Levels: The Concurrency Bugs You Signed Up For Without Reading"
 description: "Read committed, repeatable read, snapshot, serializable — every database defaults to weaker isolation than developers assume, and the anomalies are subtle, load-dependent, and real. What each level actually permits, write skew explained properly, and the practical toolkit."
-date: 2024-11-08
+date: 2028-03-01
 tags: ["Data Engineering", "Programming", "Distributed Systems", "Reliability"]
 format: article
 ---

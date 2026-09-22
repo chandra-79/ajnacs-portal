@@ -1,7 +1,7 @@
 ---
 title: "Platform Engineering: What It Is, Why It Emerged, and What Makes It Different from DevOps"
 description: "Platform engineering is not rebranded DevOps. It is a specific organisational and technical discipline that treats internal infrastructure as a product. Here is what that actually means."
-date: 2025-05-28
+date: 2026-10-16
 tags: ["Engineering Leadership", "Architecture", "Fundamentals"]
 series: "Platform Engineering: From Concept to Internal Developer Platform"
 seriesOrder: 1

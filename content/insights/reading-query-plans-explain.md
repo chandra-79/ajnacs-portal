@@ -1,7 +1,7 @@
 ---
 title: "Reading Query Plans: EXPLAIN for Engineers Who've Been Avoiding It"
 description: "The query planner explains itself completely — most engineers just never learned the language. Plan trees, the six operators that matter, the estimate-vs-actual diagnostic that solves most mysteries, and a repeatable method for going from slow query to fix."
-date: 2025-02-20
+date: 2028-02-21
 tags: ["Data Engineering", "Performance", "Programming"]
 format: article
 ---

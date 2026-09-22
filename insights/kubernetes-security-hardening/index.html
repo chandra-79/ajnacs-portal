@@ -105,7 +105,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#e0473a" stop-opacity=".10"/>
       <stop offset="1" stop-color="#c03a2e" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahkubernetesse" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e0473a" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -121,7 +121,7 @@ if(d.getAttribute('data-rface')==='serif'){
     <div class="prose">
 <p>A Kubernetes cluster out of the box has a large attack surface. Pods can communicate freely. Containers run as root by default. Any pod can access the Kubernetes API with the default service account, which has broad permissions in many configurations. Secrets are base64-encoded, not encrypted.</p>
 <p>None of these are unfixable. They&#39;re defaults chosen for developer convenience, not production security. Here&#39;s the set of controls I consider baseline for any production cluster.</p>
-<h2 id="rbac-the-principle-of-least-privilege-for-cluster-access"><a class="h-anchor" href="#rbac-the-principle-of-least-privilege-for-cluster-access" aria-label="Link to this section">#</a>RBAC: the principle of least privilege for cluster access</h2>
+<h2 id="rbac-the-principle-of-least-privilege-for-cluster-access"><a class="h-anchor" href="#rbac-the-principle-of-least-privilege-for-cluster-access" aria-hidden="true" tabindex="-1">#</a>RBAC: the principle of least privilege for cluster access</h2>
 <p>Kubernetes RBAC defines what users and service accounts can do in the cluster. The defaults are often too permissive.</p>
 <p>The common failure: <code>ClusterRoleBinding</code> that grants <code>cluster-admin</code> to a service account or group because it was the path of least resistance when something didn&#39;t work. <code>cluster-admin</code> is full control of the entire cluster — it should never be granted to anything except emergency break-glass access.</p>
 <p>The right approach: role-based access scoped to the namespace a team owns.</p>
@@ -140,7 +140,7 @@ rules:
 </code></pre>
 <p>Developers can view and update their deployments; they can&#39;t read secrets, modify RBAC, or interact with other namespaces.</p>
 <p><strong>For workloads</strong>: pods should have a dedicated service account with only the permissions needed. The <code>automountServiceAccountToken: false</code> setting prevents the default service account token from being mounted into pods that don&#39;t need API access — most application pods don&#39;t need to call the Kubernetes API at all.</p>
-<h2 id="pod-security-standards-replacing-podsecuritypolicy"><a class="h-anchor" href="#pod-security-standards-replacing-podsecuritypolicy" aria-label="Link to this section">#</a>Pod Security Standards: replacing PodSecurityPolicy</h2>
+<h2 id="pod-security-standards-replacing-podsecuritypolicy"><a class="h-anchor" href="#pod-security-standards-replacing-podsecuritypolicy" aria-hidden="true" tabindex="-1">#</a>Pod Security Standards: replacing PodSecurityPolicy</h2>
 <p>PodSecurityPolicy (PSP) is deprecated and removed in Kubernetes 1.25. The replacement is Pod Security Standards (PSS) with the Pod Security Admission controller.</p>
 <p>Three policy levels:</p>
 <ul>
@@ -169,7 +169,7 @@ metadata:
   seccompProfile:
     type: RuntimeDefault
 </code></pre>
-<h2 id="network-policies-default-deny-allow-explicitly"><a class="h-anchor" href="#network-policies-default-deny-allow-explicitly" aria-label="Link to this section">#</a>Network policies: default-deny, allow explicitly</h2>
+<h2 id="network-policies-default-deny-allow-explicitly"><a class="h-anchor" href="#network-policies-default-deny-allow-explicitly" aria-hidden="true" tabindex="-1">#</a>Network policies: default-deny, allow explicitly</h2>
 <p>By default, every pod in a Kubernetes cluster can communicate with every other pod. Network policies are the mechanism for restricting this.</p>
 <p>The baseline posture: a default-deny policy for every namespace that blocks all ingress and egress, then explicit allow policies for the communication that&#39;s needed.</p>
 <pre><code class="language-yaml">apiVersion: networking.k8s.io/v1
@@ -214,12 +214,12 @@ spec:
 </code></pre>
 <p>This is more to maintain but significantly reduces the blast radius of a compromised pod. A compromised payments service that can only reach the database and the gateway is contained; one that can reach any cluster resource is a more serious incident.</p>
 <p>Network policies require a CNI plugin that implements them — Calico, Cilium, or Weave Net. The default networking in many managed Kubernetes services (EKS with VPC CNI, GKE in some configurations) may not enforce network policies without additional configuration or plugin installation.</p>
-<h2 id="image-security-admission-control-and-signed-images"><a class="h-anchor" href="#image-security-admission-control-and-signed-images" aria-label="Link to this section">#</a>Image security: admission control and signed images</h2>
+<h2 id="image-security-admission-control-and-signed-images"><a class="h-anchor" href="#image-security-admission-control-and-signed-images" aria-hidden="true" tabindex="-1">#</a>Image security: admission control and signed images</h2>
 <p>Running unknown images is a risk. The controls:</p>
 <p><strong>Admission controllers</strong> can enforce image policies before pods start. OPA Gatekeeper or Kyverno allow policies like &quot;images must come from approved registries&quot; and &quot;images must not use the <code>:latest</code> tag&quot; (which pins to a specific image).</p>
 <p><strong>Image signing</strong> with Sigstore/Cosign allows you to verify that an image was built by your CI pipeline and hasn&#39;t been tampered with. The admission controller verifies the signature before allowing the image to run. This is the strongest control for supply chain security in Kubernetes.</p>
 <p><strong>Regular base image updates</strong>: a hardened cluster with outdated container images is still vulnerable. Automate base image updates (Dependabot for container base images, or Renovate Bot) and run Trivy or Grype image scanning in CI to catch vulnerabilities before deployment.</p>
-<h2 id="secrets-don39t-trust-etcd-at-rest-by-default"><a class="h-anchor" href="#secrets-don39t-trust-etcd-at-rest-by-default" aria-label="Link to this section">#</a>Secrets: don&#39;t trust etcd at rest by default</h2>
+<h2 id="secrets-don39t-trust-etcd-at-rest-by-default"><a class="h-anchor" href="#secrets-don39t-trust-etcd-at-rest-by-default" aria-hidden="true" tabindex="-1">#</a>Secrets: don&#39;t trust etcd at rest by default</h2>
 <p>Kubernetes Secrets are stored in etcd. etcd is not encrypted at rest by default — base64 is encoding, not encryption. Anyone with access to the etcd datastore can read all secrets.</p>
 <p>Enable etcd encryption at rest. For managed clusters:</p>
 <ul>
@@ -228,7 +228,7 @@ spec:
 <li>AKS: encryption at rest with platform keys by default; customer-managed keys available.</li>
 </ul>
 <p>Better: don&#39;t store sensitive secrets in etcd at all. Use the External Secrets Operator or the CSI Secrets Store Driver to pull secrets from AWS Secrets Manager, Azure Key Vault, or GCP Secret Manager at pod startup. The secret exists in memory; it never lives in etcd.</p>
-<h2 id="audit-logging"><a class="h-anchor" href="#audit-logging" aria-label="Link to this section">#</a>Audit logging</h2>
+<h2 id="audit-logging"><a class="h-anchor" href="#audit-logging" aria-hidden="true" tabindex="-1">#</a>Audit logging</h2>
 <p>Kubernetes API server audit logging records every request to the API — who created what, who deleted what, who accessed which secrets. This is essential for incident response and compliance.</p>
 <p>Audit logs should be shipped to a central logging system (CloudWatch Logs, Azure Monitor, GCP Cloud Logging, or your own ELK stack) where they&#39;re retained and searchable. The default audit policy logs everything, which is voluminous; a policy that logs at <code>RequestResponse</code> level for sensitive operations (secret access, RBAC changes) and <code>Metadata</code> level for routine operations is more manageable.</p>
 <p><em>Reviewing your cluster security posture or hardening a new cluster? <a href="/contact">Happy to compare configurations.</a></em></p>
@@ -268,7 +268,7 @@ spec:
       <stop offset="0" stop-color="#e0473a" stop-opacity=".10"/>
       <stop offset="1" stop-color="#c03a2e" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahplatformengo" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e0473a" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -289,7 +289,7 @@ spec:
       <stop offset="0" stop-color="#e0473a" stop-opacity=".10"/>
       <stop offset="1" stop-color="#c03a2e" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahcontainerswh" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e0473a" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -310,7 +310,7 @@ spec:
       <stop offset="0" stop-color="#e0473a" stop-opacity=".10"/>
       <stop offset="1" stop-color="#c03a2e" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahcontainerspr" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e0473a" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -400,7 +400,7 @@ spec:
         </div>
       </div>
       <div>
-        <h4>Services</h4>
+        <h2 class="foot-title">Services</h2>
         <ul>
           <li><a href="/services/#architecture">Enterprise architecture</a></li>
           <li><a href="/services/#ai">AI &amp; MLOps</a></li>
@@ -409,7 +409,7 @@ spec:
         </ul>
       </div>
       <div>
-        <h4>Insights</h4>
+        <h2 class="foot-title">Insights</h2>
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/series/">Series</a></li>
@@ -418,7 +418,7 @@ spec:
         </ul>
       </div>
       <div>
-        <h4>Contact</h4>
+        <h2 class="foot-title">Contact</h2>
         <ul>
           <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
           <li><a href="/contact/">Start an engagement</a></li>

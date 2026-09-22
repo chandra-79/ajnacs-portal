@@ -1,7 +1,7 @@
 ---
 title: "Microservices Scale With Teams, Monoliths Scale With Databases"
 description: "The choice between monolith and microservices is primarily an organizational decision, not a technical one. Matching the architecture to the team structure is more important than matching it to the technical requirements."
-date: 2025-09-19
+date: 2028-06-14
 tags: ["Architecture", "Engineering Leadership"]
 format: article
 ---

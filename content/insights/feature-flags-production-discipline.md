@@ -1,7 +1,7 @@
 ---
 title: "Feature Flags in Production: From Release Tool to Operating Discipline"
 description: "Feature flags decouple deploy from release, enable progressive delivery, and double as kill switches — and unmanaged, they rot into the most confusing code in the estate. The taxonomy, the lifecycle discipline, and the architecture choices that keep flags an asset."
-date: 2024-12-04
+date: 2027-11-24
 tags: ["Deployment", "Platform Engineering", "Engineering Practice", "Feature Flags", "Reliability"]
 format: article
 ---

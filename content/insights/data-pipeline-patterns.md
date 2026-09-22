@@ -1,7 +1,7 @@
 ---
 title: "Building Reliable Data Pipelines: Patterns That Hold Up"
 description: "Most data pipeline reliability failures aren't technical. They're architectural and organizational. Here are the patterns that prevent them."
-date: 2026-05-01
+date: 2027-06-07
 tags: ["Data Engineering", "Cloud Architecture"]
 format: article
 ---

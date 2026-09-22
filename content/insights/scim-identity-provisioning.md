@@ -1,7 +1,7 @@
 ---
 title: "SCIM and Identity Lifecycle: The Provisioning Layer Nobody Notices Until the Audit"
 description: "SSO answers 'who is this?'; provisioning answers 'why do they still have access?' — the joiner-mover-leaver problem, SCIM's protocol mechanics, the deprovisioning gap that fails audits, and building identity lifecycle for both sides of the SaaS relationship."
-date: 2025-02-27
+date: 2027-07-05
 tags: ["Identity", "Security", "Architecture", "SaaS", "Compliance"]
 format: article
 ---

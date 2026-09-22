@@ -1,7 +1,7 @@
 ---
 title: "systemd: Service Management, Unit Files, Timers, and journald"
 description: "How systemd works, writing unit files, managing services, creating timers to replace cron, and using journald to query logs with precision. The complete guide for Linux system administrators."
-date: 2026-08-06
+date: 2027-03-31
 tags: ["Programming", "Fundamentals"]
 series: "Linux: A Complete Practical Course"
 seriesOrder: 11

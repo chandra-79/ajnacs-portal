@@ -1,7 +1,7 @@
 ---
 title: "API Documentation as Product: The Developer Experience That Decides Adoption"
 description: "For platform and API teams, documentation is the user interface — and most of it is written as an afterthought by the people who least need it. Reference-vs-guides architecture, docs-from-code pipelines, the time-to-first-call metric, and AI-era docs consumers."
-date: 2024-10-03
+date: 2028-01-10
 tags: ["API Design", "Developer Experience", "Documentation", "Platform Engineering", "Engineering Practice"]
 format: article
 ---

@@ -1,7 +1,7 @@
 ---
 title: "An Untested Disaster Recovery Plan Is Not a Plan — It's a Hope"
 description: "A disaster recovery plan that has never been executed in a test environment contains unknown failures that will manifest in the actual disaster, at the worst possible time."
-date: 2026-01-29
+date: 2028-04-12
 tags: ["Cloud Architecture", "Disaster Recovery", "Resilience"]
 format: article
 ---

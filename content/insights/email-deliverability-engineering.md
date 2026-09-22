@@ -1,7 +1,7 @@
 ---
 title: "Email Deliverability Engineering: Getting Into the Inbox Is a Systems Problem"
 description: "Transactional email is critical infrastructure that most teams operate on folklore. SPF, DKIM, and DMARC as an authentication stack, sender reputation as the real ranking system, the bounce-and-complaint feedback loops, and the architecture of email that arrives."
-date: 2024-11-29
+date: 2027-12-20
 tags: ["Email", "Programming", "Infrastructure", "Security", "Reliability"]
 format: article
 ---

@@ -1,7 +1,7 @@
 ---
 title: "On-call rotations burn engineers out quietly, and by the time it's visible it's already too late"
 description: "On-call burnout has a specific texture."
-date: 2026-01-16
+date: 2029-02-21
 tags: ["Engineering Leadership", "Observability"]
 format: article
 derived: true

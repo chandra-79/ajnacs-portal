@@ -1,7 +1,7 @@
 ---
 title: "Speed at Scale: Enterprise Caching for OLTP and OLAP Workloads"
 description: "A practical guide to multi-tier caching architecture — how to design caching layers that absorb the majority of read load, handle traffic spikes without crashing, and maintain the cache hit ratios that separate resilient systems from fragile ones."
-date: 2026-09-15
+date: 2024-11-01
 tags: ["Data Engineering", "Architecture", "Performance", "Infrastructure"]
 format: article
 ---

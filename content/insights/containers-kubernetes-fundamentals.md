@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes Fundamentals: What It Is, What It Does, and When You Actually Need It"
 description: "Pods, Deployments, Services, ConfigMaps, and the control loop that keeps your containers running. The honest introduction to Kubernetes for engineers who want to understand it, not just use it."
-date: 2026-06-29
+date: 2025-12-02
 tags: ["DevSecOps", "Cloud Architecture", "Fundamentals"]
 series: "Containerization from the Ground Up"
 seriesOrder: 4

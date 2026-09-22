@@ -1,7 +1,7 @@
 ---
 title: "MongoDB Schema Design for Enterprise Applications: Embed or Reference?"
 description: "The hardest MongoDB design decision is embedding vs. referencing — and the wrong choice compounds as the application grows. Here's how to think through data modelling for MongoDB, including the patterns that work at scale and the ones that cause problems later."
-date: 2025-05-26
+date: 2026-12-28
 tags: ["Data Engineering", "MongoDB", "Architecture"]
 format: article
 ---

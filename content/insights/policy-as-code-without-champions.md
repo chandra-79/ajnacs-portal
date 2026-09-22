@@ -1,7 +1,7 @@
 ---
 title: "Policy-as-code without organizational champions is just configuration files nobody reads"
 description: "OPA, Sentinel, Azure Policy, and similar tools are genuinely useful for expressing security, compliance, and operational constraints as code."
-date: 2026-05-06
+date: 2029-07-11
 tags: ["DevSecOps", "Policy-as-Code", "Engineering Leadership"]
 format: note
 derived: true

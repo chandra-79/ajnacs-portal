@@ -1,7 +1,7 @@
 ---
 title: "Organisational Debt: What It Is and Why It Compounds Faster Than Technical Debt"
 description: "Technical debt slows engineering velocity. Organisational debt — unclear ownership, misaligned incentives, accumulated process — slows everything. It is harder to see and harder to pay down."
-date: 2025-11-17
+date: 2028-10-30
 tags: ["Engineering Leadership"]
 format: article
 ---

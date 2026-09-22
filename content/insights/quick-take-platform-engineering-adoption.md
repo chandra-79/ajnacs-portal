@@ -1,7 +1,7 @@
 ---
 title: "Platform Engineering Only Works If It's Easier Than the Alternative"
 description: "A platform that requires more effort to use than the DIY approach will not be adopted voluntarily. Developer experience is not a nice-to-have in platform engineering — it is the success metric."
-date: 2026-03-09
+date: 2028-09-27
 tags: ["Platform Engineering", "Engineering Leadership"]
 format: article
 ---

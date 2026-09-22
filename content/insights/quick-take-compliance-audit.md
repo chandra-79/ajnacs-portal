@@ -1,7 +1,7 @@
 ---
 title: "The Compliance Audit Nobody Prepared For Is Actually an Architecture Review"
 description: "SOC 2 and ISO 27001 audits expose gaps in access control, logging, change management, and encryption. These are architecture decisions. Treating the audit as a compliance exercise misses the point."
-date: 2025-11-14
+date: 2028-08-25
 tags: ["DevSecOps", "Engineering Leadership"]
 format: article
 ---

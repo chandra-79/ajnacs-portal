@@ -1,7 +1,7 @@
 ---
 title: "Error Handling as API Design: Problem Details, Retryability, and the Contract Nobody Writes"
 description: "Errors are half your API's behavior and a tenth of its documentation. The RFC 9457 problem-details standard, the retryable-vs-terminal distinction that clients actually need, error taxonomy design, and the internal disciplines that keep failures debuggable."
-date: 2024-12-02
+date: 2027-10-29
 tags: ["API Design", "Programming", "Reliability", "Developer Experience", "Distributed Systems"]
 format: article
 ---

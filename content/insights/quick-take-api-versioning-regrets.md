@@ -1,7 +1,7 @@
 ---
 title: "API Versioning: The Decisions That Haunt You and How to Make Them Well"
 description: "URL versioning vs. header versioning vs. content negotiation — what each approach costs, when the decision locks you in, and the mistakes that are cheapest to avoid at the start."
-date: 2025-12-29
+date: 2028-11-15
 tags: ["API Design", "Software Engineering", "Programming"]
 format: article
 ---

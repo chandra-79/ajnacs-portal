@@ -1,7 +1,7 @@
 ---
 title: "Organisational debt compounds faster than technical debt and is harder to see."
 description: "Technical debt has been given a vocabulary, tooling, and a legitimate place in engineering planning conversations."
-date: 2026-01-14
+date: 2029-06-18
 tags: ["Engineering Leadership"]
 format: article
 derived: true

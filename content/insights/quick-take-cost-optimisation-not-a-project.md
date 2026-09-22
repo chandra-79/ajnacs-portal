@@ -1,7 +1,7 @@
 ---
 title: "Cloud Cost Optimisation Is Not a Project — It's an Engineering Practice"
 description: "The cloud cost optimization initiative that runs for three months, produces savings, and then stops is a project. The engineering practice that embeds cost awareness into how systems are built and operated is what actually works."
-date: 2025-09-26
+date: 2028-07-28
 tags: ["FinOps", "Engineering Leadership"]
 format: article
 ---

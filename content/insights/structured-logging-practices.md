@@ -1,7 +1,7 @@
 ---
 title: "Structured Logging That Pays for Itself: Schema, Context, and Cost Discipline"
 description: "Logs are the most expensive telemetry most organizations run and the least designed. Event schemas, correlation context, level discipline, sampling, and the cost engineering that keeps the logging bill from becoming the observability program's obituary."
-date: 2025-03-14
+date: 2025-10-03
 tags: ["Observability", "Programming", "Platform Engineering", "Reliability", "Cloud Architecture"]
 format: article
 ---

@@ -1,7 +1,7 @@
 ---
 title: "Testing in production is not reckless. Not testing in production is."
 description: "Every deployment is a production test."
-date: 2025-11-28
+date: 2029-01-31
 tags: ["DevSecOps", "Cloud Architecture"]
 format: note
 derived: true

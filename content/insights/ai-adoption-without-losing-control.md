@@ -1,7 +1,7 @@
 ---
 title: "Building Enterprise AI Enablement Without Losing Control"
 description: "A practical governance framework for leaders who want to harness AI productivity without creating uncontrolled operational risk."
-date: 2025-04-21
+date: 2028-04-14
 tags: ["Enterprise AI", "Governance", "Cloud Architecture"]
 format: article
 ---

@@ -1,7 +1,7 @@
 ---
 title: "OAuth 2 and OIDC for Architects: The Mental Model That Makes It All Click"
 description: "OAuth is delegation, OIDC is identity on top of it, and most integration confusion comes from blurring the two. The flows that matter in 2026, token handling that survives security review, and the enterprise patterns for services, SPAs, and machine-to-machine."
-date: 2025-01-27
+date: 2027-06-25
 tags: ["Security", "API Design", "Identity", "Architecture", "Programming"]
 format: article
 ---

@@ -1,7 +1,7 @@
 ---
 title: "The Engineering Leader Who Stops Being Technical Stops Being Useful to Engineers"
 description: "Engineering leadership requires enough technical depth to evaluate trade-offs, support engineers in difficult decisions, and maintain credibility. Here is what staying technical actually looks like in practice."
-date: 2026-03-30
+date: 2029-01-17
 tags: ["Engineering Leadership"]
 format: article
 ---

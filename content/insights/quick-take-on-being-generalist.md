@@ -1,7 +1,7 @@
 ---
 title: "In Defense of the Engineering Generalist"
 description: "The generalist engineer is often mischaracterized as a failed specialist. In reality, the generalist role is a specific, high-value function that most organizations need more of than they realize."
-date: 2026-04-08
+date: 2029-01-12
 tags: ["Engineering Leadership"]
 format: article
 ---

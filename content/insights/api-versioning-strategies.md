@@ -1,7 +1,7 @@
 ---
 title: "API Versioning Strategies: Choosing the Right Approach for Long-Lived APIs"
 description: "API versioning is one of those decisions that looks easy until you have to support an API for five years across many clients. The approach you choose determines how much pain you create for yourself and your API consumers."
-date: 2025-04-25
+date: 2027-05-14
 tags: ["Architecture", "Engineering Leadership"]
 format: article
 ---

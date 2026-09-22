@@ -1,7 +1,7 @@
 ---
 title: "Your staging environment stopped reflecting production six months ago and you're testing in a fiction"
 description: "Staging environment drift is one of those problems that announces itself only during production incidents."
-date: 2026-02-02
+date: 2029-07-06
 tags: ["DevSecOps", "Infrastructure", "Software Engineering"]
 format: note
 derived: true

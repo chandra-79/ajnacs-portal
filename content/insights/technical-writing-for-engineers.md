@@ -1,7 +1,7 @@
 ---
 title: "Technical Writing for Engineers: The Highest-Leverage Skill Nobody Teaches"
 description: "The design doc that prevents the wrong build, the incident report that changes the system, the PR description that gets a real review — writing is engineering leverage, and it's learnable as a craft. The genres, the discipline of the reader-first draft, and the AI-era premium on judgment."
-date: 2025-03-17
+date: 2028-09-20
 tags: ["Developer Experience", "Engineering Leadership", "Engineering Practice", "Documentation", "Communication"]
 format: article
 ---

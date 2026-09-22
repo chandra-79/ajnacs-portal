@@ -105,7 +105,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#0e7490" stop-opacity=".10"/>
       <stop offset="1" stop-color="#0b5f77" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahmttrreductio" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#0e7490" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -121,7 +121,7 @@ if(d.getAttribute('data-rface')==='serif'){
     <div class="prose">
 <p>MTTR (Mean Time to Recover or Mean Time to Resolve, depending on who you ask) measures how long it takes your organization to recover from an incident. It&#39;s one of the four DORA metrics for software delivery performance, and it&#39;s the one most directly connected to user impact.</p>
 <p>Reducing MTTR is deceptively hard to target directly. You can&#39;t improve MTTR by trying harder during incidents — you improve it by investing in capabilities before incidents happen. This playbook focuses on those leading investments.</p>
-<h2 id="decompose-mttr-before-trying-to-reduce-it"><a class="h-anchor" href="#decompose-mttr-before-trying-to-reduce-it" aria-label="Link to this section">#</a>Decompose MTTR before trying to reduce it</h2>
+<h2 id="decompose-mttr-before-trying-to-reduce-it"><a class="h-anchor" href="#decompose-mttr-before-trying-to-reduce-it" aria-hidden="true" tabindex="-1">#</a>Decompose MTTR before trying to reduce it</h2>
 <aside class="keyfig">
   <p class="keyfig-label">Key figure</p>
   <p class="keyfig-text">A P1 MTTR of <b>30 minutes</b> and a P3 MTTR of 4 days both matter, and the investments to improve them are different.</p>
@@ -134,12 +134,12 @@ if(d.getAttribute('data-rface')==='serif'){
 <li><strong>Validation time</strong>: how long between deployment and confirming the incident is resolved</li>
 </ol>
 <p>Each has different causes and different investments. Before any intervention, measure each component for your recent incidents. Most teams find that diagnosis time dominates — not because their engineers are slow, but because the tooling and data to diagnose quickly aren&#39;t in place.</p>
-<h2 id="detection-alerting-that-finds-real-problems-quickly"><a class="h-anchor" href="#detection-alerting-that-finds-real-problems-quickly" aria-label="Link to this section">#</a>Detection: alerting that finds real problems quickly</h2>
+<h2 id="detection-alerting-that-finds-real-problems-quickly"><a class="h-anchor" href="#detection-alerting-that-finds-real-problems-quickly" aria-hidden="true" tabindex="-1">#</a>Detection: alerting that finds real problems quickly</h2>
 <p>Detection time depends on your monitoring and alerting strategy. The investments:</p>
 <p><strong>Symptom-based alerting over cause-based alerting</strong>: alert on user-visible symptoms (error rate &gt; 1%, latency P99 &gt; 2s, success rate &lt; 99%) rather than on infrastructure metrics alone (CPU &gt; 80%). A CPU spike that doesn&#39;t affect users doesn&#39;t need a 3am page. An error rate spike does.</p>
 <p><strong>Service Level Objectives (SLOs)</strong>: define the user experience you&#39;re committing to, measure it, and alert when you&#39;re burning error budget too fast. SLO-based alerting is more meaningful than threshold-based alerting on arbitrary metrics.</p>
 <p><strong>Anomaly detection with context</strong>: an alert that fires and points you to the relevant logs, traces, and recent deployments is faster to act on than an alert that fires and leaves you with a metric graph and no context. Invest in alert enrichment — dashboards that open automatically from alert links, runbook links embedded in alert messages, recent deploys shown alongside the anomaly.</p>
-<h2 id="diagnosis-distributed-tracing-and-correlated-observability"><a class="h-anchor" href="#diagnosis-distributed-tracing-and-correlated-observability" aria-label="Link to this section">#</a>Diagnosis: distributed tracing and correlated observability</h2>
+<h2 id="diagnosis-distributed-tracing-and-correlated-observability"><a class="h-anchor" href="#diagnosis-distributed-tracing-and-correlated-observability" aria-hidden="true" tabindex="-1">#</a>Diagnosis: distributed tracing and correlated observability</h2>
 <p>Distributed tracing is the most impactful single investment for diagnosis time in microservice architectures. A trace that shows the full request path across services — which service was slow, which query timed out, which dependency returned an error — compresses what would otherwise be hours of log correlation into minutes.</p>
 <p><strong>The minimum observability stack</strong>:</p>
 <ul>
@@ -149,7 +149,7 @@ if(d.getAttribute('data-rface')==='serif'){
 </ul>
 <p>The correlation between these three is what reduces diagnosis time. When an alert fires, you should be able to go from the alerting metric to the relevant traces and logs in a few clicks.</p>
 <p><strong>Service dependency maps</strong>: knowing which services depend on which other services, and seeing health status overlaid on that map, helps the person diagnosing narrow the scope quickly. A failing downstream service is easier to identify when you can see the dependency graph.</p>
-<h2 id="runbooks-the-most-underinvested-asset"><a class="h-anchor" href="#runbooks-the-most-underinvested-asset" aria-label="Link to this section">#</a>Runbooks: the most underinvested asset</h2>
+<h2 id="runbooks-the-most-underinvested-asset"><a class="h-anchor" href="#runbooks-the-most-underinvested-asset" aria-hidden="true" tabindex="-1">#</a>Runbooks: the most underinvested asset</h2>
 <p>A runbook for an incident type is a tested procedure for the engineer who responds. When a P1 fires at 3am and the responder has never seen this type of incident, a good runbook is the difference between a 20-minute resolution and a 2-hour investigation.</p>
 <p>The runbooks worth having first:</p>
 <ul>
@@ -161,7 +161,7 @@ if(d.getAttribute('data-rface')==='serif'){
 </ul>
 <p>What makes a runbook good: specific commands to run (not &quot;check the logs&quot; but <code>kubectl logs -n payments deployment/payments-api --since=15m | grep ERROR</code>), decision trees (if metric X shows Y, then do Z), success criteria (the incident is resolved when alert A is green and metric B returns to normal).</p>
 <p>Runbooks rot. Assign ownership, review every quarter, and update them when they&#39;re used — the person who resolved the incident should update the runbook before closing it.</p>
-<h2 id="game-days-and-chaos-engineering-practising-recovery"><a class="h-anchor" href="#game-days-and-chaos-engineering-practising-recovery" aria-label="Link to this section">#</a>Game days and chaos engineering: practising recovery</h2>
+<h2 id="game-days-and-chaos-engineering-practising-recovery"><a class="h-anchor" href="#game-days-and-chaos-engineering-practising-recovery" aria-hidden="true" tabindex="-1">#</a>Game days and chaos engineering: practising recovery</h2>
 <p>The failure mode runbooks are designed to address is &quot;engineer who has never seen this before is trying to diagnose in real time.&quot; Game days invert this — you schedule a controlled failure and have the team respond, using their tools and runbooks.</p>
 <p>A simple game day:</p>
 <ol>
@@ -172,11 +172,11 @@ if(d.getAttribute('data-rface')==='serif'){
 </ol>
 <p>The debrief outputs become improvements: new alerts, updated runbooks, new observability coverage.</p>
 <p>Chaos engineering (Chaos Monkey, Gremlin, AWS Fault Injection Simulator) automates this in production, introducing random failures to verify that resilience mechanisms work as designed. Start in staging; move to production only when monitoring is good enough to detect anomalies within minutes.</p>
-<h2 id="architecture-changes-that-reduce-remediation-time"><a class="h-anchor" href="#architecture-changes-that-reduce-remediation-time" aria-label="Link to this section">#</a>Architecture changes that reduce remediation time</h2>
+<h2 id="architecture-changes-that-reduce-remediation-time"><a class="h-anchor" href="#architecture-changes-that-reduce-remediation-time" aria-hidden="true" tabindex="-1">#</a>Architecture changes that reduce remediation time</h2>
 <p><strong>Deployment rollback speed</strong>: if a bad deployment requires 20 minutes to roll back, your MTTR has a floor of 20 minutes for deployment-caused incidents. Blue/green deployments and canary releases allow instant cutover back to the known-good version. This alone reduces median MTTR significantly for deployment-related incidents.</p>
 <p><strong>Feature flags</strong>: the ability to disable a problematic feature in production without a deployment means some incidents resolve in minutes (disable the flag) rather than the full deployment cycle.</p>
 <p><strong>Database migration safety</strong>: blue/green deployment doesn&#39;t work if your deployment includes a destructive database migration. Backwards-compatible migration practices (add columns before dropping them, keep old code working during migration) allow rollback to be fast.</p>
-<h2 id="measuring-improvement"><a class="h-anchor" href="#measuring-improvement" aria-label="Link to this section">#</a>Measuring improvement</h2>
+<h2 id="measuring-improvement"><a class="h-anchor" href="#measuring-improvement" aria-hidden="true" tabindex="-1">#</a>Measuring improvement</h2>
 <p>Track MTTR per incident severity, not as a single average. A P1 MTTR of 30 minutes and a P3 MTTR of 4 days both matter, and the investments to improve them are different.</p>
 <p>Track each MTTR component (detection, diagnosis, remediation, validation) separately. An improvement in overall MTTR that comes entirely from faster detection is different from one that comes from faster diagnosis — the investment implications are different.</p>
 <p>Set targets: what would &quot;good&quot; look like for each severity level, for each component? Work backward from those targets to the investments that would get you there.</p>
@@ -217,7 +217,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#e0473a" stop-opacity=".10"/>
       <stop offset="1" stop-color="#c03a2e" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahplatformengo" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e0473a" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -238,7 +238,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#e0473a" stop-opacity=".10"/>
       <stop offset="1" stop-color="#c03a2e" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahcontainerswh" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e0473a" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -259,7 +259,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#0e7490" stop-opacity=".10"/>
       <stop offset="1" stop-color="#0b5f77" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahplatformengm" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#0e7490" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -347,7 +347,7 @@ if(d.getAttribute('data-rface')==='serif'){
         </div>
       </div>
       <div>
-        <h4>Services</h4>
+        <h2 class="foot-title">Services</h2>
         <ul>
           <li><a href="/services/#architecture">Enterprise architecture</a></li>
           <li><a href="/services/#ai">AI &amp; MLOps</a></li>
@@ -356,7 +356,7 @@ if(d.getAttribute('data-rface')==='serif'){
         </ul>
       </div>
       <div>
-        <h4>Insights</h4>
+        <h2 class="foot-title">Insights</h2>
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/series/">Series</a></li>
@@ -365,7 +365,7 @@ if(d.getAttribute('data-rface')==='serif'){
         </ul>
       </div>
       <div>
-        <h4>Contact</h4>
+        <h2 class="foot-title">Contact</h2>
         <ul>
           <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
           <li><a href="/contact/">Start an engagement</a></li>

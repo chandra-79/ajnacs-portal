@@ -1,7 +1,7 @@
 ---
 title: "Secrets Management in Cloud Environments: Beyond Environment Variables"
 description: "Environment variables are not a secrets management solution. Here's how to handle credentials, API keys, and certificates properly across cloud environments — and the specific failure modes to design around."
-date: 2025-05-19
+date: 2027-03-08
 tags: ["DevSecOps", "Security", "Cloud Architecture"]
 series: "DevSecOps Pipeline"
 seriesOrder: 2

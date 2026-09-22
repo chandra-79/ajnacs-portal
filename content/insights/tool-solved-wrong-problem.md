@@ -1,7 +1,7 @@
 ---
 title: "Most failed tool adoptions solved the wrong problem with the right tool."
 description: "The pattern appears in most engineering organisations: a tool is evaluated, selected through a structured process, adopted with engineering investment, and then delivers minimal value or…"
-date: 2025-12-16
+date: 2028-12-20
 tags: ["Engineering Leadership", "Architecture"]
 format: article
 derived: true

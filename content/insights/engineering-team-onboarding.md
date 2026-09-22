@@ -1,7 +1,7 @@
 ---
 title: "Engineering Team Onboarding That Actually Works: What to Build and What to Skip"
 description: "A new engineer who reaches full productivity in 4 weeks is worth more than one who reaches it in 12. The onboarding experience is an engineering problem with measurable outcomes — here's how to design one that works."
-date: 2026-06-08
+date: 2028-02-25
 tags: ["Engineering Leadership", "Programming"]
 format: article
 ---

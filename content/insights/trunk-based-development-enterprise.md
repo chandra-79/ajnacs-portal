@@ -1,7 +1,7 @@
 ---
 title: "Trunk-Based Development at Enterprise Scale: The Branching Model That High Performers Converge On"
 description: "Why long-lived branches quietly tax delivery, what trunk-based development actually requires (it's more than 'commit to main'), feature flags as the enabling discipline, and an honest migration path for teams living in GitFlow."
-date: 2025-03-24
+date: 2028-01-21
 tags: ["Engineering Practice", "Platform Engineering", "Developer Experience", "Engineering Leadership", "CI/CD"]
 format: article
 ---

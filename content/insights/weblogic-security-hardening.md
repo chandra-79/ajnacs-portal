@@ -1,7 +1,7 @@
 ---
 title: "WebLogic Security Hardening: The Checklist That Survives an Audit"
 description: "Locking down WebLogic Server in production — admin channel isolation, T3 exposure, security realms, TLS configuration, patching cadence, and the exploit history that explains why each control exists."
-date: 2025-04-11
+date: 2027-03-19
 tags: ["Java", "WebLogic", "Security", "Middleware", "Compliance"]
 format: article
 ---

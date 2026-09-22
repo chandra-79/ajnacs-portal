@@ -1,7 +1,7 @@
 ---
 title: "Object Storage as an Architecture Layer: Patterns Beyond the Bucket"
 description: "S3-class storage quietly became the enterprise's universal substrate — data lakes, backups, static delivery, even database internals. Consistency and cost mechanics, lifecycle and tiering design, security posture, and the patterns that treat buckets as systems."
-date: 2025-01-27
+date: 2027-05-07
 tags: ["Cloud Architecture", "Storage", "Data Engineering", "FinOps", "Architecture"]
 format: article
 ---

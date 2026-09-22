@@ -1,7 +1,7 @@
 ---
 title: "AI Governance Is Not a Compliance Document — It Is an Operational Discipline"
 description: "Most AI governance frameworks are written to satisfy auditors. Governance that actually shapes how AI systems are built, deployed, and monitored looks different."
-date: 2026-02-03
+date: 2028-06-23
 tags: ["Enterprise AI", "Governance", "Engineering Leadership"]
 format: article
 ---

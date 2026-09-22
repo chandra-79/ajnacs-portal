@@ -1,7 +1,7 @@
 ---
 title: "Applying the Azure Well-Architected Framework: What the Pillars Look Like in Practice"
 description: "The Azure Well-Architected Framework is a useful lens for reviewing cloud architectures. Here's how each pillar translates from documentation to concrete design decisions for enterprise workloads."
-date: 2026-09-14
+date: 2024-11-13
 tags: ["Cloud Architecture", "Architecture"]
 format: article
 ---

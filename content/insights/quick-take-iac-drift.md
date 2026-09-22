@@ -1,7 +1,7 @@
 ---
 title: "IaC Drift Is a People Problem in Technical Clothing"
 description: "Infrastructure drift — where the actual infrastructure diverges from what the code describes — is almost never a Terraform problem. It is a process and incentive problem."
-date: 2025-08-20
+date: 2028-07-31
 tags: ["Cloud Architecture", "Infrastructure", "DevSecOps"]
 format: article
 ---

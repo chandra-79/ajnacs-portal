@@ -1,7 +1,7 @@
 ---
 title: "The Performance Problem That Only Appears in Production Is Usually About Data Volume"
 description: "Code that is fast on development data and slow on production data is revealing something about its design — usually an assumption about data size that was never tested at real scale."
-date: 2025-11-03
+date: 2028-10-27
 tags: ["Software Engineering", "Data Engineering", "Observability"]
 format: article
 ---

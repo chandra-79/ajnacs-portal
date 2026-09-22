@@ -1,7 +1,7 @@
 ---
 title: "There's a difference between the cloud technology you'd put on your CV and the one you'd run in production"
 description: "Before adopting a technology, I've started asking two questions separately."
-date: 2025-11-04
+date: 2029-04-16
 tags: ["Cloud Architecture", "Engineering Leadership"]
 format: note
 derived: true

@@ -1,7 +1,7 @@
 ---
 title: "Why AI Systems Need Automated Evals Before They Go Live"
 description: "Most production AI systems are evaluated by user complaints. Here is what a real AI evaluation framework looks like and why it is not optional."
-date: 2025-09-18
+date: 2028-03-29
 tags: ["AI & MLOps", "Enterprise AI"]
 format: article
 ---

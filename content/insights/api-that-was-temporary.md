@@ -1,7 +1,7 @@
 ---
 title: "The API that was supposed to be temporary is now in four production systems."
 description: "There is no such thing as a temporary API in production. There is only an API whose permanent status has not yet been acknowledged."
-date: 2025-09-08
+date: 2028-12-11
 tags: ["Architecture", "Engineering Leadership"]
 format: article
 derived: true

@@ -1,7 +1,7 @@
 ---
 title: "Cloud Tagging Policy Template: The Foundation FinOps Actually Requires"
 description: "A tagging policy that nobody enforces is worse than no tagging policy. Here's how to design a tagging taxonomy that survives contact with real engineering teams — with enforcement mechanisms, exceptions handling, and the tags that actually drive cost allocation decisions."
-date: 2025-05-05
+date: 2026-06-12
 tags: ["FinOps", "Cloud Architecture", "Cost Optimisation"]
 series: "FinOps from Zero to Production"
 seriesOrder: 1

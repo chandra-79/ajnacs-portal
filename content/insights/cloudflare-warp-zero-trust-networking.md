@@ -1,7 +1,7 @@
 ---
 title: "Cloudflare WARP Is Not a VPN — And That Distinction Changes How You Deploy It"
 description: "Most teams treat Cloudflare WARP as a VPN replacement. That mental model causes misconfigured policies, unexpected traffic behavior, and missed security benefits. Here's what it actually is."
-date: 2026-09-14
+date: 2027-08-02
 tags: ["Systems", "Security", "DevSecOps"]
 format: article
 ---

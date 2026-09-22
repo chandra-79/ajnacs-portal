@@ -1,7 +1,7 @@
 ---
 title: "Every enterprise has a database that nobody wants to touch, and that database contains the most critical data"
 description: "The database that nobody wants to touch is a recognisable archetype in every enterprise I've worked in."
-date: 2026-03-16
+date: 2029-03-02
 tags: ["Data Engineering", "Engineering Leadership"]
 format: article
 derived: true

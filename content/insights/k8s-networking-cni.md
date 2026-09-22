@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes Networking: CNI Plugins, Network Policies, and Why It Matters for Security"
 description: "Kubernetes networking is abstract by design, which means the security implications are often underappreciated. The CNI plugin, network policy implementation, and pod-to-pod communication model together determine what your cluster's security posture actually is."
-date: 2026-01-07
+date: 2025-05-12
 tags: ["DevSecOps", "Cloud Architecture"]
 format: article
 ---

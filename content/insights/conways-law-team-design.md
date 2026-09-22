@@ -1,7 +1,7 @@
 ---
 title: "Conway's Law as a Design Tool: Team Topologies and the Architecture You'll Ship Anyway"
 description: "Your org chart is your architecture's first draft — so design it on purpose. The inverse Conway maneuver, the four team types and three interaction modes, cognitive load as the sizing constraint, and the reorg mistakes that ship themselves as coupling."
-date: 2024-11-04
+date: 2027-09-06
 tags: ["Engineering Leadership", "Architecture", "Team Topologies", "Platform Engineering", "Engineering Practice"]
 format: article
 ---

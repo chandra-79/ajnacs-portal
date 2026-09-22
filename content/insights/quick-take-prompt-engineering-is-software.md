@@ -1,7 +1,7 @@
 ---
 title: "Prompt Engineering Is Software Engineering With Worse Feedback Loops"
 description: "Prompts are code — they have logic, edge cases, regressions, and require testing. The difference is that the execution environment (the LLM) is non-deterministic and the feedback loops are slower."
-date: 2026-01-09
+date: 2028-04-26
 tags: ["Enterprise AI"]
 format: article
 ---

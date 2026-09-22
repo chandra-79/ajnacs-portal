@@ -1,7 +1,7 @@
 ---
 title: "MVCC and VACUUM, Finally Explained: Why Postgres Behaves the Way It Does"
 description: "Half of Postgres operational folklore — bloat, vacuum tuning, the txid wraparound scare, HOT updates — traces to one design decision about how row versions live. The mechanism, the maintenance debt it creates, autovacuum tuning that works, and the monitoring that prevents the famous incidents."
-date: 2025-02-03
+date: 2028-05-17
 tags: ["Data Engineering", "Performance", "Programming", "Reliability"]
 format: article
 ---

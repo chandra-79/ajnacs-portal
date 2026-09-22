@@ -1,7 +1,7 @@
 ---
 title: "The difference between an AI demo and an AI product is observability"
 description: "A demo works. You show it, it impresses, people want to deploy it."
-date: 2026-02-25
+date: 2029-05-02
 tags: ["Enterprise AI", "Observability"]
 format: note
 derived: true

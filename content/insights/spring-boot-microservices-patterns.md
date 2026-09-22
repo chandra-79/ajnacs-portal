@@ -1,7 +1,7 @@
 ---
 title: "Spring Boot Microservices Patterns for Enterprise — What Holds Up in Production"
 description: "Patterns for Spring Boot microservices that have held up (and failed) in real production environments — with the specific decisions that make the difference."
-date: 2026-02-05
+date: 2027-12-29
 tags: ["Programming", "Spring Boot", "Java", "Distributed Systems"]
 format: article
 ---

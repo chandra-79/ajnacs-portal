@@ -1,7 +1,7 @@
 ---
 title: "Container Security in Production: What the Scanners Don't Tell You"
 description: "Trivy catches known CVEs. Falco catches runtime anomalies. What neither tells you is whether your container security posture is where it needs to be — and what it takes to close the gap."
-date: 2026-06-23
+date: 2028-05-10
 tags: ["DevSecOps", "Containers", "Security"]
 format: article
 ---

@@ -1,7 +1,7 @@
 ---
 title: "Your Monolith Running Fine in Production Is Not a Problem"
 description: "The urge to decompose a working monolith into microservices is strong, culturally driven, and often misguided. A monolith that serves the business well is an asset, not a liability."
-date: 2025-08-06
+date: 2028-06-12
 tags: ["Architecture", "Engineering Leadership"]
 format: article
 ---

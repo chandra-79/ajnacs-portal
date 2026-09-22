@@ -1,7 +1,7 @@
 ---
 title: "Multi-Cloud vs Hybrid Cloud: When the Terminology Actually Matters"
 description: "Most organizations use these terms interchangeably. They're different strategies with different costs, different complexity profiles, and different reasons to choose them."
-date: 2026-08-10
+date: 2027-03-03
 tags: ["Cloud Architecture"]
 format: article
 ---

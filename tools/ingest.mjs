@@ -1,10 +1,59 @@
 /* One-time ingest: read the portfolio's markdown, drop what we are not
    publishing, normalise frontmatter, remap dates, and write clean source
    into ./content. Run locally; its output is committed. */
-import { readFile, writeFile, mkdir, readdir } from "node:fs/promises";
+import { readFile, writeFile, mkdir, readdir, copyFile, access } from "node:fs/promises";
+import { constants } from "node:fs";
 import path from "node:path";
 
 const SRC = "/Users/chandra/WorkSpace/chandralanka-portfolio/src/content";
+const SRC_PUBLIC = "/Users/chandra/WorkSpace/chandralanka-portfolio/public";
+
+/* Ingest is the first stage of ingest -> rank -> schedule -> build, and it
+   used to assign its own dates unconditionally. Run on its own after the
+   queue had been scheduled, it reset all 521 articles to consecutive days
+   from the start of the window — which would have published the entire
+   backlog at once. Any date already assigned wins; only genuinely new
+   articles get one here. */
+/* Images that belong to someone else. These came over with the prose:
+   vendor press photographs of Google Willow, IBM Heron, D-Wave Advantage2,
+   Amazon Ocelot, Microsoft Majorana 1 and PsiQuantum Omega (plus a composite
+   of the same, carrying a visible D-Wave watermark), and an infographic
+   whose own footer credits "Infographic by DataArchitect.AI".
+
+   None of them are ours to republish on a commercial site. The reference is
+   stripped from the body during ingest rather than deleted from the file on
+   disk, so a re-ingest cannot quietly put them back. The prose stands on its
+   own; where a figure is genuinely needed, draw one. */
+const NOT_OURS = new Set([
+  "/images/google-willow.png",
+  "/images/google-sycamore.jpg",
+  "/images/ibm-heron.jpg",
+  "/images/dwave-advantage2.jpg",
+  "/images/amazon-ocelot.jpg",
+  "/images/ms-majorana-1.jpg",
+  "/images/psiquantum-omega.png",
+  "/images/qc-race.png",
+  "/images/ethernet-vs-infiniband.png",
+]);
+let strippedImages = 0;
+
+/* Three figures the author drew themselves, but whose generator clipped the
+   outer labels off both edges and ran the bottom row past the canvas. They
+   are redrawn by tools/diagrams.mjs — same content, correct margins, SVG
+   instead of 160KB of broken raster. Rewritten here so a re-ingest does not
+   point the article back at the old files. */
+const REDRAWN = new Map([
+  ["/images/nginx-architecture.png", "/images/nginx-architecture.svg"],
+  ["/images/nginx-load-balancing.png", "/images/nginx-load-balancing.svg"],
+  ["/images/nginx-reverse-proxy.png", "/images/nginx-reverse-proxy.svg"],
+]);
+let redrawnRefs = 0;
+
+let PRIOR = new Map();
+try {
+  const old = JSON.parse(await readFile("content/manifest.json", "utf8"));
+  PRIOR = new Map(old.map(m => [m.slug, m]));
+} catch { /* first run: nothing to preserve */ }
 const OUT = "content";
 
 // Tag consolidation: 198 tags, 81 used once. Map to a working taxonomy.
@@ -148,23 +197,32 @@ for (const [, items] of seriesSeen) {
 
 let wroteDesc = 0, fixedH1 = 0;
 const manifest = [];
+let keptDates = 0;
 for (const a of kept) {
   const isNote = a.coll === "personal";
   const section = isNote ? "notes" : "insights";
   let body = a.body;
   // A body-level H1 duplicates the page title and breaks heading order.
   if (/^#\s/m.test(body)) { body = body.replace(/^#\s+(.*)$/gm, "## $1"); fixedH1++; }
+  body = body.replace(/^!\[[^\]]*\]\((\/[^)\s]+)\)\s*$/gm, (whole, href) => {
+    if (NOT_OURS.has(href)) { strippedImages++; return ""; }
+    if (REDRAWN.has(href)) { redrawnRefs++; return whole.replace(href, REDRAWN.get(href)); }
+    return whole;
+  });
   let description = (a.fm.description || "").trim();
   let derived = false;
   if (!description) { description = deriveDescription(body); derived = true; wroteDesc++; }
   const tags = [...new Set((a.fm.tags || []).map(normTag))];
   const slug = slugify(a.file.replace(/\.mdx?$/, ""));
+  const prior = PRIOR.get(slug);
+  if (prior) keptDates++;
   const rec = {
     slug, section,
     title: a.fm.title || "",
     description,
     derived,
-    date: a.newDate,
+    date: prior?.date || a.newDate,
+    ...(prior?.status ? { status: prior.status } : {}),
     originalDate: a.fm.pubDate,
     tags,
     series: a.fm.series || null,
@@ -189,6 +247,31 @@ for (const a of kept) {
   await writeFile(path.join(OUT, section, `${slug}.md`), `${fm}\n\n${body}\n`, "utf8");
 }
 
+/* Articles reference their own images by absolute path. Ingest used to take
+   the prose and leave the pictures behind, which shipped an article with a
+   broken image and nothing to catch it. Copy every local asset an article
+   actually names. */
+const wanted = new Set();
+for (const rec of manifest) {
+  const body = await readFile(path.join(OUT, rec.section, `${rec.slug}.md`), "utf8");
+  for (const m of body.matchAll(/!\[[^\]]*\]\((\/[^)\s]+)\)/g)) if (!NOT_OURS.has(m[1])) wanted.add(m[1]);
+  for (const m of body.matchAll(/<img[^>]+src="(\/[^"]+)"/g)) wanted.add(m[1]);
+}
+let copied = 0, missing = [];
+for (const ref of wanted) {
+  const dest = ref.replace(/^\//, "");
+  try { await access(dest, constants.R_OK); continue; } catch {}
+  const from = path.join(SRC_PUBLIC, dest);
+  try {
+    await access(from, constants.R_OK);
+    await mkdir(path.dirname(dest), { recursive: true });
+    await copyFile(from, dest);
+    copied++;
+  } catch { missing.push(ref); }
+}
+console.log("article assets:", wanted.size, "referenced,", copied, "copied in,", missing.length, "missing");
+if (missing.length) console.log("  missing:", missing.join(", "));
+
 await writeFile(path.join(OUT, "manifest.json"), JSON.stringify(manifest, null, 2));
 await writeFile(path.join(OUT, "held-drafts.txt"),
   heldDrafts.map(d => `${d.coll}/${d.file}  —  ${d.fm.title}`).join("\n") + "\n");
@@ -197,6 +280,8 @@ const bySection = manifest.reduce((m, r) => (m[r.section] = (m[r.section] || 0) 
 const byFormat = manifest.reduce((m, r) => (m[r.format] = (m[r.format] || 0) + 1, m), {});
 const tagCount = new Set(manifest.flatMap(r => r.tags)).size;
 console.log("ingested:", manifest.length, bySection, byFormat);
+console.log("schedule preserved for:", keptDates, "of", manifest.length, "articles");
+console.log("third-party images stripped:", strippedImages, "| figures repointed to redraws:", redrawnRefs);
 console.log("held drafts:", heldDrafts.length, "| phd excluded:", (await collect("phd")).length);
 console.log("descriptions derived:", wroteDesc, "| H1s demoted:", fixedH1);
 console.log("unique tags after consolidation:", tagCount);

@@ -1,7 +1,7 @@
 ---
 title: "Cloudflare WARP users who think they're using a VPN are getting less security than they expect"
 description: "Cloudflare WARP is a useful tool that is frequently deployed for the wrong reasons and therefore configured to deliver a fraction of its potential security value."
-date: 2026-05-18
+date: 2029-07-13
 tags: ["Systems", "Security", "DevSecOps"]
 format: note
 derived: true

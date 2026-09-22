@@ -1,7 +1,7 @@
 ---
 title: "Why ML Models Fail at Deployment (And Almost Never at Training)"
 description: "Training metrics and production performance are measured differently, on different data, against different success criteria. The gap between them is where most ML projects die."
-date: 2025-09-04
+date: 2027-05-19
 tags: ["Enterprise AI", "AI & MLOps"]
 format: article
 ---

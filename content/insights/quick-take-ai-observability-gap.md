@@ -1,7 +1,7 @@
 ---
 title: "LLM Observability: What to Instrument in Your AI Pipeline"
 description: "A guide to the instrumentation that separates an AI demo from a production system — and the tools that make it achievable without a large investment."
-date: 2026-05-15
+date: 2028-04-19
 tags: ["Enterprise AI", "Observability"]
 format: article
 ---

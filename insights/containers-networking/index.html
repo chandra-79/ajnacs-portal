@@ -105,7 +105,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#e0473a" stop-opacity=".10"/>
       <stop offset="1" stop-color="#c03a2e" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahcontainersne" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e0473a" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -123,7 +123,7 @@ if(d.getAttribute('data-rface')==='serif'){
     </nav></div>
     <div class="prose">
 <p>Container networking is the source of a disproportionate fraction of production incidents. Containers cannot reach each other, external traffic cannot reach a container, DNS resolution fails inside the container, or a connection that works on localhost fails in a deployed environment. These failures are diagnosable once you understand how the network is actually constructed.</p>
-<h2 id="the-bridge-network-single-host-networking"><a class="h-anchor" href="#the-bridge-network-single-host-networking" aria-label="Link to this section">#</a>The Bridge Network: Single-Host Networking</h2>
+<h2 id="the-bridge-network-single-host-networking"><a class="h-anchor" href="#the-bridge-network-single-host-networking" aria-hidden="true" tabindex="-1">#</a>The Bridge Network: Single-Host Networking</h2>
 <p>When Docker starts, it creates a default bridge network (<code>docker0</code>). Every container attached to this bridge gets a private IP address and can communicate with other containers on the same bridge.</p>
 <pre><code class="language-bash">## Show Docker networks
 docker network ls
@@ -143,7 +143,7 @@ docker run -d --name api --network my-app-network my-api:latest
 docker exec -it api ping postgres
 docker exec -it api nslookup postgres
 </code></pre>
-<h2 id="port-publishing-letting-traffic-in"><a class="h-anchor" href="#port-publishing-letting-traffic-in" aria-label="Link to this section">#</a>Port Publishing: Letting Traffic In</h2>
+<h2 id="port-publishing-letting-traffic-in"><a class="h-anchor" href="#port-publishing-letting-traffic-in" aria-hidden="true" tabindex="-1">#</a>Port Publishing: Letting Traffic In</h2>
 <p>Containers are isolated in their own network namespace. To receive traffic from the host or the outside world, ports must be published:</p>
 <pre><code class="language-bash">docker run -d \
   -p 8080:3000 \    # host_port:container_port
@@ -165,7 +165,7 @@ docker run -d \
 <pre><code class="language-bash">## See the iptables rules Docker created
 sudo iptables -t nat -L -n -v | grep DOCKER
 </code></pre>
-<h2 id="dns-resolution-inside-containers"><a class="h-anchor" href="#dns-resolution-inside-containers" aria-label="Link to this section">#</a>DNS Resolution Inside Containers</h2>
+<h2 id="dns-resolution-inside-containers"><a class="h-anchor" href="#dns-resolution-inside-containers" aria-hidden="true" tabindex="-1">#</a>DNS Resolution Inside Containers</h2>
 <p>By default, containers use the host&#39;s DNS configuration (<code>/etc/resolv.conf</code>). In production environments, this creates a common failure mode: the host is configured to use an internal DNS server that resolves private hostnames, but containers cannot reach that DNS server because of network namespace isolation or security group rules.</p>
 <pre><code class="language-bash">## Inspect DNS configuration inside a container
 docker exec -it my-container cat /etc/resolv.conf
@@ -177,7 +177,7 @@ docker run --dns 1.1.1.1 my-image:latest
 docker run --dns-search internal.company.com my-image:latest
 </code></pre>
 <p>In Kubernetes, the kube-dns or CoreDNS service handles DNS for all pods. Pods are configured with <code>nameserver &lt;kube-dns-cluster-ip&gt;</code> in <code>/etc/resolv.conf</code>. The DNS service resolves Kubernetes service names (<code>my-service.my-namespace.svc.cluster.local</code>) to cluster IP addresses.</p>
-<h2 id="overlay-networks-multi-host-networking"><a class="h-anchor" href="#overlay-networks-multi-host-networking" aria-label="Link to this section">#</a>Overlay Networks: Multi-Host Networking</h2>
+<h2 id="overlay-networks-multi-host-networking"><a class="h-anchor" href="#overlay-networks-multi-host-networking" aria-hidden="true" tabindex="-1">#</a>Overlay Networks: Multi-Host Networking</h2>
 <p>A bridge network works on one host. Containers on different hosts need an overlay network — a virtual network that spans multiple hosts.</p>
 <p>Docker Swarm uses overlay networks natively. Kubernetes uses a CNI (Container Network Interface) plugin — Flannel, Calico, Cilium, or WeaveNet — to implement overlay networking across nodes.</p>
 <p>All overlay implementations face the same challenge: they must route traffic between containers on different hosts, which have different physical network addresses. The approaches differ:</p>
@@ -186,7 +186,7 @@ docker run --dns-search internal.company.com my-image:latest
 <li><strong>BGP</strong> (used by Calico in BGP mode): distributes pod routes to all hosts via the Border Gateway Protocol. No encapsulation overhead; requires a BGP-capable network.</li>
 <li><strong>eBPF</strong> (used by Cilium): uses Linux eBPF programs to handle packet routing at the kernel level, without iptables. Lower overhead, better observability.</li>
 </ul>
-<h2 id="diagnosing-container-network-issues"><a class="h-anchor" href="#diagnosing-container-network-issues" aria-label="Link to this section">#</a>Diagnosing Container Network Issues</h2>
+<h2 id="diagnosing-container-network-issues"><a class="h-anchor" href="#diagnosing-container-network-issues" aria-hidden="true" tabindex="-1">#</a>Diagnosing Container Network Issues</h2>
 <pre><code class="language-bash">## Is the container running?
 docker ps
 
@@ -256,7 +256,7 @@ sudo tcpdump -i docker0 -n host &lt;container-ip&gt;
       <stop offset="0" stop-color="#e0473a" stop-opacity=".10"/>
       <stop offset="1" stop-color="#c03a2e" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahplatformengo" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e0473a" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -277,12 +277,12 @@ sudo tcpdump -i docker0 -n host &lt;container-ip&gt;
       <stop offset="0" stop-color="#6d4aff" stop-opacity=".10"/>
       <stop offset="1" stop-color="#5837e0" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahaimlneuralne" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#6d4aff" fill-opacity=".5"/>
     </marker>
   </defs>
   <rect width="640" height="360" fill="url(#bgaimlneuralne)"/>
-  <rect x="86" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.51" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="464" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.45" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="212" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.45" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 172 H338" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.60" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 172 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.40" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="338" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.32" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 236 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.39" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/>
+  <rect x="86" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.51" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="464" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.45" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="212" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.45" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 172 H338" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahaimlneuralne)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.60" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 172 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahaimlneuralne)"/><rect x="464" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.40" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="338" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.32" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 236 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahaimlneuralne)"/><rect x="464" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.39" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/>
 </svg></div>
   <div class="card-body">
     <span class="chip">AI &amp; MLOps</span>
@@ -298,7 +298,7 @@ sudo tcpdump -i docker0 -n host &lt;container-ip&gt;
       <stop offset="0" stop-color="#6d4aff" stop-opacity=".10"/>
       <stop offset="1" stop-color="#5837e0" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahaimlragandpr" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#6d4aff" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -388,7 +388,7 @@ sudo tcpdump -i docker0 -n host &lt;container-ip&gt;
         </div>
       </div>
       <div>
-        <h4>Services</h4>
+        <h2 class="foot-title">Services</h2>
         <ul>
           <li><a href="/services/#architecture">Enterprise architecture</a></li>
           <li><a href="/services/#ai">AI &amp; MLOps</a></li>
@@ -397,7 +397,7 @@ sudo tcpdump -i docker0 -n host &lt;container-ip&gt;
         </ul>
       </div>
       <div>
-        <h4>Insights</h4>
+        <h2 class="foot-title">Insights</h2>
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/series/">Series</a></li>
@@ -406,7 +406,7 @@ sudo tcpdump -i docker0 -n host &lt;container-ip&gt;
         </ul>
       </div>
       <div>
-        <h4>Contact</h4>
+        <h2 class="foot-title">Contact</h2>
         <ul>
           <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
           <li><a href="/contact/">Start an engagement</a></li>

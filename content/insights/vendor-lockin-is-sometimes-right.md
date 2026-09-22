@@ -1,7 +1,7 @@
 ---
 title: "Vendor lock-in is not always a mistake. Sometimes it's the correct trade."
 description: "The anti-lock-in argument is intuitively appealing and frequently overstated."
-date: 2025-06-24
+date: 2029-03-21
 tags: ["Cloud Architecture", "Architecture", "Engineering Leadership"]
 format: note
 derived: true

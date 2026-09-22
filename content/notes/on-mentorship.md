@@ -1,7 +1,7 @@
 ---
 title: "On mentorship — what I got wrong for years"
 description: "Not malicious — inattentive. I gave advice generously, answered questions thoroughly, connected people to opportunities when I could."
-date: 2025-10-06
+date: 2025-08-04
 tags: ["Mentorship", "Career", "Reflection"]
 format: article
 derived: true

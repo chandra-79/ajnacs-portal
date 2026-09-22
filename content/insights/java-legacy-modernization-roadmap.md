@@ -1,7 +1,7 @@
 ---
 title: "Modernizing Legacy Java: A Roadmap from Java 8 to 21+ Without Stopping the Business"
 description: "Most enterprise Java still runs on versions the ecosystem has left behind. A staged roadmap for moving Java 8 estates to 21+ — what breaks, what to automate, how to sequence framework upgrades, and how to sell the work to the business."
-date: 2024-12-31
+date: 2026-03-10
 tags: ["Java", "Modernization", "Technical Debt", "Architecture", "Engineering Practice"]
 format: article
 ---

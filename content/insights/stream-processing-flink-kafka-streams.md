@@ -1,7 +1,7 @@
 ---
 title: "Stream Processing: Flink, Kafka Streams, and Thinking in Unbounded Data"
 description: "When 'process the data' stops having an end, the batch mental model breaks. Event time vs processing time, watermarks, stateful streams and exactly-once semantics, the Flink vs Kafka Streams vs SQL-engine decision, and the operational reality of jobs that never finish."
-date: 2025-03-13
+date: 2027-09-29
 tags: ["Data Engineering", "Distributed Systems", "Stream Processing", "Architecture"]
 format: article
 ---

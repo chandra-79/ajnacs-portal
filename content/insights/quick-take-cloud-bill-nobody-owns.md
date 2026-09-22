@@ -1,7 +1,7 @@
 ---
 title: "The Cloud Bill Without a Named Owner Grows Until It Becomes a Crisis"
 description: "Cloud cost accountability requires a specific person, not a team or an org unit. When the bill belongs to everyone, it belongs to no one — and it shows."
-date: 2025-11-12
+date: 2028-07-21
 tags: ["FinOps", "Engineering Leadership"]
 format: article
 ---

@@ -1,7 +1,7 @@
 ---
 title: "GCP Associate Cloud Engineer: Topic Coverage and Exam Strategy"
 description: "The ACE exam tests whether you can deploy and manage workloads on Google Cloud — not just describe services. Here's how the exam is structured, which topics carry the most weight, and how to build the hands-on foundation it expects."
-date: 2026-07-14
+date: 2027-01-11
 tags: ["Cloud Architecture", "Certifications"]
 format: article
 ---

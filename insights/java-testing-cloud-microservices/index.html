@@ -105,7 +105,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#4f46e5" stop-opacity=".10"/>
       <stop offset="1" stop-color="#3730a3" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahjavatestingc" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#4f46e5" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -121,7 +121,7 @@ if(d.getAttribute('data-rface')==='serif'){
     <div class="prose">
 <p>The testing pyramid exists because not all tests are equivalent. Fast tests belong at the base; slow, brittle, expensive tests belong at the top. The problem with most Java microservice test suites is that the pyramid is inverted — a thin layer of unit tests, a thick layer of integration tests that each require a running database and a live queue, and a set of end-to-end tests that take 20 minutes and fail intermittently.</p>
 <p>Here&#39;s how I think about testing Java services built for cloud deployment.</p>
-<h2 id="unit-tests-fast-focused-free-of-infrastructure"><a class="h-anchor" href="#unit-tests-fast-focused-free-of-infrastructure" aria-label="Link to this section">#</a>Unit tests: fast, focused, free of infrastructure</h2>
+<h2 id="unit-tests-fast-focused-free-of-infrastructure"><a class="h-anchor" href="#unit-tests-fast-focused-free-of-infrastructure" aria-hidden="true" tabindex="-1">#</a>Unit tests: fast, focused, free of infrastructure</h2>
 <p>Unit tests verify a single class or method in isolation. They run in milliseconds, they catch regressions in business logic, and they give immediate feedback during development. The value is high; the infrastructure cost is zero.</p>
 <p>What belongs in unit tests: business logic, transformation functions, validation rules, anything that can be exercised with a plain Java object and no external dependencies. String manipulation, date arithmetic, calculation rules, conditional routing — these are unit test territory.</p>
 <p>What doesn&#39;t belong in unit tests: anything that touches a database, a queue, or a network call. That&#39;s not a unit test; it&#39;s an integration test wearing a unit test&#39;s clothes. The tell is <code>@MockBean</code> in a <code>@SpringBootTest</code> class — you&#39;re loading the entire Spring context to test a single method that could be tested in five lines with a plain JUnit 5 test.</p>
@@ -144,7 +144,7 @@ class OrderPricingServiceTest {
     }
 }
 </code></pre>
-<h2 id="integration-tests-real-infrastructure-narrow-scope"><a class="h-anchor" href="#integration-tests-real-infrastructure-narrow-scope" aria-label="Link to this section">#</a>Integration tests: real infrastructure, narrow scope</h2>
+<h2 id="integration-tests-real-infrastructure-narrow-scope"><a class="h-anchor" href="#integration-tests-real-infrastructure-narrow-scope" aria-hidden="true" tabindex="-1">#</a>Integration tests: real infrastructure, narrow scope</h2>
 <p>Integration tests verify that your application&#39;s code interacts correctly with an external system — database, message queue, external API. The key word is narrow: a good integration test verifies one integration boundary.</p>
 <p><strong>Testcontainers is the correct tool for this.</strong> Testcontainers spins up real Docker containers (PostgreSQL, MySQL, Kafka, Redis) for your tests and tears them down afterwards. No more shared test databases, no more test data that bleeds between test runs, no more &quot;it works on my machine.&quot;</p>
 <pre><code class="language-java">@SpringBootTest
@@ -174,11 +174,11 @@ class OrderRepositoryTest {
 }
 </code></pre>
 <p>The containers add startup time — typically 10-15 seconds per container on first run, less after Docker&#39;s layer cache is warm. This is acceptable. Running integration tests against a shared database that teams have been inserting test data into for six months is not acceptable.</p>
-<h2 id="contract-tests-for-services-with-multiple-consumers"><a class="h-anchor" href="#contract-tests-for-services-with-multiple-consumers" aria-label="Link to this section">#</a>Contract tests: for services with multiple consumers</h2>
+<h2 id="contract-tests-for-services-with-multiple-consumers"><a class="h-anchor" href="#contract-tests-for-services-with-multiple-consumers" aria-hidden="true" tabindex="-1">#</a>Contract tests: for services with multiple consumers</h2>
 <p>In microservice architectures, the hardest testing problem is the consumer-producer contract: ensuring that when Service A changes its API, Service B — which it doesn&#39;t know about — doesn&#39;t break.</p>
 <p><strong>Pact</strong> (or Spring Cloud Contract) solves this. Consumers define a contract specifying what they expect from the producer API. The producer verifies that contract as part of their test suite. If the producer&#39;s change breaks a consumer contract, the producer&#39;s tests fail — before deployment.</p>
 <p>This is more valuable than end-to-end tests for catching API compatibility issues. It&#39;s faster, it runs in isolation, and it pinpoints which consumer&#39;s expectations are broken.</p>
-<h2 id="slice-tests-testing-spring-configuration-without-full-contex"><a class="h-anchor" href="#slice-tests-testing-spring-configuration-without-full-contex" aria-label="Link to this section">#</a>Slice tests: testing Spring configuration without full context</h2>
+<h2 id="slice-tests-testing-spring-configuration-without-full-contex"><a class="h-anchor" href="#slice-tests-testing-spring-configuration-without-full-contex" aria-hidden="true" tabindex="-1">#</a>Slice tests: testing Spring configuration without full context</h2>
 <p>Spring provides test slice annotations for testing specific layers in isolation with minimal context loading:</p>
 <ul>
 <li><code>@WebMvcTest</code> — loads only the web layer (controllers, filters), not the service or repository layer. Useful for testing request/response mapping, validation, and error handling.</li>
@@ -186,10 +186,10 @@ class OrderRepositoryTest {
 <li><code>@RestClientTest</code> — loads only REST client configuration. Useful for testing <code>@FeignClient</code> or <code>RestTemplate</code> wiring.</li>
 </ul>
 <p>These are dramatically faster than <code>@SpringBootTest</code> for testing a single layer. A <code>@WebMvcTest</code> loads in under 2 seconds; a full Spring Boot test context can take 15-30 seconds.</p>
-<h2 id="end-to-end-tests-sparingly-deliberately"><a class="h-anchor" href="#end-to-end-tests-sparingly-deliberately" aria-label="Link to this section">#</a>End-to-end tests: sparingly, deliberately</h2>
+<h2 id="end-to-end-tests-sparingly-deliberately"><a class="h-anchor" href="#end-to-end-tests-sparingly-deliberately" aria-hidden="true" tabindex="-1">#</a>End-to-end tests: sparingly, deliberately</h2>
 <p>End-to-end tests that exercise the full system through its external API are valuable but expensive. Keep them few and focused on the critical paths: the user journeys that absolutely cannot be broken.</p>
 <p>Run these in a deployed environment (staging), not in CI unit test runs. They are too slow and too dependent on environment state to be reliable in standard CI runs.</p>
-<h2 id="the-ci-configuration-that-pulls-this-together"><a class="h-anchor" href="#the-ci-configuration-that-pulls-this-together" aria-label="Link to this section">#</a>The CI configuration that pulls this together</h2>
+<h2 id="the-ci-configuration-that-pulls-this-together"><a class="h-anchor" href="#the-ci-configuration-that-pulls-this-together" aria-hidden="true" tabindex="-1">#</a>The CI configuration that pulls this together</h2>
 <pre><code>## runs on every commit
 Unit tests:        mvn test -Dtest=&quot;*UnitTest&quot;        (~30s)
 Slice tests:       mvn test -Dtest=&quot;*SliceTest&quot;       (~2min)
@@ -239,7 +239,7 @@ E2E tests:         deploy to staging + run E2E suite  (~20min)
       <stop offset="0" stop-color="#e0473a" stop-opacity=".10"/>
       <stop offset="1" stop-color="#c03a2e" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahplatformengo" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e0473a" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -260,7 +260,7 @@ E2E tests:         deploy to staging + run E2E suite  (~20min)
       <stop offset="0" stop-color="#e0473a" stop-opacity=".10"/>
       <stop offset="1" stop-color="#c03a2e" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahcontainerswh" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e0473a" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -281,7 +281,7 @@ E2E tests:         deploy to staging + run E2E suite  (~20min)
       <stop offset="0" stop-color="#e0473a" stop-opacity=".10"/>
       <stop offset="1" stop-color="#c03a2e" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahcontainerspr" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e0473a" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -361,7 +361,7 @@ E2E tests:         deploy to staging + run E2E suite  (~20min)
         </div>
       </div>
       <div>
-        <h4>Services</h4>
+        <h2 class="foot-title">Services</h2>
         <ul>
           <li><a href="/services/#architecture">Enterprise architecture</a></li>
           <li><a href="/services/#ai">AI &amp; MLOps</a></li>
@@ -370,7 +370,7 @@ E2E tests:         deploy to staging + run E2E suite  (~20min)
         </ul>
       </div>
       <div>
-        <h4>Insights</h4>
+        <h2 class="foot-title">Insights</h2>
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/series/">Series</a></li>
@@ -379,7 +379,7 @@ E2E tests:         deploy to staging + run E2E suite  (~20min)
         </ul>
       </div>
       <div>
-        <h4>Contact</h4>
+        <h2 class="foot-title">Contact</h2>
         <ul>
           <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
           <li><a href="/contact/">Start an engagement</a></li>

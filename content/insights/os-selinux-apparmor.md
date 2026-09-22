@@ -1,7 +1,7 @@
 ---
 title: "SELinux and AppArmor: Mandatory Access Control on Linux"
 description: "How mandatory access control works, the difference between SELinux and AppArmor, writing and debugging policies, and why MAC is the single most effective defense against container escape and privilege escalation."
-date: 2026-08-28
+date: 2027-04-19
 tags: ["Programming", "Fundamentals"]
 series: "Linux: A Complete Practical Course"
 seriesOrder: 21

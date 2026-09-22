@@ -105,7 +105,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#0e7490" stop-opacity=".10"/>
       <stop offset="1" stop-color="#0b5f77" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahplatformengi" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#0e7490" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -123,7 +123,7 @@ if(d.getAttribute('data-rface')==='serif'){
     </nav></div>
     <div class="prose">
 <p>The design of a platform&#39;s abstraction layer determines whether developers adopt it or route around it. Abstract too much and developers cannot do what they need; developers write workarounds that bypass the platform. Abstract too little and the platform is just documentation — developers face the same complexity they had before. The right abstraction hides complexity developers should not need to manage and exposes control over the things that vary legitimately between services.</p>
-<h2 id="the-golden-path-concept"><a class="h-anchor" href="#the-golden-path-concept" aria-label="Link to this section">#</a>The Golden Path Concept</h2>
+<h2 id="the-golden-path-concept"><a class="h-anchor" href="#the-golden-path-concept" aria-hidden="true" tabindex="-1">#</a>The Golden Path Concept</h2>
 <aside class="keyfig">
   <p class="keyfig-label">Key figure</p>
   <p class="keyfig-text">If <b>30%</b> of services are using Tier 3 regularly, that is a signal that the golden path does not cover a common requirement — time to add it to Tier 2.</p>
@@ -143,7 +143,7 @@ if(d.getAttribute('data-rface')==='serif'){
 4. platform deploy my-service --env production → production deployment with approval gate
 </code></pre>
 <p>The developer writes application code. The platform handles infrastructure, compliance, and observability.</p>
-<h2 id="what-to-abstract-vs-what-to-expose"><a class="h-anchor" href="#what-to-abstract-vs-what-to-expose" aria-label="Link to this section">#</a>What to Abstract vs What to Expose</h2>
+<h2 id="what-to-abstract-vs-what-to-expose"><a class="h-anchor" href="#what-to-abstract-vs-what-to-expose" aria-hidden="true" tabindex="-1">#</a>What to Abstract vs What to Expose</h2>
 <p>A useful design heuristic: abstract whatever is the same for all services; expose control over whatever varies legitimately between services.</p>
 <p><strong>Abstract</strong> (same for all services, hide the complexity):</p>
 <ul>
@@ -163,7 +163,7 @@ if(d.getAttribute('data-rface')==='serif'){
 <li>Custom alerting thresholds (what constitutes a problem for this service)</li>
 </ul>
 <p>The platform interface should be simple enough that a new developer can deploy their first service within one day without reading infrastructure documentation. Every hour spent debugging platform configuration is an hour not spent on product work.</p>
-<h2 id="the-escape-hatch-design-decision"><a class="h-anchor" href="#the-escape-hatch-design-decision" aria-label="Link to this section">#</a>The Escape Hatch Design Decision</h2>
+<h2 id="the-escape-hatch-design-decision"><a class="h-anchor" href="#the-escape-hatch-design-decision" aria-hidden="true" tabindex="-1">#</a>The Escape Hatch Design Decision</h2>
 <p>Rigid platforms break when developers encounter legitimate requirements outside the golden path. Every platform needs escape hatches: defined ways to access the underlying infrastructure when the abstraction is insufficient.</p>
 <p><strong>Tiered access model</strong>:</p>
 <ul>
@@ -172,7 +172,7 @@ if(d.getAttribute('data-rface')==='serif'){
 <li><strong>Tier 3 (escape hatch)</strong>: access the underlying infrastructure directly, with approval and documentation requirements. &quot;I need a sidecar container for X reason&quot; or &quot;I need a custom network policy for Y integration.&quot;</li>
 </ul>
 <p>Escape hatches prevent the platform from becoming an obstacle while keeping usage visible. If 30% of services are using Tier 3 regularly, that is a signal that the golden path does not cover a common requirement — time to add it to Tier 2.</p>
-<h2 id="service-catalogues-making-the-platform-discoverable"><a class="h-anchor" href="#service-catalogues-making-the-platform-discoverable" aria-label="Link to this section">#</a>Service Catalogues: Making the Platform Discoverable</h2>
+<h2 id="service-catalogues-making-the-platform-discoverable"><a class="h-anchor" href="#service-catalogues-making-the-platform-discoverable" aria-hidden="true" tabindex="-1">#</a>Service Catalogues: Making the Platform Discoverable</h2>
 <p>A service catalogue is the discovery layer for the platform. It answers: what services exist, who owns them, what do they depend on, and how do they behave?</p>
 <p>Backstage (from Spotify, now a CNCF project) is the most widely adopted open-source service catalogue. It provides:</p>
 <ul>
@@ -200,7 +200,7 @@ spec:
     - component:customer-service
     - resource:billing-database
 </code></pre>
-<h2 id="policy-as-code-governance-without-bureaucracy"><a class="h-anchor" href="#policy-as-code-governance-without-bureaucracy" aria-label="Link to this section">#</a>Policy as Code: Governance Without Bureaucracy</h2>
+<h2 id="policy-as-code-governance-without-bureaucracy"><a class="h-anchor" href="#policy-as-code-governance-without-bureaucracy" aria-hidden="true" tabindex="-1">#</a>Policy as Code: Governance Without Bureaucracy</h2>
 <p>The platform enforces governance automatically, not through approval gates. Security, compliance, and operational standards are encoded as policies that evaluate every deployment:</p>
 <pre><code class="language-yaml">## OPA/Gatekeeper policy: no containers running as root
 apiVersion: constraints.gatekeeper.sh/v1beta1
@@ -254,7 +254,7 @@ spec:
       <stop offset="0" stop-color="#e0473a" stop-opacity=".10"/>
       <stop offset="1" stop-color="#c03a2e" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahplatformengo" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e0473a" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -275,12 +275,12 @@ spec:
       <stop offset="0" stop-color="#6d4aff" stop-opacity=".10"/>
       <stop offset="1" stop-color="#5837e0" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahaimlneuralne" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#6d4aff" fill-opacity=".5"/>
     </marker>
   </defs>
   <rect width="640" height="360" fill="url(#bgaimlneuralne)"/>
-  <rect x="86" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.51" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="464" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.45" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="212" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.45" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 172 H338" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.60" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 172 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.40" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="338" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.32" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 236 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.39" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/>
+  <rect x="86" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.51" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="464" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.45" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="212" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.45" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 172 H338" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahaimlneuralne)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.60" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 172 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahaimlneuralne)"/><rect x="464" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.40" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="338" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.32" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 236 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahaimlneuralne)"/><rect x="464" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.39" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/>
 </svg></div>
   <div class="card-body">
     <span class="chip">AI &amp; MLOps</span>
@@ -296,7 +296,7 @@ spec:
       <stop offset="0" stop-color="#6d4aff" stop-opacity=".10"/>
       <stop offset="1" stop-color="#5837e0" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahaimlragandpr" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#6d4aff" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -386,7 +386,7 @@ spec:
         </div>
       </div>
       <div>
-        <h4>Services</h4>
+        <h2 class="foot-title">Services</h2>
         <ul>
           <li><a href="/services/#architecture">Enterprise architecture</a></li>
           <li><a href="/services/#ai">AI &amp; MLOps</a></li>
@@ -395,7 +395,7 @@ spec:
         </ul>
       </div>
       <div>
-        <h4>Insights</h4>
+        <h2 class="foot-title">Insights</h2>
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/series/">Series</a></li>
@@ -404,7 +404,7 @@ spec:
         </ul>
       </div>
       <div>
-        <h4>Contact</h4>
+        <h2 class="foot-title">Contact</h2>
         <ul>
           <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
           <li><a href="/contact/">Start an engagement</a></li>

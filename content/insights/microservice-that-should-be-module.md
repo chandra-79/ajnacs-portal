@@ -1,7 +1,7 @@
 ---
 title: "Most microservices I've reviewed should have been modules in a monolith"
 description: "Microservices solve genuine problems: independent deployability, technology heterogeneity, team autonomy at scale, and the ability to scale specific components independently."
-date: 2025-12-29
+date: 2029-04-25
 tags: ["Software Engineering", "Distributed Systems", "Architecture"]
 format: note
 derived: true

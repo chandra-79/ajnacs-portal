@@ -1,7 +1,7 @@
 ---
 title: "Monitoring tells you something is wrong. Observability tells you why."
 description: "Monitoring tells you something is wrong. Observability tells you why."
-date: 2026-04-20
+date: 2029-02-16
 tags: ["Observability", "Engineering Leadership", "Cloud Architecture"]
 format: note
 derived: true

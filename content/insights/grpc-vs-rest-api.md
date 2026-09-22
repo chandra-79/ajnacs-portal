@@ -1,7 +1,7 @@
 ---
 title: "gRPC vs REST: Choosing the Right API Protocol for Microservices"
 description: "REST and gRPC serve different needs. REST's broad tooling and human-readability suit external APIs and browser clients. gRPC's efficiency and strong contracts suit high-throughput internal service communication."
-date: 2025-08-25
+date: 2026-12-16
 tags: ["Architecture", "Cloud Architecture"]
 format: article
 ---

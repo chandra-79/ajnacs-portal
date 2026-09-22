@@ -105,7 +105,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#e8a317" stop-opacity=".10"/>
       <stop offset="1" stop-color="#a9760a" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahclouduniteco" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e8a317" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -124,7 +124,7 @@ if(d.getAttribute('data-rface')==='serif'){
     <div class="prose">
 <p>Most cloud cost conversations go in circles because they&#39;re comparing the wrong things. &quot;Our AWS bill went up 20% this quarter&quot; is a statement that could mean we&#39;re growing efficiently, we&#39;re scaling poorly, or someone left a cluster running — and you can&#39;t tell which from the number alone.</p>
 <p>Unit economics cuts through this. Cost per unit of business output — per active user, per transaction, per API call, per GB of data processed — contextualises spend against the business it&#39;s supporting.</p>
-<h2 id="why-absolute-spend-is-the-wrong-metric"><a class="h-anchor" href="#why-absolute-spend-is-the-wrong-metric" aria-label="Link to this section">#</a>Why absolute spend is the wrong metric</h2>
+<h2 id="why-absolute-spend-is-the-wrong-metric"><a class="h-anchor" href="#why-absolute-spend-is-the-wrong-metric" aria-hidden="true" tabindex="-1">#</a>Why absolute spend is the wrong metric</h2>
 <aside class="keyfig">
   <p class="keyfig-label">Key figure</p>
   <p class="keyfig-text">&quot;Our AWS bill went up <b>20%</b> this quarter&quot; is a statement that could mean we&#39;re growing efficiently, we&#39;re scaling poorly, or someone left a cluster running — and you can&#39;t tell which from the number alone.</p>
@@ -137,7 +137,7 @@ if(d.getAttribute('data-rface')==='serif'){
 </ul>
 <p>The absolute number doesn&#39;t tell you which scenario you&#39;re in. The unit cost does.</p>
 <p>Unit economics doesn&#39;t make the cost conversation easier — it makes it more honest. When a business leader asks &quot;why is our cloud bill so high?&quot;, the unit cost answer is either: &quot;it isn&#39;t, we&#39;re running at $0.003 per transaction and the market rate is $0.005&quot; or &quot;you&#39;re right, our cost per user has increased since Q3 and here&#39;s why.&quot; Both answers are useful. &quot;Our bill is $200k a month&quot; isn&#39;t.</p>
-<h2 id="defining-the-right-unit"><a class="h-anchor" href="#defining-the-right-unit" aria-label="Link to this section">#</a>Defining the right unit</h2>
+<h2 id="defining-the-right-unit"><a class="h-anchor" href="#defining-the-right-unit" aria-hidden="true" tabindex="-1">#</a>Defining the right unit</h2>
 <p>The unit should be something the business already tracks and cares about. Common options:</p>
 <ul>
 <li><strong>SaaS products</strong>: cost per monthly active user (MAU)</li>
@@ -148,7 +148,7 @@ if(d.getAttribute('data-rface')==='serif'){
 </ul>
 <p>The unit has to be consistent — use the same definition across teams and time periods. If &quot;transaction&quot; means one thing to the payments team and another to the analytics team, the comparisons won&#39;t be useful.</p>
 <p>For complex products that do many different things, start with the unit that most directly connects cloud spend to revenue. Optimise for clarity first.</p>
-<h2 id="how-to-calculate-it"><a class="h-anchor" href="#how-to-calculate-it" aria-label="Link to this section">#</a>How to calculate it</h2>
+<h2 id="how-to-calculate-it"><a class="h-anchor" href="#how-to-calculate-it" aria-hidden="true" tabindex="-1">#</a>How to calculate it</h2>
 <p>Unit cost calculation:</p>
 <pre><code>unit_cost = total_infrastructure_cost / unit_count
 </code></pre>
@@ -160,7 +160,7 @@ if(d.getAttribute('data-rface')==='serif'){
 <li><strong>Flat allocation</strong>: divide shared infrastructure equally across workloads</li>
 </ul>
 <p>Each approach is a simplification. The goal is consistent, good-enough allocation rather than perfect attribution.</p>
-<h2 id="benchmarks-and-thresholds"><a class="h-anchor" href="#benchmarks-and-thresholds" aria-label="Link to this section">#</a>Benchmarks and thresholds</h2>
+<h2 id="benchmarks-and-thresholds"><a class="h-anchor" href="#benchmarks-and-thresholds" aria-hidden="true" tabindex="-1">#</a>Benchmarks and thresholds</h2>
 <p>Unit costs become most useful when you have a target to compare against.</p>
 <p>Setting targets:</p>
 <ul>
@@ -169,7 +169,7 @@ if(d.getAttribute('data-rface')==='serif'){
 <li><strong>Industry context</strong>: broad industry benchmarks exist for some workload types (SaaS infrastructure spend as a percentage of revenue is a common one; 8-12% is a rough marker, though it varies widely by stage). These are signals, not targets.</li>
 </ul>
 <p>Threshold alerts: if unit cost increases by more than X% quarter-over-quarter without a corresponding product change or growth inflection, that&#39;s a signal to investigate. Growth in spend is expected; disproportionate growth in unit cost is an efficiency signal.</p>
-<h2 id="the-conversation-unit-economics-enables"><a class="h-anchor" href="#the-conversation-unit-economics-enables" aria-label="Link to this section">#</a>The conversation unit economics enables</h2>
+<h2 id="the-conversation-unit-economics-enables"><a class="h-anchor" href="#the-conversation-unit-economics-enables" aria-hidden="true" tabindex="-1">#</a>The conversation unit economics enables</h2>
 <p>With unit economics, the cloud spend conversation becomes:</p>
 <p>&quot;Our cost per MAU has stayed flat at $0.42 despite 30% user growth, which tells us our architecture is scaling efficiently. However, the data processing cost per GB has increased from $0.18 to $0.31 — that&#39;s the area worth investigating before we grow the data pipeline further.&quot;</p>
 <p>This is the conversation FinOps aims to enable: context-rich, actionable, connected to the business. It requires the underlying data (tagging, cost allocation, unit tracking) to be in good shape, which is the infrastructure that takes time to build.</p>
@@ -210,7 +210,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#0e7490" stop-opacity=".10"/>
       <stop offset="1" stop-color="#0b5f77" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahplatformengm" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#0e7490" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -239,12 +239,12 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#e8a317" stop-opacity=".10"/>
       <stop offset="1" stop-color="#a9760a" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahfinopsanomal" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e8a317" fill-opacity=".5"/>
     </marker>
   </defs>
   <rect width="640" height="360" fill="url(#bgfinopsanomal)"/>
-  <rect x="86" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.39" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 108 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.41" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 108 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.21" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 108 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.13" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 172 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.17" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 172 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="86" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.23" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 236 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.54" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 236 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.51" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/>
+  <rect x="86" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.39" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 108 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="212" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.41" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 108 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="338" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.21" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 108 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="212" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.13" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 172 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.17" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 172 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="86" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.23" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 236 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="212" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.54" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 236 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="464" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.51" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/>
 </svg></div>
   <div class="card-body">
     <span class="chip">FinOps</span>
@@ -260,7 +260,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#e8a317" stop-opacity=".10"/>
       <stop offset="1" stop-color="#a9760a" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahfinopstaggin" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e8a317" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -358,7 +358,7 @@ if(d.getAttribute('data-rface')==='serif'){
         </div>
       </div>
       <div>
-        <h4>Services</h4>
+        <h2 class="foot-title">Services</h2>
         <ul>
           <li><a href="/services/#architecture">Enterprise architecture</a></li>
           <li><a href="/services/#ai">AI &amp; MLOps</a></li>
@@ -367,7 +367,7 @@ if(d.getAttribute('data-rface')==='serif'){
         </ul>
       </div>
       <div>
-        <h4>Insights</h4>
+        <h2 class="foot-title">Insights</h2>
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/series/">Series</a></li>
@@ -376,7 +376,7 @@ if(d.getAttribute('data-rface')==='serif'){
         </ul>
       </div>
       <div>
-        <h4>Contact</h4>
+        <h2 class="foot-title">Contact</h2>
         <ul>
           <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
           <li><a href="/contact/">Start an engagement</a></li>

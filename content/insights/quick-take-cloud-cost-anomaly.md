@@ -1,7 +1,7 @@
 ---
 title: "Cloud Cost Anomalies Are Architecture Signals, Not Billing Surprises"
 description: "When a cloud cost anomaly appears, the most important question is not how to reduce the cost. It is what the cost reveals about the architecture, data model, or traffic pattern that caused it."
-date: 2025-12-03
+date: 2028-04-21
 tags: ["FinOps", "Cloud Architecture"]
 format: article
 ---

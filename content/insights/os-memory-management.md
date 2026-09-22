@@ -1,7 +1,7 @@
 ---
 title: "Memory Management: Virtual Memory, Page Faults, and Why Your App Runs Out of RAM"
 description: "What virtual memory is, how the OS maps it to physical RAM, what a page fault means, and how to diagnose memory pressure before it causes an out-of-memory kill."
-date: 2026-06-12
+date: 2027-08-23
 tags: ["Programming", "Fundamentals"]
 series: "Operating Systems for Engineers"
 seriesOrder: 3

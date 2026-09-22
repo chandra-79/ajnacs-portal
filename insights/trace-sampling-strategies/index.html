@@ -105,7 +105,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#1e9e63" stop-opacity=".10"/>
       <stop offset="1" stop-color="#157a4c" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahtracesamplin" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#1e9e63" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -120,13 +120,13 @@ if(d.getAttribute('data-rface')==='serif'){
 </nav></div>
     <div class="prose">
 <p>Distributed tracing&#39;s pitch — every request&#39;s journey across services, reconstructible on demand — collides at production scale with arithmetic nobody escapes: a mid-size estate serving 50k requests/sec, each touching a dozen services with a handful of spans apiece, generates <em>billions of spans daily</em>, and storing them all costs more than the incidents they&#39;d explain. Tracing at scale is therefore a <strong>retention-policy problem</strong>: which traces do you keep, decided by what logic, enforced where — and the quality of those decisions determines whether the tracing system answers the 3 AM question (&quot;show me a trace of the failure&quot;) or delivers its most demoralizing failure mode: perfect instrumentation, 1% sampling, and <em>no trace of the incident anyone is debugging</em>, because uniform randomness keeps mostly the healthy majority.</p>
-<h2 id="the-consistency-rule-that-everything-rests-on"><a class="h-anchor" href="#the-consistency-rule-that-everything-rests-on" aria-label="Link to this section">#</a>The consistency rule that everything rests on</h2>
+<h2 id="the-consistency-rule-that-everything-rests-on"><a class="h-anchor" href="#the-consistency-rule-that-everything-rests-on" aria-hidden="true" tabindex="-1">#</a>The consistency rule that everything rests on</h2>
 <p>Before strategy: a partial trace is a lie — spans sampled independently per service produce journeys with missing legs that mislead worse than no trace. The foundational mechanism is <strong>consistent, propagated sampling decisions</strong>: the decision made once (typically at the ingress span) and carried in the trace context (the W3C traceparent&#39;s sampled flag — the same propagation rails as every context discipline), so every downstream service honors the same verdict and traces arrive <em>whole or not at all</em>. Every strategy below is a policy about <em>where and on what information</em> that decision gets made — which is the entire design space.</p>
-<h2 id="head-vs-tail-deciding-early-and-cheap-or-late-and-smart"><a class="h-anchor" href="#head-vs-tail-deciding-early-and-cheap-or-late-and-smart" aria-label="Link to this section">#</a>Head vs tail: deciding early and cheap, or late and smart</h2>
+<h2 id="head-vs-tail-deciding-early-and-cheap-or-late-and-smart"><a class="h-anchor" href="#head-vs-tail-deciding-early-and-cheap-or-late-and-smart" aria-hidden="true" tabindex="-1">#</a>Head vs tail: deciding early and cheap, or late and smart</h2>
 <p><strong>Head sampling</strong> decides at trace start with what&#39;s knowable then — essentially nothing about how the trace will turn out — so its policies are rate-shaped: probabilistic percentages, rate limits per service, per-route overrides (checkout at 100%, health checks at 0% — the criticality tiering from every SLO discipline). Its virtues: trivially cheap (unsampled traces cost near-zero — the spans are never exported, or never created), simple, and <em>predictable</em> in cost. Its structural flaw: it cannot know the future — the error, the 30-second outlier, the interesting anomaly all look identical to the boring median at decision time, so head sampling keeps them at the same rate as everything else, which at 1% means missing 99% of exactly what you wanted.</p>
 <p><strong>Tail sampling</strong> inverts the timing: buffer every trace&#39;s spans (in a collector tier), decide <em>after completion</em> with full knowledge — keep all errors, keep everything over the latency threshold, keep traces touching flagged tenants or routes, downsample the healthy fast majority to a token rate. This is the policy that matches what humans actually query for (&quot;show me slow,&quot; &quot;show me failed&quot;), and it&#39;s what the OpenTelemetry collector&#39;s tail-sampling machinery and the vendor pipelines implement. The bill: the buffering tier is real infrastructure (every span held in memory for the decision window — the capacity math scales with trace volume and duration, and long-running traces strain the window), decisions require <em>all</em> the spans to converge on one collector (trace-ID-based routing in the collector fleet — the consistent-hashing pattern, again), and cost predictability degrades (an incident producing 100% errors is also producing 100% keep-decisions at your worst moment — the sampling policy needs its own rate cap, per the protect-the-protector instinct).</p>
 <p>The mature architecture is layered, as usual: <strong>head sampling as the volume governor</strong> (drop the health checks and the known-noise at the source — the cheapest span is the one never created), <strong>tail sampling as the intelligence layer</strong> (error/latency/attribute-biased retention on what survives), and — the piece that makes relaxed sampling tolerable — <strong>metrics and exemplars carrying the aggregate truth</strong>: the span-derived RED metrics are computed <em>before</em> sampling (so dashboards and SLO math see 100% of reality regardless of trace retention — the histogram-sketch machinery from observability practice), with <strong>exemplars</strong> linking metric buckets to retained trace IDs (the &quot;click the p99 bucket, land on a real slow trace&quot; workflow that makes sampled tracing feel unsampled exactly where investigation starts).</p>
-<h2 id="the-operational-rim"><a class="h-anchor" href="#the-operational-rim" aria-label="Link to this section">#</a>The operational rim</h2>
+<h2 id="the-operational-rim"><a class="h-anchor" href="#the-operational-rim" aria-hidden="true" tabindex="-1">#</a>The operational rim</h2>
 <p>The details that separate working pipelines from aspirational ones: <strong>sample-rate metadata on every kept trace</strong> (the decision and its rate recorded as span attributes, so analytical queries can re-weight — a kept-at-1% trace represents a hundred; count-style analysis over traces without rate-awareness is silently wrong arithmetic), <strong>per-signal budgets with owners</strong> (trace volume by service on the same FinOps-style dashboards as log ingestion — the cardinality-and-cost review from logging practice, applied to spans; the service exporting 40% of the estate&#39;s spans for no queried benefit is this pipeline&#39;s unused-index equivalent), <strong>dynamic and per-tenant overrides</strong> (the debug-sampling toggle — crank a route/tenant to 100% during investigation without a deploy, per the runtime-toggle disciplines; and the whale tenant&#39;s traces rate-capped per the fairness rules), and <strong>retention tiers matching query patterns</strong> (hot full-fidelity days for incident work, downsampled/aggregated weeks for trends — the lifecycle economics, as everywhere). And the honesty check that keeps the whole system accountable: periodically, during a real incident review, ask <em>&quot;did we have the trace?&quot;</em> — the tracing pipeline&#39;s single meaningful SLO is trace-availability-for-investigated-incidents, and a quarter of misses is the signal to rebalance policies toward the tail.</p>
 <p>The closing frame: sampling isn&#39;t the compromise tracing makes with cost — it&#39;s the design surface where an observability team encodes <em>what questions the organization has committed to answering</em>. Keep the errors, keep the outliers, keep whole traces or none, let metrics carry the aggregates, link them with exemplars, and cap the volume everywhere else — and 1% storage delivers 95% of the answers, which is the trade every honest telemetry budget was always going to make. The only unacceptable policy is the accidental one.</p>
 
@@ -164,12 +164,12 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#e8a317" stop-opacity=".10"/>
       <stop offset="1" stop-color="#a9760a" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahfinopsanomal" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e8a317" fill-opacity=".5"/>
     </marker>
   </defs>
   <rect width="640" height="360" fill="url(#bgfinopsanomal)"/>
-  <rect x="86" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.39" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 108 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.41" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 108 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.21" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 108 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.13" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 172 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.17" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 172 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="86" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.23" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 236 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.54" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 236 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.51" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/>
+  <rect x="86" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.39" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 108 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="212" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.41" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 108 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="338" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.21" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 108 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="212" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.13" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 172 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.17" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 172 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="86" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.23" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 236 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="212" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.54" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 236 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="464" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.51" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/>
 </svg></div>
   <div class="card-body">
     <span class="chip">FinOps</span>
@@ -185,7 +185,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#e8a317" stop-opacity=".10"/>
       <stop offset="1" stop-color="#a9760a" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahfinopstaggin" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e8a317" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -214,7 +214,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#2f6fed" stop-opacity=".10"/>
       <stop offset="1" stop-color="#1b4fc4" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahbackofenvelo" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#2f6fed" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -302,7 +302,7 @@ if(d.getAttribute('data-rface')==='serif'){
         </div>
       </div>
       <div>
-        <h4>Services</h4>
+        <h2 class="foot-title">Services</h2>
         <ul>
           <li><a href="/services/#architecture">Enterprise architecture</a></li>
           <li><a href="/services/#ai">AI &amp; MLOps</a></li>
@@ -311,7 +311,7 @@ if(d.getAttribute('data-rface')==='serif'){
         </ul>
       </div>
       <div>
-        <h4>Insights</h4>
+        <h2 class="foot-title">Insights</h2>
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/series/">Series</a></li>
@@ -320,7 +320,7 @@ if(d.getAttribute('data-rface')==='serif'){
         </ul>
       </div>
       <div>
-        <h4>Contact</h4>
+        <h2 class="foot-title">Contact</h2>
         <ul>
           <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
           <li><a href="/contact/">Start an engagement</a></li>

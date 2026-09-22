@@ -1,7 +1,7 @@
 ---
 title: "API Gateway Patterns for Enterprise Microservices"
 description: "API gateways are often treated as simple reverse proxies. At enterprise scale, they become the enforcement point for authentication, rate limiting, observability, and contract management. Here's what the design decisions look like."
-date: 2026-08-19
+date: 2027-01-29
 tags: ["Cloud Architecture", "Architecture", "DevSecOps"]
 format: article
 ---

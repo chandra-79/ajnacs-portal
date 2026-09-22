@@ -1,7 +1,7 @@
 ---
 title: "The Strangler Fig in Practice: Incremental Legacy Replacement That Actually Finishes"
 description: "Everyone cites the strangler pattern; few finish a strangulation. The facade and routing mechanics, the data-migration sequencing that makes or breaks it, the organizational funding model, and the anti-patterns that leave estates half-strangled forever."
-date: 2025-03-11
+date: 2026-01-19
 tags: ["Legacy Modernization", "Architecture", "Distributed Systems", "Engineering Practice", "Technical Debt"]
 format: article
 ---

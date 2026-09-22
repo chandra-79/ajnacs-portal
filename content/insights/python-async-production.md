@@ -1,7 +1,7 @@
 ---
 title: "Async Python in Production: What asyncio Buys You, and What It Costs"
 description: "A practitioner's guide to running asyncio-based services in production — when async actually helps, the blocking-call trap, structured concurrency with TaskGroups, and the operational habits that keep event loops healthy."
-date: 2025-02-10
+date: 2026-10-07
 tags: ["Python", "Async", "Performance", "Programming", "Cloud Architecture"]
 format: article
 ---

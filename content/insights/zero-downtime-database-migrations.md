@@ -1,7 +1,7 @@
 ---
 title: "Zero-Downtime Database Migrations: The Expand/Contract Discipline"
 description: "Application deploys got fast and reversible; schema changes stayed dangerous. The expand/contract pattern in detail — backwards-compatible steps, backfills that don't melt production, lock-safety in Postgres/MySQL, and the pipeline gates that enforce it."
-date: 2025-04-18
+date: 2028-03-13
 tags: ["Data Engineering", "Deployment", "Platform Engineering", "Programming", "Reliability"]
 format: article
 ---

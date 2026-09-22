@@ -1,7 +1,7 @@
 ---
 title: "Shift Left on Security Means Earlier, Not Fewer"
 description: "Security earlier in the development process is unambiguously better. Security earlier does not mean security functions are eliminated — it means the security function moves from audit to enablement."
-date: 2025-10-02
+date: 2028-10-09
 tags: ["DevSecOps", "Engineering Leadership"]
 format: article
 ---

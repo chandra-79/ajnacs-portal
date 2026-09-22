@@ -1,7 +1,7 @@
 ---
 title: "Staging Stopped Reflecting Production Months Ago — You Just Haven't Checked"
 description: "Staging environment drift is not a one-time event. It accumulates silently through unsynced config changes, schema migrations that skipped staging, and data that ages out of relevance."
-date: 2026-04-15
+date: 2028-10-02
 tags: ["DevSecOps", "Infrastructure", "Software Engineering"]
 format: article
 ---

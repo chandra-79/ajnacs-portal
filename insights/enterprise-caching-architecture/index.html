@@ -105,7 +105,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#0891b2" stop-opacity=".10"/>
       <stop offset="1" stop-color="#076f87" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahenterpriseca" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#0891b2" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -122,7 +122,7 @@ if(d.getAttribute('data-rface')==='serif'){
 <p>In most enterprise systems I&#39;ve worked on, the database is the first thing that breaks under load. Not because the database is bad — but because everything hits it directly, and disks are slow.</p>
 <p>Caching is the answer, but &quot;add Redis&quot; isn&#39;t a strategy. Here&#39;s how to think about multi-tier caching properly, and what actually matters in production.</p>
 <hr>
-<h2 id="why-caching-matters-more-than-most-people-plan-for"><a class="h-anchor" href="#why-caching-matters-more-than-most-people-plan-for" aria-label="Link to this section">#</a>Why caching matters more than most people plan for</h2>
+<h2 id="why-caching-matters-more-than-most-people-plan-for"><a class="h-anchor" href="#why-caching-matters-more-than-most-people-plan-for" aria-hidden="true" tabindex="-1">#</a>Why caching matters more than most people plan for</h2>
 <aside class="keyfig">
   <p class="keyfig-label">Key figure</p>
   <p class="keyfig-text">That&#39;s a <b>50x</b> difference between a Redis hit and a cold DB call.</p>
@@ -137,16 +137,16 @@ if(d.getAttribute('data-rface')==='serif'){
 </ul>
 <p>That&#39;s a 50x difference between a Redis hit and a cold DB call. At scale, that gap determines whether your system survives a traffic spike or buckles.</p>
 <hr>
-<h2 id="the-multi-tier-caching-model"><a class="h-anchor" href="#the-multi-tier-caching-model" aria-label="Link to this section">#</a>The multi-tier caching model</h2>
+<h2 id="the-multi-tier-caching-model"><a class="h-anchor" href="#the-multi-tier-caching-model" aria-hidden="true" tabindex="-1">#</a>The multi-tier caching model</h2>
 <pre><code>Client → CDN/Edge → App Server → Distributed Cache → Database
 </code></pre>
 <p>Each layer has a specific job:</p>
 <div class="table-wrap"><table><thead><tr><th>Layer</th><th>Technology</th><th>What it caches</th></tr></thead><tbody><tr><td><strong>Client</strong></td><td>Browser localStorage, Service Worker</td><td>Static assets, user preferences</td></tr><tr><td><strong>CDN / Edge</strong></td><td>Cloudflare, AWS CloudFront</td><td>HTML, JS, CSS, images, API responses</td></tr><tr><td><strong>App Server</strong></td><td>In-process local cache (Caffeine, Guava)</td><td>Session data, frequently read config</td></tr><tr><td><strong>Distributed Cache</strong></td><td>Redis, Memcached</td><td>Shared application state, hot DB results</td></tr><tr><td><strong>Database</strong></td><td>Query cache, buffer pool</td><td>Index pages, frequently accessed rows</td></tr></tbody></table></div>
 <p>The key insight: the distributed cache layer (Redis) is your most important investment. It sits between your application and your database and absorbs the volume that would otherwise hammer disk I/O.</p>
 <hr>
-<h2 id="oltp-vs-olap-different-workloads-different-strategies"><a class="h-anchor" href="#oltp-vs-olap-different-workloads-different-strategies" aria-label="Link to this section">#</a>OLTP vs OLAP — different workloads, different strategies</h2>
+<h2 id="oltp-vs-olap-different-workloads-different-strategies"><a class="h-anchor" href="#oltp-vs-olap-different-workloads-different-strategies" aria-hidden="true" tabindex="-1">#</a>OLTP vs OLAP — different workloads, different strategies</h2>
 <p>Transactional and analytical workloads have fundamentally different caching needs.</p>
-<h3 id="oltp-transactional-e-commerce-banking-apis-user-sessions"><a class="h-anchor" href="#oltp-transactional-e-commerce-banking-apis-user-sessions" aria-label="Link to this section">#</a>OLTP (Transactional) — e-commerce, banking APIs, user sessions</h3>
+<h3 id="oltp-transactional-e-commerce-banking-apis-user-sessions"><a class="h-anchor" href="#oltp-transactional-e-commerce-banking-apis-user-sessions" aria-hidden="true" tabindex="-1">#</a>OLTP (Transactional) — e-commerce, banking APIs, user sessions</h3>
 <p><strong>Cache-Aside (Lazy Loading):</strong><br>Application checks the cache first. On a miss, fetch from the database and populate the cache. Simple, battle-tested, works well when data access patterns are unpredictable.</p>
 <pre><code class="language-python">def get_user(user_id):
     cached = redis.get(f&quot;user:{user_id}&quot;)
@@ -158,7 +158,7 @@ if(d.getAttribute('data-rface')==='serif'){
     return user
 </code></pre>
 <p><strong>Write-Through:</strong><br>Write to cache and database simultaneously. Ensures cache consistency at the cost of slightly higher write latency. Right choice when data freshness matters.</p>
-<h3 id="olap-analytical-bi-dashboards-monthly-reports-aggregations"><a class="h-anchor" href="#olap-analytical-bi-dashboards-monthly-reports-aggregations" aria-label="Link to this section">#</a>OLAP (Analytical) — BI dashboards, monthly reports, aggregations</h3>
+<h3 id="olap-analytical-bi-dashboards-monthly-reports-aggregations"><a class="h-anchor" href="#olap-analytical-bi-dashboards-monthly-reports-aggregations" aria-hidden="true" tabindex="-1">#</a>OLAP (Analytical) — BI dashboards, monthly reports, aggregations</h3>
 <p><strong>Query Result Caching:</strong><br>Store the output of expensive <code>GROUP BY</code> and aggregation queries. A monthly revenue report that takes 8 seconds to compute can be cached for 24 hours with no user-visible impact.</p>
 <p><strong>TTL Tiers:</strong>  </p>
 <ul>
@@ -168,7 +168,7 @@ if(d.getAttribute('data-rface')==='serif'){
 </ul>
 <p>The temptation in OLAP is to cache everything forever. Resist it — stale analytical data causes trust problems that are harder to fix than latency.</p>
 <hr>
-<h2 id="the-thundering-herd-problem"><a class="h-anchor" href="#the-thundering-herd-problem" aria-label="Link to this section">#</a>The Thundering Herd problem</h2>
+<h2 id="the-thundering-herd-problem"><a class="h-anchor" href="#the-thundering-herd-problem" aria-hidden="true" tabindex="-1">#</a>The Thundering Herd problem</h2>
 <p>This is the failure mode that takes down systems at scale.</p>
 <p>Without caching, a traffic spike translates 1:1 to database load. On Black Friday, your 1000 requests/second becomes 1000 database queries/second. The database saturates, response times climb, users retry, load doubles, the database crashes.</p>
 <p>With a Read-Through cache strategy:</p>
@@ -179,7 +179,7 @@ if(d.getAttribute('data-rface')==='serif'){
 </ul>
 <p>The data: in a simulated traffic spike from 500 req/s to 4800 req/s, a properly cached system kept database CPU below 25%. Without caching, the same spike would push it past 100%.</p>
 <hr>
-<h2 id="the-metric-that-matters-cache-hit-ratio"><a class="h-anchor" href="#the-metric-that-matters-cache-hit-ratio" aria-label="Link to this section">#</a>The metric that matters: Cache Hit Ratio</h2>
+<h2 id="the-metric-that-matters-cache-hit-ratio"><a class="h-anchor" href="#the-metric-that-matters-cache-hit-ratio" aria-hidden="true" tabindex="-1">#</a>The metric that matters: Cache Hit Ratio</h2>
 <p>Everything else is secondary to this number.</p>
 <p><strong>Target: 90%+</strong></p>
 <p>A 92% hit ratio means 92 out of every 100 requests return from cache — fast, cheap, no disk I/O. Only 8 requests touch the database.</p>
@@ -192,7 +192,7 @@ if(d.getAttribute('data-rface')==='serif'){
 </ol>
 <p>Monitor this metric in production. It&#39;s a leading indicator — a dropping hit ratio often predicts an upcoming incident before anything else does.</p>
 <hr>
-<h2 id="hot-data-and-the-pareto-principle"><a class="h-anchor" href="#hot-data-and-the-pareto-principle" aria-label="Link to this section">#</a>Hot data and the Pareto Principle</h2>
+<h2 id="hot-data-and-the-pareto-principle"><a class="h-anchor" href="#hot-data-and-the-pareto-principle" aria-hidden="true" tabindex="-1">#</a>Hot data and the Pareto Principle</h2>
 <p>In almost every system I&#39;ve looked at, roughly 20% of the data accounts for 80% of the access requests. This is the &quot;hot data&quot; segment.</p>
 <p>Caching is most effective when you identify this segment deliberately rather than caching everything and hoping for the best.</p>
 <p>Practical approach:</p>
@@ -204,7 +204,7 @@ if(d.getAttribute('data-rface')==='serif'){
 </ol>
 <p>This is how you get from a 70% hit ratio to 92%+.</p>
 <hr>
-<h2 id="things-i39ve-learned-from-production-issues"><a class="h-anchor" href="#things-i39ve-learned-from-production-issues" aria-label="Link to this section">#</a>Things I&#39;ve learned from production issues</h2>
+<h2 id="things-i39ve-learned-from-production-issues"><a class="h-anchor" href="#things-i39ve-learned-from-production-issues" aria-hidden="true" tabindex="-1">#</a>Things I&#39;ve learned from production issues</h2>
 <p><strong>Don&#39;t cache without a TTL.</strong> Memory fills up, the cache becomes stale, and you&#39;ll have a confusing incident where users see outdated data for hours.</p>
 <p><strong>Test your cache-miss path.</strong> The sad path — when the cache is cold, wrong, or expired — needs to handle gracefully. If your app can&#39;t run without a warm cache, that&#39;s a fragility you&#39;ll regret.</p>
 <p><strong>Redis isn&#39;t free.</strong> Memory is finite. Get your eviction policy right (<code>allkeys-lru</code> is usually the right default for a cache-only Redis instance). Monitor memory usage. Set <code>maxmemory</code>.</p>
@@ -246,7 +246,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#e0473a" stop-opacity=".10"/>
       <stop offset="1" stop-color="#c03a2e" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahplatformengo" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e0473a" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -267,7 +267,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#0e7490" stop-opacity=".10"/>
       <stop offset="1" stop-color="#0b5f77" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahplatformengm" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#0e7490" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -296,7 +296,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#0e7490" stop-opacity=".10"/>
       <stop offset="1" stop-color="#0b5f77" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahplatformengi" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#0e7490" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -376,7 +376,7 @@ if(d.getAttribute('data-rface')==='serif'){
         </div>
       </div>
       <div>
-        <h4>Services</h4>
+        <h2 class="foot-title">Services</h2>
         <ul>
           <li><a href="/services/#architecture">Enterprise architecture</a></li>
           <li><a href="/services/#ai">AI &amp; MLOps</a></li>
@@ -385,7 +385,7 @@ if(d.getAttribute('data-rface')==='serif'){
         </ul>
       </div>
       <div>
-        <h4>Insights</h4>
+        <h2 class="foot-title">Insights</h2>
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/series/">Series</a></li>
@@ -394,7 +394,7 @@ if(d.getAttribute('data-rface')==='serif'){
         </ul>
       </div>
       <div>
-        <h4>Contact</h4>
+        <h2 class="foot-title">Contact</h2>
         <ul>
           <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
           <li><a href="/contact/">Start an engagement</a></li>

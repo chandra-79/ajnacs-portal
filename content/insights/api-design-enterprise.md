@@ -1,7 +1,7 @@
 ---
 title: "API Design for Enterprise Systems: The Decisions That Age Well"
 description: "An API that's easy to build against is easy to build wrong. The decisions around versioning, error models, pagination, idempotency, and authentication compound over time — here's how to make the ones that don't cause regret."
-date: 2026-06-22
+date: 2026-11-06
 tags: ["Programming", "Architecture", "Cloud Architecture"]
 format: article
 ---

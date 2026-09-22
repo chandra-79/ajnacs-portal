@@ -1,7 +1,7 @@
 ---
 title: "The Data Lakehouse: Why It Won, and How to Architect One That Works"
 description: "Data warehouses couldn't handle unstructured data at scale. Data lakes couldn't enforce schemas or serve BI queries efficiently. The lakehouse combines both — here's the architecture, the open table formats that make it work, and the practical design decisions."
-date: 2026-06-30
+date: 2026-10-05
 tags: ["Data Engineering", "Cloud Architecture", "AI & MLOps"]
 format: article
 ---

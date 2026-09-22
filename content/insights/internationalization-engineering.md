@@ -1,7 +1,7 @@
 ---
 title: "Internationalization as Architecture: The Engineering Under 'Just Translate It'"
 description: "i18n retrofits are among the most expensive projects in product engineering because locale assumptions hide everywhere — strings, plurals, dates, numbers, names, layouts, and the database. The externalization discipline, ICU MessageFormat, the translation pipeline, and what to build before you need it."
-date: 2024-12-27
+date: 2027-07-26
 tags: ["Programming", "Developer Experience", "Product Engineering", "Architecture"]
 format: article
 ---

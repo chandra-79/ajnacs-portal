@@ -1,7 +1,7 @@
 ---
 title: "Vector Databases in Production: What the Benchmarks Don't Tell You"
 description: "Pgvector, Pinecone, Weaviate, Qdrant — each has strong benchmark numbers. The decision that matters is which one fits your operational model, data volume, and query patterns. Here's what actually differentiates them at production scale."
-date: 2026-09-11
+date: 2027-03-10
 tags: ["Data Engineering", "AI & MLOps", "Cloud Architecture"]
 format: article
 ---

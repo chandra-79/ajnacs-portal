@@ -1,7 +1,7 @@
 ---
 title: "The Real Cost of Context Switching for Engineers (It's Not What You Think)"
 description: "Context switching costs are real, measurable, and significantly higher than most organizations account for in sprint planning. Understanding the cognitive mechanism explains why deep work is so hard to protect."
-date: 2025-12-17
+date: 2029-01-05
 tags: ["Engineering Leadership"]
 format: article
 ---

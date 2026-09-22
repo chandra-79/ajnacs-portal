@@ -1,7 +1,7 @@
 ---
 title: "SSH: Key Management, Configuration, Tunneling, and Hardening"
 description: "How SSH works, generating and managing keys, the SSH config file, port forwarding and tunneling, jump hosts, and the hardening configuration that every production server should have."
-date: 2026-08-17
+date: 2027-10-15
 tags: ["Programming", "Fundamentals"]
 series: "Linux: A Complete Practical Course"
 seriesOrder: 15

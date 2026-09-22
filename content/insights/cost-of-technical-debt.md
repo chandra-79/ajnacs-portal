@@ -1,7 +1,7 @@
 ---
 title: "The Real Cost of Technical Debt: How to Measure It and When to Pay It Down"
 description: "Technical debt is real but often argued about in vague terms. The conversations that get debt prioritized are the ones that translate it into concrete cost: slower delivery, higher incident rates, longer onboarding time."
-date: 2026-04-27
+date: 2026-12-11
 tags: ["Engineering Leadership", "Architecture"]
 format: article
 ---

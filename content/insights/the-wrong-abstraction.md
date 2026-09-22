@@ -1,7 +1,7 @@
 ---
 title: "The wrong abstraction is more expensive than no abstraction."
 description: "The decision to create an abstraction is a prediction."
-date: 2026-02-17
+date: 2028-12-25
 tags: ["Architecture", "Engineering Leadership"]
 format: article
 derived: true

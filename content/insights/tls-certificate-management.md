@@ -1,7 +1,7 @@
 ---
 title: "Certificate Management at Scale: Ending the Expiry-Outage Genre"
 description: "TLS certificates cause a uniquely preventable class of outage, and shortening browser-mandated lifetimes are forcing the issue. Automation with ACME, internal PKI design, the inventory problem, and mTLS certificate hygiene for service fleets."
-date: 2025-03-20
+date: 2027-07-07
 tags: ["Security", "TLS", "Platform Engineering", "Reliability", "Architecture"]
 format: article
 ---

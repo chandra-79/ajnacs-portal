@@ -1,7 +1,7 @@
 ---
 title: "Designing for Failure: Resilience Patterns That Actually Hold in Production"
 description: "Circuit breakers, bulkheads, retry logic, chaos engineering — the resilience patterns that genuinely reduce MTTR and the ones that look good on architecture diagrams but fail when things get real."
-date: 2025-05-08
+date: 2026-01-07
 tags: ["Cloud Architecture", "Infrastructure", "Observability"]
 format: article
 ---

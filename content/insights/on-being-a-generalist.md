@@ -1,7 +1,7 @@
 ---
 title: "The senior generalist is not a failed specialist. They are a different and necessary function."
 description: "The specialist-generalist tension in engineering careers is often framed as a choice between depth and breadth, as though one person cannot have both."
-date: 2025-10-09
+date: 2029-06-11
 tags: ["Engineering Leadership"]
 format: article
 derived: true

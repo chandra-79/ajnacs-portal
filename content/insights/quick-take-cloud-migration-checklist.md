@@ -1,7 +1,7 @@
 ---
 title: "What a Cloud Migration Checklist Misses: Operational Readiness"
 description: "Most cloud migration checklists stop at technical completion — services moved, databases replicated, DNS cut over. Operational readiness is the part nobody puts on the checklist."
-date: 2025-10-27
+date: 2028-08-09
 tags: ["Cloud Architecture", "Engineering Leadership"]
 format: article
 ---

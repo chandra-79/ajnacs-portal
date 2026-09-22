@@ -1,7 +1,7 @@
 ---
 title: "Bounded Contexts: The Part of Domain-Driven Design That Was Always the Point"
 description: "DDD's tactical patterns come and go with fashion; the strategic insight — that large domains cannot have one consistent model, and boundaries must be drawn deliberately — is the most durable idea in enterprise architecture. Context mapping, integration patterns, and finding the seams."
-date: 2024-11-11
+date: 2027-09-08
 tags: ["Domain-Driven Design", "Architecture", "Distributed Systems", "Engineering Practice"]
 format: article
 ---

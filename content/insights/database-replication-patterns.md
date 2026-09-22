@@ -1,7 +1,7 @@
 ---
 title: "Database Replication Patterns: Read Replicas, Multi-Primary, and When Each Applies"
 description: "Database replication serves two distinct goals — high availability (survive a primary failure) and read scaling (distribute read traffic). The configuration that optimizes for one is often wrong for the other."
-date: 2025-07-23
+date: 2025-08-04
 tags: ["Data Engineering", "Cloud Architecture"]
 format: article
 ---

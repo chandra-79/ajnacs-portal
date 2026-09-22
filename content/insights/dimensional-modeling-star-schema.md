@@ -1,7 +1,7 @@
 ---
 title: "Dimensional Modeling Still Matters: Star Schemas in the Lakehouse Era"
 description: "The Kimball playbook outlived every platform it was declared obsolete on. Facts and dimensions as an interface for humans, slowly changing dimensions demystified, what wide tables and semantic layers actually change, and where the discipline pays in modern stacks."
-date: 2024-11-18
+date: 2027-09-10
 tags: ["Data Engineering", "Analytics", "Data Modeling", "Architecture"]
 format: article
 ---

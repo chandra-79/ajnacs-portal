@@ -1,7 +1,7 @@
 ---
 title: "Why Data Ownership Is the Hardest Part of Data Governance"
 description: "Every data governance framework names data owners. Almost none of them explain what ownership actually means in practice — or what happens when the named owner changes roles."
-date: 2026-01-26
+date: 2028-07-07
 tags: ["Data Engineering", "Engineering Leadership"]
 format: article
 ---

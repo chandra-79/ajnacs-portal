@@ -1,7 +1,7 @@
 ---
 title: "Azure Networking Architecture: VNets, Peering, and Private Endpoints at Enterprise Scale"
 description: "Azure's networking model is powerful and complex. Virtual networks, peering, Private Endpoints, and hybrid connectivity each have specific behaviors that matter when designing for security and reliability."
-date: 2025-11-24
+date: 2027-02-17
 tags: ["Cloud Architecture"]
 format: article
 ---

@@ -1,7 +1,7 @@
 ---
 title: "Mentorship as Engineering Leverage: Why Experienced Engineers Underinvest in It"
 description: "An experienced engineer who mentors three junior engineers well produces more cumulative output than they could produce individually. Most experienced engineers treat mentorship as optional."
-date: 2026-03-04
+date: 2028-11-20
 tags: ["Engineering Leadership"]
 format: article
 ---

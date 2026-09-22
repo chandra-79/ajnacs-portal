@@ -1,7 +1,7 @@
 ---
 title: "Vendor Lock-in Is Not Always a Mistake — Sometimes It Is the Correct Trade"
 description: "Deliberate, acknowledged lock-in in exchange for significant capability advantage is a legitimate architectural decision. The mistake is not choosing lock-in — it is choosing it without recognizing it."
-date: 2025-10-13
+date: 2028-08-07
 tags: ["Cloud Architecture", "Architecture", "Engineering Leadership"]
 format: article
 ---

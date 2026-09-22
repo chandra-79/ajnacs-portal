@@ -1,7 +1,7 @@
 ---
 title: "Always Run Showback Before Chargeback — The Conversation It Starts Is the Point"
 description: "Chargeback without showback produces a bill without context. Showback first gives teams time to understand their costs before accountability begins — and the conversation during showback is where the real work happens."
-date: 2025-12-24
+date: 2028-09-15
 tags: ["FinOps", "Engineering Leadership"]
 format: article
 ---

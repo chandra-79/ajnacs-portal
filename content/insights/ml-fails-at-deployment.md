@@ -1,7 +1,7 @@
 ---
 title: "Most ML models fail at deployment, not at training — and this surprises teams that shouldn't be surprised"
 description: "Good offline evaluation metrics are necessary for a production-ready ML model. They are not sufficient."
-date: 2026-03-31
+date: 2029-01-01
 tags: ["Enterprise AI", "AI & MLOps"]
 format: article
 derived: true

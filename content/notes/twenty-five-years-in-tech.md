@@ -1,7 +1,7 @@
 ---
 title: "25 years in tech — the things nobody puts on a resume"
 description: "The resume version is clean. A line of titles, a cascade of technologies, a set of outcomes expressed as percentages."
-date: 2025-06-23
+date: 2024-12-30
 tags: ["Career", "Reflection", "Tech"]
 format: article
 derived: true

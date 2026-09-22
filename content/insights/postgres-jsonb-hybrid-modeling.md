@@ -1,7 +1,7 @@
 ---
 title: "JSONB in Postgres: Hybrid Modeling Without Rebuilding MongoDB Badly"
 description: "The relational-vs-document decision stopped being a database choice and became a per-column choice. Where JSONB genuinely belongs, the indexing and query toolkit, the schema-discipline line that keeps hybrids healthy, and the drift into document-store cosplay to avoid."
-date: 2025-02-03
+date: 2028-05-31
 tags: ["Data Engineering", "Programming", "Data Modeling"]
 format: article
 ---

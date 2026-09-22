@@ -1,7 +1,7 @@
 ---
 title: "Notification Systems: The Architecture Behind 'Just Send Them a Message'"
 description: "Notifications are a full distributed pipeline wearing a feature's costume — channel orchestration, preference and quiet-hours logic, batching and digests, deduplication across retries, and the engagement feedback loop that separates signal from spam."
-date: 2025-01-23
+date: 2028-03-22
 tags: ["Programming", "Architecture", "Distributed Systems", "Product Engineering", "SaaS"]
 format: article
 ---

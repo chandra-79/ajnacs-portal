@@ -1,7 +1,7 @@
 ---
 title: "Distributed Tracing: The Observability Investment With the Longest Payback"
 description: "Distributed tracing is the most powerful tool for diagnosing production issues in microservices architectures. It is also the hardest to instrument and the first thing cut when timelines are tight."
-date: 2025-08-04
+date: 2028-06-09
 tags: ["DevSecOps", "Cloud Architecture"]
 format: article
 ---

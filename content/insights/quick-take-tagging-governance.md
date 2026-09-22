@@ -1,7 +1,7 @@
 ---
 title: "Your Cloud Tagging Problem Is an Organisational Problem, Not a Technical One"
 description: "Tagging governance fails because it requires consistent human behavior across many teams and many decisions over a long period. No tool solves that without organizational change."
-date: 2025-09-01
+date: 2028-02-18
 tags: ["FinOps", "Cloud Architecture", "Engineering Leadership"]
 format: article
 ---

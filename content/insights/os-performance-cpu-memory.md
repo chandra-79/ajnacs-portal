@@ -1,7 +1,7 @@
 ---
 title: "CPU and Memory Performance Analysis on Linux"
 description: "How to read top, htop, vmstat, sar, and perf to diagnose CPU saturation, memory pressure, and kernel bottlenecks before they become outages."
-date: 2026-08-21
+date: 2027-01-13
 tags: ["Programming", "Fundamentals"]
 series: "Linux: A Complete Practical Course"
 seriesOrder: 16

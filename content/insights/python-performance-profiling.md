@@ -1,7 +1,7 @@
 ---
 title: "Python Performance: Profile First, Then Pick Your Weapon"
 description: "A working method for making Python faster — production-safe profiling with py-spy, the optimization ladder from algorithm to NumPy to Rust extensions, and what free-threaded CPython actually changes."
-date: 2025-02-12
+date: 2028-04-10
 tags: ["Python", "Performance", "Profiling", "Programming"]
 format: article
 ---

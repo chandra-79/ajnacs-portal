@@ -1,7 +1,7 @@
 ---
 title: "Post-Quantum Cryptography Migration: What Enterprises Should Be Doing Now"
 description: "Harvest-now-decrypt-later is already happening, the NIST standards are final, and the deadlines are set. A practical enterprise roadmap for post-quantum migration — inventory, crypto-agility, hybrid TLS, and the sequencing that separates prepared from panicked."
-date: 2025-02-03
+date: 2027-05-10
 tags: ["Quantum Computing", "Security", "Cryptography", "Architecture", "Compliance"]
 format: article
 ---

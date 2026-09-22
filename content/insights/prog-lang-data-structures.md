@@ -1,7 +1,7 @@
 ---
 title: "Data Structures Every Programmer Must Know — and When to Use Each"
 description: "Arrays, hash maps, linked lists, stacks, queues, trees. The choice of data structure determines performance as much as the algorithm does. Here is the practical guide."
-date: 2026-05-28
+date: 2027-06-04
 tags: ["Programming", "Fundamentals"]
 series: "Getting Started with Programming Languages"
 seriesOrder: 4

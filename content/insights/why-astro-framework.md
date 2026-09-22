@@ -1,7 +1,7 @@
 ---
 title: "Why I Built This Portfolio in Astro — and Why I'd Choose It Again"
 description: "After rebuilding this site in Gatsby, then Next.js, then deciding both were overkill for a content site, I landed on Astro. Eighteen months later I understand why it was the right call — and where it genuinely struggles."
-date: 2025-06-11
+date: 2028-07-24
 tags: ["Programming", "Software Engineering", "Developer Tools"]
 format: article
 ---

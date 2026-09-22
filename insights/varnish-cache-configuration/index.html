@@ -105,7 +105,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#475569" stop-opacity=".10"/>
       <stop offset="1" stop-color="#334155" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahvarnishcache" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#475569" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -120,7 +120,7 @@ if(d.getAttribute('data-rface')==='serif'){
 </nav></div>
     <div class="prose">
 <p>Varnish Cache sits in front of your web servers and caches responses in memory. For content-heavy sites with high read traffic, a correctly configured Varnish instance absorbs most of the load that would otherwise hit your application servers. The challenge is &quot;correctly configured&quot; — Varnish&#39;s Varnish Configuration Language (VCL) is C-like and the default behavior needs adjustment for most real workloads.</p>
-<h2 id="the-vcl-request-lifecycle"><a class="h-anchor" href="#the-vcl-request-lifecycle" aria-label="Link to this section">#</a>The VCL request lifecycle</h2>
+<h2 id="the-vcl-request-lifecycle"><a class="h-anchor" href="#the-vcl-request-lifecycle" aria-hidden="true" tabindex="-1">#</a>The VCL request lifecycle</h2>
 <aside class="keyfig">
   <p class="keyfig-label">Key figure</p>
   <p class="keyfig-text">A well-configured Varnish instance handling content workloads should have a hit ratio above <b>90%</b>.</p>
@@ -135,7 +135,7 @@ if(d.getAttribute('data-rface')==='serif'){
 <li><code>vcl_deliver</code>: send response to client</li>
 </ul>
 <p>You override behavior by adding logic to these subroutines in your VCL file.</p>
-<h2 id="the-minimum-config-that-makes-varnish-useful"><a class="h-anchor" href="#the-minimum-config-that-makes-varnish-useful" aria-label="Link to this section">#</a>The minimum config that makes Varnish useful</h2>
+<h2 id="the-minimum-config-that-makes-varnish-useful"><a class="h-anchor" href="#the-minimum-config-that-makes-varnish-useful" aria-hidden="true" tabindex="-1">#</a>The minimum config that makes Varnish useful</h2>
 <p>Default Varnish won&#39;t cache requests with cookies. Since most modern applications set cookies, this means nothing gets cached by default. The first VCL customisation: strip cookies for assets that don&#39;t need them.</p>
 <pre><code class="language-vcl">sub vcl_recv {
     // Strip cookies for static assets
@@ -150,7 +150,7 @@ if(d.getAttribute('data-rface')==='serif'){
 }
 </code></pre>
 <p>With cookies stripped, Varnish will serve these from cache for all users.</p>
-<h2 id="cache-key-design"><a class="h-anchor" href="#cache-key-design" aria-label="Link to this section">#</a>Cache key design</h2>
+<h2 id="cache-key-design"><a class="h-anchor" href="#cache-key-design" aria-hidden="true" tabindex="-1">#</a>Cache key design</h2>
 <p>The default cache key is <code>Host</code> + <code>URL</code>. For most applications this is correct, but some workloads need adjustment.</p>
 <p><strong>Vary headers</strong>: if your application serves different content based on <code>Accept-Encoding</code> or <code>Accept-Language</code>, the <code>Vary</code> response header tells Varnish to cache separate versions per value. A <code>Vary: Accept-Encoding</code> header means Varnish caches both the gzip and non-gzip versions of each URL separately. Too many Vary headers fragment the cache and reduce hit rates.</p>
 <p><strong>Normalise query strings</strong>: URLs with different query parameter orderings are cached separately by default. <code>?sort=name&amp;page=2</code> and <code>?page=2&amp;sort=name</code> produce different cache entries. Normalise query strings to increase cache hits:</p>
@@ -160,7 +160,7 @@ if(d.getAttribute('data-rface')==='serif'){
     set req.url = regsub(req.url, &quot;(\?[^#]+)#.*$&quot;, &quot;\1&quot;);  // strip fragment
 }
 </code></pre>
-<h2 id="ttl-strategy"><a class="h-anchor" href="#ttl-strategy" aria-label="Link to this section">#</a>TTL strategy</h2>
+<h2 id="ttl-strategy"><a class="h-anchor" href="#ttl-strategy" aria-hidden="true" tabindex="-1">#</a>TTL strategy</h2>
 <p>Varnish caches based on the <code>Cache-Control</code> header from your backend. If your backend sends <code>Cache-Control: max-age=300</code>, Varnish caches for 5 minutes. If the backend doesn&#39;t send a caching header, Varnish uses its <code>default_ttl</code> (120 seconds by default).</p>
 <p>In <code>vcl_backend_response</code>, you can override or extend TTLs:</p>
 <pre><code class="language-vcl">sub vcl_backend_response {
@@ -183,7 +183,7 @@ if(d.getAttribute('data-rface')==='serif'){
 }
 </code></pre>
 <p><strong>Grace mode</strong> is underused and valuable. <code>beresp.grace = 120s</code> tells Varnish: &quot;if the cached object is expired but the backend is slow or unavailable, serve the stale object for up to 2 minutes&quot;. This prevents users from seeing errors during backend restarts or traffic spikes.</p>
-<h2 id="handling-authenticated-content"><a class="h-anchor" href="#handling-authenticated-content" aria-label="Link to this section">#</a>Handling authenticated content</h2>
+<h2 id="handling-authenticated-content"><a class="h-anchor" href="#handling-authenticated-content" aria-hidden="true" tabindex="-1">#</a>Handling authenticated content</h2>
 <p>Content behind authentication should not be served from cache to unauthenticated users. The standard approach:</p>
 <pre><code class="language-vcl">sub vcl_recv {
     // Pass authenticated requests directly to backend
@@ -203,7 +203,7 @@ if(d.getAttribute('data-rface')==='serif'){
 &lt;esi:include src=&quot;/content/article-body&quot; ttl=&quot;3600&quot; /&gt;
 </code></pre>
 <p>Varnish assembles the final response by fetching and caching each included fragment independently. The article body is cached for an hour; the user header fragment is not cached (or cached briefly). The result: most of the page comes from cache; only the personalised fragment hits the backend.</p>
-<h2 id="purging-cached-content"><a class="h-anchor" href="#purging-cached-content" aria-label="Link to this section">#</a>Purging cached content</h2>
+<h2 id="purging-cached-content"><a class="h-anchor" href="#purging-cached-content" aria-hidden="true" tabindex="-1">#</a>Purging cached content</h2>
 <p>When content changes, you need to invalidate the cached version. Varnish provides several mechanisms:</p>
 <p><strong>BAN</strong>: mark all cached objects matching an expression as invalid</p>
 <pre><code class="language-bash">varnishadm ban req.url ~ ^/blog/new-post
@@ -228,7 +228,7 @@ sub vcl_recv {
 <pre><code class="language-bash">curl -X PURGE http://varnish-host/blog/specific-post
 </code></pre>
 <p>In production, restrict purge requests to trusted internal IPs.</p>
-<h2 id="monitoring-what-varnish-is-doing"><a class="h-anchor" href="#monitoring-what-varnish-is-doing" aria-label="Link to this section">#</a>Monitoring what Varnish is doing</h2>
+<h2 id="monitoring-what-varnish-is-doing"><a class="h-anchor" href="#monitoring-what-varnish-is-doing" aria-hidden="true" tabindex="-1">#</a>Monitoring what Varnish is doing</h2>
 <p><code>varnishstat</code> shows real-time statistics: cache hit ratio, request rate, backend health. The metric to watch first: <code>cache_hit / (cache_hit + cache_miss)</code>. A well-configured Varnish instance handling content workloads should have a hit ratio above 90%.</p>
 <p><code>varnishlog</code> shows request-level logs with the cache decision for each request. Essential for debugging why specific requests aren&#39;t being cached.</p>
 <p><em>Tuning a Varnish configuration or designing a caching strategy for a high-traffic site? <a href="/contact">Happy to work through the specifics.</a></em></p>
@@ -266,7 +266,7 @@ sub vcl_recv {
       <stop offset="0" stop-color="#e0473a" stop-opacity=".10"/>
       <stop offset="1" stop-color="#c03a2e" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahplatformengo" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e0473a" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -287,7 +287,7 @@ sub vcl_recv {
       <stop offset="0" stop-color="#0e7490" stop-opacity=".10"/>
       <stop offset="1" stop-color="#0b5f77" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahplatformengm" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#0e7490" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -316,7 +316,7 @@ sub vcl_recv {
       <stop offset="0" stop-color="#0e7490" stop-opacity=".10"/>
       <stop offset="1" stop-color="#0b5f77" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahplatformengi" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#0e7490" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -396,7 +396,7 @@ sub vcl_recv {
         </div>
       </div>
       <div>
-        <h4>Services</h4>
+        <h2 class="foot-title">Services</h2>
         <ul>
           <li><a href="/services/#architecture">Enterprise architecture</a></li>
           <li><a href="/services/#ai">AI &amp; MLOps</a></li>
@@ -405,7 +405,7 @@ sub vcl_recv {
         </ul>
       </div>
       <div>
-        <h4>Insights</h4>
+        <h2 class="foot-title">Insights</h2>
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/series/">Series</a></li>
@@ -414,7 +414,7 @@ sub vcl_recv {
         </ul>
       </div>
       <div>
-        <h4>Contact</h4>
+        <h2 class="foot-title">Contact</h2>
         <ul>
           <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
           <li><a href="/contact/">Start an engagement</a></li>

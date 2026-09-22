@@ -1,7 +1,7 @@
 ---
 title: "Cloud Migration Is Not Modernisation: The Difference Matters"
 description: "Moving an application to the cloud preserves its problems in a more expensive environment. Modernisation requires addressing those problems. Conflating the two leads to disappointment."
-date: 2025-07-21
+date: 2028-06-07
 tags: ["Cloud Architecture", "Infrastructure"]
 format: article
 ---

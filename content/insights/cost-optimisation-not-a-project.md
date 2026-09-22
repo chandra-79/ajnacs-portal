@@ -1,7 +1,7 @@
 ---
 title: "Cloud cost optimisation is not a project with an end date — it's a continuous practice"
 description: "The most common cloud cost optimisation story: the bill gets uncomfortably large, leadership forms a taskforce, the taskforce has a productive three months, the bill drops 30%, the…"
-date: 2026-02-16
+date: 2029-05-23
 tags: ["FinOps", "Engineering Leadership"]
 format: note
 derived: true

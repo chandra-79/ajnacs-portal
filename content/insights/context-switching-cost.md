@@ -1,7 +1,7 @@
 ---
 title: "Context switching is not an inconvenience. It is a significant engineering cost that most teams ignore."
 description: "The cognitive cost of context switching in knowledge work is well-documented and consistently underweighted in how engineering teams structure their days."
-date: 2025-09-11
+date: 2029-02-09
 tags: ["Engineering Leadership"]
 format: article
 derived: true

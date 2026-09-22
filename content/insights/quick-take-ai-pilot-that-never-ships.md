@@ -1,7 +1,7 @@
 ---
 title: "Why AI Pilots Succeed and Never Ship: The Production Gap"
 description: "The most common AI investment outcome is a successful pilot that never reaches production. The reasons are organizational, not technical — and they are preventable."
-date: 2026-02-19
+date: 2028-04-03
 tags: ["Enterprise AI", "Engineering Leadership"]
 format: article
 ---

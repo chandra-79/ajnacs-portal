@@ -1,7 +1,7 @@
 ---
 title: "Self-Service Infrastructure: How to Build It Without Losing Operational Control"
 description: "Scaffolding tools, infrastructure templates, self-service portals, and the approval workflows that give developers autonomy without turning the platform into a liability."
-date: 2026-07-17
+date: 2026-05-07
 tags: ["Engineering Leadership", "DevSecOps", "Fundamentals"]
 series: "Platform Engineering: From Concept to Internal Developer Platform"
 seriesOrder: 3

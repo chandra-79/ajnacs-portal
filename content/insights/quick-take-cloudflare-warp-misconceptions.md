@@ -1,7 +1,7 @@
 ---
 title: "Cloudflare WARP Is Not a VPN (And That Matters for Security Expectations)"
 description: "WARP optimizes traffic routing and encrypts your connection to Cloudflare. It does not make you anonymous, hide your traffic from Cloudflare, or provide the threat model that a traditional VPN does."
-date: 2025-11-07
+date: 2028-09-25
 tags: ["Systems", "Security", "DevSecOps"]
 format: article
 ---

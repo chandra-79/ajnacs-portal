@@ -1,7 +1,7 @@
 ---
 title: "CI/CD Security Gates: What Belongs in Every Pipeline and What's Just Theatre"
 description: "Not every security tool belongs in every pipeline stage. Here's how to sequence SAST, DAST, dependency scanning, secrets detection, and IaC security checks without creating a pipeline that takes 45 minutes and gets bypassed."
-date: 2025-04-29
+date: 2027-08-06
 tags: ["DevSecOps", "CI/CD", "Security"]
 series: "DevSecOps Pipeline"
 seriesOrder: 1

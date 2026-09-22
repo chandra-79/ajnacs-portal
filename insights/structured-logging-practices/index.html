@@ -105,7 +105,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#1e9e63" stop-opacity=".10"/>
       <stop offset="1" stop-color="#157a4c" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahstructuredlo" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#1e9e63" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -120,17 +120,17 @@ if(d.getAttribute('data-rface')==='serif'){
 </nav></div>
     <div class="prose">
 <p>Logging is the telemetry everyone has and almost nobody designs. Metrics get dashboards reviews and traces get instrumentation sprints, while logs just… accumulate — printf archaeology wrapped in an ingestion bill that grows 40% annually until finance asks why the observability vendor costs more than the compute. The waste and the weakness have the same root: logs treated as <em>text a developer emits</em> rather than what production logging actually is — <strong>a stream of structured events, designed for machines to filter and humans to trust, with an explicit cost model.</strong> Here&#39;s the design.</p>
-<h2 id="events-not-sentences"><a class="h-anchor" href="#events-not-sentences" aria-label="Link to this section">#</a>Events, not sentences</h2>
+<h2 id="events-not-sentences"><a class="h-anchor" href="#events-not-sentences" aria-hidden="true" tabindex="-1">#</a>Events, not sentences</h2>
 <p>The foundational shift: a log line is a <strong>JSON event with a schema</strong>, not a sentence with variables interpolated into it. <code>&quot;Payment failed for order 12345 after 3 retries&quot;</code> is a sentence — grep-able if you remember the phrasing, aggregatable never. The event version carries <code>event: payment_failed</code>, <code>order_id</code>, <code>retry_count</code>, <code>failure_reason</code>, <code>duration_ms</code> — and now &quot;failure rate by reason over time&quot; is a query instead of a regex safari.</p>
 <p>The schema disciplines that make event streams queryable at estate scale: <strong>a small set of standard fields on every event</strong> (timestamp, severity, service, version, environment, plus the correlation set below) — adopt an existing convention (OpenTelemetry&#39;s semantic conventions or the ECS-class schemas) rather than inventing one, because the payoff of shared field names compounds across every service and every dashboard; <strong>stable event names</strong> treated like API surface (renaming <code>payment_failed</code> breaks every alert and saved query downstream — version and deprecate, don&#39;t mutate); <strong>consistent types per field</strong> (an <code>order_id</code> that&#39;s a string here and a number there breaks indexing in ways discovered at query time); and <strong>one event per logical occurrence</strong>, not a narrative of five lines that must be mentally reassembled — the request-summary event (one rich line per request with outcome, duration, and key attributes — the classic &quot;canonical log line&quot; pattern) is worth more than fifty step-by-step murmurs, and costs less.</p>
-<h2 id="context-is-what-makes-logs-debuggable"><a class="h-anchor" href="#context-is-what-makes-logs-debuggable" aria-label="Link to this section">#</a>Context is what makes logs debuggable</h2>
+<h2 id="context-is-what-makes-logs-debuggable"><a class="h-anchor" href="#context-is-what-makes-logs-debuggable" aria-hidden="true" tabindex="-1">#</a>Context is what makes logs debuggable</h2>
 <p>A log line&#39;s value is mostly its <em>joinability</em>. The non-negotiable correlation set: <strong>trace and request IDs</strong> (propagated via OpenTelemetry context — the integration that transforms logs from standalone artifacts into the detail layer of distributed traces: find the slow trace, jump to its logs, done), <strong>principal context</strong> (tenant/user identifiers — pseudonymous where privacy demands), and <strong>causal context</strong> where it exists (job ID, message ID, saga/workflow ID — the threads that let you follow one business transaction across services and hours). Inject these once at the boundary (middleware, contextvars/MDC — the async-safe variants covered in the respective stack discussions) so every log line in the request&#39;s lifetime carries them without per-callsite effort. A codebase where engineers manually remember to include the request ID is a codebase where a third of the lines don&#39;t have it — and that third is always where the incident is.</p>
 <p>The counterpart discipline is <strong>what must never be in logs</strong>: secrets, tokens, passwords (redaction at the logging-library layer, plus scanners in CI and on the stream — because one debug line logging full request headers is a credential leak with retention), and unminimized personal data (logs are the compliance surface nobody maps — data-protection rules apply to them fully, deletion requests included, and &quot;it&#39;s just logs&quot; is not a defense anyone enjoys presenting).</p>
-<h2 id="levels-sampling-and-the-cost-model"><a class="h-anchor" href="#levels-sampling-and-the-cost-model" aria-label="Link to this section">#</a>Levels, sampling, and the cost model</h2>
+<h2 id="levels-sampling-and-the-cost-model"><a class="h-anchor" href="#levels-sampling-and-the-cost-model" aria-hidden="true" tabindex="-1">#</a>Levels, sampling, and the cost model</h2>
 <p>Level discipline, stripped of folklore: <strong>ERROR</strong> means something requiring action failed (and should be alarm-worthy in aggregate — an ERROR that&#39;s routine is mislabeled); <strong>WARN</strong> means degraded-but-handled (retries that succeeded, fallbacks taken — the early-warning band); <strong>INFO</strong> carries the business-and-request events that tell the system&#39;s story (the canonical lines); <strong>DEBUG</strong> exists for humans actively investigating and is <em>off</em> in production by default — with the crucial modern amendment that it should be <strong>dynamically enable-able</strong> (per service, per tenant, per request-percentage, at runtime, without deploys) because &quot;redeploy with debug logging&quot; is a 45-minute incident tax that runtime toggles reduce to seconds.</p>
 <p>Then the economics, because logging is priced per byte and emitted per request: <strong>not every event deserves 100% capture.</strong> The sane defaults — keep all ERROR/WARN, keep 100% of request summaries for errored/slow requests, <em>sample</em> the happy-path INFO stream (1–10% preserves statistical visibility at a tenth of the bill), always-keep anything tied to a sampled trace (consistency with your tracing decisions, or the join breaks), and let high-volume DEBUG-adjacent events earn their retention explicitly. Add <strong>tiered retention</strong> — hot searchable days, warm queryable weeks, cold object-storage archive for the compliance horizon — and the bill drops from &quot;growth-limiting&quot; to &quot;proportionate,&quot; which is the actual goal: the organizations that log everything forever at full index eventually respond by logging <em>nothing</em> useful, and the pendulum&#39;s both ends lose.</p>
 <p>The operating loop that keeps it healthy: a monthly look at ingestion by service and event (the top ten events are reliably 80% of volume, and half of them serve no query anyone has run — delete or sample them), alerts on log-volume anomalies (a 10× spike is either an incident or an accidental debug-loop, both worth knowing), and the standing question in code review — <em>who queries this line, and what decision does it inform?</em> — which is the logging version of the test-value question, and prunes with the same efficiency.</p>
-<h2 id="the-summary-schema"><a class="h-anchor" href="#the-summary-schema" aria-label="Link to this section">#</a>The summary schema</h2>
+<h2 id="the-summary-schema"><a class="h-anchor" href="#the-summary-schema" aria-hidden="true" tabindex="-1">#</a>The summary schema</h2>
 <p>Structured events against a shared convention; stable names treated as API; one rich canonical line per request; correlation IDs injected at boundaries and present everywhere; secrets and PII engineered out at the library layer; levels that mean things, with DEBUG dynamically switchable; sampling and tiered retention as designed policy rather than vendor-bill archaeology; and a review loop that deletes what nobody queries. None of it is glamorous, all of it compounds — because logs are where every incident investigation actually ends up at 3 AM, and the difference between fifteen minutes and three hours of that investigation was decided months earlier, by whether someone designed the events or just let the printfs accumulate.</p>
 
     </div>
@@ -166,12 +166,12 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#e8a317" stop-opacity=".10"/>
       <stop offset="1" stop-color="#a9760a" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahfinopsanomal" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e8a317" fill-opacity=".5"/>
     </marker>
   </defs>
   <rect width="640" height="360" fill="url(#bgfinopsanomal)"/>
-  <rect x="86" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.39" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 108 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.41" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 108 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.21" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 108 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.13" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 172 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.17" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 172 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="86" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.23" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 236 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.54" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 236 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.51" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/>
+  <rect x="86" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.39" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 108 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="212" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.41" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 108 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="338" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.21" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 108 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="212" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.13" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 172 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.17" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 172 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="86" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.23" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 236 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="212" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.54" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 236 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="464" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.51" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/>
 </svg></div>
   <div class="card-body">
     <span class="chip">FinOps</span>
@@ -187,7 +187,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#e8a317" stop-opacity=".10"/>
       <stop offset="1" stop-color="#a9760a" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahfinopstaggin" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e8a317" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -216,7 +216,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#4f46e5" stop-opacity=".10"/>
       <stop offset="1" stop-color="#3730a3" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahosnamespaces" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#4f46e5" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -296,7 +296,7 @@ if(d.getAttribute('data-rface')==='serif'){
         </div>
       </div>
       <div>
-        <h4>Services</h4>
+        <h2 class="foot-title">Services</h2>
         <ul>
           <li><a href="/services/#architecture">Enterprise architecture</a></li>
           <li><a href="/services/#ai">AI &amp; MLOps</a></li>
@@ -305,7 +305,7 @@ if(d.getAttribute('data-rface')==='serif'){
         </ul>
       </div>
       <div>
-        <h4>Insights</h4>
+        <h2 class="foot-title">Insights</h2>
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/series/">Series</a></li>
@@ -314,7 +314,7 @@ if(d.getAttribute('data-rface')==='serif'){
         </ul>
       </div>
       <div>
-        <h4>Contact</h4>
+        <h2 class="foot-title">Contact</h2>
         <ul>
           <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
           <li><a href="/contact/">Start an engagement</a></li>

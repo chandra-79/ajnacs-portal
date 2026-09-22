@@ -1,7 +1,7 @@
 ---
 title: "The quiet engineer who fixes things before they break is underrated in every performance review."
 description: "Engineering recognition systems have a structural bias toward reactive work."
-date: 2025-08-26
+date: 2029-06-08
 tags: ["Engineering Leadership"]
 format: article
 derived: true

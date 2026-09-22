@@ -1,7 +1,7 @@
 ---
 title: "Incident Command for Software Teams: Roles, Severity, and the Communication Machine"
 description: "Blameless culture tells you how to learn from incidents; incident command tells you how to run one. The IC role and its discipline, severity frameworks that trigger real behavior, communication cadences, and the practice regimen that makes 3 AM coordination automatic."
-date: 2024-12-25
+date: 2028-01-19
 tags: ["Reliability", "Incident Management", "Engineering Leadership", "Platform Engineering"]
 format: article
 ---

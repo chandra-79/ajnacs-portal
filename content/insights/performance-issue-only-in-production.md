@@ -1,7 +1,7 @@
 ---
 title: "The performance issue that only appears in production is usually a data volume assumption, not a code bug"
 description: "When a performance issue only appears in production, the most likely explanation isn't a bug that was accidentally introduced — it's an assumption about scale that holds in development…"
-date: 2026-04-22
+date: 2029-06-27
 tags: ["Software Engineering", "Data Engineering", "Observability"]
 format: note
 derived: true

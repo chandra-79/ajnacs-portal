@@ -1,7 +1,7 @@
 ---
 title: "Linux Networking from the Ground Up: TCP/IP, Sockets, and Production Diagnostics"
 description: "How the Linux network stack works, what happens between your application making a network call and bytes leaving the NIC, and the diagnostic tools that reveal what is actually happening on the wire."
-date: 2026-06-19
+date: 2027-10-11
 tags: ["Programming", "Fundamentals"]
 series: "Operating Systems for Engineers"
 seriesOrder: 5

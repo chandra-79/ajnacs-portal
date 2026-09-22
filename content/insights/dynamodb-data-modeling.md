@@ -1,7 +1,7 @@
 ---
 title: "DynamoDB Data Modeling: Designing for Access Patterns Instead of Entities"
 description: "NoSQL at scale inverts everything relational modeling taught — queries come first, joins don't exist, and the table is shaped like its questions. Single-table design demystified, the hot-partition physics, GSIs as materialized questions, and when Dynamo-style stores are the wrong answer."
-date: 2024-11-25
+date: 2027-04-02
 tags: ["Data Engineering", "NoSQL", "Cloud Architecture", "Architecture"]
 format: article
 ---

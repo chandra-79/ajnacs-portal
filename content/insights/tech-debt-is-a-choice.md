@@ -1,7 +1,7 @@
 ---
 title: "Technical debt isn't accumulated by accident. It's chosen, usually under pressure."
 description: "Technical debt isn't accumulated by accident. It's chosen, usually under pressure."
-date: 2026-06-02
+date: 2029-08-03
 tags: ["Engineering Leadership", "Software Engineering", "Career"]
 format: note
 derived: true

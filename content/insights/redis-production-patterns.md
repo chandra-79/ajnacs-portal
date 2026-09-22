@@ -1,7 +1,7 @@
 ---
 title: "Redis in Production: Patterns That Work and Anti-patterns That Will Break You"
 description: "Redis is fast until it isn't. Here are the caching patterns, data structure choices, and operational decisions that determine whether Redis is a performance multiplier or a fragile dependency."
-date: 2026-08-03
+date: 2024-12-10
 tags: ["Data Engineering", "Redis", "Architecture", "Cloud Architecture"]
 format: article
 ---

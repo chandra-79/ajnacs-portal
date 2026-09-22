@@ -1,7 +1,7 @@
 ---
 title: "The First Engineering Hire: Why This Decision Compounds Differently Than Any Other"
 description: "The first engineer you hire sets the standard for every subsequent hire, shapes the engineering culture, and determines what is considered normal. Most founding teams do not treat this with the weight it deserves."
-date: 2026-03-11
+date: 2028-11-22
 tags: ["Engineering Leadership"]
 format: article
 ---

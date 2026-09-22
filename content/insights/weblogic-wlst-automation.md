@@ -1,7 +1,7 @@
 ---
 title: "WLST Automation for WebLogic: Treating Middleware Configuration as Code"
 description: "WLST remains the most complete automation surface WebLogic has — and most estates use it as a pile of snippets. How to structure WLST scripts as real software, the offline/online split, idempotent domain builds, and where the REST API fits."
-date: 2025-04-14
+date: 2027-11-05
 tags: ["Java", "WebLogic", "Middleware", "Automation", "Platform Engineering"]
 format: article
 ---

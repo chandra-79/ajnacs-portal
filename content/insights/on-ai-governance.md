@@ -1,7 +1,7 @@
 ---
 title: "The most dangerous AI project is the one that skips the governance conversation."
 description: "The most dangerous AI project is the one that skips the governance conversation."
-date: 2026-05-11
+date: 2029-05-09
 tags: ["Enterprise AI", "Governance", "Engineering Leadership"]
 format: note
 derived: true

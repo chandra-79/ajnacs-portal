@@ -1,7 +1,7 @@
 ---
 title: "Network Performance Tools on Linux"
 description: "Using ss, tcpdump, iperf3, and nethogs to diagnose TCP connection states, capture packets, measure bandwidth, and find which process is consuming the network."
-date: 2026-08-24
+date: 2027-02-10
 tags: ["Programming", "Fundamentals"]
 series: "Linux: A Complete Practical Course"
 seriesOrder: 18

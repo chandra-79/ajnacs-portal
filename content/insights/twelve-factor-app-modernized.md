@@ -1,7 +1,7 @@
 ---
 title: "The Twelve-Factor App, Re-Read for the Platform Era: What Held, What Evolved, What's Missing"
 description: "The 2011 manifesto that taught a generation to build cloud-ready services deserves a modern audit — which factors became platform defaults, which need reinterpretation for Kubernetes and serverless, and the factors a 2026 edition would add."
-date: 2025-03-25
+date: 2027-07-09
 tags: ["Cloud Architecture", "Architecture", "Platform Engineering", "Engineering Practice"]
 format: article
 ---

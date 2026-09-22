@@ -1,7 +1,7 @@
 ---
 title: "Event-Driven Architecture: When It Helps and When It Creates Problems"
 description: "Event-driven architecture decouples producers from consumers and enables asynchronous workflows. It also introduces eventual consistency, message ordering complexity, and debugging challenges that synchronous systems don't have. Here's how to think through the trade-offs."
-date: 2025-05-12
+date: 2026-12-25
 tags: ["Architecture", "Cloud Architecture", "Data Engineering"]
 format: article
 ---

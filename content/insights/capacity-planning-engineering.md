@@ -1,7 +1,7 @@
 ---
 title: "Capacity Planning in the Cloud Era: Headroom as an Engineered Property"
 description: "Elastic infrastructure didn't kill capacity planning — it changed what gets planned. Demand modeling, the utilization-vs-headroom trade, quota and constraint archaeology, and the quarterly loop that replaces both waste and 3 AM scrambles."
-date: 2024-10-21
+date: 2026-11-09
 tags: ["Cloud Architecture", "Reliability", "FinOps", "Engineering Leadership"]
 format: article
 ---

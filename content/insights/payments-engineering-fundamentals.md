@@ -1,7 +1,7 @@
 ---
 title: "Payments Engineering Fundamentals: Money Movement for Software Engineers"
 description: "Payments is where every distributed-systems discipline meets legal consequence — auth vs capture, idempotency as fiduciary duty, ledger design and reconciliation, the failure taxonomy of declines, and the compliance perimeter that shapes the architecture."
-date: 2025-01-30
+date: 2027-09-24
 tags: ["Payments", "Programming", "Distributed Systems", "FinTech", "Architecture"]
 format: article
 ---

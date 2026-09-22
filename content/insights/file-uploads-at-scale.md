@@ -1,7 +1,7 @@
 ---
 title: "File Uploads at Scale: Presigned URLs, Malware Gauntlets, and the Pipeline Nobody Designs"
 description: "Upload is the most attacker-controlled input a system accepts and the feature every product adds in a sprint. The direct-to-storage architecture, resumable transfer, the validation-and-scanning gauntlet, serving without self-XSS, and lifecycle economics."
-date: 2024-12-06
+date: 2028-01-28
 tags: ["Programming", "Security", "Cloud Architecture", "Storage", "API Design"]
 format: article
 ---

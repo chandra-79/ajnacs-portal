@@ -1,7 +1,7 @@
 ---
 title: "Linux Firewalls: iptables, nftables, ufw, and firewalld Explained"
 description: "How Linux packet filtering works, iptables tables and chains, writing firewall rules, nftables as the modern successor, and ufw/firewalld as management layers for production systems."
-date: 2026-08-13
+date: 2027-10-13
 tags: ["Programming", "Fundamentals"]
 series: "Linux: A Complete Practical Course"
 seriesOrder: 14

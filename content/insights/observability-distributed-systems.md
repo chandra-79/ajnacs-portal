@@ -1,7 +1,7 @@
 ---
 title: "Observability in Distributed Systems: Logs, Metrics, and Traces Are Not Interchangeable"
 description: "Logs, metrics, and traces each answer different questions about a distributed system. Understanding the distinction matters when something breaks at 2am and you need to find the cause quickly."
-date: 2026-09-07
+date: 2026-12-02
 tags: ["Cloud Architecture", "DevSecOps", "Engineering Leadership"]
 format: article
 ---

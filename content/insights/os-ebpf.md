@@ -1,7 +1,7 @@
 ---
 title: "eBPF: The Future of Linux Observability and Security"
 description: "What eBPF is, why it changes Linux observability fundamentally, and how tools like bpftrace, BCC, Cilium, and Falco use it to instrument the kernel without kernel modules or system calls."
-date: 2026-09-10
+date: 2027-06-11
 tags: ["Programming", "Fundamentals"]
 series: "Linux: A Complete Practical Course"
 seriesOrder: 25

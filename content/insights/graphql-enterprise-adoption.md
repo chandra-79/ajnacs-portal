@@ -1,7 +1,7 @@
 ---
 title: "GraphQL in the Enterprise: Where It Earns Its Complexity and Where REST Should Stay"
 description: "A decade in, the honest verdict on GraphQL — the aggregation problems it genuinely solves, federation as the enterprise pattern, the N+1 and security homework it assigns, and a decision framework that isn't fashion-driven in either direction."
-date: 2024-12-16
+date: 2027-09-17
 tags: ["API Design", "GraphQL", "Programming", "Architecture", "Distributed Systems"]
 format: article
 ---

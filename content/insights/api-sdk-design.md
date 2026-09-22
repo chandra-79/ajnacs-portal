@@ -1,7 +1,7 @@
 ---
 title: "SDK Design: The Client Library as the API's Real Interface"
 description: "Most developers never touch your REST endpoints — they touch your SDK, and its quality decides integration success. Generation vs handcraft, the reliability behaviors clients deserve by default, the idiomatic-per-language bar, and the versioning contract."
-date: 2024-10-07
+date: 2028-02-28
 tags: ["API Design", "Developer Experience", "Programming", "Engineering Practice", "Platform Engineering"]
 format: article
 ---

@@ -1,7 +1,7 @@
 ---
 title: "The Engineer Who Solves Everything Is Also the Single Point of Failure"
 description: "The most capable engineer on the team becoming the default for every hard problem is an organizational risk — for the team, for the system, and for the engineer."
-date: 2026-04-20
+date: 2028-11-27
 tags: ["Engineering Leadership"]
 format: article
 ---

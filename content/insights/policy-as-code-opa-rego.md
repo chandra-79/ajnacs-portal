@@ -1,7 +1,7 @@
 ---
 title: "Policy-as-Code with OPA and Rego: What Enterprise Adoption Actually Looks Like"
 description: "Open Policy Agent solves a real problem. The organizational work required to make policy-as-code stick in a large engineering organization is what nobody talks about."
-date: 2026-04-07
+date: 2027-02-26
 tags: ["DevSecOps", "Policy-as-Code", "Cloud Architecture", "Governance"]
 format: article
 ---

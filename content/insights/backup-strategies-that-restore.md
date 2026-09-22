@@ -1,7 +1,7 @@
 ---
 title: "Backups That Restore: The Engineering Between 'We Have Backups' and 'We're Back'"
 description: "Backup is the control everyone has and the capability few have tested — the gap is where companies end. The 3-2-1 rule modernized for ransomware, point-in-time recovery mechanics, the restore-time math nobody does, and rehearsal as the only proof."
-date: 2024-10-14
+date: 2027-04-30
 tags: ["Reliability", "Disaster Recovery", "Security", "Data Engineering", "Cloud Architecture"]
 format: article
 ---

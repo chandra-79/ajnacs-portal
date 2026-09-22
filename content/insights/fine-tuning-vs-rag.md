@@ -1,7 +1,7 @@
 ---
 title: "Fine-tuning and RAG solve different problems. Most teams reach for fine-tuning when they need RAG."
 description: "Fine-tuning and RAG are frequently discussed as alternatives for the same problem. They solve different problems, and reaching for the wrong one produces expensive failures."
-date: 2026-04-16
+date: 2028-10-23
 tags: ["Enterprise AI", "AI & MLOps"]
 format: article
 derived: true

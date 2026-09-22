@@ -1,7 +1,7 @@
 ---
 title: "Java Testing Strategies for Cloud Microservices: What Actually Works in CI"
 description: "Unit tests, integration tests, contract tests, end-to-end tests — the testing pyramid for Java microservices, which layers pull weight, and how to structure tests so they catch real issues without making your CI pipeline unbearable."
-date: 2026-08-20
+date: 2024-11-25
 tags: ["Programming", "Java", "DevSecOps", "CI/CD"]
 format: article
 ---

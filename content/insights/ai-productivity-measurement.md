@@ -1,7 +1,7 @@
 ---
 title: "Measuring AI productivity impact is harder than it looks and most orgs are doing it wrong."
 description: "The productivity claims for AI coding tools are plausible but routinely measured at the wrong scope."
-date: 2025-11-11
+date: 2028-12-18
 tags: ["AI & MLOps", "Enterprise AI", "Engineering Leadership"]
 format: article
 derived: true

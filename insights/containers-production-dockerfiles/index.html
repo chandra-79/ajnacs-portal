@@ -105,7 +105,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#e0473a" stop-opacity=".10"/>
       <stop offset="1" stop-color="#c03a2e" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahcontainerspr" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e0473a" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -123,7 +123,7 @@ if(d.getAttribute('data-rface')==='serif'){
     </nav></div>
     <div class="prose">
 <p>Most Dockerfiles work. Few Dockerfiles are production-grade. The difference shows up in image size (which affects pull time and cold start), build speed (which affects developer experience and CI runtime), and security posture (which affects your attack surface). This lesson covers the specific decisions that move a Dockerfile from working to production-ready.</p>
-<h2 id="start-with-the-right-base-image"><a class="h-anchor" href="#start-with-the-right-base-image" aria-label="Link to this section">#</a>Start with the Right Base Image</h2>
+<h2 id="start-with-the-right-base-image"><a class="h-anchor" href="#start-with-the-right-base-image" aria-hidden="true" tabindex="-1">#</a>Start with the Right Base Image</h2>
 <p>The base image determines your starting attack surface, your image size, and what package manager is available.</p>
 <pre><code class="language-dockerfile">## Avoid: full OS images with unnecessary tools
 FROM ubuntu:22.04
@@ -141,7 +141,7 @@ CMD [&quot;/my-binary&quot;]
 </code></pre>
 <p><strong>Alpine</strong> is commonly recommended for minimal size (5MB base). Use it cautiously: Alpine uses musl libc instead of glibc, which causes compatibility issues with some Python packages and compiled binaries that link against glibc.</p>
 <p><strong>Distroless</strong> images (from Google) contain only the runtime — no shell, no package manager, no system utilities. This dramatically reduces attack surface because there is nothing for an attacker to use inside the container. The trade-off: debugging requires running a debug-variant image.</p>
-<h2 id="multi-stage-builds-separate-build-from-runtime"><a class="h-anchor" href="#multi-stage-builds-separate-build-from-runtime" aria-label="Link to this section">#</a>Multi-Stage Builds: Separate Build from Runtime</h2>
+<h2 id="multi-stage-builds-separate-build-from-runtime"><a class="h-anchor" href="#multi-stage-builds-separate-build-from-runtime" aria-hidden="true" tabindex="-1">#</a>Multi-Stage Builds: Separate Build from Runtime</h2>
 <p>The build environment needs compilers, package managers, and build tools. The runtime environment does not. Multi-stage builds keep the build dependencies out of the production image.</p>
 <pre><code class="language-dockerfile">## Stage 1: Build
 FROM node:20-slim AS builder
@@ -170,7 +170,7 @@ EXPOSE 3000
 CMD [&quot;node&quot;, &quot;dist/main.js&quot;]
 </code></pre>
 <p>Final image contains: Node.js runtime, production node_modules, compiled dist. No TypeScript compiler, no dev dependencies, no source files.</p>
-<h2 id="layer-caching-order-instructions-by-change-frequency"><a class="h-anchor" href="#layer-caching-order-instructions-by-change-frequency" aria-label="Link to this section">#</a>Layer Caching: Order Instructions by Change Frequency</h2>
+<h2 id="layer-caching-order-instructions-by-change-frequency"><a class="h-anchor" href="#layer-caching-order-instructions-by-change-frequency" aria-hidden="true" tabindex="-1">#</a>Layer Caching: Order Instructions by Change Frequency</h2>
 <p>Docker caches each layer. When a layer changes, all subsequent layers are invalidated. Order instructions from least-likely-to-change to most-likely-to-change:</p>
 <pre><code class="language-dockerfile">## Bad: changes to requirements invalidate package install cache
 FROM python:3.12-slim
@@ -185,7 +185,7 @@ RUN pip install --no-cache-dir -r requirements.txt   # cached until requirements
 COPY . .                          # changes frequently; only this layer rebuilds
 CMD [&quot;python&quot;, &quot;main.py&quot;]
 </code></pre>
-<h2 id="run-as-non-root"><a class="h-anchor" href="#run-as-non-root" aria-label="Link to this section">#</a>Run as Non-Root</h2>
+<h2 id="run-as-non-root"><a class="h-anchor" href="#run-as-non-root" aria-hidden="true" tabindex="-1">#</a>Run as Non-Root</h2>
 <p>By default, containers run as root inside the container namespace. This is unnecessary for almost all applications and creates security risk.</p>
 <pre><code class="language-dockerfile">## Create a system user and group
 RUN addgroup --system --gid 1001 appgroup &amp;&amp; \
@@ -198,7 +198,7 @@ RUN chown -R appuser:appgroup /app
 USER appuser
 </code></pre>
 <p>In Kubernetes, you can enforce this at the cluster level with PodSecurity admission or OPA/Gatekeeper policies that reject containers running as root.</p>
-<h2 id="use-dockerignore"><a class="h-anchor" href="#use-dockerignore" aria-label="Link to this section">#</a>Use .dockerignore</h2>
+<h2 id="use-dockerignore"><a class="h-anchor" href="#use-dockerignore" aria-hidden="true" tabindex="-1">#</a>Use .dockerignore</h2>
 <p>The build context (everything sent to the Docker daemon) should exclude files the image does not need:</p>
 <pre><code>## .dockerignore
 .git/
@@ -214,7 +214,7 @@ __pycache__/
 coverage/
 </code></pre>
 <p>A missing <code>.dockerignore</code> on a large repository can send gigabytes of context to the Docker daemon on every build, even when no relevant file changed.</p>
-<h2 id="useful-image-analysis"><a class="h-anchor" href="#useful-image-analysis" aria-label="Link to this section">#</a>Useful Image Analysis</h2>
+<h2 id="useful-image-analysis"><a class="h-anchor" href="#useful-image-analysis" aria-hidden="true" tabindex="-1">#</a>Useful Image Analysis</h2>
 <pre><code class="language-bash">## Analyse image layers and size contributions
 docker history --no-trunc my-image:latest
 
@@ -278,7 +278,7 @@ docker run --rm -it \
       <stop offset="0" stop-color="#e0473a" stop-opacity=".10"/>
       <stop offset="1" stop-color="#c03a2e" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahplatformengo" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e0473a" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -299,12 +299,12 @@ docker run --rm -it \
       <stop offset="0" stop-color="#6d4aff" stop-opacity=".10"/>
       <stop offset="1" stop-color="#5837e0" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahaimlneuralne" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#6d4aff" fill-opacity=".5"/>
     </marker>
   </defs>
   <rect width="640" height="360" fill="url(#bgaimlneuralne)"/>
-  <rect x="86" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.51" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="464" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.45" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="212" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.45" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 172 H338" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.60" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 172 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.40" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="338" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.32" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 236 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.39" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/>
+  <rect x="86" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.51" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="464" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.45" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="212" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.45" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 172 H338" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahaimlneuralne)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.60" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 172 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahaimlneuralne)"/><rect x="464" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.40" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="338" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.32" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 236 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahaimlneuralne)"/><rect x="464" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.39" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/>
 </svg></div>
   <div class="card-body">
     <span class="chip">AI &amp; MLOps</span>
@@ -320,7 +320,7 @@ docker run --rm -it \
       <stop offset="0" stop-color="#6d4aff" stop-opacity=".10"/>
       <stop offset="1" stop-color="#5837e0" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahaimlragandpr" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#6d4aff" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -410,7 +410,7 @@ docker run --rm -it \
         </div>
       </div>
       <div>
-        <h4>Services</h4>
+        <h2 class="foot-title">Services</h2>
         <ul>
           <li><a href="/services/#architecture">Enterprise architecture</a></li>
           <li><a href="/services/#ai">AI &amp; MLOps</a></li>
@@ -419,7 +419,7 @@ docker run --rm -it \
         </ul>
       </div>
       <div>
-        <h4>Insights</h4>
+        <h2 class="foot-title">Insights</h2>
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/series/">Series</a></li>
@@ -428,7 +428,7 @@ docker run --rm -it \
         </ul>
       </div>
       <div>
-        <h4>Contact</h4>
+        <h2 class="foot-title">Contact</h2>
         <ul>
           <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
           <li><a href="/contact/">Start an engagement</a></li>

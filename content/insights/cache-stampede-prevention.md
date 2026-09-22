@@ -1,7 +1,7 @@
 ---
 title: "Cache Stampedes: The Thundering Herd and the Four Ways to Stop It"
 description: "The cache expires, a thousand requests miss simultaneously, and the database meets them all at once — the self-inflicted outage every caching layer is scheduled for. Request coalescing, probabilistic early refresh, stale-while-revalidate, and jittered TTLs, composed properly."
-date: 2024-10-18
+date: 2028-08-21
 tags: ["Caching", "Performance", "Programming", "Distributed Systems", "Reliability"]
 format: article
 ---

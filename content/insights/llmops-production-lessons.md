@@ -1,7 +1,7 @@
 ---
 title: "LLMOps in Production: Lessons From Shipping Generative AI at Enterprise Scale"
 description: "The gap between an LLM demo and a production LLM system is substantial. Here's what the operationalisation actually requires — and the failure modes nobody documented in advance."
-date: 2026-02-23
+date: 2027-08-27
 tags: ["Enterprise AI", "AI & MLOps", "Observability", "Cloud Architecture"]
 format: article
 ---

@@ -1,7 +1,7 @@
 ---
 title: "Post-Mortems Without Action Items Are Just Storytelling"
 description: "The post-mortem that documents what happened, who did what, and why the incident occurred — without committing to specific changes — produces an excellent account of a failure and zero improvement."
-date: 2025-08-04
+date: 2028-09-13
 tags: ["Engineering Leadership", "Observability", "Resilience"]
 format: article
 ---

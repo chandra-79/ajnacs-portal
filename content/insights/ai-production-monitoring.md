@@ -1,7 +1,7 @@
 ---
 title: "Monitoring AI Models in Production: The Observability Stack Nobody Talks About"
 description: "Your application monitoring tells you when a service is down. It doesn't tell you when your model has been giving subtly wrong answers for three weeks. Here's how to build the monitoring that does."
-date: 2025-04-21
+date: 2026-11-30
 tags: ["AI & MLOps", "Observability", "Infrastructure"]
 format: article
 ---

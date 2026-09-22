@@ -1,7 +1,7 @@
 ---
 title: "Incident communication is an engineering skill and most engineers are not taught it."
 description: "The technical response to a production incident gets most of the engineering attention."
-date: 2026-04-13
+date: 2029-01-24
 tags: ["Engineering Leadership", "DevSecOps"]
 format: article
 derived: true

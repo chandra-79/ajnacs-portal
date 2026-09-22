@@ -1,7 +1,7 @@
 ---
 title: "Edge Computing Architecture: What Actually Belongs at the Edge"
 description: "Between the CDN and the region sits a growing compute tier — edge functions, edge data, and the IoT/industrial edge. What workloads genuinely benefit, the data-consistency physics that constrain them, and a placement framework for the edge era."
-date: 2024-11-28
+date: 2026-11-25
 tags: ["Cloud Architecture", "Edge Computing", "Architecture", "Performance", "Distributed Systems"]
 format: article
 ---

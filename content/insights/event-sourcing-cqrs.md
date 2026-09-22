@@ -1,7 +1,7 @@
 ---
 title: "Event Sourcing and CQRS: What the Pattern Actually Solves"
 description: "Event sourcing and CQRS are powerful patterns that solve specific problems. They also introduce significant complexity. Understanding exactly what problem each one solves prevents applying them to problems they don't actually address."
-date: 2025-12-22
+date: 2027-04-12
 tags: ["Architecture", "Data Engineering"]
 format: article
 ---

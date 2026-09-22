@@ -1,7 +1,7 @@
 ---
 title: "Compliance Automation in the Cloud: From Spreadsheets to Continuous Evidence"
 description: "Manual compliance evidence collection is expensive, error-prone, and produces a snapshot view of a dynamic environment. Automated compliance tools shift from periodic audits to continuous evidence collection and real-time control visibility."
-date: 2025-12-02
+date: 2027-05-12
 tags: ["DevSecOps", "Cloud Architecture"]
 format: article
 ---

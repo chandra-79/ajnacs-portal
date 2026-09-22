@@ -1,7 +1,7 @@
 ---
 title: "The Database Migration Nobody Tests: Why They Fail at the Worst Time"
 description: "Database migrations fail in production because they were tested on a small development dataset, not on production data volumes. The gap between the two is where most migration incidents live."
-date: 2025-10-23
+date: 2028-09-04
 tags: ["Data Engineering", "Engineering Leadership"]
 format: article
 ---

@@ -1,7 +1,7 @@
 ---
 title: "Infrastructure as Code Beyond Terraform: The Tool Landscape and the Decisions That Matter More"
 description: "Terraform's license drama, OpenTofu's fork, Pulumi's general-purpose languages, Crossplane's control-plane model, and the cloud-native templates — a placement guide, plus the state, module, and drift disciplines that outweigh the tool choice."
-date: 2024-12-23
+date: 2027-12-06
 tags: ["Platform Engineering", "Infrastructure as Code", "Cloud Architecture", "Infrastructure"]
 format: article
 ---

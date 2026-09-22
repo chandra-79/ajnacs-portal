@@ -1,7 +1,7 @@
 ---
 title: "Code Review That Actually Works: Culture, Mechanics, and the AI-Era Update"
 description: "Code review is the highest-leverage quality practice most teams run badly — too slow, too shallow, or too personal. The mechanics that make reviews fast and substantive, the culture that keeps them kind, and what changes when half the diffs are machine-drafted."
-date: 2024-10-28
+date: 2028-04-28
 tags: ["Engineering Practice", "Engineering Leadership", "Code Review", "Developer Experience", "Quality Engineering"]
 format: article
 ---

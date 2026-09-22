@@ -1,7 +1,7 @@
 ---
 title: "Sprint Velocity Is the Metric That Confidently Measures the Wrong Thing"
 description: "Velocity measures story points completed per sprint. It does not measure value delivered, code quality, sustainability, or team health. Here is what to track instead."
-date: 2025-10-20
+date: 2029-01-22
 tags: ["Engineering Leadership"]
 format: article
 ---

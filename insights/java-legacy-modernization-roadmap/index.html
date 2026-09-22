@@ -105,7 +105,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#2f6fed" stop-opacity=".10"/>
       <stop offset="1" stop-color="#1b4fc4" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahjavalegacymo" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#2f6fed" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -121,23 +121,23 @@ if(d.getAttribute('data-rface')==='serif'){
     <div class="prose">
 <p>Somewhere in your organization, revenue is flowing through a Java 8 application built with Spring 4, packaged as a WAR, and deployed to an app server by a script whose author left in 2019. Industry surveys still put a stubborn double-digit share of production Java on version 8 — a platform from 2014.</p>
 <p>The gap between that and current Java (21 LTS, 25 LTS) is not cosmetic. It&#39;s a security posture gap, a hiring gap, a performance gap, and — increasingly — a dependency gap, because the library ecosystem has moved its baseline. Here&#39;s how to close it without a big-bang rewrite and without stopping feature delivery.</p>
-<h2 id="why-this-became-urgent-rather-than-nice-to-have"><a class="h-anchor" href="#why-this-became-urgent-rather-than-nice-to-have" aria-label="Link to this section">#</a>Why this became urgent rather than nice-to-have</h2>
+<h2 id="why-this-became-urgent-rather-than-nice-to-have"><a class="h-anchor" href="#why-this-became-urgent-rather-than-nice-to-have" aria-hidden="true" tabindex="-1">#</a>Why this became urgent rather than nice-to-have</h2>
 <p>Four forces changed the calculus. <strong>Dependencies moved:</strong> Spring Framework 6/Boot 3 require Java 17+, and a growing set of libraries now baseline against 17 or 21 — staying on 8 means running increasingly unpatched transitive dependencies, which is where CVEs actually live. <strong>Security economics moved:</strong> commercial support for old JDKs exists but its price rises annually, and auditors have learned to ask for JDK versions. <strong>Performance moved:</strong> G1/ZGC improvements, compact strings, and startup work deliver double-digit percentage wins for a recompile — cloud bills notice. <strong>People moved:</strong> engineers learn records, virtual threads, and pattern matching now; estates frozen in 2014 idiom repel the hires they need most.</p>
-<h2 id="the-staged-path-runtime-first-then-language-then-frameworks"><a class="h-anchor" href="#the-staged-path-runtime-first-then-language-then-frameworks" aria-label="Link to this section">#</a>The staged path: runtime first, then language, then frameworks</h2>
+<h2 id="the-staged-path-runtime-first-then-language-then-frameworks"><a class="h-anchor" href="#the-staged-path-runtime-first-then-language-then-frameworks" aria-hidden="true" tabindex="-1">#</a>The staged path: runtime first, then language, then frameworks</h2>
 <p>The single most important sequencing decision: <strong>upgrade the runtime before rewriting any code.</strong> Java&#39;s backward compatibility means most Java 8 bytecode runs on JDK 21 unchanged. Decouple &quot;which JVM executes this&quot; from &quot;which language level we write&quot; and the risk profile transforms.</p>
 <p><strong>Stage 1 — Run on a modern JDK, compile at the old level.</strong> Keep <code>--release 8</code>, run on 21. What breaks is well-catalogued and mostly mechanical: the Java EE modules removed from the JDK (JAXB, JAX-WS, <code>javax.activation</code> — add them as Maven/Gradle dependencies), internal-API usage (<code>sun.misc.Unsafe</code> reflection holes — usually fixed by upgrading the library doing it: old Guava, old ASM-based anything, old Mockito/CGLIB), and JVM flags that no longer exist (CMS is gone; PermSize means nothing). Tools do the finding: <code>jdeps</code> reports internal-API dependencies, and the Rewrite/OpenRewrite recipes fix the common patterns mechanically at scale.</p>
 <p><strong>Stage 2 — Raise the language level and modernize dependencies.</strong> Move source level to 17/21 module by module. The javax→<strong>jakarta</strong> namespace migration is the big rock here for anything on the Servlet/JPA/JMS APIs — mechanical (OpenRewrite again does 90%), but it must be coordinated with the framework jump because Spring Boot 3/Jakarta EE 9+ are the versions that require it.</p>
 <p><strong>Stage 3 — Framework upgrades ride the same wave.</strong> Spring Boot 1.x/2.x → 3.x, Hibernate 5 → 6, and friends. Take them one major version at a time per service, using each framework&#39;s migration guides and the OpenRewrite recipes published for exactly these paths. This stage is where test coverage gets audited honestly: services without characterization tests get them <em>before</em> the framework jump, because &quot;it compiles&quot; and &quot;it computes the same invoices&quot; are different claims.</p>
 <p><strong>Stage 4 — Exploit the platform.</strong> Only now spend effort on new idiom where it pays: virtual threads replacing thread-pool gymnastics in I/O-bound services, records replacing Lombok data classes, pattern matching collapsing visitor hierarchies, <code>HttpClient</code> replacing that vendored 2009 HTTP library. Resist idiom-modernization as an end in itself; touch code when you&#39;re in it for a feature, guided by a written &quot;when we touch it, we bring it to this standard&quot; policy.</p>
-<h2 id="automation-is-the-difference-between-a-quarter-and-a-decade"><a class="h-anchor" href="#automation-is-the-difference-between-a-quarter-and-a-decade" aria-label="Link to this section">#</a>Automation is the difference between a quarter and a decade</h2>
+<h2 id="automation-is-the-difference-between-a-quarter-and-a-decade"><a class="h-anchor" href="#automation-is-the-difference-between-a-quarter-and-a-decade" aria-hidden="true" tabindex="-1">#</a>Automation is the difference between a quarter and a decade</h2>
 <p>At estate scale — hundreds of services — the manual version of this program dies of coordination cost. The leverage points:</p>
 <p><strong>OpenRewrite</strong> (and vendor tooling built on it) executes the mechanical 80%: javax→jakarta, JUnit 4→5, Spring Boot version bumps, deprecated-API replacements. Run recipes across whole repository fleets and review diffs, rather than assigning tickets to humans to do regex work.</p>
 <p><strong>The build pipeline as the enforcement layer.</strong> Add a &quot;runs on modern JDK&quot; CI job to every service <em>before</em> migrating any of them — the failing jobs are your automatically-generated, always-current work inventory. Ratchet forward: once a service passes on 21, its pipeline pins there and won&#39;t accept regressions.</p>
 <p><strong>A bill of materials, centrally managed.</strong> One platform BOM per organization defining blessed versions of the common stack, owned by a platform team, consumed by every service. The alternative — 400 services each negotiating their own Jackson version — is how estates got stuck last time.</p>
-<h2 id="sequencing-the-portfolio-and-selling-it"><a class="h-anchor" href="#sequencing-the-portfolio-and-selling-it" aria-label="Link to this section">#</a>Sequencing the portfolio (and selling it)</h2>
+<h2 id="sequencing-the-portfolio-and-selling-it"><a class="h-anchor" href="#sequencing-the-portfolio-and-selling-it" aria-hidden="true" tabindex="-1">#</a>Sequencing the portfolio (and selling it)</h2>
 <p>Order services by <em>risk-adjusted value</em>: internal tools and low-traffic services first as pathfinders (they debug the runbook cheaply), then the high-change services where modern tooling pays daily, and the frozen-but-critical systems last with the now-mature playbook. A useful forcing function: tie the migration to something the business already wants — the cloud move, the security certification, the performance target — rather than pitching &quot;Java upgrade&quot; as its own line item. &quot;The PCI scope requires patched runtimes&quot; opens budgets that &quot;Java 8 is old&quot; never will.</p>
 <p>Track and publish three numbers weekly: services on a supported JDK (%), services on the platform BOM (%), and CVE exposure count from dependency scanning. Visible, monotonic progress is what keeps a two-year program funded through leadership changes.</p>
-<h2 id="the-traps"><a class="h-anchor" href="#the-traps" aria-label="Link to this section">#</a>The traps</h2>
+<h2 id="the-traps"><a class="h-anchor" href="#the-traps" aria-hidden="true" tabindex="-1">#</a>The traps</h2>
 <p><strong>The parallel-rewrite mirage:</strong> &quot;while we&#39;re at it, let&#39;s rewrite it properly&quot; converts a bounded migration into an unbounded project; migrations succeed by being boring. <strong>The 95%-done plateau:</strong> the last services are the ones with no tests, no owner, and a hard dependency on something removed — assign them owners and dates at program start, not end. <strong>Reflection-heavy magic:</strong> old AOP, old serialization frameworks, and hand-rolled classloader tricks are where the non-mechanical week-long debugging lives; inventory them early via <code>jdeps</code> and JFR. <strong>Certifying vendors:</strong> that third-party JAR from a supplier who &quot;supports Java 8 only&quot; needs a commercial conversation started in month one, because their timeline is now on your critical path.</p>
 <p>The end state worth aiming at isn&#39;t &quot;we&#39;re on 21.&quot; It&#39;s <em>upgrade fluency</em>: a fleet on a managed BOM, CI that proves runtime compatibility continuously, and the organizational muscle to adopt 25 LTS as a routine quarter&#39;s chore rather than a named program with a steering committee. The first migration is expensive precisely because that muscle atrophied. Its lasting deliverable is making sure the next one is boring.</p>
 
@@ -168,7 +168,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#e0473a" stop-opacity=".10"/>
       <stop offset="1" stop-color="#c03a2e" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahplatformengo" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e0473a" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -189,7 +189,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#0e7490" stop-opacity=".10"/>
       <stop offset="1" stop-color="#0b5f77" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahplatformengm" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#0e7490" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -218,7 +218,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#0e7490" stop-opacity=".10"/>
       <stop offset="1" stop-color="#0b5f77" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahplatformengi" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#0e7490" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -298,7 +298,7 @@ if(d.getAttribute('data-rface')==='serif'){
         </div>
       </div>
       <div>
-        <h4>Services</h4>
+        <h2 class="foot-title">Services</h2>
         <ul>
           <li><a href="/services/#architecture">Enterprise architecture</a></li>
           <li><a href="/services/#ai">AI &amp; MLOps</a></li>
@@ -307,7 +307,7 @@ if(d.getAttribute('data-rface')==='serif'){
         </ul>
       </div>
       <div>
-        <h4>Insights</h4>
+        <h2 class="foot-title">Insights</h2>
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/series/">Series</a></li>
@@ -316,7 +316,7 @@ if(d.getAttribute('data-rface')==='serif'){
         </ul>
       </div>
       <div>
-        <h4>Contact</h4>
+        <h2 class="foot-title">Contact</h2>
         <ul>
           <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
           <li><a href="/contact/">Start an engagement</a></li>

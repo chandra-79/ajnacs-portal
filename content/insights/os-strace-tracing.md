@@ -1,7 +1,7 @@
 ---
 title: "System Call Tracing with strace and ltrace"
 description: "Using strace to see every system call a process makes, ltrace for library calls, and perf trace for lightweight production tracing — the toolkit for debugging black-box performance problems."
-date: 2026-08-26
+date: 2027-08-18
 tags: ["Programming", "Fundamentals"]
 series: "Linux: A Complete Practical Course"
 seriesOrder: 19

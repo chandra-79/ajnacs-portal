@@ -1,7 +1,7 @@
 ---
 title: "WebLogic JMS in Production: Servers, Stores, and the Configuration That Survives Failover"
 description: "JMS servers, persistent stores, distributed destinations, and connection factories — how WebLogic messaging actually fits together, and the configuration decisions that determine whether your queues survive a server failure."
-date: 2025-04-08
+date: 2025-08-28
 tags: ["Java", "WebLogic", "Middleware", "Messaging", "Architecture"]
 format: article
 ---

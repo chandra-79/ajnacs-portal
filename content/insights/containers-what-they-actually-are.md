@@ -1,7 +1,7 @@
 ---
 title: "What Containers Actually Are — Not the Marketing Version"
 description: "Containers are not lightweight VMs. They are processes with resource constraints and namespace isolation. Understanding the actual mechanism makes you a better user of Docker, Kubernetes, and every container runtime."
-date: 2025-05-05
+date: 2026-07-30
 tags: ["DevSecOps", "Fundamentals"]
 series: "Containerization from the Ground Up"
 seriesOrder: 1

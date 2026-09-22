@@ -1,7 +1,7 @@
 ---
 title: "Technical Roadmap Planning: How to Build One That Gets Used"
 description: "Most technical roadmaps are either too abstract to act on or too granular to survive contact with reality. The version that actually works balances strategic intent with enough specificity to coordinate across teams."
-date: 2025-09-25
+date: 2026-12-07
 tags: ["Engineering Leadership", "Architecture"]
 format: article
 ---

@@ -105,7 +105,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#0d9488" stop-opacity=".10"/>
       <stop offset="1" stop-color="#0b7a70" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahazurewellarc" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#0d9488" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -129,7 +129,7 @@ if(d.getAttribute('data-rface')==='serif'){
     <div class="prose">
 <p>Microsoft&#39;s Well-Architected Framework (WAF) is organized around five pillars: reliability, security, cost optimization, operational excellence, and performance efficiency. Every major cloud provider has a similar framework (AWS has the Well-Architected Framework, GCP has the Architecture Framework). The pillars are similar across all three — which reflects that the underlying engineering trade-offs are universal.</p>
 <p>What varies is the implementation: Azure&#39;s specific services, defaults, and constraints. This article focuses on what each pillar means when building on Azure specifically.</p>
-<h2 id="reliability"><a class="h-anchor" href="#reliability" aria-label="Link to this section">#</a>Reliability</h2>
+<h2 id="reliability"><a class="h-anchor" href="#reliability" aria-hidden="true" tabindex="-1">#</a>Reliability</h2>
 <aside class="keyfig">
   <p class="keyfig-label">Key figure</p>
   <p class="keyfig-text"><b>99.9%</b> availability tolerates roughly 9 hours of downtime per year.</p>
@@ -138,21 +138,21 @@ if(d.getAttribute('data-rface')==='serif'){
 <p><strong>Availability Zones</strong>: Azure regions with availability zones contain three physically separate datacenters with independent power, cooling, and networking. Zone-redundant configurations (placing resources across at least two zones) protect against single-datacenter failure. For production workloads, zone-redundancy on compute (VMSS with zone spreading), storage (ZRS storage accounts), and databases (zone-redundant SQL Managed Instance, zone-redundant Azure Cache for Redis) is the baseline.</p>
 <p><strong>Service-level targets drive architecture choices</strong>: before choosing a reliability configuration, be explicit about the target availability. 99.9% availability tolerates roughly 9 hours of downtime per year. 99.99% tolerates 53 minutes. The architecture choices — and the cost premium — scale significantly between these targets. Multi-region active-active deployments required for 99.99% cost substantially more than zone-redundant single-region deployments at 99.9%.</p>
 <p><strong>Recovery targets need to be tested</strong>: Recovery Time Objective (RTO) and Recovery Point Objective (RPO) are design parameters, not measurements. The actual recovery time under realistic failure conditions is only known after testing. Azure Chaos Studio provides controlled fault injection for testing recovery paths without production incidents.</p>
-<h2 id="security"><a class="h-anchor" href="#security" aria-label="Link to this section">#</a>Security</h2>
+<h2 id="security"><a class="h-anchor" href="#security" aria-hidden="true" tabindex="-1">#</a>Security</h2>
 <p>The WAF security pillar covers identity, data protection, network security, and threat detection. On Azure, the practical implementation centers on:</p>
 <p><strong>Zero-trust identity</strong>: every request must be authenticated and authorized. In Azure terms: Entra ID (formerly Azure Active Directory) for identity, managed identities for service-to-service authentication (no stored credentials), Conditional Access policies enforcing MFA, and Privileged Identity Management (PIM) for just-in-time privileged access. The principle is that network location (being inside the VNet) is not sufficient proof of authorization.</p>
 <p><strong>Key and secret management</strong>: Azure Key Vault for certificates, connection strings, API keys, and application secrets. Applications reference vault references rather than storing credentials in configuration files or environment variables. Key rotation is automated where services support it.</p>
 <p><strong>Network segmentation</strong>: Virtual Network service endpoints and Private Endpoints to keep traffic from Azure services (Storage, SQL, Service Bus) off the public internet. Network Security Groups (NSGs) with explicit allow rules — default deny, explicit allow — rather than permissive defaults.</p>
 <p><strong>Defender for Cloud</strong>: Microsoft Defender for Cloud provides continuous security posture assessment with specific recommendations tied to the Azure Secure Score. Treating Secure Score as a tracked metric creates accountability for remediation.</p>
-<h2 id="cost-optimization"><a class="h-anchor" href="#cost-optimization" aria-label="Link to this section">#</a>Cost Optimization</h2>
+<h2 id="cost-optimization"><a class="h-anchor" href="#cost-optimization" aria-hidden="true" tabindex="-1">#</a>Cost Optimization</h2>
 <p><strong>Right-sizing is ongoing, not a project</strong>: Azure Monitor and Advisor provide right-sizing recommendations for VMs, App Service plans, and databases based on actual utilization. These recommendations are typically available within 7 days of deployment and should be reviewed quarterly. The recommendation is a starting point, not an automatic answer — review actual utilization patterns before applying.</p>
 <p><strong>Commitment discounts</strong>: Azure Reservations (1-year or 3-year) and Azure Savings Plans offer 30-60% discount over pay-as-you-go pricing for committed usage. The decision requires understanding your workload&#39;s stability — reservations are a commitment. Azure Hybrid Benefit allows applying existing Windows Server and SQL Server licenses to Azure VMs, often 40% cheaper than the full license price.</p>
 <p><strong>Cost allocation with tags</strong>: Azure Cost Management works substantially better with consistent resource tagging. Required tags enforced via Azure Policy (e.g., <code>CostCenter</code>, <code>Environment</code>, <code>Owner</code>) enable team-level chargeback and identify untagged resources that cannot be attributed.</p>
-<h2 id="operational-excellence"><a class="h-anchor" href="#operational-excellence" aria-label="Link to this section">#</a>Operational Excellence</h2>
+<h2 id="operational-excellence"><a class="h-anchor" href="#operational-excellence" aria-hidden="true" tabindex="-1">#</a>Operational Excellence</h2>
 <p><strong>Infrastructure as Code</strong>: Azure Resource Manager templates, Bicep, or Terraform for all infrastructure provisioning. The anti-pattern of ClickOps — building through the portal — produces environments that are undocumented, hard to reproduce, and resistant to change management. Code review, version history, and automated deployment apply to infrastructure as much as application code.</p>
 <p><strong>Azure Monitor and Log Analytics</strong>: centralized logging via Log Analytics workspaces with diagnostic settings on all resources. Application Insights for distributed tracing across microservices. Alert rules on key metrics with routing to appropriate on-call channels. Workbooks for operational dashboards.</p>
 <p><strong>Deployment practices</strong>: blue-green or canary deployments for high-traffic services. Azure Deployment Slots for App Service provide zero-downtime swaps with automatic traffic shifting. Feature flags (Azure App Configuration) to decouple deployment from release.</p>
-<h2 id="performance-efficiency"><a class="h-anchor" href="#performance-efficiency" aria-label="Link to this section">#</a>Performance Efficiency</h2>
+<h2 id="performance-efficiency"><a class="h-anchor" href="#performance-efficiency" aria-hidden="true" tabindex="-1">#</a>Performance Efficiency</h2>
 <p><strong>Load testing before scaling decisions</strong>: Azure Load Testing (managed Apache JMeter) enables realistic load tests against production-like environments. Identifying bottlenecks under load before production traffic hits them is cheaper than scaling reactively after user-facing degradation.</p>
 <p><strong>Caching at multiple layers</strong>: Azure Cache for Redis for session state, frequently read data, and computed results. Azure CDN for static assets and globally distributed cacheable content. Azure Front Door for global load balancing with edge caching closer to users.</p>
 <p><strong>Autoscaling</strong>: VMSS with metric-based scaling rules, App Service plan autoscaling, AKS cluster autoscaler and KEDA for event-driven workload scaling. The risk: autoscaling without tested scale-up behavior. Test that scale-out events complete before traffic exceeds capacity.</p>
@@ -195,7 +195,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#e0473a" stop-opacity=".10"/>
       <stop offset="1" stop-color="#c03a2e" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahplatformengo" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e0473a" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -216,7 +216,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#0e7490" stop-opacity=".10"/>
       <stop offset="1" stop-color="#0b5f77" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahplatformengm" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#0e7490" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -245,12 +245,12 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#e8a317" stop-opacity=".10"/>
       <stop offset="1" stop-color="#a9760a" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahfinopsanomal" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e8a317" fill-opacity=".5"/>
     </marker>
   </defs>
   <rect width="640" height="360" fill="url(#bgfinopsanomal)"/>
-  <rect x="86" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.39" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 108 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.41" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 108 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.21" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 108 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.13" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 172 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.17" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 172 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="86" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.23" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 236 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.54" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 236 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.51" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/>
+  <rect x="86" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.39" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 108 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="212" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.41" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 108 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="338" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.21" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 108 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="212" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.13" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 172 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.17" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 172 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="86" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.23" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 236 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="212" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.54" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 236 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="464" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.51" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/>
 </svg></div>
   <div class="card-body">
     <span class="chip">FinOps</span>
@@ -325,7 +325,7 @@ if(d.getAttribute('data-rface')==='serif'){
         </div>
       </div>
       <div>
-        <h4>Services</h4>
+        <h2 class="foot-title">Services</h2>
         <ul>
           <li><a href="/services/#architecture">Enterprise architecture</a></li>
           <li><a href="/services/#ai">AI &amp; MLOps</a></li>
@@ -334,7 +334,7 @@ if(d.getAttribute('data-rface')==='serif'){
         </ul>
       </div>
       <div>
-        <h4>Insights</h4>
+        <h2 class="foot-title">Insights</h2>
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/series/">Series</a></li>
@@ -343,7 +343,7 @@ if(d.getAttribute('data-rface')==='serif'){
         </ul>
       </div>
       <div>
-        <h4>Contact</h4>
+        <h2 class="foot-title">Contact</h2>
         <ul>
           <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
           <li><a href="/contact/">Start an engagement</a></li>

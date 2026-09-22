@@ -1,7 +1,7 @@
 ---
 title: "The MTTR Reduction Playbook: Investments That Actually Move the Needle"
 description: "Mean Time to Recover is a lagging indicator — improving it requires leading investments in observability, runbooks, team practice, and architecture. Here's how to structure those investments and measure whether they're working."
-date: 2025-05-26
+date: 2025-06-17
 tags: ["Engineering Leadership", "Observability", "DevSecOps"]
 format: article
 ---

@@ -1,7 +1,7 @@
 ---
 title: "The engineering leader who stops being technical stops being useful to engineers."
 description: "Engineering management career tracks create a gravitational pull toward abstraction. As scope increases, direct involvement in technical work decreases."
-date: 2025-07-01
+date: 2029-02-02
 tags: ["Engineering Leadership"]
 format: article
 derived: true

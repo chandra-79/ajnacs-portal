@@ -1,7 +1,7 @@
 ---
 title: "Zero Trust Is an Architecture, Not a Product You Can Buy"
 description: "Zero trust is a security philosophy based on 'never trust, always verify.' It requires architectural changes to identity, network design, and access control. No single product delivers it."
-date: 2025-09-29
+date: 2028-10-06
 tags: ["DevSecOps", "Security", "Systems"]
 format: article
 ---

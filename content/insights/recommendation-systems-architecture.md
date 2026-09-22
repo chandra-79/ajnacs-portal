@@ -1,7 +1,7 @@
 ---
 title: "Recommendation Systems in Production: The Architecture Behind 'You Might Also Like'"
 description: "Recommenders are the highest-traffic ML systems most enterprises run — and their production shape is settled: candidate retrieval, ranking, and re-ranking, fed by feature freshness and judged by online metrics. The two-stage architecture, the cold-start realities, and the feedback loops that go wrong."
-date: 2025-02-21
+date: 2027-09-27
 tags: ["AI & MLOps", "Architecture", "Data Engineering", "Product Engineering"]
 format: article
 ---

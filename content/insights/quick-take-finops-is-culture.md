@@ -1,7 +1,7 @@
 ---
 title: "FinOps Is a Culture Problem, Not a Tooling Problem"
 description: "Cloud cost management tools are effective when teams use them and ineffective when teams ignore them. The reason teams ignore them is culture — and no tool fixes culture."
-date: 2025-09-01
+date: 2028-07-19
 tags: ["FinOps", "Engineering Leadership"]
 format: article
 ---

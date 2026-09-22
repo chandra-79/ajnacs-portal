@@ -1,7 +1,7 @@
 ---
 title: "Choosing Your First Programming Language: The Honest Guide"
 description: "Python, JavaScript, Java, Go — the right first language depends on what you are building and where you want to work. Here is how to make the decision without second-guessing yourself."
-date: 2026-05-11
+date: 2028-09-06
 tags: ["Programming", "Fundamentals"]
 series: "Getting Started with Programming Languages"
 seriesOrder: 2

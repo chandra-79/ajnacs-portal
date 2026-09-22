@@ -1,7 +1,7 @@
 ---
 title: "Architecture Governance That Teams Don't Route Around: Principles, Paved Roads, and ADRs"
 description: "The architecture review board is dead; architectural chaos is worse. The middle path — decision records, golden paths, fitness functions, and advisory review — that keeps a hundred teams coherent without a committee bottleneck."
-date: 2025-01-06
+date: 2027-06-18
 tags: ["Architecture", "Engineering Leadership", "Platform Engineering", "Engineering Practice"]
 format: article
 ---

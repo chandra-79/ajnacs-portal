@@ -66,14 +66,14 @@ function motifLayers(r, c1, c2) {
   return out;
 }
 
-function motifFlow(r, c1, c2) {
+function motifFlow(r, c1, c2, id = "") {
   const rows = 3, cols = 4; let out = "";
   for (let i = 0; i < rows; i++) for (let j = 0; j < cols; j++) {
     const x = 86 + j * 126, y = 92 + i * 64;
     if (r() > .32) {
       out += `<rect x="${x}" y="${y}" width="66" height="32" rx="7" fill="${c1}" fill-opacity="${(0.12 + r() * 0.5).toFixed(2)}" stroke="${c2}" stroke-opacity=".5" stroke-width="1.1"/>`;
       if (j < cols - 1 && r() > .38)
-        out += `<path d="M${x + 66} ${y + 16} H${x + 126}" stroke="${c1}" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/>`;
+        out += `<path d="M${x + 66} ${y + 16} H${x + 126}" stroke="${c1}" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah${id})"/>`;
     }
   }
   return out;
@@ -126,12 +126,12 @@ export function artwork(slug, tags, { w = W, h = H, calm = false } = {}) {
       <stop offset="0" stop-color="${c1}" stop-opacity=".10"/>
       <stop offset="1" stop-color="${c2}" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ah${id}" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="${c1}" fill-opacity=".5"/>
     </marker>
   </defs>
   <rect width="${w}" height="${h}" fill="url(#bg${id})"/>
-  ${motif(r, c1, c2)}
+  ${motif(r, c1, c2, id)}
 </svg>`;
 }
 
@@ -149,12 +149,15 @@ export function ogCard(title, topic, tags) {
   const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
   return `<svg viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
   <defs>
+    <marker id="ahog" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="${c1}" fill-opacity=".5"/>
+    </marker>
     <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#0a1020"/><stop offset="1" stop-color="#16203a"/>
     </linearGradient>
   </defs>
   <rect width="1200" height="630" fill="url(#g)"/>
-  <g opacity=".34" transform="translate(690,150) scale(1.35)">${MOTIFS[Math.floor(r() * MOTIFS.length)](seeded(title + "x"), c1, c2)}</g>
+  <g opacity=".34" transform="translate(690,150) scale(1.35)">${MOTIFS[Math.floor(r() * MOTIFS.length)](seeded(title + "x"), c1, c2, "og")}</g>
   <rect x="0" y="0" width="1200" height="8" fill="${c1}"/>
   <text x="78" y="128" font-family="Montserrat,sans-serif" font-size="25" font-weight="800" fill="${c1}" letter-spacing="3.4">${esc(String(topic || "INSIGHTS").toUpperCase())}</text>
   ${lines.map((l, i) => `<text x="78" y="${228 + i * 74}" font-family="Montserrat,sans-serif" font-size="58" font-weight="800" fill="#ffffff" letter-spacing="-1.4">${esc(l)}</text>`).join("\n  ")}

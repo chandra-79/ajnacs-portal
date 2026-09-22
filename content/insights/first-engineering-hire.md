@@ -1,7 +1,7 @@
 ---
 title: "The first engineering hire is a company-defining decision that most founders treat like a recruitment task."
 description: "Every subsequent engineering hire is evaluated against the standard the first hire established."
-date: 2025-10-13
+date: 2029-07-25
 tags: ["Engineering Leadership"]
 format: note
 derived: true

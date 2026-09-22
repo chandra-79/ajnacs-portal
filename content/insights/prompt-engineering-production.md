@@ -1,7 +1,7 @@
 ---
 title: "Prompt Engineering for Production Systems: Beyond the Demo"
 description: "Prompt engineering for a demo is different from prompt engineering for a system that runs reliably at scale. Here's how to design prompts for consistency, build evaluation frameworks, and manage the failure modes that appear in production but not in testing."
-date: 2026-06-15
+date: 2026-11-04
 tags: ["AI & MLOps", "Programming", "Enterprise AI"]
 format: article
 ---

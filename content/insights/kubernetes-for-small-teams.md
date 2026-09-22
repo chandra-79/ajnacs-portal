@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes is not the wrong answer. It is often the answer to a question you have not asked yet."
 description: "The question is not whether Kubernetes is technically capable of running your workload. It is."
-date: 2025-08-13
+date: 2029-03-30
 tags: ["Cloud Architecture", "Engineering Leadership"]
 format: note
 derived: true

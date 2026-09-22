@@ -1,7 +1,7 @@
 ---
 title: "On-Premises Nostalgia Is a Real Phenomenon — and Worth Taking Seriously"
 description: "Engineers who miss on-premises infrastructure are not just being difficult. They are often identifying real problems with cloud operational models that have not been adequately addressed."
-date: 2025-12-18
+date: 2028-08-11
 tags: ["Cloud Architecture", "Engineering Leadership"]
 format: article
 ---

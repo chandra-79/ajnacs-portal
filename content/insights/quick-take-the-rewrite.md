@@ -1,7 +1,7 @@
 ---
 title: "The Big Rewrite: Why It Takes Twice as Long and Delivers Half as Much"
 description: "The impulse to rewrite a complex legacy system is understandable. The outcomes of big rewrites are predictable and almost universally disappointing. Here is the pattern and the alternative."
-date: 2025-12-08
+date: 2028-11-03
 tags: ["Software Engineering", "Engineering Leadership"]
 format: article
 ---

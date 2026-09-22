@@ -1,7 +1,7 @@
 ---
 title: "The Meeting Before the Work Is the Most Important Meeting Nobody Counts"
 description: "The alignment conversation that happens before engineering starts determines how much of the engineering work is useful. Teams that skip it pay for it in rework."
-date: 2026-01-12
+date: 2029-01-08
 tags: ["Engineering Leadership"]
 format: article
 ---

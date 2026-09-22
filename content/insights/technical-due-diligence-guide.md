@@ -1,7 +1,7 @@
 ---
 title: "Technical Due Diligence: Reading a Company's Engineering in Two Weeks"
 description: "M&A and investment decisions hinge on technology assessments performed under time pressure with imperfect access. What actually predicts integration pain and hidden cost — architecture honesty, delivery capability, key-person risk, and the questions that surface them."
-date: 2025-03-17
+date: 2027-10-01
 tags: ["Engineering Leadership", "Technology Strategy", "M&A", "Architecture", "Technical Debt"]
 format: article
 ---

@@ -1,7 +1,7 @@
 ---
 title: "MLOps Pipelines That Actually Work: Lessons from Azure ML and SageMaker"
 description: "Training a model is the easy part. Getting it into production reliably, keeping it there, and knowing when it's degrading — that's the engineering. Here's what I've found building MLOps pipelines on Azure ML and AWS SageMaker."
-date: 2026-07-30
+date: 2024-12-19
 tags: ["AI & MLOps", "Cloud Architecture"]
 format: article
 ---

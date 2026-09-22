@@ -1,7 +1,7 @@
 ---
 title: "Time in Distributed Systems: Why Your Clocks Lie and What to Use Instead"
 description: "Timestamps feel like truth and behave like rumors — clock skew, NTP realities, and the ordering bugs that follow. Logical clocks, hybrid time, TrueTime-class bounded uncertainty, and the practical rules for engineers who just want correct timelines."
-date: 2025-03-18
+date: 2027-02-03
 tags: ["Distributed Systems", "Programming", "Reliability", "Architecture", "Data Engineering"]
 format: article
 ---

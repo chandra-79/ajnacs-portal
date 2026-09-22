@@ -1,7 +1,7 @@
 ---
 title: "The Engineering Leadership Trap: Managing the Way You Were Managed"
 description: "Most first-time engineering managers unconsciously replicate the management style they experienced as individual contributors — including the parts that made them miserable."
-date: 2026-02-09
+date: 2029-01-10
 tags: ["Engineering Leadership", "Career"]
 format: article
 ---

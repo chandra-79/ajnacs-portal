@@ -1,7 +1,7 @@
 ---
 title: "The Permanent Temporary API: How Quick Fixes Become Load-Bearing Infrastructure"
 description: "Why temporary API integrations never get replaced, what makes them so sticky, and the four conditions that turn a weekend workaround into a five-year maintenance burden."
-date: 2026-01-15
+date: 2027-12-15
 tags: ["Architecture", "Engineering Leadership"]
 format: article
 ---

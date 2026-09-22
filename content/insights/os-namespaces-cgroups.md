@@ -1,7 +1,7 @@
 ---
 title: "Linux Namespaces and cgroups: The Foundation of Containers"
 description: "How Linux namespaces isolate processes, filesystems, networks, and users — and how cgroups enforce resource limits. The primitives that Docker, Kubernetes, and every container runtime are built on."
-date: 2026-09-08
+date: 2026-06-02
 tags: ["Programming", "Fundamentals"]
 series: "Linux: A Complete Practical Course"
 seriesOrder: 24

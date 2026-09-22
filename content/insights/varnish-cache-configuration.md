@@ -1,7 +1,7 @@
 ---
 title: "Varnish Cache Configuration: A Practical Guide to VCL and Caching Strategy"
 description: "Varnish is a powerful HTTP accelerator, but the configuration language (VCL) has a steep learning curve. Here's how to configure Varnish for real workloads — including cache key design, TTL strategy, authentication handling, and ESI for partial caching."
-date: 2026-05-22
+date: 2025-03-04
 tags: ["CDN & Caching", "Infrastructure", "Architecture"]
 format: article
 ---

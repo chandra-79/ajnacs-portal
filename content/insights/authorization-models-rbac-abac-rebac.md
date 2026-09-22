@@ -1,7 +1,7 @@
 ---
 title: "Authorization Models: RBAC, ABAC, and the Zanzibar Turn"
 description: "Authentication got standards; authorization got fragmentation — every app reinventing permission checks until the audit or the enterprise deal arrives. The three models and their failure modes, relationship-based authorization's rise, policy engines, and the architecture of the check."
-date: 2024-10-14
+date: 2027-12-01
 tags: ["Security", "Identity", "Architecture", "Programming", "API Design"]
 format: article
 ---

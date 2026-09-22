@@ -1,7 +1,7 @@
 ---
 title: "Linux Network Configuration: Interfaces, Routing, DNS, and the ip Command"
 description: "How Linux network configuration works — the ip command, network interfaces, routing tables, DNS resolution, NetworkManager vs systemd-networkd, and persistent configuration."
-date: 2026-08-10
+date: 2027-06-09
 tags: ["Programming", "Fundamentals"]
 series: "Linux: A Complete Practical Course"
 seriesOrder: 13

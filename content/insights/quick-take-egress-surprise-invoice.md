@@ -1,7 +1,7 @@
 ---
 title: "Cloud Egress Pricing: Why the Surprise Invoice Happens and How to Prevent It"
 description: "Cloud egress costs are the most reliably surprising line item on a first-year cloud bill. Understanding how egress pricing works explains why — and how to architect to minimize it."
-date: 2025-10-17
+date: 2028-02-07
 tags: ["FinOps", "Cloud Architecture"]
 format: article
 ---

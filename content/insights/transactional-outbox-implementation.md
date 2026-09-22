@@ -1,7 +1,7 @@
 ---
 title: "Implementing the Transactional Outbox: From Pattern Diagram to Production Pipeline"
 description: "The outbox pattern gets cited constantly and implemented with sharp edges — the relay's delivery semantics, ordering per aggregate, table growth and cleanup, the CDC-vs-polling relay decision, and the monitoring that keeps the pipe honest."
-date: 2025-03-24
+date: 2027-12-10
 tags: ["Distributed Systems", "Programming", "Data Engineering", "Messaging", "Architecture"]
 format: article
 ---

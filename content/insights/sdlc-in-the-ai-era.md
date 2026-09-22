@@ -1,7 +1,7 @@
 ---
 title: "The SDLC in the AI Era: What Actually Changes When Code Gets Cheap"
 description: "AI assistants have made code generation abundant — and moved the bottleneck. How the software development lifecycle rebalances around review, verification, and specification, and what engineering leaders should change (and defend) in response."
-date: 2025-02-28
+date: 2027-11-01
 tags: ["Engineering Practice", "AI Adoption", "Engineering Leadership", "Developer Experience", "Quality Engineering"]
 format: article
 ---

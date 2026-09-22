@@ -1,7 +1,7 @@
 ---
 title: "Resume Cloud vs. Production Cloud: The Gap That Catches People"
 description: "The cloud technologies you have heard of and can talk about in interviews are not always the ones you should run in production. Here is how to develop the judgment to know the difference."
-date: 2025-07-30
+date: 2028-03-27
 tags: ["Cloud Architecture", "Engineering Leadership"]
 format: article
 ---

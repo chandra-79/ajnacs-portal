@@ -1,7 +1,7 @@
 ---
 title: "Architecture decision records are only useful if people read them when making new decisions"
 description: "Architecture decision records are only valuable if they're consulted when new decisions are being made in the same domain."
-date: 2026-03-18
+date: 2029-03-09
 tags: ["Software Engineering", "Engineering Leadership"]
 format: article
 derived: true

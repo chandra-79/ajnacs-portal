@@ -1,7 +1,7 @@
 ---
 title: "Most documentation is written for the person who already knows the thing"
 description: "The person who writes documentation has the system fully loaded in their working memory. They know which step is a prerequisite for which other step."
-date: 2026-01-05
+date: 2029-06-15
 tags: ["Software Engineering", "Engineering Leadership"]
 format: article
 derived: true

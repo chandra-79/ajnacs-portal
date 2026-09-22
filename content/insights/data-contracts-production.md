@@ -1,7 +1,7 @@
 ---
 title: "Data Contracts: Preventing the Silent Breaking Changes That Wreck Data Pipelines"
 description: "Data pipelines break silently when upstream data changes without warning. Data contracts make the agreement between producers and consumers explicit, versioned, and enforceable — before it reaches production."
-date: 2025-05-06
+date: 2027-11-26
 tags: ["Data Engineering", "Engineering Leadership"]
 format: article
 ---

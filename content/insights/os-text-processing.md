@@ -1,7 +1,7 @@
 ---
 title: "Text Processing on Linux: grep, sed, awk, cut, sort, and the Pipeline Approach"
 description: "The core Linux text processing tools — what each does, when to use each, and how to chain them in pipelines that turn raw logs and data files into exactly the answer you need."
-date: 2026-07-28
+date: 2027-03-01
 tags: ["Programming", "Fundamentals"]
 series: "Linux: A Complete Practical Course"
 seriesOrder: 7

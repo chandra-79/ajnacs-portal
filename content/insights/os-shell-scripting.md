@@ -1,7 +1,7 @@
 ---
 title: "Shell Scripting: Writing Bash Scripts That Actually Work in Production"
 description: "Variables, conditionals, loops, functions, error handling, and the specific practices that separate a shell script that works once from one that runs reliably in production automation."
-date: 2026-08-03
+date: 2027-02-05
 tags: ["Programming", "Fundamentals"]
 series: "Linux: A Complete Practical Course"
 seriesOrder: 8

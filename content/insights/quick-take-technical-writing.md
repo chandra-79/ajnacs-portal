@@ -1,7 +1,7 @@
 ---
 title: "Technical Writing Is an Engineering Skill — Here Is Why Engineers Underinvest in It"
 description: "The engineer who writes clearly — in design documents, in pull request descriptions, in incident reports, in documentation — is more effective than the same engineer who does not. The skill is developable."
-date: 2026-01-12
+date: 2028-11-06
 tags: ["Engineering Leadership"]
 format: article
 ---

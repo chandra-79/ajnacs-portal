@@ -1,7 +1,7 @@
 ---
 title: "ORMs Without the Holy War: What Object-Relational Mapping Buys, Costs, and Leaks"
 description: "The ORM debate recycles every few years while production systems quietly need the same answers — where mapping helps, where it hides the queries that hurt, the N+1 and lazy-loading physics, and the layered data-access architecture that uses ORMs without being used by them."
-date: 2025-01-29
+date: 2027-12-08
 tags: ["Programming", "Data Engineering", "Architecture", "Performance"]
 format: article
 ---

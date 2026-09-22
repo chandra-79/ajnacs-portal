@@ -1,7 +1,7 @@
 ---
 title: "Multipass: Instant Ubuntu VMs for Cloud Engineers Who Test Locally"
 description: "Canonical's Multipass closes the gap between local development and cloud deployments — by giving you a real Ubuntu VM in under 30 seconds. Here's how I use it and why it belongs in every cloud engineer's toolkit."
-date: 2026-09-21
+date: 2026-12-14
 tags: ["Developer Tools", "Infrastructure", "Cloud Architecture"]
 format: article
 ---

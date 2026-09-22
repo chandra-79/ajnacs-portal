@@ -1,7 +1,7 @@
 ---
 title: "Azure Arc: Extending Azure Management to On-Premises and Multi-Cloud"
 description: "Azure Arc projects Azure's management plane onto non-Azure resources — on-premises servers, other cloud providers, edge environments. Here's what it actually enables and where it has limitations."
-date: 2026-03-16
+date: 2027-02-19
 tags: ["Cloud Architecture"]
 format: article
 ---

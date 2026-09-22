@@ -105,7 +105,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#ea580c" stop-opacity=".10"/>
       <stop offset="1" stop-color="#b8450b" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahqueueingtheo" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#ea580c" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -128,17 +128,17 @@ if(d.getAttribute('data-rface')==='serif'){
 </nav></div>
     <div class="prose">
 <p>There&#39;s a small body of mathematics that explains a remarkable share of production behavior — why latency explodes as utilization approaches capacity, why &quot;we have headroom, we&#39;re at 75%&quot; precedes incidents, why batch arrivals wreck systems that handle the same average load smoothly, and why adding one more server sometimes fixes everything. It&#39;s queueing theory, engineers mostly encounter it as interview trivia, and that&#39;s a waste: three results, held as intuitions rather than equations, upgrade nearly every capacity, performance, and even staffing conversation you&#39;ll have.</p>
-<h2 id="little39s-law-the-conservation-law-of-systems"><a class="h-anchor" href="#little39s-law-the-conservation-law-of-systems" aria-label="Link to this section">#</a>Little&#39;s Law: the conservation law of systems</h2>
+<h2 id="little39s-law-the-conservation-law-of-systems"><a class="h-anchor" href="#little39s-law-the-conservation-law-of-systems" aria-hidden="true" tabindex="-1">#</a>Little&#39;s Law: the conservation law of systems</h2>
 <aside class="keyfig">
   <p class="keyfig-label">Key figure</p>
   <p class="keyfig-text">At <b>50%</b> utilization the queue is negligible; at 80% delays are noticeable; at 90% they&#39;ve quadrupled from there; at 95% the system is an incident with good uptime.</p>
 </aside>
 <p><strong>L = λW</strong> — items in the system equal arrival rate times time in the system — with no assumptions about distributions, scheduling, or architecture; it&#39;s as close to physics as software gets. Its power is that knowing any two quantities yields the third, and all three are things you routinely need: the connection-pool sizing from performance practice (<em>200 req/s × 50ms per request = 10 connections in use</em> — the arithmetic that rightsizes pools without folklore), the concurrency audit (<em>a service showing 4,000 in-flight requests at 200 req/s is spending 20 seconds per request — somebody&#39;s timeout math is fiction</em>), the queue-drain triage from incident practice (<em>backlog ÷ (drain rate − arrival rate) = time to recovery, or the sign says you never recover</em>), and the WIP argument in delivery (<em>work-in-progress ÷ throughput = cycle time — the flow-metrics foundation: the only ways to ship faster are finishing more or starting less, and starting less is the cheap one</em>). The habit worth installing: whenever two of <code>concurrency</code>, <code>rate</code>, and <code>duration</code> appear on a dashboard, compute the third and check it against belief — the mismatches are where the surprises hide.</p>
-<h2 id="the-utilization-curve-why-the-last-20-of-capacity-is-a-trap"><a class="h-anchor" href="#the-utilization-curve-why-the-last-20-of-capacity-is-a-trap" aria-label="Link to this section">#</a>The utilization curve: why the last 20% of capacity is a trap</h2>
+<h2 id="the-utilization-curve-why-the-last-20-of-capacity-is-a-trap"><a class="h-anchor" href="#the-utilization-curve-why-the-last-20-of-capacity-is-a-trap" aria-hidden="true" tabindex="-1">#</a>The utilization curve: why the last 20% of capacity is a trap</h2>
 <p>The second result is the one every capacity plan needs tattooed on it: <strong>waiting time scales like 1/(1−ρ)</strong> — as utilization ρ approaches 1, queueing delay doesn&#39;t grow linearly, it grows <em>hyperbolically</em>. At 50% utilization the queue is negligible; at 80% delays are noticeable; at 90% they&#39;ve quadrupled from there; at 95% the system is an incident with good uptime. This single curve explains the recurring production mystery — &quot;load rose 10% and latency rose 400%&quot; — and demolishes the intuition (imported from batch thinking, where 95% utilization is efficiency) that idle capacity is waste: <strong>in latency-sensitive systems, idle capacity is the product</strong> — it&#39;s what absorbs variance, and the utilization targets from autoscaling and capacity practice (run hot only what can queue patiently) are this curve, operationalized. It also explains why utilization <em>averages</em> deceive: a node averaging 70% over five minutes may have spent thirty seconds at 100%, and the p99 lives entirely in those thirty seconds — the percentile-over-average discipline, given its theoretical basis.</p>
-<h2 id="variability-the-tax-nobody-budgets"><a class="h-anchor" href="#variability-the-tax-nobody-budgets" aria-label="Link to this section">#</a>Variability: the tax nobody budgets</h2>
+<h2 id="variability-the-tax-nobody-budgets"><a class="h-anchor" href="#variability-the-tax-nobody-budgets" aria-hidden="true" tabindex="-1">#</a>Variability: the tax nobody budgets</h2>
 <p>The third result (the Kingman/Pollaczek-Khinchine family, needed only as intuition): queueing delay scales with <strong>the variability of arrivals and service times</strong>, roughly as the sum of their squared coefficients of variation. Two systems with identical average load and identical capacity can have order-of-magnitude different latency purely on variance — smooth arrivals and uniform work queue barely; bursty arrivals and mixed work (the 5ms lookups sharing a queue with 30-second exports) queue catastrophically. The engineering corollaries are half this series&#39; greatest hits, now with the <em>why</em> attached: <strong>smooth the arrivals</strong> (jittered retries versus synchronized stampedes — the thundering-herd disciplines are variance reduction; batch jobs staggered rather than cron-aligned at :00, which is self-inflicted arrival variance at fleet scale), <strong>separate the work classes</strong> (the express-lane insight: dedicated pools/queues for fast and slow work — the bulkhead patterns and the &quot;one queue per work shape&quot; messaging rules exist because mixed service times multiply everyone&#39;s wait; the 30-second export behind your 5ms lookup delays it more than any CPU shortage), <strong>cap service-time tails</strong> (timeouts aren&#39;t just failure hygiene — they&#39;re variance amputation; the unbounded query is a queue-time bomb for every request behind it), and <strong>prefer many small work units to few large ones</strong> (the small-batch argument from delivery practice is Kingman&#39;s equation applied to PRs and deploys — big batches are high-variance service times, and their queueing cost lands on the whole pipeline).</p>
-<h2 id="the-composite-intuitions"><a class="h-anchor" href="#the-composite-intuitions" aria-label="Link to this section">#</a>The composite intuitions</h2>
+<h2 id="the-composite-intuitions"><a class="h-anchor" href="#the-composite-intuitions" aria-hidden="true" tabindex="-1">#</a>The composite intuitions</h2>
 <p>A few compound readings that pay in design reviews: <strong>queues hide everywhere unlabeled</strong> — connection pools, thread pools, load-balancer accept queues, disk I/O schedulers, Kafka consumer lag, the on-call ticket backlog, the code-review queue — and each obeys the same three laws; the systems (and teams) that feel mysteriously slow at &quot;reasonable&quot; load are usually running an invisible queue at 92% utilization with high variance (this is why review latency and WIP limits are engineering-managed quantities, not vibes — human workflows are queueing systems with worse variance and no autoscaler). <strong>Backpressure is queue-length control</strong> — the bounded-queue-plus-shed disciplines from reliability practice are the recognition that unbounded queues convert overload into unbounded <em>latency</em>, which fails everyone slowly instead of failing some requests fast (the load-shedding math: past saturation, every admitted request makes all requests later; rejection is the kindness). <strong>And scaling has two levers, not one</strong> — more servers cuts ρ (the utilization lever), but cutting <em>variance</em> (smoothing, separating, capping) often buys more latency for less money, and it&#39;s the lever capacity plans forget because it doesn&#39;t appear on the instance-pricing page.</p>
 <p>The pitch for the hour of study: these three results — L=λW, the 1/(1−ρ) explosion, variance&#39;s multiplicative tax — turn a class of production mysteries into predictions, a class of capacity debates into arithmetic, and a class of architectural patterns (bulkheads, jitter, timeouts, WIP limits, small batches) from folklore into consequences. Most of engineering&#39;s hard-won operational wisdom, it turns out, is queueing theory rediscovered one incident at a time; learning it directly is just cheaper.</p>
 
@@ -175,7 +175,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#e0473a" stop-opacity=".10"/>
       <stop offset="1" stop-color="#c03a2e" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahplatformengo" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e0473a" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -196,7 +196,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#0e7490" stop-opacity=".10"/>
       <stop offset="1" stop-color="#0b5f77" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahplatformengm" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#0e7490" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -225,7 +225,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#0e7490" stop-opacity=".10"/>
       <stop offset="1" stop-color="#0b5f77" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahplatformengi" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#0e7490" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -305,7 +305,7 @@ if(d.getAttribute('data-rface')==='serif'){
         </div>
       </div>
       <div>
-        <h4>Services</h4>
+        <h2 class="foot-title">Services</h2>
         <ul>
           <li><a href="/services/#architecture">Enterprise architecture</a></li>
           <li><a href="/services/#ai">AI &amp; MLOps</a></li>
@@ -314,7 +314,7 @@ if(d.getAttribute('data-rface')==='serif'){
         </ul>
       </div>
       <div>
-        <h4>Insights</h4>
+        <h2 class="foot-title">Insights</h2>
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/series/">Series</a></li>
@@ -323,7 +323,7 @@ if(d.getAttribute('data-rface')==='serif'){
         </ul>
       </div>
       <div>
-        <h4>Contact</h4>
+        <h2 class="foot-title">Contact</h2>
         <ul>
           <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
           <li><a href="/contact/">Start an engagement</a></li>

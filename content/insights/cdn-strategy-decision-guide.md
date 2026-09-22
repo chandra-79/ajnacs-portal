@@ -1,7 +1,7 @@
 ---
 title: "CDN Strategy: Choosing the Right Approach for Your Architecture"
 description: "CDN selection is more than picking the fastest network. Origin configuration, cache invalidation, edge compute capabilities, and the overlap between your CDN and your cloud provider's services all affect the right choice. Here's how to think through it."
-date: 2026-05-07
+date: 2025-03-13
 tags: ["CDN & Caching", "Cloud Architecture", "Infrastructure"]
 format: article
 ---

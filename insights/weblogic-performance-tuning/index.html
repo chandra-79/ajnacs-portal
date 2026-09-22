@@ -105,7 +105,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#ea580c" stop-opacity=".10"/>
       <stop offset="1" stop-color="#b8450b" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahweblogicperf" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#ea580c" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -129,14 +129,14 @@ if(d.getAttribute('data-rface')==='serif'){
     <div class="prose">
 <p>WebLogic tuning advice on the internet is mostly cargo cult: lists of parameters copied from a 2011 forum post, applied wholesale, with no measurement before or after. Meanwhile the actual levers that govern throughput in a WebLogic estate — thread management, connection pool sizing, and the JVM underneath — go untouched because the defaults &quot;seem fine.&quot;</p>
 <p>Here&#39;s the short list of what matters, why, and how to know when to change it.</p>
-<h2 id="first-principle-weblogic-manages-its-own-threads"><a class="h-anchor" href="#first-principle-weblogic-manages-its-own-threads" aria-label="Link to this section">#</a>First principle: WebLogic manages its own threads</h2>
+<h2 id="first-principle-weblogic-manages-its-own-threads"><a class="h-anchor" href="#first-principle-weblogic-manages-its-own-threads" aria-hidden="true" tabindex="-1">#</a>First principle: WebLogic manages its own threads</h2>
 <aside class="keyfig">
   <p class="keyfig-label">Key figure</p>
   <p class="keyfig-text">Response time request class — declare a goal (say <b>500 ms</b>) and WebLogic prioritizes to meet it.</p>
 </aside>
 <p>Modern WebLogic uses a <strong>single self-tuning thread pool</strong> per server. There is no servlet thread pool to size, no execute queue count to guess (those died with WebLogic 8.1). The pool grows and shrinks based on measured throughput: WebLogic samples how throughput responds to thread count and adjusts.</p>
 <p>The tuning surface is therefore not &quot;how many threads&quot; but &quot;which work gets threads when there aren&#39;t enough&quot; — and that&#39;s what <strong>work managers</strong> are for.</p>
-<h2 id="work-managers-protecting-the-work-that-matters"><a class="h-anchor" href="#work-managers-protecting-the-work-that-matters" aria-label="Link to this section">#</a>Work managers: protecting the work that matters</h2>
+<h2 id="work-managers-protecting-the-work-that-matters"><a class="h-anchor" href="#work-managers-protecting-the-work-that-matters" aria-hidden="true" tabindex="-1">#</a>Work managers: protecting the work that matters</h2>
 <p>By default every application shares the default work manager, with equal fair shares. That means a batch endpoint someone hits with 10,000 requests competes on equal terms with your revenue-critical checkout service, on the same JVM.</p>
 <p>Work managers apply policy to thread allocation:</p>
 <ul>
@@ -148,7 +148,7 @@ if(d.getAttribute('data-rface')==='serif'){
 </ul>
 <p>Minimum viable setup for a shared JVM: one work manager per criticality tier, a max threads constraint on anything that calls a backend capable of stalling, and a capacity constraint on the default work manager so overload produces fast 503s rather than a queue of doomed requests.</p>
 <p><strong>The metric to watch</strong> is stuck threads — threads working one request longer than the stuck threshold (600 s default). Stuck threads are almost never a WebLogic problem; they&#39;re your application waiting on something that stopped answering. Configure stuck thread handling per work manager, alert on the count, and treat any nonzero steady-state value as an incident in progress.</p>
-<h2 id="jdbc-connection-pools-where-most-quotweblogicquot-problems-l"><a class="h-anchor" href="#jdbc-connection-pools-where-most-quotweblogicquot-problems-l" aria-label="Link to this section">#</a>JDBC connection pools: where most &quot;WebLogic&quot; problems live</h2>
+<h2 id="jdbc-connection-pools-where-most-quotweblogicquot-problems-l"><a class="h-anchor" href="#jdbc-connection-pools-where-most-quotweblogicquot-problems-l" aria-hidden="true" tabindex="-1">#</a>JDBC connection pools: where most &quot;WebLogic&quot; problems live</h2>
 <p>A decade of WebLogic incident reviews compresses to: it was usually the connection pool, and the pool was usually the messenger, not the culprit.</p>
 <p><strong>Size pools deliberately, not generously.</strong> Little&#39;s Law is the guide: connections needed ≈ request rate × mean time holding a connection. A service doing 200 req/s holding connections 50 ms needs ~10 connections, not 200. Oversized pools push contention into the database, where it&#39;s more expensive. Set initial = min = max in steady-state production systems to avoid connection-storm dynamics during recovery — growing a pool under load is work the database does at the worst possible moment.</p>
 <p><strong>Set these five, always:</strong></p>
@@ -161,15 +161,15 @@ if(d.getAttribute('data-rface')==='serif'){
 </ul>
 <p>And measure <code>Active Connections Current</code>, <code>Waiting For Connection Current</code>, and wait time. Waiters mean the pool is a bottleneck; whether the fix is a bigger pool or a faster query is what the SQL monitoring tells you.</p>
 <p><strong>XA pools</strong> get one extra rule: keep the transaction timeout hierarchy sane — statement timeout inside JTA timeout inside anything the client enforces — so timeouts fire innermost-first and produce clean rollbacks instead of in-doubt transactions to resolve by hand.</p>
-<h2 id="the-jvm-where-the-biggest-wins-hide"><a class="h-anchor" href="#the-jvm-where-the-biggest-wins-hide" aria-label="Link to this section">#</a>The JVM: where the biggest wins hide</h2>
+<h2 id="the-jvm-where-the-biggest-wins-hide"><a class="h-anchor" href="#the-jvm-where-the-biggest-wins-hide" aria-hidden="true" tabindex="-1">#</a>The JVM: where the biggest wins hide</h2>
 <p>WebLogic inherits everything true of JVM tuning generally, with a few estate-specific notes:</p>
 <p><strong>Heap:</strong> 4–8 GB per managed server remains the sweet spot for G1 on JDK 11/17. Set <code>-Xms</code> equal to <code>-Xmx</code>. If an application needs 24 GB of heap to survive, that&#39;s usually a caching architecture question, not a tuning question.</p>
 <p><strong>Collector:</strong> G1 is the right default. Set a pause goal (<code>-XX:MaxGCPauseMillis=200</code>) and stop there; stacking G1 micro-flags from blog posts is how estates end up with configurations nobody can explain. If pause-sensitive and on JDK 17+, ZGC is worth a proper benchmark.</p>
 <p><strong>Always on:</strong> GC logging (<code>-Xlog:gc*</code> to a rotating file), heap dump on OOM, and JFR enabled or one flag away. When the 2 AM incident comes, the difference between having and not having GC logs is the difference between a diagnosis and a guess.</p>
 <p><strong>Native memory:</strong> managed servers dying without heap OOMs are often being OOM-killed by the OS — heap plus metaspace plus threads plus direct buffers exceeded the machine. Size the <em>process</em>, not just the heap, especially in containers and VMs sized to &quot;fit exactly.&quot;</p>
-<h2 id="server-level-settings-worth-checking-once"><a class="h-anchor" href="#server-level-settings-worth-checking-once" aria-label="Link to this section">#</a>Server-level settings worth checking once</h2>
+<h2 id="server-level-settings-worth-checking-once"><a class="h-anchor" href="#server-level-settings-worth-checking-once" aria-hidden="true" tabindex="-1">#</a>Server-level settings worth checking once</h2>
 <p>A handful of defaults deserve a deliberate decision per estate: <strong>domain-wide administration port</strong> enabled (separates admin traffic and enables admin-mode testing); HTTP <strong>keep-alive and duration</strong> aligned with your load balancer&#39;s idle timeout (mismatches produce sporadic 502s that get blamed on everything else); <strong>logging</strong> — rotate by size, cap retained files, and drop the default stdout verbosity, because synchronous logging to a slow disk shows up as mysterious latency; and <strong>native I/O (muxer)</strong> enabled, which it is by default on supported platforms — verify rather than assume, since falling back to Java muxer costs real throughput.</p>
-<h2 id="the-diagnostic-loop"><a class="h-anchor" href="#the-diagnostic-loop" aria-label="Link to this section">#</a>The diagnostic loop</h2>
+<h2 id="the-diagnostic-loop"><a class="h-anchor" href="#the-diagnostic-loop" aria-hidden="true" tabindex="-1">#</a>The diagnostic loop</h2>
 <p>Tuning without measurement is redecorating. The tools that close the loop are all built in. WLDF (the diagnostic framework) harvests MBean metrics — thread pool throughput, pending requests, pool waiters, stuck counts — into archives you can chart; pair it with dashboards before incidents, not during. Thread dumps remain the highest-value-per-effort diagnostic in existence: three dumps ten seconds apart during a slowdown nearly always show the pattern — fifty threads parked in the same JDBC call is a database problem wearing a WebLogic costume. JFR flight recordings answer the questions thread dumps can&#39;t, with production-safe overhead.</p>
 <p>The order of operations for any WebLogic performance complaint: thread dumps first (where is time going?), pool metrics second (are we waiting on connections?), GC log third (are we pausing?), and only then — with evidence — turn a knob. One knob. Then measure again.</p>
 <p>The estates that run fast aren&#39;t the ones with the longest <code>java</code> command lines. They&#39;re the ones where every parameter that differs from default has a sentence of justification, a date, and a measurement attached.</p>
@@ -207,7 +207,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#e0473a" stop-opacity=".10"/>
       <stop offset="1" stop-color="#c03a2e" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahplatformengo" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e0473a" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -228,7 +228,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#0e7490" stop-opacity=".10"/>
       <stop offset="1" stop-color="#0b5f77" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahplatformengm" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#0e7490" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -257,7 +257,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#0e7490" stop-opacity=".10"/>
       <stop offset="1" stop-color="#0b5f77" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahplatformengi" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#0e7490" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -347,7 +347,7 @@ if(d.getAttribute('data-rface')==='serif'){
         </div>
       </div>
       <div>
-        <h4>Services</h4>
+        <h2 class="foot-title">Services</h2>
         <ul>
           <li><a href="/services/#architecture">Enterprise architecture</a></li>
           <li><a href="/services/#ai">AI &amp; MLOps</a></li>
@@ -356,7 +356,7 @@ if(d.getAttribute('data-rface')==='serif'){
         </ul>
       </div>
       <div>
-        <h4>Insights</h4>
+        <h2 class="foot-title">Insights</h2>
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/series/">Series</a></li>
@@ -365,7 +365,7 @@ if(d.getAttribute('data-rface')==='serif'){
         </ul>
       </div>
       <div>
-        <h4>Contact</h4>
+        <h2 class="foot-title">Contact</h2>
         <ul>
           <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
           <li><a href="/contact/">Start an engagement</a></li>

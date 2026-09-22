@@ -1,7 +1,7 @@
 ---
 title: "Implementing SLOs and Error Budgets: From Reliability Theater to Working Contract"
 description: "Most SLO initiatives produce dashboards nobody consults and budgets nobody spends. How to pick SLIs that reflect users, set targets you can defend, wire burn-rate alerts that beat threshold paging, and make the error budget an actual decision instrument."
-date: 2025-03-06
+date: 2026-11-20
 tags: ["Reliability", "Observability", "Platform Engineering", "Engineering Leadership"]
 format: article
 ---

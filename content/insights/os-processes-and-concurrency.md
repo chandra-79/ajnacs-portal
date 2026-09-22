@@ -1,7 +1,7 @@
 ---
 title: "Processes, Threads, and Concurrency: What Every Engineer Must Understand"
 description: "The difference between a process and a thread, how concurrency works in production systems, and why your program behaves differently on a multi-core server than on your laptop."
-date: 2026-06-11
+date: 2027-12-17
 tags: ["Programming", "Fundamentals"]
 series: "Operating Systems for Engineers"
 seriesOrder: 2

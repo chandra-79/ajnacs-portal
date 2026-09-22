@@ -1,7 +1,7 @@
 ---
 title: "From Showback to Chargeback: Building a Cloud Cost Ownership Model That Sticks"
 description: "Showback tells teams what they spend. Chargeback makes them accountable for it. The gap between the two is cultural as much as technical — here's how to bridge it without creating finance theater."
-date: 2026-07-13
+date: 2026-10-23
 tags: ["FinOps", "Cost Optimisation", "Engineering Leadership"]
 series: "FinOps from Zero to Production"
 seriesOrder: 5

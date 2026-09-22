@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes Operators: When to Build One and When to Stop at CRDs"
 description: "Operators extend Kubernetes with custom domain logic. But writing an operator is a significant commitment — the control loop, the reconciliation logic, the RBAC, the upgrade path. Here's when operators solve real problems and when simpler alternatives are enough."
-date: 2026-06-16
+date: 2025-02-05
 tags: ["Cloud Architecture", "Containers", "Programming"]
 format: article
 ---

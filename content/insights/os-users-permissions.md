@@ -1,7 +1,7 @@
 ---
 title: "Linux Users, Groups, and Permissions: The Complete Model"
 description: "How Linux user and group management works, the permission model in depth, sudo configuration, setuid/setgid, ACLs, and the hardening practices that belong on every production server."
-date: 2026-08-03
+date: 2027-08-11
 tags: ["Programming", "Fundamentals"]
 series: "Linux: A Complete Practical Course"
 seriesOrder: 9

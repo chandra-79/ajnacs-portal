@@ -1,7 +1,7 @@
 ---
 title: "Platform Engineering: The Cloud Architecture Conversation Most Teams Are Having Too Late"
 description: "Internal developer platforms aren't just DevOps at scale — they're a fundamentally different way of thinking about how your engineering organization interacts with infrastructure. Here's what's worth building and what isn't."
-date: 2026-06-22
+date: 2027-04-14
 tags: ["Cloud Architecture", "DevSecOps", "Engineering Leadership"]
 format: article
 ---

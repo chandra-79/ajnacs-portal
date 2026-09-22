@@ -1,7 +1,7 @@
 ---
 title: "Why Architecture Reviews After the Design Is Done Are Security Theater"
 description: "An architecture review conducted after the implementation decisions are locked changes nothing meaningful. Here is what useful architectural oversight actually looks like."
-date: 2025-10-06
+date: 2028-03-31
 tags: ["Architecture", "Engineering Leadership"]
 format: article
 ---

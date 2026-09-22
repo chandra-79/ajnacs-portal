@@ -1,7 +1,7 @@
 ---
 title: "Mainframe Modernization Without the Fantasy: Strategies for the Systems That Still Run Everything"
 description: "COBOL still clears the transactions, the talent clock is running, and the rewrite graveyard is full. The honest option space — from re-hosting to progressive strangulation — the data-access patterns that unlock value early, and what AI genuinely changes."
-date: 2025-01-14
+date: 2027-09-22
 tags: ["Legacy Modernization", "Mainframe", "Architecture", "Cloud Migration", "Technical Debt"]
 format: article
 ---

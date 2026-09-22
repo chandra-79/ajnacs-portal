@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes Autoscaling, Properly: HPA, VPA, Karpenter, and the Layers in Between"
 description: "Autoscaling in Kubernetes is three separate problems wearing one name — scaling pods out, sizing pods right, and provisioning nodes. How the layers interact, the metrics that should drive them, and the failure modes of half-configured autoscaling."
-date: 2025-01-06
+date: 2027-04-05
 tags: ["Containers", "Cloud Architecture", "Autoscaling", "FinOps", "Platform Engineering"]
 format: article
 ---

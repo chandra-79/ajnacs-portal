@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes Security Hardening: The Controls That Actually Reduce Attack Surface"
 description: "Default Kubernetes configurations are not production-secure. Here are the specific hardening controls — RBAC, Pod Security Standards, network policies, image policies, secrets management — that reduce attack surface and what each actually protects against."
-date: 2026-09-02
+date: 2026-04-13
 tags: ["DevSecOps", "Containers", "Security"]
 series: "DevSecOps Pipeline"
 seriesOrder: 4

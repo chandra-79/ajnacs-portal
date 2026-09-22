@@ -1,7 +1,7 @@
 ---
 title: "Search Infrastructure: Running Elasticsearch/OpenSearch Without the Folklore"
 description: "Search clusters are the estate's most misunderstood stateful system — part database, part index, part analytics engine. Index and shard design, the relevance layer, the operational patterns that prevent cluster incidents, and where vector search fits."
-date: 2025-03-03
+date: 2027-12-24
 tags: ["Search", "Elasticsearch", "Programming", "Performance", "Data Engineering"]
 format: article
 ---

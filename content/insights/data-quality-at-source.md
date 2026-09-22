@@ -1,7 +1,7 @@
 ---
 title: "Data quality problems are always upstream problems. Fixing them downstream is waste."
 description: "Data quality problems are solved where data is produced, not where it is consumed."
-date: 2025-09-15
+date: 2029-02-23
 tags: ["Data Engineering", "Engineering Leadership"]
 format: article
 derived: true

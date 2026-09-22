@@ -1,7 +1,7 @@
 ---
 title: "Context Engineering: The Discipline That Replaced Prompt Engineering"
 description: "As LLM applications matured from prompts to systems, the craft moved from wording instructions to architecting everything the model sees — retrieval, memory, tool results, and token budgets. The principles of context engineering for production AI systems."
-date: 2024-10-31
+date: 2027-09-03
 tags: ["AI Adoption", "LLM", "Enterprise AI", "Architecture", "AI & MLOps"]
 format: article
 ---

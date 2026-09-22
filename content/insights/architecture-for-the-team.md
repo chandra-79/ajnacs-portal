@@ -1,7 +1,7 @@
 ---
 title: "The right architecture for your system is the right architecture for your team, not for the problem."
 description: "Architecture decisions are regularly made by examining the technical requirements of the system: expected throughput, latency targets, consistency requirements, failure tolerance…"
-date: 2025-06-16
+date: 2028-12-04
 tags: ["Architecture", "Engineering Leadership"]
 format: article
 derived: true

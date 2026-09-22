@@ -1,7 +1,7 @@
 ---
 title: "The Modular Monolith: Microservices' Benefits Without the Network Bill"
 description: "The architecture the industry circled back to — module boundaries with enforced contracts inside one deployable. What modularity actually requires (it's not folders), the enforcement tooling, the database discipline that makes or breaks it, and the honest exit criteria toward services."
-date: 2025-01-16
+date: 2028-03-20
 tags: ["Architecture", "Distributed Systems", "Engineering Practice", "Java"]
 format: article
 ---

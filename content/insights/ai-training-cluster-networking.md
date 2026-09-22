@@ -1,7 +1,7 @@
 ---
 title: "AI Training Cluster Networking: Architecture for Large-Scale Model Training"
 description: "Training large models at scale requires network architecture that most data centres aren't built for. Here's how to think about the networking stack for AI training clusters — topology, bandwidth requirements, collective operations, and the trade-offs between InfiniBand and high-speed Ethernet."
-date: 2026-03-27
+date: 2025-04-08
 tags: ["Systems", "AI & MLOps", "HPC"]
 format: article
 ---

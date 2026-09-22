@@ -1,7 +1,7 @@
 ---
 title: "The Saga Pattern: Distributed Transactions Without Two-Phase Commit"
 description: "When a business transaction spans services, ACID stops being available and sagas become the discipline — local transactions, compensating actions, orchestration vs choreography, and the failure-handling design that separates working sagas from distributed spaghetti."
-date: 2025-02-25
+date: 2027-07-02
 tags: ["Distributed Systems", "Programming", "Architecture", "Reliability"]
 format: article
 ---

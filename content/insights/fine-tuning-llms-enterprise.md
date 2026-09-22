@@ -1,7 +1,7 @@
 ---
 title: "Fine-Tuning LLMs for Enterprise Use: When It Helps and When RAG Is Enough"
 description: "Fine-tuning an LLM for your specific domain is compelling in theory. In practice, most enterprise use cases are better served by RAG with good prompting. Here's how to tell the difference."
-date: 2025-09-08
+date: 2027-05-21
 tags: ["AI & MLOps", "Enterprise AI"]
 format: article
 ---

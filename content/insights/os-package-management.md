@@ -1,7 +1,7 @@
 ---
 title: "Linux Package Management: apt, dnf, snap, and Building from Source"
 description: "How Linux package managers work, apt and dnf usage patterns, managing PPAs and third-party repositories, snap and flatpak, and when building from source is the right answer."
-date: 2026-08-05
+date: 2027-08-13
 tags: ["Programming", "Fundamentals"]
 series: "Linux: A Complete Practical Course"
 seriesOrder: 10

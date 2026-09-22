@@ -1,7 +1,7 @@
 ---
 title: "Multi-region is not a reliability upgrade. It is a completely different operational model."
 description: "Multi-region architecture is presented as a natural evolution from single-region deployment, the logical next step in a reliability maturity model."
-date: 2025-09-03
+date: 2028-10-20
 tags: ["Cloud Architecture"]
 format: article
 derived: true

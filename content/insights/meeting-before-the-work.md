@@ -1,7 +1,7 @@
 ---
 title: "The meeting that happens before the work is the most important meeting nobody counts."
 description: "Engineering process design focuses on the scheduled meetings because those are legible. Sprint planning has a defined agenda, a cadence, and measurable outputs."
-date: 2026-05-04
+date: 2029-06-20
 tags: ["Engineering Leadership"]
 format: article
 derived: true

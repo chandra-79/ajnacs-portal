@@ -1,7 +1,7 @@
 ---
 title: "MTTR Is a Leadership Metric Before It Is an Engineering Metric"
 description: "Mean time to recovery is shaped as much by organizational factors — who can make deployment decisions at 2am, how escalations work, what authority the on-call engineer has — as by technical ones."
-date: 2025-08-15
+date: 2028-10-11
 tags: ["Observability", "Engineering Leadership", "Resilience"]
 format: article
 ---

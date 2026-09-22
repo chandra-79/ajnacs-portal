@@ -1,7 +1,7 @@
 ---
 title: "Software Estimation for Grown-Ups: Forecasting Without the Fiction"
 description: "Estimates fail for structural reasons — invisible work, asymmetric risk, and incentives that punish honesty. Reference-class forecasting, ranges over points, flow metrics as the estimation engine, and when to stop estimating and start slicing."
-date: 2025-03-07
+date: 2028-05-03
 tags: ["Engineering Leadership", "Engineering Practice", "Agile", "Project Management", "Developer Experience"]
 format: article
 ---

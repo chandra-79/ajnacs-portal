@@ -1,7 +1,7 @@
 ---
 title: "Vendor lock-in anxiety is usually worse than the lock-in itself."
 description: "Vendor lock-in anxiety is usually worse than the lock-in itself."
-date: 2026-05-26
+date: 2029-05-14
 tags: ["Cloud Architecture", "Engineering Leadership"]
 format: note
 derived: true

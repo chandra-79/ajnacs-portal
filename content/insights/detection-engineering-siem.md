@@ -1,7 +1,7 @@
 ---
 title: "Detection Engineering: Treating Security Alerts Like Software, Because They Are"
 description: "The SOC's alert rules are the security program's actual product — and most estates run them as an unversioned pile of vendor defaults. Detections-as-code, the ATT&CK-mapped coverage inventory, testing detections against simulated attacks, and the alert-quality economics."
-date: 2024-11-15
+date: 2029-06-22
 tags: ["Security", "Detection Engineering", "Reliability", "Observability", "Platform Engineering"]
 format: note
 ---

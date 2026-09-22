@@ -1,7 +1,7 @@
 ---
 title: "The imposter thing doesn't go away. But it changes shape."
 description: "I spent a lot of my early career waiting for someone to notice I didn't know what I was doing."
-date: 2026-01-19
+date: 2026-03-09
 tags: ["Career", "Reflection", "Tech"]
 format: article
 derived: true

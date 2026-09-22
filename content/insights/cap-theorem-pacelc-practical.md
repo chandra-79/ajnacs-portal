@@ -1,7 +1,7 @@
 ---
 title: "CAP and PACELC, Practically: What the Theorem Actually Constrains (and What It Doesn't)"
 description: "CAP is the most-cited and most-misused result in distributed systems — 'pick two of three' is wrong in both directions. What consistency and availability formally mean, why PACELC is the better daily framework, and how real systems place themselves on the spectrum."
-date: 2024-10-21
+date: 2027-01-22
 tags: ["Distributed Systems", "Data Engineering", "Architecture", "Reliability", "Programming"]
 format: article
 ---

@@ -105,7 +105,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#4f46e5" stop-opacity=".10"/>
       <stop offset="1" stop-color="#3730a3" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahosstorageman" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#4f46e5" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -131,7 +131,7 @@ if(d.getAttribute('data-rface')==='serif'){
     </nav></div>
     <div class="prose">
 <p>Storage management is a core Linux administration skill that becomes critical when a filesystem fills up at 3am, when you need to expand a volume without downtime, or when you are provisioning a new server. Understanding the full stack — from block device to mounted filesystem — lets you make correct decisions quickly under pressure.</p>
-<h2 id="the-storage-stack"><a class="h-anchor" href="#the-storage-stack" aria-label="Link to this section">#</a>The Storage Stack</h2>
+<h2 id="the-storage-stack"><a class="h-anchor" href="#the-storage-stack" aria-hidden="true" tabindex="-1">#</a>The Storage Stack</h2>
 <pre><code>Physical disk (or cloud EBS volume, SAN LUN)
     ↓
 Block device (/dev/sda, /dev/nvme0n1)
@@ -146,7 +146,7 @@ Filesystem (ext4, xfs, btrfs) — on partition or LVM logical volume
     ↓
 Mount point (/data, /var, /home) — where it appears in the directory tree
 </code></pre>
-<h2 id="identifying-block-devices"><a class="h-anchor" href="#identifying-block-devices" aria-label="Link to this section">#</a>Identifying Block Devices</h2>
+<h2 id="identifying-block-devices"><a class="h-anchor" href="#identifying-block-devices" aria-hidden="true" tabindex="-1">#</a>Identifying Block Devices</h2>
 <pre><code class="language-bash">## List all block devices
 lsblk                          # tree view: disks, partitions, mount points
 lsblk -f                       # include filesystem type and UUID
@@ -170,7 +170,7 @@ smartctl -a /dev/sda           # SMART data: disk health, errors, temperature
 ## /dev/xvda                    AWS Xen instances
 ## Partitions: /dev/sda1, /dev/nvme0n1p1
 </code></pre>
-<h2 id="partitioning"><a class="h-anchor" href="#partitioning" aria-label="Link to this section">#</a>Partitioning</h2>
+<h2 id="partitioning"><a class="h-anchor" href="#partitioning" aria-hidden="true" tabindex="-1">#</a>Partitioning</h2>
 <pre><code class="language-bash">## For new disks: use parted or fdisk
 ## GPT partition table is recommended for all disks &gt; 2TB and modern systems
 
@@ -194,7 +194,7 @@ sudo partprobe /dev/sdb
 ## or
 sudo blockdev --rereadpt /dev/sdb
 </code></pre>
-<h2 id="filesystems"><a class="h-anchor" href="#filesystems" aria-label="Link to this section">#</a>Filesystems</h2>
+<h2 id="filesystems"><a class="h-anchor" href="#filesystems" aria-hidden="true" tabindex="-1">#</a>Filesystems</h2>
 <pre><code class="language-bash">## Create filesystems
 sudo mkfs.ext4 /dev/sdb1
 sudo mkfs.ext4 -L &quot;data&quot; /dev/sdb1          # with label
@@ -220,7 +220,7 @@ sudo tune2fs -L &quot;data-volume&quot; /dev/sdb1  # set label
 sudo resize2fs /dev/sdb1               # resize to fill partition
 sudo resize2fs /dev/sdb1 50G           # resize to specific size
 </code></pre>
-<h2 id="mounting"><a class="h-anchor" href="#mounting" aria-label="Link to this section">#</a>Mounting</h2>
+<h2 id="mounting"><a class="h-anchor" href="#mounting" aria-hidden="true" tabindex="-1">#</a>Mounting</h2>
 <pre><code class="language-bash">## Mount a filesystem
 sudo mount /dev/sdb1 /data
 sudo mount -t ext4 /dev/sdb1 /data       # explicit type
@@ -251,7 +251,7 @@ cat /proc/mounts                  # kernel&#39;s view of current mounts
 findmnt                           # tree view
 findmnt --target /data
 </code></pre>
-<h2 id="etcfstab-persistent-mounts"><a class="h-anchor" href="#etcfstab-persistent-mounts" aria-label="Link to this section">#</a>/etc/fstab: Persistent Mounts</h2>
+<h2 id="etcfstab-persistent-mounts"><a class="h-anchor" href="#etcfstab-persistent-mounts" aria-hidden="true" tabindex="-1">#</a>/etc/fstab: Persistent Mounts</h2>
 <pre><code class="language-bash">## /etc/fstab format:
 ## device  mountpoint  fstype  options  dump  pass
 UUID=abc123  /data  ext4  defaults,noatime  0  2
@@ -273,7 +273,7 @@ tmpfs  /tmp  tmpfs  defaults,size=2G,mode=1777  0  0
 ## Bind mount (make a directory accessible at another path):
 /opt/app/data  /data/app  none  bind  0  0
 </code></pre>
-<h2 id="lvm-logical-volume-management"><a class="h-anchor" href="#lvm-logical-volume-management" aria-label="Link to this section">#</a>LVM: Logical Volume Management</h2>
+<h2 id="lvm-logical-volume-management"><a class="h-anchor" href="#lvm-logical-volume-management" aria-hidden="true" tabindex="-1">#</a>LVM: Logical Volume Management</h2>
 <p>LVM adds a flexible abstraction layer between physical storage and filesystems. You can resize, snapshot, and add storage to running systems without repartitioning.</p>
 <p><strong>Three layers:</strong></p>
 <ul>
@@ -322,7 +322,7 @@ sudo pvdisplay
 sudo vgdisplay
 sudo lvdisplay
 </code></pre>
-<h2 id="disk-usage-monitoring"><a class="h-anchor" href="#disk-usage-monitoring" aria-label="Link to this section">#</a>Disk Usage Monitoring</h2>
+<h2 id="disk-usage-monitoring"><a class="h-anchor" href="#disk-usage-monitoring" aria-hidden="true" tabindex="-1">#</a>Disk Usage Monitoring</h2>
 <pre><code class="language-bash">## Filesystem usage
 df -h                             # all mounted filesystems, human-readable
 df -h /data                       # specific mount
@@ -341,7 +341,7 @@ find / -type f -size +1G 2&gt;/dev/null
 iostat -x 1                       # extended stats, 1-second interval
 iotop                             # per-process I/O (like top for disk)
 </code></pre>
-<h2 id="nfs-network-file-system"><a class="h-anchor" href="#nfs-network-file-system" aria-label="Link to this section">#</a>NFS: Network File System</h2>
+<h2 id="nfs-network-file-system"><a class="h-anchor" href="#nfs-network-file-system" aria-hidden="true" tabindex="-1">#</a>NFS: Network File System</h2>
 <pre><code class="language-bash">## Server side: export a directory
 sudo apt install nfs-kernel-server
 echo &quot;/data  192.168.1.0/24(rw,sync,no_subtree_check)&quot; | sudo tee -a /etc/exports
@@ -391,7 +391,7 @@ nfsstat                           # NFS statistics
       <stop offset="0" stop-color="#e0473a" stop-opacity=".10"/>
       <stop offset="1" stop-color="#c03a2e" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahplatformengo" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e0473a" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -412,12 +412,12 @@ nfsstat                           # NFS statistics
       <stop offset="0" stop-color="#6d4aff" stop-opacity=".10"/>
       <stop offset="1" stop-color="#5837e0" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahaimlneuralne" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#6d4aff" fill-opacity=".5"/>
     </marker>
   </defs>
   <rect width="640" height="360" fill="url(#bgaimlneuralne)"/>
-  <rect x="86" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.51" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="464" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.45" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="212" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.45" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 172 H338" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.60" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 172 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.40" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="338" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.32" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 236 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.39" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/>
+  <rect x="86" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.51" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="464" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.45" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="212" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.45" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 172 H338" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahaimlneuralne)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.60" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 172 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahaimlneuralne)"/><rect x="464" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.40" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="338" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.32" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 236 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahaimlneuralne)"/><rect x="464" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.39" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/>
 </svg></div>
   <div class="card-body">
     <span class="chip">AI &amp; MLOps</span>
@@ -433,7 +433,7 @@ nfsstat                           # NFS statistics
       <stop offset="0" stop-color="#6d4aff" stop-opacity=".10"/>
       <stop offset="1" stop-color="#5837e0" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahaimlragandpr" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#6d4aff" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -523,7 +523,7 @@ nfsstat                           # NFS statistics
         </div>
       </div>
       <div>
-        <h4>Services</h4>
+        <h2 class="foot-title">Services</h2>
         <ul>
           <li><a href="/services/#architecture">Enterprise architecture</a></li>
           <li><a href="/services/#ai">AI &amp; MLOps</a></li>
@@ -532,7 +532,7 @@ nfsstat                           # NFS statistics
         </ul>
       </div>
       <div>
-        <h4>Insights</h4>
+        <h2 class="foot-title">Insights</h2>
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/series/">Series</a></li>
@@ -541,7 +541,7 @@ nfsstat                           # NFS statistics
         </ul>
       </div>
       <div>
-        <h4>Contact</h4>
+        <h2 class="foot-title">Contact</h2>
         <ul>
           <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
           <li><a href="/contact/">Start an engagement</a></li>

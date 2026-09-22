@@ -105,7 +105,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#0891b2" stop-opacity=".10"/>
       <stop offset="1" stop-color="#076f87" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahdatabaserepl" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#0891b2" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -120,7 +120,7 @@ if(d.getAttribute('data-rface')==='serif'){
 </nav></div>
     <div class="prose">
 <p>Database replication is often configured with a default setup — one primary, one replica — without clear thinking about whether the goal is availability, read scaling, geographic distribution, or disaster recovery. Different goals require different configurations, and the default is frequently suboptimal for the actual need.</p>
-<h2 id="read-replicas-for-read-scaling"><a class="h-anchor" href="#read-replicas-for-read-scaling" aria-label="Link to this section">#</a>Read replicas for read scaling</h2>
+<h2 id="read-replicas-for-read-scaling"><a class="h-anchor" href="#read-replicas-for-read-scaling" aria-hidden="true" tabindex="-1">#</a>Read replicas for read scaling</h2>
 <aside class="keyfig">
   <p class="keyfig-label">Key figure</p>
   <p class="keyfig-text">An application with <b>95%</b> reads and 5% writes can serve most traffic from replicas while writes go to the primary.</p>
@@ -130,7 +130,7 @@ if(d.getAttribute('data-rface')==='serif'){
 <p><strong>What read replicas do not solve</strong>: write throughput bottlenecks. All writes still go to a single primary. If your bottleneck is write volume, read replicas don&#39;t help.</p>
 <p><strong>Replication lag</strong>: read replicas are eventually consistent — they may lag behind the primary by milliseconds to seconds depending on write volume and replica load. Applications that read data immediately after writing it must either read from the primary for those operations or account for the possibility of stale reads. This is the most common operational surprise with read replicas.</p>
 <p><strong>Promotion time</strong>: if the primary fails, promoting a replica to primary takes time — typically 30-60 seconds for cloud managed databases (AWS RDS, Azure Database for PostgreSQL) with automated failover. During this window, writes fail. This is the availability cost of a primary-replica architecture.</p>
-<h2 id="synchronous-vs-asynchronous-replication"><a class="h-anchor" href="#synchronous-vs-asynchronous-replication" aria-label="Link to this section">#</a>Synchronous vs. asynchronous replication</h2>
+<h2 id="synchronous-vs-asynchronous-replication"><a class="h-anchor" href="#synchronous-vs-asynchronous-replication" aria-hidden="true" tabindex="-1">#</a>Synchronous vs. asynchronous replication</h2>
 <p>Asynchronous replication (the default for most databases): the primary acknowledges a write as soon as it is committed locally. The replica receives the changes shortly after. In a primary failure, the most recent writes (those not yet replicated) may be lost.</p>
 <p>Synchronous replication: the primary waits for at least one replica to confirm it has received and written the transaction before acknowledging success to the client. Writes are more expensive (higher latency); in exchange, no data loss on failover to a synchronous replica.</p>
 <p><strong>PostgreSQL synchronous replication</strong>:</p>
@@ -139,7 +139,7 @@ ALTER SYSTEM SET synchronous_standby_names = &#39;FIRST 1 (replica1, replica2)&#
 SELECT pg_reload_conf();
 </code></pre>
 <p>Synchronous replication to a standby in the same availability zone adds approximately 1-2ms to write latency. Synchronous replication to a cross-region standby adds the cross-region round-trip latency (potentially 60-100ms), which is unacceptable for most transactional workloads.</p>
-<h2 id="multi-primary-or-active-active-replication"><a class="h-anchor" href="#multi-primary-or-active-active-replication" aria-label="Link to this section">#</a>Multi-primary (or active-active) replication</h2>
+<h2 id="multi-primary-or-active-active-replication"><a class="h-anchor" href="#multi-primary-or-active-active-replication" aria-hidden="true" tabindex="-1">#</a>Multi-primary (or active-active) replication</h2>
 <p>Multi-primary replication allows writes to multiple nodes simultaneously, with changes replicated across all nodes. This solves two specific problems: geographic write distribution (each region writes to its local node) and write availability during a primary failure.</p>
 <p><strong>The conflict problem</strong>: if two nodes accept writes to the same row simultaneously, a conflict occurs. Conflict resolution strategies:</p>
 <ul>
@@ -148,14 +148,14 @@ SELECT pg_reload_conf();
 <li><strong>Avoid conflicts by design</strong>: route writes for a given entity to a specific node (based on sharding key). No two nodes ever accept writes to the same entity. This is the most reliable approach but requires application-level routing logic.</li>
 </ul>
 <p>Systems like Vitess (MySQL sharding), CockroachDB, and Cassandra are designed for multi-primary operation. Standard PostgreSQL multi-primary is implemented with tools like pglogical or BDR (Bi-Directional Replication) but requires careful conflict management.</p>
-<h2 id="managed-database-replication-in-cloud"><a class="h-anchor" href="#managed-database-replication-in-cloud" aria-label="Link to this section">#</a>Managed database replication in cloud</h2>
+<h2 id="managed-database-replication-in-cloud"><a class="h-anchor" href="#managed-database-replication-in-cloud" aria-hidden="true" tabindex="-1">#</a>Managed database replication in cloud</h2>
 <p>Cloud-managed databases abstract much of the replication complexity:</p>
 <p><strong>AWS RDS Multi-AZ</strong>: synchronous replication to a standby in a different availability zone. Automatic failover in 30-60 seconds. Zero data loss on failover. Higher cost (you pay for the standby even though it serves no read traffic).</p>
 <p><strong>AWS Aurora</strong>: six-way replication across three availability zones, with up to 15 read replicas. Failover in under 30 seconds (typically 10-15 seconds). The storage layer is multi-AZ by default; what fails over is the writer endpoint, not storage.</p>
 <p><strong>Azure Database for PostgreSQL — Flexible Server</strong> with high availability: standby server in the same or a different availability zone. 120-second failover SLA with zone-redundant HA.</p>
 <p><strong>GCP Cloud SQL</strong>: similar primary-standby configuration with automatic failover within a region.</p>
 <p>For most production workloads, cloud-managed replication is the right choice: it removes the operational complexity of managing replication manually and provides well-defined RPO/RTO guarantees.</p>
-<h2 id="choosing-the-right-configuration"><a class="h-anchor" href="#choosing-the-right-configuration" aria-label="Link to this section">#</a>Choosing the right configuration</h2>
+<h2 id="choosing-the-right-configuration"><a class="h-anchor" href="#choosing-the-right-configuration" aria-hidden="true" tabindex="-1">#</a>Choosing the right configuration</h2>
 <p>Questions to answer before configuring replication:</p>
 <ul>
 <li>Is the bottleneck reads, writes, or availability?</li>
@@ -200,12 +200,12 @@ SELECT pg_reload_conf();
       <stop offset="0" stop-color="#e8a317" stop-opacity=".10"/>
       <stop offset="1" stop-color="#a9760a" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahfinopsanomal" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e8a317" fill-opacity=".5"/>
     </marker>
   </defs>
   <rect width="640" height="360" fill="url(#bgfinopsanomal)"/>
-  <rect x="86" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.39" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 108 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.41" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 108 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.21" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 108 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.13" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 172 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.17" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 172 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="86" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.23" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 236 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.54" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 236 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.51" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/>
+  <rect x="86" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.39" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 108 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="212" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.41" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 108 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="338" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.21" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 108 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="212" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.13" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 172 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.17" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 172 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="86" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.23" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 236 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="212" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.54" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 236 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="464" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.51" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/>
 </svg></div>
   <div class="card-body">
     <span class="chip">FinOps</span>
@@ -221,7 +221,7 @@ SELECT pg_reload_conf();
       <stop offset="0" stop-color="#e8a317" stop-opacity=".10"/>
       <stop offset="1" stop-color="#a9760a" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahfinopstaggin" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e8a317" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -250,7 +250,7 @@ SELECT pg_reload_conf();
       <stop offset="0" stop-color="#0d9488" stop-opacity=".10"/>
       <stop offset="1" stop-color="#0b7a70" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahmultiregiona" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#0d9488" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -338,7 +338,7 @@ SELECT pg_reload_conf();
         </div>
       </div>
       <div>
-        <h4>Services</h4>
+        <h2 class="foot-title">Services</h2>
         <ul>
           <li><a href="/services/#architecture">Enterprise architecture</a></li>
           <li><a href="/services/#ai">AI &amp; MLOps</a></li>
@@ -347,7 +347,7 @@ SELECT pg_reload_conf();
         </ul>
       </div>
       <div>
-        <h4>Insights</h4>
+        <h2 class="foot-title">Insights</h2>
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/series/">Series</a></li>
@@ -356,7 +356,7 @@ SELECT pg_reload_conf();
         </ul>
       </div>
       <div>
-        <h4>Contact</h4>
+        <h2 class="foot-title">Contact</h2>
         <ul>
           <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
           <li><a href="/contact/">Start an engagement</a></li>

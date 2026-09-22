@@ -1,7 +1,7 @@
 ---
 title: "IaC drift is a people problem wearing a technical mask"
 description: "Infrastructure as code drift — the gap between your IaC state and your actual cloud environment — gets discussed as a technical problem."
-date: 2025-10-24
+date: 2029-04-13
 tags: ["Cloud Architecture", "Infrastructure", "DevSecOps"]
 format: note
 derived: true

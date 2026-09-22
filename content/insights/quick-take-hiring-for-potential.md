@@ -1,7 +1,7 @@
 ---
 title: "Hiring for Potential: What It Actually Means and Why It Compounds"
 description: "Hiring for potential is not about ignoring experience — it is about identifying the trajectory of a candidate, not just their current position on it."
-date: 2026-02-24
+date: 2028-11-17
 tags: ["Engineering Leadership"]
 format: article
 ---

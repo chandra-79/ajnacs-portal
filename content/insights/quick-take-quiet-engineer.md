@@ -1,7 +1,7 @@
 ---
 title: "The Quiet Engineer Who Fixes Things Before They Break Is Underrated in Every Performance Review"
 description: "Visibility and impact are not the same thing. The engineers who prevent incidents, reduce operational burden, and improve system reliability produce value that is systematically undervalued in most performance systems."
-date: 2026-06-15
+date: 2029-01-15
 tags: ["Engineering Leadership"]
 format: article
 ---

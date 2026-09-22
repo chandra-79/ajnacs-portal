@@ -1,7 +1,7 @@
 ---
 title: "DORA Metrics Without the Cargo Cult: Measuring Delivery So It Improves"
 description: "Lead time, deployment frequency, change failure rate, and recovery time are the best-validated delivery metrics we have — and the most misused. How to instrument them honestly, read them as a system, and avoid the dashboard theater that turns measurement into damage."
-date: 2024-11-22
+date: 2027-11-22
 tags: ["Platform Engineering", "Engineering Leadership", "Engineering Practice", "Metrics", "Developer Experience"]
 format: article
 ---

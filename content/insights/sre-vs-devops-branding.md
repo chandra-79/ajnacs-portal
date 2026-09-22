@@ -1,7 +1,7 @@
 ---
 title: "SRE vs DevOps is mostly a branding debate. The practices that matter are the same."
 description: "The job titles proliferated faster than the practices they implied. Site Reliability Engineer became a hiring signal for candidates who expected Google-style SRE programs."
-date: 2025-10-27
+date: 2029-05-21
 tags: ["DevSecOps", "Engineering Leadership"]
 format: note
 derived: true

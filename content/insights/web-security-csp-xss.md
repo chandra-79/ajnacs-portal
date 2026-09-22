@@ -1,7 +1,7 @@
 ---
 title: "XSS and Content Security Policy: Browser-Side Defense After the Framework Era"
 description: "Frameworks made classic XSS rarer and its remaining variants subtler — DOM sinks, template escapes, and the third-party script supply chain. Output encoding as the foundation, CSP that actually blocks things, Trusted Types, and the rollout path that doesn't break the site."
-date: 2025-04-01
+date: 2028-03-10
 tags: ["Security", "Programming", "Web Performance", "API Design", "Supply Chain Security"]
 format: article
 ---

@@ -1,7 +1,7 @@
 ---
 title: "SQLite in Production: The Serious Case for the Unserious Database"
 description: "The most deployed database on earth spent decades dismissed as a toy for servers — then WAL mode, Litestream-class replication, and the single-node renaissance made it a legitimate production choice. Where it wins, the concurrency truth, and the operational playbook."
-date: 2025-03-10
+date: 2028-01-31
 tags: ["Data Engineering", "Programming", "Architecture", "Reliability", "Edge Computing"]
 format: article
 ---

@@ -1,7 +1,7 @@
 ---
 title: "The compliance audit nobody prepared for is an architecture review in disguise."
 description: "Compliance audits feel like external events imposed on engineering teams."
-date: 2025-08-21
+date: 2029-06-29
 tags: ["DevSecOps", "Engineering Leadership"]
 format: note
 derived: true

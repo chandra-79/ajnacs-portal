@@ -1,7 +1,7 @@
 ---
 title: "Your data pipeline has schema assumptions that nobody documented and everyone has forgotten"
 description: "Every data pipeline was built with implicit assumptions about the data it processes. The format of date fields."
-date: 2026-03-13
+date: 2029-02-28
 tags: ["Data Engineering", "Infrastructure"]
 format: article
 derived: true

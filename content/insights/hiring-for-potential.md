@@ -1,7 +1,7 @@
 ---
 title: "Hiring for potential is not charity. It is the only way to build a team that compounds."
 description: "The business case for hiring experienced candidates who have already done the specific job is straightforward: shorter ramp time, immediate contribution, lower risk of mis-hire."
-date: 2025-07-25
+date: 2029-06-06
 tags: ["Engineering Leadership"]
 format: article
 derived: true

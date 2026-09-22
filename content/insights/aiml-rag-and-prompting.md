@@ -1,7 +1,7 @@
 ---
 title: "RAG, Prompting, and Building Applications on LLMs: The Practitioner's Guide"
 description: "Retrieval-augmented generation, system prompts, few-shot examples, chain-of-thought, structured output, and the engineering patterns that make LLM applications reliable in production."
-date: 2026-07-08
+date: 2026-08-25
 tags: ["AI & MLOps", "Enterprise AI", "Fundamentals"]
 series: "AI, ML, LLMs, and Neural Networks: A Practitioner's Introduction"
 seriesOrder: 4

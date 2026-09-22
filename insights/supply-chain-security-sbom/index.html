@@ -105,7 +105,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#e0473a" stop-opacity=".10"/>
       <stop offset="1" stop-color="#c03a2e" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahsupplychains" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e0473a" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -121,7 +121,7 @@ if(d.getAttribute('data-rface')==='serif'){
     <div class="prose">
 <p>The SolarWinds and Log4Shell incidents changed how the industry thinks about software supply chain risk. Both showed the same vulnerability: organizations had extensive perimeter controls and almost no visibility into what software they were actually running and whether it contained known vulnerabilities.</p>
 <p>Software Bill of Materials (SBOM) and supply chain security practices exist to address this. The challenge is that the tooling is maturing, the standards are still evolving, and the gap between &quot;we generate an SBOM&quot; and &quot;we have meaningful supply chain security&quot; is significant.</p>
-<h2 id="what-an-sbom-actually-is"><a class="h-anchor" href="#what-an-sbom-actually-is" aria-label="Link to this section">#</a>What an SBOM actually is</h2>
+<h2 id="what-an-sbom-actually-is"><a class="h-anchor" href="#what-an-sbom-actually-is" aria-hidden="true" tabindex="-1">#</a>What an SBOM actually is</h2>
 <p>A Software Bill of Materials is a formal, machine-readable list of the components in a piece of software — libraries, frameworks, and their transitive dependencies — with version information and license data. Think of it as the ingredient list for software.</p>
 <p>SBOM formats:</p>
 <ul>
@@ -129,7 +129,7 @@ if(d.getAttribute('data-rface')==='serif'){
 <li><strong>CycloneDX</strong> — OWASP standard, focused on security use cases, strong tooling ecosystem</li>
 </ul>
 <p>Most software today ships without a published SBOM. The US Executive Order on Cybersecurity (May 2021) created requirements for software sold to the US federal government; this has accelerated adoption in commercial software as well.</p>
-<h2 id="generating-an-sbom"><a class="h-anchor" href="#generating-an-sbom" aria-label="Link to this section">#</a>Generating an SBOM</h2>
+<h2 id="generating-an-sbom"><a class="h-anchor" href="#generating-an-sbom" aria-hidden="true" tabindex="-1">#</a>Generating an SBOM</h2>
 <p>SBOM generation is now straightforward for most technology stacks:</p>
 <pre><code class="language-bash">## For container images using Syft
 syft ubuntu:latest -o cyclonedx-json &gt; sbom.json
@@ -144,7 +144,7 @@ pip-audit --format=cyclonedx-json &gt; sbom.json
 mvn org.cyclonedx:cyclonedx-maven-plugin:makeAggregateBom
 </code></pre>
 <p>The SBOM should be generated as part of the build pipeline and stored alongside the artifact it describes. If you are releasing version 2.1.4 of your service, the corresponding SBOM should be retrievable for that specific version.</p>
-<h2 id="vulnerability-scanning-against-the-sbom"><a class="h-anchor" href="#vulnerability-scanning-against-the-sbom" aria-label="Link to this section">#</a>Vulnerability scanning against the SBOM</h2>
+<h2 id="vulnerability-scanning-against-the-sbom"><a class="h-anchor" href="#vulnerability-scanning-against-the-sbom" aria-hidden="true" tabindex="-1">#</a>Vulnerability scanning against the SBOM</h2>
 <p>A generated SBOM is primarily useful for vulnerability scanning: cross-referencing the component list against known vulnerability databases (NVD, OSV, GHSA).</p>
 <pre><code class="language-bash">## Grype vulnerability scanner against a generated SBOM
 grype sbom:sbom.json
@@ -162,7 +162,7 @@ grype my-app:latest
     fail-build: true
     severity-cutoff: critical
 </code></pre>
-<h2 id="provenance-and-build-attestation"><a class="h-anchor" href="#provenance-and-build-attestation" aria-label="Link to this section">#</a>Provenance and build attestation</h2>
+<h2 id="provenance-and-build-attestation"><a class="h-anchor" href="#provenance-and-build-attestation" aria-hidden="true" tabindex="-1">#</a>Provenance and build attestation</h2>
 <p>Knowing what is in your software is different from knowing that your software was built from the code you think it was. Supply chain attacks like the SolarWinds compromise tamper with build artifacts after code review but before deployment.</p>
 <p>SLSA (Supply chain Levels for Software Artifacts) is a framework that defines levels of build integrity:</p>
 <ul>
@@ -178,7 +178,7 @@ cosign sign --key cosign.key my-registry/my-app:v1.2.3
 ## Verify a signed image
 cosign verify --key cosign.pub my-registry/my-app:v1.2.3
 </code></pre>
-<h2 id="dependency-management-hygiene"><a class="h-anchor" href="#dependency-management-hygiene" aria-label="Link to this section">#</a>Dependency management hygiene</h2>
+<h2 id="dependency-management-hygiene"><a class="h-anchor" href="#dependency-management-hygiene" aria-hidden="true" tabindex="-1">#</a>Dependency management hygiene</h2>
 <p>SBOMs and scanning are detective controls. The preventive controls that reduce supply chain risk:</p>
 <p><strong>Pin dependencies to specific versions</strong> rather than ranges. <code>requests==2.31.0</code> not <code>requests&gt;=2.20</code>. Unpinned dependencies allow supply chain attacks via a malicious version being published to a package registry.</p>
 <p><strong>Lock files</strong>: <code>package-lock.json</code>, <code>poetry.lock</code>, <code>Pipfile.lock</code>, <code>go.sum</code>. These record the exact resolved versions of all transitive dependencies. Without them, <code>npm install</code> in CI may resolve to different package versions than what was tested locally.</p>
@@ -222,7 +222,7 @@ cosign verify --key cosign.pub my-registry/my-app:v1.2.3
       <stop offset="0" stop-color="#e0473a" stop-opacity=".10"/>
       <stop offset="1" stop-color="#c03a2e" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahplatformengo" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e0473a" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -243,7 +243,7 @@ cosign verify --key cosign.pub my-registry/my-app:v1.2.3
       <stop offset="0" stop-color="#e0473a" stop-opacity=".10"/>
       <stop offset="1" stop-color="#c03a2e" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahcontainerswh" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e0473a" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -264,7 +264,7 @@ cosign verify --key cosign.pub my-registry/my-app:v1.2.3
       <stop offset="0" stop-color="#0e7490" stop-opacity=".10"/>
       <stop offset="1" stop-color="#0b5f77" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahplatformengm" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#0e7490" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -352,7 +352,7 @@ cosign verify --key cosign.pub my-registry/my-app:v1.2.3
         </div>
       </div>
       <div>
-        <h4>Services</h4>
+        <h2 class="foot-title">Services</h2>
         <ul>
           <li><a href="/services/#architecture">Enterprise architecture</a></li>
           <li><a href="/services/#ai">AI &amp; MLOps</a></li>
@@ -361,7 +361,7 @@ cosign verify --key cosign.pub my-registry/my-app:v1.2.3
         </ul>
       </div>
       <div>
-        <h4>Insights</h4>
+        <h2 class="foot-title">Insights</h2>
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/series/">Series</a></li>
@@ -370,7 +370,7 @@ cosign verify --key cosign.pub my-registry/my-app:v1.2.3
         </ul>
       </div>
       <div>
-        <h4>Contact</h4>
+        <h2 class="foot-title">Contact</h2>
         <ul>
           <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
           <li><a href="/contact/">Start an engagement</a></li>

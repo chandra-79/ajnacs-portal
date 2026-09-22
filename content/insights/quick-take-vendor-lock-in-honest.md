@@ -1,7 +1,7 @@
 ---
 title: "Vendor Lock-in Anxiety Is Usually Worse Than the Lock-in Itself"
 description: "The fear of vendor lock-in drives architectural decisions that add complexity and cost. A clear-eyed analysis of the actual switching cost is usually more reassuring than the anxiety suggests."
-date: 2025-10-07
+date: 2028-08-04
 tags: ["Cloud Architecture", "Engineering Leadership"]
 format: article
 ---

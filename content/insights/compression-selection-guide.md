@@ -1,7 +1,7 @@
 ---
 title: "Compression in Production: Choosing Between gzip, zstd, lz4, and Brotli Like It Matters"
 description: "Compression is a three-way trade — ratio, speed, and CPU — that most systems set once by default and never revisit. The algorithm landscape, placement decisions across web, storage, and streaming, dictionary compression's quiet superpower, and the measurement discipline."
-date: 2024-10-28
+date: 2026-10-12
 tags: ["Performance", "Programming", "Cloud Architecture", "Data Engineering", "FinOps"]
 format: article
 ---

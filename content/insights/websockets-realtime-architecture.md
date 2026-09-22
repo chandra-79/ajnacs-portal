@@ -1,7 +1,7 @@
 ---
 title: "Real-Time Architecture: WebSockets, SSE, and the State Problem Nobody Mentions"
 description: "Choosing between WebSockets, Server-Sent Events, and polling is the easy part. The hard parts are what long-lived connections do to load balancing, deployment, scaling, and state — the operational architecture of real-time systems."
-date: 2025-04-15
+date: 2027-07-14
 tags: ["Programming", "Distributed Systems", "API Design", "Performance", "Architecture"]
 format: article
 ---

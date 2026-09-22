@@ -1,7 +1,7 @@
 ---
 title: "Incident Culture: What Blameless Post-Mortems Actually Require"
 description: "Blameless post-mortems are widely advocated and inconsistently practiced. The gap between the stated ideal and the actual culture is usually visible in how post-mortems are conducted and what happens to the action items."
-date: 2025-05-19
+date: 2027-12-31
 tags: ["Engineering Leadership", "DevSecOps"]
 format: article
 ---

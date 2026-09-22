@@ -1,7 +1,7 @@
 ---
 title: "Most Failed Tool Adoptions Solved the Wrong Problem With the Right Tool"
 description: "Tool adoption failures are usually misdiagnosis failures. The tool works. The problem it was purchased to solve is not the problem that actually exists."
-date: 2025-12-11
+date: 2028-06-19
 tags: ["Engineering Leadership", "Architecture"]
 format: article
 ---

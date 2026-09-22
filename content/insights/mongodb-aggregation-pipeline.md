@@ -1,7 +1,7 @@
 ---
 title: "MongoDB Aggregation Pipeline: Practical Patterns for Enterprise Data Processing"
 description: "The MongoDB aggregation pipeline is more powerful than most teams use it. Here are the patterns for real data processing tasks — multi-stage transformations, lookup joins, group-and-project pipelines, and the performance considerations that matter at scale."
-date: 2026-06-04
+date: 2027-10-08
 tags: ["Data Engineering", "MongoDB"]
 format: article
 ---

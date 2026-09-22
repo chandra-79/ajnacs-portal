@@ -1,7 +1,7 @@
 ---
 title: "Database Sharding: The Strategies, the Resharding Problem, and When Not To"
 description: "Sharding is the scaling move you can't easily undo — key selection that decides everything downstream, hash vs range vs directory schemes, the cross-shard query tax, resharding as the real test, and the alternatives to exhaust first."
-date: 2024-11-07
+date: 2027-01-25
 tags: ["Data Engineering", "Distributed Systems", "Architecture", "Programming", "Scalability"]
 format: article
 ---

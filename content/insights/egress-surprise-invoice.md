@@ -1,7 +1,7 @@
 ---
 title: "Every team gets one cloud egress surprise invoice. The good ones only get one."
 description: "Cloud egress pricing works differently from most cloud cost categories. Compute and storage costs scale roughly linearly with usage in ways that are easy to estimate."
-date: 2026-01-26
+date: 2028-12-22
 tags: ["FinOps", "Cloud Architecture"]
 format: article
 derived: true

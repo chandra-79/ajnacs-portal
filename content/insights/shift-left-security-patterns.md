@@ -1,7 +1,7 @@
 ---
 title: "Shift-Left Security: Beyond the Slogan"
 description: "Shift-left is the right idea. Most implementations are too shallow to matter. Here's what actually moving security earlier requires — technically and organisationally."
-date: 2026-02-27
+date: 2027-11-17
 tags: ["DevSecOps", "Security", "CI/CD", "Cloud Architecture"]
 format: article
 ---

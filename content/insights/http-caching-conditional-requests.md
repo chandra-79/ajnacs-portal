@@ -1,7 +1,7 @@
 ---
 title: "HTTP Caching, Correctly: Cache-Control, ETags, and the Headers That Run the Web"
 description: "The web's caching layer is a distributed system you configure with five headers — and most APIs and sites configure it by accident. Freshness vs validation, the immutable-asset pattern, stale-while-revalidate, CDN cache keys, and the private-data footguns."
-date: 2024-12-20
+date: 2028-05-01
 tags: ["Web Performance", "HTTP", "Performance", "API Design", "CDN"]
 format: article
 ---

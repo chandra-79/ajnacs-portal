@@ -1,7 +1,7 @@
 ---
 title: "Rate Limiting by Design: Algorithms, Placement, and the Client Contract"
 description: "Rate limiting is the API's immune system — and most implementations are a config value someone guessed. Token buckets vs sliding windows, where limits belong in the stack, multi-tenant fairness, and the response contract that makes clients behave."
-date: 2024-10-07
+date: 2027-01-15
 tags: ["API Design", "Programming", "Reliability", "Distributed Systems", "Architecture"]
 format: article
 ---

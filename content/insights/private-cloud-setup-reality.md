@@ -1,7 +1,7 @@
 ---
 title: "Private Cloud Setup: What Nobody Tells You Before You Commit the Capital"
 description: "Private cloud projects fail more often than they succeed — not because the technology doesn't work, but because the economics are misunderstood from the start. Here's what to get right before you spend the budget."
-date: 2026-08-31
+date: 2027-02-01
 tags: ["Cloud Architecture", "Infrastructure"]
 format: article
 ---

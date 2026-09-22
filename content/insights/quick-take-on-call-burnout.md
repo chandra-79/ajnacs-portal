@@ -1,7 +1,7 @@
 ---
 title: "On-Call Burnout: How It Accumulates and What Organizations Can Actually Do"
 description: "On-call burnout is not solved by rotating schedules or paying people more. It is solved by reducing alert noise, fixing recurring incidents, and treating on-call engineering as a system design problem."
-date: 2026-01-27
+date: 2028-09-29
 tags: ["Engineering Leadership", "Observability"]
 format: article
 ---

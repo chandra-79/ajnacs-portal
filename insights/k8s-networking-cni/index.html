@@ -105,7 +105,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#e0473a" stop-opacity=".10"/>
       <stop offset="1" stop-color="#c03a2e" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahk8snetworkin" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e0473a" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -128,10 +128,10 @@ if(d.getAttribute('data-rface')==='serif'){
 </nav></div>
     <div class="prose">
 <p>Kubernetes networking has three layers that interact: the pod network (how pods communicate), service networking (how services are discovered and load-balanced), and the external network (how traffic enters and leaves the cluster). Understanding all three — and the CNI plugin that implements the pod network — is necessary for reasoning about cluster security.</p>
-<h2 id="the-default-no-isolation"><a class="h-anchor" href="#the-default-no-isolation" aria-label="Link to this section">#</a>The default: no isolation</h2>
+<h2 id="the-default-no-isolation"><a class="h-anchor" href="#the-default-no-isolation" aria-hidden="true" tabindex="-1">#</a>The default: no isolation</h2>
 <p>By default, every pod in a Kubernetes cluster can communicate with every other pod, across namespaces. There are no firewall rules between pods. A compromised pod in the <code>dev</code> namespace can reach pods in the <code>production</code> namespace on any port. This is the default, and it is not appropriate for most production environments.</p>
 <p>Network Policies change this by defining allow-rules for pod-to-pod traffic. The default-deny-all policy, combined with explicit allow rules for required communication, is the correct posture for production clusters.</p>
-<h2 id="network-policies"><a class="h-anchor" href="#network-policies" aria-label="Link to this section">#</a>Network Policies</h2>
+<h2 id="network-policies"><a class="h-anchor" href="#network-policies" aria-hidden="true" tabindex="-1">#</a>Network Policies</h2>
 <p>Network Policies are Kubernetes resources that specify which traffic is allowed to or from a set of pods. They work at the IP and port level.</p>
 <pre><code class="language-yaml">## Default deny all ingress and egress for the production namespace
 apiVersion: networking.k8s.io/v1
@@ -167,18 +167,18 @@ spec:
       port: 8080
 </code></pre>
 <p>The critical detail: Network Policies are only enforced if the CNI plugin supports them. The default Kubernetes networking does not enforce Network Policies without a supporting CNI.</p>
-<h2 id="cni-plugin-selection"><a class="h-anchor" href="#cni-plugin-selection" aria-label="Link to this section">#</a>CNI plugin selection</h2>
+<h2 id="cni-plugin-selection"><a class="h-anchor" href="#cni-plugin-selection" aria-hidden="true" tabindex="-1">#</a>CNI plugin selection</h2>
 <p>The Container Network Interface (CNI) plugin is the network implementation for your cluster. It provides pod networking (IP address assignment, routing) and, for some plugins, Network Policy enforcement.</p>
 <p><strong>Flannel</strong>: simple, widely used, only provides basic pod networking. Does not enforce Network Policies. Appropriate for development clusters where network segmentation is not required.</p>
 <p><strong>Calico</strong>: full-featured network plugin with Network Policy enforcement plus extended network policies (GlobalNetworkPolicy covering cluster-wide rules, policies that can reference hostnames and CIDR ranges). Strong performance. The default for many production Kubernetes deployments.</p>
 <p><strong>Cilium</strong>: eBPF-based networking. Instead of modifying iptables rules (as most CNIs do), Cilium uses eBPF programs loaded into the Linux kernel. Benefits: significantly better performance at scale, L7 policy (allow specific HTTP paths and methods, not just ports), identity-based policy (using Kubernetes labels, not just IPs). Increasingly common in large-scale production deployments.</p>
 <p><strong>AWS VPC CNI</strong> (for EKS): assigns VPC IP addresses directly to pods. Pods are on the VPC network, not an overlay network. Network policies require Calico or Cilium to be installed alongside the VPC CNI for enforcement.</p>
 <p>For new clusters, Cilium is the forward-looking choice. For existing clusters with Calico, the upgrade is possible but non-trivial. The important thing is that whatever CNI you choose, verify it enforces Network Policies — this is not universally supported and is non-obvious from documentation.</p>
-<h2 id="the-east-west-traffic-concern"><a class="h-anchor" href="#the-east-west-traffic-concern" aria-label="Link to this section">#</a>The east-west traffic concern</h2>
+<h2 id="the-east-west-traffic-concern"><a class="h-anchor" href="#the-east-west-traffic-concern" aria-hidden="true" tabindex="-1">#</a>The east-west traffic concern</h2>
 <p>In a microservices cluster, most traffic is east-west: service-to-service within the cluster. This traffic is often unencrypted by default, even in production. A network-layer attacker (compromised node, misconfigured routing) can observe plain-text traffic between services.</p>
 <p>Service meshes (Istio, Linkerd, Cilium&#39;s service mesh mode) address this with mutual TLS (mTLS): each service gets a cryptographic identity, and all service-to-service communication is encrypted and authenticated. The overhead is non-zero (latency, compute for TLS operations) but acceptable for most workloads and significant for security posture.</p>
 <p>The alternative — application-level TLS on every service-to-service call — achieves the same security outcome but requires explicit TLS configuration in every service. Service meshes make this automatic.</p>
-<h2 id="dns-based-communication-and-its-security-implications"><a class="h-anchor" href="#dns-based-communication-and-its-security-implications" aria-label="Link to this section">#</a>DNS-based communication and its security implications</h2>
+<h2 id="dns-based-communication-and-its-security-implications"><a class="h-anchor" href="#dns-based-communication-and-its-security-implications" aria-hidden="true" tabindex="-1">#</a>DNS-based communication and its security implications</h2>
 <p>Services in Kubernetes are reached by DNS names (<code>order-service.production.svc.cluster.local</code>). The cluster DNS resolver (CoreDNS) answers these queries. A compromised pod could attempt DNS poisoning or query internal service names to enumerate the cluster topology.</p>
 <p>Network policies can restrict DNS egress to CoreDNS only:</p>
 <pre><code class="language-yaml">## Allow DNS to CoreDNS, nothing else, for production pods
@@ -227,7 +227,7 @@ egress:
       <stop offset="0" stop-color="#e0473a" stop-opacity=".10"/>
       <stop offset="1" stop-color="#c03a2e" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahplatformengo" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e0473a" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -248,7 +248,7 @@ egress:
       <stop offset="0" stop-color="#e0473a" stop-opacity=".10"/>
       <stop offset="1" stop-color="#c03a2e" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahcontainerswh" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e0473a" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -269,12 +269,12 @@ egress:
       <stop offset="0" stop-color="#e8a317" stop-opacity=".10"/>
       <stop offset="1" stop-color="#a9760a" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahfinopsanomal" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e8a317" fill-opacity=".5"/>
     </marker>
   </defs>
   <rect width="640" height="360" fill="url(#bgfinopsanomal)"/>
-  <rect x="86" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.39" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 108 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.41" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 108 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.21" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 108 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.13" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 172 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.17" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 172 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="86" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.23" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 236 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.54" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 236 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.51" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/>
+  <rect x="86" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.39" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 108 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="212" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.41" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 108 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="338" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.21" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 108 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="212" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.13" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 172 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.17" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 172 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="86" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.23" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 236 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="212" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.54" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 236 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="464" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.51" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/>
 </svg></div>
   <div class="card-body">
     <span class="chip">FinOps</span>
@@ -349,7 +349,7 @@ egress:
         </div>
       </div>
       <div>
-        <h4>Services</h4>
+        <h2 class="foot-title">Services</h2>
         <ul>
           <li><a href="/services/#architecture">Enterprise architecture</a></li>
           <li><a href="/services/#ai">AI &amp; MLOps</a></li>
@@ -358,7 +358,7 @@ egress:
         </ul>
       </div>
       <div>
-        <h4>Insights</h4>
+        <h2 class="foot-title">Insights</h2>
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/series/">Series</a></li>
@@ -367,7 +367,7 @@ egress:
         </ul>
       </div>
       <div>
-        <h4>Contact</h4>
+        <h2 class="foot-title">Contact</h2>
         <ul>
           <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
           <li><a href="/contact/">Start an engagement</a></li>

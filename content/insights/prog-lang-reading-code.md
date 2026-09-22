@@ -1,7 +1,7 @@
 ---
 title: "Reading Code Is a Skill. Most Programmers Never Deliberately Practice It."
 description: "Writing code is half the job. Reading and understanding unfamiliar code — especially at scale — is the other half, and it determines how fast you grow as an engineer."
-date: 2026-06-05
+date: 2028-05-22
 tags: ["Programming", "Fundamentals"]
 series: "Getting Started with Programming Languages"
 seriesOrder: 5

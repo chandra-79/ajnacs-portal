@@ -1,7 +1,7 @@
 ---
 title: "Private cloud economics only work when someone actually does the accounting"
 description: "Private cloud cost justifications usually compare hardware acquisition cost plus data centre expenses against public cloud on-demand pricing."
-date: 2026-04-29
+date: 2029-02-19
 tags: ["Cloud Architecture", "FinOps", "Infrastructure"]
 format: note
 derived: true

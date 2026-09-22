@@ -1,7 +1,7 @@
 ---
 title: "Cloud IAM at Scale: Making Least Privilege Real Instead of Aspirational"
 description: "Identity is the cloud's actual security perimeter, and most estates run it as an append-only pile of permissions. The architecture of scalable IAM — role design, permission boundaries, access analysis, and the automation that makes least privilege sustainable."
-date: 2024-10-24
+date: 2027-06-16
 tags: ["Cloud Architecture", "Security", "Architecture", "Compliance"]
 format: article
 ---

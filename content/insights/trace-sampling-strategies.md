@@ -1,7 +1,7 @@
 ---
 title: "Trace Sampling: Keeping the Traces That Matter When You Can't Keep Them All"
 description: "Distributed tracing at production volume is a sampling problem wearing an instrumentation costume — head vs tail sampling, the consistency rules that keep traces whole, error-and-latency-biased retention, and the cost architecture of an honest tracing pipeline."
-date: 2025-03-21
+date: 2025-09-23
 tags: ["Observability", "Distributed Systems", "Reliability", "Performance", "Cloud Architecture"]
 format: article
 ---

@@ -1,7 +1,7 @@
 ---
 title: "On Conferences: What's Worth It and What Isn't"
 description: "I have attended a lot of technology conferences. KubeCon, AWS re:Invent, Google Cloud Next, a number of smaller specialist events."
-date: 2025-09-08
+date: 2025-06-10
 tags: ["Personal", "Career", "Community"]
 format: article
 derived: true

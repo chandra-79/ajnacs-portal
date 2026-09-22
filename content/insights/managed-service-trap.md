@@ -1,7 +1,7 @@
 ---
 title: "Managed services eliminate operational burden but they don't eliminate operational responsibility"
 description: "Managed services are genuinely valuable. Handing off database patching, engine upgrades, and hardware failures to a cloud provider eliminates a significant operational burden."
-date: 2025-11-10
+date: 2029-04-18
 tags: ["Cloud Architecture", "Infrastructure"]
 format: note
 derived: true

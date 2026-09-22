@@ -1,7 +1,7 @@
 ---
 title: "Every team measures time to deploy. Almost none measure time to value."
 description: "DORA metrics provided the engineering industry with a credible, research-backed set of measures for delivery performance."
-date: 2025-10-03
+date: 2028-12-15
 tags: ["Engineering Leadership", "Architecture"]
 format: article
 derived: true

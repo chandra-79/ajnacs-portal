@@ -105,7 +105,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#6d4aff" stop-opacity=".10"/>
       <stop offset="1" stop-color="#5837e0" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahquicktakeeth" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#6d4aff" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -129,7 +129,7 @@ if(d.getAttribute('data-rface')==='serif'){
     <div class="prose">
 <p>The GPU cluster is provisioned. 256 A100s. Expensive, powerful, and sitting at 42% GPU utilization during distributed training.</p>
 <p>The bottleneck is not the GPUs. The bottleneck is the network.</p>
-<h2 id="why-distributed-ai-training-is-a-network-problem"><a class="h-anchor" href="#why-distributed-ai-training-is-a-network-problem" aria-label="Link to this section">#</a>Why distributed AI training is a network problem</h2>
+<h2 id="why-distributed-ai-training-is-a-network-problem"><a class="h-anchor" href="#why-distributed-ai-training-is-a-network-problem" aria-hidden="true" tabindex="-1">#</a>Why distributed AI training is a network problem</h2>
 <aside class="keyfig">
   <p class="keyfig-label">Key figure</p>
   <p class="keyfig-text">Expensive, powerful, and sitting at <b>42%</b> GPU utilization during distributed training.</p>
@@ -137,7 +137,7 @@ if(d.getAttribute('data-rface')==='serif'){
 <p>Modern large model training uses distributed data parallelism or tensor parallelism, which requires frequent synchronization of gradients or activations across GPUs. The synchronization involves a lot of data moving very fast:</p>
 <p>A GPT-scale model with 100 billion parameters has approximately 400GB of gradient data (in FP32) that needs to be averaged across all nodes after each backward pass. With 128-node training, each node sends and receives approximately 6GB per step. At 1,000 steps per minute, that is 100GB/s of sustained bidirectional traffic per node.</p>
 <p>Standard 100GbE (100 gigabit Ethernet) provides approximately 12.5 GB/s unidirectional. The arithmetic does not work.</p>
-<h2 id="infiniband-vs-ethernet-the-real-differences"><a class="h-anchor" href="#infiniband-vs-ethernet-the-real-differences" aria-label="Link to this section">#</a>InfiniBand vs. Ethernet: the real differences</h2>
+<h2 id="infiniband-vs-ethernet-the-real-differences"><a class="h-anchor" href="#infiniband-vs-ethernet-the-real-differences" aria-hidden="true" tabindex="-1">#</a>InfiniBand vs. Ethernet: the real differences</h2>
 <p><strong>InfiniBand HDR (200 Gb/s)</strong> — the standard for serious AI training infrastructure — provides:</p>
 <ul>
 <li>200 Gb/s bandwidth per port (25 GB/s)</li>
@@ -152,7 +152,7 @@ if(d.getAttribute('data-rface')==='serif'){
 <li>RDMA over Converged Ethernet (RoCE v2) — requires careful ECN configuration to avoid congestion collapse</li>
 <li>Available in all major cloud providers (AWS EFA, Azure InfiniBand, GCP GPUDirect TCPX)</li>
 </ul>
-<h2 id="the-practical-implication-for-training-efficiency"><a class="h-anchor" href="#the-practical-implication-for-training-efficiency" aria-label="Link to this section">#</a>The practical implication for training efficiency</h2>
+<h2 id="the-practical-implication-for-training-efficiency"><a class="h-anchor" href="#the-practical-implication-for-training-efficiency" aria-hidden="true" tabindex="-1">#</a>The practical implication for training efficiency</h2>
 <p>All-reduce communication efficiency (the collective operation that averages gradients) degrades sharply with latency and becomes network-bound when bandwidth is insufficient. The MFU (model flops utilization) of a training run on InfiniBand-connected H100s is typically 40–50% higher than the same run on standard Ethernet-connected nodes.</p>
 <p>This means:</p>
 <ul>
@@ -161,7 +161,7 @@ if(d.getAttribute('data-rface')==='serif'){
 <li>Spending 40% more on compute cost</li>
 </ul>
 <p>At the scale of serious training runs — weeks to months of GPU time — 40% is not a small difference.</p>
-<h2 id="the-cloud-context"><a class="h-anchor" href="#the-cloud-context" aria-label="Link to this section">#</a>The cloud context</h2>
+<h2 id="the-cloud-context"><a class="h-anchor" href="#the-cloud-context" aria-hidden="true" tabindex="-1">#</a>The cloud context</h2>
 <p>AWS Elastic Fabric Adapter (EFA), Azure InfiniBand, and GCP GPUDirect all provide high-speed fabric options in their GPU instances. Using a P4d or P5 instance on AWS without placing instances in a cluster placement group and enabling EFA leaves the high-speed fabric unused. The instance has the capability; the configuration has to explicitly use it.</p>
 <p>The engineers who optimize GPU selection and storage and then deploy on standard instance networking are leaving a large fraction of the cluster&#39;s performance unused.</p>
 
@@ -192,7 +192,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#6d4aff" stop-opacity=".10"/>
       <stop offset="1" stop-color="#5837e0" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahaimlragandpr" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#6d4aff" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -213,12 +213,12 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#6d4aff" stop-opacity=".10"/>
       <stop offset="1" stop-color="#5837e0" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahaimlproducti" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#6d4aff" fill-opacity=".5"/>
     </marker>
   </defs>
   <rect width="640" height="360" fill="url(#bgaimlproducti)"/>
-  <rect x="338" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.12" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 108 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.51" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="86" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.36" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 172 H212" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.51" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="464" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.14" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="338" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.22" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 236 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/>
+  <rect x="338" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.12" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 108 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahaimlproducti)"/><rect x="464" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.51" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="86" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.36" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 172 H212" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahaimlproducti)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.51" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="464" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.14" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="338" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.22" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 236 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahaimlproducti)"/>
 </svg></div>
   <div class="card-body">
     <span class="chip">AI &amp; MLOps</span>
@@ -234,7 +234,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#0d9488" stop-opacity=".10"/>
       <stop offset="1" stop-color="#0b7a70" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahdesigningfor" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#0d9488" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -314,7 +314,7 @@ if(d.getAttribute('data-rface')==='serif'){
         </div>
       </div>
       <div>
-        <h4>Services</h4>
+        <h2 class="foot-title">Services</h2>
         <ul>
           <li><a href="/services/#architecture">Enterprise architecture</a></li>
           <li><a href="/services/#ai">AI &amp; MLOps</a></li>
@@ -323,7 +323,7 @@ if(d.getAttribute('data-rface')==='serif'){
         </ul>
       </div>
       <div>
-        <h4>Insights</h4>
+        <h2 class="foot-title">Insights</h2>
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/series/">Series</a></li>
@@ -332,7 +332,7 @@ if(d.getAttribute('data-rface')==='serif'){
         </ul>
       </div>
       <div>
-        <h4>Contact</h4>
+        <h2 class="foot-title">Contact</h2>
         <ul>
           <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
           <li><a href="/contact/">Start an engagement</a></li>

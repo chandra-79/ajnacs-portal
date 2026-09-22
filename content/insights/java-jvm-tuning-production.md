@@ -1,7 +1,7 @@
 ---
 title: "JVM Tuning for Production: Heap, GC, and the Flags Worth Setting in 2026"
 description: "A practical guide to tuning the JVM for production services — heap sizing, choosing between G1, ZGC, and Shenandoah, container awareness, and the observability flags every deployment should carry."
-date: 2024-12-30
+date: 2026-10-14
 tags: ["Java", "JVM", "Performance", "Cloud Architecture"]
 format: article
 ---

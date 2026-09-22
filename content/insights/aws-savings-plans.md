@@ -1,7 +1,7 @@
 ---
 title: "AWS Savings Plans vs Reserved Instances: Making the Commitment Decision"
 description: "Savings Plans replaced most Reserved Instance use cases but not all of them. Understanding the difference determines whether you leave money on the table or over-commit to an inflexible discount structure."
-date: 2025-06-26
+date: 2025-05-27
 tags: ["FinOps", "Cloud Architecture"]
 format: article
 ---

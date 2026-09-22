@@ -1,7 +1,7 @@
 ---
 title: "On Saying No"
 description: "Saying no is a skill that most people in professional settings are systematically trained against."
-date: 2025-07-11
+date: 2025-02-21
 tags: ["Personal", "Career", "Reflection"]
 format: article
 derived: true

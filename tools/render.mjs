@@ -112,7 +112,7 @@ export function injectAfterFirstH2(html, block) {
    the way of reading. */
 export function headingAnchors(html) {
   return html.replace(/<(h[23]) id="([^"]+)">/g,
-    (m, tag, id) => `<${tag} id="${id}"><a class="h-anchor" href="#${id}" aria-label="Link to this section">#</a>`);
+    (m, tag, id) => `<${tag} id="${id}"><a class="h-anchor" href="#${id}" aria-hidden="true" tabindex="-1">#</a>`);
 }
 
 export function tableOfContents(headings) {

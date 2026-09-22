@@ -1,7 +1,7 @@
 ---
 title: "On Being Far From Home"
 description: "There is a particular moment that happens to people who have lived far from where they grew up for a long time."
-date: 2026-03-03
+date: 2026-06-26
 tags: ["Personal", "Migration", "Identity"]
 format: article
 derived: true

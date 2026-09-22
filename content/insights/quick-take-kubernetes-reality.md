@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes: The Right Answer for Fewer Problems Than Its Adoption Rate Suggests"
 description: "Kubernetes solves real problems at scale. It also creates real problems at small scale. Understanding what those problems are determines whether Kubernetes is right for your situation."
-date: 2025-07-14
+date: 2028-06-05
 tags: ["Cloud Architecture", "Infrastructure", "DevSecOps"]
 format: article
 ---

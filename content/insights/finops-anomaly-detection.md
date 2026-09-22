@@ -1,7 +1,7 @@
 ---
 title: "Cloud Cost Anomaly Detection: Catching Runaway Spend Before It Becomes a Bill"
 description: "Cloud cost overruns that show up in the monthly invoice are already weeks old. Here's how to set up anomaly detection that catches cost spikes in hours, with enough context to diagnose the cause quickly."
-date: 2026-07-10
+date: 2026-07-06
 tags: ["FinOps", "Cost Optimisation", "Cloud Architecture"]
 series: "FinOps from Zero to Production"
 seriesOrder: 4

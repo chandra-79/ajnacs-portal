@@ -1,7 +1,7 @@
 ---
 title: "Diagnosing Java Memory Leaks in Production: A Working Method"
 description: "From 'the pods keep restarting' to a named line of code — a systematic method for Java memory leak diagnosis using heap dumps, JFR, and NMT, plus the leak patterns that account for most real incidents."
-date: 2025-01-01
+date: 2027-12-22
 tags: ["Java", "JVM", "Performance", "Observability", "Debugging"]
 format: article
 ---

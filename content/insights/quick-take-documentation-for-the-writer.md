@@ -1,7 +1,7 @@
 ---
 title: "Why Most Documentation Is Written for the Person Who Already Knows the Thing"
 description: "Documentation written by an expert who assumes reader context produces documentation that is only useful to other experts. Writing documentation that is actually usable requires deliberate perspective-taking."
-date: 2025-11-26
+date: 2028-11-01
 tags: ["Software Engineering", "Engineering Leadership"]
 format: article
 ---

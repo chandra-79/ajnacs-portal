@@ -1,7 +1,7 @@
 ---
 title: "Async-First Engineering: Collaboration Design for Teams That Don't Share a Clock"
 description: "Distributed teams fail by importing office habits into time zones that can't hold them. Writing as the collaboration substrate, the sync-time budget, decision latency engineering, and the artifacts — RFCs, ADRs, updates — that replace presence with legibility."
-date: 2024-10-09
+date: 2028-09-18
 tags: ["Engineering Leadership", "Remote Work", "Developer Experience", "Engineering Practice", "Team Topologies"]
 format: article
 ---

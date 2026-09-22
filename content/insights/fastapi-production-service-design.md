@@ -1,7 +1,7 @@
 ---
 title: "FastAPI in Production: Service Design Beyond the Tutorial"
 description: "FastAPI became the default Python API framework by making the easy things delightful. Production is about the other things — dependency injection as architecture, Pydantic at the boundaries, worker models, background work, and the patterns that keep services honest at scale."
-date: 2024-12-03
+date: 2028-07-12
 tags: ["Python", "FastAPI", "Programming", "API Design", "Async"]
 format: article
 ---

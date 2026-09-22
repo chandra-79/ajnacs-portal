@@ -1,7 +1,7 @@
 ---
 title: "DNS: Why It Causes More Production Incidents Than It Gets Credit For"
 description: "DNS failures are responsible for a surprising proportion of production incidents — but they are often misdiagnosed because the symptoms look like application or network failures, not DNS failures."
-date: 2025-07-28
+date: 2028-09-01
 tags: ["Systems", "Infrastructure", "Observability"]
 format: article
 ---

@@ -1,7 +1,7 @@
 ---
 title: "Generative AI in the Enterprise: Patterns That Deliver Value vs. Patterns That Sound Good in Demos"
 description: "After two years of enterprise GenAI projects, some patterns reliably produce measurable value and some look impressive until they hit production. Here's how to tell the difference early."
-date: 2026-05-29
+date: 2027-05-24
 tags: ["AI & MLOps", "Enterprise AI", "Governance"]
 format: article
 ---

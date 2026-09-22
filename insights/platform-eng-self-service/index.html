@@ -105,7 +105,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#0e7490" stop-opacity=".10"/>
       <stop offset="1" stop-color="#0b5f77" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahplatformengs" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#0e7490" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -131,7 +131,7 @@ if(d.getAttribute('data-rface')==='serif'){
     </nav></div>
     <div class="prose">
 <p>Self-service infrastructure is the mechanism that makes platform engineering scale. If every request for a new environment, a new database, or a new service requires a ticket to the platform team, the platform team is a bottleneck, not an accelerator. Self-service removes the bottleneck by giving developers the ability to provision approved infrastructure patterns without human approval from the platform team.</p>
-<h2 id="what-self-service-infrastructure-looks-like-in-practice"><a class="h-anchor" href="#what-self-service-infrastructure-looks-like-in-practice" aria-label="Link to this section">#</a>What Self-Service Infrastructure Looks Like in Practice</h2>
+<h2 id="what-self-service-infrastructure-looks-like-in-practice"><a class="h-anchor" href="#what-self-service-infrastructure-looks-like-in-practice" aria-hidden="true" tabindex="-1">#</a>What Self-Service Infrastructure Looks Like in Practice</h2>
 <aside class="keyfig">
   <p class="keyfig-label">Key figure</p>
   <p class="keyfig-text">If <b>40%</b> of new infrastructure is being created directly through the cloud console or raw Terraform, the self-service offering is not meeting developer needs.</p>
@@ -156,7 +156,7 @@ platform db create \
 ## platform secret get billing-service/db-connection-string
 </code></pre>
 <p>Behind that command: the platform applies a Terraform module that provisions the database with the organisation&#39;s standard configuration — encryption at rest, automated backups, the correct network policies, monitoring setup, and secrets stored in the approved secrets manager. The developer gets a working database; the platform team gets consistent, policy-compliant infrastructure.</p>
-<h2 id="infrastructure-templates-the-technical-foundation"><a class="h-anchor" href="#infrastructure-templates-the-technical-foundation" aria-label="Link to this section">#</a>Infrastructure Templates: The Technical Foundation</h2>
+<h2 id="infrastructure-templates-the-technical-foundation"><a class="h-anchor" href="#infrastructure-templates-the-technical-foundation" aria-hidden="true" tabindex="-1">#</a>Infrastructure Templates: The Technical Foundation</h2>
 <p>Terraform modules and Helm charts are the building blocks of self-service infrastructure. Each template encodes one approved pattern:</p>
 <pre><code class="language-hcl">## modules/postgresql/main.tf — approved PostgreSQL pattern
 
@@ -177,7 +177,7 @@ module &quot;postgresql&quot; {
 }
 </code></pre>
 <p>The module exposes the parameters that legitimately vary (service name, size, environment). It enforces everything that should be the same for all instances. A developer invoking the module cannot accidentally create an unencrypted database or a database accessible from everywhere.</p>
-<h2 id="scaffolding-new-services"><a class="h-anchor" href="#scaffolding-new-services" aria-label="Link to this section">#</a>Scaffolding New Services</h2>
+<h2 id="scaffolding-new-services"><a class="h-anchor" href="#scaffolding-new-services" aria-hidden="true" tabindex="-1">#</a>Scaffolding New Services</h2>
 <p>New service creation is the highest-value self-service capability. A scaffolding tool generates everything a new service needs:</p>
 <pre><code class="language-bash">platform service create payment-processor \
   --type api \
@@ -203,7 +203,7 @@ module &quot;postgresql&quot; {
 ## └── README.md               # Service documentation template
 </code></pre>
 <p>The generated service is immediately deployable, monitored, and compliant. The developer starts writing business logic immediately.</p>
-<h2 id="approval-workflows-when-to-require-human-judgment"><a class="h-anchor" href="#approval-workflows-when-to-require-human-judgment" aria-label="Link to this section">#</a>Approval Workflows: When to Require Human Judgment</h2>
+<h2 id="approval-workflows-when-to-require-human-judgment"><a class="h-anchor" href="#approval-workflows-when-to-require-human-judgment" aria-hidden="true" tabindex="-1">#</a>Approval Workflows: When to Require Human Judgment</h2>
 <p>Not everything should be fully automated. Production database creation, external network exposure, and elevated IAM permissions benefit from a lightweight approval step — not as a bottleneck, but as a human review that catches mistakes.</p>
 <p>The design principle: approvals should be fast (minutes, not days) and targeted (specific risk, specific reviewer, clear criteria for approval).</p>
 <pre><code class="language-yaml">## Self-service request requiring approval
@@ -226,7 +226,7 @@ approval-sla: 4 hours   # platform commitment to review time
 ## 4. Has the external IP range been verified as the partner&#39;s?
 </code></pre>
 <p>The approval workflow should document what reviewers are checking so the review is consistent and not dependent on individual knowledge.</p>
-<h2 id="measuring-self-service-adoption"><a class="h-anchor" href="#measuring-self-service-adoption" aria-label="Link to this section">#</a>Measuring Self-Service Adoption</h2>
+<h2 id="measuring-self-service-adoption"><a class="h-anchor" href="#measuring-self-service-adoption" aria-hidden="true" tabindex="-1">#</a>Measuring Self-Service Adoption</h2>
 <p>Self-service success is measured by:</p>
 <ul>
 <li><strong>Time to first deployment</strong>: how long from service creation request to first successful deployment in staging</li>
@@ -272,7 +272,7 @@ approval-sla: 4 hours   # platform commitment to review time
       <stop offset="0" stop-color="#e0473a" stop-opacity=".10"/>
       <stop offset="1" stop-color="#c03a2e" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahplatformengo" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e0473a" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -293,12 +293,12 @@ approval-sla: 4 hours   # platform commitment to review time
       <stop offset="0" stop-color="#6d4aff" stop-opacity=".10"/>
       <stop offset="1" stop-color="#5837e0" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahaimlneuralne" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#6d4aff" fill-opacity=".5"/>
     </marker>
   </defs>
   <rect width="640" height="360" fill="url(#bgaimlneuralne)"/>
-  <rect x="86" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.51" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="464" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.45" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="212" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.45" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 172 H338" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.60" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 172 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.40" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="338" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.32" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 236 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.39" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/>
+  <rect x="86" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.51" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="464" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.45" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="212" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.45" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 172 H338" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahaimlneuralne)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.60" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 172 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahaimlneuralne)"/><rect x="464" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.40" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="338" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.32" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 236 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahaimlneuralne)"/><rect x="464" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.39" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/>
 </svg></div>
   <div class="card-body">
     <span class="chip">AI &amp; MLOps</span>
@@ -314,7 +314,7 @@ approval-sla: 4 hours   # platform commitment to review time
       <stop offset="0" stop-color="#6d4aff" stop-opacity=".10"/>
       <stop offset="1" stop-color="#5837e0" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahaimlragandpr" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#6d4aff" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -404,7 +404,7 @@ approval-sla: 4 hours   # platform commitment to review time
         </div>
       </div>
       <div>
-        <h4>Services</h4>
+        <h2 class="foot-title">Services</h2>
         <ul>
           <li><a href="/services/#architecture">Enterprise architecture</a></li>
           <li><a href="/services/#ai">AI &amp; MLOps</a></li>
@@ -413,7 +413,7 @@ approval-sla: 4 hours   # platform commitment to review time
         </ul>
       </div>
       <div>
-        <h4>Insights</h4>
+        <h2 class="foot-title">Insights</h2>
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/series/">Series</a></li>
@@ -422,7 +422,7 @@ approval-sla: 4 hours   # platform commitment to review time
         </ul>
       </div>
       <div>
-        <h4>Contact</h4>
+        <h2 class="foot-title">Contact</h2>
         <ul>
           <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
           <li><a href="/contact/">Start an engagement</a></li>

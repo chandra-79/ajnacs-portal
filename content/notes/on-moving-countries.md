@@ -1,7 +1,7 @@
 ---
 title: "On moving countries — and what you actually pack"
 description: "You spend weeks deciding what furniture to sell and what to ship. You agonise over boxes, cubic feet, insurance riders."
-date: 2026-04-01
+date: 2026-08-19
 tags: ["Moving", "Life", "Reflection"]
 format: article
 derived: true

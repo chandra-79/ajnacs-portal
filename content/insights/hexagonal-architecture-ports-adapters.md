@@ -1,7 +1,7 @@
 ---
 title: "Hexagonal Architecture in Practice: Ports, Adapters, and What the Diagrams Don't Tell You"
 description: "Ports-and-adapters (and its clean/onion siblings) all encode one rule — dependencies point inward, the domain knows nothing about infrastructure. What that buys in testability and swap-ability, what it costs in indirection, and where to relax it honestly."
-date: 2024-12-18
+date: 2027-09-20
 tags: ["Architecture", "Engineering Practice", "Programming", "Domain-Driven Design"]
 format: article
 ---

@@ -1,7 +1,7 @@
 ---
 title: "Cloud native and cloud hosted are not the same thing. Treating them as equivalent is where most migrations go wrong."
 description: "The language around cloud adoption conflates two genuinely different things, and the conflation produces unrealistic expectations that erode confidence in cloud programs."
-date: 2025-09-22
+date: 2029-04-04
 tags: ["Cloud Architecture"]
 format: note
 derived: true

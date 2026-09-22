@@ -1,7 +1,7 @@
 ---
 title: "RoCE vs iWARP: Choosing the Right RDMA Technology for Your Workload"
 description: "Both RoCE and iWARP provide RDMA over Ethernet, but they have different network requirements, loss behavior, and operational characteristics. Here's how to choose between them for AI training, HPC, and storage workloads."
-date: 2026-04-30
+date: 2026-11-02
 tags: ["Systems", "HPC", "AI & MLOps"]
 format: article
 ---

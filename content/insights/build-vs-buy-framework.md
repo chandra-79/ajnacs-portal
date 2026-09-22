@@ -1,7 +1,7 @@
 ---
 title: "Build vs Buy: A Framework That Survives Both Vendor Demos and Engineer Pride"
 description: "The most expensive decisions in enterprise technology are build-vs-buy calls made on instinct. Core-vs-context discipline, total-cost honesty on both sides, the integration tax nobody models, and the middle options everyone forgets."
-date: 2024-10-16
+date: 2027-01-01
 tags: ["Engineering Leadership", "Architecture", "Technology Strategy", "FinOps", "Engineering Practice"]
 format: article
 ---

@@ -105,12 +105,12 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#6d4aff" stop-opacity=".10"/>
       <stop offset="1" stop-color="#5837e0" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahaitrainingcl" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#6d4aff" fill-opacity=".5"/>
     </marker>
   </defs>
   <rect width="1200" height="380" fill="url(#bgaitrainingcl)"/>
-  <rect x="338" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.14" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 108 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.18" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="86" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.18" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 172 H212" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.46" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="86" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.24" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 236 H212" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.28" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 236 H338" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.52" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 236 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.25" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/>
+  <rect x="338" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.14" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 108 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahaitrainingcl)"/><rect x="464" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.18" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="86" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.18" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 172 H212" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahaitrainingcl)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.46" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="86" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.24" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 236 H212" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahaitrainingcl)"/><rect x="212" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.28" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 236 H338" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahaitrainingcl)"/><rect x="338" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.52" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 236 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahaitrainingcl)"/><rect x="464" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.25" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/>
 </svg></div></div>
 
   <div class="art-wrap article-grid">
@@ -121,7 +121,7 @@ if(d.getAttribute('data-rface')==='serif'){
     <div class="prose">
 <p>Training large language models and diffusion models at scale is a fundamentally different networking problem from running web services. The workload characteristics are different: very high bandwidth between adjacent nodes, synchronisation points that require all nodes in a group to communicate simultaneously, and sensitivity to network variance that doesn&#39;t matter in loosely-coupled microservice architectures.</p>
 <p>A slow network in a web service deployment slightly increases response time. A slow network in a distributed model training job slows the entire job to the speed of the slowest link, because all nodes must synchronise at each gradient exchange.</p>
-<h2 id="why-training-clusters-need-different-networking"><a class="h-anchor" href="#why-training-clusters-need-different-networking" aria-label="Link to this section">#</a>Why training clusters need different networking</h2>
+<h2 id="why-training-clusters-need-different-networking"><a class="h-anchor" href="#why-training-clusters-need-different-networking" aria-hidden="true" tabindex="-1">#</a>Why training clusters need different networking</h2>
 <aside class="keyfig">
   <p class="keyfig-label">Key figure</p>
   <p class="keyfig-text">NVLink Gen4 (used in H100) provides <b>900 GB</b>/s total GPU-to-GPU bandwidth within a node via NVSwitch — orders of magnitude more than PCIe would provide.</p>
@@ -135,11 +135,11 @@ if(d.getAttribute('data-rface')==='serif'){
 <li><strong>Low latency</strong>: especially for tight synchronisation points in pipeline and tensor parallelism</li>
 <li><strong>Low variance</strong>: a single slow link in a ring all-reduce makes every GPU wait for the slowest link</li>
 </ul>
-<h2 id="topology-for-training-clusters"><a class="h-anchor" href="#topology-for-training-clusters" aria-label="Link to this section">#</a>Topology for training clusters</h2>
+<h2 id="topology-for-training-clusters"><a class="h-anchor" href="#topology-for-training-clusters" aria-hidden="true" tabindex="-1">#</a>Topology for training clusters</h2>
 <p><strong>Fat-tree / Clos topology</strong>: the standard for large-scale training. A three-tier Clos (leaf-spine-core or ToR-aggregate-core) provides full bisection bandwidth — any-to-any communication at full line rate. For training clusters, full bisection bandwidth ensures that inter-node communication doesn&#39;t bottleneck regardless of which nodes are assigned to a job.</p>
 <p><strong>Rail-optimized topology</strong>: a specialised topology for training at scale. Multiple independent networks (rails) connect all nodes, and the training framework distributes all-reduce traffic across rails. A 4-rail design with 400GbE links per rail provides 1.6 Tbps of aggregate bandwidth per node — comparable to multi-rail NVLink bandwidth within a node. Used by large-scale cloud AI clusters (AWS Trainium, Google TPU pods).</p>
 <p><strong>InfiniBand non-blocking fabric</strong>: InfiniBand topologies (fat-tree with HDR/NDR) are non-blocking within the fabric — a switch can forward traffic from all ports simultaneously at line rate. Many HPC and AI training clusters use InfiniBand with EDR (100 Gbps), HDR (200 Gbps), or NDR (400 Gbps) links.</p>
-<h2 id="infiniband-vs-roce-at-training-scale"><a class="h-anchor" href="#infiniband-vs-roce-at-training-scale" aria-label="Link to this section">#</a>InfiniBand vs. RoCE at training scale</h2>
+<h2 id="infiniband-vs-roce-at-training-scale"><a class="h-anchor" href="#infiniband-vs-roce-at-training-scale" aria-hidden="true" tabindex="-1">#</a>InfiniBand vs. RoCE at training scale</h2>
 <p><strong>InfiniBand</strong> remains the preferred choice for the largest training clusters:</p>
 <ul>
 <li>Native RDMA without the Ethernet compatibility overhead</li>
@@ -155,10 +155,10 @@ if(d.getAttribute('data-rface')==='serif'){
 <li>Cloudscale AI clusters (AWS, Microsoft, Google) use RoCE in various configurations</li>
 </ul>
 <p>The performance gap between InfiniBand and high-speed RoCE has narrowed at 400GbE speeds. For new buildouts without existing InfiniBand infrastructure, RoCE on 400GbE Ethernet is often the more economical choice when combined with good switch silicon (Spectrum-4, Tomahawk 5).</p>
-<h2 id="intra-node-interconnect-nvlink-and-nvswitch"><a class="h-anchor" href="#intra-node-interconnect-nvlink-and-nvswitch" aria-label="Link to this section">#</a>Intra-node interconnect: NVLink and NVSwitch</h2>
+<h2 id="intra-node-interconnect-nvlink-and-nvswitch"><a class="h-anchor" href="#intra-node-interconnect-nvlink-and-nvswitch" aria-hidden="true" tabindex="-1">#</a>Intra-node interconnect: NVLink and NVSwitch</h2>
 <p>Within a node, GPU-to-GPU communication uses NVLink rather than PCIe. NVLink Gen4 (used in H100) provides 900 GB/s total GPU-to-GPU bandwidth within a node via NVSwitch — orders of magnitude more than PCIe would provide.</p>
 <p>This asymmetry (high-bandwidth intra-node, relatively lower-bandwidth inter-node) drives the tensor/pipeline parallelism decomposition strategy: operations that require frequent, high-volume communication (tensor-parallel) stay within a node; operations that require less frequent synchronisation (data-parallel all-reduce) span nodes.</p>
-<h2 id="bandwidth-requirements-in-practice"><a class="h-anchor" href="#bandwidth-requirements-in-practice" aria-label="Link to this section">#</a>Bandwidth requirements in practice</h2>
+<h2 id="bandwidth-requirements-in-practice"><a class="h-anchor" href="#bandwidth-requirements-in-practice" aria-hidden="true" tabindex="-1">#</a>Bandwidth requirements in practice</h2>
 <p>A rule of thumb for all-reduce bandwidth requirements in data-parallel training:</p>
 <pre><code>Required network bandwidth (per node) ≈ (2 * model_parameters * bytes_per_parameter) / step_time
 </code></pre>
@@ -166,7 +166,7 @@ if(d.getAttribute('data-rface')==='serif'){
 <pre><code>(2 * 70e9 * 2) / 1 = 280 GB/s per node
 </code></pre>
 <p>This exceeds what even 400GbE can provide — which is why large model training uses multiple nodes per NVLink domain (tensor parallelism within nodes) to reduce the inter-node all-reduce volume, and why SHARP in-network reduction (which reduces traffic on the switches) is valuable.</p>
-<h2 id="storage-networking-for-ai-workloads"><a class="h-anchor" href="#storage-networking-for-ai-workloads" aria-label="Link to this section">#</a>Storage networking for AI workloads</h2>
+<h2 id="storage-networking-for-ai-workloads"><a class="h-anchor" href="#storage-networking-for-ai-workloads" aria-hidden="true" tabindex="-1">#</a>Storage networking for AI workloads</h2>
 <p>Training clusters need fast access to training data (petabyte-scale datasets) and checkpoint storage. The storage network is often separate from the training interconnect:</p>
 <ul>
 <li><strong>Training data</strong>: parallel file systems (GPFS, Lustre, WekaFS) or object storage (S3, GCS) with high-throughput access. Storage bandwidth needs to keep all GPUs fed without bottlenecking on data loading.</li>
@@ -201,12 +201,12 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#6d4aff" stop-opacity=".10"/>
       <stop offset="1" stop-color="#5837e0" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahaimlneuralne" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#6d4aff" fill-opacity=".5"/>
     </marker>
   </defs>
   <rect width="640" height="360" fill="url(#bgaimlneuralne)"/>
-  <rect x="86" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.51" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="464" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.45" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="212" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.45" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 172 H338" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.60" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 172 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.40" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="338" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.32" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 236 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.39" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/>
+  <rect x="86" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.51" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="464" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.45" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="212" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.45" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 172 H338" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahaimlneuralne)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.60" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 172 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahaimlneuralne)"/><rect x="464" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.40" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="338" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.32" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 236 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahaimlneuralne)"/><rect x="464" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.39" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/>
 </svg></div>
   <div class="card-body">
     <span class="chip">AI &amp; MLOps</span>
@@ -222,7 +222,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#6d4aff" stop-opacity=".10"/>
       <stop offset="1" stop-color="#5837e0" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahaimlragandpr" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#6d4aff" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -243,12 +243,12 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#6d4aff" stop-opacity=".10"/>
       <stop offset="1" stop-color="#5837e0" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahaimlproducti" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#6d4aff" fill-opacity=".5"/>
     </marker>
   </defs>
   <rect width="640" height="360" fill="url(#bgaimlproducti)"/>
-  <rect x="338" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.12" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 108 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.51" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="86" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.36" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 172 H212" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.51" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="464" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.14" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="338" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.22" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 236 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/>
+  <rect x="338" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.12" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 108 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahaimlproducti)"/><rect x="464" y="92" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.51" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="86" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.36" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 172 H212" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahaimlproducti)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.51" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="464" y="156" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.14" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><rect x="338" y="220" width="66" height="32" rx="7" fill="#6d4aff" fill-opacity="0.22" stroke="#5837e0" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 236 H464" stroke="#6d4aff" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahaimlproducti)"/>
 </svg></div>
   <div class="card-body">
     <span class="chip">AI &amp; MLOps</span>
@@ -323,7 +323,7 @@ if(d.getAttribute('data-rface')==='serif'){
         </div>
       </div>
       <div>
-        <h4>Services</h4>
+        <h2 class="foot-title">Services</h2>
         <ul>
           <li><a href="/services/#architecture">Enterprise architecture</a></li>
           <li><a href="/services/#ai">AI &amp; MLOps</a></li>
@@ -332,7 +332,7 @@ if(d.getAttribute('data-rface')==='serif'){
         </ul>
       </div>
       <div>
-        <h4>Insights</h4>
+        <h2 class="foot-title">Insights</h2>
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/series/">Series</a></li>
@@ -341,7 +341,7 @@ if(d.getAttribute('data-rface')==='serif'){
         </ul>
       </div>
       <div>
-        <h4>Contact</h4>
+        <h2 class="foot-title">Contact</h2>
         <ul>
           <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
           <li><a href="/contact/">Start an engagement</a></li>

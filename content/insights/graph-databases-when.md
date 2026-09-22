@@ -1,7 +1,7 @@
 ---
 title: "Graph Databases: When Relationships Are the Workload (and When They're Just Joins)"
 description: "Fraud rings, access paths, knowledge graphs, recommendations — the queries where traversal depth is variable are where graph stores earn their keep. The property-graph model, the honest relational comparison, GraphRAG's arrival, and the adoption traps."
-date: 2024-12-13
+date: 2027-03-15
 tags: ["Data Engineering", "Graph", "Architecture", "AI Adoption"]
 format: article
 ---

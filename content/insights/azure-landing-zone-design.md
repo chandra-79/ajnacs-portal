@@ -1,7 +1,7 @@
 ---
 title: "Azure Landing Zone Design: What the Microsoft Docs Don't Tell You"
 description: "The Cloud Adoption Framework gives you a solid pattern for Azure landing zones. Here's what the implementation actually looks like — and where the framework falls short in practice."
-date: 2025-04-28
+date: 2027-08-25
 tags: ["Cloud Architecture", "Governance", "DevSecOps"]
 format: article
 ---

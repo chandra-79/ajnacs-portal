@@ -1,7 +1,7 @@
 ---
 title: "Prompt Engineering Is Not Dead — It Just Stopped Calling Itself Prompt Engineering"
 description: "The practice of structuring inputs to LLMs to produce reliable, high-quality outputs is fundamental to any LLM-based application. It is now called system design, evaluation, and AI engineering."
-date: 2026-07-06
+date: 2028-08-18
 tags: ["AI & MLOps", "Enterprise AI"]
 format: article
 ---

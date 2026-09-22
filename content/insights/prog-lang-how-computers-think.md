@@ -1,7 +1,7 @@
 ---
 title: "Before You Pick a Language, Understand How Computers Actually Think"
 description: "Programming languages are abstractions over how a CPU executes instructions. Understanding the machine underneath makes every language easier to learn and every bug easier to diagnose."
-date: 2025-06-02
+date: 2028-05-24
 tags: ["Programming", "Fundamentals"]
 series: "Getting Started with Programming Languages"
 seriesOrder: 1

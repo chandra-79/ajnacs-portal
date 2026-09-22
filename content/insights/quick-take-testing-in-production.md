@@ -1,7 +1,7 @@
 ---
 title: "Testing in Production Is Not Reckless — Not Testing in Production Is"
 description: "Staging environments cannot replicate production conditions. Testing strategies that operate only on pre-production data have known blind spots. Here is what production testing looks like done responsibly."
-date: 2025-09-15
+date: 2028-04-24
 tags: ["DevSecOps", "Cloud Architecture"]
 format: article
 ---

@@ -1,7 +1,7 @@
 ---
 title: "DNS for Engineers: The System You Depend On Most and Debug Least"
 description: "Resolution mechanics, the TTL lies everyone tells, DNS as a load-balancing and failover layer, the outage patterns ('it's always DNS') and their real causes, and the operational hygiene that keeps name resolution boring."
-date: 2024-11-21
+date: 2027-03-22
 tags: ["Systems", "DNS", "Cloud Architecture", "Reliability"]
 format: article
 ---

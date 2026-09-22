@@ -1,7 +1,7 @@
 ---
 title: "Microservices scale with teams. Monoliths scale with databases. Know which problem you have."
 description: "The microservices debate has produced more opinion than clarity, largely because the participants are arguing from different team sizes and different ownership models without…"
-date: 2026-03-23
+date: 2028-12-27
 tags: ["Architecture", "Engineering Leadership"]
 format: article
 derived: true

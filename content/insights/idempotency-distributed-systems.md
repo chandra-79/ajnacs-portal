@@ -1,7 +1,7 @@
 ---
 title: "Idempotency in Distributed Systems: The Property That Makes Retries Safe"
 description: "Every distributed system retries, and every retry is a potential duplicate. Idempotency keys, exactly-once myths, the outbox pattern, and how to design APIs and consumers that survive at-least-once delivery — the discipline underneath reliable systems."
-date: 2024-12-24
+date: 2027-03-26
 tags: ["Distributed Systems", "Programming", "API Design", "Reliability", "Architecture"]
 format: article
 ---

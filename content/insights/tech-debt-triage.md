@@ -1,7 +1,7 @@
 ---
 title: "Technical Debt Triage: A Framework for Prioritising What to Actually Fix"
 description: "All technical debt is not equal. The debt that's slowing down delivery is different from the debt that's creating risk, which is different from the debt that's just aesthetically unpleasant. Here's how to categorise and prioritize it so that 'paying down tech debt' becomes a concrete engineering investment with visible returns."
-date: 2025-06-09
+date: 2026-12-04
 tags: ["Engineering Leadership", "Architecture", "Programming"]
 format: article
 ---

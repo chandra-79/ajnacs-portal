@@ -1,7 +1,7 @@
 ---
 title: "Fraud Detection Engineering: Rules, Models, and the Adversary Who Reads Your Changelog"
 description: "Fraud systems are ML with an opponent — feature freshness at decision speed, the rules-plus-models architecture that survives audits, the label-delay problem, feedback loops with adversaries, and the precision-recall trade measured in real money both directions."
-date: 2024-12-09
+date: 2027-09-15
 tags: ["Fraud", "AI & MLOps", "Payments", "Security", "Distributed Systems"]
 format: article
 ---

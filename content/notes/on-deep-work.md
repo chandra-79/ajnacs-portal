@@ -1,7 +1,7 @@
 ---
 title: "On Deep Work in an Open-Plan World"
 description: "The kind of work I find most valuable — designing something genuinely difficult, thinking through an architectural problem, writing something that requires sustained attention — does not…"
-date: 2025-10-31
+date: 2025-09-29
 tags: ["Personal", "Productivity", "Career"]
 format: article
 derived: true

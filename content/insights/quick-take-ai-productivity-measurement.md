@@ -1,7 +1,7 @@
 ---
 title: "How to Actually Measure AI Productivity Impact (and Why Most Orgs Get It Wrong)"
 description: "JIRA tickets closed and lines of code written are not productivity metrics. Here is what to measure when evaluating AI's impact on engineering output."
-date: 2026-05-21
+date: 2028-04-05
 tags: ["AI & MLOps", "Enterprise AI", "Engineering Leadership"]
 format: article
 ---

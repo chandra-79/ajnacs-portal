@@ -1,7 +1,7 @@
 ---
 title: "Zero trust is an architectural philosophy. You cannot buy it."
 description: "Zero trust is a security architecture principle: assume no implicit trust based on network location, authenticate and authorise every access request regardless of origin, and verify…"
-date: 2025-12-15
+date: 2029-07-04
 tags: ["DevSecOps", "Security", "Systems"]
 format: note
 derived: true

@@ -1,7 +1,7 @@
 ---
 title: "Deploying AI in Regulated Industries: Healthcare, Finance, and the Compliance Minefield"
 description: "AI deployment in healthcare and financial services faces regulatory requirements that don't apply to consumer applications. Understanding the constraints before starting is cheaper than discovering them after deployment."
-date: 2026-01-30
+date: 2027-11-12
 tags: ["AI & MLOps", "Enterprise AI", "Architecture"]
 format: article
 ---

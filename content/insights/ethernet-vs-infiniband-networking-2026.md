@@ -1,7 +1,7 @@
 ---
 title: "Ethernet vs. InfiniBand: Choosing the Right Network Fabric in 2026"
 description: "A practical breakdown of when to use Ethernet and when InfiniBand makes sense — with key metrics, topology differences, and real-world guidance for cloud, HPC, and AI workloads."
-date: 2026-09-17
+date: 2026-10-02
 tags: ["Systems", "Infrastructure", "Enterprise AI", "Cloud Architecture", "HPC"]
 format: article
 ---
@@ -12,7 +12,6 @@ Network fabric decisions don't get talked about enough in enterprise architectur
 
 Here's how I think about the Ethernet vs. InfiniBand question in 2026.
 
-![Ethernet vs InfiniBand comparison infographic](/images/ethernet-vs-infiniband.png)
 
 ---
 

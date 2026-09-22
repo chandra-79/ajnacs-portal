@@ -105,7 +105,7 @@ if(d.getAttribute('data-rface')==='serif'){
       <stop offset="0" stop-color="#0891b2" stop-opacity=".10"/>
       <stop offset="1" stop-color="#076f87" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahpostgresqlpe" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#0891b2" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -121,7 +121,7 @@ if(d.getAttribute('data-rface')==='serif'){
     <div class="prose">
 <p>PostgreSQL ships with defaults that are deliberately conservative — tuned for a server with 256MB of RAM to avoid out-of-memory failures on resource-constrained machines. Production deployments on modern hardware leave most of that performance on the table.</p>
 <p>This isn&#39;t a comprehensive tuning guide (PostgreSQL&#39;s performance characteristics depend heavily on workload, hardware, and access patterns). It&#39;s the settings that matter most for most production workloads, with the reasoning behind each.</p>
-<h2 id="memory-settings-the-biggest-wins"><a class="h-anchor" href="#memory-settings-the-biggest-wins" aria-label="Link to this section">#</a>Memory settings: the biggest wins</h2>
+<h2 id="memory-settings-the-biggest-wins"><a class="h-anchor" href="#memory-settings-the-biggest-wins" aria-hidden="true" tabindex="-1">#</a>Memory settings: the biggest wins</h2>
 <aside class="keyfig">
   <p class="keyfig-label">Key figure</p>
   <p class="keyfig-text">On a dedicated database server, set to <b>25%</b> of total RAM.</p>
@@ -132,12 +132,12 @@ if(d.getAttribute('data-rface')==='serif'){
 <p><strong><code>work_mem</code></strong>: the memory available per sort and hash operation, per query. Default is 4MB. For analytical workloads with complex queries, increase this. For OLTP workloads with many concurrent connections, be careful — a query with 10 sort operations and 100 concurrent connections could use <code>10 × 100 × work_mem</code> of memory.</p>
 <p>For OLTP: <code>work_mem = 16MB</code>. For analytical queries (manually or via session-level <code>SET work_mem</code>): 64-256MB.</p>
 <p><strong><code>maintenance_work_mem</code></strong>: memory for maintenance operations (VACUUM, CREATE INDEX, ALTER TABLE). Default is 64MB. Set to 256MB-1GB — these operations run infrequently and benefit from more memory.</p>
-<h2 id="wal-and-checkpoint-tuning"><a class="h-anchor" href="#wal-and-checkpoint-tuning" aria-label="Link to this section">#</a>WAL and checkpoint tuning</h2>
+<h2 id="wal-and-checkpoint-tuning"><a class="h-anchor" href="#wal-and-checkpoint-tuning" aria-hidden="true" tabindex="-1">#</a>WAL and checkpoint tuning</h2>
 <p><strong><code>wal_buffers</code></strong>: WAL write buffer. Default is usually auto-tuned to 1/32 of shared_buffers (max 16MB). <code>wal_buffers = 16MB</code> is fine for most workloads.</p>
 <p><strong><code>checkpoint_completion_target</code></strong>: spreads checkpoint writes over a fraction of the checkpoint interval. Default is 0.9 (90%). Keep this at 0.9 — it prevents I/O spikes from checkpoint activity.</p>
 <p><strong><code>max_wal_size</code></strong>: controls how large the WAL can grow between checkpoints. Default is 1GB. For write-heavy workloads, increasing this reduces checkpoint frequency: <code>max_wal_size = 4GB</code>.</p>
 <p><strong><code>synchronous_commit</code></strong>: whether transactions wait for WAL to be durably written to disk before returning. Default <code>on</code> provides maximum durability. <code>synchronous_commit = off</code> improves write throughput significantly by making commits asynchronous — with the trade-off that up to <code>wal_writer_delay</code> (200ms by default) of committed transactions can be lost in a crash. Acceptable for some workloads (logging, analytics); never acceptable for financial or critical data.</p>
-<h2 id="connection-management-don39t-skip-pgbouncer"><a class="h-anchor" href="#connection-management-don39t-skip-pgbouncer" aria-label="Link to this section">#</a>Connection management: don&#39;t skip PgBouncer</h2>
+<h2 id="connection-management-don39t-skip-pgbouncer"><a class="h-anchor" href="#connection-management-don39t-skip-pgbouncer" aria-hidden="true" tabindex="-1">#</a>Connection management: don&#39;t skip PgBouncer</h2>
 <p>PostgreSQL&#39;s connection model is one-process-per-connection. Each connection creates a backend process that consumes ~5-10MB of memory. A PostgreSQL instance with 500 direct connections has committed 2.5-5GB of memory to connection overhead before a single query runs.</p>
 <p><code>max_connections = 100</code> (the default) is surprisingly low for many applications. Increasing it directly has diminishing returns — the memory overhead grows, and PostgreSQL&#39;s connection management doesn&#39;t scale linearly.</p>
 <p>The right solution: <strong>PgBouncer</strong> (or pgpool-II) as a connection pooler in front of PostgreSQL. PgBouncer maintains a small pool of PostgreSQL connections and multiplexes many client connections onto them. Your application connects to PgBouncer; PgBouncer manages the actual PostgreSQL connections.</p>
@@ -148,7 +148,7 @@ if(d.getAttribute('data-rface')==='serif'){
 <li>Applications can have 1000+ connections to PgBouncer without overwhelming PostgreSQL</li>
 </ul>
 <p>Transaction-mode pooling (the most common PgBouncer mode) releases the PostgreSQL connection back to the pool after each transaction — efficient, but incompatible with session-level features (prepared statements with protocol-level binding, advisory locks, <code>SET LOCAL</code>).</p>
-<h2 id="indexing-the-most-common-performance-problems"><a class="h-anchor" href="#indexing-the-most-common-performance-problems" aria-label="Link to this section">#</a>Indexing: the most common performance problems</h2>
+<h2 id="indexing-the-most-common-performance-problems"><a class="h-anchor" href="#indexing-the-most-common-performance-problems" aria-hidden="true" tabindex="-1">#</a>Indexing: the most common performance problems</h2>
 <p><strong>Missing indexes on foreign keys</strong>: PostgreSQL doesn&#39;t automatically create indexes on foreign key columns (unlike some other databases). A query that JOINs on a foreign key column without an index causes a sequential scan of the referenced table. Check for this:</p>
 <pre><code class="language-sql">SELECT conrelid::regclass AS table, conname AS fk_name, 
        a.attname AS column
@@ -165,7 +165,7 @@ AND NOT EXISTS (
 </code></pre>
 <p><strong>Index bloat</strong>: indexes grow as rows are updated and deleted. <code>pg_stat_user_indexes</code> and tools like <code>pgstattuple</code> identify bloated indexes. <code>REINDEX CONCURRENTLY</code> rebuilds without locking.</p>
 <p><strong>Index usage</strong>: queries that appear to use an index but run slowly often have a type mismatch between the parameter and the indexed column (implicit cast prevents index use) or use a function on the indexed column (<code>WHERE LOWER(email) = ...</code> doesn&#39;t use an index on <code>email</code> — use a functional index: <code>CREATE INDEX ON users(LOWER(email))</code>).</p>
-<h2 id="query-analysis-with-explain-analyze"><a class="h-anchor" href="#query-analysis-with-explain-analyze" aria-label="Link to this section">#</a>Query analysis with EXPLAIN ANALYZE</h2>
+<h2 id="query-analysis-with-explain-analyze"><a class="h-anchor" href="#query-analysis-with-explain-analyze" aria-hidden="true" tabindex="-1">#</a>Query analysis with EXPLAIN ANALYZE</h2>
 <p><code>EXPLAIN ANALYZE</code> is the primary tool for understanding why a query is slow:</p>
 <pre><code class="language-sql">EXPLAIN (ANALYZE, BUFFERS, FORMAT TEXT) 
 SELECT * FROM orders WHERE customer_id = 123 AND status = &#39;pending&#39;;
@@ -213,12 +213,12 @@ SELECT * FROM orders WHERE customer_id = 123 AND status = &#39;pending&#39;;
       <stop offset="0" stop-color="#e8a317" stop-opacity=".10"/>
       <stop offset="1" stop-color="#a9760a" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahfinopsanomal" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e8a317" fill-opacity=".5"/>
     </marker>
   </defs>
   <rect width="640" height="360" fill="url(#bgfinopsanomal)"/>
-  <rect x="86" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.39" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 108 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.41" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 108 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.21" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 108 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.13" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 172 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.17" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 172 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="86" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.23" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 236 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="212" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.54" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 236 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ah)"/><rect x="464" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.51" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/>
+  <rect x="86" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.39" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 108 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="212" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.41" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 108 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="338" y="92" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.21" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 108 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="212" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.13" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 172 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="338" y="156" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.17" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M404 172 H464" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="86" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.23" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M152 236 H212" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="212" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.54" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/><path d="M278 236 H338" stroke="#e8a317" stroke-opacity=".38" stroke-width="1.3" marker-end="url(#ahfinopsanomal)"/><rect x="464" y="220" width="66" height="32" rx="7" fill="#e8a317" fill-opacity="0.51" stroke="#a9760a" stroke-opacity=".5" stroke-width="1.1"/>
 </svg></div>
   <div class="card-body">
     <span class="chip">FinOps</span>
@@ -234,7 +234,7 @@ SELECT * FROM orders WHERE customer_id = 123 AND status = &#39;pending&#39;;
       <stop offset="0" stop-color="#e8a317" stop-opacity=".10"/>
       <stop offset="1" stop-color="#a9760a" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahfinopstaggin" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#e8a317" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -263,7 +263,7 @@ SELECT * FROM orders WHERE customer_id = 123 AND status = &#39;pending&#39;;
       <stop offset="0" stop-color="#4f46e5" stop-opacity=".10"/>
       <stop offset="1" stop-color="#3730a3" stop-opacity=".22"/>
     </linearGradient>
-    <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+    <marker id="ahosnamespaces" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
       <path d="M0 0 L7 3.5 L0 7 z" fill="#4f46e5" fill-opacity=".5"/>
     </marker>
   </defs>
@@ -343,7 +343,7 @@ SELECT * FROM orders WHERE customer_id = 123 AND status = &#39;pending&#39;;
         </div>
       </div>
       <div>
-        <h4>Services</h4>
+        <h2 class="foot-title">Services</h2>
         <ul>
           <li><a href="/services/#architecture">Enterprise architecture</a></li>
           <li><a href="/services/#ai">AI &amp; MLOps</a></li>
@@ -352,7 +352,7 @@ SELECT * FROM orders WHERE customer_id = 123 AND status = &#39;pending&#39;;
         </ul>
       </div>
       <div>
-        <h4>Insights</h4>
+        <h2 class="foot-title">Insights</h2>
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/series/">Series</a></li>
@@ -361,7 +361,7 @@ SELECT * FROM orders WHERE customer_id = 123 AND status = &#39;pending&#39;;
         </ul>
       </div>
       <div>
-        <h4>Contact</h4>
+        <h2 class="foot-title">Contact</h2>
         <ul>
           <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
           <li><a href="/contact/">Start an engagement</a></li>

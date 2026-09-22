@@ -1,7 +1,7 @@
 ---
 title: "Data Quality Engineering: Tests, Contracts, and the Trust Budget of a Data Platform"
 description: "Analytics estates fail not from missing data but from untrusted data — the dashboard nobody believes is worth less than no dashboard. Quality dimensions as testable assertions, freshness SLOs, anomaly detection's honest role, and incident response for data."
-date: 2024-11-04
+date: 2028-05-29
 tags: ["Data Engineering", "Data Quality", "Analytics", "Engineering Practice", "Observability"]
 format: article
 ---

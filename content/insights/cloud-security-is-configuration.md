@@ -1,7 +1,7 @@
 ---
 title: "Most cloud security incidents are not sophisticated attacks. They are configuration errors at scale."
 description: "The mental model that shapes most cloud security investment: sophisticated external adversaries employing novel attack techniques that require advanced threat detection capabilities to…"
-date: 2025-06-17
+date: 2028-12-06
 tags: ["DevSecOps", "Cloud Architecture"]
 format: article
 derived: true
