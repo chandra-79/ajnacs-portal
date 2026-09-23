@@ -1126,6 +1126,16 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:800;line-height:1.12;
 
 /* ---- the article column gets its own page, not the site ground ---- */
 [data-theme="dark"] .article-hero{border-color:rgba(255,255,255,.09)}
+
+/* ---- the figures have to survive the dark ground too ----
+   They are drawn at low opacity so they sit behind the type, and a stroke at
+   14% of a mid-blue over a near-black card is simply not there: three tiles
+   in the archive rendered blank. Lift the drawing rather than the card, so
+   the composition is unchanged and only its presence on the ground moves. */
+[data-theme="dark"] .card-art svg,
+[data-theme="dark"] .article-hero svg,
+[data-theme="dark"] .case-art svg,
+[data-theme="dark"] .hero .art svg{filter:brightness(1.5) saturate(1.1)}
 [data-theme="dark"] .prose pre{box-shadow:var(--lift)}
 
 /* ---- ambience ----

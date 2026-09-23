@@ -254,7 +254,7 @@ console.log("\nAssets");
     const why = {};
     for (const m of manifest) {
       const calm = m.section === "notes";
-      const { name, why: reason } = motifReason(m.tags, calm, m.title);
+      const { name, why: reason } = motifReason(m.tags, calm, m.title, m.slug);
       why[reason.split(":")[0]] = (why[reason.split(":")[0]] || 0) + 1;
       if (calm && name !== "field") noteDiagrams++;
       if (!calm && name === "field" && (m.tags || []).some(t => specific.has(t))) missing.push(m.slug);
@@ -263,6 +263,47 @@ console.log("\nAssets");
     else ok("personal notes carry no diagram");
     if (missing.length) fail(`${missing.length} article(s) with a technical subject and no figure: ${missing.slice(0, 3).join(", ")}`);
     else ok(`every technical article has a figure (by title ${why.title || 0}, by tag ${why.tag || 0}, none ${why["no systemic subject"] || 0})`);
+
+    // Relevant is not enough: an archive page showing forty cards drawn from
+    // four shapes reads as wallpaper. No one figure may carry a quarter of
+    // the corpus, and the drawing has to reach the edges of whatever canvas
+    // it is handed - the motifs once drew to a fixed 640 and left the right
+    // half of every 1200-wide hero empty.
+    const { motifNameFor, artwork, MOTIF_COUNT } = await import("./visuals.mjs");
+    const spread = {};
+    for (const m of manifest) {
+      const n = motifNameFor(m.tags, m.section === "notes", m.title, m.slug);
+      spread[n] = (spread[n] || 0) + 1;
+    }
+    const used = Object.keys(spread).length;
+    const [top, topN] = Object.entries(spread).sort((a, b) => b[1] - a[1])[0];
+    const share = topN / manifest.length;
+    if (used < 10) fail(`only ${used} of ${MOTIF_COUNT + 1} figures in use across the corpus`);
+    else if (share > 0.25) fail(`"${top}" carries ${(share * 100).toFixed(0)}% of the corpus - the archive will look repetitive`);
+    else ok(`${used} distinct figures in use, commonest "${top}" at ${(share * 100).toFixed(0)}%`);
+
+    // The motifs once drew to a fixed 640 whatever canvas they were handed,
+    // so every 1200-wide hero was art on the left and empty gradient on the
+    // right. The property that has to hold is that the drawing is expressed
+    // in the canvas it is given: widen the canvas and the geometry widens
+    // with it.
+    const geom = (svg) => {
+      const body = svg.slice(svg.indexOf("<g clip-path"))
+        .replace(/#[0-9a-fA-F]{3,8}/g, "")        // hex colours are not coordinates
+        .replace(/-opacity="[^"]*"/g, "")
+        .replace(/url\(#[^)]*\)/g, "");
+      const ns = [...body.matchAll(/-?\d+(?:\.\d+)?/g)].map(v => +v[0]);
+      return ns.length ? Math.max(...ns) : 0;
+    };
+    const stuck = [];
+    for (const m of manifest) {
+      const o = { calm: m.section === "notes", title: m.title };
+      const narrow = geom(artwork(m.slug, m.tags, { ...o, w: 640, h: 360 }));
+      const wide = geom(artwork(m.slug, m.tags, { ...o, w: 1200, h: 380 }));
+      if (!narrow || wide / narrow < 1.7) stuck.push(`${m.slug} ${narrow}->${wide}`);
+    }
+    if (stuck.length) fail(`${stuck.length} figure(s) not drawn to the canvas they are given: ${stuck.slice(0, 3).join(", ")}`);
+    else ok("figures scale to the canvas they are given (640 -> 1200)");
   }
 
   // Horizontal rules: every one in the corpus sat before a heading that
