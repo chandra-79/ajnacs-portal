@@ -2,6 +2,8 @@
 import { readFile, readdir, access } from "node:fs/promises";
 import { constants } from "node:fs";
 import path from "node:path";
+import { createHash } from "node:crypto";
+import { markFile } from "./mark.mjs";
 
 let failures = 0;
 const fail = (m) => { console.error("  ✗ " + m); failures++; };
@@ -235,19 +237,35 @@ console.log("\nAssets");
   if (spins !== 4) fail(`ajna-mark.svg has ${spins} baked rotations, expected 4 — the mark will render as one petal`);
   else ok("standalone mark carries its own rotations");
 
-  // The bloom was rewritten once and the old version left in place below it,
-  // so the stale rules won the cascade: on hover the four petals still
+  // Everything with the mark on it - the SVG icon, the .ico, the touch
+  // icons - is generated from markFile(), but by a script that needs a
+  // browser and so does not run in the build. The <head>'s cache-busting
+  // version is computed from markFile() and moves the moment the mark does,
+  // which is exactly how a redrawn mark once shipped under a fresh version
+  // with every icon still showing the old one. The stamp closes that.
+  {
+    const want = createHash("sha256").update(markFile(512)).digest("hex");
+    let stamp = "";
+    try { stamp = (await readFile("images/.mark-hash", "utf8")).trim(); } catch {}
+    if (markSvg !== markFile(512)) fail("images/ajna-mark.svg is not what tools/mark.mjs draws - run `node tools/icons.mjs`");
+    else if (stamp !== want) fail("the mark has changed since the icons were built - run `node tools/icons.mjs`");
+    else ok("every icon is built from the current mark");
+  }
+
+  // The bloom was rewritten once and the old version left in place below
+  // it, so the stale rules won the cascade: on hover the four facets still
   // pushed apart inside a bud that was shrinking around them. One
   // definition, or the mark opens a hole in itself again.
   {
-    const arrive = (css.match(/@keyframes am-arrive/g) || []).length;
+    const keyframes = (css.match(/@keyframes am-[a-z-]+/g) || []);
+    const dupes = keyframes.filter((k, i) => keyframes.indexOf(k) !== i);
     const pushes = (css.match(/\.am-petal\s*\{[^}]*translate\(/g) || []).length
                  + (css.match(/is-open[^{]*\.am-petal/g) || []).length;
-    const heart = css.includes("am-heart");
-    if (arrive !== 1) fail(`the mark's arrival animation is defined ${arrive} times`);
-    else if (pushes) fail("the mark's petals are still pushed apart on open - the old bloom is back");
-    else if (heart) fail("am-heart is styled but the mark no longer draws one");
-    else ok("the mark's bloom is defined once");
+    if (dupes.length) fail(`the mark defines ${[...new Set(dupes)].join(", ")} more than once`);
+    else if (pushes) fail("the mark's facets are pushed apart on open - the old bloom is back");
+    else if (css.includes("am-heart")) fail("am-heart is styled but the mark no longer draws one");
+    else if (!css.includes("rotateX")) fail("the leaves no longer unfold in three dimensions");
+    else ok(`the mark's bloom is defined once (${keyframes.length} keyframes)`);
   }
 
   const home = await readFile("index.html", "utf8");
