@@ -235,6 +235,21 @@ console.log("\nAssets");
   if (spins !== 4) fail(`ajna-mark.svg has ${spins} baked rotations, expected 4 — the mark will render as one petal`);
   else ok("standalone mark carries its own rotations");
 
+  // The bloom was rewritten once and the old version left in place below it,
+  // so the stale rules won the cascade: on hover the four petals still
+  // pushed apart inside a bud that was shrinking around them. One
+  // definition, or the mark opens a hole in itself again.
+  {
+    const arrive = (css.match(/@keyframes am-arrive/g) || []).length;
+    const pushes = (css.match(/\.am-petal\s*\{[^}]*translate\(/g) || []).length
+                 + (css.match(/is-open[^{]*\.am-petal/g) || []).length;
+    const heart = css.includes("am-heart");
+    if (arrive !== 1) fail(`the mark's arrival animation is defined ${arrive} times`);
+    else if (pushes) fail("the mark's petals are still pushed apart on open - the old bloom is back");
+    else if (heart) fail("am-heart is styled but the mark no longer draws one");
+    else ok("the mark's bloom is defined once");
+  }
+
   const home = await readFile("index.html", "utf8");
   if (!/favicon\.ico\?v=[0-9a-f]{8}/.test(home)) fail("icon links lost their cache-busting version");
   else ok("icon links are versioned by content");

@@ -945,7 +945,14 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:800;line-height:1.12;
 .ajna-mark{overflow:visible}
 .ajna-mark .am-bud,
 .ajna-mark .am-leaf,
-.ajna-mark .am-core{transform-box:view-box;transform-origin:50px 50px}
+.ajna-mark .am-core,
+.ajna-mark .am-petal{transform-box:view-box;transform-origin:50px 50px}
+/* The petals carry their angle in a custom property rather than a
+   transform attribute, because a CSS transform on the group overwrites
+   the attribute outright. They never move on their own - it is the bud
+   around them that shrinks. An earlier version pushed each petal out
+   along its diagonal, which is what opened a hole in the middle. */
+.ajna-mark .am-petal{transform:rotate(var(--a))}
 .ajna-mark .am-bud{transition:transform .55s var(--ease)}
 .ajna-mark .am-leaf{
   transform:rotate(var(--a)) scale(.16);opacity:0;
@@ -1006,51 +1013,6 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:800;line-height:1.12;
 /* A serif reading face wants a little more leading than the sans does. */
 [data-rface="serif"] .article .prose{line-height:calc(var(--art-lh) + .04)}
 .article .article-head .lede{font-family:var(--font-read)}
-
-/* ---------- the mark blooms ----------
-   At rest it is the flat cut mark. On hover or keyboard focus the four petals
-   push out along their diagonals, four leaves unfold into the gap that
-   opens on the axes, and an amber heart is revealed at the centre — paper
-   unfolding to show what is inside. Each petal composes its own angle (--a)
-   with the shared push, which is why the angle is a custom property and not
-   a transform attribute: a CSS transform would overwrite the attribute. */
-.ajna-mark{overflow:visible}
-.ajna-mark .am-petal,
-.ajna-mark .am-leaf,
-.ajna-mark .am-core,
-.ajna-mark .am-heart{transform-box:view-box;transform-origin:50px 50px}
-.ajna-mark .am-petal{transform:rotate(var(--a));transition:transform .6s var(--ease)}
-.ajna-mark .am-leaf{
-  transform:rotate(var(--a)) scale(.1);opacity:0;
-  transition:transform .6s var(--ease),opacity .35s var(--ease);
-}
-.ajna-mark .am-heart{transform:scale(0);opacity:0;transition:transform .6s var(--ease),opacity .4s var(--ease)}
-.ajna-mark .am-core{transition:transform .5s var(--ease)}
-
-.brand:hover .ajna-mark .am-petal,
-.brand:focus-visible .ajna-mark .am-petal,
-.ajna-mark.is-open .am-petal{transform:rotate(var(--a)) translate(9px,-9px)}
-.brand:hover .ajna-mark .am-leaf,
-.brand:focus-visible .ajna-mark .am-leaf,
-.ajna-mark.is-open .am-leaf{transform:rotate(var(--a)) scale(1);opacity:1}
-.brand:hover .ajna-mark .am-heart,
-.brand:focus-visible .ajna-mark .am-heart,
-.ajna-mark.is-open .am-heart{transform:scale(1);opacity:1}
-.brand:hover .ajna-mark .am-core,
-.brand:focus-visible .ajna-mark .am-core,
-.ajna-mark.is-open .am-core{transform:scale(.62)}
-
-/* One bloom on arrival, then it settles. Header mark only. */
-@keyframes am-arrive{
-  0%{transform:rotate(var(--a)) translate(9px,-9px)}
-  100%{transform:rotate(var(--a))}
-}
-.site-header .ajna-mark .am-petal{animation:am-arrive 1s var(--ease) backwards}
-@media (prefers-reduced-motion:reduce){
-  .ajna-mark .am-petal,.ajna-mark .am-leaf,.ajna-mark .am-core,
-  .ajna-mark .am-heart{transition:none}
-  .site-header .ajna-mark .am-petal{animation:none}
-}
 
 /* ============================================================
    Dark
