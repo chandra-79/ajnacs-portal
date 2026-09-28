@@ -3,25 +3,25 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Measuring Platform Engineering Success: The Metrics That Actually Matter | Ajna CS</title>
-<meta name="description" content="DORA metrics, developer experience scores, cognitive load measures, and the platform health indicators that tell you whether your internal platform is crea…">
+<title>Container Security: The Specific Misconfigurations That Open Production Systems to Attack | Ajna CS</title>
+<meta name="description" content="Running containers as root, privileged mode, unrestricted capabilities, exposed Docker sockets — the container security mistakes that appear in breach repo…">
 <meta name="author" content="Chandra Lanka">
-<link rel="canonical" href="https://ajnacs.com/insights/platform-eng-measuring-success/">
+<link rel="canonical" href="https://ajnacs.com/insights/containers-security/">
 <meta name="robots" content="index, follow, max-image-preview:large">
 
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Ajna Consulting Services">
-<meta property="og:title" content="Measuring Platform Engineering Success: The Metrics That Actually Matter">
-<meta property="og:description" content="DORA metrics, developer experience scores, cognitive load measures, and the platform health indicators that tell you whether your internal platform is crea…">
-<meta property="og:url" content="https://ajnacs.com/insights/platform-eng-measuring-success/">
-<meta property="og:image" content="https://ajnacs.com/assets/og/engineering-leadership.jpg">
+<meta property="og:title" content="Container Security: The Specific Misconfigurations That Open Production Systems to Attack">
+<meta property="og:description" content="Running containers as root, privileged mode, unrestricted capabilities, exposed Docker sockets — the container security mistakes that appear in breach repo…">
+<meta property="og:url" content="https://ajnacs.com/insights/containers-security/">
+<meta property="og:image" content="https://ajnacs.com/assets/og/devsecops.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:type" content="image/jpeg">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Measuring Platform Engineering Success: The Metrics That Actually Matter">
-<meta name="twitter:description" content="DORA metrics, developer experience scores, cognitive load measures, and the platform health indicators that tell you whether your internal platform is crea…">
-<meta name="twitter:image" content="https://ajnacs.com/assets/og/engineering-leadership.jpg">
+<meta name="twitter:title" content="Container Security: The Specific Misconfigurations That Open Production Systems to Attack">
+<meta name="twitter:description" content="Running containers as root, privileged mode, unrestricted capabilities, exposed Docker sockets — the container security mistakes that appear in breach repo…">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/devsecops.jpg">
 
 <link rel="icon" href="/favicon.ico?v=cefc53b9" sizes="any">
 <link rel="icon" href="/images/ajna-mark.svg?v=cefc53b9" type="image/svg+xml">
@@ -51,10 +51,10 @@ if(d.getAttribute('data-rface')==='serif'){
 }
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Measuring Platform Engineering Success: The Metrics That Actually Matter","description":"DORA metrics, developer experience scores, cognitive load measures, and the platform health indicators that tell you whether your internal platform is creating value or creating another bottleneck.","datePublished":"2026-07-21","dateModified":"2026-07-21","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/platform-eng-measuring-success/","image":"https://ajnacs.com/assets/og/engineering-leadership.jpg","keywords":"Engineering Leadership, Architecture, Fundamentals","articleSection":"Engineering Leadership","wordCount":904}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Measuring Platform Engineering Success: The Metrics That Actually Matter"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Container Security: The Specific Misconfigurations That Open Production Systems to Attack","description":"Running containers as root, privileged mode, unrestricted capabilities, exposed Docker sockets — the container security mistakes that appear in breach reports and how to prevent them systematically.","datePublished":"2026-09-28","dateModified":"2026-09-28","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/containers-security/","image":"https://ajnacs.com/assets/og/devsecops.jpg","keywords":"DevSecOps, Fundamentals","articleSection":"DevSecOps","wordCount":822}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Container Security: The Specific Misconfigurations That Open Production Systems to Attack"}]}</script>
 </head>
-<body class="" data-topic="Engineering Leadership">
+<body class="" data-topic="DevSecOps">
 <a class="skip-link" href="#main">Skip to content</a>
 
 <header class="site-header" id="siteHeader">
@@ -87,96 +87,181 @@ if(d.getAttribute('data-rface')==='serif'){
       <nav class="crumbs" aria-label="Breadcrumb">
         <a href="/">Home</a> <span aria-hidden="true">/</span>
         <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
-        <span>Engineering Leadership</span>
+        <span>DevSecOps</span>
       </nav>
-      <h1 class="h1">Measuring Platform Engineering Success: The Metrics That Actually Matter</h1>
-      <p class="lede" style="margin-top:1rem">DORA metrics, developer experience scores, cognitive load measures, and the platform health indicators that tell you whether your internal platform is creating value or creating another bottleneck.</p>
+      <h1 class="h1">Container Security: The Specific Misconfigurations That Open Production Systems to Attack</h1>
+      <p class="lede" style="margin-top:1rem">Running containers as root, privileged mode, unrestricted capabilities, exposed Docker sockets — the container security mistakes that appear in breach reports and how to prevent them systematically.</p>
       <div class="article-meta">
-        <span class="chip">Engineering Leadership</span>
-        <time datetime="2026-07-21">21 Jul 2026</time>
+        <span class="chip">DevSecOps</span>
+        <time datetime="2026-09-28">28 Sept 2026</time>
         <span class="dot"></span><span>4 min read</span>
         <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
       </div>
     </div>
   </header>
 
-  <div class="art-wrap"><div class="article-hero" data-topic="Engineering Leadership"><svg viewBox="0 0 1200 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <div class="art-wrap"><div class="article-hero" data-topic="DevSecOps"><svg viewBox="0 0 1200 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
   <defs>
-    <radialGradient id="bgplatformengm" cx="0.22" cy="0.16" r="1"><stop offset="0" stop-color="#094b64" stop-opacity=".21"/><stop offset="1" stop-color="#08455d" stop-opacity=".07"/></radialGradient>
-    <marker id="ahplatformengm" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
-      <path d="M0 0 L7 3.5 L0 7 z" fill="#094b64" fill-opacity=".5"/>
+    <linearGradient id="bgcontainersse" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c6201d" stop-opacity=".10"/><stop offset="1" stop-color="#a72926" stop-opacity=".22"/></linearGradient>
+    <marker id="ahcontainersse" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#c6201d" fill-opacity=".5"/>
     </marker>
-    <clipPath id="cpplatformengm"><rect width="1200" height="380"/></clipPath>
+    <clipPath id="cpcontainersse"><rect width="1200" height="380"/></clipPath>
   </defs>
-  <rect width="1200" height="380" fill="url(#bgplatformengm)"/>
-  <g clip-path="url(#cpplatformengm)"><rect x="0" y="148.8" width="1200" height="84.4" fill="#08455d" fill-opacity=".07"/><path d="M0 93.4 L0 85.7 L23.1 91.3 L46.2 97.1 L69.2 102.7 L92.3 108.1 L115.4 113.2 L138.5 117.9 L161.5 122 L184.6 125.6 L207.7 128.4 L230.8 130.4 L253.8 131.7 L276.9 132.1 L300 131.7 L323.1 130.5 L346.2 128.4 L369.2 125.6 L392.3 122.1 L415.4 118 L438.5 113.3 L461.5 108.2 L484.6 102.8 L507.7 97.2 L530.8 91.4 L553.8 85.8 L576.9 80.3 L600 75.1 L623.1 70.2 L646.2 65.9 L669.2 62.2 L692.3 59.2 L715.4 56.9 L738.5 55.3 L761.5 54.7 L784.6 54.8 L807.7 55.8 L830.8 57.6 L853.8 60.2 L876.9 63.5 L900 67.4 L923.1 71.9 L946.2 76.9 L969.2 82.3 L992.3 87.8 L1015.4 93.5 L1038.5 99.2 L1061.5 104.8 L1084.6 110.1 L1107.7 115.1 L1130.8 119.5 L1153.8 123.5 L1176.9 126.7 L1200 129.3" fill="none" stroke="#094b64" stroke-opacity="0.48" stroke-width="2.2" stroke-linecap="round"/><path d="M0 160.3 L0 208.3 L23.1 206.2 L46.2 203.8 L69.2 200.9 L92.3 197.6 L115.4 193.9 L138.5 189.9 L161.5 185.6 L184.6 181 L207.7 176.3 L230.8 171.4 L253.8 166.3 L276.9 161.3 L300 156.2 L323.1 151.1 L346.2 146.2 L369.2 141.4 L392.3 136.7 L415.4 132.3 L438.5 128.2 L461.5 124.4 L484.6 121 L507.7 117.9 L530.8 115.3 L553.8 113.1 L576.9 111.3 L600 110.1 L623.1 109.4 L646.2 109.1 L669.2 109.4 L692.3 110.1 L715.4 111.4 L738.5 113.2 L761.5 115.4 L784.6 118 L807.7 121.1 L830.8 124.6 L853.8 128.4 L876.9 132.5 L900 136.9 L923.1 141.5 L946.2 146.4 L969.2 151.3 L992.3 156.4 L1015.4 161.5 L1038.5 166.5 L1061.5 171.6 L1084.6 176.5 L1107.7 181.2 L1130.8 185.8 L1153.8 190 L1176.9 194 L1200 197.7" fill="none" stroke="#08455d" stroke-opacity="0.42" stroke-width="2.0" stroke-linecap="round"/><path d="M0 227.3 L0 195.7 L23.1 191.9 L46.2 188.8 L69.2 186.4 L92.3 184.8 L115.4 184 L138.5 184.1 L161.5 184.9 L184.6 186.5 L207.7 189 L230.8 192.1 L253.8 195.9 L276.9 200.3 L300 205.2 L323.1 210.5 L346.2 216.2 L369.2 222 L392.3 227.9 L415.4 233.9 L438.5 239.7 L461.5 245.3 L484.6 250.5 L507.7 255.3 L530.8 259.6 L553.8 263.2 L576.9 266.2 L600 268.4 L623.1 269.9 L646.2 270.6 L669.2 270.4 L692.3 269.4 L715.4 267.7 L738.5 265.1 L761.5 261.9 L784.6 258 L807.7 253.5 L830.8 248.5 L853.8 243.1 L876.9 237.4 L900 231.5 L923.1 225.6 L946.2 219.7 L969.2 213.9 L992.3 208.4 L1015.4 203.2 L1038.5 198.5 L1061.5 194.3 L1084.6 190.8 L1107.7 187.9 L1130.8 185.8 L1153.8 184.5 L1176.9 184 L1200 184.3" fill="none" stroke="#094b64" stroke-opacity="0.37" stroke-width="1.8" stroke-linecap="round"/><path d="M0 294.2 L0 313.5 L23.1 320.3 L46.2 326.1 L69.2 330.8 L92.3 334 L115.4 335.8 L138.5 336 L161.5 334.7 L184.6 331.8 L207.7 327.5 L230.8 322 L253.8 315.5 L276.9 308.2 L300 300.3 L323.1 292.2 L346.2 284.2 L369.2 276.5 L392.3 269.6 L415.4 263.5 L438.5 258.6 L461.5 255 L484.6 252.9 L507.7 252.4 L530.8 253.4 L553.8 255.9 L576.9 259.9 L600 265.1 L623.1 271.4 L646.2 278.6 L669.2 286.4 L692.3 294.5 L715.4 302.5 L738.5 310.3 L761.5 317.4 L784.6 323.7 L807.7 328.9 L830.8 332.8 L853.8 335.2 L876.9 336.1 L900 335.4 L923.1 333.2 L946.2 329.6 L969.2 324.6 L992.3 318.5 L1015.4 311.5 L1038.5 303.8 L1061.5 295.8 L1084.6 287.7 L1107.7 279.8 L1130.8 272.5 L1153.8 266 L1176.9 260.6 L1200 256.4" fill="none" stroke="#08455d" stroke-opacity="0.31" stroke-width="1.6" stroke-linecap="round"/></g>
+  <rect width="1200" height="380" fill="url(#bgcontainersse)"/>
+  <g clip-path="url(#cpcontainersse)"><rect x="138" y="57" width="672" height="50.8" rx="9"
+      fill="#a72926" fill-opacity="0.15"
+      stroke="#c6201d" stroke-opacity=".45" stroke-width="1.2"/><rect x="222" y="128.7" width="672" height="50.8" rx="9"
+      fill="#c6201d" fill-opacity="0.27"
+      stroke="#c6201d" stroke-opacity=".45" stroke-width="1.2"/><rect x="306" y="200.4" width="672" height="50.8" rx="9"
+      fill="#a72926" fill-opacity="0.39"
+      stroke="#c6201d" stroke-opacity=".45" stroke-width="1.2"/><rect x="390" y="272.2" width="672" height="50.8" rx="9"
+      fill="#c6201d" fill-opacity="0.51"
+      stroke="#c6201d" stroke-opacity=".45" stroke-width="1.2"/></g>
 </svg></div></div>
 
   <div class="art-wrap article-grid">
     <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
-  <ol><li><a href="#the-primary-metric-developer-productivity">The Primary Metric: Developer Productivity</a></li><li><a href="#cognitive-load-as-a-leading-indicator">Cognitive Load as a Leading Indicator</a></li><li><a href="#platform-health-metrics">Platform Health Metrics</a></li><li><a href="#what-not-to-measure">What Not to Measure</a></li><li><a href="#reporting-to-leadership">Reporting to Leadership</a></li></ol>
+  <ol><li><a href="#the-threat-model">The Threat Model</a></li><li><a href="#never-run-containers-as-root">Never Run Containers as Root</a></li><li><a href="#drop-all-capabilities-by-default">Drop All Capabilities by Default</a></li><li><a href="#read-only-root-filesystem">Read-Only Root Filesystem</a></li><li><a href="#never-mount-the-docker-socket">Never Mount the Docker Socket</a></li><li><a href="#image-scanning-in-ci">Image Scanning in CI</a></li><li><a href="#network-policies-in-kubernetes">Network Policies in Kubernetes</a></li><li><a href="#the-security-checklist">The Security Checklist</a></li></ol>
 </nav><nav class="chapters" aria-label="Articles in this series">
-      <p class="chapters-title">Platform Engineering: From Concept to Internal Developer Platform</p>
-      <ol><li><a href="/insights/platform-eng-idp-design/">Designing an Internal Developer Platform: Abstraction Layers, Golden Paths, and the Governance Balance</a></li><li><a href="/insights/platform-eng-self-service/">Self-Service Infrastructure: How to Build It Without Losing Operational Control</a></li><li><a href="/insights/platform-eng-observability/">Platform Observability: Building the Visibility Layer Every Application Team Gets Automatically</a></li><li aria-current="true"><a href="/insights/platform-eng-measuring-success/">Measuring Platform Engineering Success: The Metrics That Actually Matter</a></li></ol>
+      <p class="chapters-title">Containerization from the Ground Up</p>
+      <ol><li><a href="/insights/containers-what-they-actually-are/">What Containers Actually Are — Not the Marketing Version</a></li><li><a href="/insights/containers-production-dockerfiles/">Writing Production-Grade Dockerfiles: The Decisions That Actually Matter</a></li><li><a href="/insights/containers-networking/">Container Networking: How Containers Talk to Each Other and to the Outside World</a></li><li><a href="/insights/containers-kubernetes-fundamentals/">Kubernetes Fundamentals: What It Is, What It Does, and When You Actually Need It</a></li><li aria-current="true"><a href="/insights/containers-security/">Container Security: The Specific Misconfigurations That Open Production Systems to Attack</a></li></ol>
     </nav></div>
     <div class="prose">
-<p>Platform engineering teams face a measurement challenge: their output is other teams&#39; productivity. A platform feature that saves 200 engineering hours per month across 20 application teams delivers enormous value that is invisible in the platform team&#39;s own delivery metrics. Building the right measurement framework is essential for making that value visible, justifying continued investment, and identifying where the platform is failing to meet developer needs.</p>
-<h2 id="the-primary-metric-developer-productivity"><a class="h-anchor" href="#the-primary-metric-developer-productivity" aria-hidden="true" tabindex="-1">#</a>The Primary Metric: Developer Productivity</h2>
-<aside class="keyfig">
-  <p class="keyfig-label">Key figure</p>
-  <p class="keyfig-text">If 50 services onboard per quarter and each onboarding takes <b>8 hours</b> less than before the platform, that is 400 engineering hours per quarter — roughly 2.5 engineering months of capacity returned to product work.</p>
-</aside>
-<p>The platform exists to make application developers more productive. Productivity is multidimensional, but three signals are reliable:</p>
-<p><strong>DORA metrics</strong> (measured across teams using the platform, not just the platform team):</p>
+<p>Container security is not a single control — it is a set of decisions made at image build time, container runtime configuration, and orchestration platform level. Most container security incidents are not novel attacks against the container runtime. They are predictable misconfigurations that expose the host OS or enable lateral movement within the cluster. This lesson covers the specific misconfigurations and the systematic controls that prevent them.</p>
+<h2 id="the-threat-model"><a class="h-anchor" href="#the-threat-model" aria-hidden="true" tabindex="-1">#</a>The Threat Model</h2>
+<p>A container is a boundary, not a fortress. The threats it contains:</p>
+<ol>
+<li><strong>Application vulnerability leading to container compromise</strong>: an attacker exploits a bug in the application and gains code execution inside the container.</li>
+<li><strong>Container escape</strong>: from inside a compromised container, the attacker breaks out to the host OS.</li>
+<li><strong>Lateral movement</strong>: from a compromised container, the attacker reaches other containers or services within the cluster.</li>
+<li><strong>Supply chain</strong>: a malicious or vulnerable base image or dependency is pulled into the environment.</li>
+</ol>
+<p>The container security controls address each stage of this attack path.</p>
+<h2 id="never-run-containers-as-root"><a class="h-anchor" href="#never-run-containers-as-root" aria-hidden="true" tabindex="-1">#</a>Never Run Containers as Root</h2>
+<p>The single most impactful configuration change. A process running as root inside a container that escapes to the host is root on the host.</p>
+<pre><code class="language-dockerfile">## In the Dockerfile:
+RUN addgroup --system --gid 1001 appgroup &amp;&amp; \
+    adduser --system --uid 1001 --ingroup appgroup appuser
+USER appuser
+</code></pre>
+<pre><code class="language-yaml">## In Kubernetes PodSpec:
+spec:
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 1001
+    runAsGroup: 1001
+    fsGroup: 1001
+</code></pre>
+<p>Enforce this at the cluster level with Kubernetes PodSecurity admission (restricted policy) so no deployment can bypass it:</p>
+<pre><code class="language-yaml">apiVersion: v1
+kind: Namespace
+metadata:
+  name: production
+  labels:
+    pod-security.kubernetes.io/enforce: restricted
+</code></pre>
+<h2 id="drop-all-capabilities-by-default"><a class="h-anchor" href="#drop-all-capabilities-by-default" aria-hidden="true" tabindex="-1">#</a>Drop All Capabilities by Default</h2>
+<p>Linux capabilities break root&#39;s all-or-nothing privilege model into granular permissions. Containers inherit a default set of capabilities — many of which most applications do not need.</p>
+<pre><code class="language-yaml">spec:
+  containers:
+  - name: my-api
+    securityContext:
+      capabilities:
+        drop:
+        - ALL                      # drop everything
+        add:
+        - NET_BIND_SERVICE         # only add what you actually need
+                                   # (binding to ports &lt; 1024)
+</code></pre>
+<p>Most web applications need zero capabilities. APIs that do not bind to privileged ports need zero capabilities. The safest default is drop ALL, then consciously re-add what the specific application requires.</p>
+<h2 id="read-only-root-filesystem"><a class="h-anchor" href="#read-only-root-filesystem" aria-hidden="true" tabindex="-1">#</a>Read-Only Root Filesystem</h2>
+<p>An attacker who has code execution inside a container and cannot write to the filesystem cannot install tools, write backdoors, or modify application binaries.</p>
+<pre><code class="language-yaml">spec:
+  containers:
+  - name: my-api
+    securityContext:
+      readOnlyRootFilesystem: true
+    volumeMounts:
+    - name: tmp-dir
+      mountPath: /tmp          # mount a tmpfs for /tmp if needed
+  volumes:
+  - name: tmp-dir
+    emptyDir:
+      medium: Memory
+</code></pre>
+<h2 id="never-mount-the-docker-socket"><a class="h-anchor" href="#never-mount-the-docker-socket" aria-hidden="true" tabindex="-1">#</a>Never Mount the Docker Socket</h2>
+<p>Mounting <code>/var/run/docker.sock</code> into a container gives that container full control over the Docker daemon — which means full control over the host and all other containers. This is a container escape by design.</p>
+<pre><code class="language-yaml">## Do not do this:
+volumes:
+- hostPath:
+    path: /var/run/docker.sock
+  name: docker-socket
+</code></pre>
+<p>If a CI/CD system needs to build images inside a container, use rootless build tools (Buildah, kaniko) that do not require the Docker socket.</p>
+<h2 id="image-scanning-in-ci"><a class="h-anchor" href="#image-scanning-in-ci" aria-hidden="true" tabindex="-1">#</a>Image Scanning in CI</h2>
+<p>Every image pushed to a registry should be scanned for known CVEs before deployment:</p>
+<pre><code class="language-yaml">## GitHub Actions example
+- name: Scan image for vulnerabilities
+  uses: aquasecurity/trivy-action@master
+  with:
+    image-ref: my-image:${{ github.sha }}
+    severity: &quot;CRITICAL,HIGH&quot;
+    exit-code: &quot;1&quot;       # fail the build on critical/high CVEs
+</code></pre>
+<p>Pin base images to specific digests rather than tags. Tags are mutable — <code>python:3.12-slim</code> today may reference a different image tomorrow:</p>
+<pre><code class="language-dockerfile">## Mutable — tag can be updated without your knowledge:
+FROM python:3.12-slim
+
+## Immutable — this specific image digest never changes:
+FROM python:3.12-slim@sha256:d5b63a0cda135bc60d5bdb7ea42fed3adf28a72c40ea1e8a73c6dc8e9d9ef6e9
+</code></pre>
+<h2 id="network-policies-in-kubernetes"><a class="h-anchor" href="#network-policies-in-kubernetes" aria-hidden="true" tabindex="-1">#</a>Network Policies in Kubernetes</h2>
+<p>By default, every pod in a Kubernetes cluster can communicate with every other pod. This means a compromised pod has network access to every service in the cluster — databases, internal APIs, secrets stores.</p>
+<pre><code class="language-yaml">## Deny all ingress by default for a namespace
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny-ingress
+  namespace: production
+spec:
+  podSelector: {}          # applies to all pods
+  policyTypes:
+  - Ingress
+
+## Allow only the API to reach the database
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-api-to-database
+  namespace: production
+spec:
+  podSelector:
+    matchLabels:
+      app: postgres
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: my-api
+    ports:
+    - port: 5432
+</code></pre>
+<h2 id="the-security-checklist"><a class="h-anchor" href="#the-security-checklist" aria-hidden="true" tabindex="-1">#</a>The Security Checklist</h2>
+<p>Before any container workload reaches production:</p>
 <ul>
-<li>Deployment frequency: how often do application teams deploy to production?</li>
-<li>Lead time for changes: how long from code commit to production deployment?</li>
-<li>Change failure rate: what percentage of deployments cause incidents?</li>
-<li>MTTR: when an incident occurs, how quickly is it resolved?</li>
+<li>Non-root user in Dockerfile and enforced in PodSpec</li>
+<li>All Linux capabilities dropped, required ones explicitly added</li>
+<li>Read-only root filesystem with tmpfs for writable paths</li>
+<li>Docker socket not mounted</li>
+<li>Image scanned for CVEs; no critical/high unpatched vulnerabilities</li>
+<li>Base image pinned to digest</li>
+<li>Network policies applied (default deny, explicit allow)</li>
+<li>Secrets not in environment variables if possible — use a secrets store (Vault, AWS Secrets Manager, Kubernetes external-secrets)</li>
+<li>Resource limits set (CPU and memory) — an attacker with code execution who can consume unlimited CPU affects all other pods on the node</li>
 </ul>
-<p>A platform that is working should improve these metrics over time. If deployment frequency is flat a year after platform adoption, the platform is not reducing friction in the deployment path. If change failure rate is rising, the platform&#39;s testing and deployment gates may be providing false confidence.</p>
-<p><strong>Time to first deployment</strong>: how long does it take a new service to go from initial creation to a successful deployment in staging? This is the most direct measure of onboarding friction. A target of under one working day is achievable with good scaffolding and self-service infrastructure. More than one week indicates significant platform usability problems.</p>
-<p><strong>Developer experience (DevEx) score</strong>: a quarterly survey of application developers measuring specific dimensions:</p>
-<ul>
-<li>&quot;I can deploy my service without help from the platform team&quot; (1–5)</li>
-<li>&quot;The platform documentation is sufficient to unblock me&quot; (1–5)</li>
-<li>&quot;Platform incidents are communicated to me clearly and quickly&quot; (1–5)</li>
-<li>&quot;The platform helps me comply with security requirements without slowing me down&quot; (1–5)</li>
-</ul>
-<p>The questions should be specific enough that scores are actionable. &quot;Are you satisfied with the platform?&quot; is too broad.</p>
-<h2 id="cognitive-load-as-a-leading-indicator"><a class="h-anchor" href="#cognitive-load-as-a-leading-indicator" aria-hidden="true" tabindex="-1">#</a>Cognitive Load as a Leading Indicator</h2>
-<p>Cognitive load — the mental effort required to do a task — is difficult to measure directly but has observable proxies.</p>
-<p><strong>Ticket volume to the platform team</strong>: if application developers are filing tickets asking &quot;how do I configure X&quot; or &quot;how do I access Y,&quot; the platform is creating cognitive load it should be eliminating. Track ticket categories and use them to prioritise documentation and self-service improvements.</p>
-<p><strong>Escape hatch usage</strong>: the rate at which teams provision infrastructure outside the platform. High escape hatch usage means the platform is not covering a real need — developers are finding workarounds. The nature of the workaround tells you what to build next.</p>
-<p><strong>Time spent on infrastructure vs product</strong>: a rough measure from developer surveys. &quot;Approximately what percentage of your last sprint did you spend on infrastructure, tooling, or platform issues rather than product features?&quot; A platform that is working should drive this number down over time.</p>
-<h2 id="platform-health-metrics"><a class="h-anchor" href="#platform-health-metrics" aria-hidden="true" tabindex="-1">#</a>Platform Health Metrics</h2>
-<p>The platform itself needs to be operated reliably. The metrics for platform health:</p>
-<p><strong>Availability by capability</strong>:</p>
-<ul>
-<li>CI/CD pipeline availability: % of time pipelines are operational</li>
-<li>Secrets manager availability: % of time secret reads succeed within SLA</li>
-<li>Container registry availability: % of time image pulls succeed</li>
-</ul>
-<p><strong>Platform incident impact</strong>: when the platform has an incident, how many application teams are affected? The breadth of impact is a proxy for coupling — a highly coupled platform failure is more severe than one that only affects specific capabilities.</p>
-<p><strong>Adoption coverage</strong>: what percentage of services are deployed through the platform vs. directly to the underlying infrastructure? This should trend toward 100% for new services. Legacy services may have legitimate reasons for lower platform adoption.</p>
-<p><strong>Toil reduction</strong>: track the time the platform team spends on manual, repetitive tasks. As automation matures, this number should fall. If it is not falling, the platform is not automating its own operations effectively.</p>
-<h2 id="what-not-to-measure"><a class="h-anchor" href="#what-not-to-measure" aria-hidden="true" tabindex="-1">#</a>What Not to Measure</h2>
-<p><strong>Platform team velocity</strong>: measuring the platform team&#39;s sprint velocity incentivises delivering features regardless of adoption or impact. A platform feature that is delivered but not adopted is not a success.</p>
-<p><strong>Number of capabilities delivered</strong>: same problem. The value is in the adoption and impact, not the delivery.</p>
-<p><strong>Uptime in isolation</strong>: a platform that is 100% available but developers are not using is not a healthy platform. Availability is necessary but not sufficient.</p>
-<h2 id="reporting-to-leadership"><a class="h-anchor" href="#reporting-to-leadership" aria-hidden="true" tabindex="-1">#</a>Reporting to Leadership</h2>
-<p>Platform engineering investment requires ongoing justification to engineering leadership and business stakeholders. A useful reporting frame:</p>
-<p><strong>Quarterly platform review</strong>:</p>
-<ul>
-<li>DORA metric trends across platform-adopting teams vs. baseline</li>
-<li>Time-to-production for new services (trend)</li>
-<li>Developer satisfaction scores (trend)</li>
-<li>Infrastructure cost efficiency (the platform should also improve cost through consistent resource governance)</li>
-<li>Top 3 pain points from developer feedback and the platform roadmap items that address them</li>
-</ul>
-<p>The platform team should be able to quantify the engineering hours saved through self-service and automation. If 50 services onboard per quarter and each onboarding takes 8 hours less than before the platform, that is 400 engineering hours per quarter — roughly 2.5 engineering months of capacity returned to product work. That is the business case in terms leadership can act on.</p>
-<p>Platform engineering succeeds when it is invisible to the developers who benefit from it — when deploying a service is so effortless that nobody thinks about the infrastructure underneath. The measurement framework is what makes that invisibility legible as value.</p>
+<p>Container security is not a security team&#39;s responsibility after deployment. It is an engineering discipline from the Dockerfile outward.</p>
 
     </div>
   </div>
@@ -185,7 +270,8 @@ if(d.getAttribute('data-rface')==='serif'){
   <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
   <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
   <ul>
-    <li><a href="https://dora.dev/" rel="noopener nofollow" target="_blank">DORA — DevOps Research and Assessment</a><span>The four delivery metrics and the research behind them.</span></li>
+    <li><a href="https://kubernetes.io/docs/" rel="noopener nofollow" target="_blank">Kubernetes documentation</a><span>Primary reference for the concepts used here.</span></li>
+    <li><a href="https://www.postgresql.org/docs/current/" rel="noopener nofollow" target="_blank">PostgreSQL documentation</a><span>Configuration and planner behaviour.</span></li>
   </ul>
 </aside></div>
 
@@ -193,45 +279,18 @@ if(d.getAttribute('data-rface')==='serif'){
 
   <div class="art-wrap article-foot">
     <div class="row" style="gap:.4rem">
-      <a class="chip chip-plain" href="/insights/?topic=Engineering%20Leadership">Engineering Leadership</a><a class="chip chip-plain" href="/insights/?topic=Architecture">Architecture</a><a class="chip chip-plain" href="/insights/?topic=Fundamentals">Fundamentals</a>
+      <a class="chip chip-plain" href="/insights/?topic=DevSecOps">DevSecOps</a><a class="chip chip-plain" href="/insights/?topic=Fundamentals">Fundamentals</a>
     </div>
     <nav class="prevnext" aria-label="More articles">
-      <a href="/insights/finops-anomaly-detection/"><span>Previous</span><strong>Cloud Cost Anomaly Detection: Catching Runaway Spend Before It Becomes a Bill</strong></a>
-      <a href="/insights/containers-what-they-actually-are/" class="next"><span>Next</span><strong>What Containers Actually Are — Not the Marketing Version</strong></a>
+      <a href="/insights/platform-eng-observability/"><span>Previous</span><strong>Platform Observability: Building the Visibility Layer Every Application Team Gets Automatically</strong></a>
+      <span></span>
     </nav>
   </div>
 
   <section class="section surface hair" style="margin-top:4rem">
     <div class="wrap">
       <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|DevSecOps|Fundamentals|" data-search="container security: the specific misconfigurations that open production systems to attack running containers as root, privileged mode, unrestricted capabilities, exposed docker sockets — the container security mistakes that appear in breach reports and how to prevent them systematically. devsecops fundamentals" data-topic="DevSecOps" href="/insights/containers-security/">
-  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
-  <defs>
-    <linearGradient id="bgcontainersse" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c6201d" stop-opacity=".10"/><stop offset="1" stop-color="#a72926" stop-opacity=".22"/></linearGradient>
-    <marker id="ahcontainersse" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
-      <path d="M0 0 L7 3.5 L0 7 z" fill="#c6201d" fill-opacity=".5"/>
-    </marker>
-    <clipPath id="cpcontainersse"><rect width="640" height="360"/></clipPath>
-  </defs>
-  <rect width="640" height="360" fill="url(#bgcontainersse)"/>
-  <g clip-path="url(#cpcontainersse)"><rect x="73.6" y="54" width="358.4" height="48.1" rx="9"
-      fill="#a72926" fill-opacity="0.15"
-      stroke="#c6201d" stroke-opacity=".45" stroke-width="1.2"/><rect x="118.4" y="121.9" width="358.4" height="48.1" rx="9"
-      fill="#c6201d" fill-opacity="0.27"
-      stroke="#c6201d" stroke-opacity=".45" stroke-width="1.2"/><rect x="163.2" y="189.9" width="358.4" height="48.1" rx="9"
-      fill="#a72926" fill-opacity="0.39"
-      stroke="#c6201d" stroke-opacity=".45" stroke-width="1.2"/><rect x="208" y="257.8" width="358.4" height="48.1" rx="9"
-      fill="#c6201d" fill-opacity="0.51"
-      stroke="#c6201d" stroke-opacity=".45" stroke-width="1.2"/></g>
-</svg></div>
-  <div class="card-body">
-    <span class="chip">DevSecOps</span>
-    <h3 class="card-title">Container Security: The Specific Misconfigurations That Open Production Systems to Attack</h3>
-    <p class="card-desc">Running containers as root, privileged mode, unrestricted capabilities, exposed Docker sockets — the container security mistakes that appear in breach reports and how to prevent them systematically.</p>
-    <div class="card-meta"><time datetime="2026-09-28">28 Sept 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
-  </div>
-</a>
-<a class="card" data-card data-topics="|DevSecOps|Architecture|Fundamentals|" data-search="platform observability: building the visibility layer every application team gets automatically how platform teams build and operate the metrics, logging, and tracing infrastructure that application teams consume without configuring — and what good platform observability coverage actually looks like. devsecops architecture fundamentals" data-topic="DevSecOps" href="/insights/platform-eng-observability/">
+      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|DevSecOps|Architecture|Fundamentals|" data-search="platform observability: building the visibility layer every application team gets automatically how platform teams build and operate the metrics, logging, and tracing infrastructure that application teams consume without configuring — and what good platform observability coverage actually looks like. devsecops architecture fundamentals" data-topic="DevSecOps" href="/insights/platform-eng-observability/">
   <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
   <defs>
     <linearGradient id="bgplatformengo" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#df4d28" stop-opacity=".10"/><stop offset="1" stop-color="#b9472a" stop-opacity=".22"/></linearGradient>
@@ -267,6 +326,25 @@ if(d.getAttribute('data-rface')==='serif'){
     <h3 class="card-title">Neural Networks Explained: What They Are, How They Learn, and Why They Work</h3>
     <p class="card-desc">Neurons, layers, weights, activation functions, backpropagation, and gradient descent — the actual mechanics of how a neural network learns from data, explained without the mathematics becoming the obstacle.</p>
     <div class="card-meta"><time datetime="2026-09-04">4 Sept 2026</time><span class="dot"></span><span>3 min read</span><span class="dot"></span><span>Series</span></div>
+  </div>
+</a>
+<a class="card" data-card data-topics="|AI &amp; MLOps|Enterprise AI|Fundamentals|" data-search="rag, prompting, and building applications on llms: the practitioner&#39;s guide retrieval-augmented generation, system prompts, few-shot examples, chain-of-thought, structured output, and the engineering patterns that make llm applications reliable in production. ai &amp; mlops enterprise ai fundamentals" data-topic="AI &amp; MLOps" href="/insights/aiml-rag-and-prompting/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <radialGradient id="bgaimlragandpr" cx="0.22" cy="0.16" r="1"><stop offset="0" stop-color="#9056ff" stop-opacity=".21"/><stop offset="1" stop-color="#753ce3" stop-opacity=".07"/></radialGradient>
+    <marker id="ahaimlragandpr" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#9056ff" fill-opacity=".5"/>
+    </marker>
+    <clipPath id="cpaimlragandpr"><rect width="640" height="360"/></clipPath>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgaimlragandpr)"/>
+  <g clip-path="url(#cpaimlragandpr)"><line x1="57.9" y1="87.9" x2="179.4" y2="274.4" stroke="#9056ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="57.9" y1="87.9" x2="225.3" y2="158.7" stroke="#9056ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="57.9" y1="87.9" x2="232.2" y2="169.4" stroke="#9056ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="57.9" y1="87.9" x2="272.4" y2="287.9" stroke="#9056ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="179.4" y1="274.4" x2="225.3" y2="158.7" stroke="#9056ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="179.4" y1="274.4" x2="232.2" y2="169.4" stroke="#9056ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="179.4" y1="274.4" x2="272.4" y2="287.9" stroke="#9056ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="179.4" y1="274.4" x2="381.9" y2="247.8" stroke="#9056ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="179.4" y1="274.4" x2="399.3" y2="168.3" stroke="#9056ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="179.4" y1="274.4" x2="485" y2="111.1" stroke="#9056ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="225.3" y1="158.7" x2="232.2" y2="169.4" stroke="#9056ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="225.3" y1="158.7" x2="272.4" y2="287.9" stroke="#9056ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="225.3" y1="158.7" x2="381.9" y2="247.8" stroke="#9056ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="225.3" y1="158.7" x2="399.3" y2="168.3" stroke="#9056ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="225.3" y1="158.7" x2="485" y2="111.1" stroke="#9056ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="225.3" y1="158.7" x2="493.4" y2="48.7" stroke="#9056ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="232.2" y1="169.4" x2="272.4" y2="287.9" stroke="#9056ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="232.2" y1="169.4" x2="381.9" y2="247.8" stroke="#9056ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="232.2" y1="169.4" x2="399.3" y2="168.3" stroke="#9056ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="232.2" y1="169.4" x2="485" y2="111.1" stroke="#9056ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="232.2" y1="169.4" x2="493.4" y2="48.7" stroke="#9056ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="272.4" y1="287.9" x2="381.9" y2="247.8" stroke="#9056ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="272.4" y1="287.9" x2="399.3" y2="168.3" stroke="#9056ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="272.4" y1="287.9" x2="485" y2="111.1" stroke="#9056ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="272.4" y1="287.9" x2="493.4" y2="48.7" stroke="#9056ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="272.4" y1="287.9" x2="579.8" y2="208" stroke="#9056ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="381.9" y1="247.8" x2="399.3" y2="168.3" stroke="#9056ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="381.9" y1="247.8" x2="485" y2="111.1" stroke="#9056ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="381.9" y1="247.8" x2="493.4" y2="48.7" stroke="#9056ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="381.9" y1="247.8" x2="579.8" y2="208" stroke="#9056ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="399.3" y1="168.3" x2="485" y2="111.1" stroke="#9056ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="399.3" y1="168.3" x2="493.4" y2="48.7" stroke="#9056ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="399.3" y1="168.3" x2="579.8" y2="208" stroke="#9056ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="485" y1="111.1" x2="493.4" y2="48.7" stroke="#9056ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="485" y1="111.1" x2="579.8" y2="208" stroke="#9056ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="493.4" y1="48.7" x2="579.8" y2="208" stroke="#9056ff" stroke-opacity=".3" stroke-width="1.4"/><circle cx="57.9" cy="87.9" r="4.5" fill="#9056ff" fill-opacity=".88"/><circle cx="179.4" cy="274.4" r="8" fill="#753ce3" fill-opacity=".88"/><circle cx="225.3" cy="158.7" r="11.5" fill="#9056ff" fill-opacity=".88"/><circle cx="232.2" cy="169.4" r="4.5" fill="#753ce3" fill-opacity=".88"/><circle cx="272.4" cy="287.9" r="8" fill="#9056ff" fill-opacity=".88"/><circle cx="381.9" cy="247.8" r="11.5" fill="#753ce3" fill-opacity=".88"/><circle cx="399.3" cy="168.3" r="4.5" fill="#9056ff" fill-opacity=".88"/><circle cx="485" cy="111.1" r="8" fill="#753ce3" fill-opacity=".88"/><circle cx="493.4" cy="48.7" r="11.5" fill="#9056ff" fill-opacity=".88"/><circle cx="579.8" cy="208" r="4.5" fill="#753ce3" fill-opacity=".88"/></g>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">AI &amp; MLOps</span>
+    <h3 class="card-title">RAG, Prompting, and Building Applications on LLMs: The Practitioner&#39;s Guide</h3>
+    <p class="card-desc">Retrieval-augmented generation, system prompts, few-shot examples, chain-of-thought, structured output, and the engineering patterns that make LLM applications reliable in production.</p>
+    <div class="card-meta"><time datetime="2026-08-25">25 Aug 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
   </div>
 </a></div>
     </div>
@@ -316,13 +394,13 @@ if(d.getAttribute('data-rface')==='serif'){
 <button class="focus-exit" id="focusExit" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h6V3M21 9h-6V3M3 15h6v6M21 15h-6v6"/></svg> Exit focus</button>
 <div class="chapter-bar" id="chapterBar">
   <div class="chapter-where">
-    <b>Measuring Platform Engineering Success: The Metrics That Actually Matter</b>
-    <span>Platform Engineering: From Concept to Internal Developer Platform</span>
+    <b>Container Security: The Specific Misconfigurations That Open Production Systems to Attack</b>
+    <span>Containerization from the Ground Up</span>
   </div>
   <span class="chapter-left" id="chapterLeft"></span>
   <nav class="chapter-step" aria-label="Article navigation">
-    <a href="/insights/finops-anomaly-detection/" aria-label="Previous: Cloud Cost Anomaly Detection: Catching Runaway Spend Before It Becomes a Bill"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a>
-    <a href="/insights/containers-what-they-actually-are/" aria-label="Next: What Containers Actually Are — Not the Marketing Version"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
+    <a href="/insights/platform-eng-observability/" aria-label="Previous: Platform Observability: Building the Visibility Layer Every Application Team Gets Automatically"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a>
+    <a aria-disabled="true" aria-label="No next article"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
   </nav>
 </div>
 </main>
