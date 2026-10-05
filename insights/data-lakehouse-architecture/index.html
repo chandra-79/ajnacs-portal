@@ -3,25 +3,25 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Ethernet vs. InfiniBand: Choosing the Right Network Fabric in 2026 | Ajna CS</title>
-<meta name="description" content="A practical breakdown of when to use Ethernet and when InfiniBand makes sense — with key metrics, topology differences, and real-world guidance for cloud…">
+<title>The Data Lakehouse: Why It Won, and How to Architect One That Works | Ajna CS</title>
+<meta name="description" content="Data warehouses couldn&#39;t handle unstructured data at scale. Data lakes couldn&#39;t enforce schemas or serve BI queries efficiently. The lakehouse combines bot…">
 <meta name="author" content="Chandra Lanka">
-<link rel="canonical" href="https://ajnacs.com/insights/ethernet-vs-infiniband-networking-2026/">
+<link rel="canonical" href="https://ajnacs.com/insights/data-lakehouse-architecture/">
 <meta name="robots" content="index, follow, max-image-preview:large">
 
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Ajna Consulting Services">
-<meta property="og:title" content="Ethernet vs. InfiniBand: Choosing the Right Network Fabric in 2026">
-<meta property="og:description" content="A practical breakdown of when to use Ethernet and when InfiniBand makes sense — with key metrics, topology differences, and real-world guidance for cloud…">
-<meta property="og:url" content="https://ajnacs.com/insights/ethernet-vs-infiniband-networking-2026/">
-<meta property="og:image" content="https://ajnacs.com/assets/og/infrastructure.jpg">
+<meta property="og:title" content="The Data Lakehouse: Why It Won, and How to Architect One That Works">
+<meta property="og:description" content="Data warehouses couldn&#39;t handle unstructured data at scale. Data lakes couldn&#39;t enforce schemas or serve BI queries efficiently. The lakehouse combines bot…">
+<meta property="og:url" content="https://ajnacs.com/insights/data-lakehouse-architecture/">
+<meta property="og:image" content="https://ajnacs.com/assets/og/data-engineering.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:type" content="image/jpeg">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Ethernet vs. InfiniBand: Choosing the Right Network Fabric in 2026">
-<meta name="twitter:description" content="A practical breakdown of when to use Ethernet and when InfiniBand makes sense — with key metrics, topology differences, and real-world guidance for cloud…">
-<meta name="twitter:image" content="https://ajnacs.com/assets/og/infrastructure.jpg">
+<meta name="twitter:title" content="The Data Lakehouse: Why It Won, and How to Architect One That Works">
+<meta name="twitter:description" content="Data warehouses couldn&#39;t handle unstructured data at scale. Data lakes couldn&#39;t enforce schemas or serve BI queries efficiently. The lakehouse combines bot…">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/data-engineering.jpg">
 
 <link rel="icon" href="/favicon.ico?v=cefc53b9" sizes="any">
 <link rel="icon" href="/images/ajna-mark.svg?v=cefc53b9" type="image/svg+xml">
@@ -51,10 +51,10 @@ if(d.getAttribute('data-rface')==='serif'){
 }
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Ethernet vs. InfiniBand: Choosing the Right Network Fabric in 2026","description":"A practical breakdown of when to use Ethernet and when InfiniBand makes sense — with key metrics, topology differences, and real-world guidance for cloud, HPC, and AI workloads.","datePublished":"2026-10-02","dateModified":"2026-10-02","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/ethernet-vs-infiniband-networking-2026/","image":"https://ajnacs.com/assets/og/infrastructure.jpg","keywords":"Systems, Infrastructure, Enterprise AI, Cloud Architecture, HPC","articleSection":"Infrastructure","wordCount":985}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Ethernet vs. InfiniBand: Choosing the Right Network Fabric in 2026"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"The Data Lakehouse: Why It Won, and How to Architect One That Works","description":"Data warehouses couldn't handle unstructured data at scale. Data lakes couldn't enforce schemas or serve BI queries efficiently. The lakehouse combines both — here's the architecture, the open table formats that make it work, and the practical design decisions.","datePublished":"2026-10-05","dateModified":"2026-10-05","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/data-lakehouse-architecture/","image":"https://ajnacs.com/assets/og/data-engineering.jpg","keywords":"Data Engineering, Cloud Architecture, AI & MLOps","articleSection":"Data Engineering","wordCount":931}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"The Data Lakehouse: Why It Won, and How to Architect One That Works"}]}</script>
 </head>
-<body class="" data-topic="Infrastructure">
+<body class="" data-topic="Data Engineering">
 <a class="skip-link" href="#main">Skip to content</a>
 
 <header class="site-header" id="siteHeader">
@@ -87,135 +87,143 @@ if(d.getAttribute('data-rface')==='serif'){
       <nav class="crumbs" aria-label="Breadcrumb">
         <a href="/">Home</a> <span aria-hidden="true">/</span>
         <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
-        <span>Infrastructure</span>
+        <span>Data Engineering</span>
       </nav>
-      <h1 class="h1">Ethernet vs. InfiniBand: Choosing the Right Network Fabric in 2026</h1>
-      <p class="lede" style="margin-top:1rem">A practical breakdown of when to use Ethernet and when InfiniBand makes sense — with key metrics, topology differences, and real-world guidance for cloud, HPC, and AI workloads.</p>
+      <h1 class="h1">The Data Lakehouse: Why It Won, and How to Architect One That Works</h1>
+      <p class="lede" style="margin-top:1rem">Data warehouses couldn&#39;t handle unstructured data at scale. Data lakes couldn&#39;t enforce schemas or serve BI queries efficiently. The lakehouse combines both — here&#39;s the architecture, the open table formats that make it work, and the practical design decisions.</p>
       <div class="article-meta">
-        <span class="chip">Infrastructure</span>
-        <time datetime="2026-10-02">2 Oct 2026</time>
+        <span class="chip">Data Engineering</span>
+        <time datetime="2026-10-05">5 Oct 2026</time>
         <span class="dot"></span><span>4 min read</span>
         <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
       </div>
     </div>
   </header>
 
-  <div class="art-wrap"><div class="article-hero" data-topic="Infrastructure"><svg viewBox="0 0 1200 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <div class="art-wrap"><div class="article-hero" data-topic="Data Engineering"><svg viewBox="0 0 1200 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
   <defs>
-    <linearGradient id="bgethernetvsin" x1="0" y1="1" x2="0.4" y2="0"><stop offset="0" stop-color="#2d394c" stop-opacity=".20"/><stop offset="1" stop-color="#3d485b" stop-opacity=".07"/></linearGradient>
-    <marker id="ahethernetvsin" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
-      <path d="M0 0 L7 3.5 L0 7 z" fill="#3d485b" fill-opacity=".5"/>
+    <radialGradient id="bgdatalakehous" cx="0.22" cy="0.16" r="1"><stop offset="0" stop-color="#045773" stop-opacity=".21"/><stop offset="1" stop-color="#044a62" stop-opacity=".07"/></radialGradient>
+    <marker id="ahdatalakehous" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#045773" fill-opacity=".5"/>
     </marker>
-    <clipPath id="cpethernetvsin"><rect width="1200" height="380"/></clipPath>
+    <clipPath id="cpdatalakehous"><rect width="1200" height="380"/></clipPath>
   </defs>
-  <rect width="1200" height="380" fill="url(#bgethernetvsin)"/>
-  <g clip-path="url(#cpethernetvsin)"><line x1="78" y1="167.7" x2="195.3" y2="273.5" stroke="#3d485b" stroke-opacity=".3" stroke-width="1.4"/><line x1="195.3" y1="273.5" x2="233.5" y2="247.1" stroke="#3d485b" stroke-opacity=".3" stroke-width="1.4"/><line x1="195.3" y1="273.5" x2="303.6" y2="279.2" stroke="#3d485b" stroke-opacity=".3" stroke-width="1.4"/><line x1="233.5" y1="247.1" x2="303.6" y2="279.2" stroke="#3d485b" stroke-opacity=".3" stroke-width="1.4"/><line x1="580.3" y1="199.3" x2="633" y2="244.4" stroke="#3d485b" stroke-opacity=".3" stroke-width="1.4"/><line x1="823" y1="61.1" x2="834.4" y2="63.3" stroke="#3d485b" stroke-opacity=".3" stroke-width="1.4"/><line x1="823" y1="61.1" x2="864.4" y2="74" stroke="#3d485b" stroke-opacity=".3" stroke-width="1.4"/><line x1="834.4" y1="63.3" x2="864.4" y2="74" stroke="#3d485b" stroke-opacity=".3" stroke-width="1.4"/><circle cx="78" cy="167.7" r="4.5" fill="#3d485b" fill-opacity=".88"/><circle cx="195.3" cy="273.5" r="8" fill="#2d394c" fill-opacity=".88"/><circle cx="233.5" cy="247.1" r="11.5" fill="#3d485b" fill-opacity=".88"/><circle cx="303.6" cy="279.2" r="4.5" fill="#2d394c" fill-opacity=".88"/><circle cx="580.3" cy="199.3" r="8" fill="#3d485b" fill-opacity=".88"/><circle cx="633" cy="244.4" r="11.5" fill="#2d394c" fill-opacity=".88"/><circle cx="823" cy="61.1" r="4.5" fill="#3d485b" fill-opacity=".88"/><circle cx="834.4" cy="63.3" r="8" fill="#2d394c" fill-opacity=".88"/><circle cx="864.4" cy="74" r="11.5" fill="#3d485b" fill-opacity=".88"/><circle cx="904.2" cy="239.9" r="4.5" fill="#2d394c" fill-opacity=".88"/><circle cx="1123.6" cy="302.6" r="8" fill="#3d485b" fill-opacity=".88"/></g>
+  <rect width="1200" height="380" fill="url(#bgdatalakehous)"/>
+  <g clip-path="url(#cpdatalakehous)"><path d="M0 53.2 C456 53.2, 744 30.4, 1200 30.4 L1200 91.3 C744 91.3, 456 114.1, 0 114.1 Z"
+      fill="#045773" fill-opacity="0.14"/><path d="M0 131.2 C456 131.2, 744 119.1, 1200 119.1 L1200 145.3 C744 145.3, 456 157.4, 0 157.4 Z"
+      fill="#044a62" fill-opacity="0.25"/><path d="M0 174.5 C456 174.5, 744 106.2, 1200 106.2 L1200 156.7 C744 156.7, 456 225, 0 225 Z"
+      fill="#045773" fill-opacity="0.31"/></g>
 </svg></div></div>
 
   <div class="art-wrap article-grid">
     <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
-  <ol><li><a href="#the-short-version">The short version</a></li><li><a href="#key-metrics-side-by-side-2026">Key metrics side by side (2026)</a></li><li><a href="#what-each-one-is-actually-good-at">What each one is actually good at</a></li><li><a href="#the-ai-training-case-specifically">The AI training case specifically</a></li><li><a href="#rdma-on-ethernet-closing-the-gap">RDMA on Ethernet — closing the gap?</a></li><li><a href="#how-i39d-approach-the-decision">How I&#39;d approach the decision</a></li></ol>
+  <ol><li><a href="#the-three-open-table-formats">The three open table formats</a></li><li><a href="#storage-layer-design">Storage layer design</a></li><li><a href="#compute-layer-separation">Compute layer separation</a></li><li><a href="#the-medallion-architecture">The medallion architecture</a></li><li><a href="#governance-and-cataloguing">Governance and cataloguing</a></li></ol>
 </nav></div>
     <div class="prose">
-<p>import { Image } from &#39;astro:assets&#39;;</p>
-<p>Network fabric decisions don&#39;t get talked about enough in enterprise architecture conversations. Everyone focuses on compute and storage, and the interconnect gets chosen by default or by habit. But if you&#39;re building anything involving AI training, HPC workloads, or large-scale data movement — the network fabric choice matters more than almost anything else.</p>
-<p>Here&#39;s how I think about the Ethernet vs. InfiniBand question in 2026.</p>
-<h2 id="the-short-version"><a class="h-anchor" href="#the-short-version" aria-hidden="true" tabindex="-1">#</a>The short version</h2>
-<p><strong>Ethernet</strong> is the right default for almost everything: enterprise IT, cloud infrastructure, general-purpose workloads, internet-facing systems. It&#39;s mature, widely understood, cost-effective, and the ecosystem is enormous.</p>
-<p><strong>InfiniBand</strong> is purpose-built for scenarios where latency below 1 microsecond and maximum bandwidth actually change the outcome: AI/ML cluster training, HPC research, supercomputing. It&#39;s not a general-purpose fabric — it&#39;s a specialist tool.</p>
-<p>Most teams building on Azure, AWS, or GCP never need to think about InfiniBand directly — the cloud providers abstract it at the right layer. Where this decision surfaces is when you&#39;re designing on-premises AI clusters, research infrastructure, or evaluating managed HPC services.</p>
-<h2 id="key-metrics-side-by-side-2026"><a class="h-anchor" href="#key-metrics-side-by-side-2026" aria-hidden="true" tabindex="-1">#</a>Key metrics side by side (2026)</h2>
-<div class="table-wrap"><table><thead><tr><th>Metric</th><th>Ethernet</th><th>InfiniBand</th></tr></thead><tbody><tr><td><strong>Bandwidth</strong></td><td>800G–1.6T+</td><td>1.6T–3.2T+ (NDR/CDR)</td></tr><tr><td><strong>Latency</strong></td><td>10s of microseconds</td><td>Under 1 microsecond</td></tr><tr><td><strong>RDMA</strong></td><td>Optional — RoCE / iWARP</td><td>Native — built in</td></tr><tr><td><strong>Network topology</strong></td><td>Switch-based, hierarchical</td><td>Fabric, fat-tree / torus</td></tr><tr><td><strong>TCO</strong></td><td>Lower</td><td>Higher — specialised hardware</td></tr><tr><td><strong>Ecosystem</strong></td><td>Immense, mature</td><td>Specialised but strong</td></tr></tbody></table></div>
-<h2 id="what-each-one-is-actually-good-at"><a class="h-anchor" href="#what-each-one-is-actually-good-at" aria-hidden="true" tabindex="-1">#</a>What each one is actually good at</h2>
-<h3 id="ethernet-the-reliable-generalist"><a class="h-anchor" href="#ethernet-the-reliable-generalist" aria-hidden="true" tabindex="-1">#</a>Ethernet — the reliable generalist</h3>
-<p>Seven things work reliably well with Ethernet:</p>
-<ol>
-<li><strong>Universal connectivity</strong> — data centres, LAN, internet. If something needs to talk to something else, Ethernet handles it.</li>
-<li><strong>Speed range</strong> — from 10G up through 100G, 400G, 800G+ now standardised. More than enough for most enterprise workloads.</li>
-<li><strong>Proven reliability</strong> — decades of production hardening, broad hardware compatibility.</li>
-<li><strong>Security</strong> — mature standards and protocols. The security tooling ecosystem is deep.</li>
-<li><strong>Scale</strong> — powers the internet backbone and the largest public clouds. Proven at hyperscale.</li>
-<li><strong>Cost</strong> — competitive market, lots of vendors, wide choice.</li>
-<li><strong>RDMA adoption growing</strong> — iWARP and RoCE v2 are making RDMA accessible on Ethernet, narrowing the gap with InfiniBand for some workloads.</li>
-</ol>
-<p><strong>Best fit:</strong> General enterprise IT, public and private clouds, internet infrastructure, and the vast majority of use cases.</p>
-<h3 id="infiniband-the-precision-specialist"><a class="h-anchor" href="#infiniband-the-precision-specialist" aria-hidden="true" tabindex="-1">#</a>InfiniBand — the precision specialist</h3>
-<p>Where InfiniBand earns its higher cost:</p>
+<p>The data landscape spent a decade in a pendulum swing. First the data warehouse (structured, governed, expensive, inflexible). Then the data lake (cheap, flexible, unstructured, ungovernable at scale). Then the simultaneous recognition that most organizations needed both: governed, structured data for BI and reporting, and scalable, flexible storage for ML and data science.</p>
+<p>The data lakehouse is the current consensus architecture: object storage as the foundation (cheap, scalable), open table formats that add ACID transactions, schema enforcement, and query performance on top of that storage, and a separation of storage from compute.</p>
+<h2 id="the-three-open-table-formats"><a class="h-anchor" href="#the-three-open-table-formats" aria-hidden="true" tabindex="-1">#</a>The three open table formats</h2>
+<p>The technical foundation of the lakehouse is an open table format — a metadata layer on top of Parquet files in object storage that provides ACID transactions, schema evolution, partitioning, and time travel.</p>
+<p><strong>Delta Lake</strong>: created by Databricks, open-sourced under the Linux Foundation. Mature ecosystem, tight Databricks integration, strong adoption in Azure environments. Delta tables are Parquet files with a <code>_delta_log</code> transaction log directory that records all changes. Time travel uses the transaction log: <code>SELECT * FROM table VERSION AS OF 5</code> or <code>TIMESTAMP AS OF &#39;2026-01-01&#39;</code>.</p>
+<p><strong>Apache Iceberg</strong>: created at Netflix, broadly adopted across cloud providers. AWS Glue, AWS Athena, Snowflake, Trino, Spark, and Flink all support Iceberg natively. The strongest option for multi-engine environments where different teams use different query engines. Iceberg&#39;s manifest files enable partition pruning and hidden partitioning (partitioning by an expression like <code>day(ts)</code> rather than materialised partition columns).</p>
+<p><strong>Apache Hudi</strong>: created at Uber, specialised for streaming upserts and incremental processing. Hudi&#39;s record-level upsert capability (using Bloom filter indices for efficient key lookup) makes it the strongest option for change data capture pipelines that need to apply database row-level changes to the lakehouse.</p>
+<p>For new deployments: Delta Lake if your primary compute is Databricks; Iceberg if you need query engine flexibility or you&#39;re on AWS with Athena/Glue.</p>
+<h2 id="storage-layer-design"><a class="h-anchor" href="#storage-layer-design" aria-hidden="true" tabindex="-1">#</a>Storage layer design</h2>
+<p>Object storage is the foundation: S3, ADLS Gen2, or GCS. The cost advantage over traditional storage is significant — object storage at $0.02-0.023/GB/month vs block storage at $0.08-0.10/GB/month.</p>
+<p><strong>Partition design matters significantly for query performance.</strong> A table partitioned by <code>year/month/day</code> on event timestamp enables Iceberg/Delta to skip irrelevant partitions and read only the files needed for a date-range query. A table that isn&#39;t partitioned (or is partitioned on a high-cardinality column) reads all files for every query.</p>
+<p>The wrong partition granularity is a common problem:</p>
 <ul>
-<li><strong>Exceptional bandwidth</strong> — NDR at 400G per port, XDR at 800G, CDR pushing 1.6T+. For AI training clusters moving terabytes between GPUs, this matters.</li>
-<li><strong>Sub-microsecond latency</strong> — consistent, deterministic, and in a different class from Ethernet. Critical for tightly-coupled parallel workloads.</li>
-<li><strong>Native RDMA</strong> — Remote Direct Memory Access without the configuration overhead of RoCE. Zero-copy data transfer, offloads the CPU.</li>
-<li><strong>High efficiency fabric management</strong> — traffic control at the fabric level, not just the port level.</li>
-<li><strong>Interconnect topology</strong> — fat-tree and torus topologies optimized for all-to-all communication patterns common in distributed AI training.</li>
+<li>Too coarse (<code>year</code> only): large partitions, many files per partition scan</li>
+<li>Too fine (<code>year/month/day/hour</code>): small files problem — many small Parquet files, high metadata overhead</li>
+<li>Right granularity: depends on data volume and query patterns. For event data at 10GB/day, <code>year/month/day</code> produces daily partitions of manageable size</li>
 </ul>
-<p><strong>Best fit:</strong> AI and ML model training, HPC research clusters, supercomputing, extreme-scale scientific computing.</p>
-<h2 id="the-ai-training-case-specifically"><a class="h-anchor" href="#the-ai-training-case-specifically" aria-hidden="true" tabindex="-1">#</a>The AI training case specifically</h2>
-<p>This is where I see the most confusion in architecture conversations right now.</p>
-<p>If you&#39;re doing AI inference — serving a trained model to end users — Ethernet is generally fine. Inference is often embarrassingly parallel and latency between nodes is less critical.</p>
-<p>If you&#39;re doing distributed AI training — gradient synchronisation, all-reduce operations across many GPUs — the interconnect becomes a bottleneck. InfiniBand (or its close cousin, NVIDIA NVLink/NVSwitch at the chip level) is what makes large training runs practical at scale. This is why NVIDIA&#39;s DGX systems use InfiniBand internally, and why AWS&#39;s UltraCluster and Azure&#39;s NDv4/H100 instances use it.</p>
-<p>The question for most enterprise teams isn&#39;t &quot;which should I buy&quot; — it&#39;s &quot;when I choose a cloud instance type for AI training, do I know whether it uses InfiniBand or Ethernet under the hood?&quot; The answer affects cost, performance, and how you structure your training jobs.</p>
-<h2 id="rdma-on-ethernet-closing-the-gap"><a class="h-anchor" href="#rdma-on-ethernet-closing-the-gap" aria-hidden="true" tabindex="-1">#</a>RDMA on Ethernet — closing the gap?</h2>
-<p>RoCE (RDMA over Converged Ethernet) has matured significantly. For workloads where InfiniBand&#39;s full capabilities are overkill but you still need low-latency, high-bandwidth RDMA — RoCE v2 on 100G+ Ethernet is a reasonable middle ground.</p>
-<p>The caveats: RoCE requires a lossless network (Priority Flow Control), careful QoS configuration, and discipline in how you design the fabric. It&#39;s achievable but it adds operational complexity that native InfiniBand doesn&#39;t have.</p>
-<h2 id="how-i39d-approach-the-decision"><a class="h-anchor" href="#how-i39d-approach-the-decision" aria-hidden="true" tabindex="-1">#</a>How I&#39;d approach the decision</h2>
-<p>A quick framework:</p>
-<ol>
-<li><p><strong>Start with Ethernet as the default.</strong> Unless there&#39;s a specific reason to deviate, the ecosystem maturity and cost profile make it the right base assumption.</p>
-</li>
-<li><p><strong>Ask the latency question.</strong> Does your workload need sub-microsecond latency between nodes? If not, Ethernet + RoCE can usually get you where you need to go.</p>
-</li>
-<li><p><strong>Quantify the training cluster size.</strong> Under ~100 GPUs, Ethernet fabric is often fine for AI training with RoCE. Beyond that, InfiniBand&#39;s advantages compound.</p>
-</li>
-<li><p><strong>Check what the cloud provider is actually using.</strong> If you&#39;re on managed infrastructure, understand the interconnect before tuning your distributed training configuration. You may be optimizing for the wrong constraints.</p>
-</li>
-<li><p><strong>Factor in operational team capability.</strong> InfiniBand fabric management is specialist knowledge. The hardware advantage can evaporate if your team isn&#39;t equipped to operate it well.</p>
-</li>
-</ol>
-<p>There&#39;s genuinely no universal right answer here — it depends on workload characteristics, scale, team skills, and budget. What I&#39;ve found useful is having a clear mental model of where each fabric was designed to operate, and then mapping your actual requirements against that rather than chasing the higher headline number.</p>
-<p>Happy to go deeper on any of the specific decision points — drop a comment or <a href="/about">get in touch</a>.</p>
-<p><em>Tagged: Networking · Infrastructure · AI · Cloud Architecture · HPC</em></p>
+<p><strong>Small files compaction</strong>: streaming ingestion often produces many small files (one file per micro-batch). Small files degrade scan performance — the metadata overhead per file becomes significant at thousands of files. Schedule a compaction job (Spark or Databricks auto-optimise) that merges small files into larger ones on a regular basis.</p>
+<h2 id="compute-layer-separation"><a class="h-anchor" href="#compute-layer-separation" aria-hidden="true" tabindex="-1">#</a>Compute layer separation</h2>
+<p>The lakehouse architecture separates storage from compute. Multiple compute engines can read from the same storage simultaneously:</p>
+<ul>
+<li><strong>Databricks or Spark</strong>: for complex transformations, ML feature engineering, large-scale batch processing</li>
+<li><strong>Athena or BigQuery</strong>: for SQL queries from analysts, ad-hoc exploration, BI tool integration  </li>
+<li><strong>dbt</strong>: for transformation pipelines that run in-warehouse; supports Delta and Iceberg via Spark or BigQuery targets</li>
+<li><strong>Trino/Presto</strong>: open-source distributed query engine, strong Iceberg support</li>
+</ul>
+<p>The separation has operational implications: the compute layer scales independently of storage, different teams can use their preferred query engine, and you can switch compute engines without migrating data.</p>
+<h2 id="the-medallion-architecture"><a class="h-anchor" href="#the-medallion-architecture" aria-hidden="true" tabindex="-1">#</a>The medallion architecture</h2>
+<p>The most widely adopted data organization pattern in lakehouses is the three-layer medallion (or multi-hop) architecture:</p>
+<p><strong>Bronze layer</strong> (raw): data landed exactly as received from source systems. No transformation, no schema enforcement beyond what the source provides. Append-only. Retained indefinitely or for regulatory retention periods. This is the system of record for raw data.</p>
+<p><strong>Silver layer</strong> (cleansed): validated, deduplicated, conformed. Type casting applied, schema enforced, joins between related sources applied, obvious errors filtered. Queryable but not yet business-ready.</p>
+<p><strong>Gold layer</strong> (aggregated): business-level aggregations optimized for BI and reporting. Denormalised for query performance — wide tables rather than normalised schemas. These are the tables that power dashboards and analytical queries.</p>
+<p>The benefit: if a transformation in silver is found to be incorrect, you can reprocess from bronze without re-ingesting the raw data. Bronze is immutable history; silver and gold are derived views that can be rebuilt.</p>
+<h2 id="governance-and-cataloguing"><a class="h-anchor" href="#governance-and-cataloguing" aria-hidden="true" tabindex="-1">#</a>Governance and cataloguing</h2>
+<p>A lakehouse without a data catalogue is a data lake — you can find the files, but you can&#39;t find the right table or understand what it contains.</p>
+<p><strong>Unity Catalog</strong> (Databricks): centralised governance for Delta tables — fine-grained access control, column masking, row filters, audit logging, and lineage tracking. The right choice if your compute is Databricks.</p>
+<p><strong>AWS Glue Data Catalog</strong>: metadata store for tables in S3, used by Athena, EMR, and Glue jobs. Supports Iceberg tables. Less feature-rich than Unity Catalog but native to the AWS ecosystem.</p>
+<p><strong>Apache Atlas</strong>: open-source data governance with lineage tracking, classification, and audit. More complex to operate than cloud-native options.</p>
+<p>Access control: row-level and column-level security should be enforced at the catalogue/governance layer, not in downstream query tools. A customer PII column masked at the governance layer is masked everywhere; a column masked by a BI tool setting is only masked in that tool.</p>
+<p><em>Designing a lakehouse architecture or migrating from a traditional data warehouse? The table format and partition design choices compound — worth getting right early. <a href="/contact">Happy to compare approaches.</a></em></p>
 
     </div>
   </div>
 
-  
+  <div class="art-wrap"><aside class="refs" aria-labelledby="refs-h">
+  <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
+  <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
+  <ul>
+    <li><a href="https://spark.apache.org/docs/latest/" rel="noopener nofollow" target="_blank">Apache Spark</a><span>Execution model and tuning.</span></li>
+  </ul>
+</aside></div>
 
   
 
   <div class="art-wrap article-foot">
     <div class="row" style="gap:.4rem">
-      <a class="chip chip-plain" href="/insights/?topic=Systems">Systems</a><a class="chip chip-plain" href="/insights/?topic=Infrastructure">Infrastructure</a><a class="chip chip-plain" href="/insights/?topic=Enterprise%20AI">Enterprise AI</a><a class="chip chip-plain" href="/insights/?topic=Cloud%20Architecture">Cloud Architecture</a><a class="chip chip-plain" href="/insights/?topic=HPC">HPC</a>
+      <a class="chip chip-plain" href="/insights/?topic=Data%20Engineering">Data Engineering</a><a class="chip chip-plain" href="/insights/?topic=Cloud%20Architecture">Cloud Architecture</a><a class="chip chip-plain" href="/insights/?topic=AI%20%26%20MLOps">AI &amp; MLOps</a>
     </div>
     <nav class="prevnext" aria-label="More articles">
-      <a href="/insights/os-kernel-tuning-sysctl/"><span>Previous</span><strong>Kernel Tuning with sysctl: Memory, Networking, and I/O</strong></a>
-      <a href="/insights/data-lakehouse-architecture/" class="next"><span>Next</span><strong>The Data Lakehouse: Why It Won, and How to Architect One That Works</strong></a>
+      <a href="/insights/ethernet-vs-infiniband-networking-2026/"><span>Previous</span><strong>Ethernet vs. InfiniBand: Choosing the Right Network Fabric in 2026</strong></a>
+      <span></span>
     </nav>
   </div>
 
   <section class="section surface hair" style="margin-top:4rem">
     <div class="wrap">
       <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|Data Engineering|Cloud Architecture|AI &amp; MLOps|" data-search="the data lakehouse: why it won, and how to architect one that works data warehouses couldn&#39;t handle unstructured data at scale. data lakes couldn&#39;t enforce schemas or serve bi queries efficiently. the lakehouse combines both — here&#39;s the architecture, the open table formats that make it work, and the practical design decisions. data engineering cloud architecture ai &amp; mlops" data-topic="Data Engineering" href="/insights/data-lakehouse-architecture/">
+      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|Systems|Infrastructure|Enterprise AI|Cloud Architecture|HPC|" data-search="ethernet vs. infiniband: choosing the right network fabric in 2026 a practical breakdown of when to use ethernet and when infiniband makes sense — with key metrics, topology differences, and real-world guidance for cloud, hpc, and ai workloads. systems infrastructure enterprise ai cloud architecture hpc" data-topic="Infrastructure" href="/insights/ethernet-vs-infiniband-networking-2026/">
   <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
   <defs>
-    <radialGradient id="bgdatalakehous" cx="0.22" cy="0.16" r="1"><stop offset="0" stop-color="#045773" stop-opacity=".21"/><stop offset="1" stop-color="#044a62" stop-opacity=".07"/></radialGradient>
-    <marker id="ahdatalakehous" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
-      <path d="M0 0 L7 3.5 L0 7 z" fill="#045773" fill-opacity=".5"/>
+    <linearGradient id="bgethernetvsin" x1="0" y1="1" x2="0.4" y2="0"><stop offset="0" stop-color="#2d394c" stop-opacity=".20"/><stop offset="1" stop-color="#3d485b" stop-opacity=".07"/></linearGradient>
+    <marker id="ahethernetvsin" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#3d485b" fill-opacity=".5"/>
     </marker>
-    <clipPath id="cpdatalakehous"><rect width="640" height="360"/></clipPath>
+    <clipPath id="cpethernetvsin"><rect width="640" height="360"/></clipPath>
   </defs>
-  <rect width="640" height="360" fill="url(#bgdatalakehous)"/>
-  <g clip-path="url(#cpdatalakehous)"><path d="M0 50.4 C243.2 50.4, 396.8 28.8, 640 28.8 L640 86.5 C396.8 86.5, 243.2 108.1, 0 108.1 Z"
-      fill="#045773" fill-opacity="0.14"/><path d="M0 124.3 C243.2 124.3, 396.8 112.8, 640 112.8 L640 137.6 C396.8 137.6, 243.2 149.1, 0 149.1 Z"
-      fill="#044a62" fill-opacity="0.25"/><path d="M0 165.3 C243.2 165.3, 396.8 100.6, 640 100.6 L640 148.5 C396.8 148.5, 243.2 213.2, 0 213.2 Z"
-      fill="#045773" fill-opacity="0.31"/></g>
+  <rect width="640" height="360" fill="url(#bgethernetvsin)"/>
+  <g clip-path="url(#cpethernetvsin)"><line x1="41.6" y1="158.9" x2="104.2" y2="259.1" stroke="#3d485b" stroke-opacity=".3" stroke-width="1.4"/><line x1="41.6" y1="158.9" x2="124.5" y2="234.1" stroke="#3d485b" stroke-opacity=".3" stroke-width="1.4"/><line x1="104.2" y1="259.1" x2="124.5" y2="234.1" stroke="#3d485b" stroke-opacity=".3" stroke-width="1.4"/><line x1="104.2" y1="259.1" x2="161.9" y2="264.5" stroke="#3d485b" stroke-opacity=".3" stroke-width="1.4"/><line x1="124.5" y1="234.1" x2="161.9" y2="264.5" stroke="#3d485b" stroke-opacity=".3" stroke-width="1.4"/><line x1="309.5" y1="188.8" x2="337.6" y2="231.5" stroke="#3d485b" stroke-opacity=".3" stroke-width="1.4"/><line x1="337.6" y1="231.5" x2="482.2" y2="227.3" stroke="#3d485b" stroke-opacity=".3" stroke-width="1.4"/><line x1="438.9" y1="57.9" x2="445" y2="59.9" stroke="#3d485b" stroke-opacity=".3" stroke-width="1.4"/><line x1="438.9" y1="57.9" x2="461" y2="70.1" stroke="#3d485b" stroke-opacity=".3" stroke-width="1.4"/><line x1="445" y1="59.9" x2="461" y2="70.1" stroke="#3d485b" stroke-opacity=".3" stroke-width="1.4"/><line x1="482.2" y1="227.3" x2="599.3" y2="286.7" stroke="#3d485b" stroke-opacity=".3" stroke-width="1.4"/><circle cx="41.6" cy="158.9" r="4.5" fill="#3d485b" fill-opacity=".88"/><circle cx="104.2" cy="259.1" r="8" fill="#2d394c" fill-opacity=".88"/><circle cx="124.5" cy="234.1" r="11.5" fill="#3d485b" fill-opacity=".88"/><circle cx="161.9" cy="264.5" r="4.5" fill="#2d394c" fill-opacity=".88"/><circle cx="309.5" cy="188.8" r="8" fill="#3d485b" fill-opacity=".88"/><circle cx="337.6" cy="231.5" r="11.5" fill="#2d394c" fill-opacity=".88"/><circle cx="438.9" cy="57.9" r="4.5" fill="#3d485b" fill-opacity=".88"/><circle cx="445" cy="59.9" r="8" fill="#2d394c" fill-opacity=".88"/><circle cx="461" cy="70.1" r="11.5" fill="#3d485b" fill-opacity=".88"/><circle cx="482.2" cy="227.3" r="4.5" fill="#2d394c" fill-opacity=".88"/><circle cx="599.3" cy="286.7" r="8" fill="#3d485b" fill-opacity=".88"/></g>
 </svg></div>
   <div class="card-body">
-    <span class="chip">Data Engineering</span>
-    <h3 class="card-title">The Data Lakehouse: Why It Won, and How to Architect One That Works</h3>
-    <p class="card-desc">Data warehouses couldn&#39;t handle unstructured data at scale. Data lakes couldn&#39;t enforce schemas or serve BI queries efficiently. The lakehouse combines both — here&#39;s the architecture, the open table formats that make it work, and the practical design decisions.</p>
-    <div class="card-meta"><time datetime="2026-10-05">5 Oct 2026</time><span class="dot"></span><span>4 min read</span></div>
+    <span class="chip">Infrastructure</span>
+    <h3 class="card-title">Ethernet vs. InfiniBand: Choosing the Right Network Fabric in 2026</h3>
+    <p class="card-desc">A practical breakdown of when to use Ethernet and when InfiniBand makes sense — with key metrics, topology differences, and real-world guidance for cloud, HPC, and AI workloads.</p>
+    <div class="card-meta"><time datetime="2026-10-02">2 Oct 2026</time><span class="dot"></span><span>4 min read</span></div>
+  </div>
+</a>
+<a class="card" data-card data-topics="|AI &amp; MLOps|Fundamentals|" data-search="neural networks explained: what they are, how they learn, and why they work neurons, layers, weights, activation functions, backpropagation, and gradient descent — the actual mechanics of how a neural network learns from data, explained without the mathematics becoming the obstacle. ai &amp; mlops fundamentals" data-topic="AI &amp; MLOps" href="/insights/aiml-neural-networks/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgaimlneuralne" x1="0" y1="1" x2="0.4" y2="0"><stop offset="0" stop-color="#5a25df" stop-opacity=".20"/><stop offset="1" stop-color="#672bff" stop-opacity=".07"/></linearGradient>
+    <marker id="ahaimlneuralne" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#672bff" fill-opacity=".5"/>
+    </marker>
+    <clipPath id="cpaimlneuralne"><rect width="640" height="360"/></clipPath>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgaimlneuralne)"/>
+  <g clip-path="url(#cpaimlneuralne)"><line x1="38.4" y1="169.8" x2="151.2" y2="89.1" stroke="#672bff" stroke-opacity=".3" stroke-width="1.4"/><line x1="38.4" y1="169.8" x2="186.6" y2="220.1" stroke="#672bff" stroke-opacity=".3" stroke-width="1.4"/><line x1="38.4" y1="169.8" x2="215.5" y2="239.1" stroke="#672bff" stroke-opacity=".3" stroke-width="1.4"/><line x1="38.4" y1="169.8" x2="232.5" y2="168.1" stroke="#672bff" stroke-opacity=".3" stroke-width="1.4"/><line x1="38.4" y1="169.8" x2="235.7" y2="95.1" stroke="#672bff" stroke-opacity=".3" stroke-width="1.4"/><line x1="38.4" y1="169.8" x2="239.7" y2="301.3" stroke="#672bff" stroke-opacity=".3" stroke-width="1.4"/><line x1="151.2" y1="89.1" x2="186.6" y2="220.1" stroke="#672bff" stroke-opacity=".3" stroke-width="1.4"/><line x1="151.2" y1="89.1" x2="215.5" y2="239.1" stroke="#672bff" stroke-opacity=".3" stroke-width="1.4"/><line x1="151.2" y1="89.1" x2="232.5" y2="168.1" stroke="#672bff" stroke-opacity=".3" stroke-width="1.4"/><line x1="151.2" y1="89.1" x2="235.7" y2="95.1" stroke="#672bff" stroke-opacity=".3" stroke-width="1.4"/><line x1="151.2" y1="89.1" x2="239.7" y2="301.3" stroke="#672bff" stroke-opacity=".3" stroke-width="1.4"/><line x1="186.6" y1="220.1" x2="215.5" y2="239.1" stroke="#672bff" stroke-opacity=".3" stroke-width="1.4"/><line x1="186.6" y1="220.1" x2="232.5" y2="168.1" stroke="#672bff" stroke-opacity=".3" stroke-width="1.4"/><line x1="186.6" y1="220.1" x2="235.7" y2="95.1" stroke="#672bff" stroke-opacity=".3" stroke-width="1.4"/><line x1="186.6" y1="220.1" x2="239.7" y2="301.3" stroke="#672bff" stroke-opacity=".3" stroke-width="1.4"/><line x1="186.6" y1="220.1" x2="419.7" y2="305.2" stroke="#672bff" stroke-opacity=".3" stroke-width="1.4"/><line x1="186.6" y1="220.1" x2="438.2" y2="236.7" stroke="#672bff" stroke-opacity=".3" stroke-width="1.4"/><line x1="215.5" y1="239.1" x2="232.5" y2="168.1" stroke="#672bff" stroke-opacity=".3" stroke-width="1.4"/><line x1="215.5" y1="239.1" x2="235.7" y2="95.1" stroke="#672bff" stroke-opacity=".3" stroke-width="1.4"/><line x1="215.5" y1="239.1" x2="239.7" y2="301.3" stroke="#672bff" stroke-opacity=".3" stroke-width="1.4"/><line x1="215.5" y1="239.1" x2="419.7" y2="305.2" stroke="#672bff" stroke-opacity=".3" stroke-width="1.4"/><line x1="215.5" y1="239.1" x2="438.2" y2="236.7" stroke="#672bff" stroke-opacity=".3" stroke-width="1.4"/><line x1="215.5" y1="239.1" x2="464.8" y2="120.8" stroke="#672bff" stroke-opacity=".3" stroke-width="1.4"/><line x1="232.5" y1="168.1" x2="235.7" y2="95.1" stroke="#672bff" stroke-opacity=".3" stroke-width="1.4"/><line x1="232.5" y1="168.1" x2="239.7" y2="301.3" stroke="#672bff" stroke-opacity=".3" stroke-width="1.4"/><line x1="232.5" y1="168.1" x2="419.7" y2="305.2" stroke="#672bff" stroke-opacity=".3" stroke-width="1.4"/><line x1="232.5" y1="168.1" x2="438.2" y2="236.7" stroke="#672bff" stroke-opacity=".3" stroke-width="1.4"/><line x1="232.5" y1="168.1" x2="458.9" y2="85.4" stroke="#672bff" stroke-opacity=".3" stroke-width="1.4"/><line x1="232.5" y1="168.1" x2="464.8" y2="120.8" stroke="#672bff" stroke-opacity=".3" stroke-width="1.4"/><line x1="232.5" y1="168.1" x2="487.1" y2="92.3" stroke="#672bff" stroke-opacity=".3" stroke-width="1.4"/><line x1="235.7" y1="95.1" x2="239.7" y2="301.3" stroke="#672bff" stroke-opacity=".3" stroke-width="1.4"/><line x1="235.7" y1="95.1" x2="419.7" y2="305.2" stroke="#672bff" stroke-opacity=".3" stroke-width="1.4"/><line x1="235.7" y1="95.1" x2="438.2" y2="236.7" stroke="#672bff" stroke-opacity=".3" stroke-width="1.4"/><line x1="235.7" y1="95.1" x2="458.9" y2="85.4" stroke="#672bff" stroke-opacity=".3" stroke-width="1.4"/><line x1="235.7" y1="95.1" x2="464.8" y2="120.8" stroke="#672bff" stroke-opacity=".3" stroke-width="1.4"/><line x1="235.7" y1="95.1" x2="487.1" y2="92.3" stroke="#672bff" stroke-opacity=".3" stroke-width="1.4"/><line x1="239.7" y1="301.3" x2="419.7" y2="305.2" stroke="#672bff" stroke-opacity=".3" stroke-width="1.4"/><line x1="239.7" y1="301.3" x2="438.2" y2="236.7" stroke="#672bff" stroke-opacity=".3" stroke-width="1.4"/><line x1="419.7" y1="305.2" x2="438.2" y2="236.7" stroke="#672bff" stroke-opacity=".3" stroke-width="1.4"/><line x1="419.7" y1="305.2" x2="458.9" y2="85.4" stroke="#672bff" stroke-opacity=".3" stroke-width="1.4"/><line x1="419.7" y1="305.2" x2="464.8" y2="120.8" stroke="#672bff" stroke-opacity=".3" stroke-width="1.4"/><line x1="419.7" y1="305.2" x2="487.1" y2="92.3" stroke="#672bff" stroke-opacity=".3" stroke-width="1.4"/><line x1="419.7" y1="305.2" x2="585.6" y2="189" stroke="#672bff" stroke-opacity=".3" stroke-width="1.4"/><line x1="438.2" y1="236.7" x2="458.9" y2="85.4" stroke="#672bff" stroke-opacity=".3" stroke-width="1.4"/><line x1="438.2" y1="236.7" x2="464.8" y2="120.8" stroke="#672bff" stroke-opacity=".3" stroke-width="1.4"/><line x1="438.2" y1="236.7" x2="487.1" y2="92.3" stroke="#672bff" stroke-opacity=".3" stroke-width="1.4"/><line x1="438.2" y1="236.7" x2="585.6" y2="189" stroke="#672bff" stroke-opacity=".3" stroke-width="1.4"/><line x1="458.9" y1="85.4" x2="464.8" y2="120.8" stroke="#672bff" stroke-opacity=".3" stroke-width="1.4"/><line x1="458.9" y1="85.4" x2="487.1" y2="92.3" stroke="#672bff" stroke-opacity=".3" stroke-width="1.4"/><line x1="458.9" y1="85.4" x2="585.6" y2="189" stroke="#672bff" stroke-opacity=".3" stroke-width="1.4"/><line x1="464.8" y1="120.8" x2="487.1" y2="92.3" stroke="#672bff" stroke-opacity=".3" stroke-width="1.4"/><line x1="464.8" y1="120.8" x2="585.6" y2="189" stroke="#672bff" stroke-opacity=".3" stroke-width="1.4"/><line x1="487.1" y1="92.3" x2="585.6" y2="189" stroke="#672bff" stroke-opacity=".3" stroke-width="1.4"/><circle cx="38.4" cy="169.8" r="4.5" fill="#672bff" fill-opacity=".88"/><circle cx="151.2" cy="89.1" r="8" fill="#5a25df" fill-opacity=".88"/><circle cx="186.6" cy="220.1" r="11.5" fill="#672bff" fill-opacity=".88"/><circle cx="215.5" cy="239.1" r="4.5" fill="#5a25df" fill-opacity=".88"/><circle cx="232.5" cy="168.1" r="8" fill="#672bff" fill-opacity=".88"/><circle cx="235.7" cy="95.1" r="11.5" fill="#5a25df" fill-opacity=".88"/><circle cx="239.7" cy="301.3" r="4.5" fill="#672bff" fill-opacity=".88"/><circle cx="419.7" cy="305.2" r="8" fill="#5a25df" fill-opacity=".88"/><circle cx="438.2" cy="236.7" r="11.5" fill="#672bff" fill-opacity=".88"/><circle cx="458.9" cy="85.4" r="4.5" fill="#5a25df" fill-opacity=".88"/><circle cx="464.8" cy="120.8" r="8" fill="#672bff" fill-opacity=".88"/><circle cx="487.1" cy="92.3" r="11.5" fill="#5a25df" fill-opacity=".88"/><circle cx="585.6" cy="189" r="4.5" fill="#672bff" fill-opacity=".88"/></g>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">AI &amp; MLOps</span>
+    <h3 class="card-title">Neural Networks Explained: What They Are, How They Learn, and Why They Work</h3>
+    <p class="card-desc">Neurons, layers, weights, activation functions, backpropagation, and gradient descent — the actual mechanics of how a neural network learns from data, explained without the mathematics becoming the obstacle.</p>
+    <div class="card-meta"><time datetime="2026-09-04">4 Sept 2026</time><span class="dot"></span><span>3 min read</span><span class="dot"></span><span>Series</span></div>
   </div>
 </a>
 <a class="card" data-card data-topics="|AI &amp; MLOps|Enterprise AI|Fundamentals|" data-search="rag, prompting, and building applications on llms: the practitioner&#39;s guide retrieval-augmented generation, system prompts, few-shot examples, chain-of-thought, structured output, and the engineering patterns that make llm applications reliable in production. ai &amp; mlops enterprise ai fundamentals" data-topic="AI &amp; MLOps" href="/insights/aiml-rag-and-prompting/">
@@ -235,25 +243,6 @@ if(d.getAttribute('data-rface')==='serif'){
     <h3 class="card-title">RAG, Prompting, and Building Applications on LLMs: The Practitioner&#39;s Guide</h3>
     <p class="card-desc">Retrieval-augmented generation, system prompts, few-shot examples, chain-of-thought, structured output, and the engineering patterns that make LLM applications reliable in production.</p>
     <div class="card-meta"><time datetime="2026-08-25">25 Aug 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
-  </div>
-</a>
-<a class="card" data-card data-topics="|AI &amp; MLOps|Enterprise AI|Fundamentals|" data-search="putting ai in production: what enterprise ai deployment actually requires model serving, latency, cost, monitoring, governance, and the operational discipline that separates a proof of concept from an ai system that runs reliably at enterprise scale. ai &amp; mlops enterprise ai fundamentals" data-topic="AI &amp; MLOps" href="/insights/aiml-production-ai/">
-  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
-  <defs>
-    <linearGradient id="bgaimlproducti" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5b38ff" stop-opacity=".10"/><stop offset="1" stop-color="#4c2ce0" stop-opacity=".22"/></linearGradient>
-    <marker id="ahaimlproducti" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
-      <path d="M0 0 L7 3.5 L0 7 z" fill="#5b38ff" fill-opacity=".5"/>
-    </marker>
-    <clipPath id="cpaimlproducti"><rect width="640" height="360"/></clipPath>
-  </defs>
-  <rect width="640" height="360" fill="url(#bgaimlproducti)"/>
-  <g clip-path="url(#cpaimlproducti)"><rect x="74.2" y="96" width="67.2" height="36" rx="7" fill="#5b38ff" fill-opacity="0.50" stroke="#4c2ce0" stroke-opacity=".5" stroke-width="1.1"/><path d="M141.4 114 H211.7" stroke="#5b38ff" stroke-opacity=".38" stroke-width="1.3" fill="none" marker-end="url(#ahaimlproducti)"/><rect x="215.7" y="96" width="67.2" height="36" rx="7" fill="#5b38ff" fill-opacity="0.12" stroke="#4c2ce0" stroke-opacity=".5" stroke-width="1.1"/><path d="M282.9 114 H353.1" stroke="#5b38ff" stroke-opacity=".38" stroke-width="1.3" fill="none" marker-end="url(#ahaimlproducti)"/><rect x="357.1" y="96" width="67.2" height="36" rx="7" fill="#5b38ff" fill-opacity="0.31" stroke="#4c2ce0" stroke-opacity=".5" stroke-width="1.1"/><path d="M424.3 114 H494.6" stroke="#5b38ff" stroke-opacity=".38" stroke-width="1.3" fill="none" marker-end="url(#ahaimlproducti)"/><rect x="498.6" y="96" width="67.2" height="36" rx="7" fill="#5b38ff" fill-opacity="0.51" stroke="#4c2ce0" stroke-opacity=".5" stroke-width="1.1"/><rect x="74.2" y="228" width="67.2" height="36" rx="7" fill="#5b38ff" fill-opacity="0.51" stroke="#4c2ce0" stroke-opacity=".5" stroke-width="1.1"/><path d="M141.4 246 H211.7" stroke="#5b38ff" stroke-opacity=".38" stroke-width="1.3" fill="none" marker-end="url(#ahaimlproducti)"/><rect x="215.7" y="228" width="67.2" height="36" rx="7" fill="#5b38ff" fill-opacity="0.24" stroke="#4c2ce0" stroke-opacity=".5" stroke-width="1.1"/><path d="M282.9 246 H353.1" stroke="#5b38ff" stroke-opacity=".38" stroke-width="1.3" fill="none" marker-end="url(#ahaimlproducti)"/><rect x="357.1" y="228" width="67.2" height="36" rx="7" fill="#5b38ff" fill-opacity="0.29" stroke="#4c2ce0" stroke-opacity=".5" stroke-width="1.1"/><path d="M424.3 246 H494.6" stroke="#5b38ff" stroke-opacity=".38" stroke-width="1.3" fill="none" marker-end="url(#ahaimlproducti)"/></g>
-</svg></div>
-  <div class="card-body">
-    <span class="chip">AI &amp; MLOps</span>
-    <h3 class="card-title">Putting AI in Production: What Enterprise AI Deployment Actually Requires</h3>
-    <p class="card-desc">Model serving, latency, cost, monitoring, governance, and the operational discipline that separates a proof of concept from an AI system that runs reliably at enterprise scale.</p>
-    <div class="card-meta"><time datetime="2026-08-11">11 Aug 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
   </div>
 </a></div>
     </div>
