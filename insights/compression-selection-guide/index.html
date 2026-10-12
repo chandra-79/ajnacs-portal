@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Compression in Production: Choosing Between gzip, zstd, lz4, and Brotli Like It Matters | Ajna CS</title>
+<meta name="description" content="Compression is a three-way trade — ratio, speed, and CPU — that most systems set once by default and never revisit. The algorithm landscape, placement deci…">
+<meta name="author" content="Chandra Lanka">
+<link rel="canonical" href="https://ajnacs.com/insights/compression-selection-guide/">
+<meta name="robots" content="index, follow, max-image-preview:large">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Ajna Consulting Services">
+<meta property="og:title" content="Compression in Production: Choosing Between gzip, zstd, lz4, and Brotli Like It Matters">
+<meta property="og:description" content="Compression is a three-way trade — ratio, speed, and CPU — that most systems set once by default and never revisit. The algorithm landscape, placement deci…">
+<meta property="og:url" content="https://ajnacs.com/insights/compression-selection-guide/">
+<meta property="og:image" content="https://ajnacs.com/assets/og/performance.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/jpeg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Compression in Production: Choosing Between gzip, zstd, lz4, and Brotli Like It Matters">
+<meta name="twitter:description" content="Compression is a three-way trade — ratio, speed, and CPU — that most systems set once by default and never revisit. The algorithm landscape, placement deci…">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/performance.jpg">
+
+<link rel="icon" href="/favicon.ico?v=cefc53b9" sizes="any">
+<link rel="icon" href="/images/ajna-mark.svg?v=cefc53b9" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png?v=cefc53b9">
+<meta name="theme-color" content="#0a1020">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Quintessential&display=swap">
+<link rel="stylesheet" href="/assets/css/site.css">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<script>
+/* Theme and reading preferences are applied before first paint, so the page
+   never flashes the wrong ground or resets someone's text size mid-read. */
+(function(){try{
+var d=document.documentElement,t=localStorage.getItem('acs-theme');
+if(t!=='dark'&&t!=='light'&&t!=='sepia')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+d.setAttribute('data-theme',t);
+['rsize','rwidth','rface'].forEach(function(k){
+  var v=localStorage.getItem('acs-'+k);
+  if(v&&/^[a-z]{1,5}$/.test(v))d.setAttribute('data-'+k,v);
+});
+if(d.getAttribute('data-rface')==='serif'){
+  var l=document.createElement('link');l.rel='stylesheet';
+  l.href='https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600&display=swap';
+  document.head.appendChild(l);
+}
+}catch(e){}})();
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Compression in Production: Choosing Between gzip, zstd, lz4, and Brotli Like It Matters","description":"Compression is a three-way trade — ratio, speed, and CPU — that most systems set once by default and never revisit. The algorithm landscape, placement decisions across web, storage, and streaming, dictionary compression's quiet superpower, and the measurement discipline.","datePublished":"2026-10-12","dateModified":"2026-10-12","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/compression-selection-guide/","image":"https://ajnacs.com/assets/og/performance.jpg","keywords":"Performance, Programming, Cloud Architecture, Data Engineering, FinOps","articleSection":"Performance","wordCount":1005}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Compression in Production: Choosing Between gzip, zstd, lz4, and Brotli Like It Matters"}]}</script>
+</head>
+<body class="" data-topic="Performance">
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header" id="siteHeader">
+  <div class="wrap" style="display:flex;align-items:center;width:min(1220px,100% - var(--gutter)*2)">
+    <a class="brand" href="/" aria-label="Ajna Consulting Services — home">
+      <svg class="ajna-mark" viewBox="0 0 100 100" width="40" height="40" fill="none" aria-hidden="true" focusable="false"><defs><path id="t-hdr" d="M 50 4 L 96 50 L 50 50 Z"/><path id="e-hdr" d="M 50 4 L 96 50"/><path id="k-hdr" d="M 50 4 L 50 50 L 96 50"/><linearGradient id="bev-hdr" gradientUnits="userSpaceOnUse" x1="50" y1="50" x2="73" y2="27"><stop offset="0" stop-color="#000" stop-opacity=".13"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity=".2"/></linearGradient><radialGradient id="core-hdr" cx=".34" cy=".3" r=".85"><stop offset="0" stop-color="#fff" stop-opacity=".42"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".45"/></radialGradient><path id="ll-hdr" d="M 50 50 C 35 30.26, 40.7 9.579999999999998, 50 3 C 59.3 9.579999999999998, 65 30.26, 50 50 Z"/><path id="ls-hdr" d="M 50 50 C 35.5 33.620000000000005, 41.01 16.46, 50 11 C 58.99 16.46, 64.5 33.620000000000005, 50 50 Z"/><linearGradient id="lf-hdr" gradientUnits="userSpaceOnUse" x1="35" y1="30" x2="65" y2="30"><stop offset="0" stop-color="#fff" stop-opacity=".3"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".22"/></linearGradient></defs><g class="am-leaf am-leaf-b" style="--a:45deg"><use href="#ls-hdr" fill="#17A05E" opacity=".62"/><use href="#ls-hdr" fill="url(#lf-hdr)"/></g><g class="am-leaf am-leaf-b" style="--a:135deg"><use href="#ls-hdr" fill="#2B57E8" opacity=".62"/><use href="#ls-hdr" fill="url(#lf-hdr)"/><use href="#ls-hdr" fill="#000" opacity="0.30"/></g><g class="am-leaf am-leaf-b" style="--a:225deg"><use href="#ls-hdr" fill="#E8402A" opacity=".62"/><use href="#ls-hdr" fill="url(#lf-hdr)"/></g><g class="am-leaf am-leaf-b" style="--a:315deg"><use href="#ls-hdr" fill="#F5A623" opacity=".62"/><use href="#ls-hdr" fill="url(#lf-hdr)"/><use href="#ls-hdr" fill="#fff" opacity="0.30"/></g><g class="am-leaf" style="--a:0deg"><use href="#ll-hdr" fill="#E8402A" opacity=".9"/><use href="#ll-hdr" fill="url(#lf-hdr)"/><use href="#ll-hdr" fill="#fff" opacity="0.21"/></g><g class="am-leaf" style="--a:90deg"><use href="#ll-hdr" fill="#F5A623" opacity=".9"/><use href="#ll-hdr" fill="url(#lf-hdr)"/><use href="#ll-hdr" fill="#000" opacity="0.21"/></g><g class="am-leaf" style="--a:180deg"><use href="#ll-hdr" fill="#17A05E" opacity=".9"/><use href="#ll-hdr" fill="url(#lf-hdr)"/><use href="#ll-hdr" fill="#000" opacity="0.21"/></g><g class="am-leaf" style="--a:270deg"><use href="#ll-hdr" fill="#2B57E8" opacity=".9"/><use href="#ll-hdr" fill="url(#lf-hdr)"/><use href="#ll-hdr" fill="#fff" opacity="0.21"/></g><g class="am-bud"><g class="am-petal" style="--a:0deg"><use href="#t-hdr" fill="#E8402A"/><use href="#t-hdr" fill="url(#bev-hdr)"/><use href="#t-hdr" fill="#fff" opacity="0.07"/><use href="#e-hdr" stroke="#fff" stroke-opacity="0.34" stroke-width="1.6" stroke-linecap="round"/><use href="#k-hdr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g class="am-petal" style="--a:90deg"><use href="#t-hdr" fill="#F5A623"/><use href="#t-hdr" fill="url(#bev-hdr)"/><use href="#t-hdr" fill="#000" opacity="0.12"/><use href="#e-hdr" stroke="#000" stroke-opacity="0.16" stroke-width="1.6" stroke-linecap="round"/><use href="#k-hdr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g class="am-petal" style="--a:180deg"><use href="#t-hdr" fill="#17A05E"/><use href="#t-hdr" fill="url(#bev-hdr)"/><use href="#t-hdr" fill="#000" opacity="0.05"/><use href="#e-hdr" stroke="#000" stroke-opacity="0.1" stroke-width="1.6" stroke-linecap="round"/><use href="#k-hdr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g class="am-petal" style="--a:270deg"><use href="#t-hdr" fill="#2B57E8"/><use href="#t-hdr" fill="url(#bev-hdr)"/><use href="#t-hdr" fill="#fff" opacity="0.30"/><use href="#e-hdr" stroke="#fff" stroke-opacity="0.46" stroke-width="1.6" stroke-linecap="round"/><use href="#k-hdr" stroke="#000" stroke-width=".9" opacity=".2"/></g></g><g class="am-core"><circle cx="50" cy="50" r="6" fill="currentColor"/><circle cx="50" cy="50" r="6" fill="url(#core-hdr)"/></g></svg>
+      <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
+    </a>
+    <nav class="nav" id="nav" aria-label="Primary">
+      <a href="/services/">Services</a>
+      <a href="/insights/" aria-current="page">Insights</a>
+      <a href="/series/">Series</a>
+      <a href="/case-studies/">Case studies</a>
+      <a href="/about/">About</a>
+      <a class="btn btn-sm" href="/contact/" style="margin-left:.4rem">Engage engineering</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn" id="themeBtn" type="button" aria-label="Switch to dark mode" aria-pressed="false"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg></button>
+      <button class="icon-btn nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+
+<div class="read-bar" aria-hidden="true"><span id="readBar"></span></div>
+<article class="article with-toc">
+  <header class="article-head">
+    <div class="art-wrap">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a> <span aria-hidden="true">/</span>
+        <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
+        <span>Performance</span>
+      </nav>
+      <h1 class="h1">Compression in Production: Choosing Between gzip, zstd, lz4, and Brotli Like It Matters</h1>
+      <p class="lede" style="margin-top:1rem">Compression is a three-way trade — ratio, speed, and CPU — that most systems set once by default and never revisit. The algorithm landscape, placement decisions across web, storage, and streaming, dictionary compression&#39;s quiet superpower, and the measurement discipline.</p>
+      <div class="article-meta">
+        <span class="chip">Performance</span>
+        <time datetime="2026-10-12">12 Oct 2026</time>
+        <span class="dot"></span><span>4 min read</span>
+        <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="art-wrap"><div class="article-hero" data-topic="Performance"><svg viewBox="0 0 1200 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgcompressions" x1="0" y1="1" x2="0.4" y2="0"><stop offset="0" stop-color="#ac3109" stop-opacity=".20"/><stop offset="1" stop-color="#d53c09" stop-opacity=".07"/></linearGradient>
+    <marker id="ahcompressions" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#d53c09" fill-opacity=".5"/>
+    </marker>
+    <clipPath id="cpcompressions"><rect width="1200" height="380"/></clipPath>
+  </defs>
+  <rect width="1200" height="380" fill="url(#bgcompressions)"/>
+  <g clip-path="url(#cpcompressions)"><path d="M108 38 V326.8 H1140" fill="none" stroke="#d53c09" stroke-opacity=".38" stroke-width="1.3"/><circle cx="622.8" cy="205" r="6.8" fill="#ac3109" fill-opacity="0.44"/><circle cx="264.3" cy="293.8" r="5.7" fill="#d53c09" fill-opacity="0.43"/><circle cx="1017.5" cy="146.7" r="5.1" fill="#d53c09" fill-opacity="0.45"/><circle cx="284.2" cy="275.2" r="8" fill="#d53c09" fill-opacity="0.70"/><circle cx="271.4" cy="299.2" r="6.2" fill="#ac3109" fill-opacity="0.54"/><circle cx="537.5" cy="231.6" r="7.2" fill="#d53c09" fill-opacity="0.64"/><circle cx="922" cy="131.9" r="6" fill="#d53c09" fill-opacity="0.59"/><circle cx="612.3" cy="227.2" r="4.8" fill="#d53c09" fill-opacity="0.41"/><circle cx="317" cy="277.9" r="6.2" fill="#ac3109" fill-opacity="0.59"/><circle cx="1031.9" cy="137.9" r="5.7" fill="#d53c09" fill-opacity="0.59"/><circle cx="481.2" cy="226.1" r="6.7" fill="#d53c09" fill-opacity="0.34"/><circle cx="284.5" cy="290.9" r="3.7" fill="#d53c09" fill-opacity="0.71"/><circle cx="132.6" cy="323.8" r="5.2" fill="#ac3109" fill-opacity="0.49"/><circle cx="333.9" cy="264.7" r="5" fill="#d53c09" fill-opacity="0.70"/><circle cx="582.4" cy="235.4" r="7" fill="#d53c09" fill-opacity="0.44"/></g>
+</svg></div></div>
+
+  <div class="art-wrap article-grid">
+    <div class="reader-aside"><nav class="toc" aria-label="On this page">
+  <p class="toc-title">On this page</p>
+  <ol><li><a href="#the-landscape-four-names-cover-almost-everything">The landscape: four names cover almost everything</a></li><li><a href="#placement-the-same-trade-five-different-answers">Placement: the same trade, five different answers</a></li><li><a href="#dictionary-compression-the-underused-multiplier">Dictionary compression: the underused multiplier</a></li><li><a href="#the-discipline-measure-in-your-units">The discipline: measure in your units</a></li></ol>
+</nav></div>
+    <div class="prose">
+<p>Compression settings are among the most-copied, least-examined defaults in infrastructure: the web tier gzips because the sample config did, Kafka runs whatever the producer default was, the data lake writes snappy-compressed Parquet because the framework chose, and nobody has measured any of it since. Meanwhile the stakes quietly compounded — egress bills priced per byte, storage tiers priced per GB-month, pipelines whose throughput is bounded by network, and CPU that&#39;s either abundant (making heavier compression free money) or the bottleneck (making it a self-inflicted wound). Compression is a <em>placement-specific optimization with a three-axis trade</em> — ratio, compression speed, decompression speed — and an afternoon of deliberate choice routinely beats years of defaults.</p>
+<h2 id="the-landscape-four-names-cover-almost-everything"><a class="h-anchor" href="#the-landscape-four-names-cover-almost-everything" aria-hidden="true" tabindex="-1">#</a>The landscape: four names cover almost everything</h2>
+<p>The modern shortlist collapsed nicely: <strong>gzip/zlib</strong> — the universal legacy: moderate ratio, moderate speed, supported by everything since the 90s; its remaining role is <em>compatibility floor</em>, because it wins on no other axis. <strong>zstd</strong> — the modern default, full stop: better ratios than gzip <em>and</em> several times faster at both ends, with a wide level dial (fast levels rivaling lz4, high levels approaching archival ratios) that makes it the one-algorithm answer for most storage, streaming, and internal-transfer jobs; its ecosystem support (Kafka, Parquet/ORC, HTTP via <code>Content-Encoding: zstd</code> in modern clients, package managers, filesystems) crossed the everywhere threshold years ago. <strong>lz4</strong> — the speed specialist: modest ratios at gigabytes-per-second per core, for the paths where compression must be nearly invisible — in-memory caches, RocksDB-class storage engine internals, real-time streams where microseconds count. <strong>Brotli</strong> — the web specialist: best-in-class ratios for text at slow compression speeds, which is exactly right for <em>precompressed static assets</em> (compress once at build time at maximum level, serve a million times — the asymmetry that defines the web tier) and wrong for dynamic responses at high levels (the classic misconfiguration: Brotli-11 on the fly, burning CPU to save bytes the user never notices; dynamic content wants Brotli-4-ish or zstd). Everything else — snappy (lz4&#39;s approximate peer, everywhere in older big-data defaults), xz/lzma (max ratio, painful speed — cold archives only) — is a variation on these four&#39;s trade-offs.</p>
+<p>The selection heuristic that covers 90% of cases: <strong>zstd unless</strong> you need extreme speed (lz4), maximum static-web ratio (Brotli at build time), or a legacy consumer (gzip).</p>
+<h2 id="placement-the-same-trade-five-different-answers"><a class="h-anchor" href="#placement-the-same-trade-five-different-answers" aria-hidden="true" tabindex="-1">#</a>Placement: the same trade, five different answers</h2>
+<p><strong>The web tier</strong> splits by asset lifecycle: static assets precompressed at build (Brotli max + gzip fallback, served by content negotiation — CPU cost paid once, per the build-vs-serve asymmetry), dynamic API responses compressed on the fly at moderate levels (with a size floor — compressing 200-byte payloads wastes CPU and can <em>grow</em> them — and the security footnote: compression plus attacker-controlled-content plus secrets in the same response enabled the BREACH-class attacks; secrets and reflected input shouldn&#39;t share compressed responses). The measurement lens is the web-vitals one: bytes saved matter in proportion to the user&#39;s bandwidth, which is why mobile-heavy audiences repay compression attention most.</p>
+<p><strong>Streaming and messaging</strong>: compression batches beautifully — Kafka compresses per record-batch, so producer batching configuration <em>is</em> compression configuration (bigger batches, better ratios — the throughput tuning and the compression tuning are one knob wearing two names). zstd as default, lz4 where producer CPU is precious; the payoff is tripled — network, broker disk, <em>and</em> replication traffic all shrink together, which in cloud terms means the compression setting is a cross-AZ-traffic line item.</p>
+<p><strong>Storage and analytics</strong>: columnar formats (Parquet/ORC) compress per column-chunk, where encoding and compression interact — sorted, low-cardinality columns compress dramatically better, so <em>data layout choices are compression choices</em> (the sort-order decision in the lakehouse quietly moves storage bills by multiples). zstd has displaced snappy as the modern default here; higher levels for cold zones, faster levels for hot, per the tiering economics. For backups and archives, the calculus adds restore-time honesty: the maximum-ratio archive that takes hours to decompress is a recovery-time decision masquerading as a storage saving — the DR-rehearsal discipline includes timing the decompress.</p>
+<p><strong>Internals and caches</strong>: lz4-class speed for anything in the request path (cache values, storage-engine blocks, RPC payloads at high QPS), where the question isn&#39;t &quot;does compression help&quot; but &quot;does it fit in the latency budget&quot; — measured, not assumed, because memory-bandwidth-bound services can <em>gain</em> throughput from compression (smaller working set, better cache behavior) while CPU-bound ones lose it.</p>
+<h2 id="dictionary-compression-the-underused-multiplier"><a class="h-anchor" href="#dictionary-compression-the-underused-multiplier" aria-hidden="true" tabindex="-1">#</a>Dictionary compression: the underused multiplier</h2>
+<p>The quiet superpower for the small-payload world: compression algorithms learn redundancy <em>within</em> a payload, so small documents (the 2KB JSON event, the API response) compress poorly alone — the redundancy is <em>across</em> payloads, not within them. <strong>Dictionary compression</strong> (zstd&#39;s first-class feature) fixes exactly this: train a dictionary on a sample of representative payloads, share it between compressor and decompressor, and small-payload ratios improve dramatically (multiples, not percentages, on schema-repetitive JSON). The operational shape: dictionaries are versioned artifacts (train, distribute, reference by ID — schema-registry-adjacent governance, because a lost dictionary is unreadable data), retrained as payload shapes drift. Anywhere millions of small, similar payloads flow — event streams, cache stores, log shipping — dictionaries are the difference between &quot;compression barely helps here&quot; and &quot;compression halved this bill.&quot;</p>
+<h2 id="the-discipline-measure-in-your-units"><a class="h-anchor" href="#the-discipline-measure-in-your-units" aria-hidden="true" tabindex="-1">#</a>The discipline: measure in your units</h2>
+<p>Compression benchmarks lie the way all benchmarks lie — on someone else&#39;s data. The evaluation that means something runs on <em>your</em> payloads at <em>your</em> sizes, and reports in decision units: ratio (bytes saved → egress/storage dollars, per the envelope math), compression and decompression throughput per core (→ CPU dollars and latency-budget fit), and the end-to-end effect (did p99 move? did pipeline throughput rise?). Revisit when the inputs change — payload shapes, traffic mix, instance pricing, or algorithm ecosystems (the zstd-everywhere shift stranded a generation of gzip decisions) — which in practice means a lightweight annual review of the estate&#39;s five biggest compression surfaces, ranked by bytes moved. It&#39;s the least glamorous optimization in this series and among the most reliable: the bytes are already flowing, the algorithms are free, and the difference between the default and the deliberate choice is usually a double-digit percentage of a bill somebody&#39;s paying.</p>
+
+    </div>
+  </div>
+
+  <div class="art-wrap"><aside class="refs" aria-labelledby="refs-h">
+  <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
+  <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
+  <ul>
+    <li><a href="https://kafka.apache.org/documentation/" rel="noopener nofollow" target="_blank">Apache Kafka documentation</a><span>Partitioning, consumer groups and delivery semantics.</span></li>
+  </ul>
+</aside></div>
+
+  
+
+  <div class="art-wrap article-foot">
+    <div class="row" style="gap:.4rem">
+      <a class="chip chip-plain" href="/insights/?topic=Performance">Performance</a><a class="chip chip-plain" href="/insights/?topic=Programming">Programming</a><a class="chip chip-plain" href="/insights/?topic=Cloud%20Architecture">Cloud Architecture</a><a class="chip chip-plain" href="/insights/?topic=Data%20Engineering">Data Engineering</a><a class="chip chip-plain" href="/insights/?topic=FinOps">FinOps</a>
+    </div>
+    <nav class="prevnext" aria-label="More articles">
+      <a href="/insights/sre-toil-reduction/"><span>Previous</span><strong>SRE Toil: What It Is, How to Measure It, and How to Reduce It</strong></a>
+      <span></span>
+    </nav>
+  </div>
+
+  <section class="section surface hair" style="margin-top:4rem">
+    <div class="wrap">
+      <p class="eyebrow">Related</p>
+      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|Engineering Leadership|DevSecOps|Cloud Architecture|" data-search="sre toil: what it is, how to measure it, and how to reduce it toil is the manual, repetitive, automatable work that keeps systems running without actually improving them. sre practice says: measure toil, set a ceiling, and invest engineering effort in eliminating it. engineering leadership devsecops cloud architecture" data-topic="Engineering Leadership" href="/insights/sre-toil-reduction/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgsretoilreduc" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#085459" stop-opacity=".10"/><stop offset="1" stop-color="#075056" stop-opacity=".22"/></linearGradient>
+    <marker id="ahsretoilreduc" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#085459" fill-opacity=".5"/>
+    </marker>
+    <clipPath id="cpsretoilreduc"><rect width="640" height="360"/></clipPath>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgsretoilreduc)"/>
+  <g clip-path="url(#cpsretoilreduc)"><line x1="32" y1="72.7" x2="608" y2="72.7" stroke="#085459" stroke-opacity=".2" stroke-width="1"/><rect x="83.6" y="59.7" width="51.8" height="25.9" rx="13" fill="#075056" fill-opacity="0.66"/><rect x="201.4" y="59.7" width="73.2" height="25.9" rx="13" fill="#075056" fill-opacity="0.49"/><rect x="359.4" y="59.7" width="85.6" height="25.9" rx="13" fill="#075056" fill-opacity="0.42"/><rect x="517.8" y="59.7" width="71" height="25.9" rx="13" fill="#075056" fill-opacity="0.32"/><line x1="32" y1="124.5" x2="608" y2="124.5" stroke="#085459" stroke-opacity=".2" stroke-width="1"/><rect x="117.3" y="111.6" width="88.7" height="25.9" rx="13" fill="#085459" fill-opacity="0.33"/><rect x="229.4" y="111.6" width="120.9" height="25.9" rx="13" fill="#085459" fill-opacity="0.60"/><rect x="435.3" y="111.6" width="89.2" height="25.9" rx="13" fill="#085459" fill-opacity="0.37"/><line x1="32" y1="176.4" x2="608" y2="176.4" stroke="#085459" stroke-opacity=".2" stroke-width="1"/><rect x="76.2" y="163.4" width="119.5" height="25.9" rx="13" fill="#075056" fill-opacity="0.43"/><rect x="225.4" y="163.4" width="84.8" height="25.9" rx="13" fill="#075056" fill-opacity="0.33"/><rect x="366.9" y="163.4" width="76.6" height="25.9" rx="13" fill="#075056" fill-opacity="0.63"/><rect x="485" y="163.4" width="103.8" height="25.9" rx="13" fill="#075056" fill-opacity="0.69"/><line x1="32" y1="228.2" x2="608" y2="228.2" stroke="#085459" stroke-opacity=".2" stroke-width="1"/><rect x="84.2" y="215.3" width="139.9" height="25.9" rx="13" fill="#085459" fill-opacity="0.28"/><rect x="257.7" y="215.3" width="151.9" height="25.9" rx="13" fill="#085459" fill-opacity="0.60"/><rect x="449.4" y="215.3" width="139.4" height="25.9" rx="13" fill="#085459" fill-opacity="0.49"/><line x1="32" y1="280.1" x2="608" y2="280.1" stroke="#085459" stroke-opacity=".2" stroke-width="1"/><rect x="114" y="267.1" width="110.5" height="25.9" rx="13" fill="#075056" fill-opacity="0.45"/><rect x="278.3" y="267.1" width="156.7" height="25.9" rx="13" fill="#075056" fill-opacity="0.42"/><rect x="464.9" y="267.1" width="110.8" height="25.9" rx="13" fill="#075056" fill-opacity="0.62"/></g>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">Engineering Leadership</span>
+    <h3 class="card-title">SRE Toil: What It Is, How to Measure It, and How to Reduce It</h3>
+    <p class="card-desc">Toil is the manual, repetitive, automatable work that keeps systems running without actually improving them. SRE practice says: measure toil, set a ceiling, and invest engineering effort in eliminating it.</p>
+    <div class="card-meta"><time datetime="2026-10-09">9 Oct 2026</time><span class="dot"></span><span>3 min read</span></div>
+  </div>
+</a>
+<a class="card" data-card data-topics="|Python|Async|Performance|Programming|Cloud Architecture|" data-search="async python in production: what asyncio buys you, and what it costs a practitioner&#39;s guide to running asyncio-based services in production — when async actually helps, the blocking-call trap, structured concurrency with taskgroups, and the operational habits that keep event loops healthy. python async performance programming cloud architecture" data-topic="Performance" href="/insights/python-async-production/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgpythonasyncp" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c35f08" stop-opacity=".10"/><stop offset="1" stop-color="#a14e08" stop-opacity=".22"/></linearGradient>
+    <marker id="ahpythonasyncp" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#c35f08" fill-opacity=".5"/>
+    </marker>
+    <clipPath id="cppythonasyncp"><rect width="640" height="360"/></clipPath>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgpythonasyncp)"/>
+  <g clip-path="url(#cppythonasyncp)"><line x1="32" y1="302.4" x2="608" y2="302.4" stroke="#c35f08" stroke-opacity=".4" stroke-width="1.4"/><rect x="60.8" y="73.1" width="26.6" height="229.3" rx="6" fill="#a14e08" fill-opacity="0.74"/><rect x="106.7" y="112.4" width="26.6" height="190" rx="6" fill="#c35f08" fill-opacity="0.67"/><rect x="152.6" y="168.5" width="26.6" height="133.9" rx="6" fill="#c35f08" fill-opacity="0.56"/><rect x="198.4" y="152.2" width="26.6" height="150.2" rx="6" fill="#a14e08" fill-opacity="0.59"/><rect x="244.3" y="181.3" width="26.6" height="121.1" rx="6" fill="#c35f08" fill-opacity="0.53"/><rect x="290.2" y="66.2" width="26.6" height="236.2" rx="6" fill="#c35f08" fill-opacity="0.76"/><rect x="336" y="168.8" width="26.6" height="133.6" rx="6" fill="#a14e08" fill-opacity="0.56"/><rect x="381.9" y="213.9" width="26.6" height="88.5" rx="6" fill="#c35f08" fill-opacity="0.47"/><rect x="427.8" y="174.3" width="26.6" height="128.1" rx="6" fill="#c35f08" fill-opacity="0.55"/><rect x="473.6" y="55" width="26.6" height="247.4" rx="6" fill="#a14e08" fill-opacity="0.78"/><rect x="519.5" y="64.3" width="26.6" height="238.1" rx="6" fill="#c35f08" fill-opacity="0.76"/><rect x="565.4" y="66.7" width="26.6" height="235.7" rx="6" fill="#c35f08" fill-opacity="0.75"/></g>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">Performance</span>
+    <h3 class="card-title">Async Python in Production: What asyncio Buys You, and What It Costs</h3>
+    <p class="card-desc">A practitioner&#39;s guide to running asyncio-based services in production — when async actually helps, the blocking-call trap, structured concurrency with TaskGroups, and the operational habits that keep event loops healthy.</p>
+    <div class="card-meta"><time datetime="2026-10-07">7 Oct 2026</time><span class="dot"></span><span>5 min read</span></div>
+  </div>
+</a>
+<a class="card" data-card data-topics="|Data Engineering|Cloud Architecture|AI &amp; MLOps|" data-search="the data lakehouse: why it won, and how to architect one that works data warehouses couldn&#39;t handle unstructured data at scale. data lakes couldn&#39;t enforce schemas or serve bi queries efficiently. the lakehouse combines both — here&#39;s the architecture, the open table formats that make it work, and the practical design decisions. data engineering cloud architecture ai &amp; mlops" data-topic="Data Engineering" href="/insights/data-lakehouse-architecture/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <radialGradient id="bgdatalakehous" cx="0.22" cy="0.16" r="1"><stop offset="0" stop-color="#045773" stop-opacity=".21"/><stop offset="1" stop-color="#044a62" stop-opacity=".07"/></radialGradient>
+    <marker id="ahdatalakehous" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#045773" fill-opacity=".5"/>
+    </marker>
+    <clipPath id="cpdatalakehous"><rect width="640" height="360"/></clipPath>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgdatalakehous)"/>
+  <g clip-path="url(#cpdatalakehous)"><path d="M0 50.4 C243.2 50.4, 396.8 28.8, 640 28.8 L640 86.5 C396.8 86.5, 243.2 108.1, 0 108.1 Z"
+      fill="#045773" fill-opacity="0.14"/><path d="M0 124.3 C243.2 124.3, 396.8 112.8, 640 112.8 L640 137.6 C396.8 137.6, 243.2 149.1, 0 149.1 Z"
+      fill="#044a62" fill-opacity="0.25"/><path d="M0 165.3 C243.2 165.3, 396.8 100.6, 640 100.6 L640 148.5 C396.8 148.5, 243.2 213.2, 0 213.2 Z"
+      fill="#045773" fill-opacity="0.31"/></g>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">Data Engineering</span>
+    <h3 class="card-title">The Data Lakehouse: Why It Won, and How to Architect One That Works</h3>
+    <p class="card-desc">Data warehouses couldn&#39;t handle unstructured data at scale. Data lakes couldn&#39;t enforce schemas or serve BI queries efficiently. The lakehouse combines both — here&#39;s the architecture, the open table formats that make it work, and the practical design decisions.</p>
+    <div class="card-meta"><time datetime="2026-10-05">5 Oct 2026</time><span class="dot"></span><span>4 min read</span></div>
+  </div>
+</a></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="art-wrap"><div class="cta-panel">
+      <h2 class="h2">Working on this in production?</h2>
+      <p class="lede" style="margin-top:.7rem">We do this work directly alongside engineering teams — architecture review, migration, and hands-on enablement.</p>
+      <div class="row" style="margin-top:1.4rem">
+        <a class="btn" href="/contact/">Engage engineering <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="btn btn-ghost" href="/services/">See what we do</a>
+      </div>
+    </div></div>
+  </section>
+</article>
+
+<div class="reader-tools">
+  <button class="icon-btn" id="readerBtn" type="button" aria-expanded="false" aria-controls="readerPanel" title="Reading settings" aria-label="Reading settings"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2.2"/><circle cx="10" cy="17" r="2.2"/></svg></button>
+  <button class="icon-btn" id="focusBtn" type="button" aria-pressed="false" title="Focus mode" aria-label="Enter focus mode"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></button>
+</div>
+<div class="reader-panel" id="readerPanel" role="dialog" aria-label="Reading settings" hidden>
+  <fieldset><legend>Text size</legend>
+    <div class="seg" data-pref="rsize">
+      <button type="button" data-val="s" aria-pressed="false"><span class="sample s">Aa</span>Small</button><button type="button" data-val="m" aria-pressed="false"><span class="sample ">Aa</span>Default</button><button type="button" data-val="l" aria-pressed="false"><span class="sample l">Aa</span>Large</button><button type="button" data-val="xl" aria-pressed="false"><span class="sample l">Aa</span>Largest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Ground</legend>
+    <div class="seg" data-pref="theme">
+      <button type="button" data-val="light" aria-pressed="false"><span class="swatch light"></span>Light</button><button type="button" data-val="sepia" aria-pressed="false"><span class="swatch sepia"></span>Sepia</button><button type="button" data-val="dark" aria-pressed="false"><span class="swatch dark"></span>Dark</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Column width</legend>
+    <div class="seg" data-pref="rwidth">
+      <button type="button" data-val="s" aria-pressed="false">Narrow</button><button type="button" data-val="m" aria-pressed="false">Default</button><button type="button" data-val="l" aria-pressed="false">Wide</button><button type="button" data-val="xl" aria-pressed="false">Widest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Typeface</legend>
+    <div class="seg" data-pref="rface">
+      <button type="button" data-val="sans" aria-pressed="false"><span class="sample">Aa</span>Sans</button>
+      <button type="button" data-val="serif" aria-pressed="false"><span class="sample serif">Aa</span>Serif</button>
+    </div>
+  </fieldset>
+  <button class="reader-reset" id="readerReset" type="button">Reset to defaults</button>
+  <p class="reader-note">Saved in this browser only — these settings do not follow you to another device.</p>
+</div>
+<button class="focus-exit" id="focusExit" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h6V3M21 9h-6V3M3 15h6v6M21 15h-6v6"/></svg> Exit focus</button>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="grid g-4" style="gap:2rem">
+      <div>
+        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem" aria-label="Ajna Consulting Services — home">
+          <svg class="ajna-mark" viewBox="0 0 100 100" width="36" height="36" fill="none" aria-hidden="true" focusable="false"><defs><path id="t-ftr" d="M 50 4 L 96 50 L 50 50 Z"/><path id="e-ftr" d="M 50 4 L 96 50"/><path id="k-ftr" d="M 50 4 L 50 50 L 96 50"/><linearGradient id="bev-ftr" gradientUnits="userSpaceOnUse" x1="50" y1="50" x2="73" y2="27"><stop offset="0" stop-color="#000" stop-opacity=".13"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity=".2"/></linearGradient><radialGradient id="core-ftr" cx=".34" cy=".3" r=".85"><stop offset="0" stop-color="#fff" stop-opacity=".42"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".45"/></radialGradient><path id="ll-ftr" d="M 50 50 C 35 30.26, 40.7 9.579999999999998, 50 3 C 59.3 9.579999999999998, 65 30.26, 50 50 Z"/><path id="ls-ftr" d="M 50 50 C 35.5 33.620000000000005, 41.01 16.46, 50 11 C 58.99 16.46, 64.5 33.620000000000005, 50 50 Z"/><linearGradient id="lf-ftr" gradientUnits="userSpaceOnUse" x1="35" y1="30" x2="65" y2="30"><stop offset="0" stop-color="#fff" stop-opacity=".3"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".22"/></linearGradient></defs><g class="am-leaf am-leaf-b" style="--a:45deg"><use href="#ls-ftr" fill="#17A05E" opacity=".62"/><use href="#ls-ftr" fill="url(#lf-ftr)"/></g><g class="am-leaf am-leaf-b" style="--a:135deg"><use href="#ls-ftr" fill="#2B57E8" opacity=".62"/><use href="#ls-ftr" fill="url(#lf-ftr)"/><use href="#ls-ftr" fill="#000" opacity="0.30"/></g><g class="am-leaf am-leaf-b" style="--a:225deg"><use href="#ls-ftr" fill="#E8402A" opacity=".62"/><use href="#ls-ftr" fill="url(#lf-ftr)"/></g><g class="am-leaf am-leaf-b" style="--a:315deg"><use href="#ls-ftr" fill="#F5A623" opacity=".62"/><use href="#ls-ftr" fill="url(#lf-ftr)"/><use href="#ls-ftr" fill="#fff" opacity="0.30"/></g><g class="am-leaf" style="--a:0deg"><use href="#ll-ftr" fill="#E8402A" opacity=".9"/><use href="#ll-ftr" fill="url(#lf-ftr)"/><use href="#ll-ftr" fill="#fff" opacity="0.21"/></g><g class="am-leaf" style="--a:90deg"><use href="#ll-ftr" fill="#F5A623" opacity=".9"/><use href="#ll-ftr" fill="url(#lf-ftr)"/><use href="#ll-ftr" fill="#000" opacity="0.21"/></g><g class="am-leaf" style="--a:180deg"><use href="#ll-ftr" fill="#17A05E" opacity=".9"/><use href="#ll-ftr" fill="url(#lf-ftr)"/><use href="#ll-ftr" fill="#000" opacity="0.21"/></g><g class="am-leaf" style="--a:270deg"><use href="#ll-ftr" fill="#2B57E8" opacity=".9"/><use href="#ll-ftr" fill="url(#lf-ftr)"/><use href="#ll-ftr" fill="#fff" opacity="0.21"/></g><g class="am-bud"><g class="am-petal" style="--a:0deg"><use href="#t-ftr" fill="#E8402A"/><use href="#t-ftr" fill="url(#bev-ftr)"/><use href="#t-ftr" fill="#fff" opacity="0.07"/><use href="#e-ftr" stroke="#fff" stroke-opacity="0.34" stroke-width="1.6" stroke-linecap="round"/><use href="#k-ftr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g class="am-petal" style="--a:90deg"><use href="#t-ftr" fill="#F5A623"/><use href="#t-ftr" fill="url(#bev-ftr)"/><use href="#t-ftr" fill="#000" opacity="0.12"/><use href="#e-ftr" stroke="#000" stroke-opacity="0.16" stroke-width="1.6" stroke-linecap="round"/><use href="#k-ftr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g class="am-petal" style="--a:180deg"><use href="#t-ftr" fill="#17A05E"/><use href="#t-ftr" fill="url(#bev-ftr)"/><use href="#t-ftr" fill="#000" opacity="0.05"/><use href="#e-ftr" stroke="#000" stroke-opacity="0.1" stroke-width="1.6" stroke-linecap="round"/><use href="#k-ftr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g class="am-petal" style="--a:270deg"><use href="#t-ftr" fill="#2B57E8"/><use href="#t-ftr" fill="url(#bev-ftr)"/><use href="#t-ftr" fill="#fff" opacity="0.30"/><use href="#e-ftr" stroke="#fff" stroke-opacity="0.46" stroke-width="1.6" stroke-linecap="round"/><use href="#k-ftr" stroke="#000" stroke-width=".9" opacity=".2"/></g></g><g class="am-core"><circle cx="50" cy="50" r="6" fill="currentColor"/><circle cx="50" cy="50" r="6" fill="url(#core-ftr)"/></g></svg>
+          <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
+        </a>
+        <p style="font-size:.88rem;line-height:1.65;color:#9fb0d0;max-width:30ch">
+          Specialised engineering partner for enterprise architecture, AI &amp; MLOps, and technical enablement.
+        </p>
+        <div class="social" style="margin-top:1.1rem">
+          <a href="https://www.youtube.com/@TechKnowen" rel="noopener" aria-label="YouTube"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 12s0-3.8-.5-5.6a2.9 2.9 0 0 0-2-2C18.7 4 12 4 12 4s-6.7 0-8.5.4a2.9 2.9 0 0 0-2 2C1 8.2 1 12 1 12s0 3.8.5 5.6a2.9 2.9 0 0 0 2 2C5.3 20 12 20 12 20s6.7 0 8.5-.4a2.9 2.9 0 0 0 2-2C23 15.8 23 12 23 12zM9.8 15.4V8.6l5.9 3.4z"/></svg></a>
+          <a href="https://techknowen.com" rel="noopener" aria-label="TechKnowen blog"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 3h16v3H4zm0 5h16v13l-8-4-8 4z"/></svg></a>
+          <a href="/feed.xml" aria-label="RSS feed"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="6.2" cy="17.8" r="2.2"/><path d="M4 10.2v3a6.6 6.6 0 0 1 6.6 6.6h3A9.6 9.6 0 0 0 4 10.2zM4 4v3c7.2 0 13 5.8 13 13h3C20 11.2 12.8 4 4 4z"/></svg></a>
+        </div>
+      </div>
+      <div>
+        <h2 class="foot-title">Services</h2>
+        <ul>
+          <li><a href="/services/#architecture">Enterprise architecture</a></li>
+          <li><a href="/services/#ai">AI &amp; MLOps</a></li>
+          <li><a href="/services/#training">Technical enablement</a></li>
+          <li><a href="/case-studies/">Case studies</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2 class="foot-title">Insights</h2>
+        <ul>
+          <li><a href="/insights/">All articles</a></li>
+          <li><a href="/series/">Series</a></li>
+          <li><a href="/topics/">Topics</a></li>
+          <li><a href="/notes/">Personal notes</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2 class="foot-title">Contact</h2>
+        <ul>
+          <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
+          <li><a href="/contact/">Start an engagement</a></li>
+          <li><a href="/about/">About</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span id="yr">2026</span> Ajna Consulting Services. All rights reserved.</span>
+      <span style="display:flex;gap:1.2rem"><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a></span>
+    </div>
+  </div>
+</footer>
+<script src="/assets/js/site.js" defer></script>
+</body>
+</html>
