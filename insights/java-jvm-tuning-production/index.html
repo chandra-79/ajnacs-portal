@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>JVM Tuning for Production: Heap, GC, and the Flags Worth Setting in 2026 | Ajna CS</title>
+<meta name="description" content="A practical guide to tuning the JVM for production services — heap sizing, choosing between G1, ZGC, and Shenandoah, container awareness, and the observabi…">
+<meta name="author" content="Chandra Lanka">
+<link rel="canonical" href="https://ajnacs.com/insights/java-jvm-tuning-production/">
+<meta name="robots" content="index, follow, max-image-preview:large">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Ajna Consulting Services">
+<meta property="og:title" content="JVM Tuning for Production: Heap, GC, and the Flags Worth Setting in 2026">
+<meta property="og:description" content="A practical guide to tuning the JVM for production services — heap sizing, choosing between G1, ZGC, and Shenandoah, container awareness, and the observabi…">
+<meta property="og:url" content="https://ajnacs.com/insights/java-jvm-tuning-production/">
+<meta property="og:image" content="https://ajnacs.com/assets/og/performance.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/jpeg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="JVM Tuning for Production: Heap, GC, and the Flags Worth Setting in 2026">
+<meta name="twitter:description" content="A practical guide to tuning the JVM for production services — heap sizing, choosing between G1, ZGC, and Shenandoah, container awareness, and the observabi…">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/performance.jpg">
+
+<link rel="icon" href="/favicon.ico?v=cefc53b9" sizes="any">
+<link rel="icon" href="/images/ajna-mark.svg?v=cefc53b9" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png?v=cefc53b9">
+<meta name="theme-color" content="#0a1020">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Quintessential&display=swap">
+<link rel="stylesheet" href="/assets/css/site.css">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<script>
+/* Theme and reading preferences are applied before first paint, so the page
+   never flashes the wrong ground or resets someone's text size mid-read. */
+(function(){try{
+var d=document.documentElement,t=localStorage.getItem('acs-theme');
+if(t!=='dark'&&t!=='light'&&t!=='sepia')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+d.setAttribute('data-theme',t);
+['rsize','rwidth','rface'].forEach(function(k){
+  var v=localStorage.getItem('acs-'+k);
+  if(v&&/^[a-z]{1,5}$/.test(v))d.setAttribute('data-'+k,v);
+});
+if(d.getAttribute('data-rface')==='serif'){
+  var l=document.createElement('link');l.rel='stylesheet';
+  l.href='https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600&display=swap';
+  document.head.appendChild(l);
+}
+}catch(e){}})();
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"JVM Tuning for Production: Heap, GC, and the Flags Worth Setting in 2026","description":"A practical guide to tuning the JVM for production services — heap sizing, choosing between G1, ZGC, and Shenandoah, container awareness, and the observability flags every deployment should carry.","datePublished":"2026-10-14","dateModified":"2026-10-14","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/java-jvm-tuning-production/","image":"https://ajnacs.com/assets/og/performance.jpg","keywords":"Java, JVM, Performance, Cloud Architecture","articleSection":"Performance","wordCount":1075}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"JVM Tuning for Production: Heap, GC, and the Flags Worth Setting in 2026"}]}</script>
+</head>
+<body class="" data-topic="Performance">
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header" id="siteHeader">
+  <div class="wrap" style="display:flex;align-items:center;width:min(1220px,100% - var(--gutter)*2)">
+    <a class="brand" href="/" aria-label="Ajna Consulting Services — home">
+      <svg class="ajna-mark" viewBox="0 0 100 100" width="40" height="40" fill="none" aria-hidden="true" focusable="false"><defs><path id="t-hdr" d="M 50 4 L 96 50 L 50 50 Z"/><path id="e-hdr" d="M 50 4 L 96 50"/><path id="k-hdr" d="M 50 4 L 50 50 L 96 50"/><linearGradient id="bev-hdr" gradientUnits="userSpaceOnUse" x1="50" y1="50" x2="73" y2="27"><stop offset="0" stop-color="#000" stop-opacity=".13"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity=".2"/></linearGradient><radialGradient id="core-hdr" cx=".34" cy=".3" r=".85"><stop offset="0" stop-color="#fff" stop-opacity=".42"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".45"/></radialGradient><path id="ll-hdr" d="M 50 50 C 35 30.26, 40.7 9.579999999999998, 50 3 C 59.3 9.579999999999998, 65 30.26, 50 50 Z"/><path id="ls-hdr" d="M 50 50 C 35.5 33.620000000000005, 41.01 16.46, 50 11 C 58.99 16.46, 64.5 33.620000000000005, 50 50 Z"/><linearGradient id="lf-hdr" gradientUnits="userSpaceOnUse" x1="35" y1="30" x2="65" y2="30"><stop offset="0" stop-color="#fff" stop-opacity=".3"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".22"/></linearGradient></defs><g class="am-leaf am-leaf-b" style="--a:45deg"><use href="#ls-hdr" fill="#17A05E" opacity=".62"/><use href="#ls-hdr" fill="url(#lf-hdr)"/></g><g class="am-leaf am-leaf-b" style="--a:135deg"><use href="#ls-hdr" fill="#2B57E8" opacity=".62"/><use href="#ls-hdr" fill="url(#lf-hdr)"/><use href="#ls-hdr" fill="#000" opacity="0.30"/></g><g class="am-leaf am-leaf-b" style="--a:225deg"><use href="#ls-hdr" fill="#E8402A" opacity=".62"/><use href="#ls-hdr" fill="url(#lf-hdr)"/></g><g class="am-leaf am-leaf-b" style="--a:315deg"><use href="#ls-hdr" fill="#F5A623" opacity=".62"/><use href="#ls-hdr" fill="url(#lf-hdr)"/><use href="#ls-hdr" fill="#fff" opacity="0.30"/></g><g class="am-leaf" style="--a:0deg"><use href="#ll-hdr" fill="#E8402A" opacity=".9"/><use href="#ll-hdr" fill="url(#lf-hdr)"/><use href="#ll-hdr" fill="#fff" opacity="0.21"/></g><g class="am-leaf" style="--a:90deg"><use href="#ll-hdr" fill="#F5A623" opacity=".9"/><use href="#ll-hdr" fill="url(#lf-hdr)"/><use href="#ll-hdr" fill="#000" opacity="0.21"/></g><g class="am-leaf" style="--a:180deg"><use href="#ll-hdr" fill="#17A05E" opacity=".9"/><use href="#ll-hdr" fill="url(#lf-hdr)"/><use href="#ll-hdr" fill="#000" opacity="0.21"/></g><g class="am-leaf" style="--a:270deg"><use href="#ll-hdr" fill="#2B57E8" opacity=".9"/><use href="#ll-hdr" fill="url(#lf-hdr)"/><use href="#ll-hdr" fill="#fff" opacity="0.21"/></g><g class="am-bud"><g class="am-petal" style="--a:0deg"><use href="#t-hdr" fill="#E8402A"/><use href="#t-hdr" fill="url(#bev-hdr)"/><use href="#t-hdr" fill="#fff" opacity="0.07"/><use href="#e-hdr" stroke="#fff" stroke-opacity="0.34" stroke-width="1.6" stroke-linecap="round"/><use href="#k-hdr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g class="am-petal" style="--a:90deg"><use href="#t-hdr" fill="#F5A623"/><use href="#t-hdr" fill="url(#bev-hdr)"/><use href="#t-hdr" fill="#000" opacity="0.12"/><use href="#e-hdr" stroke="#000" stroke-opacity="0.16" stroke-width="1.6" stroke-linecap="round"/><use href="#k-hdr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g class="am-petal" style="--a:180deg"><use href="#t-hdr" fill="#17A05E"/><use href="#t-hdr" fill="url(#bev-hdr)"/><use href="#t-hdr" fill="#000" opacity="0.05"/><use href="#e-hdr" stroke="#000" stroke-opacity="0.1" stroke-width="1.6" stroke-linecap="round"/><use href="#k-hdr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g class="am-petal" style="--a:270deg"><use href="#t-hdr" fill="#2B57E8"/><use href="#t-hdr" fill="url(#bev-hdr)"/><use href="#t-hdr" fill="#fff" opacity="0.30"/><use href="#e-hdr" stroke="#fff" stroke-opacity="0.46" stroke-width="1.6" stroke-linecap="round"/><use href="#k-hdr" stroke="#000" stroke-width=".9" opacity=".2"/></g></g><g class="am-core"><circle cx="50" cy="50" r="6" fill="currentColor"/><circle cx="50" cy="50" r="6" fill="url(#core-hdr)"/></g></svg>
+      <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
+    </a>
+    <nav class="nav" id="nav" aria-label="Primary">
+      <a href="/services/">Services</a>
+      <a href="/insights/" aria-current="page">Insights</a>
+      <a href="/series/">Series</a>
+      <a href="/case-studies/">Case studies</a>
+      <a href="/about/">About</a>
+      <a class="btn btn-sm" href="/contact/" style="margin-left:.4rem">Engage engineering</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn" id="themeBtn" type="button" aria-label="Switch to dark mode" aria-pressed="false"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg></button>
+      <button class="icon-btn nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+
+<div class="read-bar" aria-hidden="true"><span id="readBar"></span></div>
+<article class="article with-toc">
+  <header class="article-head">
+    <div class="art-wrap">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a> <span aria-hidden="true">/</span>
+        <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
+        <span>Performance</span>
+      </nav>
+      <h1 class="h1">JVM Tuning for Production: Heap, GC, and the Flags Worth Setting in 2026</h1>
+      <p class="lede" style="margin-top:1rem">A practical guide to tuning the JVM for production services — heap sizing, choosing between G1, ZGC, and Shenandoah, container awareness, and the observability flags every deployment should carry.</p>
+      <div class="article-meta">
+        <span class="chip">Performance</span>
+        <time datetime="2026-10-14">14 Oct 2026</time>
+        <span class="dot"></span><span>5 min read</span>
+        <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="art-wrap"><div class="article-hero" data-topic="Performance"><svg viewBox="0 0 1200 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <radialGradient id="bgjavajvmtunin" cx="0.22" cy="0.16" r="1"><stop offset="0" stop-color="#f57813" stop-opacity=".21"/><stop offset="1" stop-color="#c45c0a" stop-opacity=".07"/></radialGradient>
+    <marker id="ahjavajvmtunin" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#f57813" fill-opacity=".5"/>
+    </marker>
+    <clipPath id="cpjavajvmtunin"><rect width="1200" height="380"/></clipPath>
+  </defs>
+  <rect width="1200" height="380" fill="url(#bgjavajvmtunin)"/>
+  <g clip-path="url(#cpjavajvmtunin)"><line x1="60" y1="319.2" x2="1140" y2="319.2" stroke="#f57813" stroke-opacity=".4" stroke-width="1.4"/><rect x="120.1" y="216.8" width="66.5" height="102.4" rx="6" fill="#c45c0a" fill-opacity="0.49"/><rect x="234.7" y="56" width="66.5" height="263.2" rx="6" fill="#f57813" fill-opacity="0.78"/><rect x="349.4" y="115.6" width="66.5" height="203.6" rx="6" fill="#f57813" fill-opacity="0.67"/><rect x="464.1" y="146.2" width="66.5" height="173" rx="6" fill="#c45c0a" fill-opacity="0.62"/><rect x="578.7" y="252.1" width="66.5" height="67.1" rx="6" fill="#f57813" fill-opacity="0.42"/><rect x="693.4" y="158.9" width="66.5" height="160.3" rx="6" fill="#f57813" fill-opacity="0.59"/><rect x="808.1" y="79.6" width="66.5" height="239.6" rx="6" fill="#c45c0a" fill-opacity="0.74"/><rect x="922.7" y="156.4" width="66.5" height="162.8" rx="6" fill="#f57813" fill-opacity="0.60"/><rect x="1037.4" y="177.4" width="66.5" height="141.8" rx="6" fill="#f57813" fill-opacity="0.56"/></g>
+</svg></div></div>
+
+  <div class="art-wrap article-grid">
+    <div class="reader-aside"><nav class="toc" aria-label="On this page">
+  <p class="toc-title">On this page</p>
+  <ol><li><a href="#heap-sizing-the-decision-that-drives-everything-else">Heap sizing: the decision that drives everything else</a></li><li><a href="#choosing-a-collector-an-actual-decision-tree">Choosing a collector: an actual decision tree</a></li><li><a href="#the-flags-every-production-jvm-should-carry">The flags every production JVM should carry</a></li><li><a href="#reading-the-signals-a-short-diagnostic-grammar">Reading the signals: a short diagnostic grammar</a></li><li><a href="#what-modern-java-changed">What modern Java changed</a></li><li><a href="#the-discipline">The discipline</a></li></ol>
+</nav></div>
+    <div class="prose">
+<p>JVM tuning has a reputation problem: it&#39;s either treated as dark magic requiring a specialist with a beard, or dismissed entirely because &quot;the defaults are fine now.&quot; Both takes are wrong. The defaults <em>are</em> dramatically better than a decade ago — and a handful of deliberate decisions still separate services that hum from services that page you.</p>
+<p>Here&#39;s the 2026 version of what&#39;s worth knowing, for engineers running Java services on JDK 17/21+ in containers and clouds.</p>
+<h2 id="heap-sizing-the-decision-that-drives-everything-else"><a class="h-anchor" href="#heap-sizing-the-decision-that-drives-everything-else" aria-hidden="true" tabindex="-1">#</a>Heap sizing: the decision that drives everything else</h2>
+<aside class="keyfig">
+  <p class="keyfig-label">Key figure</p>
+  <p class="keyfig-text">A container with a <b>4 GB</b> limit and -Xmx4g will be OOM-killed, and the kernel&#39;s kill message won&#39;t mention Java.</p>
+</aside>
+<p><strong>Set <code>-Xms</code> equal to <code>-Xmx</code>.</strong> Growing the heap is work the JVM does at the worst time (under load), and in containers the memory is reserved anyway. Predictability beats elasticity inside a single process.</p>
+<p><strong>How big?</strong> Start from measurement, not folklore: run the service under realistic load, look at the heap occupancy <em>after</em> full/mixed collections (the live set), and size the heap at roughly 2.5–4× the live set. Below 2× the GC runs hot and throughput suffers; above 5× you&#39;re renting memory to avoid collections that would have been cheap anyway.</p>
+<p><strong>Remember the JVM is bigger than the heap.</strong> Process memory = heap + metaspace + thread stacks (1 MB × threads adds up) + code cache + direct buffers + GC overhead. A container with a 4 GB limit and <code>-Xmx4g</code> will be OOM-killed, and the kernel&#39;s kill message won&#39;t mention Java. Budget 25–35% headroom above heap for a typical service, more if it uses direct buffers heavily (Netty, Kafka clients).</p>
+<p><strong>In containers, prefer percentages:</strong> <code>-XX:MaxRAMPercentage=70</code> sizes the heap off the container limit, so resizing the pod resizes the JVM coherently. Modern JDKs are fully container-aware (cgroup v2 included); the historical horror stories about the JVM seeing the host&#39;s 256 GB date from JDK 8 builds you should no longer be running.</p>
+<h2 id="choosing-a-collector-an-actual-decision-tree"><a class="h-anchor" href="#choosing-a-collector-an-actual-decision-tree" aria-hidden="true" tabindex="-1">#</a>Choosing a collector: an actual decision tree</h2>
+<p>The good news: there are only three answers now, and all of them are good.</p>
+<p><strong>G1 (the default): the right choice for most services.</strong> Balanced throughput and latency, pause goals honored reasonably well (<code>-XX:MaxGCPauseMillis=200</code> is the only G1 flag most services need), and decades of collective operational experience. If your p99 latency budget is 50 ms or more, G1 and stop thinking about it.</p>
+<p><strong>ZGC: when pauses are the product.</strong> Sub-millisecond pauses at multi-terabyte heaps, and since <strong>generational ZGC</strong> (default ZGC mode from JDK 21) the old &quot;ZGC burns extra CPU and needs huge headroom&quot; caveats have softened substantially. Trading systems, real-time bidding, interactive APIs with single-digit-millisecond p99s: <code>-XX:+UseZGC</code> and benchmark. The costs are a few percent of throughput and slightly higher memory usage — measure whether you care.</p>
+<p><strong>Parallel GC: when only throughput matters.</strong> Batch jobs, Spark executors, overnight ETL — nobody sees a pause in a batch job. <code>-XX:+UseParallelGC</code> finishes the work sooner for less CPU.</p>
+<p>(Shenandoah occupies ZGC&#39;s niche with different internals and is a fine choice, particularly on Red Hat builds; benchmark it against generational ZGC if you&#39;re in that market.)</p>
+<p>The anti-pattern is the flag pile: fifteen <code>-XX</code> options copied across generations of services, each one an answer to a question nobody remembers. On a modern JDK, a service with more than five GC-related flags is nearly always carrying dead weight. Delete them, set heap + collector + pause goal, and re-measure.</p>
+<h2 id="the-flags-every-production-jvm-should-carry"><a class="h-anchor" href="#the-flags-every-production-jvm-should-carry" aria-hidden="true" tabindex="-1">#</a>The flags every production JVM should carry</h2>
+<p>Not tuning — observability. These cost almost nothing and pay for themselves the first bad day. GC logging: <code>-Xlog:gc*,safepoint:file=/logs/gc.log:time,uptime:filecount=5,filesize=20m</code>. Heap dump on OOM: <code>-XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/dumps</code>. Flight recorder always on: <code>-XX:StartFlightRecording=maxsize=200m,maxage=12h</code> — continuous JFR is production-safe (~1% overhead) and means the incident that happened at 3 AM left a recording. Crash artifacts: <code>-XX:ErrorFile=/logs/hs_err_%p.log</code>. And <code>-XX:+ExitOnOutOfMemoryError</code> in orchestrated environments, because a half-dead JVM that flaps its health check is worse than a clean restart.</p>
+<h2 id="reading-the-signals-a-short-diagnostic-grammar"><a class="h-anchor" href="#reading-the-signals-a-short-diagnostic-grammar" aria-hidden="true" tabindex="-1">#</a>Reading the signals: a short diagnostic grammar</h2>
+<p><strong>Rising GC frequency with stable traffic</strong> → live set is growing → suspect a leak; take two heap dumps an hour apart and diff dominator trees.</p>
+<p><strong>Long pauses on G1</strong> → check the GC log for <em>to-space exhaustion</em> or humongous allocation churn (objects over half a region). Fixes, in order: bigger heap, bigger regions (<code>-XX:G1HeapRegionSize</code>), or stop allocating 30 MB byte arrays in a hot path.</p>
+<p><strong>High GC CPU, short pauses, everywhere</strong> → allocation rate problem. JFR&#39;s allocation profiling names the call sites; the fix is in code (buffer reuse, streaming instead of materializing), not flags.</p>
+<p><strong>Latency spikes with no GC activity</strong> → look at safepoints in the log (that&#39;s why <code>safepoint</code> is in the logging config). Time-to-safepoint stalls from long-running counted loops or massive array copies masquerade as GC problems while the collector is innocent.</p>
+<p><strong>Process RSS grows, heap flat</strong> → native: direct buffers, metaspace (classloader leak — the classic in anything doing hot redeploys), or a native library. <code>jcmd VM.native_memory</code> after starting with NMT answers which.</p>
+<p>The tools, in the order to reach for them: GC log (free, always there), <code>jcmd</code> (thread dumps, heap histograms, NMT — all safe in production), JFR + JDK Mission Control (the profiler you already have), async-profiler when you want flame graphs with native frames.</p>
+<h2 id="what-modern-java-changed"><a class="h-anchor" href="#what-modern-java-changed" aria-hidden="true" tabindex="-1">#</a>What modern Java changed</h2>
+<p>Three shifts worth internalizing if your mental model dates from JDK 8:</p>
+<p><strong>Virtual threads (JDK 21) change thread math, not heap math.</strong> You&#39;ll stop tuning thread pool sizes for I/O-bound services, and thread-stack memory pressure eases. Allocation and GC behavior stay the same — a million virtual threads all allocating still feed the same collector.</p>
+<p><strong>Compact object headers (JDK 24+, <code>-XX:+UseCompactObjectHeaders</code>) shrink every object by 4–8 bytes.</strong> For allocation-heavy services that&#39;s a real live-set reduction for one flag. Worth testing as it stabilizes in your JDK line.</p>
+<p><strong>AOT/CDS advances (Project Leyden)</strong> keep cutting startup and warmup — <code>-XX:CacheDataStore</code> style training runs matter for serverless and autoscaled fleets where cold JVMs meet traffic.</p>
+<h2 id="the-discipline"><a class="h-anchor" href="#the-discipline" aria-hidden="true" tabindex="-1">#</a>The discipline</h2>
+<p>Every flag in production should have: a reason written down, a date, the JDK version it was tested on, and a benchmark result. Re-validate the whole set at every major JDK upgrade — collectors improve, and yesterday&#39;s workaround is tomorrow&#39;s regression. Tune one thing at a time against a load test that resembles production, and let the GC log — not the vibe — declare the winner.</p>
+<p>The JVM in 2026 is a superb piece of engineering that mostly tunes itself. Your job is to size it honestly, pick the collector that matches your latency contract, keep the observability flags on, and resist the urge to help it more than that.</p>
+
+    </div>
+  </div>
+
+  <div class="art-wrap"><aside class="refs" aria-labelledby="refs-h">
+  <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
+  <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
+  <ul>
+    <li><a href="https://kafka.apache.org/documentation/" rel="noopener nofollow" target="_blank">Apache Kafka documentation</a><span>Partitioning, consumer groups and delivery semantics.</span></li>
+    <li><a href="https://spark.apache.org/docs/latest/" rel="noopener nofollow" target="_blank">Apache Spark</a><span>Execution model and tuning.</span></li>
+  </ul>
+</aside></div>
+
+  
+
+  <div class="art-wrap article-foot">
+    <div class="row" style="gap:.4rem">
+      <a class="chip chip-plain" href="/insights/?topic=Java">Java</a><a class="chip chip-plain" href="/insights/?topic=JVM">JVM</a><a class="chip chip-plain" href="/insights/?topic=Performance">Performance</a><a class="chip chip-plain" href="/insights/?topic=Cloud%20Architecture">Cloud Architecture</a>
+    </div>
+    <nav class="prevnext" aria-label="More articles">
+      <a href="/insights/compression-selection-guide/"><span>Previous</span><strong>Compression in Production: Choosing Between gzip, zstd, lz4, and Brotli Like It Matters</strong></a>
+      <span></span>
+    </nav>
+  </div>
+
+  <section class="section surface hair" style="margin-top:4rem">
+    <div class="wrap">
+      <p class="eyebrow">Related</p>
+      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|Performance|Programming|Cloud Architecture|Data Engineering|FinOps|" data-search="compression in production: choosing between gzip, zstd, lz4, and brotli like it matters compression is a three-way trade — ratio, speed, and cpu — that most systems set once by default and never revisit. the algorithm landscape, placement decisions across web, storage, and streaming, dictionary compression&#39;s quiet superpower, and the measurement discipline. performance programming cloud architecture data engineering finops" data-topic="Performance" href="/insights/compression-selection-guide/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgcompressions" x1="0" y1="1" x2="0.4" y2="0"><stop offset="0" stop-color="#ac3109" stop-opacity=".20"/><stop offset="1" stop-color="#d53c09" stop-opacity=".07"/></linearGradient>
+    <marker id="ahcompressions" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#d53c09" fill-opacity=".5"/>
+    </marker>
+    <clipPath id="cpcompressions"><rect width="640" height="360"/></clipPath>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgcompressions)"/>
+  <g clip-path="url(#cpcompressions)"><path d="M57.6 36 V309.6 H608" fill="none" stroke="#d53c09" stroke-opacity=".38" stroke-width="1.3"/><circle cx="332.2" cy="194.2" r="6.8" fill="#ac3109" fill-opacity="0.44"/><circle cx="141" cy="278.4" r="5.7" fill="#d53c09" fill-opacity="0.43"/><circle cx="542.7" cy="138.9" r="5.1" fill="#d53c09" fill-opacity="0.45"/><circle cx="151.6" cy="260.7" r="8" fill="#d53c09" fill-opacity="0.70"/><circle cx="144.7" cy="283.4" r="6.2" fill="#ac3109" fill-opacity="0.54"/><circle cx="286.7" cy="219.4" r="7.2" fill="#d53c09" fill-opacity="0.64"/><circle cx="491.7" cy="124.9" r="6" fill="#d53c09" fill-opacity="0.59"/><circle cx="326.6" cy="215.2" r="4.8" fill="#d53c09" fill-opacity="0.41"/><circle cx="169.1" cy="263.3" r="6.2" fill="#ac3109" fill-opacity="0.59"/><circle cx="550.4" cy="130.6" r="5.7" fill="#d53c09" fill-opacity="0.59"/><circle cx="256.6" cy="214.2" r="6.7" fill="#d53c09" fill-opacity="0.34"/><circle cx="151.7" cy="275.6" r="3.7" fill="#d53c09" fill-opacity="0.71"/><circle cx="70.7" cy="306.6" r="5.2" fill="#ac3109" fill-opacity="0.49"/><circle cx="178.1" cy="250.8" r="5" fill="#d53c09" fill-opacity="0.70"/><circle cx="310.6" cy="223" r="7" fill="#d53c09" fill-opacity="0.44"/></g>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">Performance</span>
+    <h3 class="card-title">Compression in Production: Choosing Between gzip, zstd, lz4, and Brotli Like It Matters</h3>
+    <p class="card-desc">Compression is a three-way trade — ratio, speed, and CPU — that most systems set once by default and never revisit. The algorithm landscape, placement decisions across web, storage, and streaming, dictionary compression&#39;s quiet superpower, and the measurement discipline.</p>
+    <div class="card-meta"><time datetime="2026-10-12">12 Oct 2026</time><span class="dot"></span><span>4 min read</span></div>
+  </div>
+</a>
+<a class="card" data-card data-topics="|Engineering Leadership|DevSecOps|Cloud Architecture|" data-search="sre toil: what it is, how to measure it, and how to reduce it toil is the manual, repetitive, automatable work that keeps systems running without actually improving them. sre practice says: measure toil, set a ceiling, and invest engineering effort in eliminating it. engineering leadership devsecops cloud architecture" data-topic="Engineering Leadership" href="/insights/sre-toil-reduction/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgsretoilreduc" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#085459" stop-opacity=".10"/><stop offset="1" stop-color="#075056" stop-opacity=".22"/></linearGradient>
+    <marker id="ahsretoilreduc" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#085459" fill-opacity=".5"/>
+    </marker>
+    <clipPath id="cpsretoilreduc"><rect width="640" height="360"/></clipPath>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgsretoilreduc)"/>
+  <g clip-path="url(#cpsretoilreduc)"><line x1="32" y1="72.7" x2="608" y2="72.7" stroke="#085459" stroke-opacity=".2" stroke-width="1"/><rect x="83.6" y="59.7" width="51.8" height="25.9" rx="13" fill="#075056" fill-opacity="0.66"/><rect x="201.4" y="59.7" width="73.2" height="25.9" rx="13" fill="#075056" fill-opacity="0.49"/><rect x="359.4" y="59.7" width="85.6" height="25.9" rx="13" fill="#075056" fill-opacity="0.42"/><rect x="517.8" y="59.7" width="71" height="25.9" rx="13" fill="#075056" fill-opacity="0.32"/><line x1="32" y1="124.5" x2="608" y2="124.5" stroke="#085459" stroke-opacity=".2" stroke-width="1"/><rect x="117.3" y="111.6" width="88.7" height="25.9" rx="13" fill="#085459" fill-opacity="0.33"/><rect x="229.4" y="111.6" width="120.9" height="25.9" rx="13" fill="#085459" fill-opacity="0.60"/><rect x="435.3" y="111.6" width="89.2" height="25.9" rx="13" fill="#085459" fill-opacity="0.37"/><line x1="32" y1="176.4" x2="608" y2="176.4" stroke="#085459" stroke-opacity=".2" stroke-width="1"/><rect x="76.2" y="163.4" width="119.5" height="25.9" rx="13" fill="#075056" fill-opacity="0.43"/><rect x="225.4" y="163.4" width="84.8" height="25.9" rx="13" fill="#075056" fill-opacity="0.33"/><rect x="366.9" y="163.4" width="76.6" height="25.9" rx="13" fill="#075056" fill-opacity="0.63"/><rect x="485" y="163.4" width="103.8" height="25.9" rx="13" fill="#075056" fill-opacity="0.69"/><line x1="32" y1="228.2" x2="608" y2="228.2" stroke="#085459" stroke-opacity=".2" stroke-width="1"/><rect x="84.2" y="215.3" width="139.9" height="25.9" rx="13" fill="#085459" fill-opacity="0.28"/><rect x="257.7" y="215.3" width="151.9" height="25.9" rx="13" fill="#085459" fill-opacity="0.60"/><rect x="449.4" y="215.3" width="139.4" height="25.9" rx="13" fill="#085459" fill-opacity="0.49"/><line x1="32" y1="280.1" x2="608" y2="280.1" stroke="#085459" stroke-opacity=".2" stroke-width="1"/><rect x="114" y="267.1" width="110.5" height="25.9" rx="13" fill="#075056" fill-opacity="0.45"/><rect x="278.3" y="267.1" width="156.7" height="25.9" rx="13" fill="#075056" fill-opacity="0.42"/><rect x="464.9" y="267.1" width="110.8" height="25.9" rx="13" fill="#075056" fill-opacity="0.62"/></g>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">Engineering Leadership</span>
+    <h3 class="card-title">SRE Toil: What It Is, How to Measure It, and How to Reduce It</h3>
+    <p class="card-desc">Toil is the manual, repetitive, automatable work that keeps systems running without actually improving them. SRE practice says: measure toil, set a ceiling, and invest engineering effort in eliminating it.</p>
+    <div class="card-meta"><time datetime="2026-10-09">9 Oct 2026</time><span class="dot"></span><span>3 min read</span></div>
+  </div>
+</a>
+<a class="card" data-card data-topics="|Python|Async|Performance|Programming|Cloud Architecture|" data-search="async python in production: what asyncio buys you, and what it costs a practitioner&#39;s guide to running asyncio-based services in production — when async actually helps, the blocking-call trap, structured concurrency with taskgroups, and the operational habits that keep event loops healthy. python async performance programming cloud architecture" data-topic="Performance" href="/insights/python-async-production/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgpythonasyncp" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c35f08" stop-opacity=".10"/><stop offset="1" stop-color="#a14e08" stop-opacity=".22"/></linearGradient>
+    <marker id="ahpythonasyncp" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#c35f08" fill-opacity=".5"/>
+    </marker>
+    <clipPath id="cppythonasyncp"><rect width="640" height="360"/></clipPath>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgpythonasyncp)"/>
+  <g clip-path="url(#cppythonasyncp)"><line x1="32" y1="302.4" x2="608" y2="302.4" stroke="#c35f08" stroke-opacity=".4" stroke-width="1.4"/><rect x="60.8" y="73.1" width="26.6" height="229.3" rx="6" fill="#a14e08" fill-opacity="0.74"/><rect x="106.7" y="112.4" width="26.6" height="190" rx="6" fill="#c35f08" fill-opacity="0.67"/><rect x="152.6" y="168.5" width="26.6" height="133.9" rx="6" fill="#c35f08" fill-opacity="0.56"/><rect x="198.4" y="152.2" width="26.6" height="150.2" rx="6" fill="#a14e08" fill-opacity="0.59"/><rect x="244.3" y="181.3" width="26.6" height="121.1" rx="6" fill="#c35f08" fill-opacity="0.53"/><rect x="290.2" y="66.2" width="26.6" height="236.2" rx="6" fill="#c35f08" fill-opacity="0.76"/><rect x="336" y="168.8" width="26.6" height="133.6" rx="6" fill="#a14e08" fill-opacity="0.56"/><rect x="381.9" y="213.9" width="26.6" height="88.5" rx="6" fill="#c35f08" fill-opacity="0.47"/><rect x="427.8" y="174.3" width="26.6" height="128.1" rx="6" fill="#c35f08" fill-opacity="0.55"/><rect x="473.6" y="55" width="26.6" height="247.4" rx="6" fill="#a14e08" fill-opacity="0.78"/><rect x="519.5" y="64.3" width="26.6" height="238.1" rx="6" fill="#c35f08" fill-opacity="0.76"/><rect x="565.4" y="66.7" width="26.6" height="235.7" rx="6" fill="#c35f08" fill-opacity="0.75"/></g>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">Performance</span>
+    <h3 class="card-title">Async Python in Production: What asyncio Buys You, and What It Costs</h3>
+    <p class="card-desc">A practitioner&#39;s guide to running asyncio-based services in production — when async actually helps, the blocking-call trap, structured concurrency with TaskGroups, and the operational habits that keep event loops healthy.</p>
+    <div class="card-meta"><time datetime="2026-10-07">7 Oct 2026</time><span class="dot"></span><span>5 min read</span></div>
+  </div>
+</a></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="art-wrap"><div class="cta-panel">
+      <h2 class="h2">Working on this in production?</h2>
+      <p class="lede" style="margin-top:.7rem">We do this work directly alongside engineering teams — architecture review, migration, and hands-on enablement.</p>
+      <div class="row" style="margin-top:1.4rem">
+        <a class="btn" href="/contact/">Engage engineering <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="btn btn-ghost" href="/services/">See what we do</a>
+      </div>
+    </div></div>
+  </section>
+</article>
+
+<div class="reader-tools">
+  <button class="icon-btn" id="readerBtn" type="button" aria-expanded="false" aria-controls="readerPanel" title="Reading settings" aria-label="Reading settings"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2.2"/><circle cx="10" cy="17" r="2.2"/></svg></button>
+  <button class="icon-btn" id="focusBtn" type="button" aria-pressed="false" title="Focus mode" aria-label="Enter focus mode"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></button>
+</div>
+<div class="reader-panel" id="readerPanel" role="dialog" aria-label="Reading settings" hidden>
+  <fieldset><legend>Text size</legend>
+    <div class="seg" data-pref="rsize">
+      <button type="button" data-val="s" aria-pressed="false"><span class="sample s">Aa</span>Small</button><button type="button" data-val="m" aria-pressed="false"><span class="sample ">Aa</span>Default</button><button type="button" data-val="l" aria-pressed="false"><span class="sample l">Aa</span>Large</button><button type="button" data-val="xl" aria-pressed="false"><span class="sample l">Aa</span>Largest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Ground</legend>
+    <div class="seg" data-pref="theme">
+      <button type="button" data-val="light" aria-pressed="false"><span class="swatch light"></span>Light</button><button type="button" data-val="sepia" aria-pressed="false"><span class="swatch sepia"></span>Sepia</button><button type="button" data-val="dark" aria-pressed="false"><span class="swatch dark"></span>Dark</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Column width</legend>
+    <div class="seg" data-pref="rwidth">
+      <button type="button" data-val="s" aria-pressed="false">Narrow</button><button type="button" data-val="m" aria-pressed="false">Default</button><button type="button" data-val="l" aria-pressed="false">Wide</button><button type="button" data-val="xl" aria-pressed="false">Widest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Typeface</legend>
+    <div class="seg" data-pref="rface">
+      <button type="button" data-val="sans" aria-pressed="false"><span class="sample">Aa</span>Sans</button>
+      <button type="button" data-val="serif" aria-pressed="false"><span class="sample serif">Aa</span>Serif</button>
+    </div>
+  </fieldset>
+  <button class="reader-reset" id="readerReset" type="button">Reset to defaults</button>
+  <p class="reader-note">Saved in this browser only — these settings do not follow you to another device.</p>
+</div>
+<button class="focus-exit" id="focusExit" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h6V3M21 9h-6V3M3 15h6v6M21 15h-6v6"/></svg> Exit focus</button>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="grid g-4" style="gap:2rem">
+      <div>
+        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem" aria-label="Ajna Consulting Services — home">
+          <svg class="ajna-mark" viewBox="0 0 100 100" width="36" height="36" fill="none" aria-hidden="true" focusable="false"><defs><path id="t-ftr" d="M 50 4 L 96 50 L 50 50 Z"/><path id="e-ftr" d="M 50 4 L 96 50"/><path id="k-ftr" d="M 50 4 L 50 50 L 96 50"/><linearGradient id="bev-ftr" gradientUnits="userSpaceOnUse" x1="50" y1="50" x2="73" y2="27"><stop offset="0" stop-color="#000" stop-opacity=".13"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity=".2"/></linearGradient><radialGradient id="core-ftr" cx=".34" cy=".3" r=".85"><stop offset="0" stop-color="#fff" stop-opacity=".42"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".45"/></radialGradient><path id="ll-ftr" d="M 50 50 C 35 30.26, 40.7 9.579999999999998, 50 3 C 59.3 9.579999999999998, 65 30.26, 50 50 Z"/><path id="ls-ftr" d="M 50 50 C 35.5 33.620000000000005, 41.01 16.46, 50 11 C 58.99 16.46, 64.5 33.620000000000005, 50 50 Z"/><linearGradient id="lf-ftr" gradientUnits="userSpaceOnUse" x1="35" y1="30" x2="65" y2="30"><stop offset="0" stop-color="#fff" stop-opacity=".3"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".22"/></linearGradient></defs><g class="am-leaf am-leaf-b" style="--a:45deg"><use href="#ls-ftr" fill="#17A05E" opacity=".62"/><use href="#ls-ftr" fill="url(#lf-ftr)"/></g><g class="am-leaf am-leaf-b" style="--a:135deg"><use href="#ls-ftr" fill="#2B57E8" opacity=".62"/><use href="#ls-ftr" fill="url(#lf-ftr)"/><use href="#ls-ftr" fill="#000" opacity="0.30"/></g><g class="am-leaf am-leaf-b" style="--a:225deg"><use href="#ls-ftr" fill="#E8402A" opacity=".62"/><use href="#ls-ftr" fill="url(#lf-ftr)"/></g><g class="am-leaf am-leaf-b" style="--a:315deg"><use href="#ls-ftr" fill="#F5A623" opacity=".62"/><use href="#ls-ftr" fill="url(#lf-ftr)"/><use href="#ls-ftr" fill="#fff" opacity="0.30"/></g><g class="am-leaf" style="--a:0deg"><use href="#ll-ftr" fill="#E8402A" opacity=".9"/><use href="#ll-ftr" fill="url(#lf-ftr)"/><use href="#ll-ftr" fill="#fff" opacity="0.21"/></g><g class="am-leaf" style="--a:90deg"><use href="#ll-ftr" fill="#F5A623" opacity=".9"/><use href="#ll-ftr" fill="url(#lf-ftr)"/><use href="#ll-ftr" fill="#000" opacity="0.21"/></g><g class="am-leaf" style="--a:180deg"><use href="#ll-ftr" fill="#17A05E" opacity=".9"/><use href="#ll-ftr" fill="url(#lf-ftr)"/><use href="#ll-ftr" fill="#000" opacity="0.21"/></g><g class="am-leaf" style="--a:270deg"><use href="#ll-ftr" fill="#2B57E8" opacity=".9"/><use href="#ll-ftr" fill="url(#lf-ftr)"/><use href="#ll-ftr" fill="#fff" opacity="0.21"/></g><g class="am-bud"><g class="am-petal" style="--a:0deg"><use href="#t-ftr" fill="#E8402A"/><use href="#t-ftr" fill="url(#bev-ftr)"/><use href="#t-ftr" fill="#fff" opacity="0.07"/><use href="#e-ftr" stroke="#fff" stroke-opacity="0.34" stroke-width="1.6" stroke-linecap="round"/><use href="#k-ftr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g class="am-petal" style="--a:90deg"><use href="#t-ftr" fill="#F5A623"/><use href="#t-ftr" fill="url(#bev-ftr)"/><use href="#t-ftr" fill="#000" opacity="0.12"/><use href="#e-ftr" stroke="#000" stroke-opacity="0.16" stroke-width="1.6" stroke-linecap="round"/><use href="#k-ftr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g class="am-petal" style="--a:180deg"><use href="#t-ftr" fill="#17A05E"/><use href="#t-ftr" fill="url(#bev-ftr)"/><use href="#t-ftr" fill="#000" opacity="0.05"/><use href="#e-ftr" stroke="#000" stroke-opacity="0.1" stroke-width="1.6" stroke-linecap="round"/><use href="#k-ftr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g class="am-petal" style="--a:270deg"><use href="#t-ftr" fill="#2B57E8"/><use href="#t-ftr" fill="url(#bev-ftr)"/><use href="#t-ftr" fill="#fff" opacity="0.30"/><use href="#e-ftr" stroke="#fff" stroke-opacity="0.46" stroke-width="1.6" stroke-linecap="round"/><use href="#k-ftr" stroke="#000" stroke-width=".9" opacity=".2"/></g></g><g class="am-core"><circle cx="50" cy="50" r="6" fill="currentColor"/><circle cx="50" cy="50" r="6" fill="url(#core-ftr)"/></g></svg>
+          <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
+        </a>
+        <p style="font-size:.88rem;line-height:1.65;color:#9fb0d0;max-width:30ch">
+          Specialised engineering partner for enterprise architecture, AI &amp; MLOps, and technical enablement.
+        </p>
+        <div class="social" style="margin-top:1.1rem">
+          <a href="https://www.youtube.com/@TechKnowen" rel="noopener" aria-label="YouTube"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 12s0-3.8-.5-5.6a2.9 2.9 0 0 0-2-2C18.7 4 12 4 12 4s-6.7 0-8.5.4a2.9 2.9 0 0 0-2 2C1 8.2 1 12 1 12s0 3.8.5 5.6a2.9 2.9 0 0 0 2 2C5.3 20 12 20 12 20s6.7 0 8.5-.4a2.9 2.9 0 0 0 2-2C23 15.8 23 12 23 12zM9.8 15.4V8.6l5.9 3.4z"/></svg></a>
+          <a href="https://techknowen.com" rel="noopener" aria-label="TechKnowen blog"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 3h16v3H4zm0 5h16v13l-8-4-8 4z"/></svg></a>
+          <a href="/feed.xml" aria-label="RSS feed"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="6.2" cy="17.8" r="2.2"/><path d="M4 10.2v3a6.6 6.6 0 0 1 6.6 6.6h3A9.6 9.6 0 0 0 4 10.2zM4 4v3c7.2 0 13 5.8 13 13h3C20 11.2 12.8 4 4 4z"/></svg></a>
+        </div>
+      </div>
+      <div>
+        <h2 class="foot-title">Services</h2>
+        <ul>
+          <li><a href="/services/#architecture">Enterprise architecture</a></li>
+          <li><a href="/services/#ai">AI &amp; MLOps</a></li>
+          <li><a href="/services/#training">Technical enablement</a></li>
+          <li><a href="/case-studies/">Case studies</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2 class="foot-title">Insights</h2>
+        <ul>
+          <li><a href="/insights/">All articles</a></li>
+          <li><a href="/series/">Series</a></li>
+          <li><a href="/topics/">Topics</a></li>
+          <li><a href="/notes/">Personal notes</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2 class="foot-title">Contact</h2>
+        <ul>
+          <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
+          <li><a href="/contact/">Start an engagement</a></li>
+          <li><a href="/about/">About</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span id="yr">2026</span> Ajna Consulting Services. All rights reserved.</span>
+      <span style="display:flex;gap:1.2rem"><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a></span>
+    </div>
+  </div>
+</footer>
+<script src="/assets/js/site.js" defer></script>
+</body>
+</html>
