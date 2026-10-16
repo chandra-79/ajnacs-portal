@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Platform Engineering: What It Is, Why It Emerged, and What Makes It Different from DevOps | Ajna CS</title>
+<meta name="description" content="Platform engineering is not rebranded DevOps. It is a specific organisational and technical discipline that treats internal infrastructure as a product. He…">
+<meta name="author" content="Chandra Lanka">
+<link rel="canonical" href="https://ajnacs.com/insights/platform-eng-what-it-is/">
+<meta name="robots" content="index, follow, max-image-preview:large">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Ajna Consulting Services">
+<meta property="og:title" content="Platform Engineering: What It Is, Why It Emerged, and What Makes It Different from DevOps">
+<meta property="og:description" content="Platform engineering is not rebranded DevOps. It is a specific organisational and technical discipline that treats internal infrastructure as a product. He…">
+<meta property="og:url" content="https://ajnacs.com/insights/platform-eng-what-it-is/">
+<meta property="og:image" content="https://ajnacs.com/assets/og/engineering-leadership.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/jpeg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Platform Engineering: What It Is, Why It Emerged, and What Makes It Different from DevOps">
+<meta name="twitter:description" content="Platform engineering is not rebranded DevOps. It is a specific organisational and technical discipline that treats internal infrastructure as a product. He…">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/engineering-leadership.jpg">
+
+<link rel="icon" href="/favicon.ico?v=cefc53b9" sizes="any">
+<link rel="icon" href="/images/ajna-mark.svg?v=cefc53b9" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png?v=cefc53b9">
+<meta name="theme-color" content="#0a1020">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Quintessential&display=swap">
+<link rel="stylesheet" href="/assets/css/site.css">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<script>
+/* Theme and reading preferences are applied before first paint, so the page
+   never flashes the wrong ground or resets someone's text size mid-read. */
+(function(){try{
+var d=document.documentElement,t=localStorage.getItem('acs-theme');
+if(t!=='dark'&&t!=='light'&&t!=='sepia')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+d.setAttribute('data-theme',t);
+['rsize','rwidth','rface'].forEach(function(k){
+  var v=localStorage.getItem('acs-'+k);
+  if(v&&/^[a-z]{1,5}$/.test(v))d.setAttribute('data-'+k,v);
+});
+if(d.getAttribute('data-rface')==='serif'){
+  var l=document.createElement('link');l.rel='stylesheet';
+  l.href='https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600&display=swap';
+  document.head.appendChild(l);
+}
+}catch(e){}})();
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Platform Engineering: What It Is, Why It Emerged, and What Makes It Different from DevOps","description":"Platform engineering is not rebranded DevOps. It is a specific organisational and technical discipline that treats internal infrastructure as a product. Here is what that actually means.","datePublished":"2026-10-16","dateModified":"2026-10-16","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/platform-eng-what-it-is/","image":"https://ajnacs.com/assets/og/engineering-leadership.jpg","keywords":"Engineering Leadership, Architecture, Fundamentals","articleSection":"Engineering Leadership","wordCount":762}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Platform Engineering: What It Is, Why It Emerged, and What Makes It Different from DevOps"}]}</script>
+</head>
+<body class="" data-topic="Engineering Leadership">
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header" id="siteHeader">
+  <div class="wrap" style="display:flex;align-items:center;width:min(1220px,100% - var(--gutter)*2)">
+    <a class="brand" href="/" aria-label="Ajna Consulting Services — home">
+      <svg class="ajna-mark" viewBox="0 0 100 100" width="40" height="40" fill="none" aria-hidden="true" focusable="false"><defs><path id="t-hdr" d="M 50 4 L 96 50 L 50 50 Z"/><path id="e-hdr" d="M 50 4 L 96 50"/><path id="k-hdr" d="M 50 4 L 50 50 L 96 50"/><linearGradient id="bev-hdr" gradientUnits="userSpaceOnUse" x1="50" y1="50" x2="73" y2="27"><stop offset="0" stop-color="#000" stop-opacity=".13"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity=".2"/></linearGradient><radialGradient id="core-hdr" cx=".34" cy=".3" r=".85"><stop offset="0" stop-color="#fff" stop-opacity=".42"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".45"/></radialGradient><path id="ll-hdr" d="M 50 50 C 35 30.26, 40.7 9.579999999999998, 50 3 C 59.3 9.579999999999998, 65 30.26, 50 50 Z"/><path id="ls-hdr" d="M 50 50 C 35.5 33.620000000000005, 41.01 16.46, 50 11 C 58.99 16.46, 64.5 33.620000000000005, 50 50 Z"/><linearGradient id="lf-hdr" gradientUnits="userSpaceOnUse" x1="35" y1="30" x2="65" y2="30"><stop offset="0" stop-color="#fff" stop-opacity=".3"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".22"/></linearGradient></defs><g class="am-leaf am-leaf-b" style="--a:45deg"><use href="#ls-hdr" fill="#17A05E" opacity=".62"/><use href="#ls-hdr" fill="url(#lf-hdr)"/></g><g class="am-leaf am-leaf-b" style="--a:135deg"><use href="#ls-hdr" fill="#2B57E8" opacity=".62"/><use href="#ls-hdr" fill="url(#lf-hdr)"/><use href="#ls-hdr" fill="#000" opacity="0.30"/></g><g class="am-leaf am-leaf-b" style="--a:225deg"><use href="#ls-hdr" fill="#E8402A" opacity=".62"/><use href="#ls-hdr" fill="url(#lf-hdr)"/></g><g class="am-leaf am-leaf-b" style="--a:315deg"><use href="#ls-hdr" fill="#F5A623" opacity=".62"/><use href="#ls-hdr" fill="url(#lf-hdr)"/><use href="#ls-hdr" fill="#fff" opacity="0.30"/></g><g class="am-leaf" style="--a:0deg"><use href="#ll-hdr" fill="#E8402A" opacity=".9"/><use href="#ll-hdr" fill="url(#lf-hdr)"/><use href="#ll-hdr" fill="#fff" opacity="0.21"/></g><g class="am-leaf" style="--a:90deg"><use href="#ll-hdr" fill="#F5A623" opacity=".9"/><use href="#ll-hdr" fill="url(#lf-hdr)"/><use href="#ll-hdr" fill="#000" opacity="0.21"/></g><g class="am-leaf" style="--a:180deg"><use href="#ll-hdr" fill="#17A05E" opacity=".9"/><use href="#ll-hdr" fill="url(#lf-hdr)"/><use href="#ll-hdr" fill="#000" opacity="0.21"/></g><g class="am-leaf" style="--a:270deg"><use href="#ll-hdr" fill="#2B57E8" opacity=".9"/><use href="#ll-hdr" fill="url(#lf-hdr)"/><use href="#ll-hdr" fill="#fff" opacity="0.21"/></g><g class="am-bud"><g class="am-petal" style="--a:0deg"><use href="#t-hdr" fill="#E8402A"/><use href="#t-hdr" fill="url(#bev-hdr)"/><use href="#t-hdr" fill="#fff" opacity="0.07"/><use href="#e-hdr" stroke="#fff" stroke-opacity="0.34" stroke-width="1.6" stroke-linecap="round"/><use href="#k-hdr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g class="am-petal" style="--a:90deg"><use href="#t-hdr" fill="#F5A623"/><use href="#t-hdr" fill="url(#bev-hdr)"/><use href="#t-hdr" fill="#000" opacity="0.12"/><use href="#e-hdr" stroke="#000" stroke-opacity="0.16" stroke-width="1.6" stroke-linecap="round"/><use href="#k-hdr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g class="am-petal" style="--a:180deg"><use href="#t-hdr" fill="#17A05E"/><use href="#t-hdr" fill="url(#bev-hdr)"/><use href="#t-hdr" fill="#000" opacity="0.05"/><use href="#e-hdr" stroke="#000" stroke-opacity="0.1" stroke-width="1.6" stroke-linecap="round"/><use href="#k-hdr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g class="am-petal" style="--a:270deg"><use href="#t-hdr" fill="#2B57E8"/><use href="#t-hdr" fill="url(#bev-hdr)"/><use href="#t-hdr" fill="#fff" opacity="0.30"/><use href="#e-hdr" stroke="#fff" stroke-opacity="0.46" stroke-width="1.6" stroke-linecap="round"/><use href="#k-hdr" stroke="#000" stroke-width=".9" opacity=".2"/></g></g><g class="am-core"><circle cx="50" cy="50" r="6" fill="currentColor"/><circle cx="50" cy="50" r="6" fill="url(#core-hdr)"/></g></svg>
+      <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
+    </a>
+    <nav class="nav" id="nav" aria-label="Primary">
+      <a href="/services/">Services</a>
+      <a href="/insights/" aria-current="page">Insights</a>
+      <a href="/series/">Series</a>
+      <a href="/case-studies/">Case studies</a>
+      <a href="/about/">About</a>
+      <a class="btn btn-sm" href="/contact/" style="margin-left:.4rem">Engage engineering</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn" id="themeBtn" type="button" aria-label="Switch to dark mode" aria-pressed="false"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg></button>
+      <button class="icon-btn nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+
+<div class="read-bar" aria-hidden="true"><span id="readBar"></span></div>
+<article class="article with-toc">
+  <header class="article-head">
+    <div class="art-wrap">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a> <span aria-hidden="true">/</span>
+        <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
+        <span>Engineering Leadership</span>
+      </nav>
+      <h1 class="h1">Platform Engineering: What It Is, Why It Emerged, and What Makes It Different from DevOps</h1>
+      <p class="lede" style="margin-top:1rem">Platform engineering is not rebranded DevOps. It is a specific organisational and technical discipline that treats internal infrastructure as a product. Here is what that actually means.</p>
+      <div class="article-meta">
+        <span class="chip">Engineering Leadership</span>
+        <time datetime="2026-10-16">16 Oct 2026</time>
+        <span class="dot"></span><span>3 min read</span>
+        <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="art-wrap"><div class="article-hero" data-topic="Engineering Leadership"><svg viewBox="0 0 1200 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <radialGradient id="bgplatformengw" cx="0.22" cy="0.16" r="1"><stop offset="0" stop-color="#0a5d75" stop-opacity=".21"/><stop offset="1" stop-color="#095167" stop-opacity=".07"/></radialGradient>
+    <marker id="ahplatformengw" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#0a5d75" fill-opacity=".5"/>
+    </marker>
+    <clipPath id="cpplatformengw"><rect width="1200" height="380"/></clipPath>
+  </defs>
+  <rect width="1200" height="380" fill="url(#bgplatformengw)"/>
+  <g clip-path="url(#cpplatformengw)"><line x1="83.2" y1="307.4" x2="247" y2="130.5" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="83.2" y1="307.4" x2="294.4" y2="136.5" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="83.2" y1="307.4" x2="357.8" y2="296.7" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="247" y1="130.5" x2="294.4" y2="136.5" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="247" y1="130.5" x2="357.8" y2="296.7" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="247" y1="130.5" x2="445.2" y2="318.4" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="247" y1="130.5" x2="510.1" y2="243.7" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="294.4" y1="136.5" x2="357.8" y2="296.7" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="294.4" y1="136.5" x2="445.2" y2="318.4" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="294.4" y1="136.5" x2="510.1" y2="243.7" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="357.8" y1="296.7" x2="445.2" y2="318.4" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="357.8" y1="296.7" x2="510.1" y2="243.7" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="445.2" y1="318.4" x2="510.1" y2="243.7" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="445.2" y1="318.4" x2="754.1" y2="282.4" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="445.2" y1="318.4" x2="761.4" y2="282.5" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="510.1" y1="243.7" x2="687.6" y2="51.8" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="510.1" y1="243.7" x2="754.1" y2="282.4" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="510.1" y1="243.7" x2="761.4" y2="282.5" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="687.6" y1="51.8" x2="754.1" y2="282.4" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="687.6" y1="51.8" x2="761.4" y2="282.5" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="687.6" y1="51.8" x2="899.8" y2="100.8" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="687.6" y1="51.8" x2="965.2" y2="170.2" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="754.1" y1="282.4" x2="761.4" y2="282.5" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="754.1" y1="282.4" x2="899.8" y2="100.8" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="754.1" y1="282.4" x2="965.2" y2="170.2" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="761.4" y1="282.5" x2="899.8" y2="100.8" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="761.4" y1="282.5" x2="965.2" y2="170.2" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="899.8" y1="100.8" x2="965.2" y2="170.2" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="899.8" y1="100.8" x2="1121.4" y2="247.4" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="965.2" y1="170.2" x2="1121.4" y2="247.4" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><circle cx="83.2" cy="307.4" r="4.5" fill="#0a5d75" fill-opacity=".88"/><circle cx="247" cy="130.5" r="8" fill="#095167" fill-opacity=".88"/><circle cx="294.4" cy="136.5" r="11.5" fill="#0a5d75" fill-opacity=".88"/><circle cx="357.8" cy="296.7" r="4.5" fill="#095167" fill-opacity=".88"/><circle cx="445.2" cy="318.4" r="8" fill="#0a5d75" fill-opacity=".88"/><circle cx="510.1" cy="243.7" r="11.5" fill="#095167" fill-opacity=".88"/><circle cx="687.6" cy="51.8" r="4.5" fill="#0a5d75" fill-opacity=".88"/><circle cx="754.1" cy="282.4" r="8" fill="#095167" fill-opacity=".88"/><circle cx="761.4" cy="282.5" r="11.5" fill="#0a5d75" fill-opacity=".88"/><circle cx="899.8" cy="100.8" r="4.5" fill="#095167" fill-opacity=".88"/><circle cx="965.2" cy="170.2" r="8" fill="#0a5d75" fill-opacity=".88"/><circle cx="1121.4" cy="247.4" r="11.5" fill="#095167" fill-opacity=".88"/></g>
+</svg></div></div>
+
+  <div class="art-wrap article-grid">
+    <div class="reader-aside"><nav class="toc" aria-label="On this page">
+  <p class="toc-title">On this page</p>
+  <ol><li><a href="#why-platform-engineering-emerged">Why Platform Engineering Emerged</a></li><li><a href="#the-internal-developer-platform-idp">The Internal Developer Platform (IDP)</a></li><li><a href="#platform-engineering-vs-devops-vs-sre">Platform Engineering vs DevOps vs SRE</a></li><li><a href="#the-product-mindset-distinction">The Product Mindset Distinction</a></li></ol>
+</nav><nav class="chapters" aria-label="Articles in this series">
+      <p class="chapters-title">Platform Engineering: From Concept to Internal Developer Platform</p>
+      <ol><li aria-current="true"><a href="/insights/platform-eng-what-it-is/">Platform Engineering: What It Is, Why It Emerged, and What Makes It Different from DevOps</a></li><li><a href="/insights/platform-eng-idp-design/">Designing an Internal Developer Platform: Abstraction Layers, Golden Paths, and the Governance Balance</a></li><li><a href="/insights/platform-eng-self-service/">Self-Service Infrastructure: How to Build It Without Losing Operational Control</a></li><li><a href="/insights/platform-eng-observability/">Platform Observability: Building the Visibility Layer Every Application Team Gets Automatically</a></li><li><a href="/insights/platform-eng-measuring-success/">Measuring Platform Engineering Success: The Metrics That Actually Matter</a></li></ol>
+    </nav></div>
+    <div class="prose">
+<p>Platform engineering is one of the most discussed topics in enterprise technology right now, which means it is also one of the most confused. It is variously described as DevOps with a product mindset, internal tooling done properly, or the evolution of the SRE model. These descriptions are partially true. A more precise definition: platform engineering is the discipline of building and operating internal platforms that improve developer productivity and reduce cognitive load for application teams.</p>
+<h2 id="why-platform-engineering-emerged"><a class="h-anchor" href="#why-platform-engineering-emerged" aria-hidden="true" tabindex="-1">#</a>Why Platform Engineering Emerged</h2>
+<p>The DevOps movement succeeded in establishing that development and operations should not be siloed functions. It did not fully answer the question of how to scale operational excellence across dozens or hundreds of application teams.</p>
+<p>As organisations adopted cloud-native architectures — Kubernetes, microservices, observability tooling, CI/CD pipelines, service meshes — the operational complexity grew. Each application team was expected to configure their own pipelines, set up their own monitoring, manage their own Kubernetes manifests, handle their own secrets management, and comply with security policies. This is an enormous cognitive burden. It is also inefficient: if 20 teams are all figuring out the same Kubernetes Ingress configuration, the organisation is spending 20× the effort that a shared, well-engineered solution would require.</p>
+<p>Platform engineering emerged as the answer to this scaling problem. Instead of expecting every application team to be experts in infrastructure, a dedicated platform team builds the abstractions, self-service interfaces, and guardrails that let application teams move fast without needing that expertise.</p>
+<h2 id="the-internal-developer-platform-idp"><a class="h-anchor" href="#the-internal-developer-platform-idp" aria-hidden="true" tabindex="-1">#</a>The Internal Developer Platform (IDP)</h2>
+<p>The output of a platform engineering team is an Internal Developer Platform: a curated, opinionated set of capabilities that application developers consume through self-service interfaces.</p>
+<p>What an IDP typically provides:</p>
+<p><strong>Compute and deployment</strong>: standardised ways to deploy a service (a Helm chart template, a GitHub Actions workflow, an infrastructure module) that produce correctly configured, policy-compliant deployments without the developer needing to write Kubernetes YAML or Terraform from scratch.</p>
+<p><strong>Observability</strong>: pre-configured dashboards, alerting rules, log aggregation, and distributed tracing that work automatically for any service deployed through the platform. The developer does not configure Grafana — they get a working dashboard.</p>
+<p><strong>Secrets management</strong>: a self-service workflow for requesting and consuming secrets, with automatic rotation and audit logging. The developer does not set up Vault — they use an approved pattern.</p>
+<p><strong>CI/CD</strong>: opinionated pipeline templates with built-in security scanning, testing gates, and deployment approvals. The developer defines what to build; the platform handles how.</p>
+<p><strong>Networking and security</strong>: service mesh configuration, network policies, and certificate management that comply with security requirements automatically.</p>
+<h2 id="platform-engineering-vs-devops-vs-sre"><a class="h-anchor" href="#platform-engineering-vs-devops-vs-sre" aria-hidden="true" tabindex="-1">#</a>Platform Engineering vs DevOps vs SRE</h2>
+<p>The distinctions that matter:</p>
+<p><strong>DevOps</strong> is a philosophy and a set of practices — breaking down the wall between development and operations, automating delivery, sharing responsibility for production. It describes how organisations should work.</p>
+<p><strong>SRE</strong> (Site Reliability Engineering) is a specific implementation of DevOps principles at scale, focused on reliability. SRE teams set SLOs, manage error budgets, own reliability tooling, and respond to incidents. Their customers are production users.</p>
+<p><strong>Platform engineering</strong> builds the infrastructure that other engineers consume. Platform engineers are product managers and software engineers for internal tools. Their customers are application developers. Success is measured by developer productivity and reduction in toil, not by SLOs or incident response time.</p>
+<p>An organisation can have all three. Platform engineering provides the infrastructure and tooling; SRE provides the reliability standards and incident response; DevOps describes the cultural operating model connecting all of it.</p>
+<h2 id="the-product-mindset-distinction"><a class="h-anchor" href="#the-product-mindset-distinction" aria-hidden="true" tabindex="-1">#</a>The Product Mindset Distinction</h2>
+<p>The phrase &quot;treat the platform as a product&quot; appears in every platform engineering discussion. Here is what it means in practice:</p>
+<p>The platform team has users (application developers) and must understand their needs. They conduct user research — talking to application teams about their pain points, what is slowing them down, what they are building workarounds for. They have a roadmap, a backlog, and a product planning process. They release new platform capabilities with documentation and communication, not just a Confluence page nobody reads.</p>
+<p>Critically: they measure adoption, not just delivery. Building a capability that nobody uses is a failure, not a success. If developers are bypassing the platform to use the underlying infrastructure directly, the platform has failed to meet a need.</p>
+<p>This product orientation is what separates platform engineering from the previous generation of &quot;devtools&quot; teams that built tooling for themselves and expected developers to use it because it was mandated.</p>
+<p>The following lessons in this series cover the practical components of an Internal Developer Platform: how to design the abstraction layer, how to implement self-service without losing governance, and how to measure whether the platform is working.</p>
+
+    </div>
+  </div>
+
+  <div class="art-wrap"><aside class="refs" aria-labelledby="refs-h">
+  <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
+  <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
+  <ul>
+    <li><a href="https://kubernetes.io/docs/" rel="noopener nofollow" target="_blank">Kubernetes documentation</a><span>Primary reference for the concepts used here.</span></li>
+    <li><a href="https://developer.hashicorp.com/terraform/docs" rel="noopener nofollow" target="_blank">Terraform documentation</a><span>Language and provider reference.</span></li>
+  </ul>
+</aside></div>
+
+  
+
+  <div class="art-wrap article-foot">
+    <div class="row" style="gap:.4rem">
+      <a class="chip chip-plain" href="/insights/?topic=Engineering%20Leadership">Engineering Leadership</a><a class="chip chip-plain" href="/insights/?topic=Architecture">Architecture</a><a class="chip chip-plain" href="/insights/?topic=Fundamentals">Fundamentals</a>
+    </div>
+    <nav class="prevnext" aria-label="More articles">
+      <a href="/insights/java-jvm-tuning-production/"><span>Previous</span><strong>JVM Tuning for Production: Heap, GC, and the Flags Worth Setting in 2026</strong></a>
+      <span></span>
+    </nav>
+  </div>
+
+  <section class="section surface hair" style="margin-top:4rem">
+    <div class="wrap">
+      <p class="eyebrow">Related</p>
+      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|Engineering Leadership|DevSecOps|Cloud Architecture|" data-search="sre toil: what it is, how to measure it, and how to reduce it toil is the manual, repetitive, automatable work that keeps systems running without actually improving them. sre practice says: measure toil, set a ceiling, and invest engineering effort in eliminating it. engineering leadership devsecops cloud architecture" data-topic="Engineering Leadership" href="/insights/sre-toil-reduction/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgsretoilreduc" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#085459" stop-opacity=".10"/><stop offset="1" stop-color="#075056" stop-opacity=".22"/></linearGradient>
+    <marker id="ahsretoilreduc" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#085459" fill-opacity=".5"/>
+    </marker>
+    <clipPath id="cpsretoilreduc"><rect width="640" height="360"/></clipPath>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgsretoilreduc)"/>
+  <g clip-path="url(#cpsretoilreduc)"><line x1="32" y1="72.7" x2="608" y2="72.7" stroke="#085459" stroke-opacity=".2" stroke-width="1"/><rect x="83.6" y="59.7" width="51.8" height="25.9" rx="13" fill="#075056" fill-opacity="0.66"/><rect x="201.4" y="59.7" width="73.2" height="25.9" rx="13" fill="#075056" fill-opacity="0.49"/><rect x="359.4" y="59.7" width="85.6" height="25.9" rx="13" fill="#075056" fill-opacity="0.42"/><rect x="517.8" y="59.7" width="71" height="25.9" rx="13" fill="#075056" fill-opacity="0.32"/><line x1="32" y1="124.5" x2="608" y2="124.5" stroke="#085459" stroke-opacity=".2" stroke-width="1"/><rect x="117.3" y="111.6" width="88.7" height="25.9" rx="13" fill="#085459" fill-opacity="0.33"/><rect x="229.4" y="111.6" width="120.9" height="25.9" rx="13" fill="#085459" fill-opacity="0.60"/><rect x="435.3" y="111.6" width="89.2" height="25.9" rx="13" fill="#085459" fill-opacity="0.37"/><line x1="32" y1="176.4" x2="608" y2="176.4" stroke="#085459" stroke-opacity=".2" stroke-width="1"/><rect x="76.2" y="163.4" width="119.5" height="25.9" rx="13" fill="#075056" fill-opacity="0.43"/><rect x="225.4" y="163.4" width="84.8" height="25.9" rx="13" fill="#075056" fill-opacity="0.33"/><rect x="366.9" y="163.4" width="76.6" height="25.9" rx="13" fill="#075056" fill-opacity="0.63"/><rect x="485" y="163.4" width="103.8" height="25.9" rx="13" fill="#075056" fill-opacity="0.69"/><line x1="32" y1="228.2" x2="608" y2="228.2" stroke="#085459" stroke-opacity=".2" stroke-width="1"/><rect x="84.2" y="215.3" width="139.9" height="25.9" rx="13" fill="#085459" fill-opacity="0.28"/><rect x="257.7" y="215.3" width="151.9" height="25.9" rx="13" fill="#085459" fill-opacity="0.60"/><rect x="449.4" y="215.3" width="139.4" height="25.9" rx="13" fill="#085459" fill-opacity="0.49"/><line x1="32" y1="280.1" x2="608" y2="280.1" stroke="#085459" stroke-opacity=".2" stroke-width="1"/><rect x="114" y="267.1" width="110.5" height="25.9" rx="13" fill="#075056" fill-opacity="0.45"/><rect x="278.3" y="267.1" width="156.7" height="25.9" rx="13" fill="#075056" fill-opacity="0.42"/><rect x="464.9" y="267.1" width="110.8" height="25.9" rx="13" fill="#075056" fill-opacity="0.62"/></g>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">Engineering Leadership</span>
+    <h3 class="card-title">SRE Toil: What It Is, How to Measure It, and How to Reduce It</h3>
+    <p class="card-desc">Toil is the manual, repetitive, automatable work that keeps systems running without actually improving them. SRE practice says: measure toil, set a ceiling, and invest engineering effort in eliminating it.</p>
+    <div class="card-meta"><time datetime="2026-10-09">9 Oct 2026</time><span class="dot"></span><span>3 min read</span></div>
+  </div>
+</a>
+<a class="card" data-card data-topics="|Programming|Fundamentals|" data-search="kernel tuning with sysctl: memory, networking, and i/o the sysctl parameters that actually matter in production — vm reclaim tuning, tcp stack optimisation, file descriptor limits, and the settings that separate a well-tuned server from a default install. programming fundamentals" data-topic="Programming" href="/insights/os-kernel-tuning-sysctl/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgoskerneltuni" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5b55e9" stop-opacity=".10"/><stop offset="1" stop-color="#3731ad" stop-opacity=".22"/></linearGradient>
+    <marker id="ahoskerneltuni" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#5b55e9" fill-opacity=".5"/>
+    </marker>
+    <clipPath id="cposkerneltuni"><rect width="640" height="360"/></clipPath>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgoskerneltuni)"/>
+  <g clip-path="url(#cposkerneltuni)"><line x1="38.4" y1="179.7" x2="172" y2="212.5" stroke="#5b55e9" stroke-opacity=".3" stroke-width="1.4"/><line x1="38.4" y1="179.7" x2="178.5" y2="138.1" stroke="#5b55e9" stroke-opacity=".3" stroke-width="1.4"/><line x1="38.4" y1="179.7" x2="199" y2="260.4" stroke="#5b55e9" stroke-opacity=".3" stroke-width="1.4"/><line x1="172" y1="212.5" x2="178.5" y2="138.1" stroke="#5b55e9" stroke-opacity=".3" stroke-width="1.4"/><line x1="172" y1="212.5" x2="199" y2="260.4" stroke="#5b55e9" stroke-opacity=".3" stroke-width="1.4"/><line x1="172" y1="212.5" x2="232.4" y2="95.5" stroke="#5b55e9" stroke-opacity=".3" stroke-width="1.4"/><line x1="172" y1="212.5" x2="271.8" y2="275.2" stroke="#5b55e9" stroke-opacity=".3" stroke-width="1.4"/><line x1="172" y1="212.5" x2="280.7" y2="89" stroke="#5b55e9" stroke-opacity=".3" stroke-width="1.4"/><line x1="172" y1="212.5" x2="302.1" y2="277.6" stroke="#5b55e9" stroke-opacity=".3" stroke-width="1.4"/><line x1="178.5" y1="138.1" x2="199" y2="260.4" stroke="#5b55e9" stroke-opacity=".3" stroke-width="1.4"/><line x1="178.5" y1="138.1" x2="232.4" y2="95.5" stroke="#5b55e9" stroke-opacity=".3" stroke-width="1.4"/><line x1="178.5" y1="138.1" x2="271.8" y2="275.2" stroke="#5b55e9" stroke-opacity=".3" stroke-width="1.4"/><line x1="178.5" y1="138.1" x2="280.7" y2="89" stroke="#5b55e9" stroke-opacity=".3" stroke-width="1.4"/><line x1="178.5" y1="138.1" x2="302.1" y2="277.6" stroke="#5b55e9" stroke-opacity=".3" stroke-width="1.4"/><line x1="178.5" y1="138.1" x2="351.4" y2="47.8" stroke="#5b55e9" stroke-opacity=".3" stroke-width="1.4"/><line x1="199" y1="260.4" x2="232.4" y2="95.5" stroke="#5b55e9" stroke-opacity=".3" stroke-width="1.4"/><line x1="199" y1="260.4" x2="271.8" y2="275.2" stroke="#5b55e9" stroke-opacity=".3" stroke-width="1.4"/><line x1="199" y1="260.4" x2="280.7" y2="89" stroke="#5b55e9" stroke-opacity=".3" stroke-width="1.4"/><line x1="199" y1="260.4" x2="302.1" y2="277.6" stroke="#5b55e9" stroke-opacity=".3" stroke-width="1.4"/><line x1="199" y1="260.4" x2="385.4" y2="270.7" stroke="#5b55e9" stroke-opacity=".3" stroke-width="1.4"/><line x1="232.4" y1="95.5" x2="271.8" y2="275.2" stroke="#5b55e9" stroke-opacity=".3" stroke-width="1.4"/><line x1="232.4" y1="95.5" x2="280.7" y2="89" stroke="#5b55e9" stroke-opacity=".3" stroke-width="1.4"/><line x1="232.4" y1="95.5" x2="302.1" y2="277.6" stroke="#5b55e9" stroke-opacity=".3" stroke-width="1.4"/><line x1="232.4" y1="95.5" x2="351.4" y2="47.8" stroke="#5b55e9" stroke-opacity=".3" stroke-width="1.4"/><line x1="232.4" y1="95.5" x2="393.9" y2="58.8" stroke="#5b55e9" stroke-opacity=".3" stroke-width="1.4"/><line x1="232.4" y1="95.5" x2="403.2" y2="82.1" stroke="#5b55e9" stroke-opacity=".3" stroke-width="1.4"/><line x1="271.8" y1="275.2" x2="280.7" y2="89" stroke="#5b55e9" stroke-opacity=".3" stroke-width="1.4"/><line x1="271.8" y1="275.2" x2="302.1" y2="277.6" stroke="#5b55e9" stroke-opacity=".3" stroke-width="1.4"/><line x1="271.8" y1="275.2" x2="385.4" y2="270.7" stroke="#5b55e9" stroke-opacity=".3" stroke-width="1.4"/><line x1="271.8" y1="275.2" x2="436.7" y2="265.7" stroke="#5b55e9" stroke-opacity=".3" stroke-width="1.4"/><line x1="280.7" y1="89" x2="302.1" y2="277.6" stroke="#5b55e9" stroke-opacity=".3" stroke-width="1.4"/><line x1="280.7" y1="89" x2="351.4" y2="47.8" stroke="#5b55e9" stroke-opacity=".3" stroke-width="1.4"/><line x1="280.7" y1="89" x2="393.9" y2="58.8" stroke="#5b55e9" stroke-opacity=".3" stroke-width="1.4"/><line x1="280.7" y1="89" x2="403.2" y2="82.1" stroke="#5b55e9" stroke-opacity=".3" stroke-width="1.4"/><line x1="280.7" y1="89" x2="439.1" y2="131.5" stroke="#5b55e9" stroke-opacity=".3" stroke-width="1.4"/><line x1="302.1" y1="277.6" x2="385.4" y2="270.7" stroke="#5b55e9" stroke-opacity=".3" stroke-width="1.4"/><line x1="302.1" y1="277.6" x2="436.7" y2="265.7" stroke="#5b55e9" stroke-opacity=".3" stroke-width="1.4"/><line x1="302.1" y1="277.6" x2="463.8" y2="220.3" stroke="#5b55e9" stroke-opacity=".3" stroke-width="1.4"/><line x1="351.4" y1="47.8" x2="393.9" y2="58.8" stroke="#5b55e9" stroke-opacity=".3" stroke-width="1.4"/><line x1="351.4" y1="47.8" x2="403.2" y2="82.1" stroke="#5b55e9" stroke-opacity=".3" stroke-width="1.4"/><line x1="351.4" y1="47.8" x2="439.1" y2="131.5" stroke="#5b55e9" stroke-opacity=".3" stroke-width="1.4"/><line x1="385.4" y1="270.7" x2="403.2" y2="82.1" stroke="#5b55e9" stroke-opacity=".3" stroke-width="1.4"/><line x1="385.4" y1="270.7" x2="436.7" y2="265.7" stroke="#5b55e9" stroke-opacity=".3" stroke-width="1.4"/><line x1="385.4" y1="270.7" x2="439.1" y2="131.5" stroke="#5b55e9" stroke-opacity=".3" stroke-width="1.4"/><line x1="385.4" y1="270.7" x2="463.8" y2="220.3" stroke="#5b55e9" stroke-opacity=".3" stroke-width="1.4"/><line x1="393.9" y1="58.8" x2="403.2" y2="82.1" stroke="#5b55e9" stroke-opacity=".3" stroke-width="1.4"/><line x1="393.9" y1="58.8" x2="439.1" y2="131.5" stroke="#5b55e9" stroke-opacity=".3" stroke-width="1.4"/><line x1="393.9" y1="58.8" x2="463.8" y2="220.3" stroke="#5b55e9" stroke-opacity=".3" stroke-width="1.4"/><line x1="403.2" y1="82.1" x2="436.7" y2="265.7" stroke="#5b55e9" stroke-opacity=".3" stroke-width="1.4"/><line x1="403.2" y1="82.1" x2="439.1" y2="131.5" stroke="#5b55e9" stroke-opacity=".3" stroke-width="1.4"/><line x1="403.2" y1="82.1" x2="463.8" y2="220.3" stroke="#5b55e9" stroke-opacity=".3" stroke-width="1.4"/><line x1="436.7" y1="265.7" x2="439.1" y2="131.5" stroke="#5b55e9" stroke-opacity=".3" stroke-width="1.4"/><line x1="436.7" y1="265.7" x2="463.8" y2="220.3" stroke="#5b55e9" stroke-opacity=".3" stroke-width="1.4"/><line x1="436.7" y1="265.7" x2="592.7" y2="191.4" stroke="#5b55e9" stroke-opacity=".3" stroke-width="1.4"/><line x1="439.1" y1="131.5" x2="463.8" y2="220.3" stroke="#5b55e9" stroke-opacity=".3" stroke-width="1.4"/><line x1="439.1" y1="131.5" x2="592.7" y2="191.4" stroke="#5b55e9" stroke-opacity=".3" stroke-width="1.4"/><line x1="463.8" y1="220.3" x2="592.7" y2="191.4" stroke="#5b55e9" stroke-opacity=".3" stroke-width="1.4"/><circle cx="38.4" cy="179.7" r="4.5" fill="#5b55e9" fill-opacity=".88"/><circle cx="172" cy="212.5" r="8" fill="#3731ad" fill-opacity=".88"/><circle cx="178.5" cy="138.1" r="11.5" fill="#5b55e9" fill-opacity=".88"/><circle cx="199" cy="260.4" r="4.5" fill="#3731ad" fill-opacity=".88"/><circle cx="232.4" cy="95.5" r="8" fill="#5b55e9" fill-opacity=".88"/><circle cx="271.8" cy="275.2" r="11.5" fill="#3731ad" fill-opacity=".88"/><circle cx="280.7" cy="89" r="4.5" fill="#5b55e9" fill-opacity=".88"/><circle cx="302.1" cy="277.6" r="8" fill="#3731ad" fill-opacity=".88"/><circle cx="351.4" cy="47.8" r="11.5" fill="#5b55e9" fill-opacity=".88"/><circle cx="385.4" cy="270.7" r="4.5" fill="#3731ad" fill-opacity=".88"/><circle cx="393.9" cy="58.8" r="8" fill="#5b55e9" fill-opacity=".88"/><circle cx="403.2" cy="82.1" r="11.5" fill="#3731ad" fill-opacity=".88"/><circle cx="436.7" cy="265.7" r="4.5" fill="#5b55e9" fill-opacity=".88"/><circle cx="439.1" cy="131.5" r="8" fill="#3731ad" fill-opacity=".88"/><circle cx="463.8" cy="220.3" r="11.5" fill="#5b55e9" fill-opacity=".88"/><circle cx="592.7" cy="191.4" r="4.5" fill="#3731ad" fill-opacity=".88"/></g>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">Programming</span>
+    <h3 class="card-title">Kernel Tuning with sysctl: Memory, Networking, and I/O</h3>
+    <p class="card-desc">The sysctl parameters that actually matter in production — VM reclaim tuning, TCP stack optimisation, file descriptor limits, and the settings that separate a well-tuned server from a default install.</p>
+    <div class="card-meta"><time datetime="2026-09-30">30 Sept 2026</time><span class="dot"></span><span>5 min read</span><span class="dot"></span><span>Series</span></div>
+  </div>
+</a>
+<a class="card" data-card data-topics="|DevSecOps|Fundamentals|" data-search="container security: the specific misconfigurations that open production systems to attack running containers as root, privileged mode, unrestricted capabilities, exposed docker sockets — the container security mistakes that appear in breach reports and how to prevent them systematically. devsecops fundamentals" data-topic="DevSecOps" href="/insights/containers-security/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgcontainersse" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c6201d" stop-opacity=".10"/><stop offset="1" stop-color="#a72926" stop-opacity=".22"/></linearGradient>
+    <marker id="ahcontainersse" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#c6201d" fill-opacity=".5"/>
+    </marker>
+    <clipPath id="cpcontainersse"><rect width="640" height="360"/></clipPath>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgcontainersse)"/>
+  <g clip-path="url(#cpcontainersse)"><rect x="73.6" y="54" width="358.4" height="48.1" rx="9"
+      fill="#a72926" fill-opacity="0.15"
+      stroke="#c6201d" stroke-opacity=".45" stroke-width="1.2"/><rect x="118.4" y="121.9" width="358.4" height="48.1" rx="9"
+      fill="#c6201d" fill-opacity="0.27"
+      stroke="#c6201d" stroke-opacity=".45" stroke-width="1.2"/><rect x="163.2" y="189.9" width="358.4" height="48.1" rx="9"
+      fill="#a72926" fill-opacity="0.39"
+      stroke="#c6201d" stroke-opacity=".45" stroke-width="1.2"/><rect x="208" y="257.8" width="358.4" height="48.1" rx="9"
+      fill="#c6201d" fill-opacity="0.51"
+      stroke="#c6201d" stroke-opacity=".45" stroke-width="1.2"/></g>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">DevSecOps</span>
+    <h3 class="card-title">Container Security: The Specific Misconfigurations That Open Production Systems to Attack</h3>
+    <p class="card-desc">Running containers as root, privileged mode, unrestricted capabilities, exposed Docker sockets — the container security mistakes that appear in breach reports and how to prevent them systematically.</p>
+    <div class="card-meta"><time datetime="2026-09-28">28 Sept 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
+  </div>
+</a></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="art-wrap"><div class="cta-panel">
+      <h2 class="h2">Working on this in production?</h2>
+      <p class="lede" style="margin-top:.7rem">We do this work directly alongside engineering teams — architecture review, migration, and hands-on enablement.</p>
+      <div class="row" style="margin-top:1.4rem">
+        <a class="btn" href="/contact/">Engage engineering <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="btn btn-ghost" href="/services/">See what we do</a>
+      </div>
+    </div></div>
+  </section>
+</article>
+
+<div class="reader-tools">
+  <button class="icon-btn" id="readerBtn" type="button" aria-expanded="false" aria-controls="readerPanel" title="Reading settings" aria-label="Reading settings"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2.2"/><circle cx="10" cy="17" r="2.2"/></svg></button>
+  <button class="icon-btn" id="focusBtn" type="button" aria-pressed="false" title="Focus mode" aria-label="Enter focus mode"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></button>
+</div>
+<div class="reader-panel" id="readerPanel" role="dialog" aria-label="Reading settings" hidden>
+  <fieldset><legend>Text size</legend>
+    <div class="seg" data-pref="rsize">
+      <button type="button" data-val="s" aria-pressed="false"><span class="sample s">Aa</span>Small</button><button type="button" data-val="m" aria-pressed="false"><span class="sample ">Aa</span>Default</button><button type="button" data-val="l" aria-pressed="false"><span class="sample l">Aa</span>Large</button><button type="button" data-val="xl" aria-pressed="false"><span class="sample l">Aa</span>Largest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Ground</legend>
+    <div class="seg" data-pref="theme">
+      <button type="button" data-val="light" aria-pressed="false"><span class="swatch light"></span>Light</button><button type="button" data-val="sepia" aria-pressed="false"><span class="swatch sepia"></span>Sepia</button><button type="button" data-val="dark" aria-pressed="false"><span class="swatch dark"></span>Dark</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Column width</legend>
+    <div class="seg" data-pref="rwidth">
+      <button type="button" data-val="s" aria-pressed="false">Narrow</button><button type="button" data-val="m" aria-pressed="false">Default</button><button type="button" data-val="l" aria-pressed="false">Wide</button><button type="button" data-val="xl" aria-pressed="false">Widest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Typeface</legend>
+    <div class="seg" data-pref="rface">
+      <button type="button" data-val="sans" aria-pressed="false"><span class="sample">Aa</span>Sans</button>
+      <button type="button" data-val="serif" aria-pressed="false"><span class="sample serif">Aa</span>Serif</button>
+    </div>
+  </fieldset>
+  <button class="reader-reset" id="readerReset" type="button">Reset to defaults</button>
+  <p class="reader-note">Saved in this browser only — these settings do not follow you to another device.</p>
+</div>
+<button class="focus-exit" id="focusExit" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h6V3M21 9h-6V3M3 15h6v6M21 15h-6v6"/></svg> Exit focus</button>
+<div class="chapter-bar" id="chapterBar">
+  <div class="chapter-where">
+    <b>Platform Engineering: What It Is, Why It Emerged, and What Makes It Different from DevOps</b>
+    <span>Platform Engineering: From Concept to Internal Developer Platform</span>
+  </div>
+  <span class="chapter-left" id="chapterLeft"></span>
+  <nav class="chapter-step" aria-label="Article navigation">
+    <a href="/insights/java-jvm-tuning-production/" aria-label="Previous: JVM Tuning for Production: Heap, GC, and the Flags Worth Setting in 2026"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a>
+    <a aria-disabled="true" aria-label="No next article"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
+  </nav>
+</div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="grid g-4" style="gap:2rem">
+      <div>
+        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem" aria-label="Ajna Consulting Services — home">
+          <svg class="ajna-mark" viewBox="0 0 100 100" width="36" height="36" fill="none" aria-hidden="true" focusable="false"><defs><path id="t-ftr" d="M 50 4 L 96 50 L 50 50 Z"/><path id="e-ftr" d="M 50 4 L 96 50"/><path id="k-ftr" d="M 50 4 L 50 50 L 96 50"/><linearGradient id="bev-ftr" gradientUnits="userSpaceOnUse" x1="50" y1="50" x2="73" y2="27"><stop offset="0" stop-color="#000" stop-opacity=".13"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity=".2"/></linearGradient><radialGradient id="core-ftr" cx=".34" cy=".3" r=".85"><stop offset="0" stop-color="#fff" stop-opacity=".42"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".45"/></radialGradient><path id="ll-ftr" d="M 50 50 C 35 30.26, 40.7 9.579999999999998, 50 3 C 59.3 9.579999999999998, 65 30.26, 50 50 Z"/><path id="ls-ftr" d="M 50 50 C 35.5 33.620000000000005, 41.01 16.46, 50 11 C 58.99 16.46, 64.5 33.620000000000005, 50 50 Z"/><linearGradient id="lf-ftr" gradientUnits="userSpaceOnUse" x1="35" y1="30" x2="65" y2="30"><stop offset="0" stop-color="#fff" stop-opacity=".3"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".22"/></linearGradient></defs><g class="am-leaf am-leaf-b" style="--a:45deg"><use href="#ls-ftr" fill="#17A05E" opacity=".62"/><use href="#ls-ftr" fill="url(#lf-ftr)"/></g><g class="am-leaf am-leaf-b" style="--a:135deg"><use href="#ls-ftr" fill="#2B57E8" opacity=".62"/><use href="#ls-ftr" fill="url(#lf-ftr)"/><use href="#ls-ftr" fill="#000" opacity="0.30"/></g><g class="am-leaf am-leaf-b" style="--a:225deg"><use href="#ls-ftr" fill="#E8402A" opacity=".62"/><use href="#ls-ftr" fill="url(#lf-ftr)"/></g><g class="am-leaf am-leaf-b" style="--a:315deg"><use href="#ls-ftr" fill="#F5A623" opacity=".62"/><use href="#ls-ftr" fill="url(#lf-ftr)"/><use href="#ls-ftr" fill="#fff" opacity="0.30"/></g><g class="am-leaf" style="--a:0deg"><use href="#ll-ftr" fill="#E8402A" opacity=".9"/><use href="#ll-ftr" fill="url(#lf-ftr)"/><use href="#ll-ftr" fill="#fff" opacity="0.21"/></g><g class="am-leaf" style="--a:90deg"><use href="#ll-ftr" fill="#F5A623" opacity=".9"/><use href="#ll-ftr" fill="url(#lf-ftr)"/><use href="#ll-ftr" fill="#000" opacity="0.21"/></g><g class="am-leaf" style="--a:180deg"><use href="#ll-ftr" fill="#17A05E" opacity=".9"/><use href="#ll-ftr" fill="url(#lf-ftr)"/><use href="#ll-ftr" fill="#000" opacity="0.21"/></g><g class="am-leaf" style="--a:270deg"><use href="#ll-ftr" fill="#2B57E8" opacity=".9"/><use href="#ll-ftr" fill="url(#lf-ftr)"/><use href="#ll-ftr" fill="#fff" opacity="0.21"/></g><g class="am-bud"><g class="am-petal" style="--a:0deg"><use href="#t-ftr" fill="#E8402A"/><use href="#t-ftr" fill="url(#bev-ftr)"/><use href="#t-ftr" fill="#fff" opacity="0.07"/><use href="#e-ftr" stroke="#fff" stroke-opacity="0.34" stroke-width="1.6" stroke-linecap="round"/><use href="#k-ftr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g class="am-petal" style="--a:90deg"><use href="#t-ftr" fill="#F5A623"/><use href="#t-ftr" fill="url(#bev-ftr)"/><use href="#t-ftr" fill="#000" opacity="0.12"/><use href="#e-ftr" stroke="#000" stroke-opacity="0.16" stroke-width="1.6" stroke-linecap="round"/><use href="#k-ftr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g class="am-petal" style="--a:180deg"><use href="#t-ftr" fill="#17A05E"/><use href="#t-ftr" fill="url(#bev-ftr)"/><use href="#t-ftr" fill="#000" opacity="0.05"/><use href="#e-ftr" stroke="#000" stroke-opacity="0.1" stroke-width="1.6" stroke-linecap="round"/><use href="#k-ftr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g class="am-petal" style="--a:270deg"><use href="#t-ftr" fill="#2B57E8"/><use href="#t-ftr" fill="url(#bev-ftr)"/><use href="#t-ftr" fill="#fff" opacity="0.30"/><use href="#e-ftr" stroke="#fff" stroke-opacity="0.46" stroke-width="1.6" stroke-linecap="round"/><use href="#k-ftr" stroke="#000" stroke-width=".9" opacity=".2"/></g></g><g class="am-core"><circle cx="50" cy="50" r="6" fill="currentColor"/><circle cx="50" cy="50" r="6" fill="url(#core-ftr)"/></g></svg>
+          <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
+        </a>
+        <p style="font-size:.88rem;line-height:1.65;color:#9fb0d0;max-width:30ch">
+          Specialised engineering partner for enterprise architecture, AI &amp; MLOps, and technical enablement.
+        </p>
+        <div class="social" style="margin-top:1.1rem">
+          <a href="https://www.youtube.com/@TechKnowen" rel="noopener" aria-label="YouTube"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 12s0-3.8-.5-5.6a2.9 2.9 0 0 0-2-2C18.7 4 12 4 12 4s-6.7 0-8.5.4a2.9 2.9 0 0 0-2 2C1 8.2 1 12 1 12s0 3.8.5 5.6a2.9 2.9 0 0 0 2 2C5.3 20 12 20 12 20s6.7 0 8.5-.4a2.9 2.9 0 0 0 2-2C23 15.8 23 12 23 12zM9.8 15.4V8.6l5.9 3.4z"/></svg></a>
+          <a href="https://techknowen.com" rel="noopener" aria-label="TechKnowen blog"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 3h16v3H4zm0 5h16v13l-8-4-8 4z"/></svg></a>
+          <a href="/feed.xml" aria-label="RSS feed"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="6.2" cy="17.8" r="2.2"/><path d="M4 10.2v3a6.6 6.6 0 0 1 6.6 6.6h3A9.6 9.6 0 0 0 4 10.2zM4 4v3c7.2 0 13 5.8 13 13h3C20 11.2 12.8 4 4 4z"/></svg></a>
+        </div>
+      </div>
+      <div>
+        <h2 class="foot-title">Services</h2>
+        <ul>
+          <li><a href="/services/#architecture">Enterprise architecture</a></li>
+          <li><a href="/services/#ai">AI &amp; MLOps</a></li>
+          <li><a href="/services/#training">Technical enablement</a></li>
+          <li><a href="/case-studies/">Case studies</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2 class="foot-title">Insights</h2>
+        <ul>
+          <li><a href="/insights/">All articles</a></li>
+          <li><a href="/series/">Series</a></li>
+          <li><a href="/topics/">Topics</a></li>
+          <li><a href="/notes/">Personal notes</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2 class="foot-title">Contact</h2>
+        <ul>
+          <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
+          <li><a href="/contact/">Start an engagement</a></li>
+          <li><a href="/about/">About</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span id="yr">2026</span> Ajna Consulting Services. All rights reserved.</span>
+      <span style="display:flex;gap:1.2rem"><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a></span>
+    </div>
+  </div>
+</footer>
+<script src="/assets/js/site.js" defer></script>
+</body>
+</html>
