@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Large Language Models: What They Are, How They Are Built, and What They Cannot Do | Ajna CS</title>
+<meta name="description" content="Transformers, attention, pretraining, fine-tuning, RLHF — the architecture and training pipeline behind GPT, Claude, Llama, and every other modern LLM, exp…">
+<meta name="author" content="Chandra Lanka">
+<link rel="canonical" href="https://ajnacs.com/insights/aiml-llms-explained/">
+<meta name="robots" content="index, follow, max-image-preview:large">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Ajna Consulting Services">
+<meta property="og:title" content="Large Language Models: What They Are, How They Are Built, and What They Cannot Do">
+<meta property="og:description" content="Transformers, attention, pretraining, fine-tuning, RLHF — the architecture and training pipeline behind GPT, Claude, Llama, and every other modern LLM, exp…">
+<meta property="og:url" content="https://ajnacs.com/insights/aiml-llms-explained/">
+<meta property="og:image" content="https://ajnacs.com/assets/og/ai-mlops.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/jpeg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Large Language Models: What They Are, How They Are Built, and What They Cannot Do">
+<meta name="twitter:description" content="Transformers, attention, pretraining, fine-tuning, RLHF — the architecture and training pipeline behind GPT, Claude, Llama, and every other modern LLM, exp…">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/ai-mlops.jpg">
+
+<link rel="icon" href="/favicon.ico?v=cefc53b9" sizes="any">
+<link rel="icon" href="/images/ajna-mark.svg?v=cefc53b9" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png?v=cefc53b9">
+<meta name="theme-color" content="#0a1020">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Quintessential&display=swap">
+<link rel="stylesheet" href="/assets/css/site.css">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<script>
+/* Theme and reading preferences are applied before first paint, so the page
+   never flashes the wrong ground or resets someone's text size mid-read. */
+(function(){try{
+var d=document.documentElement,t=localStorage.getItem('acs-theme');
+if(t!=='dark'&&t!=='light'&&t!=='sepia')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+d.setAttribute('data-theme',t);
+['rsize','rwidth','rface'].forEach(function(k){
+  var v=localStorage.getItem('acs-'+k);
+  if(v&&/^[a-z]{1,5}$/.test(v))d.setAttribute('data-'+k,v);
+});
+if(d.getAttribute('data-rface')==='serif'){
+  var l=document.createElement('link');l.rel='stylesheet';
+  l.href='https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600&display=swap';
+  document.head.appendChild(l);
+}
+}catch(e){}})();
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Large Language Models: What They Are, How They Are Built, and What They Cannot Do","description":"Transformers, attention, pretraining, fine-tuning, RLHF — the architecture and training pipeline behind GPT, Claude, Llama, and every other modern LLM, explained for engineers who need to use and evaluate these systems.","datePublished":"2026-10-21","dateModified":"2026-10-21","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/aiml-llms-explained/","image":"https://ajnacs.com/assets/og/ai-mlops.jpg","keywords":"AI & MLOps, Enterprise AI, Fundamentals","articleSection":"AI & MLOps","wordCount":821}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Large Language Models: What They Are, How They Are Built, and What They Cannot Do"}]}</script>
+</head>
+<body class="" data-topic="AI &amp; MLOps">
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header" id="siteHeader">
+  <div class="wrap" style="display:flex;align-items:center;width:min(1220px,100% - var(--gutter)*2)">
+    <a class="brand" href="/" aria-label="Ajna Consulting Services — home">
+      <svg class="ajna-mark" viewBox="0 0 100 100" width="40" height="40" fill="none" aria-hidden="true" focusable="false"><defs><path id="t-hdr" d="M 50 4 L 96 50 L 50 50 Z"/><path id="e-hdr" d="M 50 4 L 96 50"/><path id="k-hdr" d="M 50 4 L 50 50 L 96 50"/><linearGradient id="bev-hdr" gradientUnits="userSpaceOnUse" x1="50" y1="50" x2="73" y2="27"><stop offset="0" stop-color="#000" stop-opacity=".13"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity=".2"/></linearGradient><radialGradient id="core-hdr" cx=".34" cy=".3" r=".85"><stop offset="0" stop-color="#fff" stop-opacity=".42"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".45"/></radialGradient><path id="ll-hdr" d="M 50 50 C 35 30.26, 40.7 9.579999999999998, 50 3 C 59.3 9.579999999999998, 65 30.26, 50 50 Z"/><path id="ls-hdr" d="M 50 50 C 35.5 33.620000000000005, 41.01 16.46, 50 11 C 58.99 16.46, 64.5 33.620000000000005, 50 50 Z"/><linearGradient id="lf-hdr" gradientUnits="userSpaceOnUse" x1="35" y1="30" x2="65" y2="30"><stop offset="0" stop-color="#fff" stop-opacity=".3"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".22"/></linearGradient></defs><g class="am-leaf am-leaf-b" style="--a:45deg"><use href="#ls-hdr" fill="#17A05E" opacity=".62"/><use href="#ls-hdr" fill="url(#lf-hdr)"/></g><g class="am-leaf am-leaf-b" style="--a:135deg"><use href="#ls-hdr" fill="#2B57E8" opacity=".62"/><use href="#ls-hdr" fill="url(#lf-hdr)"/><use href="#ls-hdr" fill="#000" opacity="0.30"/></g><g class="am-leaf am-leaf-b" style="--a:225deg"><use href="#ls-hdr" fill="#E8402A" opacity=".62"/><use href="#ls-hdr" fill="url(#lf-hdr)"/></g><g class="am-leaf am-leaf-b" style="--a:315deg"><use href="#ls-hdr" fill="#F5A623" opacity=".62"/><use href="#ls-hdr" fill="url(#lf-hdr)"/><use href="#ls-hdr" fill="#fff" opacity="0.30"/></g><g class="am-leaf" style="--a:0deg"><use href="#ll-hdr" fill="#E8402A" opacity=".9"/><use href="#ll-hdr" fill="url(#lf-hdr)"/><use href="#ll-hdr" fill="#fff" opacity="0.21"/></g><g class="am-leaf" style="--a:90deg"><use href="#ll-hdr" fill="#F5A623" opacity=".9"/><use href="#ll-hdr" fill="url(#lf-hdr)"/><use href="#ll-hdr" fill="#000" opacity="0.21"/></g><g class="am-leaf" style="--a:180deg"><use href="#ll-hdr" fill="#17A05E" opacity=".9"/><use href="#ll-hdr" fill="url(#lf-hdr)"/><use href="#ll-hdr" fill="#000" opacity="0.21"/></g><g class="am-leaf" style="--a:270deg"><use href="#ll-hdr" fill="#2B57E8" opacity=".9"/><use href="#ll-hdr" fill="url(#lf-hdr)"/><use href="#ll-hdr" fill="#fff" opacity="0.21"/></g><g class="am-bud"><g class="am-petal" style="--a:0deg"><use href="#t-hdr" fill="#E8402A"/><use href="#t-hdr" fill="url(#bev-hdr)"/><use href="#t-hdr" fill="#fff" opacity="0.07"/><use href="#e-hdr" stroke="#fff" stroke-opacity="0.34" stroke-width="1.6" stroke-linecap="round"/><use href="#k-hdr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g class="am-petal" style="--a:90deg"><use href="#t-hdr" fill="#F5A623"/><use href="#t-hdr" fill="url(#bev-hdr)"/><use href="#t-hdr" fill="#000" opacity="0.12"/><use href="#e-hdr" stroke="#000" stroke-opacity="0.16" stroke-width="1.6" stroke-linecap="round"/><use href="#k-hdr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g class="am-petal" style="--a:180deg"><use href="#t-hdr" fill="#17A05E"/><use href="#t-hdr" fill="url(#bev-hdr)"/><use href="#t-hdr" fill="#000" opacity="0.05"/><use href="#e-hdr" stroke="#000" stroke-opacity="0.1" stroke-width="1.6" stroke-linecap="round"/><use href="#k-hdr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g class="am-petal" style="--a:270deg"><use href="#t-hdr" fill="#2B57E8"/><use href="#t-hdr" fill="url(#bev-hdr)"/><use href="#t-hdr" fill="#fff" opacity="0.30"/><use href="#e-hdr" stroke="#fff" stroke-opacity="0.46" stroke-width="1.6" stroke-linecap="round"/><use href="#k-hdr" stroke="#000" stroke-width=".9" opacity=".2"/></g></g><g class="am-core"><circle cx="50" cy="50" r="6" fill="currentColor"/><circle cx="50" cy="50" r="6" fill="url(#core-hdr)"/></g></svg>
+      <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
+    </a>
+    <nav class="nav" id="nav" aria-label="Primary">
+      <a href="/services/">Services</a>
+      <a href="/insights/" aria-current="page">Insights</a>
+      <a href="/series/">Series</a>
+      <a href="/case-studies/">Case studies</a>
+      <a href="/about/">About</a>
+      <a class="btn btn-sm" href="/contact/" style="margin-left:.4rem">Engage engineering</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn" id="themeBtn" type="button" aria-label="Switch to dark mode" aria-pressed="false"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg></button>
+      <button class="icon-btn nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+
+<div class="read-bar" aria-hidden="true"><span id="readBar"></span></div>
+<article class="article with-toc">
+  <header class="article-head">
+    <div class="art-wrap">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a> <span aria-hidden="true">/</span>
+        <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
+        <span>AI &amp; MLOps</span>
+      </nav>
+      <h1 class="h1">Large Language Models: What They Are, How They Are Built, and What They Cannot Do</h1>
+      <p class="lede" style="margin-top:1rem">Transformers, attention, pretraining, fine-tuning, RLHF — the architecture and training pipeline behind GPT, Claude, Llama, and every other modern LLM, explained for engineers who need to use and evaluate these systems.</p>
+      <div class="article-meta">
+        <span class="chip">AI &amp; MLOps</span>
+        <time datetime="2026-10-21">21 Oct 2026</time>
+        <span class="dot"></span><span>4 min read</span>
+        <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="art-wrap"><div class="article-hero" data-topic="AI &amp; MLOps"><svg viewBox="0 0 1200 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgaimlllmsexpl" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2d19ff" stop-opacity=".10"/><stop offset="1" stop-color="#3020da" stop-opacity=".22"/></linearGradient>
+    <marker id="ahaimlllmsexpl" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#2d19ff" fill-opacity=".5"/>
+    </marker>
+    <clipPath id="cpaimlllmsexpl"><rect width="1200" height="380"/></clipPath>
+  </defs>
+  <rect width="1200" height="380" fill="url(#bgaimlllmsexpl)"/>
+  <g clip-path="url(#cpaimlllmsexpl)"><line x1="100.2" y1="150.7" x2="301.7" y2="251.1" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="301.7" y1="251.1" x2="392" y2="201.5" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="301.7" y1="251.1" x2="429.4" y2="292" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="301.7" y1="251.1" x2="471.8" y2="99" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="392" y1="201.5" x2="429.4" y2="292" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="392" y1="201.5" x2="471.8" y2="99" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="392" y1="201.5" x2="489.1" y2="54.8" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="392" y1="201.5" x2="547.9" y2="325.4" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="429.4" y1="292" x2="471.8" y2="99" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="429.4" y1="292" x2="547.9" y2="325.4" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="429.4" y1="292" x2="621.2" y2="328.4" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="471.8" y1="99" x2="489.1" y2="54.8" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="471.8" y1="99" x2="547.9" y2="325.4" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="471.8" y1="99" x2="704.7" y2="74.6" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="489.1" y1="54.8" x2="704.7" y2="74.6" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="547.9" y1="325.4" x2="621.2" y2="328.4" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="547.9" y1="325.4" x2="762.7" y2="284.6" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="621.2" y1="328.4" x2="762.7" y2="284.6" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="621.2" y1="328.4" x2="804" y2="225.9" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="621.2" y1="328.4" x2="805.9" y2="184.8" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="704.7" y1="74.6" x2="762.7" y2="284.6" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="704.7" y1="74.6" x2="771.7" y2="77.6" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="704.7" y1="74.6" x2="804" y2="225.9" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="704.7" y1="74.6" x2="805.9" y2="184.8" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="762.7" y1="284.6" x2="771.7" y2="77.6" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="762.7" y1="284.6" x2="804" y2="225.9" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="762.7" y1="284.6" x2="805.9" y2="184.8" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="771.7" y1="77.6" x2="804" y2="225.9" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="771.7" y1="77.6" x2="805.9" y2="184.8" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="804" y1="225.9" x2="805.9" y2="184.8" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><circle cx="100.2" cy="150.7" r="4.5" fill="#2d19ff" fill-opacity=".88"/><circle cx="301.7" cy="251.1" r="8" fill="#3020da" fill-opacity=".88"/><circle cx="392" cy="201.5" r="11.5" fill="#2d19ff" fill-opacity=".88"/><circle cx="429.4" cy="292" r="4.5" fill="#3020da" fill-opacity=".88"/><circle cx="471.8" cy="99" r="8" fill="#2d19ff" fill-opacity=".88"/><circle cx="489.1" cy="54.8" r="11.5" fill="#3020da" fill-opacity=".88"/><circle cx="547.9" cy="325.4" r="4.5" fill="#2d19ff" fill-opacity=".88"/><circle cx="621.2" cy="328.4" r="8" fill="#3020da" fill-opacity=".88"/><circle cx="704.7" cy="74.6" r="11.5" fill="#2d19ff" fill-opacity=".88"/><circle cx="762.7" cy="284.6" r="4.5" fill="#3020da" fill-opacity=".88"/><circle cx="771.7" cy="77.6" r="8" fill="#2d19ff" fill-opacity=".88"/><circle cx="804" cy="225.9" r="11.5" fill="#3020da" fill-opacity=".88"/><circle cx="805.9" cy="184.8" r="4.5" fill="#2d19ff" fill-opacity=".88"/><circle cx="1097.7" cy="152.1" r="8" fill="#3020da" fill-opacity=".88"/></g>
+</svg></div></div>
+
+  <div class="art-wrap article-grid">
+    <div class="reader-aside"><nav class="toc" aria-label="On this page">
+  <p class="toc-title">On this page</p>
+  <ol><li><a href="#the-transformer-the-architecture-that-changed-everything">The Transformer: The Architecture That Changed Everything</a></li><li><a href="#pretraining-what-llms-actually-learn">Pretraining: What LLMs Actually Learn</a></li><li><a href="#fine-tuning-and-rlhf-from-predictor-to-assistant">Fine-Tuning and RLHF: From Predictor to Assistant</a></li><li><a href="#what-llms-cannot-do-the-architectural-limits">What LLMs Cannot Do: The Architectural Limits</a></li></ol>
+</nav><nav class="chapters" aria-label="Articles in this series">
+      <p class="chapters-title">AI, ML, LLMs, and Neural Networks: A Practitioner&#39;s Introduction</p>
+      <ol><li><a href="/insights/aiml-what-is-machine-learning/">What Machine Learning Actually Is — Before the Hype and After the Buzzwords</a></li><li><a href="/insights/aiml-neural-networks/">Neural Networks Explained: What They Are, How They Learn, and Why They Work</a></li><li aria-current="true"><a href="/insights/aiml-llms-explained/">Large Language Models: What They Are, How They Are Built, and What They Cannot Do</a></li><li><a href="/insights/aiml-rag-and-prompting/">RAG, Prompting, and Building Applications on LLMs: The Practitioner&#39;s Guide</a></li><li><a href="/insights/aiml-production-ai/">Putting AI in Production: What Enterprise AI Deployment Actually Requires</a></li></ol>
+    </nav></div>
+    <div class="prose">
+<p>Large language models are the most consequential technology development in AI since the GPU made deep learning practical. Understanding their architecture, their training process, and their limitations is essential for any engineer building on top of them — because the limitations are architectural, not incidental, and they shape what is safe and unsafe to build.</p>
+<h2 id="the-transformer-the-architecture-that-changed-everything"><a class="h-anchor" href="#the-transformer-the-architecture-that-changed-everything" aria-hidden="true" tabindex="-1">#</a>The Transformer: The Architecture That Changed Everything</h2>
+<p>Every major language model — GPT, Claude, Llama, Gemini, Mistral — is built on the transformer architecture, introduced in the 2017 paper &quot;Attention Is All You Need&quot; by Vaswani et al.</p>
+<p>The transformer&#39;s key innovation: the <strong>attention mechanism</strong>, which allows every token (word or subword) in the input to directly attend to every other token, regardless of distance. Earlier architectures (RNNs, LSTMs) processed sequences left-to-right, making it difficult to connect information that was far apart in the sequence. Attention removes the distance constraint.</p>
+<p><strong>How attention works conceptually</strong>: for each token, attention computes a weighted sum of all other tokens in the sequence, where the weights reflect how relevant each token is to understanding the current one. &quot;The bank by the river was steep&quot; — when computing the representation of &quot;bank,&quot; attention assigns high weight to &quot;river&quot; (suggesting geographic bank, not financial bank) and lower weight to &quot;steep.&quot;</p>
+<p>The transformer has two main components:</p>
+<ul>
+<li><strong>Encoder</strong>: reads the input and builds contextualised representations (used in BERT and similar models for classification, named entity recognition, etc.)</li>
+<li><strong>Decoder</strong>: generates output tokens one at a time, attending to both the encoder output and its own previous output (used in GPT-style models for text generation)</li>
+</ul>
+<p>GPT, Claude, and most modern LLMs are decoder-only transformers.</p>
+<h2 id="pretraining-what-llms-actually-learn"><a class="h-anchor" href="#pretraining-what-llms-actually-learn" aria-hidden="true" tabindex="-1">#</a>Pretraining: What LLMs Actually Learn</h2>
+<p>LLMs are pretrained on massive text corpora — trillions of tokens of web text, books, code, and scientific papers. The training objective is simple: predict the next token.</p>
+<p>Given &quot;The capital of France is&quot;, the model should predict &quot;Paris&quot; with high probability. Given &quot;Paris&quot;, it should predict reasonable continuations. This objective, applied at scale, forces the model to learn grammar, factual knowledge, reasoning patterns, code syntax, and cultural context — because all of these are predictive of what comes next in human text.</p>
+<p>The result is a model with broad world knowledge and language capability encoded in its billions of parameters.</p>
+<p><strong>Scale matters dramatically</strong>: GPT-2 (2019, 1.5B parameters) could write coherent paragraphs. GPT-3 (2020, 175B parameters) could follow instructions, translate languages, and write working code. GPT-4 and Claude 3 (2023–2024, estimated hundreds of billions of parameters) can reason through complex problems, write nuanced essays, and pass professional exams.</p>
+<h2 id="fine-tuning-and-rlhf-from-predictor-to-assistant"><a class="h-anchor" href="#fine-tuning-and-rlhf-from-predictor-to-assistant" aria-hidden="true" tabindex="-1">#</a>Fine-Tuning and RLHF: From Predictor to Assistant</h2>
+<p>A pretrained LLM predicts next tokens — it does not reliably follow instructions, maintain safe behaviour, or produce helpful responses. Two additional training stages address this:</p>
+<p><strong>Instruction fine-tuning</strong>: the pretrained model is further trained on a dataset of instruction-response pairs. &quot;Write a Python function that...&quot; → example correct response. This teaches the model to follow instructions rather than just complete text.</p>
+<p><strong>RLHF (Reinforcement Learning from Human Feedback)</strong>: human raters evaluate model outputs for helpfulness, harmlessness, and honesty. A reward model is trained to predict human preferences. The LLM is then fine-tuned using reinforcement learning to maximise the reward model&#39;s score. This is the technique that produced the leap from GPT-3 to ChatGPT in terms of usability.</p>
+<h2 id="what-llms-cannot-do-the-architectural-limits"><a class="h-anchor" href="#what-llms-cannot-do-the-architectural-limits" aria-hidden="true" tabindex="-1">#</a>What LLMs Cannot Do: The Architectural Limits</h2>
+<p>Understanding limitations is more important than understanding capabilities for production decision-making.</p>
+<p><strong>LLMs do not have knowledge of events after their training cutoff.</strong> The model&#39;s knowledge is frozen at the point its training data was collected. This is why retrieval-augmented generation (RAG) exists — to provide up-to-date information at inference time.</p>
+<p><strong>LLMs confabulate (hallucinate).</strong> The model generates the most plausible next tokens. When the correct answer is not well-represented in training data, the model generates a plausible-sounding but incorrect answer confidently. This is not a bug — it is the architecture operating as designed. It means LLM outputs in factual domains require verification.</p>
+<p><strong>LLMs are not search engines.</strong> They do not retrieve information from a database; they synthesise text based on patterns learned during training. Two queries about the same fact may produce different answers.</p>
+<p><strong>LLMs have context window limits.</strong> They can only attend to a fixed number of tokens at once (context window). GPT-4 supports 128K tokens; Claude supports up to 200K. Beyond the context window, the model cannot access information.</p>
+<p><strong>LLMs do not reason in the way humans do.</strong> Chain-of-thought prompting improves performance on reasoning tasks, but the model is generating text that looks like reasoning, not executing a reasoning algorithm. It can fail at simple logical tasks that require consistent rule application.</p>
+<p><strong>LLMs do not have persistent memory.</strong> Each conversation starts fresh. The model does not remember previous conversations unless that history is explicitly included in the context window.</p>
+<p>These limitations are architectural, not temporary. Building production systems on LLMs requires designing around them, not hoping they do not apply.</p>
+
+    </div>
+  </div>
+
+  
+
+  
+
+  <div class="art-wrap article-foot">
+    <div class="row" style="gap:.4rem">
+      <a class="chip chip-plain" href="/insights/?topic=AI%20%26%20MLOps">AI &amp; MLOps</a><a class="chip chip-plain" href="/insights/?topic=Enterprise%20AI">Enterprise AI</a><a class="chip chip-plain" href="/insights/?topic=Fundamentals">Fundamentals</a>
+    </div>
+    <nav class="prevnext" aria-label="More articles">
+      <a href="/insights/python-for-cloud-engineers/"><span>Previous</span><strong>Python for Cloud Engineers: The Parts That Actually Matter</strong></a>
+      <span></span>
+    </nav>
+  </div>
+
+  <section class="section surface hair" style="margin-top:4rem">
+    <div class="wrap">
+      <p class="eyebrow">Related</p>
+      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|Engineering Leadership|Architecture|Fundamentals|" data-search="platform engineering: what it is, why it emerged, and what makes it different from devops platform engineering is not rebranded devops. it is a specific organisational and technical discipline that treats internal infrastructure as a product. here is what that actually means. engineering leadership architecture fundamentals" data-topic="Engineering Leadership" href="/insights/platform-eng-what-it-is/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <radialGradient id="bgplatformengw" cx="0.22" cy="0.16" r="1"><stop offset="0" stop-color="#0a5d75" stop-opacity=".21"/><stop offset="1" stop-color="#095167" stop-opacity=".07"/></radialGradient>
+    <marker id="ahplatformengw" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#0a5d75" fill-opacity=".5"/>
+    </marker>
+    <clipPath id="cpplatformengw"><rect width="640" height="360"/></clipPath>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgplatformengw)"/>
+  <g clip-path="url(#cpplatformengw)"><line x1="44.3" y1="291.3" x2="131.7" y2="123.7" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="44.3" y1="291.3" x2="157" y2="129.3" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="44.3" y1="291.3" x2="190.8" y2="281" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="44.3" y1="291.3" x2="237.5" y2="301.7" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="44.3" y1="291.3" x2="272.1" y2="230.8" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="131.7" y1="123.7" x2="157" y2="129.3" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="131.7" y1="123.7" x2="190.8" y2="281" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="131.7" y1="123.7" x2="237.5" y2="301.7" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="131.7" y1="123.7" x2="272.1" y2="230.8" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="131.7" y1="123.7" x2="366.7" y2="49.1" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="157" y1="129.3" x2="190.8" y2="281" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="157" y1="129.3" x2="237.5" y2="301.7" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="157" y1="129.3" x2="272.1" y2="230.8" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="157" y1="129.3" x2="366.7" y2="49.1" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="157" y1="129.3" x2="402.2" y2="267.5" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="157" y1="129.3" x2="406.1" y2="267.6" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="190.8" y1="281" x2="237.5" y2="301.7" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="190.8" y1="281" x2="272.1" y2="230.8" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="190.8" y1="281" x2="366.7" y2="49.1" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="190.8" y1="281" x2="402.2" y2="267.5" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="190.8" y1="281" x2="406.1" y2="267.6" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="237.5" y1="301.7" x2="272.1" y2="230.8" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="237.5" y1="301.7" x2="366.7" y2="49.1" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="237.5" y1="301.7" x2="402.2" y2="267.5" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="237.5" y1="301.7" x2="406.1" y2="267.6" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="272.1" y1="230.8" x2="366.7" y2="49.1" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="272.1" y1="230.8" x2="402.2" y2="267.5" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="272.1" y1="230.8" x2="406.1" y2="267.6" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="272.1" y1="230.8" x2="479.9" y2="95.5" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="272.1" y1="230.8" x2="514.8" y2="161.2" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="366.7" y1="49.1" x2="402.2" y2="267.5" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="366.7" y1="49.1" x2="406.1" y2="267.6" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="366.7" y1="49.1" x2="479.9" y2="95.5" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="366.7" y1="49.1" x2="514.8" y2="161.2" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="366.7" y1="49.1" x2="598.1" y2="234.4" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="402.2" y1="267.5" x2="406.1" y2="267.6" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="402.2" y1="267.5" x2="479.9" y2="95.5" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="402.2" y1="267.5" x2="514.8" y2="161.2" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="402.2" y1="267.5" x2="598.1" y2="234.4" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="406.1" y1="267.6" x2="479.9" y2="95.5" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="406.1" y1="267.6" x2="514.8" y2="161.2" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="406.1" y1="267.6" x2="598.1" y2="234.4" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="479.9" y1="95.5" x2="514.8" y2="161.2" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="479.9" y1="95.5" x2="598.1" y2="234.4" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="514.8" y1="161.2" x2="598.1" y2="234.4" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><circle cx="44.3" cy="291.3" r="4.5" fill="#0a5d75" fill-opacity=".88"/><circle cx="131.7" cy="123.7" r="8" fill="#095167" fill-opacity=".88"/><circle cx="157" cy="129.3" r="11.5" fill="#0a5d75" fill-opacity=".88"/><circle cx="190.8" cy="281" r="4.5" fill="#095167" fill-opacity=".88"/><circle cx="237.5" cy="301.7" r="8" fill="#0a5d75" fill-opacity=".88"/><circle cx="272.1" cy="230.8" r="11.5" fill="#095167" fill-opacity=".88"/><circle cx="366.7" cy="49.1" r="4.5" fill="#0a5d75" fill-opacity=".88"/><circle cx="402.2" cy="267.5" r="8" fill="#095167" fill-opacity=".88"/><circle cx="406.1" cy="267.6" r="11.5" fill="#0a5d75" fill-opacity=".88"/><circle cx="479.9" cy="95.5" r="4.5" fill="#095167" fill-opacity=".88"/><circle cx="514.8" cy="161.2" r="8" fill="#0a5d75" fill-opacity=".88"/><circle cx="598.1" cy="234.4" r="11.5" fill="#095167" fill-opacity=".88"/></g>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">Engineering Leadership</span>
+    <h3 class="card-title">Platform Engineering: What It Is, Why It Emerged, and What Makes It Different from DevOps</h3>
+    <p class="card-desc">Platform engineering is not rebranded DevOps. It is a specific organisational and technical discipline that treats internal infrastructure as a product. Here is what that actually means.</p>
+    <div class="card-meta"><time datetime="2026-10-16">16 Oct 2026</time><span class="dot"></span><span>3 min read</span><span class="dot"></span><span>Series</span></div>
+  </div>
+</a>
+<a class="card" data-card data-topics="|Data Engineering|Cloud Architecture|AI &amp; MLOps|" data-search="the data lakehouse: why it won, and how to architect one that works data warehouses couldn&#39;t handle unstructured data at scale. data lakes couldn&#39;t enforce schemas or serve bi queries efficiently. the lakehouse combines both — here&#39;s the architecture, the open table formats that make it work, and the practical design decisions. data engineering cloud architecture ai &amp; mlops" data-topic="Data Engineering" href="/insights/data-lakehouse-architecture/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <radialGradient id="bgdatalakehous" cx="0.22" cy="0.16" r="1"><stop offset="0" stop-color="#045773" stop-opacity=".21"/><stop offset="1" stop-color="#044a62" stop-opacity=".07"/></radialGradient>
+    <marker id="ahdatalakehous" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#045773" fill-opacity=".5"/>
+    </marker>
+    <clipPath id="cpdatalakehous"><rect width="640" height="360"/></clipPath>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgdatalakehous)"/>
+  <g clip-path="url(#cpdatalakehous)"><path d="M0 50.4 C243.2 50.4, 396.8 28.8, 640 28.8 L640 86.5 C396.8 86.5, 243.2 108.1, 0 108.1 Z"
+      fill="#045773" fill-opacity="0.14"/><path d="M0 124.3 C243.2 124.3, 396.8 112.8, 640 112.8 L640 137.6 C396.8 137.6, 243.2 149.1, 0 149.1 Z"
+      fill="#044a62" fill-opacity="0.25"/><path d="M0 165.3 C243.2 165.3, 396.8 100.6, 640 100.6 L640 148.5 C396.8 148.5, 243.2 213.2, 0 213.2 Z"
+      fill="#045773" fill-opacity="0.31"/></g>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">Data Engineering</span>
+    <h3 class="card-title">The Data Lakehouse: Why It Won, and How to Architect One That Works</h3>
+    <p class="card-desc">Data warehouses couldn&#39;t handle unstructured data at scale. Data lakes couldn&#39;t enforce schemas or serve BI queries efficiently. The lakehouse combines both — here&#39;s the architecture, the open table formats that make it work, and the practical design decisions.</p>
+    <div class="card-meta"><time datetime="2026-10-05">5 Oct 2026</time><span class="dot"></span><span>4 min read</span></div>
+  </div>
+</a>
+<a class="card" data-card data-topics="|Systems|Infrastructure|Enterprise AI|Cloud Architecture|HPC|" data-search="ethernet vs. infiniband: choosing the right network fabric in 2026 a practical breakdown of when to use ethernet and when infiniband makes sense — with key metrics, topology differences, and real-world guidance for cloud, hpc, and ai workloads. systems infrastructure enterprise ai cloud architecture hpc" data-topic="Infrastructure" href="/insights/ethernet-vs-infiniband-networking-2026/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgethernetvsin" x1="0" y1="1" x2="0.4" y2="0"><stop offset="0" stop-color="#2d394c" stop-opacity=".20"/><stop offset="1" stop-color="#3d485b" stop-opacity=".07"/></linearGradient>
+    <marker id="ahethernetvsin" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#3d485b" fill-opacity=".5"/>
+    </marker>
+    <clipPath id="cpethernetvsin"><rect width="640" height="360"/></clipPath>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgethernetvsin)"/>
+  <g clip-path="url(#cpethernetvsin)"><line x1="41.6" y1="158.9" x2="104.2" y2="259.1" stroke="#3d485b" stroke-opacity=".3" stroke-width="1.4"/><line x1="41.6" y1="158.9" x2="124.5" y2="234.1" stroke="#3d485b" stroke-opacity=".3" stroke-width="1.4"/><line x1="104.2" y1="259.1" x2="124.5" y2="234.1" stroke="#3d485b" stroke-opacity=".3" stroke-width="1.4"/><line x1="104.2" y1="259.1" x2="161.9" y2="264.5" stroke="#3d485b" stroke-opacity=".3" stroke-width="1.4"/><line x1="124.5" y1="234.1" x2="161.9" y2="264.5" stroke="#3d485b" stroke-opacity=".3" stroke-width="1.4"/><line x1="309.5" y1="188.8" x2="337.6" y2="231.5" stroke="#3d485b" stroke-opacity=".3" stroke-width="1.4"/><line x1="337.6" y1="231.5" x2="482.2" y2="227.3" stroke="#3d485b" stroke-opacity=".3" stroke-width="1.4"/><line x1="438.9" y1="57.9" x2="445" y2="59.9" stroke="#3d485b" stroke-opacity=".3" stroke-width="1.4"/><line x1="438.9" y1="57.9" x2="461" y2="70.1" stroke="#3d485b" stroke-opacity=".3" stroke-width="1.4"/><line x1="445" y1="59.9" x2="461" y2="70.1" stroke="#3d485b" stroke-opacity=".3" stroke-width="1.4"/><line x1="482.2" y1="227.3" x2="599.3" y2="286.7" stroke="#3d485b" stroke-opacity=".3" stroke-width="1.4"/><circle cx="41.6" cy="158.9" r="4.5" fill="#3d485b" fill-opacity=".88"/><circle cx="104.2" cy="259.1" r="8" fill="#2d394c" fill-opacity=".88"/><circle cx="124.5" cy="234.1" r="11.5" fill="#3d485b" fill-opacity=".88"/><circle cx="161.9" cy="264.5" r="4.5" fill="#2d394c" fill-opacity=".88"/><circle cx="309.5" cy="188.8" r="8" fill="#3d485b" fill-opacity=".88"/><circle cx="337.6" cy="231.5" r="11.5" fill="#2d394c" fill-opacity=".88"/><circle cx="438.9" cy="57.9" r="4.5" fill="#3d485b" fill-opacity=".88"/><circle cx="445" cy="59.9" r="8" fill="#2d394c" fill-opacity=".88"/><circle cx="461" cy="70.1" r="11.5" fill="#3d485b" fill-opacity=".88"/><circle cx="482.2" cy="227.3" r="4.5" fill="#2d394c" fill-opacity=".88"/><circle cx="599.3" cy="286.7" r="8" fill="#3d485b" fill-opacity=".88"/></g>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">Infrastructure</span>
+    <h3 class="card-title">Ethernet vs. InfiniBand: Choosing the Right Network Fabric in 2026</h3>
+    <p class="card-desc">A practical breakdown of when to use Ethernet and when InfiniBand makes sense — with key metrics, topology differences, and real-world guidance for cloud, HPC, and AI workloads.</p>
+    <div class="card-meta"><time datetime="2026-10-02">2 Oct 2026</time><span class="dot"></span><span>4 min read</span></div>
+  </div>
+</a></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="art-wrap"><div class="cta-panel">
+      <h2 class="h2">Working on this in production?</h2>
+      <p class="lede" style="margin-top:.7rem">We do this work directly alongside engineering teams — architecture review, migration, and hands-on enablement.</p>
+      <div class="row" style="margin-top:1.4rem">
+        <a class="btn" href="/contact/">Engage engineering <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="btn btn-ghost" href="/services/">See what we do</a>
+      </div>
+    </div></div>
+  </section>
+</article>
+
+<div class="reader-tools">
+  <button class="icon-btn" id="readerBtn" type="button" aria-expanded="false" aria-controls="readerPanel" title="Reading settings" aria-label="Reading settings"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2.2"/><circle cx="10" cy="17" r="2.2"/></svg></button>
+  <button class="icon-btn" id="focusBtn" type="button" aria-pressed="false" title="Focus mode" aria-label="Enter focus mode"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></button>
+</div>
+<div class="reader-panel" id="readerPanel" role="dialog" aria-label="Reading settings" hidden>
+  <fieldset><legend>Text size</legend>
+    <div class="seg" data-pref="rsize">
+      <button type="button" data-val="s" aria-pressed="false"><span class="sample s">Aa</span>Small</button><button type="button" data-val="m" aria-pressed="false"><span class="sample ">Aa</span>Default</button><button type="button" data-val="l" aria-pressed="false"><span class="sample l">Aa</span>Large</button><button type="button" data-val="xl" aria-pressed="false"><span class="sample l">Aa</span>Largest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Ground</legend>
+    <div class="seg" data-pref="theme">
+      <button type="button" data-val="light" aria-pressed="false"><span class="swatch light"></span>Light</button><button type="button" data-val="sepia" aria-pressed="false"><span class="swatch sepia"></span>Sepia</button><button type="button" data-val="dark" aria-pressed="false"><span class="swatch dark"></span>Dark</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Column width</legend>
+    <div class="seg" data-pref="rwidth">
+      <button type="button" data-val="s" aria-pressed="false">Narrow</button><button type="button" data-val="m" aria-pressed="false">Default</button><button type="button" data-val="l" aria-pressed="false">Wide</button><button type="button" data-val="xl" aria-pressed="false">Widest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Typeface</legend>
+    <div class="seg" data-pref="rface">
+      <button type="button" data-val="sans" aria-pressed="false"><span class="sample">Aa</span>Sans</button>
+      <button type="button" data-val="serif" aria-pressed="false"><span class="sample serif">Aa</span>Serif</button>
+    </div>
+  </fieldset>
+  <button class="reader-reset" id="readerReset" type="button">Reset to defaults</button>
+  <p class="reader-note">Saved in this browser only — these settings do not follow you to another device.</p>
+</div>
+<button class="focus-exit" id="focusExit" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h6V3M21 9h-6V3M3 15h6v6M21 15h-6v6"/></svg> Exit focus</button>
+<div class="chapter-bar" id="chapterBar">
+  <div class="chapter-where">
+    <b>Large Language Models: What They Are, How They Are Built, and What They Cannot Do</b>
+    <span>AI, ML, LLMs, and Neural Networks: A Practitioner&#39;s Introduction</span>
+  </div>
+  <span class="chapter-left" id="chapterLeft"></span>
+  <nav class="chapter-step" aria-label="Article navigation">
+    <a href="/insights/python-for-cloud-engineers/" aria-label="Previous: Python for Cloud Engineers: The Parts That Actually Matter"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a>
+    <a aria-disabled="true" aria-label="No next article"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
+  </nav>
+</div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="grid g-4" style="gap:2rem">
+      <div>
+        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem" aria-label="Ajna Consulting Services — home">
+          <svg class="ajna-mark" viewBox="0 0 100 100" width="36" height="36" fill="none" aria-hidden="true" focusable="false"><defs><path id="t-ftr" d="M 50 4 L 96 50 L 50 50 Z"/><path id="e-ftr" d="M 50 4 L 96 50"/><path id="k-ftr" d="M 50 4 L 50 50 L 96 50"/><linearGradient id="bev-ftr" gradientUnits="userSpaceOnUse" x1="50" y1="50" x2="73" y2="27"><stop offset="0" stop-color="#000" stop-opacity=".13"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity=".2"/></linearGradient><radialGradient id="core-ftr" cx=".34" cy=".3" r=".85"><stop offset="0" stop-color="#fff" stop-opacity=".42"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".45"/></radialGradient><path id="ll-ftr" d="M 50 50 C 35 30.26, 40.7 9.579999999999998, 50 3 C 59.3 9.579999999999998, 65 30.26, 50 50 Z"/><path id="ls-ftr" d="M 50 50 C 35.5 33.620000000000005, 41.01 16.46, 50 11 C 58.99 16.46, 64.5 33.620000000000005, 50 50 Z"/><linearGradient id="lf-ftr" gradientUnits="userSpaceOnUse" x1="35" y1="30" x2="65" y2="30"><stop offset="0" stop-color="#fff" stop-opacity=".3"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".22"/></linearGradient></defs><g class="am-leaf am-leaf-b" style="--a:45deg"><use href="#ls-ftr" fill="#17A05E" opacity=".62"/><use href="#ls-ftr" fill="url(#lf-ftr)"/></g><g class="am-leaf am-leaf-b" style="--a:135deg"><use href="#ls-ftr" fill="#2B57E8" opacity=".62"/><use href="#ls-ftr" fill="url(#lf-ftr)"/><use href="#ls-ftr" fill="#000" opacity="0.30"/></g><g class="am-leaf am-leaf-b" style="--a:225deg"><use href="#ls-ftr" fill="#E8402A" opacity=".62"/><use href="#ls-ftr" fill="url(#lf-ftr)"/></g><g class="am-leaf am-leaf-b" style="--a:315deg"><use href="#ls-ftr" fill="#F5A623" opacity=".62"/><use href="#ls-ftr" fill="url(#lf-ftr)"/><use href="#ls-ftr" fill="#fff" opacity="0.30"/></g><g class="am-leaf" style="--a:0deg"><use href="#ll-ftr" fill="#E8402A" opacity=".9"/><use href="#ll-ftr" fill="url(#lf-ftr)"/><use href="#ll-ftr" fill="#fff" opacity="0.21"/></g><g class="am-leaf" style="--a:90deg"><use href="#ll-ftr" fill="#F5A623" opacity=".9"/><use href="#ll-ftr" fill="url(#lf-ftr)"/><use href="#ll-ftr" fill="#000" opacity="0.21"/></g><g class="am-leaf" style="--a:180deg"><use href="#ll-ftr" fill="#17A05E" opacity=".9"/><use href="#ll-ftr" fill="url(#lf-ftr)"/><use href="#ll-ftr" fill="#000" opacity="0.21"/></g><g class="am-leaf" style="--a:270deg"><use href="#ll-ftr" fill="#2B57E8" opacity=".9"/><use href="#ll-ftr" fill="url(#lf-ftr)"/><use href="#ll-ftr" fill="#fff" opacity="0.21"/></g><g class="am-bud"><g class="am-petal" style="--a:0deg"><use href="#t-ftr" fill="#E8402A"/><use href="#t-ftr" fill="url(#bev-ftr)"/><use href="#t-ftr" fill="#fff" opacity="0.07"/><use href="#e-ftr" stroke="#fff" stroke-opacity="0.34" stroke-width="1.6" stroke-linecap="round"/><use href="#k-ftr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g class="am-petal" style="--a:90deg"><use href="#t-ftr" fill="#F5A623"/><use href="#t-ftr" fill="url(#bev-ftr)"/><use href="#t-ftr" fill="#000" opacity="0.12"/><use href="#e-ftr" stroke="#000" stroke-opacity="0.16" stroke-width="1.6" stroke-linecap="round"/><use href="#k-ftr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g class="am-petal" style="--a:180deg"><use href="#t-ftr" fill="#17A05E"/><use href="#t-ftr" fill="url(#bev-ftr)"/><use href="#t-ftr" fill="#000" opacity="0.05"/><use href="#e-ftr" stroke="#000" stroke-opacity="0.1" stroke-width="1.6" stroke-linecap="round"/><use href="#k-ftr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g class="am-petal" style="--a:270deg"><use href="#t-ftr" fill="#2B57E8"/><use href="#t-ftr" fill="url(#bev-ftr)"/><use href="#t-ftr" fill="#fff" opacity="0.30"/><use href="#e-ftr" stroke="#fff" stroke-opacity="0.46" stroke-width="1.6" stroke-linecap="round"/><use href="#k-ftr" stroke="#000" stroke-width=".9" opacity=".2"/></g></g><g class="am-core"><circle cx="50" cy="50" r="6" fill="currentColor"/><circle cx="50" cy="50" r="6" fill="url(#core-ftr)"/></g></svg>
+          <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
+        </a>
+        <p style="font-size:.88rem;line-height:1.65;color:#9fb0d0;max-width:30ch">
+          Specialised engineering partner for enterprise architecture, AI &amp; MLOps, and technical enablement.
+        </p>
+        <div class="social" style="margin-top:1.1rem">
+          <a href="https://www.youtube.com/@TechKnowen" rel="noopener" aria-label="YouTube"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 12s0-3.8-.5-5.6a2.9 2.9 0 0 0-2-2C18.7 4 12 4 12 4s-6.7 0-8.5.4a2.9 2.9 0 0 0-2 2C1 8.2 1 12 1 12s0 3.8.5 5.6a2.9 2.9 0 0 0 2 2C5.3 20 12 20 12 20s6.7 0 8.5-.4a2.9 2.9 0 0 0 2-2C23 15.8 23 12 23 12zM9.8 15.4V8.6l5.9 3.4z"/></svg></a>
+          <a href="https://techknowen.com" rel="noopener" aria-label="TechKnowen blog"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 3h16v3H4zm0 5h16v13l-8-4-8 4z"/></svg></a>
+          <a href="/feed.xml" aria-label="RSS feed"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="6.2" cy="17.8" r="2.2"/><path d="M4 10.2v3a6.6 6.6 0 0 1 6.6 6.6h3A9.6 9.6 0 0 0 4 10.2zM4 4v3c7.2 0 13 5.8 13 13h3C20 11.2 12.8 4 4 4z"/></svg></a>
+        </div>
+      </div>
+      <div>
+        <h2 class="foot-title">Services</h2>
+        <ul>
+          <li><a href="/services/#architecture">Enterprise architecture</a></li>
+          <li><a href="/services/#ai">AI &amp; MLOps</a></li>
+          <li><a href="/services/#training">Technical enablement</a></li>
+          <li><a href="/case-studies/">Case studies</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2 class="foot-title">Insights</h2>
+        <ul>
+          <li><a href="/insights/">All articles</a></li>
+          <li><a href="/series/">Series</a></li>
+          <li><a href="/topics/">Topics</a></li>
+          <li><a href="/notes/">Personal notes</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2 class="foot-title">Contact</h2>
+        <ul>
+          <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
+          <li><a href="/contact/">Start an engagement</a></li>
+          <li><a href="/about/">About</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span id="yr">2026</span> Ajna Consulting Services. All rights reserved.</span>
+      <span style="display:flex;gap:1.2rem"><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a></span>
+    </div>
+  </div>
+</footer>
+<script src="/assets/js/site.js" defer></script>
+</body>
+</html>
