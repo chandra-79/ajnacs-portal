@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>From Showback to Chargeback: Building a Cloud Cost Ownership Model That Sticks | Ajna CS</title>
+<meta name="description" content="Showback tells teams what they spend. Chargeback makes them accountable for it. The gap between the two is cultural as much as technical — here&#39;s how to br…">
+<meta name="author" content="Chandra Lanka">
+<link rel="canonical" href="https://ajnacs.com/insights/finops-chargeback-maturity/">
+<meta name="robots" content="index, follow, max-image-preview:large">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Ajna Consulting Services">
+<meta property="og:title" content="From Showback to Chargeback: Building a Cloud Cost Ownership Model That Sticks">
+<meta property="og:description" content="Showback tells teams what they spend. Chargeback makes them accountable for it. The gap between the two is cultural as much as technical — here&#39;s how to br…">
+<meta property="og:url" content="https://ajnacs.com/insights/finops-chargeback-maturity/">
+<meta property="og:image" content="https://ajnacs.com/assets/og/finops.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/jpeg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="From Showback to Chargeback: Building a Cloud Cost Ownership Model That Sticks">
+<meta name="twitter:description" content="Showback tells teams what they spend. Chargeback makes them accountable for it. The gap between the two is cultural as much as technical — here&#39;s how to br…">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/finops.jpg">
+
+<link rel="icon" href="/favicon.ico?v=cefc53b9" sizes="any">
+<link rel="icon" href="/images/ajna-mark.svg?v=cefc53b9" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png?v=cefc53b9">
+<meta name="theme-color" content="#0a1020">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Quintessential&display=swap">
+<link rel="stylesheet" href="/assets/css/site.css">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<script>
+/* Theme and reading preferences are applied before first paint, so the page
+   never flashes the wrong ground or resets someone's text size mid-read. */
+(function(){try{
+var d=document.documentElement,t=localStorage.getItem('acs-theme');
+if(t!=='dark'&&t!=='light'&&t!=='sepia')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+d.setAttribute('data-theme',t);
+['rsize','rwidth','rface'].forEach(function(k){
+  var v=localStorage.getItem('acs-'+k);
+  if(v&&/^[a-z]{1,5}$/.test(v))d.setAttribute('data-'+k,v);
+});
+if(d.getAttribute('data-rface')==='serif'){
+  var l=document.createElement('link');l.rel='stylesheet';
+  l.href='https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600&display=swap';
+  document.head.appendChild(l);
+}
+}catch(e){}})();
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"From Showback to Chargeback: Building a Cloud Cost Ownership Model That Sticks","description":"Showback tells teams what they spend. Chargeback makes them accountable for it. The gap between the two is cultural as much as technical — here's how to bridge it without creating finance theater.","datePublished":"2026-10-23","dateModified":"2026-10-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/finops-chargeback-maturity/","image":"https://ajnacs.com/assets/og/finops.jpg","keywords":"FinOps, Cost Optimisation, Engineering Leadership","articleSection":"FinOps","wordCount":904}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"From Showback to Chargeback: Building a Cloud Cost Ownership Model That Sticks"}]}</script>
+</head>
+<body class="" data-topic="FinOps">
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header" id="siteHeader">
+  <div class="wrap" style="display:flex;align-items:center;width:min(1220px,100% - var(--gutter)*2)">
+    <a class="brand" href="/" aria-label="Ajna Consulting Services — home">
+      <svg class="ajna-mark" viewBox="0 0 100 100" width="40" height="40" fill="none" aria-hidden="true" focusable="false"><defs><path id="t-hdr" d="M 50 4 L 96 50 L 50 50 Z"/><path id="e-hdr" d="M 50 4 L 96 50"/><path id="k-hdr" d="M 50 4 L 50 50 L 96 50"/><linearGradient id="bev-hdr" gradientUnits="userSpaceOnUse" x1="50" y1="50" x2="73" y2="27"><stop offset="0" stop-color="#000" stop-opacity=".13"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity=".2"/></linearGradient><radialGradient id="core-hdr" cx=".34" cy=".3" r=".85"><stop offset="0" stop-color="#fff" stop-opacity=".42"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".45"/></radialGradient><path id="ll-hdr" d="M 50 50 C 35 30.26, 40.7 9.579999999999998, 50 3 C 59.3 9.579999999999998, 65 30.26, 50 50 Z"/><path id="ls-hdr" d="M 50 50 C 35.5 33.620000000000005, 41.01 16.46, 50 11 C 58.99 16.46, 64.5 33.620000000000005, 50 50 Z"/><linearGradient id="lf-hdr" gradientUnits="userSpaceOnUse" x1="35" y1="30" x2="65" y2="30"><stop offset="0" stop-color="#fff" stop-opacity=".3"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".22"/></linearGradient></defs><g class="am-leaf am-leaf-b" style="--a:45deg"><use href="#ls-hdr" fill="#17A05E" opacity=".62"/><use href="#ls-hdr" fill="url(#lf-hdr)"/></g><g class="am-leaf am-leaf-b" style="--a:135deg"><use href="#ls-hdr" fill="#2B57E8" opacity=".62"/><use href="#ls-hdr" fill="url(#lf-hdr)"/><use href="#ls-hdr" fill="#000" opacity="0.30"/></g><g class="am-leaf am-leaf-b" style="--a:225deg"><use href="#ls-hdr" fill="#E8402A" opacity=".62"/><use href="#ls-hdr" fill="url(#lf-hdr)"/></g><g class="am-leaf am-leaf-b" style="--a:315deg"><use href="#ls-hdr" fill="#F5A623" opacity=".62"/><use href="#ls-hdr" fill="url(#lf-hdr)"/><use href="#ls-hdr" fill="#fff" opacity="0.30"/></g><g class="am-leaf" style="--a:0deg"><use href="#ll-hdr" fill="#E8402A" opacity=".9"/><use href="#ll-hdr" fill="url(#lf-hdr)"/><use href="#ll-hdr" fill="#fff" opacity="0.21"/></g><g class="am-leaf" style="--a:90deg"><use href="#ll-hdr" fill="#F5A623" opacity=".9"/><use href="#ll-hdr" fill="url(#lf-hdr)"/><use href="#ll-hdr" fill="#000" opacity="0.21"/></g><g class="am-leaf" style="--a:180deg"><use href="#ll-hdr" fill="#17A05E" opacity=".9"/><use href="#ll-hdr" fill="url(#lf-hdr)"/><use href="#ll-hdr" fill="#000" opacity="0.21"/></g><g class="am-leaf" style="--a:270deg"><use href="#ll-hdr" fill="#2B57E8" opacity=".9"/><use href="#ll-hdr" fill="url(#lf-hdr)"/><use href="#ll-hdr" fill="#fff" opacity="0.21"/></g><g class="am-bud"><g class="am-petal" style="--a:0deg"><use href="#t-hdr" fill="#E8402A"/><use href="#t-hdr" fill="url(#bev-hdr)"/><use href="#t-hdr" fill="#fff" opacity="0.07"/><use href="#e-hdr" stroke="#fff" stroke-opacity="0.34" stroke-width="1.6" stroke-linecap="round"/><use href="#k-hdr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g class="am-petal" style="--a:90deg"><use href="#t-hdr" fill="#F5A623"/><use href="#t-hdr" fill="url(#bev-hdr)"/><use href="#t-hdr" fill="#000" opacity="0.12"/><use href="#e-hdr" stroke="#000" stroke-opacity="0.16" stroke-width="1.6" stroke-linecap="round"/><use href="#k-hdr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g class="am-petal" style="--a:180deg"><use href="#t-hdr" fill="#17A05E"/><use href="#t-hdr" fill="url(#bev-hdr)"/><use href="#t-hdr" fill="#000" opacity="0.05"/><use href="#e-hdr" stroke="#000" stroke-opacity="0.1" stroke-width="1.6" stroke-linecap="round"/><use href="#k-hdr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g class="am-petal" style="--a:270deg"><use href="#t-hdr" fill="#2B57E8"/><use href="#t-hdr" fill="url(#bev-hdr)"/><use href="#t-hdr" fill="#fff" opacity="0.30"/><use href="#e-hdr" stroke="#fff" stroke-opacity="0.46" stroke-width="1.6" stroke-linecap="round"/><use href="#k-hdr" stroke="#000" stroke-width=".9" opacity=".2"/></g></g><g class="am-core"><circle cx="50" cy="50" r="6" fill="currentColor"/><circle cx="50" cy="50" r="6" fill="url(#core-hdr)"/></g></svg>
+      <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
+    </a>
+    <nav class="nav" id="nav" aria-label="Primary">
+      <a href="/services/">Services</a>
+      <a href="/insights/" aria-current="page">Insights</a>
+      <a href="/series/">Series</a>
+      <a href="/case-studies/">Case studies</a>
+      <a href="/about/">About</a>
+      <a class="btn btn-sm" href="/contact/" style="margin-left:.4rem">Engage engineering</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn" id="themeBtn" type="button" aria-label="Switch to dark mode" aria-pressed="false"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg></button>
+      <button class="icon-btn nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+
+<div class="read-bar" aria-hidden="true"><span id="readBar"></span></div>
+<article class="article with-toc">
+  <header class="article-head">
+    <div class="art-wrap">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a> <span aria-hidden="true">/</span>
+        <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
+        <span>FinOps</span>
+      </nav>
+      <h1 class="h1">From Showback to Chargeback: Building a Cloud Cost Ownership Model That Sticks</h1>
+      <p class="lede" style="margin-top:1rem">Showback tells teams what they spend. Chargeback makes them accountable for it. The gap between the two is cultural as much as technical — here&#39;s how to bridge it without creating finance theater.</p>
+      <div class="article-meta">
+        <span class="chip">FinOps</span>
+        <time datetime="2026-10-23">23 Oct 2026</time>
+        <span class="dot"></span><span>4 min read</span>
+        <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="art-wrap"><div class="article-hero" data-topic="FinOps"><svg viewBox="0 0 1200 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgfinopscharge" x1="0" y1="1" x2="0.4" y2="0"><stop offset="0" stop-color="#844b07" stop-opacity=".20"/><stop offset="1" stop-color="#ac630f" stop-opacity=".07"/></linearGradient>
+    <marker id="ahfinopscharge" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#ac630f" fill-opacity=".5"/>
+    </marker>
+    <clipPath id="cpfinopscharge"><rect width="1200" height="380"/></clipPath>
+  </defs>
+  <rect width="1200" height="380" fill="url(#bgfinopscharge)"/>
+  <g clip-path="url(#cpfinopscharge)"><line x1="60" y1="319.2" x2="1140" y2="319.2" stroke="#ac630f" stroke-opacity=".4" stroke-width="1.4"/><rect x="120.1" y="119" width="66.5" height="200.2" rx="6" fill="#844b07" fill-opacity="0.67"/><rect x="234.7" y="124.8" width="66.5" height="194.4" rx="6" fill="#ac630f" fill-opacity="0.66"/><rect x="349.4" y="228.4" width="66.5" height="90.8" rx="6" fill="#ac630f" fill-opacity="0.47"/><rect x="464.1" y="230.2" width="66.5" height="89" rx="6" fill="#844b07" fill-opacity="0.46"/><rect x="578.7" y="234.8" width="66.5" height="84.4" rx="6" fill="#ac630f" fill-opacity="0.45"/><rect x="693.4" y="241" width="66.5" height="78.2" rx="6" fill="#ac630f" fill-opacity="0.44"/><rect x="808.1" y="241.6" width="66.5" height="77.6" rx="6" fill="#844b07" fill-opacity="0.44"/><rect x="922.7" y="268.9" width="66.5" height="50.3" rx="6" fill="#ac630f" fill-opacity="0.39"/><rect x="1037.4" y="269.6" width="66.5" height="49.6" rx="6" fill="#ac630f" fill-opacity="0.39"/></g>
+</svg></div></div>
+
+  <div class="art-wrap article-grid">
+    <div class="reader-aside"><nav class="toc" aria-label="On this page">
+  <p class="toc-title">On this page</p>
+  <ol><li><a href="#why-showback-often-fails-to-change-behavior">Why showback often fails to change behavior</a></li><li><a href="#the-four-stage-maturity-model">The four-stage maturity model</a></li><li><a href="#technical-requirements-for-chargeback">Technical requirements for chargeback</a></li><li><a href="#handling-the-cultural-transition">Handling the cultural transition</a></li></ol>
+</nav><nav class="chapters" aria-label="Articles in this series">
+      <p class="chapters-title">FinOps from Zero to Production</p>
+      <ol><li><a href="/insights/finops-tagging-policy/">Cloud Tagging Policy Template: The Foundation FinOps Actually Requires</a></li><li><a href="/insights/reserved-instance-rationalization/">Reserved Instance Rationalisation: How to Commit to the Right Resources</a></li><li><a href="/insights/cloud-unit-economics/">Cloud Unit Economics: The Metric That Makes Cloud Spend Conversations Productive</a></li><li><a href="/insights/finops-anomaly-detection/">Cloud Cost Anomaly Detection: Catching Runaway Spend Before It Becomes a Bill</a></li><li aria-current="true"><a href="/insights/finops-chargeback-maturity/">From Showback to Chargeback: Building a Cloud Cost Ownership Model That Sticks</a></li></ol>
+    </nav></div>
+    <div class="prose">
+<p>Most organizations start with showback — a monthly report that tells engineering teams what their cloud spend was. Most organizations stay at showback, because moving to chargeback requires engineering leaders and finance to agree on accounting boundaries that are genuinely hard to draw.</p>
+<p>The result is a FinOps program with visibility but no behavior change. Teams see the numbers, acknowledge them, and continue making infrastructure decisions the same way.</p>
+<p>Chargeback changes that. When a team&#39;s cloud costs appear in their cost center&#39;s P&amp;L, infrastructure decisions start to feel like budget decisions. The organizational dynamic shifts.</p>
+<h2 id="why-showback-often-fails-to-change-behavior"><a class="h-anchor" href="#why-showback-often-fails-to-change-behavior" aria-hidden="true" tabindex="-1">#</a>Why showback often fails to change behavior</h2>
+<aside class="keyfig">
+  <p class="keyfig-label">Key figure</p>
+  <p class="keyfig-text">Before moving to chargeback, target <b>95%</b>+ tag coverage on all cost-generating resources.</p>
+</aside>
+<p>Showback gives teams information. It doesn&#39;t give them authority or accountability. The missing element: a connection between the cost data and something a team lead actually controls.</p>
+<p>If engineering teams don&#39;t control their own infrastructure provisioning, seeing the bill doesn&#39;t help. If cloud costs are allocated to a central IT budget regardless of which team caused them, showing teams their &quot;share&quot; is performative.</p>
+<p>The conditions for showback to produce behavior change:</p>
+<ol>
+<li>Teams provision their own infrastructure (or have meaningful input into provisioning decisions)</li>
+<li>Team leads are asked to explain cost variances, not just acknowledge them</li>
+<li>Cost data is timely enough to be relevant (weekly or near-real-time, not 30-day-delayed)</li>
+<li>There&#39;s a connection between cost and team OKRs or performance review</li>
+</ol>
+<p>Without these conditions, showback is reporting without consequence.</p>
+<h2 id="the-four-stage-maturity-model"><a class="h-anchor" href="#the-four-stage-maturity-model" aria-hidden="true" tabindex="-1">#</a>The four-stage maturity model</h2>
+<p><strong>Stage 1 — Centralized cost</strong>: all cloud spend in one account, allocated to IT. No team-level visibility. Engineering leaders have no cost context when making infrastructure decisions.</p>
+<p><strong>Stage 2 — Tagged showback</strong>: resources tagged by team/product, monthly cost reports distributed. Teams see their spend but there&#39;s no accountability mechanism. Useful for awareness, ineffective for behavior change.</p>
+<p><strong>Stage 3 — Accountable showback</strong>: teams receive weekly cost reports with variance explanations required for &gt;20% deviation from forecast. Team leads discuss cost in sprint reviews. Cost is tracked as an engineering metric alongside reliability and velocity.</p>
+<p><strong>Stage 4 — Chargeback</strong>: cloud costs are allocated to business units&#39; P&amp;L. Each team has a cloud budget as a line item. Overspend requires justification through the same process as any other budget exception. Cost efficiency is a first-class engineering metric.</p>
+<p>Most organizations should target Stage 3 before attempting Stage 4. Stage 4 without Stage 3 habits in place creates accounting battles rather than cost discipline.</p>
+<h2 id="technical-requirements-for-chargeback"><a class="h-anchor" href="#technical-requirements-for-chargeback" aria-hidden="true" tabindex="-1">#</a>Technical requirements for chargeback</h2>
+<p><strong>Tag coverage</strong>: chargeback is only as accurate as your tag data. Before moving to chargeback, target 95%+ tag coverage on all cost-generating resources. The resources that resist tagging (shared services, data transfer, support charges) need explicit allocation rules.</p>
+<p><strong>Shared cost allocation</strong>: some costs are genuinely shared and don&#39;t tag cleanly to a single team — shared Kubernetes clusters, VPN infrastructure, centralized logging, network egress. Allocation approaches:</p>
+<ul>
+<li><em>Proportional allocation</em>: distribute shared costs in proportion to each team&#39;s directly attributable spend. Simple, defensible.</li>
+<li><em>Usage-based allocation</em>: allocate based on measured usage (CPU hours on shared cluster, GB of centralized logs). More accurate, more complex to implement.</li>
+<li><em>Fixed allocation</em>: each team pays a flat share of shared infrastructure costs. Simplest, but creates perverse incentives when teams have very different usage patterns.</li>
+</ul>
+<p>Choose the approach your finance team can audit and your engineering teams consider fair. A theoretically accurate allocation model that nobody trusts is worse than a simple model that everyone accepts.</p>
+<p><strong>Account structure</strong>: the cleanest chargeback implementations use separate AWS accounts or Azure subscriptions per team or product area. This provides natural billing boundaries, enables service control policies, and makes cost attribution unambiguous. The overhead of managing multiple accounts is offset by the operational simplicity of clear ownership.</p>
+<p><strong>Billing data pipeline</strong>: raw billing data (AWS Cost and Usage Report, Azure Cost Management exports, GCP Billing exports) needs to be enriched with team metadata, allocation rules, and business context before it&#39;s usable for chargeback. Most mature FinOps implementations build a small data pipeline into a data warehouse (Snowflake, BigQuery, Redshift) where this enrichment happens and reporting is produced.</p>
+<h2 id="handling-the-cultural-transition"><a class="h-anchor" href="#handling-the-cultural-transition" aria-hidden="true" tabindex="-1">#</a>Handling the cultural transition</h2>
+<p>The most common failure mode: chargeback is announced as a policy change without the organizational infrastructure to support it. Teams receive bills they don&#39;t understand, for resources they don&#39;t control, using a methodology they weren&#39;t consulted on.</p>
+<p>The transition that works:</p>
+<p><strong>6 months before chargeback</strong>: begin Stage 3 showback with weekly reports and variance discussions. Identify which teams have cost attribution gaps (missing tags, unclear ownership). Resolve those gaps before chargeback goes live.</p>
+<p><strong>3 months before chargeback</strong>: publish the chargeback methodology. Run a shadow period where teams receive both showback reports and simulated chargeback invoices. Address disputes about allocation methodology before they affect real budgets.</p>
+<p><strong>Chargeback go-live</strong>: start with the business units that have the most mature FinOps practices and clearest cost boundaries. Expand to other units after 2-3 billing cycles of stable operation.</p>
+<p><strong>Ongoing</strong>: FinOps reviews as a standing agenda item in quarterly business reviews. Cost efficiency included in engineering team KPIs. A clear escalation path for teams that identify allocation errors.</p>
+<p>The teams that resist chargeback most strongly are usually the ones with the most cost attribution problems — resources without owners, shared infrastructure nobody claimed, legacy workloads that predate the tagging policy. These are exactly the problems you want to surface.</p>
+<p><em>Building a cost ownership model across a multi-team or multi-BU organization? The technical implementation is usually simpler than the organizational alignment. <a href="/contact">Happy to compare approaches.</a></em></p>
+
+    </div>
+  </div>
+
+  <div class="art-wrap"><aside class="refs" aria-labelledby="refs-h">
+  <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
+  <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
+  <ul>
+    <li><a href="https://kubernetes.io/docs/" rel="noopener nofollow" target="_blank">Kubernetes documentation</a><span>Primary reference for the concepts used here.</span></li>
+    <li><a href="https://www.finops.org/" rel="noopener nofollow" target="_blank">FinOps Foundation</a><span>Framework, capabilities and terminology.</span></li>
+  </ul>
+</aside></div>
+
+  
+
+  <div class="art-wrap article-foot">
+    <div class="row" style="gap:.4rem">
+      <a class="chip chip-plain" href="/insights/?topic=FinOps">FinOps</a><a class="chip chip-plain" href="/insights/?topic=Cost%20Optimisation">Cost Optimisation</a><a class="chip chip-plain" href="/insights/?topic=Engineering%20Leadership">Engineering Leadership</a>
+    </div>
+    <nav class="prevnext" aria-label="More articles">
+      <a href="/insights/aiml-llms-explained/"><span>Previous</span><strong>Large Language Models: What They Are, How They Are Built, and What They Cannot Do</strong></a>
+      <span></span>
+    </nav>
+  </div>
+
+  <section class="section surface hair" style="margin-top:4rem">
+    <div class="wrap">
+      <p class="eyebrow">Related</p>
+      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|Engineering Leadership|Architecture|Fundamentals|" data-search="platform engineering: what it is, why it emerged, and what makes it different from devops platform engineering is not rebranded devops. it is a specific organisational and technical discipline that treats internal infrastructure as a product. here is what that actually means. engineering leadership architecture fundamentals" data-topic="Engineering Leadership" href="/insights/platform-eng-what-it-is/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <radialGradient id="bgplatformengw" cx="0.22" cy="0.16" r="1"><stop offset="0" stop-color="#0a5d75" stop-opacity=".21"/><stop offset="1" stop-color="#095167" stop-opacity=".07"/></radialGradient>
+    <marker id="ahplatformengw" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#0a5d75" fill-opacity=".5"/>
+    </marker>
+    <clipPath id="cpplatformengw"><rect width="640" height="360"/></clipPath>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgplatformengw)"/>
+  <g clip-path="url(#cpplatformengw)"><line x1="44.3" y1="291.3" x2="131.7" y2="123.7" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="44.3" y1="291.3" x2="157" y2="129.3" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="44.3" y1="291.3" x2="190.8" y2="281" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="44.3" y1="291.3" x2="237.5" y2="301.7" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="44.3" y1="291.3" x2="272.1" y2="230.8" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="131.7" y1="123.7" x2="157" y2="129.3" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="131.7" y1="123.7" x2="190.8" y2="281" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="131.7" y1="123.7" x2="237.5" y2="301.7" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="131.7" y1="123.7" x2="272.1" y2="230.8" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="131.7" y1="123.7" x2="366.7" y2="49.1" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="157" y1="129.3" x2="190.8" y2="281" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="157" y1="129.3" x2="237.5" y2="301.7" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="157" y1="129.3" x2="272.1" y2="230.8" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="157" y1="129.3" x2="366.7" y2="49.1" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="157" y1="129.3" x2="402.2" y2="267.5" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="157" y1="129.3" x2="406.1" y2="267.6" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="190.8" y1="281" x2="237.5" y2="301.7" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="190.8" y1="281" x2="272.1" y2="230.8" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="190.8" y1="281" x2="366.7" y2="49.1" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="190.8" y1="281" x2="402.2" y2="267.5" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="190.8" y1="281" x2="406.1" y2="267.6" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="237.5" y1="301.7" x2="272.1" y2="230.8" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="237.5" y1="301.7" x2="366.7" y2="49.1" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="237.5" y1="301.7" x2="402.2" y2="267.5" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="237.5" y1="301.7" x2="406.1" y2="267.6" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="272.1" y1="230.8" x2="366.7" y2="49.1" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="272.1" y1="230.8" x2="402.2" y2="267.5" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="272.1" y1="230.8" x2="406.1" y2="267.6" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="272.1" y1="230.8" x2="479.9" y2="95.5" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="272.1" y1="230.8" x2="514.8" y2="161.2" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="366.7" y1="49.1" x2="402.2" y2="267.5" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="366.7" y1="49.1" x2="406.1" y2="267.6" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="366.7" y1="49.1" x2="479.9" y2="95.5" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="366.7" y1="49.1" x2="514.8" y2="161.2" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="366.7" y1="49.1" x2="598.1" y2="234.4" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="402.2" y1="267.5" x2="406.1" y2="267.6" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="402.2" y1="267.5" x2="479.9" y2="95.5" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="402.2" y1="267.5" x2="514.8" y2="161.2" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="402.2" y1="267.5" x2="598.1" y2="234.4" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="406.1" y1="267.6" x2="479.9" y2="95.5" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="406.1" y1="267.6" x2="514.8" y2="161.2" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="406.1" y1="267.6" x2="598.1" y2="234.4" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="479.9" y1="95.5" x2="514.8" y2="161.2" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="479.9" y1="95.5" x2="598.1" y2="234.4" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><line x1="514.8" y1="161.2" x2="598.1" y2="234.4" stroke="#0a5d75" stroke-opacity=".3" stroke-width="1.4"/><circle cx="44.3" cy="291.3" r="4.5" fill="#0a5d75" fill-opacity=".88"/><circle cx="131.7" cy="123.7" r="8" fill="#095167" fill-opacity=".88"/><circle cx="157" cy="129.3" r="11.5" fill="#0a5d75" fill-opacity=".88"/><circle cx="190.8" cy="281" r="4.5" fill="#095167" fill-opacity=".88"/><circle cx="237.5" cy="301.7" r="8" fill="#0a5d75" fill-opacity=".88"/><circle cx="272.1" cy="230.8" r="11.5" fill="#095167" fill-opacity=".88"/><circle cx="366.7" cy="49.1" r="4.5" fill="#0a5d75" fill-opacity=".88"/><circle cx="402.2" cy="267.5" r="8" fill="#095167" fill-opacity=".88"/><circle cx="406.1" cy="267.6" r="11.5" fill="#0a5d75" fill-opacity=".88"/><circle cx="479.9" cy="95.5" r="4.5" fill="#095167" fill-opacity=".88"/><circle cx="514.8" cy="161.2" r="8" fill="#0a5d75" fill-opacity=".88"/><circle cx="598.1" cy="234.4" r="11.5" fill="#095167" fill-opacity=".88"/></g>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">Engineering Leadership</span>
+    <h3 class="card-title">Platform Engineering: What It Is, Why It Emerged, and What Makes It Different from DevOps</h3>
+    <p class="card-desc">Platform engineering is not rebranded DevOps. It is a specific organisational and technical discipline that treats internal infrastructure as a product. Here is what that actually means.</p>
+    <div class="card-meta"><time datetime="2026-10-16">16 Oct 2026</time><span class="dot"></span><span>3 min read</span><span class="dot"></span><span>Series</span></div>
+  </div>
+</a>
+<a class="card" data-card data-topics="|Performance|Programming|Cloud Architecture|Data Engineering|FinOps|" data-search="compression in production: choosing between gzip, zstd, lz4, and brotli like it matters compression is a three-way trade — ratio, speed, and cpu — that most systems set once by default and never revisit. the algorithm landscape, placement decisions across web, storage, and streaming, dictionary compression&#39;s quiet superpower, and the measurement discipline. performance programming cloud architecture data engineering finops" data-topic="Performance" href="/insights/compression-selection-guide/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgcompressions" x1="0" y1="1" x2="0.4" y2="0"><stop offset="0" stop-color="#ac3109" stop-opacity=".20"/><stop offset="1" stop-color="#d53c09" stop-opacity=".07"/></linearGradient>
+    <marker id="ahcompressions" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#d53c09" fill-opacity=".5"/>
+    </marker>
+    <clipPath id="cpcompressions"><rect width="640" height="360"/></clipPath>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgcompressions)"/>
+  <g clip-path="url(#cpcompressions)"><path d="M57.6 36 V309.6 H608" fill="none" stroke="#d53c09" stroke-opacity=".38" stroke-width="1.3"/><circle cx="332.2" cy="194.2" r="6.8" fill="#ac3109" fill-opacity="0.44"/><circle cx="141" cy="278.4" r="5.7" fill="#d53c09" fill-opacity="0.43"/><circle cx="542.7" cy="138.9" r="5.1" fill="#d53c09" fill-opacity="0.45"/><circle cx="151.6" cy="260.7" r="8" fill="#d53c09" fill-opacity="0.70"/><circle cx="144.7" cy="283.4" r="6.2" fill="#ac3109" fill-opacity="0.54"/><circle cx="286.7" cy="219.4" r="7.2" fill="#d53c09" fill-opacity="0.64"/><circle cx="491.7" cy="124.9" r="6" fill="#d53c09" fill-opacity="0.59"/><circle cx="326.6" cy="215.2" r="4.8" fill="#d53c09" fill-opacity="0.41"/><circle cx="169.1" cy="263.3" r="6.2" fill="#ac3109" fill-opacity="0.59"/><circle cx="550.4" cy="130.6" r="5.7" fill="#d53c09" fill-opacity="0.59"/><circle cx="256.6" cy="214.2" r="6.7" fill="#d53c09" fill-opacity="0.34"/><circle cx="151.7" cy="275.6" r="3.7" fill="#d53c09" fill-opacity="0.71"/><circle cx="70.7" cy="306.6" r="5.2" fill="#ac3109" fill-opacity="0.49"/><circle cx="178.1" cy="250.8" r="5" fill="#d53c09" fill-opacity="0.70"/><circle cx="310.6" cy="223" r="7" fill="#d53c09" fill-opacity="0.44"/></g>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">Performance</span>
+    <h3 class="card-title">Compression in Production: Choosing Between gzip, zstd, lz4, and Brotli Like It Matters</h3>
+    <p class="card-desc">Compression is a three-way trade — ratio, speed, and CPU — that most systems set once by default and never revisit. The algorithm landscape, placement decisions across web, storage, and streaming, dictionary compression&#39;s quiet superpower, and the measurement discipline.</p>
+    <div class="card-meta"><time datetime="2026-10-12">12 Oct 2026</time><span class="dot"></span><span>4 min read</span></div>
+  </div>
+</a>
+<a class="card" data-card data-topics="|Engineering Leadership|DevSecOps|Cloud Architecture|" data-search="sre toil: what it is, how to measure it, and how to reduce it toil is the manual, repetitive, automatable work that keeps systems running without actually improving them. sre practice says: measure toil, set a ceiling, and invest engineering effort in eliminating it. engineering leadership devsecops cloud architecture" data-topic="Engineering Leadership" href="/insights/sre-toil-reduction/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgsretoilreduc" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#085459" stop-opacity=".10"/><stop offset="1" stop-color="#075056" stop-opacity=".22"/></linearGradient>
+    <marker id="ahsretoilreduc" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#085459" fill-opacity=".5"/>
+    </marker>
+    <clipPath id="cpsretoilreduc"><rect width="640" height="360"/></clipPath>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgsretoilreduc)"/>
+  <g clip-path="url(#cpsretoilreduc)"><line x1="32" y1="72.7" x2="608" y2="72.7" stroke="#085459" stroke-opacity=".2" stroke-width="1"/><rect x="83.6" y="59.7" width="51.8" height="25.9" rx="13" fill="#075056" fill-opacity="0.66"/><rect x="201.4" y="59.7" width="73.2" height="25.9" rx="13" fill="#075056" fill-opacity="0.49"/><rect x="359.4" y="59.7" width="85.6" height="25.9" rx="13" fill="#075056" fill-opacity="0.42"/><rect x="517.8" y="59.7" width="71" height="25.9" rx="13" fill="#075056" fill-opacity="0.32"/><line x1="32" y1="124.5" x2="608" y2="124.5" stroke="#085459" stroke-opacity=".2" stroke-width="1"/><rect x="117.3" y="111.6" width="88.7" height="25.9" rx="13" fill="#085459" fill-opacity="0.33"/><rect x="229.4" y="111.6" width="120.9" height="25.9" rx="13" fill="#085459" fill-opacity="0.60"/><rect x="435.3" y="111.6" width="89.2" height="25.9" rx="13" fill="#085459" fill-opacity="0.37"/><line x1="32" y1="176.4" x2="608" y2="176.4" stroke="#085459" stroke-opacity=".2" stroke-width="1"/><rect x="76.2" y="163.4" width="119.5" height="25.9" rx="13" fill="#075056" fill-opacity="0.43"/><rect x="225.4" y="163.4" width="84.8" height="25.9" rx="13" fill="#075056" fill-opacity="0.33"/><rect x="366.9" y="163.4" width="76.6" height="25.9" rx="13" fill="#075056" fill-opacity="0.63"/><rect x="485" y="163.4" width="103.8" height="25.9" rx="13" fill="#075056" fill-opacity="0.69"/><line x1="32" y1="228.2" x2="608" y2="228.2" stroke="#085459" stroke-opacity=".2" stroke-width="1"/><rect x="84.2" y="215.3" width="139.9" height="25.9" rx="13" fill="#085459" fill-opacity="0.28"/><rect x="257.7" y="215.3" width="151.9" height="25.9" rx="13" fill="#085459" fill-opacity="0.60"/><rect x="449.4" y="215.3" width="139.4" height="25.9" rx="13" fill="#085459" fill-opacity="0.49"/><line x1="32" y1="280.1" x2="608" y2="280.1" stroke="#085459" stroke-opacity=".2" stroke-width="1"/><rect x="114" y="267.1" width="110.5" height="25.9" rx="13" fill="#075056" fill-opacity="0.45"/><rect x="278.3" y="267.1" width="156.7" height="25.9" rx="13" fill="#075056" fill-opacity="0.42"/><rect x="464.9" y="267.1" width="110.8" height="25.9" rx="13" fill="#075056" fill-opacity="0.62"/></g>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">Engineering Leadership</span>
+    <h3 class="card-title">SRE Toil: What It Is, How to Measure It, and How to Reduce It</h3>
+    <p class="card-desc">Toil is the manual, repetitive, automatable work that keeps systems running without actually improving them. SRE practice says: measure toil, set a ceiling, and invest engineering effort in eliminating it.</p>
+    <div class="card-meta"><time datetime="2026-10-09">9 Oct 2026</time><span class="dot"></span><span>3 min read</span></div>
+  </div>
+</a></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="art-wrap"><div class="cta-panel">
+      <h2 class="h2">Working on this in production?</h2>
+      <p class="lede" style="margin-top:.7rem">We do this work directly alongside engineering teams — architecture review, migration, and hands-on enablement.</p>
+      <div class="row" style="margin-top:1.4rem">
+        <a class="btn" href="/contact/">Engage engineering <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="btn btn-ghost" href="/services/">See what we do</a>
+      </div>
+    </div></div>
+  </section>
+</article>
+
+<div class="reader-tools">
+  <button class="icon-btn" id="readerBtn" type="button" aria-expanded="false" aria-controls="readerPanel" title="Reading settings" aria-label="Reading settings"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2.2"/><circle cx="10" cy="17" r="2.2"/></svg></button>
+  <button class="icon-btn" id="focusBtn" type="button" aria-pressed="false" title="Focus mode" aria-label="Enter focus mode"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></button>
+</div>
+<div class="reader-panel" id="readerPanel" role="dialog" aria-label="Reading settings" hidden>
+  <fieldset><legend>Text size</legend>
+    <div class="seg" data-pref="rsize">
+      <button type="button" data-val="s" aria-pressed="false"><span class="sample s">Aa</span>Small</button><button type="button" data-val="m" aria-pressed="false"><span class="sample ">Aa</span>Default</button><button type="button" data-val="l" aria-pressed="false"><span class="sample l">Aa</span>Large</button><button type="button" data-val="xl" aria-pressed="false"><span class="sample l">Aa</span>Largest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Ground</legend>
+    <div class="seg" data-pref="theme">
+      <button type="button" data-val="light" aria-pressed="false"><span class="swatch light"></span>Light</button><button type="button" data-val="sepia" aria-pressed="false"><span class="swatch sepia"></span>Sepia</button><button type="button" data-val="dark" aria-pressed="false"><span class="swatch dark"></span>Dark</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Column width</legend>
+    <div class="seg" data-pref="rwidth">
+      <button type="button" data-val="s" aria-pressed="false">Narrow</button><button type="button" data-val="m" aria-pressed="false">Default</button><button type="button" data-val="l" aria-pressed="false">Wide</button><button type="button" data-val="xl" aria-pressed="false">Widest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Typeface</legend>
+    <div class="seg" data-pref="rface">
+      <button type="button" data-val="sans" aria-pressed="false"><span class="sample">Aa</span>Sans</button>
+      <button type="button" data-val="serif" aria-pressed="false"><span class="sample serif">Aa</span>Serif</button>
+    </div>
+  </fieldset>
+  <button class="reader-reset" id="readerReset" type="button">Reset to defaults</button>
+  <p class="reader-note">Saved in this browser only — these settings do not follow you to another device.</p>
+</div>
+<button class="focus-exit" id="focusExit" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h6V3M21 9h-6V3M3 15h6v6M21 15h-6v6"/></svg> Exit focus</button>
+<div class="chapter-bar" id="chapterBar">
+  <div class="chapter-where">
+    <b>From Showback to Chargeback: Building a Cloud Cost Ownership Model That Sticks</b>
+    <span>FinOps from Zero to Production</span>
+  </div>
+  <span class="chapter-left" id="chapterLeft"></span>
+  <nav class="chapter-step" aria-label="Article navigation">
+    <a href="/insights/aiml-llms-explained/" aria-label="Previous: Large Language Models: What They Are, How They Are Built, and What They Cannot Do"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a>
+    <a aria-disabled="true" aria-label="No next article"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
+  </nav>
+</div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="grid g-4" style="gap:2rem">
+      <div>
+        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem" aria-label="Ajna Consulting Services — home">
+          <svg class="ajna-mark" viewBox="0 0 100 100" width="36" height="36" fill="none" aria-hidden="true" focusable="false"><defs><path id="t-ftr" d="M 50 4 L 96 50 L 50 50 Z"/><path id="e-ftr" d="M 50 4 L 96 50"/><path id="k-ftr" d="M 50 4 L 50 50 L 96 50"/><linearGradient id="bev-ftr" gradientUnits="userSpaceOnUse" x1="50" y1="50" x2="73" y2="27"><stop offset="0" stop-color="#000" stop-opacity=".13"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity=".2"/></linearGradient><radialGradient id="core-ftr" cx=".34" cy=".3" r=".85"><stop offset="0" stop-color="#fff" stop-opacity=".42"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".45"/></radialGradient><path id="ll-ftr" d="M 50 50 C 35 30.26, 40.7 9.579999999999998, 50 3 C 59.3 9.579999999999998, 65 30.26, 50 50 Z"/><path id="ls-ftr" d="M 50 50 C 35.5 33.620000000000005, 41.01 16.46, 50 11 C 58.99 16.46, 64.5 33.620000000000005, 50 50 Z"/><linearGradient id="lf-ftr" gradientUnits="userSpaceOnUse" x1="35" y1="30" x2="65" y2="30"><stop offset="0" stop-color="#fff" stop-opacity=".3"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".22"/></linearGradient></defs><g class="am-leaf am-leaf-b" style="--a:45deg"><use href="#ls-ftr" fill="#17A05E" opacity=".62"/><use href="#ls-ftr" fill="url(#lf-ftr)"/></g><g class="am-leaf am-leaf-b" style="--a:135deg"><use href="#ls-ftr" fill="#2B57E8" opacity=".62"/><use href="#ls-ftr" fill="url(#lf-ftr)"/><use href="#ls-ftr" fill="#000" opacity="0.30"/></g><g class="am-leaf am-leaf-b" style="--a:225deg"><use href="#ls-ftr" fill="#E8402A" opacity=".62"/><use href="#ls-ftr" fill="url(#lf-ftr)"/></g><g class="am-leaf am-leaf-b" style="--a:315deg"><use href="#ls-ftr" fill="#F5A623" opacity=".62"/><use href="#ls-ftr" fill="url(#lf-ftr)"/><use href="#ls-ftr" fill="#fff" opacity="0.30"/></g><g class="am-leaf" style="--a:0deg"><use href="#ll-ftr" fill="#E8402A" opacity=".9"/><use href="#ll-ftr" fill="url(#lf-ftr)"/><use href="#ll-ftr" fill="#fff" opacity="0.21"/></g><g class="am-leaf" style="--a:90deg"><use href="#ll-ftr" fill="#F5A623" opacity=".9"/><use href="#ll-ftr" fill="url(#lf-ftr)"/><use href="#ll-ftr" fill="#000" opacity="0.21"/></g><g class="am-leaf" style="--a:180deg"><use href="#ll-ftr" fill="#17A05E" opacity=".9"/><use href="#ll-ftr" fill="url(#lf-ftr)"/><use href="#ll-ftr" fill="#000" opacity="0.21"/></g><g class="am-leaf" style="--a:270deg"><use href="#ll-ftr" fill="#2B57E8" opacity=".9"/><use href="#ll-ftr" fill="url(#lf-ftr)"/><use href="#ll-ftr" fill="#fff" opacity="0.21"/></g><g class="am-bud"><g class="am-petal" style="--a:0deg"><use href="#t-ftr" fill="#E8402A"/><use href="#t-ftr" fill="url(#bev-ftr)"/><use href="#t-ftr" fill="#fff" opacity="0.07"/><use href="#e-ftr" stroke="#fff" stroke-opacity="0.34" stroke-width="1.6" stroke-linecap="round"/><use href="#k-ftr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g class="am-petal" style="--a:90deg"><use href="#t-ftr" fill="#F5A623"/><use href="#t-ftr" fill="url(#bev-ftr)"/><use href="#t-ftr" fill="#000" opacity="0.12"/><use href="#e-ftr" stroke="#000" stroke-opacity="0.16" stroke-width="1.6" stroke-linecap="round"/><use href="#k-ftr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g class="am-petal" style="--a:180deg"><use href="#t-ftr" fill="#17A05E"/><use href="#t-ftr" fill="url(#bev-ftr)"/><use href="#t-ftr" fill="#000" opacity="0.05"/><use href="#e-ftr" stroke="#000" stroke-opacity="0.1" stroke-width="1.6" stroke-linecap="round"/><use href="#k-ftr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g class="am-petal" style="--a:270deg"><use href="#t-ftr" fill="#2B57E8"/><use href="#t-ftr" fill="url(#bev-ftr)"/><use href="#t-ftr" fill="#fff" opacity="0.30"/><use href="#e-ftr" stroke="#fff" stroke-opacity="0.46" stroke-width="1.6" stroke-linecap="round"/><use href="#k-ftr" stroke="#000" stroke-width=".9" opacity=".2"/></g></g><g class="am-core"><circle cx="50" cy="50" r="6" fill="currentColor"/><circle cx="50" cy="50" r="6" fill="url(#core-ftr)"/></g></svg>
+          <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
+        </a>
+        <p style="font-size:.88rem;line-height:1.65;color:#9fb0d0;max-width:30ch">
+          Specialised engineering partner for enterprise architecture, AI &amp; MLOps, and technical enablement.
+        </p>
+        <div class="social" style="margin-top:1.1rem">
+          <a href="https://www.youtube.com/@TechKnowen" rel="noopener" aria-label="YouTube"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 12s0-3.8-.5-5.6a2.9 2.9 0 0 0-2-2C18.7 4 12 4 12 4s-6.7 0-8.5.4a2.9 2.9 0 0 0-2 2C1 8.2 1 12 1 12s0 3.8.5 5.6a2.9 2.9 0 0 0 2 2C5.3 20 12 20 12 20s6.7 0 8.5-.4a2.9 2.9 0 0 0 2-2C23 15.8 23 12 23 12zM9.8 15.4V8.6l5.9 3.4z"/></svg></a>
+          <a href="https://techknowen.com" rel="noopener" aria-label="TechKnowen blog"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 3h16v3H4zm0 5h16v13l-8-4-8 4z"/></svg></a>
+          <a href="/feed.xml" aria-label="RSS feed"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="6.2" cy="17.8" r="2.2"/><path d="M4 10.2v3a6.6 6.6 0 0 1 6.6 6.6h3A9.6 9.6 0 0 0 4 10.2zM4 4v3c7.2 0 13 5.8 13 13h3C20 11.2 12.8 4 4 4z"/></svg></a>
+        </div>
+      </div>
+      <div>
+        <h2 class="foot-title">Services</h2>
+        <ul>
+          <li><a href="/services/#architecture">Enterprise architecture</a></li>
+          <li><a href="/services/#ai">AI &amp; MLOps</a></li>
+          <li><a href="/services/#training">Technical enablement</a></li>
+          <li><a href="/case-studies/">Case studies</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2 class="foot-title">Insights</h2>
+        <ul>
+          <li><a href="/insights/">All articles</a></li>
+          <li><a href="/series/">Series</a></li>
+          <li><a href="/topics/">Topics</a></li>
+          <li><a href="/notes/">Personal notes</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2 class="foot-title">Contact</h2>
+        <ul>
+          <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
+          <li><a href="/contact/">Start an engagement</a></li>
+          <li><a href="/about/">About</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span id="yr">2026</span> Ajna Consulting Services. All rights reserved.</span>
+      <span style="display:flex;gap:1.2rem"><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a></span>
+    </div>
+  </div>
+</footer>
+<script src="/assets/js/site.js" defer></script>
+</body>
+</html>
