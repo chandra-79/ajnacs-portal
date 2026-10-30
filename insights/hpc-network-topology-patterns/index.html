@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>HPC Network Topology Patterns: Fat-Tree, Torus, and Dragonfly Explained | Ajna CS</title>
+<meta name="description" content="The network topology of an HPC or AI training cluster determines its bandwidth, latency, cost, and how well it scales. Here&#39;s how fat-tree, torus, and drag…">
+<meta name="author" content="Chandra Lanka">
+<link rel="canonical" href="https://ajnacs.com/insights/hpc-network-topology-patterns/">
+<meta name="robots" content="index, follow, max-image-preview:large">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Ajna Consulting Services">
+<meta property="og:title" content="HPC Network Topology Patterns: Fat-Tree, Torus, and Dragonfly Explained">
+<meta property="og:description" content="The network topology of an HPC or AI training cluster determines its bandwidth, latency, cost, and how well it scales. Here&#39;s how fat-tree, torus, and drag…">
+<meta property="og:url" content="https://ajnacs.com/insights/hpc-network-topology-patterns/">
+<meta property="og:image" content="https://ajnacs.com/assets/og/ai-mlops.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/jpeg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="HPC Network Topology Patterns: Fat-Tree, Torus, and Dragonfly Explained">
+<meta name="twitter:description" content="The network topology of an HPC or AI training cluster determines its bandwidth, latency, cost, and how well it scales. Here&#39;s how fat-tree, torus, and drag…">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/ai-mlops.jpg">
+
+<link rel="icon" href="/favicon.ico?v=cefc53b9" sizes="any">
+<link rel="icon" href="/images/ajna-mark.svg?v=cefc53b9" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png?v=cefc53b9">
+<meta name="theme-color" content="#0a1020">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Quintessential&display=swap">
+<link rel="stylesheet" href="/assets/css/site.css">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<script>
+/* Theme and reading preferences are applied before first paint, so the page
+   never flashes the wrong ground or resets someone's text size mid-read. */
+(function(){try{
+var d=document.documentElement,t=localStorage.getItem('acs-theme');
+if(t!=='dark'&&t!=='light'&&t!=='sepia')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+d.setAttribute('data-theme',t);
+['rsize','rwidth','rface'].forEach(function(k){
+  var v=localStorage.getItem('acs-'+k);
+  if(v&&/^[a-z]{1,5}$/.test(v))d.setAttribute('data-'+k,v);
+});
+if(d.getAttribute('data-rface')==='serif'){
+  var l=document.createElement('link');l.rel='stylesheet';
+  l.href='https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600&display=swap';
+  document.head.appendChild(l);
+}
+}catch(e){}})();
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"HPC Network Topology Patterns: Fat-Tree, Torus, and Dragonfly Explained","description":"The network topology of an HPC or AI training cluster determines its bandwidth, latency, cost, and how well it scales. Here's how fat-tree, torus, and dragonfly topologies work, their trade-offs, and which workloads each suits best.","datePublished":"2026-10-30","dateModified":"2026-10-30","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/hpc-network-topology-patterns/","image":"https://ajnacs.com/assets/og/ai-mlops.jpg","keywords":"Systems, HPC, AI & MLOps","articleSection":"AI & MLOps","wordCount":973}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"HPC Network Topology Patterns: Fat-Tree, Torus, and Dragonfly Explained"}]}</script>
+</head>
+<body class="" data-topic="AI &amp; MLOps">
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header" id="siteHeader">
+  <div class="wrap" style="display:flex;align-items:center;width:min(1220px,100% - var(--gutter)*2)">
+    <a class="brand" href="/" aria-label="Ajna Consulting Services — home">
+      <svg class="ajna-mark" viewBox="0 0 100 100" width="40" height="40" fill="none" aria-hidden="true" focusable="false"><defs><path id="t-hdr" d="M 50 4 L 96 50 L 50 50 Z"/><path id="e-hdr" d="M 50 4 L 96 50"/><path id="k-hdr" d="M 50 4 L 50 50 L 96 50"/><linearGradient id="bev-hdr" gradientUnits="userSpaceOnUse" x1="50" y1="50" x2="73" y2="27"><stop offset="0" stop-color="#000" stop-opacity=".13"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity=".2"/></linearGradient><radialGradient id="core-hdr" cx=".34" cy=".3" r=".85"><stop offset="0" stop-color="#fff" stop-opacity=".42"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".45"/></radialGradient><path id="ll-hdr" d="M 50 50 C 35 30.26, 40.7 9.579999999999998, 50 3 C 59.3 9.579999999999998, 65 30.26, 50 50 Z"/><path id="ls-hdr" d="M 50 50 C 35.5 33.620000000000005, 41.01 16.46, 50 11 C 58.99 16.46, 64.5 33.620000000000005, 50 50 Z"/><linearGradient id="lf-hdr" gradientUnits="userSpaceOnUse" x1="35" y1="30" x2="65" y2="30"><stop offset="0" stop-color="#fff" stop-opacity=".3"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".22"/></linearGradient></defs><g class="am-leaf am-leaf-b" style="--a:45deg"><use href="#ls-hdr" fill="#17A05E" opacity=".62"/><use href="#ls-hdr" fill="url(#lf-hdr)"/></g><g class="am-leaf am-leaf-b" style="--a:135deg"><use href="#ls-hdr" fill="#2B57E8" opacity=".62"/><use href="#ls-hdr" fill="url(#lf-hdr)"/><use href="#ls-hdr" fill="#000" opacity="0.30"/></g><g class="am-leaf am-leaf-b" style="--a:225deg"><use href="#ls-hdr" fill="#E8402A" opacity=".62"/><use href="#ls-hdr" fill="url(#lf-hdr)"/></g><g class="am-leaf am-leaf-b" style="--a:315deg"><use href="#ls-hdr" fill="#F5A623" opacity=".62"/><use href="#ls-hdr" fill="url(#lf-hdr)"/><use href="#ls-hdr" fill="#fff" opacity="0.30"/></g><g class="am-leaf" style="--a:0deg"><use href="#ll-hdr" fill="#E8402A" opacity=".9"/><use href="#ll-hdr" fill="url(#lf-hdr)"/><use href="#ll-hdr" fill="#fff" opacity="0.21"/></g><g class="am-leaf" style="--a:90deg"><use href="#ll-hdr" fill="#F5A623" opacity=".9"/><use href="#ll-hdr" fill="url(#lf-hdr)"/><use href="#ll-hdr" fill="#000" opacity="0.21"/></g><g class="am-leaf" style="--a:180deg"><use href="#ll-hdr" fill="#17A05E" opacity=".9"/><use href="#ll-hdr" fill="url(#lf-hdr)"/><use href="#ll-hdr" fill="#000" opacity="0.21"/></g><g class="am-leaf" style="--a:270deg"><use href="#ll-hdr" fill="#2B57E8" opacity=".9"/><use href="#ll-hdr" fill="url(#lf-hdr)"/><use href="#ll-hdr" fill="#fff" opacity="0.21"/></g><g class="am-bud"><g class="am-petal" style="--a:0deg"><use href="#t-hdr" fill="#E8402A"/><use href="#t-hdr" fill="url(#bev-hdr)"/><use href="#t-hdr" fill="#fff" opacity="0.07"/><use href="#e-hdr" stroke="#fff" stroke-opacity="0.34" stroke-width="1.6" stroke-linecap="round"/><use href="#k-hdr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g class="am-petal" style="--a:90deg"><use href="#t-hdr" fill="#F5A623"/><use href="#t-hdr" fill="url(#bev-hdr)"/><use href="#t-hdr" fill="#000" opacity="0.12"/><use href="#e-hdr" stroke="#000" stroke-opacity="0.16" stroke-width="1.6" stroke-linecap="round"/><use href="#k-hdr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g class="am-petal" style="--a:180deg"><use href="#t-hdr" fill="#17A05E"/><use href="#t-hdr" fill="url(#bev-hdr)"/><use href="#t-hdr" fill="#000" opacity="0.05"/><use href="#e-hdr" stroke="#000" stroke-opacity="0.1" stroke-width="1.6" stroke-linecap="round"/><use href="#k-hdr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g class="am-petal" style="--a:270deg"><use href="#t-hdr" fill="#2B57E8"/><use href="#t-hdr" fill="url(#bev-hdr)"/><use href="#t-hdr" fill="#fff" opacity="0.30"/><use href="#e-hdr" stroke="#fff" stroke-opacity="0.46" stroke-width="1.6" stroke-linecap="round"/><use href="#k-hdr" stroke="#000" stroke-width=".9" opacity=".2"/></g></g><g class="am-core"><circle cx="50" cy="50" r="6" fill="currentColor"/><circle cx="50" cy="50" r="6" fill="url(#core-hdr)"/></g></svg>
+      <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
+    </a>
+    <nav class="nav" id="nav" aria-label="Primary">
+      <a href="/services/">Services</a>
+      <a href="/insights/" aria-current="page">Insights</a>
+      <a href="/series/">Series</a>
+      <a href="/case-studies/">Case studies</a>
+      <a href="/about/">About</a>
+      <a class="btn btn-sm" href="/contact/" style="margin-left:.4rem">Engage engineering</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn" id="themeBtn" type="button" aria-label="Switch to dark mode" aria-pressed="false"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg></button>
+      <button class="icon-btn nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+
+<div class="read-bar" aria-hidden="true"><span id="readBar"></span></div>
+<article class="article with-toc">
+  <header class="article-head">
+    <div class="art-wrap">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a> <span aria-hidden="true">/</span>
+        <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
+        <span>AI &amp; MLOps</span>
+      </nav>
+      <h1 class="h1">HPC Network Topology Patterns: Fat-Tree, Torus, and Dragonfly Explained</h1>
+      <p class="lede" style="margin-top:1rem">The network topology of an HPC or AI training cluster determines its bandwidth, latency, cost, and how well it scales. Here&#39;s how fat-tree, torus, and dragonfly topologies work, their trade-offs, and which workloads each suits best.</p>
+      <div class="article-meta">
+        <span class="chip">AI &amp; MLOps</span>
+        <time datetime="2026-10-30">30 Oct 2026</time>
+        <span class="dot"></span><span>4 min read</span>
+        <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="art-wrap"><div class="article-hero" data-topic="AI &amp; MLOps"><svg viewBox="0 0 1200 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bghpcnetworkto" x1="0" y1="1" x2="0.4" y2="0"><stop offset="0" stop-color="#5822df" stop-opacity=".20"/><stop offset="1" stop-color="#6325ff" stop-opacity=".07"/></linearGradient>
+    <marker id="ahhpcnetworkto" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#6325ff" fill-opacity=".5"/>
+    </marker>
+    <clipPath id="cphpcnetworkto"><rect width="1200" height="380"/></clipPath>
+  </defs>
+  <rect width="1200" height="380" fill="url(#bghpcnetworkto)"/>
+  <g clip-path="url(#cphpcnetworkto)"><line x1="451.2" y1="150.7" x2="463.6" y2="152.9" stroke="#6325ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="451.2" y1="150.7" x2="478.2" y2="294.2" stroke="#6325ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="451.2" y1="150.7" x2="511.6" y2="261.3" stroke="#6325ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="451.2" y1="150.7" x2="542.2" y2="136.5" stroke="#6325ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="451.2" y1="150.7" x2="592.7" y2="287.3" stroke="#6325ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="463.6" y1="152.9" x2="478.2" y2="294.2" stroke="#6325ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="463.6" y1="152.9" x2="511.6" y2="261.3" stroke="#6325ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="463.6" y1="152.9" x2="542.2" y2="136.5" stroke="#6325ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="463.6" y1="152.9" x2="592.7" y2="287.3" stroke="#6325ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="478.2" y1="294.2" x2="511.6" y2="261.3" stroke="#6325ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="478.2" y1="294.2" x2="542.2" y2="136.5" stroke="#6325ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="478.2" y1="294.2" x2="592.7" y2="287.3" stroke="#6325ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="511.6" y1="261.3" x2="542.2" y2="136.5" stroke="#6325ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="511.6" y1="261.3" x2="592.7" y2="287.3" stroke="#6325ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="542.2" y1="136.5" x2="592.7" y2="287.3" stroke="#6325ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="542.2" y1="136.5" x2="692.3" y2="86.7" stroke="#6325ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="592.7" y1="287.3" x2="692.3" y2="86.7" stroke="#6325ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="592.7" y1="287.3" x2="791.9" y2="311.5" stroke="#6325ff" stroke-opacity=".3" stroke-width="1.4"/><circle cx="93.4" cy="326.5" r="4.5" fill="#6325ff" fill-opacity=".88"/><circle cx="451.2" cy="150.7" r="8" fill="#5822df" fill-opacity=".88"/><circle cx="463.6" cy="152.9" r="11.5" fill="#6325ff" fill-opacity=".88"/><circle cx="478.2" cy="294.2" r="4.5" fill="#5822df" fill-opacity=".88"/><circle cx="511.6" cy="261.3" r="8" fill="#6325ff" fill-opacity=".88"/><circle cx="542.2" cy="136.5" r="11.5" fill="#5822df" fill-opacity=".88"/><circle cx="592.7" cy="287.3" r="4.5" fill="#6325ff" fill-opacity=".88"/><circle cx="692.3" cy="86.7" r="8" fill="#5822df" fill-opacity=".88"/><circle cx="791.9" cy="311.5" r="11.5" fill="#6325ff" fill-opacity=".88"/><circle cx="1115.9" cy="308.9" r="4.5" fill="#5822df" fill-opacity=".88"/></g>
+</svg></div></div>
+
+  <div class="art-wrap article-grid">
+    <div class="reader-aside"><nav class="toc" aria-label="On this page">
+  <p class="toc-title">On this page</p>
+  <ol><li><a href="#fat-tree-full-bisection-bandwidth-high-cost">Fat-tree: full bisection bandwidth, high cost</a></li><li><a href="#torus-low-diameter-bandwidth-penalty-for-non-local-traffic">Torus: low diameter, bandwidth penalty for non-local traffic</a></li><li><a href="#dragonfly-low-diameter-moderate-cost">Dragonfly: low diameter, moderate cost</a></li><li><a href="#rail-optimized-topology-for-ai-training">Rail-optimized topology for AI training</a></li><li><a href="#choosing-for-your-workload">Choosing for your workload</a></li></ol>
+</nav></div>
+    <div class="prose">
+<p>The network fabric of a high-performance computing cluster isn&#39;t just cabling — it&#39;s an architectural decision that determines the performance ceiling of every job that runs on it. The topology defines how bandwidth scales with cluster size, how much any-to-any communication costs, and how many switches and cables you need.</p>
+<p>Three topologies dominate HPC and AI training infrastructure: fat-tree, torus, and dragonfly. Each makes different trade-offs between bandwidth, diameter (maximum hops between any two nodes), cost, and engineering complexity.</p>
+<h2 id="fat-tree-full-bisection-bandwidth-high-cost"><a class="h-anchor" href="#fat-tree-full-bisection-bandwidth-high-cost" aria-hidden="true" tabindex="-1">#</a>Fat-tree: full bisection bandwidth, high cost</h2>
+<p>Fat-tree (also called Clos or folded Clos) is the most widely deployed topology for data centres, HPC clusters, and large-scale AI training. The name comes from the original Leiserson fat-tree paper, though the implementation used in practice is the three-tier Clos: edge (top-of-rack) switches connected to aggregation switches connected to core switches.</p>
+<p>The defining property: <strong>full bisection bandwidth</strong>. Any half of the nodes can communicate with the other half at full line rate simultaneously. Any-to-any communication between any two nodes uses the same bandwidth — there&#39;s no penalty for communicating with a non-adjacent node.</p>
+<p><strong>Why this matters for distributed training</strong>: all-reduce collective operations require every node to communicate with every other node in the group. Full bisection bandwidth means these operations don&#39;t become network-bottlenecked regardless of which nodes are assigned to a job.</p>
+<p><strong>The cost</strong>: scales as O(N log N) in switch ports. A fat-tree for N nodes requires significantly more switches than sparser topologies. At 10,000+ nodes, the cabling complexity is substantial.</p>
+<p>Variants:</p>
+<ul>
+<li><strong>2-tier Clos</strong> (leaf-spine): simpler, used in smaller deployments</li>
+<li><strong>3-tier Clos</strong>: standard for larger HPC clusters; 10,000+ nodes</li>
+<li><strong>Non-blocking vs oversubscribed</strong>: full fat-tree is non-blocking (full bisection bandwidth); oversubscribed fat-tree (e.g., 2:1 at the spine) reduces cost at the expense of bisection bandwidth</li>
+</ul>
+<p>InfiniBand and high-speed Ethernet deployments at hyperscalers predominantly use fat-tree variants.</p>
+<h2 id="torus-low-diameter-bandwidth-penalty-for-non-local-traffic"><a class="h-anchor" href="#torus-low-diameter-bandwidth-penalty-for-non-local-traffic" aria-hidden="true" tabindex="-1">#</a>Torus: low diameter, bandwidth penalty for non-local traffic</h2>
+<p>A torus connects nodes in a multi-dimensional grid where each node connects directly to its neighbours, and the edges of the grid wrap around to connect to the opposite edge (making a torus rather than a flat grid).</p>
+<p>A 3D torus: each node has 6 neighbours (left/right, front/back, up/down) and wraps in all three dimensions.</p>
+<p><strong>Advantages:</strong></p>
+<ul>
+<li>Low switch port count — a k-ary d-dimensional torus connects N = k^d nodes with only d·k links per node</li>
+<li>Low diameter for uniform nearest-neighbour communication patterns</li>
+<li>Cost-effective for very large clusters (IBM Blue Gene series, Cray systems)</li>
+</ul>
+<p><strong>Disadvantages:</strong></p>
+<ul>
+<li>Non-uniform bandwidth: communication between nearby nodes uses a short path; communication between distant nodes uses many hops through intermediate nodes</li>
+<li>All-reduce performance depends heavily on the mapping of parallel jobs to the torus — a job whose nodes are spread across the torus will see higher latency than one whose nodes are co-located</li>
+<li>Poor bisection bandwidth relative to fat-tree: splitting the cluster in half leaves relatively few cross-links</li>
+</ul>
+<p><strong>When torus is used</strong>: large-scale scientific computing where the communication pattern is primarily nearest-neighbour (computational fluid dynamics, climate simulation, molecular dynamics). In these workloads, the torus topology matches the communication pattern of the physics being simulated.</p>
+<p>For ML training with all-reduce patterns (which require any-to-any communication), fat-tree or dragonfly outperform torus at scale.</p>
+<h2 id="dragonfly-low-diameter-moderate-cost"><a class="h-anchor" href="#dragonfly-low-diameter-moderate-cost" aria-hidden="true" tabindex="-1">#</a>Dragonfly: low diameter, moderate cost</h2>
+<p>Dragonfly is a two-level topology that aims to combine the low diameter of a torus with the bandwidth of a fat-tree at lower cost than a full fat-tree.</p>
+<p><strong>Structure:</strong></p>
+<ul>
+<li>Nodes connect to a local switch (group)</li>
+<li>Groups are connected to each other via global links</li>
+<li>Each group has high internal bandwidth; global links provide inter-group connectivity</li>
+</ul>
+<p>The key design property: any two nodes are at most 3 hops apart (local switch → global link → destination local switch), regardless of cluster size. This is significantly lower than a fat-tree for very large clusters.</p>
+<p><strong>Trade-offs:</strong></p>
+<ul>
+<li>Adaptive routing is essential — static routing can create hotspots on global links when many jobs need inter-group communication simultaneously</li>
+<li>Less uniform bandwidth than fat-tree: intra-group communication is cheaper than inter-group</li>
+<li>More complex to manage than fat-tree due to the two-level hierarchy</li>
+</ul>
+<p><strong>Where dragonfly is deployed</strong>: Cray Aries (Cray XC series), HPE Slingshot, some large-scale supercomputers. The topology was designed for the scale (100,000+ nodes) where fat-tree becomes impractically expensive.</p>
+<p>At the scale of typical enterprise HPC clusters (hundreds to a few thousand nodes), fat-tree is usually the better choice — simpler to configure, easier to reason about, and the cost advantage of dragonfly only materialises at very large scale.</p>
+<h2 id="rail-optimized-topology-for-ai-training"><a class="h-anchor" href="#rail-optimized-topology-for-ai-training" aria-hidden="true" tabindex="-1">#</a>Rail-optimized topology for AI training</h2>
+<p>For AI training specifically, a specialised variant called rail-optimized (or multi-rail) topology is gaining adoption.</p>
+<p><strong>Structure</strong>: multiple independent networks (rails) each connecting all compute nodes. A 4-rail design means each node has 4 NICs, each connected to a separate independent fat-tree fabric.</p>
+<p><strong>Why it helps for all-reduce</strong>: all-reduce traffic is distributed across all 4 rails simultaneously, quadrupling effective bandwidth. Each rail uses a separate switch fabric — a failure on one rail reduces bandwidth but doesn&#39;t stop training.</p>
+<p>NVIDIA&#39;s NVLink switch fabric operates on this principle within a rack; multi-rail Ethernet or InfiniBand extends it inter-rack.</p>
+<h2 id="choosing-for-your-workload"><a class="h-anchor" href="#choosing-for-your-workload" aria-hidden="true" tabindex="-1">#</a>Choosing for your workload</h2>
+<div class="table-wrap"><table><thead><tr><th>Topology</th><th>Best for</th><th>Not ideal for</th></tr></thead><tbody><tr><td>Fat-tree</td><td>General HPC, AI training, any-to-any workloads</td><td>Very large clusters (cost)</td></tr><tr><td>Torus</td><td>Nearest-neighbour scientific simulation</td><td>All-reduce heavy ML training</td></tr><tr><td>Dragonfly</td><td>Very large HPC (100k+ nodes)</td><td>Small/medium clusters (complexity cost)</td></tr><tr><td>Rail-optimized</td><td>Large-scale AI training (1000+ GPUs)</td><td>General-purpose workloads</td></tr></tbody></table></div>
+<p>For most enterprise AI training clusters under 1,000 GPUs, a fat-tree with RoCE or InfiniBand at 200–400 Gbps is the pragmatic choice: well-understood, supported by standard tooling, and delivers the bandwidth that distributed training requires.</p>
+<p><em>Designing or evaluating network infrastructure for HPC or AI training? <a href="/contact">Happy to compare configurations.</a></em></p>
+
+    </div>
+  </div>
+
+  
+
+  
+
+  <div class="art-wrap article-foot">
+    <div class="row" style="gap:.4rem">
+      <a class="chip chip-plain" href="/insights/?topic=Systems">Systems</a><a class="chip chip-plain" href="/insights/?topic=HPC">HPC</a><a class="chip chip-plain" href="/insights/?topic=AI%20%26%20MLOps">AI &amp; MLOps</a>
+    </div>
+    <nav class="prevnext" aria-label="More articles">
+      <a href="/insights/system-design-patterns-backend/"><span>Previous</span><strong>System Design Patterns Every Backend Engineer Should Know</strong></a>
+      <span></span>
+    </nav>
+  </div>
+
+  <section class="section surface hair" style="margin-top:4rem">
+    <div class="wrap">
+      <p class="eyebrow">Related</p>
+      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|AI &amp; MLOps|Enterprise AI|Fundamentals|" data-search="large language models: what they are, how they are built, and what they cannot do transformers, attention, pretraining, fine-tuning, rlhf — the architecture and training pipeline behind gpt, claude, llama, and every other modern llm, explained for engineers who need to use and evaluate these systems. ai &amp; mlops enterprise ai fundamentals" data-topic="AI &amp; MLOps" href="/insights/aiml-llms-explained/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgaimlllmsexpl" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2d19ff" stop-opacity=".10"/><stop offset="1" stop-color="#3020da" stop-opacity=".22"/></linearGradient>
+    <marker id="ahaimlllmsexpl" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#2d19ff" fill-opacity=".5"/>
+    </marker>
+    <clipPath id="cpaimlllmsexpl"><rect width="640" height="360"/></clipPath>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgaimlllmsexpl)"/>
+  <g clip-path="url(#cpaimlllmsexpl)"><line x1="53.5" y1="142.7" x2="160.9" y2="237.9" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="53.5" y1="142.7" x2="209.1" y2="190.9" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="53.5" y1="142.7" x2="229" y2="276.7" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="53.5" y1="142.7" x2="251.6" y2="93.8" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="53.5" y1="142.7" x2="260.8" y2="51.9" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="160.9" y1="237.9" x2="209.1" y2="190.9" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="160.9" y1="237.9" x2="229" y2="276.7" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="160.9" y1="237.9" x2="251.6" y2="93.8" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="160.9" y1="237.9" x2="260.8" y2="51.9" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="160.9" y1="237.9" x2="292.2" y2="308.2" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="160.9" y1="237.9" x2="331.3" y2="311.1" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="209.1" y1="190.9" x2="229" y2="276.7" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="209.1" y1="190.9" x2="251.6" y2="93.8" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="209.1" y1="190.9" x2="260.8" y2="51.9" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="209.1" y1="190.9" x2="292.2" y2="308.2" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="209.1" y1="190.9" x2="331.3" y2="311.1" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="209.1" y1="190.9" x2="375.8" y2="70.7" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="209.1" y1="190.9" x2="406.8" y2="269.6" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="209.1" y1="190.9" x2="428.8" y2="214" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="209.1" y1="190.9" x2="429.8" y2="175.1" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="229" y1="276.7" x2="251.6" y2="93.8" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="229" y1="276.7" x2="260.8" y2="51.9" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="229" y1="276.7" x2="292.2" y2="308.2" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="229" y1="276.7" x2="331.3" y2="311.1" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="229" y1="276.7" x2="406.8" y2="269.6" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="229" y1="276.7" x2="428.8" y2="214" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="229" y1="276.7" x2="429.8" y2="175.1" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="251.6" y1="93.8" x2="260.8" y2="51.9" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="251.6" y1="93.8" x2="292.2" y2="308.2" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="251.6" y1="93.8" x2="375.8" y2="70.7" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="251.6" y1="93.8" x2="411.6" y2="73.6" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="251.6" y1="93.8" x2="428.8" y2="214" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="251.6" y1="93.8" x2="429.8" y2="175.1" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="260.8" y1="51.9" x2="375.8" y2="70.7" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="260.8" y1="51.9" x2="411.6" y2="73.6" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="260.8" y1="51.9" x2="429.8" y2="175.1" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="292.2" y1="308.2" x2="331.3" y2="311.1" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="292.2" y1="308.2" x2="406.8" y2="269.6" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="292.2" y1="308.2" x2="428.8" y2="214" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="292.2" y1="308.2" x2="429.8" y2="175.1" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="331.3" y1="311.1" x2="406.8" y2="269.6" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="331.3" y1="311.1" x2="428.8" y2="214" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="331.3" y1="311.1" x2="429.8" y2="175.1" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="375.8" y1="70.7" x2="406.8" y2="269.6" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="375.8" y1="70.7" x2="411.6" y2="73.6" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="375.8" y1="70.7" x2="428.8" y2="214" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="375.8" y1="70.7" x2="429.8" y2="175.1" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="375.8" y1="70.7" x2="585.4" y2="144.1" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="406.8" y1="269.6" x2="411.6" y2="73.6" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="406.8" y1="269.6" x2="428.8" y2="214" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="406.8" y1="269.6" x2="429.8" y2="175.1" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="406.8" y1="269.6" x2="585.4" y2="144.1" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="411.6" y1="73.6" x2="428.8" y2="214" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="411.6" y1="73.6" x2="429.8" y2="175.1" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="411.6" y1="73.6" x2="585.4" y2="144.1" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="428.8" y1="214" x2="429.8" y2="175.1" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="428.8" y1="214" x2="585.4" y2="144.1" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><line x1="429.8" y1="175.1" x2="585.4" y2="144.1" stroke="#2d19ff" stroke-opacity=".3" stroke-width="1.4"/><circle cx="53.5" cy="142.7" r="4.5" fill="#2d19ff" fill-opacity=".88"/><circle cx="160.9" cy="237.9" r="8" fill="#3020da" fill-opacity=".88"/><circle cx="209.1" cy="190.9" r="11.5" fill="#2d19ff" fill-opacity=".88"/><circle cx="229" cy="276.7" r="4.5" fill="#3020da" fill-opacity=".88"/><circle cx="251.6" cy="93.8" r="8" fill="#2d19ff" fill-opacity=".88"/><circle cx="260.8" cy="51.9" r="11.5" fill="#3020da" fill-opacity=".88"/><circle cx="292.2" cy="308.2" r="4.5" fill="#2d19ff" fill-opacity=".88"/><circle cx="331.3" cy="311.1" r="8" fill="#3020da" fill-opacity=".88"/><circle cx="375.8" cy="70.7" r="11.5" fill="#2d19ff" fill-opacity=".88"/><circle cx="406.8" cy="269.6" r="4.5" fill="#3020da" fill-opacity=".88"/><circle cx="411.6" cy="73.6" r="8" fill="#2d19ff" fill-opacity=".88"/><circle cx="428.8" cy="214" r="11.5" fill="#3020da" fill-opacity=".88"/><circle cx="429.8" cy="175.1" r="4.5" fill="#2d19ff" fill-opacity=".88"/><circle cx="585.4" cy="144.1" r="8" fill="#3020da" fill-opacity=".88"/></g>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">AI &amp; MLOps</span>
+    <h3 class="card-title">Large Language Models: What They Are, How They Are Built, and What They Cannot Do</h3>
+    <p class="card-desc">Transformers, attention, pretraining, fine-tuning, RLHF — the architecture and training pipeline behind GPT, Claude, Llama, and every other modern LLM, explained for engineers who need to use and evaluate these systems.</p>
+    <div class="card-meta"><time datetime="2026-10-21">21 Oct 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
+  </div>
+</a>
+<a class="card" data-card data-topics="|Data Engineering|Cloud Architecture|AI &amp; MLOps|" data-search="the data lakehouse: why it won, and how to architect one that works data warehouses couldn&#39;t handle unstructured data at scale. data lakes couldn&#39;t enforce schemas or serve bi queries efficiently. the lakehouse combines both — here&#39;s the architecture, the open table formats that make it work, and the practical design decisions. data engineering cloud architecture ai &amp; mlops" data-topic="Data Engineering" href="/insights/data-lakehouse-architecture/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <radialGradient id="bgdatalakehous" cx="0.22" cy="0.16" r="1"><stop offset="0" stop-color="#045773" stop-opacity=".21"/><stop offset="1" stop-color="#044a62" stop-opacity=".07"/></radialGradient>
+    <marker id="ahdatalakehous" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#045773" fill-opacity=".5"/>
+    </marker>
+    <clipPath id="cpdatalakehous"><rect width="640" height="360"/></clipPath>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgdatalakehous)"/>
+  <g clip-path="url(#cpdatalakehous)"><path d="M0 50.4 C243.2 50.4, 396.8 28.8, 640 28.8 L640 86.5 C396.8 86.5, 243.2 108.1, 0 108.1 Z"
+      fill="#045773" fill-opacity="0.14"/><path d="M0 124.3 C243.2 124.3, 396.8 112.8, 640 112.8 L640 137.6 C396.8 137.6, 243.2 149.1, 0 149.1 Z"
+      fill="#044a62" fill-opacity="0.25"/><path d="M0 165.3 C243.2 165.3, 396.8 100.6, 640 100.6 L640 148.5 C396.8 148.5, 243.2 213.2, 0 213.2 Z"
+      fill="#045773" fill-opacity="0.31"/></g>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">Data Engineering</span>
+    <h3 class="card-title">The Data Lakehouse: Why It Won, and How to Architect One That Works</h3>
+    <p class="card-desc">Data warehouses couldn&#39;t handle unstructured data at scale. Data lakes couldn&#39;t enforce schemas or serve BI queries efficiently. The lakehouse combines both — here&#39;s the architecture, the open table formats that make it work, and the practical design decisions.</p>
+    <div class="card-meta"><time datetime="2026-10-05">5 Oct 2026</time><span class="dot"></span><span>4 min read</span></div>
+  </div>
+</a>
+<a class="card" data-card data-topics="|Systems|Infrastructure|Enterprise AI|Cloud Architecture|HPC|" data-search="ethernet vs. infiniband: choosing the right network fabric in 2026 a practical breakdown of when to use ethernet and when infiniband makes sense — with key metrics, topology differences, and real-world guidance for cloud, hpc, and ai workloads. systems infrastructure enterprise ai cloud architecture hpc" data-topic="Infrastructure" href="/insights/ethernet-vs-infiniband-networking-2026/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgethernetvsin" x1="0" y1="1" x2="0.4" y2="0"><stop offset="0" stop-color="#2d394c" stop-opacity=".20"/><stop offset="1" stop-color="#3d485b" stop-opacity=".07"/></linearGradient>
+    <marker id="ahethernetvsin" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#3d485b" fill-opacity=".5"/>
+    </marker>
+    <clipPath id="cpethernetvsin"><rect width="640" height="360"/></clipPath>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgethernetvsin)"/>
+  <g clip-path="url(#cpethernetvsin)"><line x1="41.6" y1="158.9" x2="104.2" y2="259.1" stroke="#3d485b" stroke-opacity=".3" stroke-width="1.4"/><line x1="41.6" y1="158.9" x2="124.5" y2="234.1" stroke="#3d485b" stroke-opacity=".3" stroke-width="1.4"/><line x1="104.2" y1="259.1" x2="124.5" y2="234.1" stroke="#3d485b" stroke-opacity=".3" stroke-width="1.4"/><line x1="104.2" y1="259.1" x2="161.9" y2="264.5" stroke="#3d485b" stroke-opacity=".3" stroke-width="1.4"/><line x1="124.5" y1="234.1" x2="161.9" y2="264.5" stroke="#3d485b" stroke-opacity=".3" stroke-width="1.4"/><line x1="309.5" y1="188.8" x2="337.6" y2="231.5" stroke="#3d485b" stroke-opacity=".3" stroke-width="1.4"/><line x1="337.6" y1="231.5" x2="482.2" y2="227.3" stroke="#3d485b" stroke-opacity=".3" stroke-width="1.4"/><line x1="438.9" y1="57.9" x2="445" y2="59.9" stroke="#3d485b" stroke-opacity=".3" stroke-width="1.4"/><line x1="438.9" y1="57.9" x2="461" y2="70.1" stroke="#3d485b" stroke-opacity=".3" stroke-width="1.4"/><line x1="445" y1="59.9" x2="461" y2="70.1" stroke="#3d485b" stroke-opacity=".3" stroke-width="1.4"/><line x1="482.2" y1="227.3" x2="599.3" y2="286.7" stroke="#3d485b" stroke-opacity=".3" stroke-width="1.4"/><circle cx="41.6" cy="158.9" r="4.5" fill="#3d485b" fill-opacity=".88"/><circle cx="104.2" cy="259.1" r="8" fill="#2d394c" fill-opacity=".88"/><circle cx="124.5" cy="234.1" r="11.5" fill="#3d485b" fill-opacity=".88"/><circle cx="161.9" cy="264.5" r="4.5" fill="#2d394c" fill-opacity=".88"/><circle cx="309.5" cy="188.8" r="8" fill="#3d485b" fill-opacity=".88"/><circle cx="337.6" cy="231.5" r="11.5" fill="#2d394c" fill-opacity=".88"/><circle cx="438.9" cy="57.9" r="4.5" fill="#3d485b" fill-opacity=".88"/><circle cx="445" cy="59.9" r="8" fill="#2d394c" fill-opacity=".88"/><circle cx="461" cy="70.1" r="11.5" fill="#3d485b" fill-opacity=".88"/><circle cx="482.2" cy="227.3" r="4.5" fill="#2d394c" fill-opacity=".88"/><circle cx="599.3" cy="286.7" r="8" fill="#3d485b" fill-opacity=".88"/></g>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">Infrastructure</span>
+    <h3 class="card-title">Ethernet vs. InfiniBand: Choosing the Right Network Fabric in 2026</h3>
+    <p class="card-desc">A practical breakdown of when to use Ethernet and when InfiniBand makes sense — with key metrics, topology differences, and real-world guidance for cloud, HPC, and AI workloads.</p>
+    <div class="card-meta"><time datetime="2026-10-02">2 Oct 2026</time><span class="dot"></span><span>4 min read</span></div>
+  </div>
+</a></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="art-wrap"><div class="cta-panel">
+      <h2 class="h2">Working on this in production?</h2>
+      <p class="lede" style="margin-top:.7rem">We do this work directly alongside engineering teams — architecture review, migration, and hands-on enablement.</p>
+      <div class="row" style="margin-top:1.4rem">
+        <a class="btn" href="/contact/">Engage engineering <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="btn btn-ghost" href="/services/">See what we do</a>
+      </div>
+    </div></div>
+  </section>
+</article>
+
+<div class="reader-tools">
+  <button class="icon-btn" id="readerBtn" type="button" aria-expanded="false" aria-controls="readerPanel" title="Reading settings" aria-label="Reading settings"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2.2"/><circle cx="10" cy="17" r="2.2"/></svg></button>
+  <button class="icon-btn" id="focusBtn" type="button" aria-pressed="false" title="Focus mode" aria-label="Enter focus mode"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></button>
+</div>
+<div class="reader-panel" id="readerPanel" role="dialog" aria-label="Reading settings" hidden>
+  <fieldset><legend>Text size</legend>
+    <div class="seg" data-pref="rsize">
+      <button type="button" data-val="s" aria-pressed="false"><span class="sample s">Aa</span>Small</button><button type="button" data-val="m" aria-pressed="false"><span class="sample ">Aa</span>Default</button><button type="button" data-val="l" aria-pressed="false"><span class="sample l">Aa</span>Large</button><button type="button" data-val="xl" aria-pressed="false"><span class="sample l">Aa</span>Largest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Ground</legend>
+    <div class="seg" data-pref="theme">
+      <button type="button" data-val="light" aria-pressed="false"><span class="swatch light"></span>Light</button><button type="button" data-val="sepia" aria-pressed="false"><span class="swatch sepia"></span>Sepia</button><button type="button" data-val="dark" aria-pressed="false"><span class="swatch dark"></span>Dark</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Column width</legend>
+    <div class="seg" data-pref="rwidth">
+      <button type="button" data-val="s" aria-pressed="false">Narrow</button><button type="button" data-val="m" aria-pressed="false">Default</button><button type="button" data-val="l" aria-pressed="false">Wide</button><button type="button" data-val="xl" aria-pressed="false">Widest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Typeface</legend>
+    <div class="seg" data-pref="rface">
+      <button type="button" data-val="sans" aria-pressed="false"><span class="sample">Aa</span>Sans</button>
+      <button type="button" data-val="serif" aria-pressed="false"><span class="sample serif">Aa</span>Serif</button>
+    </div>
+  </fieldset>
+  <button class="reader-reset" id="readerReset" type="button">Reset to defaults</button>
+  <p class="reader-note">Saved in this browser only — these settings do not follow you to another device.</p>
+</div>
+<button class="focus-exit" id="focusExit" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h6V3M21 9h-6V3M3 15h6v6M21 15h-6v6"/></svg> Exit focus</button>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="grid g-4" style="gap:2rem">
+      <div>
+        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem" aria-label="Ajna Consulting Services — home">
+          <svg class="ajna-mark" viewBox="0 0 100 100" width="36" height="36" fill="none" aria-hidden="true" focusable="false"><defs><path id="t-ftr" d="M 50 4 L 96 50 L 50 50 Z"/><path id="e-ftr" d="M 50 4 L 96 50"/><path id="k-ftr" d="M 50 4 L 50 50 L 96 50"/><linearGradient id="bev-ftr" gradientUnits="userSpaceOnUse" x1="50" y1="50" x2="73" y2="27"><stop offset="0" stop-color="#000" stop-opacity=".13"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity=".2"/></linearGradient><radialGradient id="core-ftr" cx=".34" cy=".3" r=".85"><stop offset="0" stop-color="#fff" stop-opacity=".42"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".45"/></radialGradient><path id="ll-ftr" d="M 50 50 C 35 30.26, 40.7 9.579999999999998, 50 3 C 59.3 9.579999999999998, 65 30.26, 50 50 Z"/><path id="ls-ftr" d="M 50 50 C 35.5 33.620000000000005, 41.01 16.46, 50 11 C 58.99 16.46, 64.5 33.620000000000005, 50 50 Z"/><linearGradient id="lf-ftr" gradientUnits="userSpaceOnUse" x1="35" y1="30" x2="65" y2="30"><stop offset="0" stop-color="#fff" stop-opacity=".3"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".22"/></linearGradient></defs><g class="am-leaf am-leaf-b" style="--a:45deg"><use href="#ls-ftr" fill="#17A05E" opacity=".62"/><use href="#ls-ftr" fill="url(#lf-ftr)"/></g><g class="am-leaf am-leaf-b" style="--a:135deg"><use href="#ls-ftr" fill="#2B57E8" opacity=".62"/><use href="#ls-ftr" fill="url(#lf-ftr)"/><use href="#ls-ftr" fill="#000" opacity="0.30"/></g><g class="am-leaf am-leaf-b" style="--a:225deg"><use href="#ls-ftr" fill="#E8402A" opacity=".62"/><use href="#ls-ftr" fill="url(#lf-ftr)"/></g><g class="am-leaf am-leaf-b" style="--a:315deg"><use href="#ls-ftr" fill="#F5A623" opacity=".62"/><use href="#ls-ftr" fill="url(#lf-ftr)"/><use href="#ls-ftr" fill="#fff" opacity="0.30"/></g><g class="am-leaf" style="--a:0deg"><use href="#ll-ftr" fill="#E8402A" opacity=".9"/><use href="#ll-ftr" fill="url(#lf-ftr)"/><use href="#ll-ftr" fill="#fff" opacity="0.21"/></g><g class="am-leaf" style="--a:90deg"><use href="#ll-ftr" fill="#F5A623" opacity=".9"/><use href="#ll-ftr" fill="url(#lf-ftr)"/><use href="#ll-ftr" fill="#000" opacity="0.21"/></g><g class="am-leaf" style="--a:180deg"><use href="#ll-ftr" fill="#17A05E" opacity=".9"/><use href="#ll-ftr" fill="url(#lf-ftr)"/><use href="#ll-ftr" fill="#000" opacity="0.21"/></g><g class="am-leaf" style="--a:270deg"><use href="#ll-ftr" fill="#2B57E8" opacity=".9"/><use href="#ll-ftr" fill="url(#lf-ftr)"/><use href="#ll-ftr" fill="#fff" opacity="0.21"/></g><g class="am-bud"><g class="am-petal" style="--a:0deg"><use href="#t-ftr" fill="#E8402A"/><use href="#t-ftr" fill="url(#bev-ftr)"/><use href="#t-ftr" fill="#fff" opacity="0.07"/><use href="#e-ftr" stroke="#fff" stroke-opacity="0.34" stroke-width="1.6" stroke-linecap="round"/><use href="#k-ftr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g class="am-petal" style="--a:90deg"><use href="#t-ftr" fill="#F5A623"/><use href="#t-ftr" fill="url(#bev-ftr)"/><use href="#t-ftr" fill="#000" opacity="0.12"/><use href="#e-ftr" stroke="#000" stroke-opacity="0.16" stroke-width="1.6" stroke-linecap="round"/><use href="#k-ftr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g class="am-petal" style="--a:180deg"><use href="#t-ftr" fill="#17A05E"/><use href="#t-ftr" fill="url(#bev-ftr)"/><use href="#t-ftr" fill="#000" opacity="0.05"/><use href="#e-ftr" stroke="#000" stroke-opacity="0.1" stroke-width="1.6" stroke-linecap="round"/><use href="#k-ftr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g class="am-petal" style="--a:270deg"><use href="#t-ftr" fill="#2B57E8"/><use href="#t-ftr" fill="url(#bev-ftr)"/><use href="#t-ftr" fill="#fff" opacity="0.30"/><use href="#e-ftr" stroke="#fff" stroke-opacity="0.46" stroke-width="1.6" stroke-linecap="round"/><use href="#k-ftr" stroke="#000" stroke-width=".9" opacity=".2"/></g></g><g class="am-core"><circle cx="50" cy="50" r="6" fill="currentColor"/><circle cx="50" cy="50" r="6" fill="url(#core-ftr)"/></g></svg>
+          <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
+        </a>
+        <p style="font-size:.88rem;line-height:1.65;color:#9fb0d0;max-width:30ch">
+          Specialised engineering partner for enterprise architecture, AI &amp; MLOps, and technical enablement.
+        </p>
+        <div class="social" style="margin-top:1.1rem">
+          <a href="https://www.youtube.com/@TechKnowen" rel="noopener" aria-label="YouTube"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 12s0-3.8-.5-5.6a2.9 2.9 0 0 0-2-2C18.7 4 12 4 12 4s-6.7 0-8.5.4a2.9 2.9 0 0 0-2 2C1 8.2 1 12 1 12s0 3.8.5 5.6a2.9 2.9 0 0 0 2 2C5.3 20 12 20 12 20s6.7 0 8.5-.4a2.9 2.9 0 0 0 2-2C23 15.8 23 12 23 12zM9.8 15.4V8.6l5.9 3.4z"/></svg></a>
+          <a href="https://techknowen.com" rel="noopener" aria-label="TechKnowen blog"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 3h16v3H4zm0 5h16v13l-8-4-8 4z"/></svg></a>
+          <a href="/feed.xml" aria-label="RSS feed"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="6.2" cy="17.8" r="2.2"/><path d="M4 10.2v3a6.6 6.6 0 0 1 6.6 6.6h3A9.6 9.6 0 0 0 4 10.2zM4 4v3c7.2 0 13 5.8 13 13h3C20 11.2 12.8 4 4 4z"/></svg></a>
+        </div>
+      </div>
+      <div>
+        <h2 class="foot-title">Services</h2>
+        <ul>
+          <li><a href="/services/#architecture">Enterprise architecture</a></li>
+          <li><a href="/services/#ai">AI &amp; MLOps</a></li>
+          <li><a href="/services/#training">Technical enablement</a></li>
+          <li><a href="/case-studies/">Case studies</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2 class="foot-title">Insights</h2>
+        <ul>
+          <li><a href="/insights/">All articles</a></li>
+          <li><a href="/series/">Series</a></li>
+          <li><a href="/topics/">Topics</a></li>
+          <li><a href="/notes/">Personal notes</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2 class="foot-title">Contact</h2>
+        <ul>
+          <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
+          <li><a href="/contact/">Start an engagement</a></li>
+          <li><a href="/about/">About</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span id="yr">2026</span> Ajna Consulting Services. All rights reserved.</span>
+      <span style="display:flex;gap:1.2rem"><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a></span>
+    </div>
+  </div>
+</footer>
+<script src="/assets/js/site.js" defer></script>
+</body>
+</html>
