@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>API Design for Enterprise Systems: The Decisions That Age Well | Ajna CS</title>
+<meta name="description" content="An API that&#39;s easy to build against is easy to build wrong. The decisions around versioning, error models, pagination, idempotency, and authentication comp…">
+<meta name="author" content="Chandra Lanka">
+<link rel="canonical" href="https://ajnacs.com/insights/api-design-enterprise/">
+<meta name="robots" content="index, follow, max-image-preview:large">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Ajna Consulting Services">
+<meta property="og:title" content="API Design for Enterprise Systems: The Decisions That Age Well">
+<meta property="og:description" content="An API that&#39;s easy to build against is easy to build wrong. The decisions around versioning, error models, pagination, idempotency, and authentication comp…">
+<meta property="og:url" content="https://ajnacs.com/insights/api-design-enterprise/">
+<meta property="og:image" content="https://ajnacs.com/assets/og/programming.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/jpeg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="API Design for Enterprise Systems: The Decisions That Age Well">
+<meta name="twitter:description" content="An API that&#39;s easy to build against is easy to build wrong. The decisions around versioning, error models, pagination, idempotency, and authentication comp…">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/programming.jpg">
+
+<link rel="icon" href="/favicon.ico?v=cefc53b9" sizes="any">
+<link rel="icon" href="/images/ajna-mark.svg?v=cefc53b9" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png?v=cefc53b9">
+<meta name="theme-color" content="#0a1020">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Quintessential&display=swap">
+<link rel="stylesheet" href="/assets/css/site.css">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<script>
+/* Theme and reading preferences are applied before first paint, so the page
+   never flashes the wrong ground or resets someone's text size mid-read. */
+(function(){try{
+var d=document.documentElement,t=localStorage.getItem('acs-theme');
+if(t!=='dark'&&t!=='light'&&t!=='sepia')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+d.setAttribute('data-theme',t);
+['rsize','rwidth','rface'].forEach(function(k){
+  var v=localStorage.getItem('acs-'+k);
+  if(v&&/^[a-z]{1,5}$/.test(v))d.setAttribute('data-'+k,v);
+});
+if(d.getAttribute('data-rface')==='serif'){
+  var l=document.createElement('link');l.rel='stylesheet';
+  l.href='https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600&display=swap';
+  document.head.appendChild(l);
+}
+}catch(e){}})();
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"API Design for Enterprise Systems: The Decisions That Age Well","description":"An API that's easy to build against is easy to build wrong. The decisions around versioning, error models, pagination, idempotency, and authentication compound over time — here's how to make the ones that don't cause regret.","datePublished":"2026-11-06","dateModified":"2026-11-06","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/api-design-enterprise/","image":"https://ajnacs.com/assets/og/programming.jpg","keywords":"Programming, Architecture, Cloud Architecture","articleSection":"Programming","wordCount":1079}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"API Design for Enterprise Systems: The Decisions That Age Well"}]}</script>
+</head>
+<body class="" data-topic="Programming">
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header" id="siteHeader">
+  <div class="wrap" style="display:flex;align-items:center;width:min(1220px,100% - var(--gutter)*2)">
+    <a class="brand" href="/" aria-label="Ajna Consulting Services — home">
+      <svg class="ajna-mark" viewBox="0 0 100 100" width="40" height="40" fill="none" aria-hidden="true" focusable="false"><defs><path id="t-hdr" d="M 50 4 L 96 50 L 50 50 Z"/><path id="e-hdr" d="M 50 4 L 96 50"/><path id="k-hdr" d="M 50 4 L 50 50 L 96 50"/><linearGradient id="bev-hdr" gradientUnits="userSpaceOnUse" x1="50" y1="50" x2="73" y2="27"><stop offset="0" stop-color="#000" stop-opacity=".13"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity=".2"/></linearGradient><radialGradient id="core-hdr" cx=".34" cy=".3" r=".85"><stop offset="0" stop-color="#fff" stop-opacity=".42"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".45"/></radialGradient><path id="ll-hdr" d="M 50 50 C 35 30.26, 40.7 9.579999999999998, 50 3 C 59.3 9.579999999999998, 65 30.26, 50 50 Z"/><path id="ls-hdr" d="M 50 50 C 35.5 33.620000000000005, 41.01 16.46, 50 11 C 58.99 16.46, 64.5 33.620000000000005, 50 50 Z"/><linearGradient id="lf-hdr" gradientUnits="userSpaceOnUse" x1="35" y1="30" x2="65" y2="30"><stop offset="0" stop-color="#fff" stop-opacity=".3"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".22"/></linearGradient></defs><g class="am-leaf am-leaf-b" style="--a:45deg"><use href="#ls-hdr" fill="#17A05E" opacity=".62"/><use href="#ls-hdr" fill="url(#lf-hdr)"/></g><g class="am-leaf am-leaf-b" style="--a:135deg"><use href="#ls-hdr" fill="#2B57E8" opacity=".62"/><use href="#ls-hdr" fill="url(#lf-hdr)"/><use href="#ls-hdr" fill="#000" opacity="0.30"/></g><g class="am-leaf am-leaf-b" style="--a:225deg"><use href="#ls-hdr" fill="#E8402A" opacity=".62"/><use href="#ls-hdr" fill="url(#lf-hdr)"/></g><g class="am-leaf am-leaf-b" style="--a:315deg"><use href="#ls-hdr" fill="#F5A623" opacity=".62"/><use href="#ls-hdr" fill="url(#lf-hdr)"/><use href="#ls-hdr" fill="#fff" opacity="0.30"/></g><g class="am-leaf" style="--a:0deg"><use href="#ll-hdr" fill="#E8402A" opacity=".9"/><use href="#ll-hdr" fill="url(#lf-hdr)"/><use href="#ll-hdr" fill="#fff" opacity="0.21"/></g><g class="am-leaf" style="--a:90deg"><use href="#ll-hdr" fill="#F5A623" opacity=".9"/><use href="#ll-hdr" fill="url(#lf-hdr)"/><use href="#ll-hdr" fill="#000" opacity="0.21"/></g><g class="am-leaf" style="--a:180deg"><use href="#ll-hdr" fill="#17A05E" opacity=".9"/><use href="#ll-hdr" fill="url(#lf-hdr)"/><use href="#ll-hdr" fill="#000" opacity="0.21"/></g><g class="am-leaf" style="--a:270deg"><use href="#ll-hdr" fill="#2B57E8" opacity=".9"/><use href="#ll-hdr" fill="url(#lf-hdr)"/><use href="#ll-hdr" fill="#fff" opacity="0.21"/></g><g class="am-bud"><g class="am-petal" style="--a:0deg"><use href="#t-hdr" fill="#E8402A"/><use href="#t-hdr" fill="url(#bev-hdr)"/><use href="#t-hdr" fill="#fff" opacity="0.07"/><use href="#e-hdr" stroke="#fff" stroke-opacity="0.34" stroke-width="1.6" stroke-linecap="round"/><use href="#k-hdr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g class="am-petal" style="--a:90deg"><use href="#t-hdr" fill="#F5A623"/><use href="#t-hdr" fill="url(#bev-hdr)"/><use href="#t-hdr" fill="#000" opacity="0.12"/><use href="#e-hdr" stroke="#000" stroke-opacity="0.16" stroke-width="1.6" stroke-linecap="round"/><use href="#k-hdr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g class="am-petal" style="--a:180deg"><use href="#t-hdr" fill="#17A05E"/><use href="#t-hdr" fill="url(#bev-hdr)"/><use href="#t-hdr" fill="#000" opacity="0.05"/><use href="#e-hdr" stroke="#000" stroke-opacity="0.1" stroke-width="1.6" stroke-linecap="round"/><use href="#k-hdr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g class="am-petal" style="--a:270deg"><use href="#t-hdr" fill="#2B57E8"/><use href="#t-hdr" fill="url(#bev-hdr)"/><use href="#t-hdr" fill="#fff" opacity="0.30"/><use href="#e-hdr" stroke="#fff" stroke-opacity="0.46" stroke-width="1.6" stroke-linecap="round"/><use href="#k-hdr" stroke="#000" stroke-width=".9" opacity=".2"/></g></g><g class="am-core"><circle cx="50" cy="50" r="6" fill="currentColor"/><circle cx="50" cy="50" r="6" fill="url(#core-hdr)"/></g></svg>
+      <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
+    </a>
+    <nav class="nav" id="nav" aria-label="Primary">
+      <a href="/services/">Services</a>
+      <a href="/insights/" aria-current="page">Insights</a>
+      <a href="/series/">Series</a>
+      <a href="/case-studies/">Case studies</a>
+      <a href="/about/">About</a>
+      <a class="btn btn-sm" href="/contact/" style="margin-left:.4rem">Engage engineering</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn" id="themeBtn" type="button" aria-label="Switch to dark mode" aria-pressed="false"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg></button>
+      <button class="icon-btn nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+
+<div class="read-bar" aria-hidden="true"><span id="readBar"></span></div>
+<article class="article with-toc">
+  <header class="article-head">
+    <div class="art-wrap">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a> <span aria-hidden="true">/</span>
+        <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
+        <span>Programming</span>
+      </nav>
+      <h1 class="h1">API Design for Enterprise Systems: The Decisions That Age Well</h1>
+      <p class="lede" style="margin-top:1rem">An API that&#39;s easy to build against is easy to build wrong. The decisions around versioning, error models, pagination, idempotency, and authentication compound over time — here&#39;s how to make the ones that don&#39;t cause regret.</p>
+      <div class="article-meta">
+        <span class="chip">Programming</span>
+        <time datetime="2026-11-06">6 Nov 2026</time>
+        <span class="dot"></span><span>5 min read</span>
+        <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="art-wrap"><div class="article-hero" data-topic="Programming"><svg viewBox="0 0 1200 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgapidesignent" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4229e3" stop-opacity=".10"/><stop offset="1" stop-color="#392b96" stop-opacity=".22"/></linearGradient>
+    <marker id="ahapidesignent" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#4229e3" fill-opacity=".5"/>
+    </marker>
+    <clipPath id="cpapidesignent"><rect width="1200" height="380"/></clipPath>
+  </defs>
+  <rect width="1200" height="380" fill="url(#bgapidesignent)"/>
+  <g clip-path="url(#cpapidesignent)"><path d="M120 190 C284 190, 284 48.9, 448 48.9" fill="none" stroke="#4229e3" stroke-opacity="0.40" stroke-width="1.4"/><path d="M120 190 C284 190, 284 190, 448 190" fill="none" stroke="#4229e3" stroke-opacity="0.40" stroke-width="1.4"/><path d="M120 190 C284 190, 284 331.1, 448 331.1" fill="none" stroke="#4229e3" stroke-opacity="0.40" stroke-width="1.4"/><path d="M448 48.9 C612 48.9, 612 30.4, 776 30.4" fill="none" stroke="#4229e3" stroke-opacity="0.34" stroke-width="1.4"/><path d="M448 48.9 C612 48.9, 612 82.5, 776 82.5" fill="none" stroke="#4229e3" stroke-opacity="0.34" stroke-width="1.4"/><path d="M448 190 C612 190, 612 156.4, 776 156.4" fill="none" stroke="#4229e3" stroke-opacity="0.34" stroke-width="1.4"/><path d="M448 190 C612 190, 612 223.6, 776 223.6" fill="none" stroke="#4229e3" stroke-opacity="0.34" stroke-width="1.4"/><path d="M448 331.1 C612 331.1, 612 331.1, 776 331.1" fill="none" stroke="#4229e3" stroke-opacity="0.34" stroke-width="1.4"/><path d="M776 30.4 C940 30.4, 940 30.4, 1104 30.4" fill="none" stroke="#4229e3" stroke-opacity="0.28" stroke-width="1.4"/><path d="M776 82.5 C940 82.5, 940 66.5, 1104 66.5" fill="none" stroke="#4229e3" stroke-opacity="0.28" stroke-width="1.4"/><path d="M776 82.5 C940 82.5, 940 98.5, 1104 98.5" fill="none" stroke="#4229e3" stroke-opacity="0.28" stroke-width="1.4"/><path d="M776 156.4 C940 156.4, 940 140.4, 1104 140.4" fill="none" stroke="#4229e3" stroke-opacity="0.28" stroke-width="1.4"/><path d="M776 156.4 C940 156.4, 940 172.4, 1104 172.4" fill="none" stroke="#4229e3" stroke-opacity="0.28" stroke-width="1.4"/><path d="M776 223.6 C940 223.6, 940 207.6, 1104 207.6" fill="none" stroke="#4229e3" stroke-opacity="0.28" stroke-width="1.4"/><path d="M776 223.6 C940 223.6, 940 239.6, 1104 239.6" fill="none" stroke="#4229e3" stroke-opacity="0.28" stroke-width="1.4"/><path d="M776 331.1 C940 331.1, 940 331.1, 1104 331.1" fill="none" stroke="#4229e3" stroke-opacity="0.28" stroke-width="1.4"/><circle cx="1104" cy="30.4" r="4.5" fill="#392b96" fill-opacity=".8"/><circle cx="1104" cy="66.5" r="4.5" fill="#392b96" fill-opacity=".8"/><circle cx="1104" cy="98.5" r="4.5" fill="#392b96" fill-opacity=".8"/><circle cx="1104" cy="140.4" r="4.5" fill="#392b96" fill-opacity=".8"/><circle cx="1104" cy="172.4" r="4.5" fill="#392b96" fill-opacity=".8"/><circle cx="1104" cy="207.6" r="4.5" fill="#392b96" fill-opacity=".8"/><circle cx="1104" cy="239.6" r="4.5" fill="#392b96" fill-opacity=".8"/><circle cx="1104" cy="331.1" r="4.5" fill="#392b96" fill-opacity=".8"/><circle cx="120" cy="190" r="7" fill="#4229e3" fill-opacity=".9"/></g>
+</svg></div></div>
+
+  <div class="art-wrap article-grid">
+    <div class="reader-aside"><nav class="toc" aria-label="On this page">
+  <p class="toc-title">On this page</p>
+  <ol><li><a href="#versioning-have-a-strategy-before-you-need-it">Versioning: have a strategy before you need it</a></li><li><a href="#error-models-structured-consistent-actionable">Error models: structured, consistent, actionable</a></li><li><a href="#idempotency-safe-retries-without-duplicate-operations">Idempotency: safe retries without duplicate operations</a></li><li><a href="#pagination-cursor-based-for-anything-that-changes">Pagination: cursor-based for anything that changes</a></li><li><a href="#authentication-one-pattern-per-api-type">Authentication: one pattern per API type</a></li><li><a href="#documentation-as-a-first-class-deliverable">Documentation as a first-class deliverable</a></li></ol>
+</nav></div>
+    <div class="prose">
+<p>APIs are commitments. Unlike internal code that you can refactor freely, a published API has consumers who depend on its stability. A breaking change in an API affects every consumer simultaneously, and the larger the consumer base, the more expensive it is to make.</p>
+<p>The decisions worth getting right at design time are the ones you&#39;ll be living with for years.</p>
+<h2 id="versioning-have-a-strategy-before-you-need-it"><a class="h-anchor" href="#versioning-have-a-strategy-before-you-need-it" aria-hidden="true" tabindex="-1">#</a>Versioning: have a strategy before you need it</h2>
+<aside class="keyfig">
+  <p class="keyfig-label">Key figure</p>
+  <p class="keyfig-text">Idempotency keys are stored with a TTL (typically <b>24 hours</b>).</p>
+</aside>
+<p>The two common REST API versioning strategies:</p>
+<p><strong>URL path versioning</strong> (<code>/v1/orders</code>, <code>/v2/orders</code>): explicit, visible, easy to route, easy for consumers to understand which version they&#39;re using. The downside: versioning in URLs is considered not &quot;pure REST&quot; by some, and running multiple versions in production means maintaining multiple codebases or careful compatibility shims.</p>
+<p><strong>Header versioning</strong> (<code>Accept: application/vnd.company.v2+json</code> or <code>API-Version: 2</code>): keeps URLs clean, allows the same URL to serve different versions. Less discoverable — consumers have to read the documentation to understand how to request a version.</p>
+<p>For internal APIs with a limited, known consumer base, header versioning is clean. For public APIs or APIs consumed by external partners, URL versioning is more practical — it&#39;s explicit, it shows in browser history, and it&#39;s harder to get wrong accidentally.</p>
+<p><strong>What constitutes a breaking change</strong> (requires a new version):</p>
+<ul>
+<li>Removing a field from a response</li>
+<li>Changing a field&#39;s type</li>
+<li>Making a previously-optional request field required</li>
+<li>Changing the semantics of an existing field</li>
+</ul>
+<p><strong>What isn&#39;t a breaking change</strong> (additive, backward-compatible):</p>
+<ul>
+<li>Adding new optional fields to a response</li>
+<li>Adding new optional request parameters</li>
+<li>Adding new endpoints</li>
+<li>Adding new enum values (though consumers should handle unknown enum values gracefully)</li>
+</ul>
+<p>Build consumers to be tolerant of new fields in responses — if your JSON deserialisation fails on unknown fields, you&#39;ll have a harder time adding fields non-breakingly.</p>
+<h2 id="error-models-structured-consistent-actionable"><a class="h-anchor" href="#error-models-structured-consistent-actionable" aria-hidden="true" tabindex="-1">#</a>Error models: structured, consistent, actionable</h2>
+<p>An error response that says <code>{&quot;error&quot;: &quot;Something went wrong&quot;}</code> is unhelpful for debugging and useless for programmatic error handling.</p>
+<p>A useful error model:</p>
+<pre><code class="language-json">{
+  &quot;error&quot;: {
+    &quot;code&quot;: &quot;ORDER_ITEM_UNAVAILABLE&quot;,
+    &quot;message&quot;: &quot;Item SKU-789 is no longer available for purchase&quot;,
+    &quot;detail&quot;: &quot;The requested quantity (5) exceeds available stock (2)&quot;,
+    &quot;request_id&quot;: &quot;req-a3b4c5d6&quot;,
+    &quot;documentation_url&quot;: &quot;https://api.company.com/docs/errors/ORDER_ITEM_UNAVAILABLE&quot;
+  }
+}
+</code></pre>
+<p>Components:</p>
+<ul>
+<li><strong><code>code</code></strong>: a stable, machine-readable string. Consumers can programmatically handle <code>ORDER_ITEM_UNAVAILABLE</code> differently from <code>PAYMENT_DECLINED</code> without parsing human-readable messages. Don&#39;t use integers — strings are self-documenting in logs.</li>
+<li><strong><code>message</code></strong>: a human-readable description of what went wrong.</li>
+<li><strong><code>detail</code></strong>: optional, contextual information that helps diagnosis.</li>
+<li><strong><code>request_id</code></strong>: the ID that ties the error to your internal logs. Tell consumers to include this when reporting issues — it eliminates a round trip of &quot;what were you doing when this happened?&quot;</li>
+<li><strong><code>documentation_url</code></strong>: optional but genuinely useful for common errors.</li>
+</ul>
+<p>Use HTTP status codes correctly: 400 for client errors (invalid input), 401 for unauthenticated, 403 for authenticated but unauthorised, 404 for not found, 409 for conflict (duplicate resource, optimistic locking failure), 422 for valid JSON but semantically invalid request, 429 for rate limiting, 503 for service unavailable.</p>
+<h2 id="idempotency-safe-retries-without-duplicate-operations"><a class="h-anchor" href="#idempotency-safe-retries-without-duplicate-operations" aria-hidden="true" tabindex="-1">#</a>Idempotency: safe retries without duplicate operations</h2>
+<p>POST requests are not idempotent by default — if the client sends the same POST twice (due to a timeout or retry), the server creates two resources. For operations with real-world effects (creating an order, initiating a payment), duplicate execution has consequences.</p>
+<p>The idempotency key pattern: the client generates a unique key for the operation and sends it as a header (<code>Idempotency-Key: uuid</code>). The server stores the result of the operation indexed by the key. If the same key is sent again, the server returns the stored result rather than re-executing the operation.</p>
+<pre><code>POST /orders
+Idempotency-Key: 7f3b2a1c-4d5e-6f7a-8b9c-0d1e2f3a4b5c
+Content-Type: application/json
+
+{ &quot;customer_id&quot;: &quot;cust-123&quot;, &quot;items&quot;: [...] }
+</code></pre>
+<p>The client retries on timeout or 5xx, sending the same <code>Idempotency-Key</code>. The second request either: arrives after the first completed (returns the original response), arrives while the first is still processing (returns 202 Accepted and the client polls), or the first request never reached the server (processes normally and stores the result).</p>
+<p>Idempotency keys are stored with a TTL (typically 24 hours). After the TTL, a key can be reused.</p>
+<h2 id="pagination-cursor-based-for-anything-that-changes"><a class="h-anchor" href="#pagination-cursor-based-for-anything-that-changes" aria-hidden="true" tabindex="-1">#</a>Pagination: cursor-based for anything that changes</h2>
+<p>Offset pagination (<code>?page=2&amp;limit=20</code>, or <code>?offset=40&amp;limit=20</code>) is easy to implement and familiar, but breaks when the underlying data changes between requests. If someone inserts a record between page 1 and page 2, page 2 repeats a record. If someone deletes a record, page 2 skips one.</p>
+<p>Cursor-based pagination returns an opaque cursor pointing to the position in the result set:</p>
+<pre><code class="language-json">{
+  &quot;data&quot;: [...],
+  &quot;pagination&quot;: {
+    &quot;next_cursor&quot;: &quot;eyJpZCI6MTIzNH0&quot;,
+    &quot;has_more&quot;: true
+  }
+}
+</code></pre>
+<p>The cursor encodes enough information to resume from the exact position (typically an encoded ID or timestamp). It&#39;s stable against inserts and deletes.</p>
+<p>The trade-off: cursor pagination doesn&#39;t allow jumping to page 10 directly. For most APIs, this is fine — consumers are paginating through results sequentially. If random page access is required (display &quot;page 10 of 47&quot;), offset pagination with the dataset&#39;s instability documented is acceptable.</p>
+<h2 id="authentication-one-pattern-per-api-type"><a class="h-anchor" href="#authentication-one-pattern-per-api-type" aria-hidden="true" tabindex="-1">#</a>Authentication: one pattern per API type</h2>
+<p>For public APIs and partner integrations: <strong>API keys</strong> for simple cases, <strong>OAuth 2.0 / JWT</strong> for anything involving user identity or fine-grained scopes.</p>
+<p>OAuth 2.0 with short-lived access tokens (15-60 minutes) and long-lived refresh tokens. The access token is validated on every request (signature verification, expiry check); the refresh token is only used when the access token expires.</p>
+<p>For service-to-service APIs within your infrastructure: <strong>mutual TLS</strong> (mTLS) or <strong>JWT signed with service-specific keys</strong>. The calling service proves its identity; the receiving service verifies the signature without a round-trip to an auth server.</p>
+<p>What to avoid: long-lived API keys with no expiration, shared keys used by multiple services (no individual service audit trail), and custom authentication schemes. The OAuth 2.0 ecosystem is mature; don&#39;t reinvent it.</p>
+<h2 id="documentation-as-a-first-class-deliverable"><a class="h-anchor" href="#documentation-as-a-first-class-deliverable" aria-hidden="true" tabindex="-1">#</a>Documentation as a first-class deliverable</h2>
+<p>An API that isn&#39;t documented is an API that requires its consumers to read your code or ask your team questions. For internal APIs, this is friction. For external APIs, it&#39;s a barrier to adoption.</p>
+<p>OpenAPI (Swagger) specification as the source of truth, generated documentation published alongside the API, and runnable examples (Swagger UI or Redoc) are the minimum. An API changelog documenting what changed in each version — especially breaking changes — is worth maintaining even for internal APIs.</p>
+<p>The documentation is the contract. When consumers build against the documentation, the documentation becomes the specification you&#39;re committed to maintaining.</p>
+<p><em>Designing a new API or auditing an existing one for consistency and longevity? <a href="/contact">Happy to compare approaches.</a></em></p>
+
+    </div>
+  </div>
+
+  
+
+  
+
+  <div class="art-wrap article-foot">
+    <div class="row" style="gap:.4rem">
+      <a class="chip chip-plain" href="/insights/?topic=Programming">Programming</a><a class="chip chip-plain" href="/insights/?topic=Architecture">Architecture</a><a class="chip chip-plain" href="/insights/?topic=Cloud%20Architecture">Cloud Architecture</a>
+    </div>
+    <nav class="prevnext" aria-label="More articles">
+      <a href="/insights/prompt-engineering-production/"><span>Previous</span><strong>Prompt Engineering for Production Systems: Beyond the Demo</strong></a>
+      <span></span>
+    </nav>
+  </div>
+
+  <section class="section surface hair" style="margin-top:4rem">
+    <div class="wrap">
+      <p class="eyebrow">Related</p>
+      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|AI &amp; MLOps|Programming|Enterprise AI|" data-search="prompt engineering for production systems: beyond the demo prompt engineering for a demo is different from prompt engineering for a system that runs reliably at scale. here&#39;s how to design prompts for consistency, build evaluation frameworks, and manage the failure modes that appear in production but not in testing. ai &amp; mlops programming enterprise ai" data-topic="AI &amp; MLOps" href="/insights/prompt-engineering-production/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <radialGradient id="bgpromptengine" cx="0.22" cy="0.16" r="1"><stop offset="0" stop-color="#4413ff" stop-opacity=".21"/><stop offset="1" stop-color="#461fd7" stop-opacity=".07"/></radialGradient>
+    <marker id="ahpromptengine" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#4413ff" fill-opacity=".5"/>
+    </marker>
+    <clipPath id="cppromptengine"><rect width="640" height="360"/></clipPath>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgpromptengine)"/>
+  <g clip-path="url(#cppromptengine)"><path d="M58.7 306.3 H134 H207.6 H354.6 V322.7 H496.5 H601.6" fill="none" stroke="#4413ff" stroke-opacity="0.51" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="round"/><circle cx="601.6" cy="322.7" r="3.6" fill="#461fd7" fill-opacity=".7"/><path d="M85.9 199.5 H239.2 V212 H338.8 V202.5 H421.2 H512.8 V237.3 H601.6 V214.4" fill="none" stroke="#461fd7" stroke-opacity="0.50" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="round"/><circle cx="601.6" cy="214.4" r="3.6" fill="#461fd7" fill-opacity=".7"/><path d="M86.8 261.2 H215.9 V225 H338.9 H470.1 V231.9 H521.8 H601.6" fill="none" stroke="#4413ff" stroke-opacity="0.34" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="round"/><circle cx="601.6" cy="231.9" r="3.6" fill="#461fd7" fill-opacity=".7"/><path d="M54.7 251 H125.4 V258.1 H208.8 H292.7 V282 H416.6 V260.4 H536.3 H601.6 V267.1" fill="none" stroke="#461fd7" stroke-opacity="0.45" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="round"/><circle cx="601.6" cy="267.1" r="3.6" fill="#461fd7" fill-opacity=".7"/><path d="M60.2 147.5 H204 V116.4 H262.7 V87.2 H314.9 H407.6 V94.4 H463.9 H527.8 V71 H601.6 V73.6" fill="none" stroke="#4413ff" stroke-opacity="0.47" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="round"/><circle cx="601.6" cy="73.6" r="3.6" fill="#461fd7" fill-opacity=".7"/><path d="M48.7 191.1 H126.7 V218.2 H194.4 H300.6 V248.1 H386 V232.9 H483.6 V218.1 H537.6 V214.4 H601.6" fill="none" stroke="#461fd7" stroke-opacity="0.43" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="round"/><circle cx="601.6" cy="214.4" r="3.6" fill="#461fd7" fill-opacity=".7"/></g>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">AI &amp; MLOps</span>
+    <h3 class="card-title">Prompt Engineering for Production Systems: Beyond the Demo</h3>
+    <p class="card-desc">Prompt engineering for a demo is different from prompt engineering for a system that runs reliably at scale. Here&#39;s how to design prompts for consistency, build evaluation frameworks, and manage the failure modes that appear in production but not in testing.</p>
+    <div class="card-meta"><time datetime="2026-11-04">4 Nov 2026</time><span class="dot"></span><span>4 min read</span></div>
+  </div>
+</a>
+<a class="card" data-card data-topics="|Programming|Architecture|Cloud Architecture|" data-search="system design patterns every backend engineer should know cqrs, event sourcing, saga pattern, outbox pattern — the patterns that solve specific distributed systems problems, what trade-offs they introduce, and when the simpler option is actually the right one. programming architecture cloud architecture" data-topic="Programming" href="/insights/system-design-patterns-backend/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <radialGradient id="bgsystemdesign" cx="0.22" cy="0.16" r="1"><stop offset="0" stop-color="#3c2fe4" stop-opacity=".21"/><stop offset="1" stop-color="#342c99" stop-opacity=".07"/></radialGradient>
+    <marker id="ahsystemdesign" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#3c2fe4" fill-opacity=".5"/>
+    </marker>
+    <clipPath id="cpsystemdesign"><rect width="640" height="360"/></clipPath>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgsystemdesign)"/>
+  <g clip-path="url(#cpsystemdesign)"><rect x="192" y="54" width="256" height="48.1" rx="9"
+      fill="#342c99" fill-opacity="0.15"
+      stroke="#3c2fe4" stroke-opacity=".45" stroke-width="1.2"/><line x1="320" y1="102.1" x2="320" y2="121.9" stroke="#3c2fe4" stroke-opacity=".38" stroke-width="1.4"/><rect x="160" y="121.9" width="320" height="48.1" rx="9"
+      fill="#3c2fe4" fill-opacity="0.27"
+      stroke="#3c2fe4" stroke-opacity=".45" stroke-width="1.2"/><line x1="320" y1="170.1" x2="320" y2="189.9" stroke="#3c2fe4" stroke-opacity=".38" stroke-width="1.4"/><rect x="128" y="189.9" width="384" height="48.1" rx="9"
+      fill="#342c99" fill-opacity="0.39"
+      stroke="#3c2fe4" stroke-opacity=".45" stroke-width="1.2"/><line x1="320" y1="238" x2="320" y2="257.8" stroke="#3c2fe4" stroke-opacity=".38" stroke-width="1.4"/><rect x="96" y="257.8" width="448" height="48.1" rx="9"
+      fill="#3c2fe4" fill-opacity="0.51"
+      stroke="#3c2fe4" stroke-opacity=".45" stroke-width="1.2"/></g>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">Programming</span>
+    <h3 class="card-title">System Design Patterns Every Backend Engineer Should Know</h3>
+    <p class="card-desc">CQRS, event sourcing, saga pattern, outbox pattern — the patterns that solve specific distributed systems problems, what trade-offs they introduce, and when the simpler option is actually the right one.</p>
+    <div class="card-meta"><time datetime="2026-10-28">28 Oct 2026</time><span class="dot"></span><span>5 min read</span></div>
+  </div>
+</a>
+<a class="card" data-card data-topics="|Java|JVM|GraalVM|Cloud Architecture|Performance|" data-search="graalvm native image for enterprise java: when compiling ahead of time pays native image turns java applications into instant-starting, memory-lean executables — at the cost of a closed-world assumption that fights two decades of java dynamism. where native compilation genuinely wins, what breaks, and a decision framework. java jvm graalvm cloud architecture performance" data-topic="Cloud Architecture" href="/insights/java-graalvm-native-image/">
+  <div class="card-art"><svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <radialGradient id="bgjavagraalvmn" cx="0.22" cy="0.16" r="1"><stop offset="0" stop-color="#0b828a" stop-opacity=".21"/><stop offset="1" stop-color="#096e74" stop-opacity=".07"/></radialGradient>
+    <marker id="ahjavagraalvmn" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7 z" fill="#0b828a" fill-opacity=".5"/>
+    </marker>
+    <clipPath id="cpjavagraalvmn"><rect width="640" height="360"/></clipPath>
+  </defs>
+  <rect width="640" height="360" fill="url(#bgjavagraalvmn)"/>
+  <g clip-path="url(#cpjavagraalvmn)"><rect x="192" y="54" width="256" height="34.6" rx="9"
+      fill="#096e74" fill-opacity="0.15"
+      stroke="#0b828a" stroke-opacity=".45" stroke-width="1.2"/><line x1="320" y1="88.6" x2="320" y2="108.4" stroke="#0b828a" stroke-opacity=".38" stroke-width="1.4"/><rect x="160" y="108.4" width="320" height="34.6" rx="9"
+      fill="#0b828a" fill-opacity="0.27"
+      stroke="#0b828a" stroke-opacity=".45" stroke-width="1.2"/><line x1="320" y1="142.9" x2="320" y2="162.7" stroke="#0b828a" stroke-opacity=".38" stroke-width="1.4"/><rect x="128" y="162.7" width="384" height="34.6" rx="9"
+      fill="#096e74" fill-opacity="0.39"
+      stroke="#0b828a" stroke-opacity=".45" stroke-width="1.2"/><line x1="320" y1="197.3" x2="320" y2="217.1" stroke="#0b828a" stroke-opacity=".38" stroke-width="1.4"/><rect x="96" y="217.1" width="448" height="34.6" rx="9"
+      fill="#0b828a" fill-opacity="0.51"
+      stroke="#0b828a" stroke-opacity=".45" stroke-width="1.2"/><line x1="320" y1="251.6" x2="320" y2="271.4" stroke="#0b828a" stroke-opacity=".38" stroke-width="1.4"/><rect x="64" y="271.4" width="512" height="34.6" rx="9"
+      fill="#096e74" fill-opacity="0.63"
+      stroke="#0b828a" stroke-opacity=".45" stroke-width="1.2"/></g>
+</svg></div>
+  <div class="card-body">
+    <span class="chip">Cloud Architecture</span>
+    <h3 class="card-title">GraalVM Native Image for Enterprise Java: When Compiling Ahead of Time Pays</h3>
+    <p class="card-desc">Native Image turns Java applications into instant-starting, memory-lean executables — at the cost of a closed-world assumption that fights two decades of Java dynamism. Where native compilation genuinely wins, what breaks, and a decision framework.</p>
+    <div class="card-meta"><time datetime="2026-10-26">26 Oct 2026</time><span class="dot"></span><span>5 min read</span></div>
+  </div>
+</a></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="art-wrap"><div class="cta-panel">
+      <h2 class="h2">Working on this in production?</h2>
+      <p class="lede" style="margin-top:.7rem">We do this work directly alongside engineering teams — architecture review, migration, and hands-on enablement.</p>
+      <div class="row" style="margin-top:1.4rem">
+        <a class="btn" href="/contact/">Engage engineering <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="btn btn-ghost" href="/services/">See what we do</a>
+      </div>
+    </div></div>
+  </section>
+</article>
+
+<div class="reader-tools">
+  <button class="icon-btn" id="readerBtn" type="button" aria-expanded="false" aria-controls="readerPanel" title="Reading settings" aria-label="Reading settings"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2.2"/><circle cx="10" cy="17" r="2.2"/></svg></button>
+  <button class="icon-btn" id="focusBtn" type="button" aria-pressed="false" title="Focus mode" aria-label="Enter focus mode"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></button>
+</div>
+<div class="reader-panel" id="readerPanel" role="dialog" aria-label="Reading settings" hidden>
+  <fieldset><legend>Text size</legend>
+    <div class="seg" data-pref="rsize">
+      <button type="button" data-val="s" aria-pressed="false"><span class="sample s">Aa</span>Small</button><button type="button" data-val="m" aria-pressed="false"><span class="sample ">Aa</span>Default</button><button type="button" data-val="l" aria-pressed="false"><span class="sample l">Aa</span>Large</button><button type="button" data-val="xl" aria-pressed="false"><span class="sample l">Aa</span>Largest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Ground</legend>
+    <div class="seg" data-pref="theme">
+      <button type="button" data-val="light" aria-pressed="false"><span class="swatch light"></span>Light</button><button type="button" data-val="sepia" aria-pressed="false"><span class="swatch sepia"></span>Sepia</button><button type="button" data-val="dark" aria-pressed="false"><span class="swatch dark"></span>Dark</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Column width</legend>
+    <div class="seg" data-pref="rwidth">
+      <button type="button" data-val="s" aria-pressed="false">Narrow</button><button type="button" data-val="m" aria-pressed="false">Default</button><button type="button" data-val="l" aria-pressed="false">Wide</button><button type="button" data-val="xl" aria-pressed="false">Widest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Typeface</legend>
+    <div class="seg" data-pref="rface">
+      <button type="button" data-val="sans" aria-pressed="false"><span class="sample">Aa</span>Sans</button>
+      <button type="button" data-val="serif" aria-pressed="false"><span class="sample serif">Aa</span>Serif</button>
+    </div>
+  </fieldset>
+  <button class="reader-reset" id="readerReset" type="button">Reset to defaults</button>
+  <p class="reader-note">Saved in this browser only — these settings do not follow you to another device.</p>
+</div>
+<button class="focus-exit" id="focusExit" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h6V3M21 9h-6V3M3 15h6v6M21 15h-6v6"/></svg> Exit focus</button>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="grid g-4" style="gap:2rem">
+      <div>
+        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem" aria-label="Ajna Consulting Services — home">
+          <svg class="ajna-mark" viewBox="0 0 100 100" width="36" height="36" fill="none" aria-hidden="true" focusable="false"><defs><path id="t-ftr" d="M 50 4 L 96 50 L 50 50 Z"/><path id="e-ftr" d="M 50 4 L 96 50"/><path id="k-ftr" d="M 50 4 L 50 50 L 96 50"/><linearGradient id="bev-ftr" gradientUnits="userSpaceOnUse" x1="50" y1="50" x2="73" y2="27"><stop offset="0" stop-color="#000" stop-opacity=".13"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity=".2"/></linearGradient><radialGradient id="core-ftr" cx=".34" cy=".3" r=".85"><stop offset="0" stop-color="#fff" stop-opacity=".42"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".45"/></radialGradient><path id="ll-ftr" d="M 50 50 C 35 30.26, 40.7 9.579999999999998, 50 3 C 59.3 9.579999999999998, 65 30.26, 50 50 Z"/><path id="ls-ftr" d="M 50 50 C 35.5 33.620000000000005, 41.01 16.46, 50 11 C 58.99 16.46, 64.5 33.620000000000005, 50 50 Z"/><linearGradient id="lf-ftr" gradientUnits="userSpaceOnUse" x1="35" y1="30" x2="65" y2="30"><stop offset="0" stop-color="#fff" stop-opacity=".3"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".22"/></linearGradient></defs><g class="am-leaf am-leaf-b" style="--a:45deg"><use href="#ls-ftr" fill="#17A05E" opacity=".62"/><use href="#ls-ftr" fill="url(#lf-ftr)"/></g><g class="am-leaf am-leaf-b" style="--a:135deg"><use href="#ls-ftr" fill="#2B57E8" opacity=".62"/><use href="#ls-ftr" fill="url(#lf-ftr)"/><use href="#ls-ftr" fill="#000" opacity="0.30"/></g><g class="am-leaf am-leaf-b" style="--a:225deg"><use href="#ls-ftr" fill="#E8402A" opacity=".62"/><use href="#ls-ftr" fill="url(#lf-ftr)"/></g><g class="am-leaf am-leaf-b" style="--a:315deg"><use href="#ls-ftr" fill="#F5A623" opacity=".62"/><use href="#ls-ftr" fill="url(#lf-ftr)"/><use href="#ls-ftr" fill="#fff" opacity="0.30"/></g><g class="am-leaf" style="--a:0deg"><use href="#ll-ftr" fill="#E8402A" opacity=".9"/><use href="#ll-ftr" fill="url(#lf-ftr)"/><use href="#ll-ftr" fill="#fff" opacity="0.21"/></g><g class="am-leaf" style="--a:90deg"><use href="#ll-ftr" fill="#F5A623" opacity=".9"/><use href="#ll-ftr" fill="url(#lf-ftr)"/><use href="#ll-ftr" fill="#000" opacity="0.21"/></g><g class="am-leaf" style="--a:180deg"><use href="#ll-ftr" fill="#17A05E" opacity=".9"/><use href="#ll-ftr" fill="url(#lf-ftr)"/><use href="#ll-ftr" fill="#000" opacity="0.21"/></g><g class="am-leaf" style="--a:270deg"><use href="#ll-ftr" fill="#2B57E8" opacity=".9"/><use href="#ll-ftr" fill="url(#lf-ftr)"/><use href="#ll-ftr" fill="#fff" opacity="0.21"/></g><g class="am-bud"><g class="am-petal" style="--a:0deg"><use href="#t-ftr" fill="#E8402A"/><use href="#t-ftr" fill="url(#bev-ftr)"/><use href="#t-ftr" fill="#fff" opacity="0.07"/><use href="#e-ftr" stroke="#fff" stroke-opacity="0.34" stroke-width="1.6" stroke-linecap="round"/><use href="#k-ftr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g class="am-petal" style="--a:90deg"><use href="#t-ftr" fill="#F5A623"/><use href="#t-ftr" fill="url(#bev-ftr)"/><use href="#t-ftr" fill="#000" opacity="0.12"/><use href="#e-ftr" stroke="#000" stroke-opacity="0.16" stroke-width="1.6" stroke-linecap="round"/><use href="#k-ftr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g class="am-petal" style="--a:180deg"><use href="#t-ftr" fill="#17A05E"/><use href="#t-ftr" fill="url(#bev-ftr)"/><use href="#t-ftr" fill="#000" opacity="0.05"/><use href="#e-ftr" stroke="#000" stroke-opacity="0.1" stroke-width="1.6" stroke-linecap="round"/><use href="#k-ftr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g class="am-petal" style="--a:270deg"><use href="#t-ftr" fill="#2B57E8"/><use href="#t-ftr" fill="url(#bev-ftr)"/><use href="#t-ftr" fill="#fff" opacity="0.30"/><use href="#e-ftr" stroke="#fff" stroke-opacity="0.46" stroke-width="1.6" stroke-linecap="round"/><use href="#k-ftr" stroke="#000" stroke-width=".9" opacity=".2"/></g></g><g class="am-core"><circle cx="50" cy="50" r="6" fill="currentColor"/><circle cx="50" cy="50" r="6" fill="url(#core-ftr)"/></g></svg>
+          <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
+        </a>
+        <p style="font-size:.88rem;line-height:1.65;color:#9fb0d0;max-width:30ch">
+          Specialised engineering partner for enterprise architecture, AI &amp; MLOps, and technical enablement.
+        </p>
+        <div class="social" style="margin-top:1.1rem">
+          <a href="https://www.youtube.com/@TechKnowen" rel="noopener" aria-label="YouTube"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 12s0-3.8-.5-5.6a2.9 2.9 0 0 0-2-2C18.7 4 12 4 12 4s-6.7 0-8.5.4a2.9 2.9 0 0 0-2 2C1 8.2 1 12 1 12s0 3.8.5 5.6a2.9 2.9 0 0 0 2 2C5.3 20 12 20 12 20s6.7 0 8.5-.4a2.9 2.9 0 0 0 2-2C23 15.8 23 12 23 12zM9.8 15.4V8.6l5.9 3.4z"/></svg></a>
+          <a href="https://techknowen.com" rel="noopener" aria-label="TechKnowen blog"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 3h16v3H4zm0 5h16v13l-8-4-8 4z"/></svg></a>
+          <a href="/feed.xml" aria-label="RSS feed"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="6.2" cy="17.8" r="2.2"/><path d="M4 10.2v3a6.6 6.6 0 0 1 6.6 6.6h3A9.6 9.6 0 0 0 4 10.2zM4 4v3c7.2 0 13 5.8 13 13h3C20 11.2 12.8 4 4 4z"/></svg></a>
+        </div>
+      </div>
+      <div>
+        <h2 class="foot-title">Services</h2>
+        <ul>
+          <li><a href="/services/#architecture">Enterprise architecture</a></li>
+          <li><a href="/services/#ai">AI &amp; MLOps</a></li>
+          <li><a href="/services/#training">Technical enablement</a></li>
+          <li><a href="/case-studies/">Case studies</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2 class="foot-title">Insights</h2>
+        <ul>
+          <li><a href="/insights/">All articles</a></li>
+          <li><a href="/series/">Series</a></li>
+          <li><a href="/topics/">Topics</a></li>
+          <li><a href="/notes/">Personal notes</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2 class="foot-title">Contact</h2>
+        <ul>
+          <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
+          <li><a href="/contact/">Start an engagement</a></li>
+          <li><a href="/about/">About</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span id="yr">2026</span> Ajna Consulting Services. All rights reserved.</span>
+      <span style="display:flex;gap:1.2rem"><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a></span>
+    </div>
+  </div>
+</footer>
+<script src="/assets/js/site.js" defer></script>
+</body>
+</html>
