@@ -16,7 +16,7 @@ const live = manifest.filter(m => m.date <= TODAY);
 const queued = manifest.filter(m => m.date > TODAY);
 
 console.log("\nStructure");
-for (const f of ["index.html", "404.html", "robots.txt", "sitemap.xml", "feed.xml",
+for (const f of [".nojekyll", "index.html", "404.html", "robots.txt", "sitemap.xml", "feed.xml",
                  "CNAME", "assets/css/site.css", "assets/js/site.js",
                  "services/index.html", "insights/index.html", "contact/index.html",
                  "privacy/index.html", "terms/index.html", "about/index.html"]) {
@@ -115,8 +115,9 @@ console.log("\nBrand & reader");
   const shell = await readFile(`insights/${dirs[0].name}/index.html`, "utf8");
   if (/ajna-logo\.png/.test(shell)) fail("the retired logo is still referenced");
   else ok("mark and icon set in place");
-  if (!/Quintessential/.test(shell)) fail("the wordmark face is not being loaded");
-  else ok("wordmark face loaded");
+  const localFonts=await readFile('assets/fonts/fonts.css','utf8');
+  if (!/href="\/assets\/fonts\/fonts\.css/.test(shell)||!/font-family:\s*['"]?Quintessential/.test(localFonts)) fail("the local wordmark face is not being loaded");
+  else ok("wordmark face loaded from local licensed fonts");
 
   // Reading preferences are offered on every article; the chapter bar only
   // where there is enough article to navigate.
@@ -214,7 +215,7 @@ console.log("\nAssets");
     for (const m of h.matchAll(/(?:og:image|twitter:image)" content="[^"]*?(\/assets\/og\/[^"]+)"/g)) cards.add(m[1]);
   }
   const missingCards = [];
-  for (const c of cards) { try { await access(c.replace(/^\//, ""), constants.R_OK); } catch { missingCards.push(c); } }
+  for (const c of cards) { try { await access(c.replace(/^\//, "").split(/[?#]/)[0], constants.R_OK); } catch { missingCards.push(c); } }
   if (missingCards.length) fail(`${missingCards.length} social card(s) missing: ${missingCards.slice(0, 4).join(", ")}`);
   else ok(`${cards.size} social cards all present`);
   const svgCards = [...cards].filter(c => c.endsWith(".svg"));
@@ -265,8 +266,16 @@ console.log("\nAssets");
     if (dupes.length) fail(`the mark defines ${[...new Set(dupes)].join(", ")} more than once`);
     else if (pushes) fail("the mark's facets are pushed apart on open - the old bloom is back");
     else if (css.includes("am-heart")) fail("am-heart is styled but the mark no longer draws one");
-    else if (!css.includes("rotateX")) fail("the leaves no longer unfold in three dimensions");
-    else ok(`the mark's bloom is defined once (${keyframes.length} keyframes)`);
+    else if (keyframes.length || /\.brand:(?:hover|focus-visible)[^{]*\.ajna-mark/.test(css)) fail("the old CSS bloom competes with the selected motion controller");
+    else {
+      const motion = await readFile("assets/js/brand-motion.mjs", "utf8");
+      const shell = await readFile("tools/shell.mjs", "utf8");
+      const liveMark = (await import("./mark.mjs")).mark();
+      if ((liveMark.match(/class="am-leaf"/g) || []).length !== 8) fail("selected Option B must draw eight leaves around its intact diamond");
+      else if (!motion.includes("springStep") || !motion.includes("prefers-reduced-motion") || !motion.includes("clearTimeout(this.timer)")) fail("the bloom lost coordinated, interruptible, motion-aware behaviour");
+      else if (!shell.includes('data-ajna-motion') || !shell.includes('class="brand-home"') || !shell.includes('/assets/js/brand-motion.mjs')) fail("logo motion controls must remain separate from the ordinary home link");
+      else ok("Option B has eight leaves, one motion controller, and an independent home link");
+    }
   }
 
   const home = await readFile("index.html", "utf8");

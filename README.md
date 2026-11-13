@@ -68,6 +68,19 @@ published pages and the entire planned queue. `npm test` checks every article,
 selected subject regressions, unique paths, clipping identifiers, and calendar
 invariants before checking the generated website.
 
+Artwork now uses eight subject-led composition/material families, with exact
+concept scenes for topics such as C4 boundaries, TLS certificates, SQL windows,
+VM guests and code examples. Every editorial card and chapter/note row has a
+thumbnail. Each page and article has its own PNG share preview, versioned by
+its actual SVG source hash. The old generic topic JPEG templates are retired.
+
+`node tools/image-inventory.mjs` refreshes the complete use/source/relevance/crop
+inventory in `docs/image-audit.json`. Optional browser reviews are
+`tools/image-geometry-check.mjs` and `tools/brand-lab-check.mjs`; they reuse a
+local Playwright package (`AJNA_PLAYWRIGHT_PACKAGE`) without adding a production
+dependency. The default logo motion is the selected eight-petal Option B;
+the wordmark remains an ordinary home link.
+
 To bring one article forward, set its `date` in `content/manifest.json` to
 today or earlier and rebuild.
 

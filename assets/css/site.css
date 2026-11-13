@@ -456,10 +456,20 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:800;line-height:1.12;
   background:var(--accent);opacity:.85;
 }
 .feature{padding:1.4rem 1.5rem;background:var(--paper);border:1px solid var(--line);border-radius:var(--radius)}
+.capability-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media(max-width:700px){.capability-grid{grid-template-columns:1fr}}
+.content-thumbnail{overflow:hidden;aspect-ratio:16/9;margin:0 0 1.2rem;border-radius:8px}
+.content-thumbnail svg{display:block;width:100%;height:100%;object-fit:contain}
+.topic-tile .content-thumbnail{width:100%;margin-bottom:.8rem}
+.topic-tile{flex-wrap:wrap}
+.quote .content-thumbnail{margin-bottom:1.4rem}
 
 /* ---------- methodology ---------- */
 .method{margin-top:2.6rem;display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--radius-lg);overflow:hidden;grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr))}
 .method li{background:var(--paper);padding:1.7rem 1.6rem;position:relative}
+.method{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media(max-width:1000px){.method{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.method{grid-template-columns:1fr}}
 .method .n{font-family:var(--font-display);font-size:.78rem;font-weight:800;letter-spacing:.1em;color:var(--accent-ink);display:block;margin-bottom:.7rem}
 .method strong{display:block;font-family:var(--font-display);font-size:1.02rem;font-weight:750;letter-spacing:-.012em}
 .method p{margin-top:.5rem;font-size:.9rem;color:var(--text-2);line-height:1.6}
@@ -598,6 +608,10 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:800;line-height:1.12;
 .note-row h2{font-family:var(--font-display);font-size:1.08rem;font-weight:700;margin-top:.4rem;line-height:1.4}
 .note-row:hover h2{color:var(--accent-ink)}
 .note-row p{margin-top:.45rem;font-size:.91rem;color:var(--text-2);line-height:1.6;max-width:70ch}
+.note-row{display:grid;grid-template-columns:180px minmax(0,1fr);gap:1.3rem;align-items:start}
+.note-row .content-thumbnail{margin:0}
+.series-index .content-thumbnail{flex:none;width:160px;margin:0}
+@media(max-width:600px){.note-row{grid-template-columns:1fr}.note-row .content-thumbnail{max-width:360px}.series-index a{flex-wrap:wrap}.series-index .content-thumbnail{width:100%;max-width:360px}.series-index a>span:last-child{flex-basis:calc(100% - 3rem);min-width:0}}
 
 /* ---------- forms panel ---------- */
 .form-panel{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius-lg);padding:clamp(1.5rem,3.5vw,2.4rem)}
@@ -751,10 +765,7 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:800;line-height:1.12;
 /* cards lift a little more so a grid of them is not a flat sheet */
 .card{background:var(--paper)}
 .card-art{position:relative}
-.card-art::after{
-  content:"";position:absolute;inset:0;
-  background:linear-gradient(180deg,transparent 58%,color-mix(in srgb,var(--paper) 82%, transparent));
-}
+.card-art::after{content:none}
 [data-theme="dark"] .card{background:var(--paper-2)}
 
 /* a feature slot: one article given real size */
@@ -933,98 +944,15 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:800;line-height:1.12;
 [data-rface="serif"] .article .prose{line-height:calc(var(--art-lh) + .04)}
 .article .article-head .lede{font-family:var(--font-read)}
 
-/* ---------- the mark blooms ----------
-   At rest it is the cut diamond. On hover, on keyboard focus, and once when
-   the header arrives, the diamond draws down and forward to become the bud
-   at the centre while eight leaves fall open from behind it.
-
-   Prising the four facets apart instead leaves a hole in the middle, and a
-   symmetric shape that opens a hole and closes it again reads as a mouth.
-   So the diamond never breaks: it is always a diamond, then a diamond at
-   the heart of a rosette.
-
-   The leaves unfold rather than grow: each one lies edge-on in the plane of
-   the mark and swings up on the axis through its own base, the way paper
-   unfolds. Inside an SVG that fold is drawn flat - measured, a leaf at
-   rotateX(-84deg) collapses to a tenth of its length with no foreshortening,
-   because SVG children have no 3D rendering context and translateZ on them
-   does nothing at all. So the depth is taken one level up, where it is real:
-   .brand carries the perspective and the whole mark turns on its own axes,
-   as a solid does when you lean towards it.
-
-   Each leaf composes its own angle (--a) with the shared unfolding, which is
-   why the angle is a custom property and not a transform attribute - a CSS
-   transform overwrites the attribute outright. */
-.brand{perspective:620px}
-.ajna-mark{overflow:visible;transform-style:preserve-3d;transition:transform .6s var(--ease)}
-.brand:hover .ajna-mark,
-.brand:focus-visible .ajna-mark,
-.ajna-mark.is-open{transform:rotateX(15deg) rotateY(-14deg)}
-.ajna-mark .am-bud,
-.ajna-mark .am-leaf,
-.ajna-mark .am-core,
-.ajna-mark .am-petal{transform-box:view-box;transform-origin:50px 50px}
-/* The facets carry their angle in a custom property rather than a transform
-   attribute, for the reason above. They never move on their own - it is the
-   bud around them that draws down. An earlier version pushed each facet out
-   along its diagonal, which is what opened the hole. */
-.ajna-mark .am-petal{transform:rotate(var(--a))}
-.ajna-mark .am-bud{transition:transform .6s var(--ease)}
-.ajna-mark .am-leaf{
-  transform:rotate(var(--a)) rotateX(-84deg) scale(.62);opacity:0;
-  transition:transform .6s var(--ease),opacity .34s var(--ease);
-}
-.ajna-mark .am-leaf-b{transition-delay:.07s}
-.ajna-mark .am-core{transition:transform .5s var(--ease)}
-
-.brand:hover .ajna-mark .am-bud,
-.brand:focus-visible .ajna-mark .am-bud,
-.ajna-mark.is-open .am-bud{transform:scale(.44)}
-.brand:hover .ajna-mark .am-leaf,
-.brand:focus-visible .ajna-mark .am-leaf,
-.ajna-mark.is-open .am-leaf{transform:rotate(var(--a)) rotateX(0deg) scale(1);opacity:1}
-.brand:hover .ajna-mark .am-core,
-.brand:focus-visible .ajna-mark .am-core,
-.ajna-mark.is-open .am-core{transform:scale(.48)}
-
-/* One full cycle when the header arrives: open, hold, and fold back to the
-   diamond. The mark shows what it does once and then sits still, rather
-   than waiting to be discovered on hover. Header mark only, once per load.
-
-   "backwards" not "both": a filled animation outranks normal declarations,
-   so "both" would pin the mark open and hover could never move it. */
-@keyframes am-bloom-bud{
-  0%{transform:none}
-  44%,66%{transform:scale(.44)}
-  100%{transform:none}
-}
-@keyframes am-bloom-leaf{
-  0%{transform:rotate(var(--a)) rotateX(-84deg) scale(.62);opacity:0}
-  44%,66%{transform:rotate(var(--a)) rotateX(0deg) scale(1);opacity:1}
-  100%{transform:rotate(var(--a)) rotateX(-84deg) scale(.62);opacity:0}
-}
-@keyframes am-bloom-core{
-  0%{transform:none}
-  44%,66%{transform:scale(.48)}
-  100%{transform:none}
-}
-@keyframes am-bloom-tilt{
-  0%{transform:none}
-  44%,66%{transform:rotateX(15deg) rotateY(-14deg)}
-  100%{transform:none}
-}
-.site-header .ajna-mark{animation:am-bloom-tilt 3.2s var(--ease) backwards}
-.site-header .ajna-mark .am-bud{animation:am-bloom-bud 3.2s var(--ease) backwards}
-.site-header .ajna-mark .am-leaf{animation:am-bloom-leaf 3.2s var(--ease) backwards}
-.site-header .ajna-mark .am-leaf-b{animation-delay:.06s}
-.site-header .ajna-mark .am-core{animation:am-bloom-core 3.2s var(--ease) backwards}
-@media (prefers-reduced-motion:reduce){
-  .ajna-mark,.ajna-mark .am-bud,.ajna-mark .am-leaf,.ajna-mark .am-core{transition:none}
-  .site-header .ajna-mark,
-  .site-header .ajna-mark .am-bud,
-  .site-header .ajna-mark .am-leaf,
-  .site-header .ajna-mark .am-core{animation:none}
-}
+/* ---------- Option B: one controller owns the unfolding ---------- */
+.brand-motion{width:44px;height:44px;flex:none;display:grid;place-items:center;padding:0;border:0;border-radius:9px;background:transparent;color:inherit;cursor:pointer;touch-action:manipulation}
+.brand-motion:hover{background:var(--accent-soft)}
+.brand-motion:focus-visible,.brand-home:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+.brand-home{display:flex;align-items:center;color:inherit;text-decoration:none}
+.ajna-mark{overflow:visible;display:block;pointer-events:none}
+.ajna-mark .am-petal{transform-box:view-box;transform-origin:50px 50px;transform:rotate(var(--a))}
+/* No hover/focus/load animation overrides: transform attributes are driven
+   together by the time-based spring in assets/js/brand-motion.mjs. */
 
 
 @media print{.reader-tools,.reader-panel,.chapter-bar,.focus-exit,.read-bar{display:none!important}}

@@ -1,10 +1,13 @@
 /* The page shell: head, header, footer. Everything renders through this. */
 import { SITE, esc, icon } from "./lib.mjs";
 import { mark, markFile } from "./mark.mjs";
+import { siteImagePath } from "./site-images.mjs";
 import { createHash } from "node:crypto";
+import { readFileSync } from "node:fs";
 
 /* Short content hash of the mark itself. */
 const MARK_V = createHash("sha256").update(markFile(512)).digest("hex").slice(0, 8);
+const SITE_V = createHash("sha256").update(["../assets/css/site.css", "../assets/js/brand-motion.mjs", "../assets/js/motion-spring.mjs"].map(path => readFileSync(new URL(path, import.meta.url), "utf8")).join("\n")).digest("hex").slice(0, 8);
 
 const NAV = [
   ["/services/", "Services"],
@@ -16,13 +19,16 @@ const NAV = [
 
 export function page({
   title, description, path: urlPath, body,
-  ogImage = "/assets/og/default.jpg", type = "website",
+  ogImage = null, type = "website",
   jsonld = [], bodyClass = "", topic = null, canonical = null,
 }) {
   const url = SITE.url + urlPath;
   const fullTitle = urlPath === "/" ? title : `${title} | ${SITE.short}`;
   const meta = String(description || "").replace(/\s+/g, " ").trim().slice(0, 300);
   const metaShort = meta.length > 158 ? meta.slice(0, 155).replace(/[\s,;:—-]+$/, "") + "…" : meta;
+  ogImage ||= siteImagePath(urlPath,title,metaShort,topic);
+  const imagePath=ogImage.split(/[?#]/)[0];
+  const imageType = /\.png$/i.test(imagePath) ? "image/png" : /\.svg$/i.test(imagePath) ? "image/svg+xml" : /\.webp$/i.test(imagePath) ? "image/webp" : "image/jpeg";
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -43,7 +49,7 @@ export function page({
 <meta property="og:image" content="${esc(SITE.url + ogImage)}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:type" content="${imageType}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${esc(title)}">
 <meta name="twitter:description" content="${esc(metaShort)}">
@@ -54,10 +60,8 @@ export function page({
 <link rel="apple-touch-icon" href="/images/apple-touch-icon.png?v=${MARK_V}">
 <meta name="theme-color" content="#0a1020">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Quintessential&display=swap">
-<link rel="stylesheet" href="/assets/css/site.css">
+<link rel="stylesheet" href="/assets/fonts/fonts.css">
+<link rel="stylesheet" href="/assets/css/site.css?v=${SITE_V}">
 <link rel="alternate" type="application/rss+xml" title="${esc(SITE.name)} — Insights" href="/feed.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
@@ -70,11 +74,7 @@ d.setAttribute('data-theme',t);
   var v=localStorage.getItem('acs-'+k);
   if(v&&/^[a-z]{1,5}$/.test(v))d.setAttribute('data-'+k,v);
 });
-if(d.getAttribute('data-rface')==='serif'){
-  var l=document.createElement('link');l.rel='stylesheet';
-  l.href='https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600&display=swap';
-  document.head.appendChild(l);
-}
+
 }catch(e){}})();
 </script>
 ${jsonld.map(j => `<script type="application/ld+json">${JSON.stringify(j)}</script>`).join("\n")}
@@ -84,10 +84,10 @@ ${jsonld.map(j => `<script type="application/ld+json">${JSON.stringify(j)}</scri
 
 <header class="site-header" id="siteHeader">
   <div class="wrap" style="display:flex;align-items:center;width:min(1220px,100% - var(--gutter)*2)">
-    <a class="brand" href="/" aria-label="${esc(SITE.name)} — home">
-      ${mark({ size: 40, uid: "hdr" })}
-      <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
-    </a>
+    <div class="brand">
+      <button class="brand-motion" type="button" data-ajna-motion data-arrival aria-label="Open Ajna logo" aria-pressed="false">${mark({ size: 40, uid: "hdr" })}</button>
+      <a class="brand-home" href="/" aria-label="${esc(SITE.name)} — home"><span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span></a>
+    </div>
     <nav class="nav" id="nav" aria-label="Primary">
       ${NAV.map(([href, label]) =>
         `<a href="${href}"${urlPath.startsWith(href) && href !== "/" ? ' aria-current="page"' : ""}>${label}</a>`).join("\n      ")}
@@ -109,7 +109,7 @@ ${body}
     <div class="grid g-4" style="gap:2rem">
       <div>
         <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem" aria-label="${esc(SITE.name)} — home">
-          ${mark({ size: 36, uid: "ftr" })}
+          ${mark({ size: 36, uid: "ftr", still: true })}
           <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
         </a>
         <p style="font-size:.88rem;line-height:1.65;color:#9fb0d0;max-width:30ch">
@@ -155,6 +155,7 @@ ${body}
   </div>
 </footer>
 <script src="/assets/js/site.js" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=${SITE_V}"></script>
 </body>
 </html>`;
 }

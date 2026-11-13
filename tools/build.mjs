@@ -6,16 +6,17 @@ import path from "node:path";
 import { SITE, esc, fmtDate, readingTime, seriesSlug, primaryTopic, PRIMARY_TOPICS, icon, parseFront } from "./lib.mjs";
 import { page } from "./shell.mjs";
 import { artwork, colorFor } from "./visuals.mjs";
-import { ogSlug } from "./ogcards.mjs";
 import { makeRenderer, extractStats, statStrip, barChart, injectAfterFirstH2, tableOfContents, headingAnchors } from "./render.mjs";
 import { staticPages } from "./pages.mjs";
 import { referencesFor, referencesBlock } from "./references.mjs";
 import { publicationDate } from "./publication.mjs";
 import { buildArticleImages } from "./article-images.mjs";
+import { buildPageImage } from "./site-images.mjs";
 
 const TODAY = publicationDate();
 const manifest = JSON.parse(await readFile("content/manifest.json", "utf8"));
 await buildArticleImages(manifest);
+const articlePreviewHashes=JSON.parse(await readFile('assets/og/articles/sources.json','utf8'));
 
 const live = manifest
   .filter(m => m.date <= TODAY)
@@ -30,6 +31,13 @@ const out = async (rel, html) => {
   // the site resolved to an image. No slug contains a dot, so extension
   // detection is safe here.
   const p = /\.[a-z0-9]{2,5}$/i.test(path.basename(rel)) ? rel : path.join(rel, "index.html");
+  if(p.endsWith('.html') && html.includes('/assets/og/pages/')) {
+    const decode=s=>s.replace(/&amp;/g,'&').replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/&lt;/g,'<').replace(/&gt;/g,'>');
+    const meta=name=>decode(html.match(new RegExp(`(?:property|name)="${name}" content="([^"]*)"`))?.[1]||'');
+    const urlPath=new URL(meta('og:url')).pathname;
+    const topic=decode(html.match(/<body[^>]* data-topic="([^"]+)"/)?.[1]||'')||null;
+    await buildPageImage(urlPath,meta('og:title'),meta('og:description'),topic);
+  }
   await mkdir(path.dirname(p), { recursive: true });
   await writeFile(p, html, "utf8");
 };
@@ -68,10 +76,8 @@ for (const m of live) {
   const tocHtml = tableOfContents(headings);
   const refsHtml = m.section === "insights" ? referencesBlock(referencesFor(body)) : "";
 
-  /* One card per topic, generated once by tools/ogcards.mjs. A per-article
-     card would mean the scheduled publisher had to rasterise one for every
-     article it releases, years from now, in CI. */
-  const ogPath = `/assets/og/articles/${m.slug}.png`;
+  /* Every article's subject-specific preview is prepared before publication. */
+  const ogPath = `/assets/og/articles/${m.slug}.png?v=${articlePreviewHashes[m.slug].slice(0,12)}`;
 
   const idx = live.filter(x => x.section === m.section);
   const pos = idx.findIndex(x => x.slug === m.slug);
@@ -314,9 +320,12 @@ await out("notes", page({
 <section class="wrap" style="padding-bottom:var(--section-y)">
   <div class="notes-list">
     ${notes.map(m => `<a class="note-row" href="/notes/${m.slug}/">
+      <div class="content-thumbnail">${artwork(m.slug,m.tags,{title:m.title,calm:true})}</div>
+      <div class="note-summary">
       <time datetime="${m.date}">${fmtDate(m.date)}</time>
       <h2>${esc(m.title)}</h2>
       <p>${esc(m.description)}</p>
+      </div>
     </a>`).join("\n")}
   </div>
 </section>`,
@@ -345,7 +354,7 @@ for (const [name, items] of seriesMap) {
 </section>
 <section class="wrap" style="padding-bottom:var(--section-y)">
   <ol class="series-index">
-    ${items.map((m, i) => `<li><a href="/insights/${m.slug}/"><span class="n">${String(i + 1).padStart(2, "0")}</span><span><strong>${esc(m.title)}</strong><em>${esc(m.description)}</em></span></a></li>`).join("\n    ")}
+    ${items.map((m, i) => `<li><a href="/insights/${m.slug}/"><div class="content-thumbnail">${artwork(m.slug,m.tags,{title:m.title})}</div><span class="n">${String(i + 1).padStart(2, "0")}</span><span><strong>${esc(m.title)}</strong><em>${esc(m.description)}</em></span></a></li>`).join("\n    ")}
   </ol>
 </section>`,
   }));
@@ -392,6 +401,7 @@ await out("topics", page({
 <section class="wrap" style="padding-bottom:var(--section-y)">
   <div class="grid g-4">
     ${topicList.map(([t, n]) => `<a class="topic-tile" data-topic="${esc(t)}" href="/insights/?topic=${encodeURIComponent(t)}">
+      <div class="content-thumbnail">${artwork('topic-'+t.toLowerCase().replace(/[^a-z0-9]+/g,'-'),[t],{title:t})}</div>
       <strong>${esc(t)}</strong><span>${n} article${n === 1 ? "" : "s"}</span></a>`).join("\n    ")}
   </div>
 </section>`,

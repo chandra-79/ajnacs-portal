@@ -31,33 +31,13 @@ const KEY = { 0: 0.07, 90: -0.12, 180: -0.05, 270: 0.3 };
 const RIM_LIGHT = { 0: 0.34, 90: 0, 180: 0, 270: 0.46 };
 const RIM_DARK = { 0: 0, 90: 0.16, 180: 0.1, 270: 0 };
 
-/* The same light, on the ring. A leaf points away from the centre at its own
-   angle, so how much of the light it takes is the dot product of that
-   direction with the direction the light comes from: the leaves at the top
-   left turn into it, the ones at the bottom right turn away. A flat tint per
-   leaf rather than a gradient - eight gradients is a kilobyte of inline SVG
-   on every page, and at forty pixels the tint is what reads anyway. */
-const leafKey = (a) => {
-  const r = (a * Math.PI) / 180;
-  return 0.3 * Math.SQRT1_2 * (Math.cos(r) - Math.sin(r));
-};
-
-/* Prising the four facets apart leaves a hole in the middle, and a symmetric
-   shape that opens a hole and closes it again reads as a mouth, not a
-   flower. So the diamond never breaks: it shrinks to become the bud at the
-   centre while eight leaves unfold from behind it. Nothing gapes, and the
-   silhouette stays a flower the whole way through.
-
-   Two rings of petals rather than eight identical ones: a long ring on the
-   axes and a shorter, paler ring on the diagonals behind it. Eight the same
-   reads as a compass rose. Rounded tips, because a pointed one reads as a
-   spike however it is arranged. Tips stay inside the viewBox so nothing
-   spills onto the wordmark beside it. */
+/* Option B keeps the solid rhombus at the heart of eight broad leaves.
+   Their two-dimensional unfolding is coordinated by brand-motion.mjs. */
 const petal = (L, w) =>
-  `M ${C} ${C} C ${C - w} ${C - L * 0.42}, ${C - w * 0.62} ${C - L * 0.86}, ${C} ${C - L}`
-  + ` C ${C + w * 0.62} ${C - L * 0.86}, ${C + w} ${C - L * 0.42}, ${C} ${C} Z`;
-const LEAF_LONG = petal(47, 15);
-const LEAF_SHORT = petal(39, 14.5);
+  `M 50 50 C ${50-w} ${50-L*.42}, ${50-w*.62} ${50-L*.86}, 50 ${50-L}`
+  + ` C ${50+w*.62} ${50-L*.86}, ${50+w} ${50-L*.42}, 50 50 Z`;
+const LEAF_LONG = petal(47,16);
+const LEAF_SHORT = petal(39,14);
 
 export function mark({ size = 40, uid = "m", ink = "currentColor", title = "", still = false } = {}) {
   const spin = (a) => still
@@ -99,31 +79,17 @@ export function mark({ size = 40, uid = "m", ink = "currentColor", title = "", s
       + `</g>`;
   }).join("");
 
-  /* A roll across each leaf, plus the key light above, so the ring reads as
-     eight surfaces at eight angles rather than eight flat cut-outs. */
-  const leafShade = `lf-${uid}`;
-  const leafDefs = `<linearGradient id="${leafShade}" gradientUnits="userSpaceOnUse" x1="${C - 15}" y1="${C - 20}" x2="${C + 15}" y2="${C - 20}">`
-    + `<stop offset="0" stop-color="#fff" stop-opacity=".3"/>`
-    + `<stop offset=".45" stop-color="#fff" stop-opacity="0"/>`
-    + `<stop offset="1" stop-color="#000" stop-opacity=".22"/></linearGradient>`;
-
   const LL = `ll-${uid}`, LS = `ls-${uid}`;
   const leafShapes = `<path id="${LL}" d="${LEAF_LONG}"/><path id="${LS}" d="${LEAF_SHORT}"/>`;
-
-  const leaf = (ref, a, colour, op, cls) => {
-    const k = leafKey(a);
-    return `<g class="${cls}" style="--a:${a}deg">`
-      + `<use href="#${ref}" fill="${colour}" opacity="${op}"/>`
-      + `<use href="#${ref}" fill="url(#${leafShade})"/>`
-      + (Math.abs(k) > 0.02
-          ? `<use href="#${ref}" fill="${k > 0 ? "#fff" : "#000"}" opacity="${Math.abs(k).toFixed(2)}"/>` : "")
+  const leafDefs = [LL,LS].map(ref=>`<clipPath id="clip-${ref}"><use href="#${ref}"/></clipPath>`).join("");
+  const inner = still ? "" : Array.from({length:8},(_,i)=>{
+    const ref=i%2?LS:LL, L=i%2?39:47;
+    return `<g class="am-leaf" opacity="0" transform="translate(50 50) rotate(${i*45}) scale(.38 .02) translate(-50 -50)">`
+      + `<use href="#${ref}" fill="${MARK_COLOURS[Math.floor(i/2)]}"/>`
+      + `<path d="M50 0 H100 V100 H50Z" fill="#000" fill-opacity=".13" clip-path="url(#clip-${ref})"/>`
+      + `<path d="M50 50 L50 ${50-L}" stroke="#fff" stroke-opacity=".2" stroke-width=".7"/>`
       + `</g>`;
-  };
-
-  const inner = still ? "" : [
-    ...[45, 135, 225, 315].map((a, i) => leaf(LS, a, MARK_COLOURS[(i + 2) % 4], ".62", "am-leaf am-leaf-b")),
-    ...[0, 90, 180, 270].map((a, i) => leaf(LL, a, MARK_COLOURS[i], ".9", "am-leaf")),
-  ].join("");
+  }).join("");
 
   return `<svg class="ajna-mark${still ? " is-still" : ""}" viewBox="0 0 100 100" width="${size}" height="${size}" fill="none" ${
     title ? `role="img" aria-label="${title}"` : 'aria-hidden="true" focusable="false"'}>`

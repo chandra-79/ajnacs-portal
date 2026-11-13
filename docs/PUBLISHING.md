@@ -30,6 +30,11 @@ Every article also has a raster social preview prepared in advance, so future
 publication does not depend on an image service. `sources.json` identifies the
 exact artwork input used for each cached preview.
 
+Social preview URLs include the exact SVG input hash, so a rebuilt image has a
+new share URL without requesting an external cache purge. `.nojekyll` tells
+GitHub Pages to serve this generator's static output directly; source Markdown
+is not processed by a second site generator.
+
 The architecture decision record guide and short essay are separate works.
 The guide is restored at `architecture-decision-records-guide`; the essay keeps
 its original `architecture-decision-records` path. Import source identities

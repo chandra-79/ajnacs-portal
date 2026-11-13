@@ -35,7 +35,7 @@ function directionFor(slug,tags,calm,title) {
 }
 export const SPECIFIC_TOPICS=[...Object.keys(TOPIC_COLOR),'API Design','Quantum Computing'];
 export const MOTIF_COUNT=EDITORIAL_LAYOUTS.length;
-export const motifNameFor=(tags,calm,title,slug)=>directionFor(slug,tags,calm,title).layout;
+export const motifNameFor=(tags,calm,title,slug)=>{const d=directionFor(slug,tags,calm,title);return d.detail||d.layout;};
 export function motifReason(tags,calm,title='',slug='') {
   return { name:directionFor(slug,tags,calm,title).layout, why:articleDirection(slug) ? 'article-source' : 'subject' };
 }

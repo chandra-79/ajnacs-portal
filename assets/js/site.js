@@ -246,18 +246,7 @@
     root.setAttribute(name === "theme" ? "data-theme" : "data-" + name, value);
     try { localStorage.setItem(PREFS[name], value); } catch (e) {}
     if (name === "theme" && typeof syncTheme === "function") syncTheme();
-    if (name === "rface" && value === "serif") loadSerif();
     syncSegs();
-  }
-  /* The reading serif is only fetched if someone actually asks for it. */
-  var serifLoaded = false;
-  function loadSerif() {
-    if (serifLoaded || document.querySelector('link[href*="Newsreader"]')) { serifLoaded = true; return; }
-    serifLoaded = true;
-    var l = document.createElement("link");
-    l.rel = "stylesheet";
-    l.href = "https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600&display=swap";
-    document.head.appendChild(l);
   }
 
   var segs = [].slice.call(document.querySelectorAll(".seg[data-pref]"));

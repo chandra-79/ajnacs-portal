@@ -2,6 +2,7 @@
    than a random geometric texture. No numbers in these illustrations are data. */
 import { readFileSync } from 'node:fs';
 import { parseFront } from './lib.mjs';
+import { subjectOverride, articleSpecificScene } from './article-scenes.mjs';
 
 const escape = value => String(value).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
 const rules = [
@@ -84,6 +85,8 @@ export function subjectDirection(article) {
     rule = rules.find(([name]) => name === layout);
   }
   const [layout, , concepts] = rule;
+  const override=subjectOverride(slug);
+  const codeExcerpt=(article.text.match(/```[^\n]*\n([\s\S]*?)```/)?.[1]||'').split('\n').map(s=>s.trimEnd()).filter(s=>s.trim()).slice(0,6).map(s=>s.slice(0,48));
   const mentioned = concepts.filter(label => article.text.toLowerCase().includes(label.toLowerCase()));
   const headings = [...article.text.matchAll(/^#{2,3}\s+(.+)$/gm)]
     .map(match => match[1].replace(/[`*_]/g, '').split(/:\s| — /)[0])
@@ -92,7 +95,7 @@ export function subjectDirection(article) {
   const note = article.section === 'notes';
   let subject = article.title.split(/:\s| — /)[0].replace(/^Quick take:\s*/i, '');
   if (subject.length > 65) subject = slug.replace(/^quick-take-/, '').split('-').map(s => s[0].toUpperCase() + s.slice(1)).join(' ');
-  return { slug, title: article.title, subject, layout: note ? 'field' : layout, scene: note ? noteScene(slug) : layout,
+  return { slug, title: article.title, subject, layout: note ? 'field' : (override?.layout || layout), scene: note ? noteScene(slug) : (override?.layout || layout), detail: note ? null : (override?.detail||((layout==='code'&&codeExcerpt.length)?'source-code':undefined)), codeExcerpt,
     terms, section: article.section,
     description: note ? `An editorial illustration for ${article.title}.` : `Conceptual illustration for ${article.title}: ${terms.join(', ')}.` };
 }
@@ -213,38 +216,82 @@ function sceneFor(layout, c1, c2) {
   return `${kinds.map((kind,i)=>node(kind,30+i*208,60)).join('')}${line(112,95,226,95)}${line(320,95,434,95)}`;
 }
 
+export function compositionFor(direction) {
+  if(direction.section==='notes'||['reading','library','conversation','reflection'].includes(direction.scene))return 'editorial-vignette';
+  if(['fabric','network','consensus','hashring','architecture'].includes(direction.scene))return 'drafting-board';
+  if(['cache','retrieval','api','stream','delivery','transaction','pagination'].includes(direction.scene))return 'process-strip';
+  if(['container','virtualization','compute','database','index','sharding'].includes(direction.scene))return 'technical-cutaway';
+  if(['migration','incident','time','journey'].includes(direction.scene))return 'narrative-landscape';
+  if(['model','telemetry','experiment','throttle','code'].includes(direction.scene))return 'instrument-panel';
+  if(['security','identity','accessibility','energy','quantum'].includes(direction.scene))return 'symbolic-object';
+  return 'paper-workbench';
+}
+
 export function editorialArtwork(direction, { w, h, c1, c2, id }) {
-  const wide = w / h > 2.3;
-  const subject = direction.subject;
-  const words = subject.split(' ');
-  const lines = [];
-  for (const word of words) {
-    if (!lines.length || (lines.at(-1)+' '+word).length > (wide ? 32 : 31)) lines.push(word);
-    else lines[lines.length-1] += ' '+word;
+  const wide=w/h>2.3,W=wide?1200:640,H=wide?380:360;
+  const family=compositionFor(direction),clip='cp'+id;
+  const fit=Math.min(w/W,h/H),tx=(w-W*fit)/2,ty=(h-H*fit)/2;
+  const dark=['drafting-board','instrument-panel'].includes(family);
+  const styles={
+    'drafting-board':['#102b3b','#d5edf2','#73d2c6','#eda752'],
+    'process-strip':['#f7f0e1','#293a42','#315c63','#bd562f'],
+    'technical-cutaway':['#e9e7f2','#33324f','#645b94','#b06d3b'],
+    'narrative-landscape':['#f2e6d4','#4e4438','#677c62','#b26342'],
+    'instrument-panel':['#151d2b','#e8e3ce','#94c5cb','#e0ad6d'],
+    'symbolic-object':['#e6eee9','#25443c','#326e60','#ad563f'],
+    'paper-workbench':['#f1ebe0','#483f39','#756654','#9d4c35'],
+    'editorial-vignette':['#f7f0e8','#473b3c','#80685c','#ab6951'],
+  };
+  const [paper,ink,stroke,accent]=styles[family];
+  const short=direction.subject,words=short.split(' '),lines=[];
+  for(const word of words){if(!lines.length||(lines.at(-1)+' '+word).length>(wide?31:34))lines.push(word);else lines[lines.length-1]+=' '+word;}
+  const maxLines=(family==='symbolic-object'||family==='editorial-vignette')?2:3;
+  const headingLines=lines.slice(0,maxLines);if(lines.length>maxLines)headingLines[maxLines-1]+='…';
+  const title=(x,y,size=wide?29:25,serif=false,align='start')=>headingLines.map((s,i)=>`<text x="${x}" y="${y+i*(size+7)}" fill="${ink}" font-size="${size}" font-weight="${serif?400:650}" font-family="${serif?'Georgia,serif':'Arial,sans-serif'}" text-anchor="${align}">${escape(s)}</text>`).join('');
+  const custom=articleSpecificScene(direction,stroke,accent);
+  const scene=custom||sceneFor(direction.scene,stroke,accent);
+  const drawing=(x,y,s=1)=>`<g transform="translate(${x} ${y}) scale(${s})">${scene}</g>`;
+  const label=(x,y,s,color=ink,size=12)=>`<text x="${x}" y="${y}" fill="${color}" font-family="Arial,sans-serif" font-size="${size}" letter-spacing="1.1">${escape(s)}</text>`;
+  const caption=direction.terms.slice(0,3).join(' · ');
+  let body='';
+  if(family==='drafting-board'){
+    body=`<g stroke="#6195a4" stroke-width=".7" opacity=".16">${Array.from({length:Math.ceil(W/32)},(_,i)=>`<path d="M${i*32} 0V${H}"/>`).join('')}${Array.from({length:Math.ceil(H/32)},(_,i)=>`<path d="M0 ${i*32}H${W}"/>`).join('')}</g><path d="M20 20h24m-12-12v24M${W-44} ${H-20}h24m-12-12v24" stroke="#b3d6da" opacity=".6"/>`;
+    body+=wide?title(55,115,30)+drawing(585,60,1):drawing(55,108,.94)+title(35,41,24);
+    body+=label(35,H-17,direction.detail?direction.detail.replaceAll('-',' '):direction.scene,accent,11);
+  }else if(family==='process-strip'){
+    body=`<path d="M0 ${H-48}H${W}" stroke="${accent}" stroke-width="2"/><path d="M0 ${H-43}H${W}" stroke="${accent}" stroke-width="8" opacity=".12"/>`;
+    body+=wide?title(56,95,29)+drawing(585,65,1):title(35,40,24)+drawing(50,115,.96);
+    const roles=custom?[]:(sceneLabels[direction.scene]||[]);
+    body+=roles.map((s,i)=>label((wide?617:77)+i*(wide?208:199),H-58,s,stroke,wide?14:12)).join('');
+    body+=label(35,H-20,'AJNA / '+direction.scene.toUpperCase(),stroke,11);
+  }else if(family==='technical-cutaway'){
+    const x=wide?605:78,y=wide?55:116,scale=wide?1:.88;
+    body=`<path d="M${x-20} ${y+175}l260 65 295-70-265-63z" fill="${stroke}" opacity=".1"/><path d="M${x-5} ${y+157}l245 58 275-64" fill="none" stroke="${accent}" stroke-width="2"/>`+drawing(x,y,scale);
+    body+=wide?title(60,112,30):title(35,40,24);
+    body+=label(wide?60:35,H-23,direction.detail?direction.detail.replaceAll('-',' '):direction.scene,stroke,12);
+  }else if(family==='narrative-landscape'){
+    body=`<path d="M-20 ${H-38}Q${W*.25} ${H-110} ${W*.56} ${H-35}T${W+20} ${H-55}V${H}H0Z" fill="${stroke}" opacity=".14"/><circle cx="${wide?W-95:W-62}" cy="${wide?72:48}" r="${wide?44:30}" fill="${accent}" opacity=".2"/>`;
+    body+=wide?title(55,93,30,true)+drawing(580,65,1):drawing(50,24,.96)+title(35,270,24,true);
+  }else if(family==='instrument-panel'){
+    body=`<path d="M0 38H${W}" stroke="#526071"/><circle cx="20" cy="19" r="4" fill="#c37e61"/><circle cx="35" cy="19" r="4" fill="#d5b477"/><circle cx="50" cy="19" r="4" fill="#88ae92"/>`+label(75,24,direction.detail?direction.detail.toUpperCase().replaceAll('-',' '):direction.scene.toUpperCase(),'#b0c3d0',11);
+    body+=wide?title(50,115,29)+drawing(585,70,1):drawing(50,135,.94)+title(30,78,24);
+    body+=`<path d="M20 ${H-13}h60m10 0h32m10 0h90" stroke="${accent}" stroke-width="2" opacity=".6"/>`;
+  }else if(family==='symbolic-object'){
+    const kind={security:'shield',identity:'gateway',accessibility:'keyboard',energy:'leaf',quantum:'chip'}[direction.scene]||'shield';
+    const x=wide?860:325,y=wide?175:145,r=wide?130:109;
+    body=`<circle cx="${x}" cy="${y}" r="${r}" fill="${stroke}" opacity=".09"/><circle cx="${x+26}" cy="${y-14}" r="${r*.72}" fill="none" stroke="${accent}" stroke-width="2" opacity=".3"/>`;
+    body+=custom?drawing(wide?590:55,wide?70:38,wide?1:.94):`<g transform="translate(${x-r*.63} ${y-r*.63}) scale(${r*.0126})">${glyph(kind,stroke)}</g>`;
+    body+=wide?title(58,104,31,true):title(35,278,24,true);
+    body+=label(wide?60:35,H-20,direction.scene.toUpperCase(),accent,11);
+  }else if(family==='paper-workbench'){
+    const x=wide?575:45,y=wide?43:110;
+    body=`<path d="M${x+28} ${y-13}l525 14-6 216-528-14z" fill="${accent}" opacity=".12"/><rect x="${x}" y="${y}" width="550" height="218" fill="#fffaf0"/><path d="M${x+12} ${y+16}h17m-8-8v16" stroke="${accent}"/>`+drawing(x+4,y+8,.96);
+    body+=wide?title(55,107,30,true):title(35,42,25,true);
+    body+=label(35,H-15,direction.scene.toUpperCase()+' / WORKING NOTES',stroke,10);
+  }else{
+    body=`<ellipse cx="${wide?880:325}" cy="${wide?292:232}" rx="${wide?245:225}" ry="20" fill="${stroke}" opacity=".07"/>`;
+    body+=wide?drawing(585,54,1)+title(55,120,31,true):drawing(55,29,.94)+title(35,271,24,true);
+    body+=label(wide?58:35,H-19,direction.section==='notes'?'CHANDRA LANKA / A PERSONAL NOTE':'AJNA / '+direction.scene.toUpperCase(),accent,10);
   }
-  const headline = lines.slice(0, 3);
-  const baseW = wide ? 1200 : 640;
-  const baseH = wide ? 380 : 360;
-  const labelY = wide ? 306 : 325;
-  const drawX = wide ? 570 : 72;
-  const drawY = wide ? 60 : 118;
-  const drawScale = wide ? 1 : .88;
-  const titleX = wide ? 66 : 40;
-  const titleY = wide ? 132 : 43;
-  const titleSize = wide ? 28 : 24;
-  const roles = sceneLabels[direction.layout] || [];
-  const ink = `var(--art-ink, ${c2})`;
-  const labels = direction.section === 'notes' ? '' : roles.map((term,i)=>`<text x="${drawX+(68+i*208)*drawScale}" y="${labelY}" text-anchor="middle" font-size="${wide?17:21}" fill="${ink}" font-weight="600">${escape(term)}</text>`).join('');
-  const concepts = wide && direction.section !== 'notes' ? direction.terms.map((term, i) => `<text x="${titleX}" y="${266+i*23}" font-size="15" fill="${ink}" opacity=".8">${escape(term)}</text>`).join('') : '';
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" role="img" aria-label="${escape(direction.description)}" preserveAspectRatio="xMidYMid meet" data-article-art="${escape(direction.slug)}" data-art-scene="${direction.scene}">
-  <defs><clipPath id="cp${id}"><rect width="${w}" height="${h}" rx="18"/></clipPath></defs>
-  <g clip-path="url(#cp${id})"><rect width="${w}" height="${h}" fill="${c1}" fill-opacity=".055"/>
-  <g transform="scale(${w/baseW} ${h/baseH})" font-family="Inter,Arial,sans-serif">
-    <path d="M24 ${baseH-24}H${baseW-24}" stroke="${c1}" stroke-opacity=".12"/>
-    <text x="${titleX}" y="${wide?76:22}" font-size="${wide?13:11}" font-weight="700" letter-spacing="2" fill="${ink}">${direction.section === 'notes' ? 'A PERSONAL NOTE' : 'AJNA · '+escape(direction.layout.replaceAll('-',' ').toUpperCase())}</text>
-    ${headline.map((line,i)=>`<text x="${titleX}" y="${titleY+i*(titleSize+8)}" font-size="${titleSize}" font-weight="650" fill="${ink}">${escape(line)}</text>`).join('')}
-    ${concepts}
-    <g transform="translate(${drawX} ${drawY}) scale(${drawScale})">${sceneFor(direction.scene,`var(--art-stroke, ${c1})`,`var(--art-accent, ${c2})`)}</g>
-    ${labels}
-  </g></g></svg>`.replace(/[ \t]+$/gm, '');
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" role="img" aria-label="${escape(direction.description)}" preserveAspectRatio="xMidYMid meet" data-article-art="${escape(direction.slug)}" data-art-scene="${direction.scene}" data-composition="${family}"><defs><clipPath id="${clip}"><rect width="${w}" height="${h}"/></clipPath></defs><g clip-path="url(#${clip})"><rect width="${w}" height="${h}" fill="${paper}"/><g transform="translate(${tx} ${ty}) scale(${fit})">${body}</g></g></svg>`;
 }

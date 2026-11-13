@@ -75,7 +75,7 @@ const architecture = frame(860, 360, "Both roles in one server block", `
   ${box(646, 88, 176, 68, "app-1", null, AMBER)}
   ${box(646, 220, 176, 68, "app-2", null, AMBER)}
   <text x="430" y="332" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="12" fill="${MUTE}">
-    One process handles the edge concerns so the application does not have to.</text>`);
+    The edge handles shared concerns so the application does not have to.</text>`);
 
 for (const [name, svg] of [["nginx-reverse-proxy", reverseProxy],
                            ["nginx-load-balancing", loadBalancing],

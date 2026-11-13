@@ -3,6 +3,7 @@
 import { SITE, esc, icon, fmtDate, readingTime, primaryTopic, seriesSlug } from "./lib.mjs";
 import { page } from "./shell.mjs";
 import { artwork } from "./visuals.mjs";
+const thumbnail=(title,tags,slug='')=>`<div class="content-thumbnail">${artwork(slug||'content-'+title.toLowerCase().replace(/[^a-z0-9]+/g,'-'),tags,{title})}</div>`;
 
 const SERVICES = [
   {
@@ -150,6 +151,7 @@ export function staticPages({ insights, notes, seriesMap, topicList, cardFor }) 
     </div>
     <div class="grid g-2" style="margin-top:2.6rem">
       ${SERVICES.map(s => `<article class="svc-card" data-topic="${esc(s.topic)}">
+        ${thumbnail(s.eyebrow,[s.topic],'service-'+s.id)}
         <p class="eyebrow">${esc(s.eyebrow)}</p>
         <h3 class="h3" style="margin-top:.8rem">${esc(s.title)}</h3>
         <p class="muted" style="margin-top:.7rem;font-size:.95rem">${esc(s.lede)}</p>
@@ -165,7 +167,7 @@ export function staticPages({ insights, notes, seriesMap, topicList, cardFor }) 
     <p class="eyebrow">The Ajna methodology</p>
     <h2 class="h1" style="margin-top:.8rem;max-width:22ch">How an engagement actually runs.</h2>
     <ol class="method">
-      ${METHOD.map(([t, d], i) => `<li><span class="n">${String(i + 1).padStart(2, "0")}</span><strong>${esc(t)}</strong><p>${esc(d)}</p></li>`).join("\n      ")}
+      ${METHOD.map(([t, d], i) => `<li>${thumbnail(t,[['Architecture'],['Cloud Architecture'],['DevSecOps'],['Engineering Leadership']][i],'method-'+['audit','migration','automation','technical-learning'][i])}<span class="n">${String(i + 1).padStart(2, "0")}</span><strong>${esc(t)}</strong><p>${esc(d)}</p></li>`).join("\n      ")}
     </ol>
   </div>
 </section>
@@ -216,7 +218,8 @@ ${seriesMap.size ? `<section class="section band band-warm">
         ["Delivered high-impact architecture solutions and exceptional technical leadership, consistently exceeding enterprise operational targets.", "VP of Engineering", "Global operations"],
         ["Recognised for driving successful enterprise platform migrations, resolving complex technical challenges, and maintaining rigorous stakeholder confidence.", "Project Sponsor", "Financial institution"],
         ["Known for precise architectural documentation and scenario-based labs, significantly improving our engineering team's systemic understanding.", "Engineering Lead", "Logistics sector"],
-      ].map(([q, who, org]) => `<figure class="quote">
+      ].map(([q, who, org],i) => `<figure class="quote">
+        ${thumbnail(['Architecture delivery','Platform migration','Scenario-based technical learning'][i],[['Architecture'],['Cloud Architecture'],['Engineering Leadership']][i],'engagement-feedback-'+i)}
         <blockquote>${esc(q)}</blockquote>
         <figcaption><strong>${esc(who)}</strong><span>${esc(org)}</span></figcaption>
       </figure>`).join("\n")}
@@ -265,8 +268,8 @@ ${SERVICES.map(s => `<section class="section ${s.id === "ai" ? "surface hair" : 
     <p class="eyebrow">${esc(s.eyebrow)}</p>
     <h2 class="h1" style="margin-top:.8rem;max-width:22ch">${esc(s.title)}</h2>
     <p class="lede" style="margin-top:1rem;max-width:60ch">${esc(s.lede)}</p>
-    <div class="grid g-2" style="margin-top:2.4rem">
-      ${s.items.map(([t, d]) => `<div class="feature"><h3 class="h3">${esc(t)}</h3><p class="muted" style="margin-top:.5rem;font-size:.95rem">${esc(d)}</p></div>`).join("\n      ")}
+    <div class="grid g-2 capability-grid" style="margin-top:2.4rem">
+      ${s.items.map(([t, d]) => `<div class="feature">${thumbnail(t,[s.topic],'service-'+t.toLowerCase().replace(/[^a-z0-9]+/g,'-'))}<h3 class="h3">${esc(t)}</h3><p class="muted" style="margin-top:.5rem;font-size:.95rem">${esc(d)}</p></div>`).join("\n      ")}
     </div>
     <a class="btn" href="/contact/" style="margin-top:2rem">Discuss ${esc(s.eyebrow.toLowerCase())} ${icon.arrow}</a>
   </div>
@@ -297,7 +300,7 @@ ${SERVICES.map(s => `<section class="section ${s.id === "ai" ? "surface hair" : 
 </div></section>
 
 <section class="wrap" style="padding-bottom:var(--section-y)">
-  <div class="grid g-2">
+  <div class="grid g-2 capability-grid">
   ${[
     ["Architecture audit", "Architecture", "A fixed-scope technical audit of middleware, cloud spend and systemic bottlenecks.",
       ["Where the architectural debt actually sits", "Which bottlenecks are structural and which are configuration", "A sequenced remediation plan with costs attached"],
@@ -367,8 +370,8 @@ ${SERVICES.map(s => `<section class="section ${s.id === "ai" ? "surface hair" : 
 <section class="wrap-narrow" style="padding-bottom:var(--section-y)">
   <div class="form-panel">${contactForm("contact")}</div>
   <div class="grid g-2" style="margin-top:2.5rem">
-    <div class="feature"><h2 class="h3">Email</h2><p class="muted" style="margin-top:.5rem"><a href="mailto:${SITE.email}">${SITE.email}</a></p></div>
-    <div class="feature"><h2 class="h3">Writing</h2><p class="muted" style="margin-top:.5rem"><a href="${SITE.blog}" rel="noopener">techknowen.com</a> · <a href="${SITE.youtube}" rel="noopener">YouTube</a> · <a href="/feed.xml">RSS</a></p></div>
+    <div class="feature">${thumbnail('An engineering conversation',['Engineering Leadership'],'contact-feedback')}<h2 class="h3">Email</h2><p class="muted" style="margin-top:.5rem"><a href="mailto:${SITE.email}">${SITE.email}</a></p></div>
+    <div class="feature">${thumbnail('Engineering writing',['Engineering Leadership'],'contact-technical-writing')}<h2 class="h3">Writing</h2><p class="muted" style="margin-top:.5rem"><a href="${SITE.blog}" rel="noopener">techknowen.com</a> · <a href="${SITE.youtube}" rel="noopener">YouTube</a> · <a href="/feed.xml">RSS</a></p></div>
   </div>
 </section>`,
     jsonld: [{ "@context": "https://schema.org", "@type": "ContactPage", url: SITE.url + "/contact/", about: { "@id": SITE.url + "/#org" } }],
