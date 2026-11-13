@@ -32,7 +32,7 @@ const subjects=[
   [/core-vitals/,'telemetry','web-vitals'],[/(?:^|-)slos?(?:-|$)|error-budget/,'telemetry','reliability-budget'],
   [/os-ebpf/,'telemetry','kernel-probe'],[/observab|monitoring/,'telemetry','signals'],
   [/enterprise-middleware/,'network','integration'],[/cloud-native-infrastructure/,'container','namespaces'],
-  [/hands-on-lab/,'code','lab'],[/^service-software-engineering$/,'code','terminal'],
+  [/hands-on-lab/,'code','lab'],[/^service-software-engineering$/,'api','service-api'],
   [/mlops-data-pipeline/,'model','model-lifecycle'],[/predictive-analytics/,'model','prediction'],
   [/ai-security-and-iam/,'security','ai-review'],
   [/feature-flag/,'delivery','traffic-switch'],[/deployment-strategies/,'delivery','blue-green'],
@@ -81,6 +81,7 @@ export function articleSpecificScene(direction,c1,c2){
   const rows=(x,y,n,w=140)=>Array.from({length:n},(_,i)=>line(x,y+i*20,x+w,y+i*20)).join('');
   const edge=(x,y,X,Y)=>line(x,y,X,Y)+`<path d="M${X-7} ${Y-4}L${X} ${Y}l-7 4"/>`;
   let art='';
+  if(detail==='service-api')art=[['Request',10],['Validate',150],['Service',290],['JSON response',430]].map(([t,x],i)=>box(x,65,110,85,t)+(i<3?edge(x+117,108,x+135,108):'')).join('')+text(280,180,'A validated request and a bounded response',12);
   if(detail==='guest-vms')art=rect(20,10,520,198)+text(280,36,'Full guest systems on a local host')+[40,215,390].map((x,i)=>rect(x,60,130,105)+text(x+65,85,'VM '+String.fromCharCode(65+i))+line(x,97,x+130,97)+text(x+65,127,'Guest OS')+text(x+65,151,'Apps + services',11)).join('')+line(35,178,525,178)+text(280,199,'Hypervisor / host',13);
   if(detail==='native-hosted')art=rect(20,20,235,180)+text(138,48,'Cloud hosted')+box(50,78,175,90,'Existing application')+rect(305,20,235,180)+text(423,48,'Cloud native')+[[325,80],[435,80],[380,145]].map(([x,y],i)=>box(x,y,85,40,['Service','Managed','Scale'][i])).join('')+line(410,100,435,100)+line(368,120,410,145)+line(478,120,435,145);
   if(detail==='multi-hybrid')art=rect(20,20,235,180)+text(138,48,'Multi-cloud')+box(40,85,90,70,'Cloud A')+box(145,85,90,70,'Cloud B')+rect(305,20,235,180)+text(423,48,'Hybrid')+box(325,85,90,70,'Local')+box(430,85,90,70,'Cloud')+line(130,120,145,120)+line(415,120,430,120);

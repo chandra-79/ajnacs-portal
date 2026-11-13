@@ -67,6 +67,14 @@ test('art direction uses eight structurally different subject-led composition fa
   }
 });
 
+test('the software engineering capability shows API/backend work rather than a shell terminal',()=>{
+ const svg=artwork('service-software-engineering',['Engineering Leadership'],{title:'Software engineering'});
+ assert.ok(svg.includes('data-subject-detail="service-api"'));
+ assert.ok(svg.includes('JSON response')&&svg.includes('Validate'));
+ assert.ok(svg.includes('data-composition="process-strip"'));
+ assert.ok(!svg.includes('$ command'));
+});
+
 test('every editorial content card and row carries a genuine subject thumbnail',()=>{
   const pages=['index.html','insights/index.html','services/index.html','contact/index.html','case-studies/index.html','topics/index.html','series/index.html','notes/index.html'];
   const selectors=['svc-card','feature','quote','topic-tile','card','case','note-row','feature-post'];

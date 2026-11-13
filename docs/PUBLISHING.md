@@ -6,6 +6,28 @@ Wednesday and Friday dates, from 13 November 2026 through 6 August 2029.
 Already-published dates and URLs are preserved. Planned series chapters use
 their reserved dates in reading order.
 
+Dated current/past-year headlines take the earliest future slots ahead of
+evergreen posts. Early timely assignments stay anchored; displaced evergreen
+posts take the freed later dates, so the overall slot set is unchanged. A
+time-bound series chapter brings any unpublished prerequisites forward too.
+The remaining chapters keep reading order. An editor can explicitly mark a
+manifest item `timeSensitive: true` when freshness is not apparent in its title.
+
+As of 12 November, the seven dated snapshots are now:
+
+| Date | Snapshot |
+| --- | --- |
+| 13 November 2026 | Serverless versus containers, 2026 |
+| 16 November 2026 | AI coding assistants, 2026 |
+| 18 November 2026 | The quantum computing race, 2025 |
+| 20 November 2026 | Platform engineering, 2026 |
+| 23 November 2026 | Python packaging, 2026 |
+| 25 November 2026 | Quantum computing quick take, 2025 |
+| 27 November 2026 | Quantum computing reality check, 2025 |
+
+These are scheduling changes; the snapshots' historical year labels and
+article bodies are retained. None waits until 2028 or 2029.
+
 `content/manifest.json` is the publishing authority. `npm run schedule` reconciles
 status, validates paths, preserves history and assigns distinct free slots to
 new or conflicting future entries. It is safe to repeat on the same day.

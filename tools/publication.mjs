@@ -24,6 +24,11 @@ export function isPublicationDay(date) {
   return validDate(date) && PUBLICATION_DAYS.includes(new Date(date + 'T00:00:00Z').getUTCDay());
 }
 
+export function isTimeBoundHeadline(record,today=publicationDate()) {
+  const year=Number(today.slice(0,4));
+  return record.timeSensitive===true || [...String(record.title||'').matchAll(/\b20\d{2}\b/g)].some(match=>Number(match[0])<=year);
+}
+
 export function distributeSchedule(input, { today = publicationDate(), ranking = [] } = {}) {
   if (!validDate(today)) throw new Error('The scheduling day must be YYYY-MM-DD');
   const records = input.map(record => ({ ...record }));
@@ -54,6 +59,25 @@ export function distributeSchedule(input, { today = publicationDate(), ranking =
     record.status = 'scheduled';
     occupied.add(record.date);
   }
+  // Dated snapshots must not wait behind years of evergreen material. Keep
+  // the same reserved slot set and early timely anchors; exchange late
+  // snapshots with evergreen occupants of the earliest available slots.
+  const future=records.filter(record=>record.date>today).sort((a,b)=>a.date.localeCompare(b.date));
+  const priority=new Set(future.filter(record=>isTimeBoundHeadline(record,today)));
+  for(const record of [...priority])if(record.series){
+    for(const chapter of future)if(chapter.series===record.series && (chapter.seriesOrder||0)<=(record.seriesOrder||0))priority.add(chapter);
+  }
+  const prioritySlots=future.slice(0,priority.size).map(record=>record.date);
+  const anchors=new Set([...priority].filter(record=>prioritySlots.includes(record.date)).map(record=>record.date));
+  const freePrioritySlots=prioritySlots.filter(date=>!anchors.has(date));
+  const promote=[...priority].filter(record=>!prioritySlots.includes(record.date)).sort((a,b)=>a.date.localeCompare(b.date)||a.slug.localeCompare(b.slug));
+  promote.forEach((record,index)=>{
+    const nextDate=freePrioritySlots[index];
+    const displaced=future.find(other=>other.date===nextDate);
+    const previousDate=record.date;
+    record.date=nextDate;
+    if(displaced)displaced.date=previousDate;
+  });
   // Preserve each series' reserved dates, but make future chapters arrive in
   // reading order. Already-published chapters keep their historical dates.
   const series = new Map();

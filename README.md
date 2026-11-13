@@ -58,6 +58,11 @@ it twice on the same day is idempotent. `npm run schedule:check` verifies that
 the calendar is reconciled. `TODAY=YYYY-MM-DD` provides a validated as-of date
 for reproducible previews and tests.
 
+Current/past-year snapshot headlines take the earliest future dates ahead of
+evergreen posts, retaining the overall reserved slot set and any early timely
+anchors. Unpublished prerequisites accompany a dated series chapter. See
+`docs/PUBLISHING.md` for the seven 2025/2026 snapshots scheduled for November.
+
 The optional ingest command reads the sibling `chandralanka-portfolio` project;
 set `AJNA_SOURCE_ROOT` to use another source checkout. Distinct guides and essays
 with the same source filename keep separate publishing paths.
