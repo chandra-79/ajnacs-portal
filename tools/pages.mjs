@@ -200,7 +200,7 @@ ${seriesMap.size ? `<section class="section band band-warm">
     <h2 class="h1" style="margin-top:.8rem;max-width:22ch">Longer arcs, in order.</h2>
     <div class="grid g-3" style="margin-top:2.4rem">
       ${[...seriesMap].slice(0, 3).map(([name, items]) => `<a class="card" data-topic="${esc(primaryTopic(items[0].tags))}" href="/series/${seriesSlug(name)}/">
-        <div class="card-art">${artwork(seriesSlug(name), items[0].tags)}</div>
+        <div class="card-art">${artwork(seriesSlug(name), items[0].tags, { title:name })}</div>
         <div class="card-body"><span class="chip">${items.length} parts</span>
         <h3 class="card-title">${esc(name)}</h3></div></a>`).join("\n")}
     </div>
@@ -312,7 +312,7 @@ ${SERVICES.map(s => `<section class="section ${s.id === "ai" ? "surface hair" : 
       ["Curriculum built against your architecture", "Hands-on environments, not slideware", "Runbooks the team wrote themselves"],
       "Measured on: operational independence after handover."],
   ].map(([t, topic, lede, bullets, measure]) => `<article class="case" data-topic="${esc(topic)}">
-    <div class="case-art">${artwork(t.toLowerCase().replace(/\\s+/g, "-"), [topic])}</div>
+    <div class="case-art">${artwork(t.toLowerCase().replace(/[^a-z0-9]+/g, "-"), [topic], { title:t })}</div>
     <div class="case-body">
       <span class="chip">${esc(topic)}</span>
       <h2 class="h3" style="margin-top:.7rem">${esc(t)}</h2>

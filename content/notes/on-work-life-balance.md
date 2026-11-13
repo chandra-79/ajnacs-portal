@@ -7,7 +7,6 @@ format: article
 derived: true
 ---
 
-![Work-life balance](/images/work-life-balance.gif)
 
 There's a version of the work-life balance conversation that stays on the surface — flexible hours, remote work, unlimited PTO. Policies and perks. Things that look good in a recruitment pitch.
 

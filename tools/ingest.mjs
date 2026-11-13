@@ -4,9 +4,12 @@
 import { readFile, writeFile, mkdir, readdir, copyFile, access } from "node:fs/promises";
 import { constants } from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
+import { importedSlug } from "./source-id.mjs";
 
-const SRC = "/Users/chandra/WorkSpace/chandralanka-portfolio/src/content";
-const SRC_PUBLIC = "/Users/chandra/WorkSpace/chandralanka-portfolio/public";
+const SOURCE_ROOT = process.env.AJNA_SOURCE_ROOT || fileURLToPath(new URL('../../../chandralanka-portfolio/', import.meta.url));
+const SRC = path.join(SOURCE_ROOT, 'src/content');
+const SRC_PUBLIC = path.join(SOURCE_ROOT, 'public');
 
 /* Ingest is the first stage of ingest -> rank -> schedule -> build, and it
    used to assign its own dates unconditionally. Run on its own after the
@@ -34,6 +37,7 @@ const NOT_OURS = new Set([
   "/images/psiquantum-omega.png",
   "/images/qc-race.png",
   "/images/ethernet-vs-infiniband.png",
+  "/images/work-life-balance.gif",
 ]);
 let strippedImages = 0;
 let strippedRules = 0;
@@ -169,6 +173,12 @@ const all = [
 
 const kept = all.filter(a => String(a.fm.draft) !== "true");
 const heldDrafts = all.filter(a => String(a.fm.draft) === "true");
+const sourceCounts = new Map();
+for (const article of kept) {
+  const slug = slugify(article.file.replace(/\.mdx?$/, ""));
+  sourceCounts.set(slug, (sourceCounts.get(slug) || 0) + 1);
+}
+const collisions = new Set([...sourceCounts].filter(([,count]) => count > 1).map(([slug]) => slug));
 
 // ── Date remap: Oct 2024 → Sep 2026, preserving original relative order ──
 kept.sort((a, b) => String(a.fm.pubDate).localeCompare(String(b.fm.pubDate)));
@@ -221,11 +231,12 @@ for (const a of kept) {
   let derived = false;
   if (!description) { description = deriveDescription(body); derived = true; wroteDesc++; }
   const tags = [...new Set((a.fm.tags || []).map(normTag))];
-  const slug = slugify(a.file.replace(/\.mdx?$/, ""));
+  const slug = importedSlug(a, slugify(a.file.replace(/\.mdx?$/, "")), collisions, PRIOR);
   const prior = PRIOR.get(slug);
   if (prior) keptDates++;
   const rec = {
     slug, section,
+    sourceCollection: a.coll, sourceFile: a.file,
     title: a.fm.title || "",
     description,
     derived,

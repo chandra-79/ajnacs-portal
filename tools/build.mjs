@@ -10,9 +10,12 @@ import { ogSlug } from "./ogcards.mjs";
 import { makeRenderer, extractStats, statStrip, barChart, injectAfterFirstH2, tableOfContents, headingAnchors } from "./render.mjs";
 import { staticPages } from "./pages.mjs";
 import { referencesFor, referencesBlock } from "./references.mjs";
+import { publicationDate } from "./publication.mjs";
+import { buildArticleImages } from "./article-images.mjs";
 
-const TODAY = (process.env.TODAY || new Date().toISOString().slice(0, 10)).slice(0, 10);
+const TODAY = publicationDate();
 const manifest = JSON.parse(await readFile("content/manifest.json", "utf8"));
+await buildArticleImages(manifest);
 
 const live = manifest
   .filter(m => m.date <= TODAY)
@@ -68,7 +71,7 @@ for (const m of live) {
   /* One card per topic, generated once by tools/ogcards.mjs. A per-article
      card would mean the scheduled publisher had to rasterise one for every
      article it releases, years from now, in CI. */
-  const ogPath = `/assets/og/${ogSlug(topic)}.jpg`;
+  const ogPath = `/assets/og/articles/${m.slug}.png`;
 
   const idx = live.filter(x => x.section === m.section);
   const pos = idx.findIndex(x => x.slug === m.slug);
@@ -165,7 +168,7 @@ ${longForm ? `<div class="chapter-bar" id="chapterBar">
     </div>
   </header>
 
-  <div class="art-wrap"><div class="article-hero" data-topic="${esc(topic)}">${artwork(m.slug, m.tags, { w: 1200, h: 380, calm: m.section === "notes", title: m.title })}</div></div>
+  <div class="art-wrap"><div class="article-hero" data-topic="${esc(topic)}"><span class="art-wide">${artwork(m.slug, m.tags, { w: 1200, h: 380, calm: m.section === "notes", title: m.title })}</span><span class="art-compact">${artwork(m.slug, m.tags, { w: 640, h: 360, calm: m.section === "notes", title: m.title })}</span></div></div>
 
   <div class="art-wrap article-grid">
     ${asideHtml}

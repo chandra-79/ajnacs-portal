@@ -4,13 +4,14 @@ import { constants } from "node:fs";
 import path from "node:path";
 import { createHash } from "node:crypto";
 import { markFile } from "./mark.mjs";
+import { publicationDate } from "./publication.mjs";
 
 let failures = 0;
 const fail = (m) => { console.error("  ✗ " + m); failures++; };
 const ok = (m) => console.log("  ✓ " + m);
 
 const manifest = JSON.parse(await readFile("content/manifest.json", "utf8"));
-const TODAY = (process.env.TODAY || new Date().toISOString().slice(0, 10));
+const TODAY = publicationDate();
 const live = manifest.filter(m => m.date <= TODAY);
 const queued = manifest.filter(m => m.date > TODAY);
 
@@ -295,7 +296,7 @@ console.log("\nAssets");
     if (noteDiagrams) fail(`${noteDiagrams} personal note(s) carrying a systems diagram`);
     else ok("personal notes carry no diagram");
     if (missing.length) fail(`${missing.length} article(s) with a technical subject and no figure: ${missing.slice(0, 3).join(", ")}`);
-    else ok(`every technical article has a figure (by title ${why.title || 0}, by tag ${why.tag || 0}, none ${why["no systemic subject"] || 0})`);
+    else ok(`every article has a source-specific visual direction (${why["article-source"] || 0} article sources)`);
 
     // Relevant is not enough: an archive page showing forty cards drawn from
     // four shapes reads as wallpaper. No one figure may carry a quarter of
@@ -322,6 +323,7 @@ console.log("\nAssets");
     // with it.
     const geom = (svg) => {
       const body = svg.slice(svg.indexOf("<g clip-path"))
+        .replace(/<text\b[^>]*>[\s\S]*?<\/text>/g, "") // years in article titles aren't geometry
         .replace(/#[0-9a-fA-F]{3,8}/g, "")        // hex colours are not coordinates
         .replace(/-opacity="[^"]*"/g, "")
         .replace(/url\(#[^)]*\)/g, "");

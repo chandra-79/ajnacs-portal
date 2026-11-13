@@ -36,18 +36,37 @@ Articles are not all live. `content/manifest.json` gives every article a date,
 and the generator only emits articles whose date has arrived. Everything later
 stays in the repository as markdown and produces no page.
 
-A scheduled workflow (`.github/workflows/deploy.yml`) rebuilds Mon/Wed/Fri and
-commits whatever has come due. Because Pages publishes from the branch, that
-commit *is* the deployment — no manual step.
+A scheduled workflow (`.github/workflows/deploy.yml`) runs Mon/Wed/Fri at
+06:17 UTC. The site calendar is **America/New_York**, frozen once per run so
+scheduling, build and verification agree even across UTC midnight. It commits
+whatever has come due and explicitly requests the GitHub Pages build; a token
+push by itself is not treated as proof of deployment.
 
 To change the cadence, edit the schedule in `tools/schedule.mjs` and re-run:
 
 ```sh
 node tools/ingest.mjs    # re-read source markdown, normalise, remap dates
 node tools/rank.mjs      # score articles for launch relevance
-node tools/schedule.mjs  # assign published/queued dates
+npm run schedule        # reconcile published/queued dates without rewriting history
 npm run build
 ```
+
+The scheduler preserves published dates and distinct future Mon/Wed/Fri slots.
+Future chapters use their series order within the series' reserved slots.
+New articles and future date collisions receive separate free slots. Running
+it twice on the same day is idempotent. `npm run schedule:check` verifies that
+the calendar is reconciled. `TODAY=YYYY-MM-DD` provides a validated as-of date
+for reproducible previews and tests.
+
+The optional ingest command reads the sibling `chandralanka-portfolio` project;
+set `AJNA_SOURCE_ROOT` to use another source checkout. Distinct guides and essays
+with the same source filename keep separate publishing paths.
+
+Article heroes and cards use original source-specific vector illustrations,
+not a hash-selected decorative template. The same subject direction covers
+published pages and the entire planned queue. `npm test` checks every article,
+selected subject regressions, unique paths, clipping identifiers, and calendar
+invariants before checking the generated website.
 
 To bring one article forward, set its `date` in `content/manifest.json` to
 today or earlier and rebuild.
