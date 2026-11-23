@@ -10,6 +10,14 @@ Something shifts in how you think about system design after you've been in enoug
 
 Here are the patterns I've found worth investing in, and a few that sound better in theory than they perform under pressure.
 
+## What to measure
+
+**Load amplified by retries.** At 1,000 original requests/s, an average of 0.25 retries per original request adds 250 requests/s. Track original-request outcomes and attempts at the same boundary. Check how many layers retry before raising any retry budget.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
+Further reading: [Google’s SRE Workbook, Implementing SLOs](https://sre.google/workbook/implementing-slos/).
+
 ## The circuit breaker — useful, but often implemented wrong
 
 The circuit breaker pattern (from Michael Nygard's *Release It!*) is one of the most widely referenced resilience patterns, and one of the most frequently misconfigured.
@@ -104,4 +112,4 @@ The resilience patterns above matter. But in practice, when I've seen MTTR impro
 
 The patterns are the architecture. The operational discipline — the runbooks, the drills, the regular review cycles — is what makes them work under pressure.
 
-*What's your current MTTR, and what's the biggest contributor to it? [I'd like to hear.](/about)*
+*What's your current MTTR, and what's the biggest contributor to it? [I'd like to hear.](/about/)*

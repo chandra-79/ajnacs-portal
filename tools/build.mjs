@@ -6,16 +6,18 @@ import path from "node:path";
 import { SITE, esc, fmtDate, readingTime, seriesSlug, primaryTopic, PRIMARY_TOPICS, icon, parseFront } from "./lib.mjs";
 import { page } from "./shell.mjs";
 import { artwork, colorFor } from "./visuals.mjs";
-import { makeRenderer, extractStats, statStrip, barChart, injectAfterFirstH2, tableOfContents, headingAnchors } from "./render.mjs";
+import { makeRenderer, tableOfContents, headingAnchors } from "./render.mjs";
 import { staticPages } from "./pages.mjs";
 import { referencesFor, referencesBlock } from "./references.mjs";
 import { publicationDate } from "./publication.mjs";
 import { buildArticleImages } from "./article-images.mjs";
 import { buildPageImage } from "./site-images.mjs";
+import { coverFor, photoFor } from "./covers.mjs";
+import { relatedArticles, robotsPolicy, topicPath, featuredCollections } from "./discovery.mjs";
 
 const TODAY = publicationDate();
 const manifest = JSON.parse(await readFile("content/manifest.json", "utf8"));
-await buildArticleImages(manifest);
+await buildArticleImages(manifest, TODAY);
 const articlePreviewHashes=JSON.parse(await readFile('assets/og/articles/sources.json','utf8'));
 
 const live = manifest
@@ -23,6 +25,16 @@ const live = manifest
   .sort((a, b) => b.date.localeCompare(a.date));
 const insights = live.filter(m => m.section === "insights");
 const notes = live.filter(m => m.section === "notes");
+
+const topicCounts = {};
+for (const m of insights) for (const t of m.tags) if (PRIMARY_TOPICS.includes(t)) topicCounts[t] = (topicCounts[t] || 0) + 1;
+const topicList = Object.entries(topicCounts).sort((a, b) => b[1] - a[1]);
+
+const tagsInUse = new Set(insights.flatMap(m => m.tags));
+const filters = [...topicList, ...[...tagsInUse].filter(t => !PRIMARY_TOPICS.includes(t)).sort().map(t => [t, insights.filter(m => m.tags.includes(t)).length])];
+const hubTopics = new Set(topicList.map(([topic, count]) => count >= 3 ? topic : null).filter(Boolean));
+const articleTopicPath = topic => topicPath(topic, hubTopics);
+
 
 const out = async (rel, html) => {
   // Anything with a file extension is written as a file. The old whitelist
@@ -46,7 +58,7 @@ const out = async (rel, html) => {
 const cardFor = (m, base) => {
   const topic = primaryTopic(m.tags);
   return `<a class="card" data-card data-topics="|${esc(m.tags.join("|"))}|" data-search="${esc((m.title + " " + m.description + " " + m.tags.join(" ")).toLowerCase())}" data-topic="${esc(topic)}" href="${base}/${m.slug}/">
-  <div class="card-art">${artwork(m.slug, m.tags, { title: m.title })}</div>
+  <div class="card-art">${coverFor(m)}</div>
   <div class="card-body">
     <span class="chip">${esc(topic)}</span>
     <h3 class="card-title">${esc(m.title)}</h3>
@@ -65,19 +77,15 @@ for (const m of live) {
   let html = await marked.parse(body);
 
   const topic = primaryTopic(m.tags);
-  const stats = extractStats(body);
-  if (m.section === "insights") {
-    const chart = barChart(stats, m.title);
-    html = injectAfterFirstH2(html, chart || statStrip(stats));
-  }
-
   html = headingAnchors(html);
 
   const tocHtml = tableOfContents(headings);
   const refsHtml = m.section === "insights" ? referencesBlock(referencesFor(body)) : "";
 
   /* Every article's subject-specific preview is prepared before publication. */
-  const ogPath = `/assets/og/articles/${m.slug}.png?v=${articlePreviewHashes[m.slug].slice(0,12)}`;
+  const photo = photoFor(m.slug);
+  const ogPath = photo?.path || `/assets/og/articles/${m.slug}.png?v=${articlePreviewHashes[m.slug].slice(0,12)}`;
+  const imageAlt = photo?.alt || `Illustration for ${m.title}`;
 
   const idx = live.filter(x => x.section === m.section);
   const pos = idx.findIndex(x => x.slug === m.slug);
@@ -88,9 +96,9 @@ for (const m of live) {
 
   const longForm = Boolean(m.series) || m.words > 1200;
   const base = m.section === "notes" ? "/notes" : "/insights";
-  const related = live.filter(x => x.section === m.section && x.slug !== m.slug &&
-      x.tags.some(t => m.tags.includes(t)))
-    .slice(0, 3);
+  const related = relatedArticles(m, idx);
+  const topicHref = m.section === "insights" ? articleTopicPath(topic) : "/notes/";
+  const authorHref = "/about/#chandra-lanka";
 
   /* A series is this site's version of a book: the chapter list belongs
      beside the text, not buried at the foot of the article. */
@@ -161,20 +169,21 @@ ${longForm ? `<div class="chapter-bar" id="chapterBar">
       <nav class="crumbs" aria-label="Breadcrumb">
         <a href="/">Home</a> <span aria-hidden="true">/</span>
         <a href="${base}/">${m.section === "notes" ? "Notes" : "Insights"}</a> <span aria-hidden="true">/</span>
-        <span>${esc(topic)}</span>
+        <a href="${topicHref}">${esc(topic)}</a>
       </nav>
       <h1 class="h1">${esc(m.title)}</h1>
       ${m.derived ? "" : `<p class="lede" style="margin-top:1rem">${esc(m.description)}</p>`}
       <div class="article-meta">
-        <span class="chip">${esc(topic)}</span>
-        <time datetime="${m.date}">${fmtDate(m.date)}</time>
+        <a class="article-byline" href="${authorHref}">Chandra Lanka</a>
+        <span class="dot" aria-hidden="true"></span><time datetime="${m.date}">${fmtDate(m.date)}</time>
+        ${m.modified ? `<span class="dot" aria-hidden="true"></span><span>Updated <time datetime="${m.modified}">${fmtDate(m.modified)}</time></span>` : ''}
         <span class="dot"></span><span>${readingTime(m.words)} min read</span>
         <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
       </div>
     </div>
   </header>
 
-  <div class="art-wrap"><div class="article-hero" data-topic="${esc(topic)}"><span class="art-wide">${artwork(m.slug, m.tags, { w: 1200, h: 380, calm: m.section === "notes", title: m.title })}</span><span class="art-compact">${artwork(m.slug, m.tags, { w: 640, h: 360, calm: m.section === "notes", title: m.title })}</span></div></div>
+  <div class="art-wrap"><div class="article-hero" data-topic="${esc(topic)}">${coverFor(m, { hero: true, sizes: '(min-width: 1280px) 1180px, 100vw' })}</div></div>
 
   <div class="art-wrap article-grid">
     ${asideHtml}
@@ -197,7 +206,7 @@ ${html}
 
   <div class="art-wrap article-foot">
     <div class="row" style="gap:.4rem">
-      ${m.tags.map(t => `<a class="chip chip-plain" href="/insights/?topic=${encodeURIComponent(t)}">${esc(t)}</a>`).join("")}
+      ${m.tags.map(t => m.section === 'notes' ? `<span class="chip chip-plain">${esc(t)}</span>` : `<a class="chip chip-plain" href="${articleTopicPath(t)}">${esc(t)}</a>`).join("")}
     </div>
     <nav class="prevnext" aria-label="More articles">
       ${older ? `<a href="${base}/${older.slug}/"><span>Previous</span><strong>${esc(older.title)}</strong></a>` : "<span></span>"}
@@ -230,14 +239,19 @@ ${readerChrome}`;
     description: m.description,
     path: `${base}/${m.slug}/`,
     ogImage: ogPath,
+    imageAlt,
+    imageWidth: photo?.width,
+    imageHeight: photo?.height,
+    published: m.date,
+    modified: m.modified,
     type: "article",
     topic,
     body: body_,
     jsonld: [{
       "@context": "https://schema.org", "@type": "BlogPosting",
       headline: m.title, description: m.description,
-      datePublished: m.date, dateModified: m.date,
-      author: { "@type": "Person", name: "Chandra Lanka", url: "https://ajnacs.com/about/" },
+      datePublished: m.date, dateModified: m.modified || m.date,
+      author: { "@type": "Person", name: "Chandra Lanka", url: SITE.url + authorHref },
       publisher: { "@type": "Organization", name: SITE.name, url: SITE.url },
       mainEntityOfPage: SITE.url + base + "/" + m.slug + "/",
       image: SITE.url + ogPath,
@@ -257,10 +271,6 @@ ${readerChrome}`;
 }
 
 /* ---------- insights index ---------- */
-const topicCounts = {};
-for (const m of insights) for (const t of m.tags) if (PRIMARY_TOPICS.includes(t)) topicCounts[t] = (topicCounts[t] || 0) + 1;
-const topicList = Object.entries(topicCounts).sort((a, b) => b[1] - a[1]);
-
 await out("insights", page({
   title: "Insights",
   description: "Field notes on enterprise architecture, cloud, AI and MLOps, security and cost — written from production work, not theory.",
@@ -270,17 +280,26 @@ await out("insights", page({
   <div class="wrap">
     <p class="eyebrow">Insights</p>
     <h1 class="h-display" style="margin-top:.8rem;max-width:18ch">Engineering, written down.</h1>
-    <p class="lede" style="margin-top:1.2rem;max-width:62ch">Architecture decisions, production failures, and the trade-offs behind them. Written from delivery work with enterprise engineering teams.</p>
+    <p class="lede" style="margin-top:1.2rem;max-width:62ch">Architecture decisions, production failures and the trade-offs behind them. Written for the people who build and run production systems.</p>
+    <div class="row insights-actions"><a class="btn btn-ghost" href="/topics/">Browse topics</a><a class="btn btn-ghost" href="/feed.xml">Subscribe via RSS</a></div>
   </div>
 </section>
 
 <section class="wrap" style="padding-bottom:var(--section-y)">
+  <section class="archive-collections" aria-labelledby="archive-start"><h2 class="h3" id="archive-start">Start with a guide</h2><div class="grid g-3">
+    ${featuredCollections.filter(({slug}) => insights.some(m => m.slug === slug)).map(({slug,label,description}) => `<a class="guide-link" href="/insights/${slug}/"><strong>${esc(label)}</strong><span>${esc(description)}</span></a>`).join('')}
+  </div></section>
   <div class="filter-bar">
     <div class="search-field">
       ${icon.search}
       <label class="sr-only" for="postSearch">Search articles</label>
       <input type="search" id="postSearch" placeholder="Search the archive…" autocomplete="off">
     </div>
+    <label class="sr-only" for="postTopic">Filter by topic</label>
+    <select id="postTopic" class="topic-select" hidden>
+      <option value="">All topics</option>
+      ${filters.map(([t, n]) => `<option value="${esc(t)}">${esc(t)} (${n})</option>`).join('')}
+    </select>
     <p class="small muted" id="postCount" role="status" aria-live="polite"></p>
   </div>
 
@@ -320,7 +339,7 @@ await out("notes", page({
 <section class="wrap" style="padding-bottom:var(--section-y)">
   <div class="notes-list">
     ${notes.map(m => `<a class="note-row" href="/notes/${m.slug}/">
-      <div class="content-thumbnail">${artwork(m.slug,m.tags,{title:m.title,calm:true})}</div>
+      <div class="content-thumbnail">${coverFor(m)}</div>
       <div class="note-summary">
       <time datetime="${m.date}">${fmtDate(m.date)}</time>
       <h2>${esc(m.title)}</h2>
@@ -354,7 +373,7 @@ for (const [name, items] of seriesMap) {
 </section>
 <section class="wrap" style="padding-bottom:var(--section-y)">
   <ol class="series-index">
-    ${items.map((m, i) => `<li><a href="/insights/${m.slug}/"><div class="content-thumbnail">${artwork(m.slug,m.tags,{title:m.title})}</div><span class="n">${String(i + 1).padStart(2, "0")}</span><span><strong>${esc(m.title)}</strong><em>${esc(m.description)}</em></span></a></li>`).join("\n    ")}
+    ${items.map((m, i) => `<li><a href="/insights/${m.slug}/"><div class="content-thumbnail">${coverFor(m, { sizes: '(min-width: 600px) 160px, 100vw' })}</div><span class="n">${String(i + 1).padStart(2, "0")}</span><span><strong>${esc(m.title)}</strong><em>${esc(m.description)}</em></span></a></li>`).join("\n    ")}
   </ol>
 </section>`,
   }));
@@ -400,12 +419,25 @@ await out("topics", page({
 </div></section>
 <section class="wrap" style="padding-bottom:var(--section-y)">
   <div class="grid g-4">
-    ${topicList.map(([t, n]) => `<a class="topic-tile" data-topic="${esc(t)}" href="/insights/?topic=${encodeURIComponent(t)}">
+    ${topicList.map(([t, n]) => `<a class="topic-tile" data-topic="${esc(t)}" href="${articleTopicPath(t)}">
       <div class="content-thumbnail">${artwork('topic-'+t.toLowerCase().replace(/[^a-z0-9]+/g,'-'),[t],{title:t})}</div>
       <strong>${esc(t)}</strong><span>${n} article${n === 1 ? "" : "s"}</span></a>`).join("\n    ")}
   </div>
 </section>`,
 }));
+
+/* ---------- searchable topic hubs ---------- */
+for (const topic of hubTopics) {
+  const url = articleTopicPath(topic);
+  const articles = insights.filter(m => m.tags.includes(topic));
+  await out(url.slice(1, -1), page({
+    title: `${topic} articles and guides`,
+    description: `Browse ${topic} articles from Ajna Consulting Services, with production trade-offs, worked measurements and implementation guides.`,
+    path: url, topic,
+    body: `<section class="section mesh"><div class="wrap"><nav class="crumbs" aria-label="Breadcrumb"><a href="/insights/">Insights</a><span aria-hidden="true">/</span><a href="/topics/">Topics</a></nav><h1 class="h-display">${esc(topic)}</h1><p class="lede">${articles.length} articles</p></div></section>
+<section class="wrap section" aria-label="Articles about ${esc(topic)}"><div class="grid g-3">${articles.map(m => cardFor(m, '/insights')).join('')}</div></section>`,
+  }));
+}
 
 /* ---------- static pages ---------- */
 for (const [rel, html] of Object.entries(staticPages({ insights, notes, seriesMap, topicList, cardFor }))) {
@@ -435,23 +467,17 @@ ${feedItems}
 </rss>`);
 
 const urls = [
-  ["/", "1.0", "weekly"], ["/services/", "0.9", "monthly"], ["/insights/", "0.9", "daily"],
-  ["/series/", "0.7", "weekly"], ["/topics/", "0.6", "weekly"], ["/case-studies/", "0.8", "monthly"],
-  ["/about/", "0.6", "monthly"], ["/contact/", "0.7", "monthly"], ["/notes/", "0.4", "weekly"],
-  ...insights.map(m => [`/insights/${m.slug}/`, "0.7", "monthly"]),
-  ...notes.map(m => [`/notes/${m.slug}/`, "0.3", "yearly"]),
-  ...[...seriesMap.keys()].map(n => [`/series/${seriesSlug(n)}/`, "0.6", "monthly"]),
+  ...['/', '/services/', '/insights/', '/series/', '/topics/', '/case-studies/', '/about/', '/contact/', '/notes/', '/privacy/', '/terms/'].map(url => [url]),
+  ...live.map(m => [`/${m.section}/${m.slug}/`, m.modified || m.date]),
+  ...[...seriesMap.keys()].map(n => [`/series/${seriesSlug(n)}/`]),
+  ...[...hubTopics].map(topic => [articleTopicPath(topic)]),
 ];
 await out("sitemap.xml", `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${urls.map(([u, p, f]) => `  <url><loc>${SITE.url}${u}</loc><changefreq>${f}</changefreq><priority>${p}</priority></url>`).join("\n")}
+${urls.map(([url, lastmod]) => `  <url><loc>${SITE.url}${url}</loc>${lastmod ? `<lastmod>${lastmod}</lastmod>` : ''}</url>`).join("\n")}
 </urlset>`);
 
-await out("robots.txt", `User-agent: *
-Allow: /
-
-Sitemap: ${SITE.url}/sitemap.xml
-`);
+await out("robots.txt", robotsPolicy(SITE.url));
 
 
 

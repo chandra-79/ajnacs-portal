@@ -13,7 +13,7 @@ Not malicious — inattentive. I gave advice generously, answered questions thor
 
 That's not mentorship. That's advice-giving from a position of experience.
 
-The difference took me too long to understand, and I only understood it when I had a mentor who did it properly.
+I understood the difference when I had a mentor who worked differently.
 
 What she did differently: she asked questions I didn't know the answers to. Not difficult technical questions — questions about what I actually wanted, what I was avoiding, what I was afraid of. She was less interested in helping me solve the problem I presented with than in helping me see the problem underneath it.
 

@@ -12,6 +12,14 @@ Tagging is the unsexy foundation that FinOps sits on. Without reliable tags, you
 
 Most organizations have tagging policies. Far fewer have tagging that's consistently applied. The gap is usually one of three things: the policy is too complex, enforcement is manual, or there's no clear owner.
 
+## What to measure
+
+**Spend-weighted tag coverage.** If 190 of 200 resources are tagged but the untagged resources account for $8,000 of $40,000 spend, resource coverage is 95% while spend coverage is 80%. Track both and define how inherited or invalid owner tags are treated.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
+Further reading: [FinOps Foundation, State of FinOps 2026](https://data.finops.org/).
+
 ## The core tag taxonomy
 
 A useful tagging taxonomy has the minimum set of tags required for cost allocation and nothing more. Every additional required tag is a maintenance burden and an enforcement challenge.
@@ -84,4 +92,4 @@ Quarterly:
 
 A monthly compliance rate target — 95% of production resources have all required tags — gives teams something to aim for and a metric leadership can track.
 
-*Building or overhauling your tagging strategy? The implementation details matter more than the policy document. [Happy to share what's worked.](/contact)*
+*Building or overhauling your tagging strategy? The implementation details matter more than the policy document. [Happy to share what's worked.](/contact/)*

@@ -7,7 +7,7 @@ import { readFileSync } from "node:fs";
 
 /* Short content hash of the mark itself. */
 const MARK_V = createHash("sha256").update(markFile(512)).digest("hex").slice(0, 8);
-const SITE_V = createHash("sha256").update(["../assets/css/site.css", "../assets/js/brand-motion.mjs", "../assets/js/motion-spring.mjs"].map(path => readFileSync(new URL(path, import.meta.url), "utf8")).join("\n")).digest("hex").slice(0, 8);
+const SITE_V = createHash("sha256").update(["../assets/css/site.css", "../assets/js/site.js", "../assets/js/brand-motion.mjs", "../assets/js/motion-spring.mjs"].map(path => readFileSync(new URL(path, import.meta.url), "utf8")).join("\n")).digest("hex").slice(0, 8);
 
 const NAV = [
   ["/services/", "Services"],
@@ -21,6 +21,8 @@ export function page({
   title, description, path: urlPath, body,
   ogImage = null, type = "website",
   jsonld = [], bodyClass = "", topic = null, canonical = null,
+  imageAlt = title, imageWidth = 1200, imageHeight = 630,
+  published, modified, robots = "index, follow, max-image-preview:large",
 }) {
   const url = SITE.url + urlPath;
   const fullTitle = urlPath === "/" ? title : `${title} | ${SITE.short}`;
@@ -39,21 +41,25 @@ export function page({
 <meta name="description" content="${esc(metaShort)}">
 <meta name="author" content="Chandra Lanka">
 <link rel="canonical" href="${esc(canonical || url)}">
-<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="robots" content="${esc(robots)}">
 
 <meta property="og:type" content="${type}">
 <meta property="og:site_name" content="${esc(SITE.name)}">
 <meta property="og:title" content="${esc(title)}">
 <meta property="og:description" content="${esc(metaShort)}">
-<meta property="og:url" content="${esc(url)}">
+<meta property="og:url" content="${esc(canonical || url)}">
 <meta property="og:image" content="${esc(SITE.url + ogImage)}">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
+<meta property="og:image:width" content="${imageWidth}">
+<meta property="og:image:height" content="${imageHeight}">
+<meta property="og:image:alt" content="${esc(imageAlt)}">
+${published ? `<meta property="article:published_time" content="${published}">` : ''}
+${modified ? `<meta property="article:modified_time" content="${modified}">` : ''}
 <meta property="og:image:type" content="${imageType}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${esc(title)}">
 <meta name="twitter:description" content="${esc(metaShort)}">
 <meta name="twitter:image" content="${esc(SITE.url + ogImage)}">
+<meta name="twitter:image:alt" content="${esc(imageAlt)}">
 
 <link rel="icon" href="/favicon.ico?v=${MARK_V}" sizes="any">
 <link rel="icon" href="/images/ajna-mark.svg?v=${MARK_V}" type="image/svg+xml">
@@ -77,7 +83,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-${jsonld.map(j => `<script type="application/ld+json">${JSON.stringify(j)}</script>`).join("\n")}
+${jsonld.map(j => `<script type="application/ld+json">${JSON.stringify(j).replace(/</g, "\\u003c")}</script>`).join("\n")}
 </head>
 <body class="${bodyClass}"${topic ? ` data-topic="${esc(topic)}"` : ""}>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -90,7 +96,7 @@ ${jsonld.map(j => `<script type="application/ld+json">${JSON.stringify(j)}</scri
     </div>
     <nav class="nav" id="nav" aria-label="Primary">
       ${NAV.map(([href, label]) =>
-        `<a href="${href}"${urlPath.startsWith(href) && href !== "/" ? ' aria-current="page"' : ""}>${label}</a>`).join("\n      ")}
+        `<a href="${href}"${urlPath === href ? ' aria-current="page"' : ""}>${label}</a>`).join("\n      ")}
       <a class="btn btn-sm" href="/contact/" style="margin-left:.4rem">Engage engineering</a>
     </nav>
     <div class="nav-actions">
@@ -154,7 +160,7 @@ ${body}
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js" defer></script>
+<script src="/assets/js/site.js?v=${SITE_V}" defer></script>
 <script type="module" src="/assets/js/brand-motion.mjs?v=${SITE_V}"></script>
 </body>
 </html>`;

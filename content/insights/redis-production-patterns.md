@@ -10,6 +10,12 @@ Redis is the database most teams add without a meeting. You add it for caching, 
 
 The patterns matter. Here's what I've learned from running Redis at scale.
 
+## What to measure
+
+**Evictions and origin fallback under pressure.** If 5,000 keys are evicted while 1 million cache requests run, log the window and trend evictions per minute alongside the origin’s request rate. Reproduce with production-like key sizes and TTL distribution. Check that failure paths preserve the source of truth.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
 ## Data structure selection is architectural
 
 Redis isn't a key-value store. It's a data structure server that happens to have strings. The data structure you choose affects performance, memory usage, and correctness.
@@ -92,4 +98,4 @@ Approaches:
 
 The choice between Sentinel and Cluster depends on throughput. If a single Redis instance handles your peak load comfortably with headroom, use Sentinel. If you're hitting single-instance CPU or memory limits, move to Cluster.
 
-*Diagnosing Redis performance issues or planning a migration from single-node to cluster? [Happy to talk through the specifics.](/contact)*
+*Diagnosing Redis performance issues or planning a migration from single-node to cluster? [Happy to talk through the specifics.](/contact/)*

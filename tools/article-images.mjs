@@ -4,17 +4,24 @@ import { readFile, writeFile, mkdir, access } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { Resvg } from '@resvg/resvg-js';
 import { artwork } from './visuals.mjs';
+import { coverArt, photoFor } from './covers.mjs';
 
-export async function buildArticleImages(manifest) {
+export async function buildArticleImages(manifest, today) {
   const folder='assets/og/articles';
   await mkdir(folder,{recursive:true});
+  await mkdir('assets/covers',{recursive:true});
   let previous={};
   try { previous=JSON.parse(await readFile(`${folder}/sources.json`,'utf8')); } catch {}
   const hashes={};
   let rendered=0;
   for(const article of manifest) {
-    const svg=artwork(article.slug,article.tags,{w:1200,h:630,title:article.title,calm:article.section==='notes'})
-      .replace(/var\(--[\w-]+,\s*(#[0-9a-fA-F]+)\)/g,'$1');
+    const active = article.date <= today;
+    if (active && !photoFor(article.slug)) {
+      await writeFile(`assets/covers/${article.slug}.svg`, coverArt(article.slug));
+    }
+    const svg = active ? coverArt(article.slug, 1200, 630) : artwork(article.slug, article.tags, {
+      w: 1200, h: 630, title: article.title, calm: article.section === 'notes',
+    }).replace(/var\(--[\w-]+,\s*(#[0-9a-fA-F]+)\)/g,'$1');
     const hash=createHash('sha256').update(svg).digest('hex');
     hashes[article.slug]=hash;
     let exists=true;

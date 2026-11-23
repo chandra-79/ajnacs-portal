@@ -11,7 +11,7 @@ I spent a lot of my early career waiting for someone to notice I didn't know wha
 
 Not because I didn't know what I was doing — I did, most of the time, well enough. But there was always a gap between how much confidence the room seemed to expect and how certain I actually felt. The assumption that the gap was visible and damning took years to revise.
 
-The thing about imposter syndrome worth knowing: it doesn't correlate with competence. I've met genuinely mediocre engineers who were absolutely certain of their own ability, and I've met exceptional ones who carried chronic low-level uncertainty about whether they belonged in the rooms they were regularly invited into.
+I’ve learned that feeling like an impostor is a poor way to judge my own competence. I've met genuinely mediocre engineers who were absolutely certain of their own ability, and I've met exceptional ones who carried chronic low-level uncertainty about whether they belonged in the rooms they were regularly invited into.
 
 The feeling is, in that sense, useless as a signal about actual competence.
 

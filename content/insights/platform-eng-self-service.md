@@ -10,6 +10,14 @@ format: article
 
 Self-service infrastructure is the mechanism that makes platform engineering scale. If every request for a new environment, a new database, or a new service requires a ticket to the platform team, the platform team is a bottleneck, not an accelerator. Self-service removes the bottleneck by giving developers the ability to provision approved infrastructure patterns without human approval from the platform team.
 
+## What to measure
+
+**Completion without a help ticket.** If 84 of 100 eligible provisioning attempts complete with no platform-team interaction and 10 require a ticket, self-service completion is 84%. Classify the remaining six as abandoned or failed, and compare wait times with the old process.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
+Further reading: [DORA’s software delivery performance metrics](https://dora.dev/guides/dora-metrics/).
+
 ## What Self-Service Infrastructure Looks Like in Practice
 
 The experience from the developer's perspective should be as simple as possible:

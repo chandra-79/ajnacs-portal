@@ -10,6 +10,12 @@ Async Python has crossed from "interesting" to "default" for a huge slice of new
 
 This is the production guide: where async genuinely pays, where it quietly hurts, and the habits that separate healthy asyncio services from mysterious ones.
 
+## What to measure
+
+**Concurrency, saturation and timeouts.** At 200 requests/s, an average 0.25 s in flight means about 50 concurrent requests in steady state. Observe event-loop lag and downstream pool wait while increasing load. A higher concurrency limit cannot increase a dependency’s capacity.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
 ## The one-sentence model, and the one decision
 
 An asyncio service runs your entire application on (typically) one thread, interleaving thousands of tasks that take turns at every `await` — which means it excels precisely when tasks spend their time *waiting* on I/O, and fails precisely when any task *computes* or blocks without yielding.

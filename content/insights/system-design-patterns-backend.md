@@ -10,6 +10,12 @@ System design patterns are solutions to recurring problems in distributed system
 
 The patterns worth knowing deeply are the ones that solve problems you will actually encounter — data consistency across services, handling high write loads, maintaining audit history, coordinating distributed transactions. Here's how I think about the ones that come up most often.
 
+## What to measure
+
+**Traffic, queue lag and user-visible outcomes.** During a load ramp, track successful throughput and tail latency. If production runs at 800 messages/s and consumers process 700, backlog grows by 100 messages/s, or 6,000 per minute. Set a visible lag objective and test how the system drains after a burst.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
 ## CQRS: separate your read model from your write model
 
 Command Query Responsibility Segregation separates the data model used to modify state (commands) from the data model used to read state (queries).
@@ -91,4 +97,4 @@ If the answer is "our event publishing is unreliable" — outbox.
 
 A pattern applied because it's architecturally interesting, not because it solves a specific problem, adds complexity without benefit. The simplest implementation that meets the requirements is usually the right one.
 
-*Working through a distributed systems design challenge? [Always happy to think through trade-offs.](/contact)*
+*Working through a distributed systems design challenge? [Always happy to think through trade-offs.](/contact/)*

@@ -10,6 +10,14 @@ format: article
 
 The design of a platform's abstraction layer determines whether developers adopt it or route around it. Abstract too much and developers cannot do what they need; developers write workarounds that bypass the platform. Abstract too little and the platform is just documentation — developers face the same complexity they had before. The right abstraction hides complexity developers should not need to manage and exposes control over the things that vary legitimately between services.
 
+## What to measure
+
+**Time to first compliant production deployment.** Take a cohort starting new services and measure elapsed time from repository creation to a successful, policy-compliant deployment. Report the median and p90, and track how many completed using the paved road without manual escalation.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
+Further reading: [DORA’s software delivery performance metrics](https://dora.dev/guides/dora-metrics/).
+
 ## The Golden Path Concept
 
 A golden path is an opinionated, supported route through the platform — the recommended way to deploy a service, set up monitoring, or manage a secret. It is not the only way, but it is the way that is documented, tested, and automatically compliant with security and operational standards.

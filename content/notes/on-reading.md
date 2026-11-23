@@ -9,7 +9,7 @@ derived: true
 
 I read a lot — always have. But for most of my career, I read in the same way I approached most things: with efficiency as the primary goal. Get through the book, extract the relevant ideas, move on.
 
-What I've learned is that this optimises for quantity at the cost of retention and integration. You can have read fifty books in a year and have fewer actual ideas from them than someone who read ten slowly and sat with what they found.
+I got through more books that way and remembered less of what I read. You can have read fifty books in a year and have fewer actual ideas from them than someone who read ten slowly and sat with what they found.
 
 The change started when I noticed I couldn't reliably articulate the ideas from books I'd read eighteen months ago. Not the titles, not the authors — those I remembered. The actual content had passed through and left no lasting impression. That seemed like a problem with the practice rather than with my memory.
 

@@ -10,6 +10,14 @@ Deployment strategy discussions have a way of floating free of their constraints
 
 Here's the strategy landscape with the constraints attached.
 
+## What to measure
+
+**Absolute error change and canary sample size.** In a comparable window, 30 errors in 10,000 canary requests is 0.3%; 100 errors in 100,000 control requests is 0.1%. The difference is 0.2 percentage points. Check cohort mix and the sample needed for the decision before expanding traffic.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
+Further reading: [DORA’s software delivery performance metrics](https://dora.dev/guides/dora-metrics/).
+
 ## The baseline: rolling updates
 
 Replace instances a few at a time behind a load balancer until the fleet runs the new version. This is Kubernetes' default and the industry's workhorse, and its virtues are real: no extra capacity beyond a surge margin, no traffic-management sophistication required, built into every orchestrator.

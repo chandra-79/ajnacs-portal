@@ -12,6 +12,14 @@ One of the most common FinOps conversations goes: "Our cloud bill came in and it
 
 The alternative is catching anomalies when they happen — not when the invoice arrives.
 
+## What to measure
+
+**Time to detection and late-arriving spend.** If excess spend begins at 10:00, billing exposes it at 14:00 and an alert arrives at 14:20, user-visible detection took 4 hours 20 minutes. Report the feed delay and detector delay separately. Sample known anomalies alongside false positives.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
+Further reading: [FinOps Foundation, State of FinOps 2026](https://data.finops.org/).
+
 ## The detection gap: why monthly bills aren't enough
 
 Cloud providers publish cost data with a lag. AWS Cost Explorer typically has 8-24 hours of lag on usage data. Azure Cost Management updates every 8 hours. GCP billing data has similar latency. Monthly invoice delivery is weeks after most of the spend occurred.
@@ -92,4 +100,4 @@ From experience, the most common causes of significant cost anomalies in the ord
 
 3. **Forgotten development resources**: a proof-of-concept cluster, a large development database, or a GPU instance that was started and not terminated. Check for resources without the `Environment: production` tag that have been running longer than expected.
 
-*Setting up cost anomaly detection or responding to an unexpected bill? [Happy to compare approaches.](/contact)*
+*Setting up cost anomaly detection or responding to an unexpected bill? [Happy to compare approaches.](/contact/)*

@@ -12,6 +12,14 @@ Most cloud cost conversations go in circles because they're comparing the wrong 
 
 Unit economics cuts through this. Cost per unit of business output — per active user, per transaction, per API call, per GB of data processed — contextualises spend against the business it's supporting.
 
+## What to measure
+
+**Cost per completed business unit.** At $18,000 monthly allocated cloud spend and 600,000 completed orders, cloud cost is $0.03 per order. At the same spend and 450,000 orders, it is $0.04. Use the same cost scope and exclude failed orders from the completed-order denominator.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
+Further reading: [FinOps Foundation, State of FinOps 2026](https://data.finops.org/).
+
 ## Why absolute spend is the wrong metric
 
 An engineering team that grew its AWS bill from $50k to $100k over a year might have:
@@ -60,7 +68,7 @@ Unit costs become most useful when you have a target to compare against.
 Setting targets:
 - **Baseline from current performance**: your current unit cost is the baseline. Track improvement (or degradation) over time.
 - **Architecture exercises**: when planning a major architectural change, estimate the expected unit cost. Compare to actuals after deployment.
-- **Industry context**: broad industry benchmarks exist for some workload types (SaaS infrastructure spend as a percentage of revenue is a common one; 8-12% is a rough marker, though it varies widely by stage). These are signals, not targets.
+- **Peer context**: compare benchmarks only when both the spend categories and the business model match. Use your own prior-period unit costs for the primary comparison.
 
 Threshold alerts: if unit cost increases by more than X% quarter-over-quarter without a corresponding product change or growth inflection, that's a signal to investigate. Growth in spend is expected; disproportionate growth in unit cost is an efficiency signal.
 
@@ -74,4 +82,4 @@ This is the conversation FinOps aims to enable: context-rich, actionable, connec
 
 The return on that investment is conversations like the one above, instead of conversations about whether $200k is too much.
 
-*Working toward this kind of visibility in your organization? The data infrastructure that supports unit economics is worth building. [Happy to compare approaches.](/contact)*
+*Working toward this kind of visibility in your organization? The data infrastructure that supports unit economics is worth building. [Happy to compare approaches.](/contact/)*

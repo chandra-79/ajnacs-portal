@@ -7,7 +7,7 @@ format: article
 derived: true
 ---
 
-People ask about productivity systems and I want to talk about music instead.
+When people ask me about productivity systems, I usually want to talk about music.
 
 I've tried most of the frameworks. The ones that work for me all have one thing in common: they assume the hardest part is getting started. They're right. But there's a second hard part nobody talks about — staying in the thing once you're in it, especially when the problem gets genuinely difficult and your brain starts looking for any exit.
 

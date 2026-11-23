@@ -10,6 +10,12 @@ APIs are commitments. Unlike internal code that you can refactor freely, a publi
 
 The decisions worth getting right at design time are the ones you'll be living with for years.
 
+## What to measure
+
+**Retry safety for mutating requests.** Send 100 duplicate requests with the same idempotency key through the normal timeout and retry path. Count additional writes and mismatched responses separately. A pass for this test means zero extra writes and a consistent response for a given payload; a reused key with a different payload is a separate case.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
 ## Versioning: have a strategy before you need it
 
 The two common REST API versioning strategies:
@@ -117,4 +123,4 @@ OpenAPI (Swagger) specification as the source of truth, generated documentation 
 
 The documentation is the contract. When consumers build against the documentation, the documentation becomes the specification you're committed to maintaining.
 
-*Designing a new API or auditing an existing one for consistency and longevity? [Happy to compare approaches.](/contact)*
+*Designing a new API or auditing an existing one for consistency and longevity? [Happy to compare approaches.](/contact/)*

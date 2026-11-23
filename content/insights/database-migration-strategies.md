@@ -10,6 +10,12 @@ The migration that causes an outage is usually not the one that failed — it's 
 
 Zero-downtime database migrations are achievable, but they require treating schema changes and data movement as distinct operations with distinct risk profiles.
 
+## What to measure
+
+**Reconciliation rate at a known replication lag.** If 999,950 of 1,000,000 source records match a target snapshot at the same logical cut, the mismatch count is 50. Investigate by key and reason before switching writes. Track replication lag and rehearse what happens to new writes during rollback.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
 ## The core principle: schema changes must be backward compatible
 
 The fundamental constraint: at any point during a deployment, both the old version of the application and the new version must be able to read and write the database correctly. This rules out a large category of apparently simple changes:
@@ -130,4 +136,4 @@ The rollback plan that hasn't been tested is not a rollback plan. Before any sig
 
 The most common rollback failure mode: the rollback assumes the old schema still exists, but the contract phase already removed it.
 
-*Working through a database migration with a tight cutover constraint? The sequencing of expand/contract phases is where most of the risk sits. [Happy to think through the specific trade-offs.](/contact)*
+*Working through a database migration with a tight cutover constraint? The sequencing of expand/contract phases is where most of the risk sits. [Happy to think through the specific trade-offs.](/contact/)*

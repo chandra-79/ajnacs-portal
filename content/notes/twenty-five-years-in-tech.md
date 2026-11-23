@@ -11,7 +11,7 @@ The resume version is clean. A line of titles, a cascade of technologies, a set 
 
 What it doesn't give you is the texture.
 
-The texture is: sitting in a war room at 2am for the fourth consecutive night, when the system is down and customers are angry and everyone is exhausted and somebody still has to hold the thread of rational thinking. Learning that composure under pressure isn't a personality trait — it's a skill, and you build it the way you build any skill: by needing it before you have it, repeatedly.
+The texture is: sitting in a war room at 2 a.m. for the fourth consecutive night, when the system is down and customers are angry and everyone is exhausted and somebody still has to hold the thread of rational thinking. Learning that composure under pressure isn't a personality trait — it's a skill, and you build it the way you build any skill: by needing it before you have it, repeatedly.
 
 Or the moment you realise that the most expensive architectural mistakes are never technical. They're social. Someone knew the design was flawed and didn't say so clearly enough. Someone said it clearly and wasn't heard. The code just executes the decision; the decision happened in a meeting, or a hallway conversation, or an email that got three words of attention.
 

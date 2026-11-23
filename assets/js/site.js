@@ -62,6 +62,7 @@
     var cards = [].slice.call(listEl.querySelectorAll("[data-card]"));
     var searchEl = $("postSearch");
     var countEl = $("postCount");
+    var topicSelect = $("postTopic");
     var chips = [].slice.call(document.querySelectorAll("[data-topic-filter]"));
     var emptyEl = $("postEmpty");
     var moreBtn = $("postMore");
@@ -107,15 +108,22 @@
         t = setTimeout(function () { query = searchEl.value.trim().toLowerCase(); apply(true); }, 140);
       });
     }
+    function selectTopic(value) {
+      activeTopic = value;
+      if (topicSelect) topicSelect.value = value;
+      chips.forEach(function (chip) {
+        chip.setAttribute("aria-pressed", String(chip.dataset.topicFilter === value));
+      });
+      apply(true);
+    }
+    if (topicSelect) {
+      topicSelect.hidden = false;
+      topicSelect.addEventListener("change", function () { selectTopic(topicSelect.value); });
+    }
     chips.forEach(function (chip) {
       chip.addEventListener("click", function () {
-        var v = chip.dataset.topicFilter;
-        activeTopic = activeTopic === v ? "" : v;
-        chips.forEach(function (c) {
-          var on = c.dataset.topicFilter === activeTopic;
-          c.setAttribute("aria-pressed", on ? "true" : "false");
-        });
-        apply(true);
+        var value = chip.dataset.topicFilter;
+        selectTopic(activeTopic === value ? "" : value);
       });
     });
     if (moreBtn) moreBtn.addEventListener("click", function () { shown += PAGE; apply(false); });
@@ -123,9 +131,8 @@
     // a ?topic= in the URL preselects a filter
     try {
       var qp = new URLSearchParams(location.search).get("topic");
-      if (qp) {
-        activeTopic = qp;
-        chips.forEach(function (c) { c.setAttribute("aria-pressed", c.dataset.topicFilter === qp ? "true" : "false"); });
+      if (qp && cards.some(function (card) { return card.dataset.topics.includes("|" + qp + "|"); })) {
+        selectTopic(qp);
       }
     } catch (e) {}
     apply(true);

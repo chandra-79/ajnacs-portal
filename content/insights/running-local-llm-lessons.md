@@ -10,6 +10,12 @@ I started running LLMs locally because I was spending more than I expected on AP
 
 The short version: local LLMs are genuinely useful for a specific set of tasks, the tooling has matured considerably, and the enterprise case for on-premises model hosting is stronger than most cloud-first conversations acknowledge.
 
+## What to measure
+
+**Prefill, decode and working-set memory.** With the same prompt length, model and quantisation, record time to first token, generated tokens/s and peak resident memory. A 300-token completion at 30 tokens/s spends about 10 seconds decoding after prefill. Report context length and hardware with the result.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
 ## The Tooling That Actually Works
 
 **Ollama** is where most people should start. It handles model downloads, quantisation selection, and an OpenAI-compatible API endpoint that means your existing integrations often just work with a URL swap. The developer experience is clean:
@@ -72,4 +78,4 @@ Honesty requires balance. Local models lag hosted frontier models on:
 
 The right framing is not "local vs. cloud" but "which tasks warrant local and which warrant cloud." Routine, high-volume, latency-sensitive tasks with data sensitivity concerns → local. Novel, complex reasoning tasks where quality is the primary constraint → cloud. Most organizations need both.
 
-*Running local inference in production or evaluating it for an enterprise use case? I'm interested in comparing notes — [get in touch](/contact).*
+*Running local inference in production or evaluating it for an enterprise use case? I'm interested in comparing notes — [get in touch](/contact/).*

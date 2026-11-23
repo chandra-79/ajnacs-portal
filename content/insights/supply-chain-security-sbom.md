@@ -10,6 +10,12 @@ The SolarWinds and Log4Shell incidents changed how the industry thinks about sof
 
 Software Bill of Materials (SBOM) and supply chain security practices exist to address this. The challenge is that the tooling is maturing, the standards are still evolving, and the gap between "we generate an SBOM" and "we have meaningful supply chain security" is significant.
 
+## What to measure
+
+**SBOM coverage for deployed digests.** If 190 of 200 unique production image digests link to an inventory generated from the deployed artifact, coverage is 95%. Add freshness and provenance checks, and record who owns remediation when a component is flagged.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
 ## What an SBOM actually is
 
 A Software Bill of Materials is a formal, machine-readable list of the components in a piece of software — libraries, frameworks, and their transitive dependencies — with version information and license data. Think of it as the ingredient list for software.
@@ -101,4 +107,4 @@ SBOMs and scanning are detective controls. The preventive controls that reduce s
 
 The supply chain security posture that matters: knowing what you're running, knowing whether it has known vulnerabilities, and having a process to respond when new vulnerabilities are disclosed for components you depend on.
 
-*Building out a supply chain security program or integrating SBOM generation into an existing CI/CD pipeline? [Happy to share what the implementation looks like at scale.](/contact)*
+*Building out a supply chain security program or integrating SBOM generation into an existing CI/CD pipeline? [Happy to share what the implementation looks like at scale.](/contact/)*

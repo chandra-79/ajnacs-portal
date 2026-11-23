@@ -10,6 +10,12 @@ format: article
 
 Moving an AI model from a Jupyter notebook to production is not primarily a technical challenge — it is an operational and organisational challenge. The model that produces impressive demos requires latency budgets, cost management, monitoring, access controls, and reliability engineering before it is a production system. This lesson covers what that operational work actually involves.
 
+## What to measure
+
+**Quality at production latency.** Count responses that pass your evaluation rubric and meet the latency objective. If 920 of 1,000 traffic-representative requests do both, the joint pass rate is 92%. Keep quality failures, timeouts and failed fallbacks visible as separate counts.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
 ## Model Serving: The Inference Infrastructure
 
 Inference (using the model to make predictions) in production is different from inference in development:

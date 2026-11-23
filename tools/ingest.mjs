@@ -234,6 +234,11 @@ for (const a of kept) {
   const slug = importedSlug(a, slugify(a.file.replace(/\.mdx?$/, "")), collisions, PRIOR);
   const prior = PRIOR.get(slug);
   if (prior) keptDates++;
+  if (prior?.editorialRevision) {
+    await access(path.join(OUT, prior.section, `${slug}.md`), constants.R_OK);
+    manifest.push(prior);
+    continue;
+  }
   const rec = {
     slug, section,
     sourceCollection: a.coll, sourceFile: a.file,
@@ -264,6 +269,14 @@ for (const a of kept) {
   ].filter(Boolean).join("\n");
   await mkdir(path.join(OUT, section), { recursive: true });
   await writeFile(path.join(OUT, section, `${slug}.md`), `${fm}\n\n${body}\n`, "utf8");
+}
+
+// Editorial versions are Ajna's source even if the imported file is renamed or removed.
+const retainedSlugs = new Set(manifest.map(record => record.slug));
+for (const prior of PRIOR.values()) {
+  if (!prior.editorialRevision || retainedSlugs.has(prior.slug)) continue;
+  await access(path.join(OUT, prior.section, `${prior.slug}.md`), constants.R_OK);
+  manifest.push(prior);
 }
 
 /* Articles reference their own images by absolute path. Ingest used to take

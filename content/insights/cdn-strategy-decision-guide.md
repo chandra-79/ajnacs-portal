@@ -8,6 +8,12 @@ format: article
 
 A CDN solves a simple problem — content is faster when it's closer to the user — in increasingly complex ways. Modern CDNs aren't just caches; they're the place where TLS terminates, where bot traffic is filtered, where geolocation routing happens, where edge compute runs, and where rate limiting is enforced. The CDN decision has more surface area than most teams realise when they first evaluate it.
 
+## What to measure
+
+**Requests and bytes reaching origin.** If 8,000 of 10,000 cache-eligible requests hit, request hit rate is 80%. Count bytes separately because the 2,000 misses may carry most of the payload. Break out first requests after expiry or purge to show how the origin behaves when the cache is cold.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
 ## The fundamental decision: cloud-native CDN vs. specialist CDN
 
 Cloud providers offer CDN services that integrate tightly with their other services:
@@ -67,4 +73,4 @@ Edge compute is constrained: CPU time limits, limited memory, no persistent conn
 
 **Real User Monitoring (RUM)**: synthetic tests from monitoring locations don't capture the geographic distribution of your actual users. RUM data from user browsers, aggregated by geography, shows where performance is actually poor.
 
-*Working through CDN selection or configuration for a specific architecture? The trade-offs vary a lot by workload. [Happy to compare notes.](/contact)*
+*Working through CDN selection or configuration for a specific architecture? The trade-offs vary a lot by workload. [Happy to compare notes.](/contact/)*

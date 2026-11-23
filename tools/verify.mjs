@@ -41,6 +41,29 @@ for (const m of queued) {
 if (leaked) fail(`${leaked} scheduled articles were published early`);
 else ok(`${queued.length} scheduled articles correctly withheld`);
 
+console.log("\nDiscovery");
+{
+  const robots = await readFile("robots.txt", "utf8");
+  const groups = robots.split(/\n\n+/);
+  const general = groups.find(group => group.includes("User-agent: *")) || "";
+  const restricted = groups.find(group => group.includes("User-agent: GPTBot")) || "";
+  if (!general.includes("Allow: /\n") || !["/content/", "/tools/", "/docs/", "/brand-lab/"].every(route => general.includes(`Disallow: ${route}`))) fail("public and internal crawler paths are misconfigured");
+  if (!restricted.endsWith("Disallow: /") || !["GPTBot", "ClaudeBot", "Google-Extended", "Applebot-Extended", "CCBot"].every(agent => restricted.includes(`User-agent: ${agent}\n`))) fail("training and dataset crawler group is incomplete");
+  if (/User-agent: (?:Googlebot|bingbot|OAI-SearchBot|Claude-SearchBot)\b/i.test(restricted)) fail("search crawler included in the training block");
+  const sitemap = await readFile("sitemap.xml", "utf8");
+  const urls = new Set([...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(match => match[1]));
+  for (const m of live) {
+    const route = `https://ajnacs.com/${m.section}/${m.slug}/`;
+    if (!urls.has(route) || !sitemap.includes(`<loc>${route}</loc><lastmod>${m.modified || m.date}</lastmod>`)) fail(`sitemap URL or date missing: ${m.slug}`);
+    if (m.section === "insights" && m.editorialRevision) {
+      const text = await readFile(`content/insights/${m.slug}.md`, "utf8");
+      if (!text.includes("## What to measure") || !text.includes("Illustrative measurement.")) fail(`edited insight missing a labelled measurement: ${m.slug}`);
+    }
+  }
+  if ([...urls].some(url => url.includes('?') || url.endsWith('404.html'))) fail("sitemap contains a filter or error URL");
+  if (!failures) ok("crawler rules, article sitemap dates and labelled evidence checked");
+}
+
 console.log("\nQuality");
 let noDesc = 0, noTitle = 0, badCanon = 0, noJsonLd = 0, orphanHero = 0;
 for (const d of dirs) {
@@ -212,7 +235,7 @@ console.log("\nAssets");
   const cards = new Set();
   for (const f of pages) {
     const h = await readFile(f, "utf8");
-    for (const m of h.matchAll(/(?:og:image|twitter:image)" content="[^"]*?(\/assets\/og\/[^"]+)"/g)) cards.add(m[1]);
+    for (const m of h.matchAll(/(?:og:image|twitter:image)" content="[^"]*?(\/assets\/(?:og|covers)\/[^"]+)"/g)) cards.add(m[1]);
   }
   const missingCards = [];
   for (const c of cards) { try { await access(c.replace(/^\//, "").split(/[?#]/)[0], constants.R_OK); } catch { missingCards.push(c); } }

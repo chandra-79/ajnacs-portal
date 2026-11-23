@@ -10,6 +10,12 @@ Training large language models and diffusion models at scale is a fundamentally 
 
 A slow network in a web service deployment slightly increases response time. A slow network in a distributed model training job slows the entire job to the speed of the slowest link, because all nodes must synchronise at each gradient exchange.
 
+## What to measure
+
+**Scaling efficiency at fixed work.** Keep the model, batch protocol and precision fixed. If an 8-GPU run handles 4,000 tokens/s and a 32-GPU run handles 13,000, the speedup is 3.25× for 4× the GPUs, or about 81% scaling efficiency. Record collective time and per-rank stragglers before attributing the gap to the network.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
 ## Why training clusters need different networking
 
 Distributed training breaks a model's computation across multiple GPUs and nodes. Two dominant parallelism strategies:
@@ -75,4 +81,4 @@ Training clusters need fast access to training data (petabyte-scale datasets) an
 - **Training data**: parallel file systems (GPFS, Lustre, WekaFS) or object storage (S3, GCS) with high-throughput access. Storage bandwidth needs to keep all GPUs fed without bottlenecking on data loading.
 - **Checkpoints**: regular writes of model state to durable storage. Checkpoint frequency and size (hundreds of GB for large models) determine storage I/O requirements. NVMe over Fabrics (NVMe-oF) or high-throughput object storage are common patterns.
 
-*Designing networking for an AI training cluster or evaluating whether your existing infrastructure is suitable? [Happy to compare configurations.](/contact)*
+*Designing networking for an AI training cluster or evaluating whether your existing infrastructure is suitable? [Happy to compare configurations.](/contact/)*

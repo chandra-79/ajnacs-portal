@@ -10,6 +10,12 @@ A service mesh intercepts all traffic between services in a cluster via sidecar 
 
 The proposition is genuinely powerful. The operational reality is that service meshes add significant complexity, and that complexity has a cost that's easy to underestimate before you're running one in production.
 
+## What to measure
+
+**Proxy overhead at equivalent protection.** With the same traffic, mTLS and retry policy, measure p99 and proxy CPU per 1,000 requests/s. If p99 rises from 40 ms to 46 ms, that is 6 ms added for the test. Repeat across retries and failure cases before selecting a mesh.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
 ## What a service mesh actually provides
 
 **Mutual TLS (mTLS) between services**: every service-to-service connection is encrypted and both sides authenticate. Without a mesh, services in a Kubernetes cluster communicate over plaintext unless the application implements TLS. With a mesh, mTLS is automatic.
@@ -62,4 +68,4 @@ Linkerd doesn't have Istio's traffic management depth (less support for complex 
 
 The incremental path prevents a big-bang mesh deployment from becoming a simultaneous debugging exercise across 50 services.
 
-*Evaluating a service mesh for your cluster or trying to debug a mesh configuration? [Happy to compare notes on what's worked.](/contact)*
+*Evaluating a service mesh for your cluster or trying to debug a mesh configuration? [Happy to compare notes on what's worked.](/contact/)*

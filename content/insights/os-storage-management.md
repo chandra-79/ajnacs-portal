@@ -10,6 +10,12 @@ format: article
 
 Storage management is a core Linux administration skill that becomes critical when a filesystem fills up at 3am, when you need to expand a volume without downtime, or when you are provisioning a new server. Understanding the full stack — from block device to mounted filesystem — lets you make correct decisions quickly under pressure.
 
+## What to measure
+
+**Growth runway and recovery verification.** If a volume has 120 GiB free and recent growth is 8 GiB/day, the simple linear runway is 15 days. Recalculate with peak-day growth and restore a sample from an independent backup before treating a resize as your only recovery measure.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
 ## The Storage Stack
 
 ```

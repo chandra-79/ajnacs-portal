@@ -8,6 +8,12 @@ format: article
 
 Kubernetes networking has three layers that interact: the pod network (how pods communicate), service networking (how services are discovered and load-balanced), and the external network (how traffic enters and leaves the cluster). Understanding all three — and the CNI plugin that implements the pod network — is necessary for reasoning about cluster security.
 
+## What to measure
+
+**Cross-node overhead at matched policy.** Run same-node and cross-node requests with identical payload, policies and offered rate. If cross-node p95 is 5 ms versus 3 ms locally, the observed difference is 2 ms. Repeat with policy changes one at a time and check packet drops and CPU cost.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
 ## The default: no isolation
 
 By default, every pod in a Kubernetes cluster can communicate with every other pod, across namespaces. There are no firewall rules between pods. A compromised pod in the `dev` namespace can reach pods in the `production` namespace on any port. This is the default, and it is not appropriate for most production environments.
@@ -97,4 +103,4 @@ egress:
 
 This prevents pods from making arbitrary external DNS queries and limits DNS exposure to the cluster-internal resolver.
 
-*Reviewing Kubernetes network security or selecting a CNI for a new cluster? The security requirements should drive the CNI selection. [Happy to compare options for your specific deployment environment.](/contact)*
+*Reviewing Kubernetes network security or selecting a CNI for a new cluster? The security requirements should drive the CNI selection. [Happy to compare options for your specific deployment environment.](/contact/)*

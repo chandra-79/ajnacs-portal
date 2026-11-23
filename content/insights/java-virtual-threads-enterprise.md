@@ -10,6 +10,12 @@ Virtual threads are the biggest change to Java's concurrency model since the lan
 
 But "mostly deleting things" is not "free." Two years into mainstream adoption, the patterns — and the failure modes — are clear. Here's the enterprise field guide.
 
+## What to measure
+
+**Concurrency at the same downstream cap.** Keep a 40-connection database pool fixed while increasing incoming concurrency. Track useful throughput, p99 latency and pool wait. If throughput stays flat while wait rises, additional threads are queueing work ahead of the same bottleneck.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
 ## The core idea in one paragraph
 
 Platform threads map 1:1 to OS threads: expensive to create (~1 MB stack), capped in the low thousands per host. Virtual threads are JVM-managed: cheap (bytes of initial footprint), scheduled onto a small pool of OS carrier threads, and *unmounted* from the carrier whenever they block on I/O. A million virtual threads waiting on HTTP responses costs almost nothing; the carriers stay busy running whichever threads are actually runnable. The result: you write plain, blocking, debuggable code and get the concurrency scaling that previously required reactive frameworks.

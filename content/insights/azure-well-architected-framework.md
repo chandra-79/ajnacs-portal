@@ -10,6 +10,14 @@ Microsoft's Well-Architected Framework (WAF) is organized around five pillars: r
 
 What varies is the implementation: Azure's specific services, defaults, and constraints. This article focuses on what each pillar means when building on Azure specifically.
 
+## What to measure
+
+**Recovery objective under a timed drill.** If the recovery time objective is 30 minutes and a failover drill restores normal service after 42, the exercise missed by 12 minutes. Record the dependency that held recovery up and how much data was lost separately.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
+Further reading: [Azure Well-Architected Framework, reliability targets](https://learn.microsoft.com/en-us/azure/well-architected/reliability/metrics).
+
 ## Reliability
 
 The Azure definition of reliability covers fault tolerance, recovery, and the capacity to maintain acceptable behavior under adverse conditions. The key design decisions:
@@ -58,4 +66,4 @@ The WAF security pillar covers identity, data protection, network security, and 
 
 The WAF Review (available in the Azure portal and via the Well-Architected Review assessment tool) is useful for structured evaluation of existing architectures against these pillars. The output is a prioritized list of recommendations with effort estimates — a starting point for technical debt backlog, not a definitive audit.
 
-*Reviewing an Azure architecture against the WAF pillars or preparing for an enterprise cloud assessment? [Happy to compare notes on the high-impact areas.](/contact)*
+*Reviewing an Azure architecture against the WAF pillars or preparing for an enterprise cloud assessment? [Happy to compare notes on the high-impact areas.](/contact/)*

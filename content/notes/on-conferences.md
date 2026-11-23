@@ -9,7 +9,7 @@ derived: true
 
 I have attended a lot of technology conferences. KubeCon, AWS re:Invent, Google Cloud Next, a number of smaller specialist events. The pattern I've noticed is that the value of a conference correlates weakly with its size and strongly with the people you are already going to talk to when you arrive.
 
-The sessions are mostly not the valuable part.
+For me, most of the value is between sessions.
 
 This is not a criticism of conference talks. Some are excellent, and the best ones — a genuine practitioner sharing hard-won lessons from a production environment, a researcher presenting findings that challenge a common assumption — are worth the time. But the median conference talk is a polished version of information you could have found in a blog post.
 

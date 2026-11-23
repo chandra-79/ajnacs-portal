@@ -10,6 +10,12 @@ RDMA (Remote Direct Memory Access) bypasses the operating system kernel and CPU 
 
 Two RDMA-over-Ethernet technologies dominate: RoCE (RDMA over Converged Ethernet) and iWARP (Internet Wide Area RDMA Protocol). They solve the same problem differently and have meaningfully different operational requirements.
 
+## What to measure
+
+**Application goodput and congestion impact.** Compare transfer time, p99 completion latency and host CPU at the same message size and offered load. A 10 Gb/s link should not be described as delivering 10 Gb/s to the application without measuring protocol and congestion overhead.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
 ## RoCE: high performance, demanding network
 
 RoCE maps InfiniBand transport directly to Ethernet. There are two versions:
@@ -84,4 +90,4 @@ For large-scale AI training clusters, InfiniBand (rather than either RoCE or iWA
 
 For enterprises building AI training infrastructure on existing Ethernet networks, RoCE with proper PFC/DCQCN configuration is the pragmatic path to InfiniBand-comparable performance.
 
-*Designing a networking fabric for AI training or HPC? The topology and technology choices compound on each other. [Happy to think through the trade-offs.](/contact)*
+*Designing a networking fabric for AI training or HPC? The topology and technology choices compound on each other. [Happy to think through the trade-offs.](/contact/)*

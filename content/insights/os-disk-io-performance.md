@@ -10,6 +10,12 @@ format: article
 
 Disk I/O problems are the most deceptive category of Linux performance issues. An application stalls, CPU shows low utilisation, memory looks fine — and you discover that everything is waiting on disk. Databases, log pipelines, and container image pulls are the most common offenders. Understanding what the storage stack is telling you is a prerequisite for any serious Linux work.
 
+## What to measure
+
+**IOPS and p99 at a fixed queue depth.** At a fixed 4 KiB block size and queue depth, record IOPS, throughput and p99 latency. At 25,000 operations/s, throughput is about 102 MB/s in decimal units. A higher queue depth can increase throughput and worsen tails simultaneously.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
 ## The Storage Stack
 
 Before measuring, understand what you are measuring. A write from an application travels through:

@@ -11,7 +11,7 @@ At some point in a long career, your relationship with learning changes.
 
 Early on, everything is acquisition. You read voraciously, take courses, earn certifications, absorb everything available. The world is larger than you are, and the job is to close the gap as fast as possible.
 
-Later — and I am not sure exactly when this shift happens — the nature of the learning changes. You still acquire new information, but you spend as much time integrating and revising as you do acquiring. New information gets placed in relation to what you already know, which means your existing knowledge structure matters more. You can absorb new things faster precisely because you have more to connect them to.
+Later — and I am not sure exactly when this shift happens — what you do with new information changes. You still acquire new information, but you spend as much time integrating and revising as you do acquiring. New information gets placed in relation to what you already know, which means your existing knowledge structure matters more. You can absorb new things faster precisely because you have more to connect them to.
 
 What this feels like from the inside: I can read a paper or a technical post now and immediately locate where it fits relative to things I have encountered before. That is useful. The danger is that the existing structure can filter out genuinely novel things — ideas that do not fit anywhere get discarded faster than they should.
 

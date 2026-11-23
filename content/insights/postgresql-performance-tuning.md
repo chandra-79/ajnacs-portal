@@ -10,6 +10,14 @@ PostgreSQL ships with defaults that are deliberately conservative — tuned for 
 
 This isn't a comprehensive tuning guide (PostgreSQL's performance characteristics depend heavily on workload, hardware, and access patterns). It's the settings that matter most for most production workloads, with the reasoning behind each.
 
+## What to measure
+
+**Buffers per successful query at equivalent load.** Compare the same bind parameters with `EXPLAIN (ANALYZE, BUFFERS)` in an appropriate environment. If shared block reads fall from 2,000 to 400, that is an 80% reduction for the recorded execution. Track warm versus cold cache and index maintenance cost separately.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
+Further reading: [PostgreSQL documentation on EXPLAIN](https://www.postgresql.org/docs/current/using-explain.html).
+
 ## Memory settings: the biggest wins
 
 **`shared_buffers`**: the amount of memory PostgreSQL uses for caching data pages. Default is 128MB. On a dedicated database server, set to 25% of total RAM. On a 32GB server: `shared_buffers = 8GB`.
@@ -92,4 +100,4 @@ Key things to look for:
 
 `pg_stat_statements` extension (enable in `shared_preload_libraries`) records query execution statistics across all connections. The query with the highest `total_exec_time` divided by `calls` is your first optimization target.
 
-*Working through a PostgreSQL performance problem or setting up a production database configuration? [Happy to look at specifics.](/contact)*
+*Working through a PostgreSQL performance problem or setting up a production database configuration? [Happy to look at specifics.](/contact/)*

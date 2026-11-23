@@ -8,6 +8,12 @@ format: article
 
 There's a small body of mathematics that explains a remarkable share of production behavior — why latency explodes as utilization approaches capacity, why "we have headroom, we're at 75%" precedes incidents, why batch arrivals wreck systems that handle the same average load smoothly, and why adding one more server sometimes fixes everything. It's queueing theory, engineers mostly encounter it as interview trivia, and that's a waste: three results, held as intuitions rather than equations, upgrade nearly every capacity, performance, and even staffing conversation you'll have.
 
+## What to measure
+
+**Work in flight in a stable window.** For 120 completions/s and 0.25 s average time in the measured system, Little’s Law implies an average of 30 items in flight. Use matching boundaries and a stable window. An overloaded queue growing without bound violates that steady-state assumption.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
 ## Little's Law: the conservation law of systems
 
 **L = λW** — items in the system equal arrival rate times time in the system — with no assumptions about distributions, scheduling, or architecture; it's as close to physics as software gets. Its power is that knowing any two quantities yields the third, and all three are things you routinely need: the connection-pool sizing from performance practice (*200 req/s × 50ms per request = 10 connections in use* — the arithmetic that rightsizes pools without folklore), the concurrency audit (*a service showing 4,000 in-flight requests at 200 req/s is spending 20 seconds per request — somebody's timeout math is fiction*), the queue-drain triage from incident practice (*backlog ÷ (drain rate − arrival rate) = time to recovery, or the sign says you never recover*), and the WIP argument in delivery (*work-in-progress ÷ throughput = cycle time — the flow-metrics foundation: the only ways to ship faster are finishing more or starting less, and starting less is the cheap one*). The habit worth installing: whenever two of `concurrency`, `rate`, and `duration` appear on a dashboard, compute the third and check it against belief — the mismatches are where the surprises hide.

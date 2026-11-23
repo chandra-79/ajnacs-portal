@@ -7,7 +7,7 @@ import { esc } from "./lib.mjs";
 
 export const SOURCES = [
   // framework / research
-  [/\bDORA\b|\bState of DevOps\b|\bfour key metrics\b/i, "DORA — DevOps Research and Assessment", "https://dora.dev/", "The four delivery metrics and the research behind them."],
+  [/\bDORA\b|\bState of DevOps\b|\bfour key metrics\b/i, "DORA — DevOps Research and Assessment", "https://dora.dev/guides/dora-metrics/", "Current delivery metrics and their historical definitions."],
   [/\bSPACE framework\b/i, "The SPACE of Developer Productivity", "https://queue.acm.org/detail.cfm?id=3454124", "ACM Queue, Forsgren et al."],
   // CNCF / platform
   [/\bBackstage\b/i, "Backstage", "https://backstage.io/", "Open-source developer portal, now a CNCF project."],

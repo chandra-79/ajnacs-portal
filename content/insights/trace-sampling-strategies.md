@@ -8,6 +8,12 @@ format: article
 
 Distributed tracing's pitch — every request's journey across services, reconstructible on demand — collides at production scale with arithmetic nobody escapes: a mid-size estate serving 50k requests/sec, each touching a dozen services with a handful of spans apiece, generates *billions of spans daily*, and storing them all costs more than the incidents they'd explain. Tracing at scale is therefore a **retention-policy problem**: which traces do you keep, decided by what logic, enforced where — and the quality of those decisions determines whether the tracing system answers the 3 AM question ("show me a trace of the failure") or delivers its most demoralizing failure mode: perfect instrumentation, 1% sampling, and *no trace of the incident anyone is debugging*, because uniform randomness keeps mostly the healthy majority.
 
+## What to measure
+
+**Retention across error and normal cohorts.** If 180 of 200 error traces and 980 of 9,800 normal traces survive, cohort retention is 90% and 10%, respectively. Keep the full denominators for verification, and measure late spans and collector memory at the configured decision delay.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
 ## The consistency rule that everything rests on
 
 Before strategy: a partial trace is a lie — spans sampled independently per service produce journeys with missing legs that mislead worse than no trace. The foundational mechanism is **consistent, propagated sampling decisions**: the decision made once (typically at the ingress span) and carried in the trace context (the W3C traceparent's sampled flag — the same propagation rails as every context discipline), so every downstream service honors the same verdict and traces arrive *whole or not at all*. Every strategy below is a policy about *where and on what information* that decision gets made — which is the entire design space.

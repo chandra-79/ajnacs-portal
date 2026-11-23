@@ -8,7 +8,15 @@ format: article
 
 Google's SRE book introduced the concept of toil as a specific category of work worth tracking and actively reducing. The definition is precise: toil is work that is manual, repetitive, automatable, tactical (it doesn't produce lasting value), and that scales linearly with service growth.
 
-The reason to track it separately from other work: teams that spend too much time on toil have no capacity for the reliability improvements that would eliminate toil. They are on a treadmill. The SRE principle is a ceiling on toil — no more than 50% of an SRE's time — with explicit investment in automation to reduce it.
+The reason to track it separately from other work: teams that spend too much time on toil have no capacity for the reliability improvements that would eliminate toil. They are on a treadmill. [Google’s SRE organisation sets a goal](https://sre.google/sre-book/eliminating-toil/) of keeping operational work below 50% of each SRE’s time. Treat that as a published operating policy; set your own ceiling after measuring where your time goes.
+
+## What to measure
+
+**Toil fraction and automation payback.** If a team records 64 hours of toil in 240 available engineering hours, the toil fraction is about 27%. If automation costs 60 engineer-hours and saves 6 per week after maintenance, simple payback is 10 weeks. Review results across a full on-call rotation and include incidents created by the automation.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
+Further reading: [Google’s SRE book, Eliminating Toil](https://sre.google/sre-book/eliminating-toil/).
 
 ## Recognizing toil
 
@@ -33,7 +41,7 @@ You cannot reduce what you do not measure. Toil measurement approaches:
 
 **Ticket analysis**: tag support and operational tickets as toil vs. not. Review the toil tickets monthly. What categories of toil appear repeatedly? These are the automation candidates.
 
-A team discovering that 40% of their time is toil is not discovering a problem unique to them — it is discovering a baseline that exists broadly. The question is what to do about it.
+A team measuring 40% toil has a baseline for its own work. Compare across rotations and account for unusual incident weeks before using it to set a target.
 
 ## Prioritizing what to automate
 
@@ -51,6 +59,6 @@ Not all toil is equally worth automating. The priority framework:
 
 Reducing toil requires trading short-term capacity for long-term capacity. The team needs to spend time building automation instead of doing the manual work. This is a conversation with leadership: we are spending 35% of our engineering capacity on work that doesn't improve the system, and we need 2 sprints to build automation that will reduce this to 15%.
 
-The ROI argument helps: if 2 engineers spend 1 sprint building an automation that saves 4 hours per week across 3 engineers, the payback is within 2 months. The argument is more convincing with actual measurements than with intuitions.
+Estimate payback as one-time engineering effort divided by weekly hours saved after recurring maintenance. Use observed weekly frequencies and include the work needed to keep the automation running.
 
-*Working through a toil reduction initiative for an operations or SRE team? The measurement step is often the most revealing part. [Happy to compare approaches.](/contact)*
+*Working through a toil reduction initiative for an operations or SRE team? The measurement step is often the most revealing part. [Happy to compare approaches.](/contact/)*

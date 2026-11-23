@@ -10,6 +10,14 @@ There is a specific failure mode in reliability engineering: a system with excel
 
 Chaos engineering exists to close this gap. Instead of discovering failure behavior during an incident, you engineer controlled failures in a systematic way to validate that your reliability assumptions are correct.
 
+## What to measure
+
+**Error budget spent by one experiment.** If a controlled fault affects 30 of 100,000 eligible requests and the period allows 100 failed requests, the test consumes 30% of that period’s error budget. Define abort criteria and watch user-visible errors before increasing the blast radius.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
+Further reading: [Google’s SRE Workbook, Implementing SLOs](https://sre.google/workbook/implementing-slos/).
+
 ## The core principle
 
 The Netflix Chaos Engineering paper articulated the core idea: deliberately inject failures in a controlled manner to identify weaknesses before they manifest as incidents. The controlled environment lets you choose the failure, limit the blast radius, and observe the system behavior with your full attention — instead of discovering the failure at 2am under incident conditions.
@@ -89,4 +97,4 @@ GameDays are planned chaos engineering exercises run as team events — a time-b
 
 GameDays build confidence in system resilience and build team capability to handle incidents. Engineers who have practiced responding to injected failures respond more effectively to real ones.
 
-*Introducing chaos engineering to a reliability program or planning a first GameDay? The experiment design depends on the specific failure modes you most need to validate. [Happy to think through the approach.](/contact)*
+*Introducing chaos engineering to a reliability program or planning a first GameDay? The experiment design depends on the specific failure modes you most need to validate. [Happy to think through the approach.](/contact/)*

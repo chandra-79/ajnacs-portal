@@ -10,6 +10,12 @@ Prompt engineering is easy to dismiss as a soft skill — just telling the model
 
 The gap between "this works in the playground" and "this works reliably in production for all inputs" is where most prompt engineering effort should go.
 
+## What to measure
+
+**Prompt quality and regression on frozen cases.** If a revised prompt passes 87 of 100 fixed cases versus 81 for the old prompt, the observed gain is six percentage points. Examine which cases regressed, and compare token cost and latency using the same model version and sampling settings.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
 ## Structure your prompts like code, not conversation
 
 A prompt for a production system has components that should be designed deliberately:
@@ -91,4 +97,4 @@ Prompts are software. They should be version-controlled, reviewed, tested before
 
 In practice: store prompts in version control, reference them by a version identifier in your application, and deploy prompt changes through the same pipeline as code changes. An A/B testing framework for prompts — routing a percentage of production traffic to the new prompt before full rollout — is worth the investment for prompts that handle high-value or high-risk tasks.
 
-*Building a production AI system and working through the reliability problems? [Happy to compare approaches.](/contact)*
+*Building a production AI system and working through the reliability problems? [Happy to compare approaches.](/contact/)*

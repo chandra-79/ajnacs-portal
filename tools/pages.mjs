@@ -3,7 +3,17 @@
 import { SITE, esc, icon, fmtDate, readingTime, primaryTopic, seriesSlug } from "./lib.mjs";
 import { page } from "./shell.mjs";
 import { artwork } from "./visuals.mjs";
+import { coverFor } from "./covers.mjs";
+import { createHash } from "node:crypto";
+import { readFileSync } from "node:fs";
 const thumbnail=(title,tags,slug='')=>`<div class="content-thumbnail">${artwork(slug||'content-'+title.toLowerCase().replace(/[^a-z0-9]+/g,'-'),tags,{title})}</div>`;
+
+function caseStudyCover(slug, alt, first) {
+  const src = `/assets/covers/case-studies/${slug}.webp`;
+  const bytes = readFileSync(new URL(`..${src}`, import.meta.url));
+  const version = createHash('sha256').update(bytes).digest('hex').slice(0, 12);
+  return `<img data-article-art="${slug}" src="${src}?v=${version}" width="960" height="540" alt="${esc(alt)}" decoding="async"${first ? ' fetchpriority="high"' : ' loading="lazy"'}>`;
+}
 
 const SERVICES = [
   {
@@ -48,10 +58,7 @@ const METHOD = [
   ["Educate & Empower", "Upskilling internal teams so the capability stays after we leave."],
 ];
 
-const STATS = [
-  ["35%", "Faster releases"], ["45%", "MTTR reduction"],
-  ["25%", "OpEx savings"], ["99.9%", "Availability target"],
-];
+const OUTCOMES = ["Release lead time", "Recovery time", "Cost per workload", "Service availability"];
 
 const STACK = ["Kubernetes","Terraform","AWS","Azure","Google Cloud","Apache Kafka","OpenTelemetry","PostgreSQL","Snowflake","Apache Spark","PyTorch","WebLogic","Oracle FMW","Spring Boot","Docker","Ansible","Redis","Zero-Trust IAM"];
 
@@ -119,16 +126,13 @@ export function staticPages({ insights, notes, seriesMap, topicList, cardFor }) 
     <h1 class="h-display">Architecture that survives<br>contact with production.</h1>
     <p class="lede" style="max-width:58ch;margin-top:1.4rem">
       We modernise legacy systems, put AI into production, and train the engineers who have to run it afterwards.
-      We work alongside your team, in your codebase — not from a deck.
+      We work alongside your team in your codebase and production workflows.
     </p>
     <div class="row" style="margin-top:2rem;gap:.8rem">
       <a class="btn btn-lg" href="/contact/">Engage engineering ${icon.arrow}</a>
       <a class="btn btn-ghost btn-lg" href="/insights/">Read our writing</a>
     </div>
-    <div class="stat-strip" style="margin-top:3.4rem">
-      ${STATS.map(([v, l]) => `<div class="stat"><div class="stat-val">${v}</div><div class="stat-lbl">${l}</div></div>`).join("")}
-    </div>
-    <p class="small center" style="margin-top:.9rem;color:#8fa0c4">Typical results across modernisation engagements.</p>
+    <ul class="home-outcomes" aria-label="Engagement measures">${OUTCOMES.map(label => `<li>${label}</li>`).join('')}</ul>
   </div>
 </section>
 
@@ -145,7 +149,7 @@ export function staticPages({ insights, notes, seriesMap, topicList, cardFor }) 
     <div class="between" style="align-items:flex-end">
       <div>
         <p class="eyebrow">What we do</p>
-        <h2 class="h1" style="margin-top:.8rem;max-width:20ch">Three things, done properly.</h2>
+        <h2 class="h1" style="margin-top:.8rem;max-width:20ch">Architecture, AI and engineering training</h2>
       </div>
       <a class="link-arrow" href="/services/">All services ${icon.arrow}</a>
     </div>
@@ -182,7 +186,7 @@ export function staticPages({ insights, notes, seriesMap, topicList, cardFor }) 
       <a class="link-arrow" href="/insights/">Further reading ${icon.arrow}</a>
     </div>
     ${featured.length ? `<a class="feature-post" data-topic="${esc(primaryTopic(featured[0].tags))}" href="/insights/${featured[0].slug}/" style="margin-top:2.6rem">
-      <span class="art">${artwork(featured[0].slug, featured[0].tags, { w: 760, h: 560 })}</span>
+      <span class="art">${coverFor(featured[0], { sizes: "(min-width: 800px) 640px, 100vw" })}</span>
       <span class="body">
         <span class="chip" style="align-self:flex-start">${esc(primaryTopic(featured[0].tags))}</span>
         <h3>${esc(featured[0].title)}</h3>
@@ -302,20 +306,20 @@ ${SERVICES.map(s => `<section class="section ${s.id === "ai" ? "surface hair" : 
 <section class="wrap" style="padding-bottom:var(--section-y)">
   <div class="grid g-2 capability-grid">
   ${[
-    ["Architecture audit", "Architecture", "A fixed-scope technical audit of middleware, cloud spend and systemic bottlenecks.",
+    ["architecture-audit", "A magnifying glass reveals a bottleneck in a layered system", "Architecture audit", "Architecture", "A fixed-scope technical audit of middleware, cloud spend and systemic bottlenecks.",
       ["Where the architectural debt actually sits", "Which bottlenecks are structural and which are configuration", "A sequenced remediation plan with costs attached"],
       "Measured on: decisions the engineering team can act on immediately."],
-    ["Legacy modernisation", "Cloud Architecture", "Decoupling monolithic assets into event-driven services across multi-region deployments.",
+    ["legacy-modernisation", "A switching track routes workload packages from a mainframe to modular cloud services", "Legacy modernisation", "Cloud Architecture", "Decoupling monolithic assets into event-driven services across multi-region deployments.",
       ["Domain boundaries drawn against real call patterns", "Incremental strangler migration, not a rewrite", "CI/CD and IaC so deployment stops being an event"],
       "Measured on: release frequency and change failure rate."],
-    ["AI into production", "Enterprise AI", "Taking a model or agent from a working prototype to something that can be operated.",
+    ["ai-into-production", "A model moves from a prototype through a validation gate to production servers", "AI into production", "Enterprise AI", "Taking a model or agent from a working prototype to something that can be operated.",
       ["Evaluation harness before launch, not after", "Versioning, rollback and drift detection", "Zero-trust boundaries around corporate data"],
       "Measured on: whether it still works in month six."],
-    ["Team enablement", "Engineering Leadership", "Lab-based instruction on the stack the team actually runs.",
+    ["team-enablement", "Three lab workstations share a training bench and an open runbook", "Team enablement", "Engineering Leadership", "Lab-based instruction on the stack the team actually runs.",
       ["Curriculum built against your architecture", "Hands-on environments, not slideware", "Runbooks the team wrote themselves"],
       "Measured on: operational independence after handover."],
-  ].map(([t, topic, lede, bullets, measure]) => `<article class="case" data-topic="${esc(topic)}">
-    <div class="case-art">${artwork(t.toLowerCase().replace(/[^a-z0-9]+/g, "-"), [topic], { title:t })}</div>
+  ].map(([slug, alt, t, topic, lede, bullets, measure], index) => `<article class="case" data-topic="${esc(topic)}">
+    <div class="case-art">${caseStudyCover(slug, alt, index === 0)}</div>
     <div class="case-body">
       <span class="chip">${esc(topic)}</span>
       <h2 class="h3" style="margin-top:.7rem">${esc(t)}</h2>
@@ -349,7 +353,7 @@ ${SERVICES.map(s => `<section class="section ${s.id === "ai" ? "surface hair" : 
   <p>We specialise in transitioning complex legacy architectures into highly distributed, event-driven microservices. We engage directly alongside client engineering teams to execute deployments, configure CI/CD pipelines and establish operational governance — the work itself, not a recommendation about the work.</p>
   <h2>Why the writing exists</h2>
   <p>The <a href="/insights/">Insights</a> section is not marketing. It is the working material: architecture decisions, production failures and the trade-offs behind them, written down so they can be argued with. If you disagree with something there, that is a reasonable way to start a conversation.</p>
-  <h2>Who writes it</h2>
+  <h2 id="chandra-lanka">Who writes it</h2>
   <p>Chandra Lanka leads the practice — twenty-five years across enterprise middleware, cloud platforms and, more recently, putting AI systems somewhere they can be operated rather than demonstrated. Personal writing that does not belong on a company site lives under <a href="/notes/">Notes</a>.</p>
   <h2>Contact</h2>
   <p>Email <a href="mailto:${SITE.email}">${SITE.email}</a>, or use the <a href="/contact/">enquiry form</a>. We reply to specifics faster than to introductions.</p>
@@ -444,6 +448,7 @@ ${SERVICES.map(s => `<section class="section ${s.id === "ai" ? "surface hair" : 
     title: "Page not found",
     description: "That page does not exist.",
     path: "/404.html",
+    robots: "noindex, follow",
     body: `
 <section class="section"><div class="wrap-narrow center" style="padding-block:4rem">
   <p class="eyebrow" style="justify-content:center">404</p>

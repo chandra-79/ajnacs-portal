@@ -10,6 +10,12 @@ format: article
 
 Container security is not a single control — it is a set of decisions made at image build time, container runtime configuration, and orchestration platform level. Most container security incidents are not novel attacks against the container runtime. They are predictable misconfigurations that expose the host OS or enable lateral movement within the cluster. This lesson covers the specific misconfigurations and the systematic controls that prevent them.
 
+## What to measure
+
+**Signed image coverage at deployment.** If 180 of 200 newly admitted workloads use a verified image digest, coverage is 90%. Count audit-only and denied admissions separately. Check exemptions and scan age before presenting a policy-enabled cluster as fully covered.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
 ## The Threat Model
 
 A container is a boundary, not a fortress. The threats it contains:

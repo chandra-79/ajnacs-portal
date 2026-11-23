@@ -8,6 +8,12 @@ format: article
 
 Database replication is often configured with a default setup — one primary, one replica — without clear thinking about whether the goal is availability, read scaling, geographic distribution, or disaster recovery. Different goals require different configurations, and the default is frequently suboptimal for the actual need.
 
+## What to measure
+
+**Replica lag and recovery point.** If a primary has committed through position 1,200 and a replica is durable through 1,185, 15 log positions remain outstanding in the example. Express actual business exposure in affected records or time and distinguish receive, flush and replay.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
 ## Read replicas for read scaling
 
 The common use case: a read-heavy application where a single database instance is the query bottleneck. Read replicas receive a copy of every write from the primary and serve SELECT queries independently.
@@ -72,4 +78,4 @@ Questions to answer before configuring replication:
 
 The answers map to a specific configuration. A workload requiring zero data loss and sub-minute failover needs synchronous replication with automated failover. A workload with heavy read traffic and tolerance for 1-2 second replication lag is a candidate for async read replicas.
 
-*Designing database replication for a new system or reviewing an existing configuration against availability requirements? [Happy to compare approaches.](/contact)*
+*Designing database replication for a new system or reviewing an existing configuration against availability requirements? [Happy to compare approaches.](/contact/)*

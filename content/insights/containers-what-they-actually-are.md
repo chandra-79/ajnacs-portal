@@ -10,6 +10,14 @@ format: article
 
 The most common misconception about containers: they are lightweight virtual machines. They are not. A container is a process — or a group of processes — running on the host OS, isolated by Linux kernel features and constrained in its resource usage. Understanding this distinction is foundational for every engineer who uses containers in production.
 
+## What to measure
+
+**Start latency and memory at equivalent load.** Start the same service in a container and a VM using identical application versions. Measure time from launch to a healthy request and memory at steady state. Separate warm-start and cold-start results instead of averaging them together.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
+Further reading: [CNCF’s 2025 Annual Cloud Native Survey](https://www.cncf.io/announcements/2026/01/20/kubernetes-established-as-the-de-facto-operating-system-for-ai-as-production-use-hits-82-in-2025-cncf-annual-cloud-native-survey/).
+
 ## Virtual Machines vs Containers: The Actual Difference
 
 A virtual machine (VM) includes a full guest operating system — its own kernel, its own init process, its own drivers. The hypervisor (VMware, KVM, Hyper-V) runs below all guest OS instances and provides the illusion of dedicated hardware to each. The guest kernel is fully isolated from the host kernel.

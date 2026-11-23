@@ -8,6 +8,12 @@ format: article
 
 Logging is the telemetry everyone has and almost nobody designs. Metrics get dashboards reviews and traces get instrumentation sprints, while logs just… accumulate — printf archaeology wrapped in an ingestion bill that grows 40% annually until finance asks why the observability vendor costs more than the compute. The waste and the weakness have the same root: logs treated as *text a developer emits* rather than what production logging actually is — **a stream of structured events, designed for machines to filter and humans to trust, with an explicit cost model.** Here's the design.
 
+## What to measure
+
+**Field completeness and cost per debugged incident.** If 940 of 1,000 eligible log records have a usable trace identifier, correlation coverage is 94%. Track ingestion volume and inspect sensitive-field redaction. Better coverage is valuable when operators can reconstruct incidents faster.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
 ## Events, not sentences
 
 The foundational shift: a log line is a **JSON event with a schema**, not a sentence with variables interpolated into it. `"Payment failed for order 12345 after 3 retries"` is a sentence — grep-able if you remember the phrasing, aggregatable never. The event version carries `event: payment_failed`, `order_id`, `retry_count`, `failure_reason`, `duration_ms` — and now "failure rate by reason over time" is a query instead of a regex safari.

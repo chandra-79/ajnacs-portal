@@ -7,10 +7,9 @@ format: article
 derived: true
 ---
 
-
 There's a version of the work-life balance conversation that stays on the surface — flexible hours, remote work, unlimited PTO. Policies and perks. Things that look good in a recruitment pitch.
 
-The actual conversation is harder and less comfortable.
+The harder conversation is about what happens when someone uses those perks.
 
 It's about whether the culture makes it genuinely safe to stop working. Whether taking a day off means coming back to a pile of things that blame you for being absent. Whether the definition of commitment at your organization includes being available after hours, and whether saying no to that has consequences — stated or unstated.
 

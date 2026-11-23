@@ -12,6 +12,12 @@ A Kubernetes cluster out of the box has a large attack surface. Pods can communi
 
 None of these are unfixable. They're defaults chosen for developer convenience, not production security. Here's the set of controls I consider baseline for any production cluster.
 
+## What to measure
+
+**Policy enforcement coverage.** If 95 of 100 production namespaces enforce the selected policy, coverage is 95% by namespace. Weight by workloads as a second view and list exemptions with owners and expiry. Track denied admissions separately from detections.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
 ## RBAC: the principle of least privilege for cluster access
 
 Kubernetes RBAC defines what users and service accounts can do in the cluster. The defaults are often too permissive.
@@ -155,4 +161,4 @@ Kubernetes API server audit logging records every request to the API — who cre
 
 Audit logs should be shipped to a central logging system (CloudWatch Logs, Azure Monitor, GCP Cloud Logging, or your own ELK stack) where they're retained and searchable. The default audit policy logs everything, which is voluminous; a policy that logs at `RequestResponse` level for sensitive operations (secret access, RBAC changes) and `Metadata` level for routine operations is more manageable.
 
-*Reviewing your cluster security posture or hardening a new cluster? [Happy to compare configurations.](/contact)*
+*Reviewing your cluster security posture or hardening a new cluster? [Happy to compare configurations.](/contact/)*

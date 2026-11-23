@@ -10,6 +10,12 @@ Somewhere in your organization, revenue is flowing through a Java 8 application 
 
 The gap between that and current Java (21 LTS, 25 LTS) is not cosmetic. It's a security posture gap, a hiring gap, a performance gap, and — increasingly — a dependency gap, because the library ecosystem has moved its baseline. Here's how to close it without a big-bang rewrite and without stopping feature delivery.
 
+## What to measure
+
+**Risk retired per migration slice.** If 24 of 30 critical integrations replay correctly on the replacement runtime, compatibility coverage is 80%. Rank the six gaps by business impact and rollback complexity. Treat fewer framework dependencies and fewer unresolved business workflows as separate outcomes.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
 ## Why this became urgent rather than nice-to-have
 
 Four forces changed the calculus. **Dependencies moved:** Spring Framework 6/Boot 3 require Java 17+, and a growing set of libraries now baseline against 17 or 21 — staying on 8 means running increasingly unpatched transitive dependencies, which is where CVEs actually live. **Security economics moved:** commercial support for old JDKs exists but its price rises annually, and auditors have learned to ask for JDK versions. **Performance moved:** G1/ZGC improvements, compact strings, and startup work deliver double-digit percentage wins for a recompile — cloud bills notice. **People moved:** engineers learn records, virtual threads, and pattern matching now; estates frozen in 2014 idiom repel the hires they need most.

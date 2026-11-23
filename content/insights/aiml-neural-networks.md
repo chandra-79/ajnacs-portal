@@ -10,6 +10,12 @@ format: article
 
 Neural networks have produced most of the significant AI results of the last decade: image recognition that surpasses human accuracy, protein structure prediction that eluded biology for fifty years, and language models that can write, reason, and code. Understanding the basic mechanics — why neural networks are capable of learning complex functions — is foundational for any engineer working with modern AI systems.
 
+## What to measure
+
+**Generalisation gap.** Use disjoint training and validation sets. An accuracy of 96% on training data and 84% on validation data gives a 12-percentage-point gap. Compare both against a simple baseline and inspect class-level errors before changing the network.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
 ## The Basic Unit: The Artificial Neuron
 
 An artificial neuron performs a simple computation: it takes multiple input values, multiplies each by a weight, sums the weighted inputs, adds a bias, and passes the result through an activation function.

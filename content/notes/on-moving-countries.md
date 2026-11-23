@@ -11,7 +11,7 @@ You spend weeks deciding what furniture to sell and what to ship. You agonise ov
 
 Moving countries is less like relocating and more like doing a hard restart on a lot of invisible settings.
 
-The obvious stuff adjusts fast. New SIM, new bank account, new commute. Within a month you know which supermarket to trust and which coffee shop has the right ratio of quiet to ambient noise for getting work done.
+The obvious stuff adjusts fast. A new SIM, a new bank account, a new commute. Within a month you know which supermarket to trust and which coffee shop has the right ratio of quiet to ambient noise for getting work done.
 
 The slow stuff is subtler. How direct to be in a meeting. When a "yes" means yes versus when it's a polite holding pattern. How much silence is comfortable in a conversation before someone feels obligated to fill it. These things you learn by getting them slightly wrong, repeatedly, until one day you notice you stopped getting them wrong.
 
