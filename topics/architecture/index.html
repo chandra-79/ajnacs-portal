@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Architecture articles and guides | Ajna CS</title>
+<meta name="description" content="Browse Architecture articles from Ajna Consulting Services, with production trade-offs, worked measurements and implementation guides.">
+<meta name="author" content="Chandra Lanka">
+<link rel="canonical" href="https://ajnacs.com/topics/architecture/">
+<meta name="robots" content="index, follow, max-image-preview:large">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Ajna Consulting Services">
+<meta property="og:title" content="Architecture articles and guides">
+<meta property="og:description" content="Browse Architecture articles from Ajna Consulting Services, with production trade-offs, worked measurements and implementation guides.">
+<meta property="og:url" content="https://ajnacs.com/topics/architecture/">
+<meta property="og:image" content="https://ajnacs.com/assets/og/pages/topics-architecture.png?v=3575b67586a2">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Architecture articles and guides">
+
+
+<meta property="og:image:type" content="image/png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Architecture articles and guides">
+<meta name="twitter:description" content="Browse Architecture articles from Ajna Consulting Services, with production trade-offs, worked measurements and implementation guides.">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/pages/topics-architecture.png?v=3575b67586a2">
+<meta name="twitter:image:alt" content="Architecture articles and guides">
+
+<link rel="icon" href="/favicon.ico?v=cefc53b9" sizes="any">
+<link rel="icon" href="/images/ajna-mark.svg?v=cefc53b9" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png?v=cefc53b9">
+<meta name="theme-color" content="#0a1020">
+
+<link rel="stylesheet" href="/assets/fonts/fonts.css">
+<link rel="stylesheet" href="/assets/css/site.css?v=dd970c4d">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<script>
+/* Theme and reading preferences are applied before first paint, so the page
+   never flashes the wrong ground or resets someone's text size mid-read. */
+(function(){try{
+var d=document.documentElement,t=localStorage.getItem('acs-theme');
+if(t!=='dark'&&t!=='light'&&t!=='sepia')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+d.setAttribute('data-theme',t);
+['rsize','rwidth','rface'].forEach(function(k){
+  var v=localStorage.getItem('acs-'+k);
+  if(v&&/^[a-z]{1,5}$/.test(v))d.setAttribute('data-'+k,v);
+});
+
+}catch(e){}})();
+</script>
+
+</head>
+<body class="" data-topic="Architecture">
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header" id="siteHeader">
+  <div class="wrap" style="display:flex;align-items:center;width:min(1220px,100% - var(--gutter)*2)">
+    <div class="brand">
+      <button class="brand-motion" type="button" data-ajna-motion data-arrival aria-label="Open Ajna logo" aria-pressed="false"><svg class="ajna-mark" viewBox="0 0 100 100" width="40" height="40" fill="none" aria-hidden="true" focusable="false"><defs><path id="t-hdr" d="M 50 4 L 96 50 L 50 50 Z"/><path id="e-hdr" d="M 50 4 L 96 50"/><path id="k-hdr" d="M 50 4 L 50 50 L 96 50"/><linearGradient id="bev-hdr" gradientUnits="userSpaceOnUse" x1="50" y1="50" x2="73" y2="27"><stop offset="0" stop-color="#000" stop-opacity=".13"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity=".2"/></linearGradient><radialGradient id="core-hdr" cx=".34" cy=".3" r=".85"><stop offset="0" stop-color="#fff" stop-opacity=".42"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".45"/></radialGradient><path id="ll-hdr" d="M 50 50 C 34 30.26, 40.08 9.579999999999998, 50 3 C 59.92 9.579999999999998, 66 30.26, 50 50 Z"/><path id="ls-hdr" d="M 50 50 C 36 33.620000000000005, 41.32 16.46, 50 11 C 58.68 16.46, 64 33.620000000000005, 50 50 Z"/><clipPath id="clip-ll-hdr"><use href="#ll-hdr"/></clipPath><clipPath id="clip-ls-hdr"><use href="#ls-hdr"/></clipPath></defs><g class="am-leaf" opacity="0" transform="translate(50 50) rotate(0) scale(.38 .02) translate(-50 -50)"><use href="#ll-hdr" fill="#E8402A"/><path d="M50 0 H100 V100 H50Z" fill="#000" fill-opacity=".13" clip-path="url(#clip-ll-hdr)"/><path d="M50 50 L50 3" stroke="#fff" stroke-opacity=".2" stroke-width=".7"/></g><g class="am-leaf" opacity="0" transform="translate(50 50) rotate(45) scale(.38 .02) translate(-50 -50)"><use href="#ls-hdr" fill="#E8402A"/><path d="M50 0 H100 V100 H50Z" fill="#000" fill-opacity=".13" clip-path="url(#clip-ls-hdr)"/><path d="M50 50 L50 11" stroke="#fff" stroke-opacity=".2" stroke-width=".7"/></g><g class="am-leaf" opacity="0" transform="translate(50 50) rotate(90) scale(.38 .02) translate(-50 -50)"><use href="#ll-hdr" fill="#F5A623"/><path d="M50 0 H100 V100 H50Z" fill="#000" fill-opacity=".13" clip-path="url(#clip-ll-hdr)"/><path d="M50 50 L50 3" stroke="#fff" stroke-opacity=".2" stroke-width=".7"/></g><g class="am-leaf" opacity="0" transform="translate(50 50) rotate(135) scale(.38 .02) translate(-50 -50)"><use href="#ls-hdr" fill="#F5A623"/><path d="M50 0 H100 V100 H50Z" fill="#000" fill-opacity=".13" clip-path="url(#clip-ls-hdr)"/><path d="M50 50 L50 11" stroke="#fff" stroke-opacity=".2" stroke-width=".7"/></g><g class="am-leaf" opacity="0" transform="translate(50 50) rotate(180) scale(.38 .02) translate(-50 -50)"><use href="#ll-hdr" fill="#17A05E"/><path d="M50 0 H100 V100 H50Z" fill="#000" fill-opacity=".13" clip-path="url(#clip-ll-hdr)"/><path d="M50 50 L50 3" stroke="#fff" stroke-opacity=".2" stroke-width=".7"/></g><g class="am-leaf" opacity="0" transform="translate(50 50) rotate(225) scale(.38 .02) translate(-50 -50)"><use href="#ls-hdr" fill="#17A05E"/><path d="M50 0 H100 V100 H50Z" fill="#000" fill-opacity=".13" clip-path="url(#clip-ls-hdr)"/><path d="M50 50 L50 11" stroke="#fff" stroke-opacity=".2" stroke-width=".7"/></g><g class="am-leaf" opacity="0" transform="translate(50 50) rotate(270) scale(.38 .02) translate(-50 -50)"><use href="#ll-hdr" fill="#2B57E8"/><path d="M50 0 H100 V100 H50Z" fill="#000" fill-opacity=".13" clip-path="url(#clip-ll-hdr)"/><path d="M50 50 L50 3" stroke="#fff" stroke-opacity=".2" stroke-width=".7"/></g><g class="am-leaf" opacity="0" transform="translate(50 50) rotate(315) scale(.38 .02) translate(-50 -50)"><use href="#ls-hdr" fill="#2B57E8"/><path d="M50 0 H100 V100 H50Z" fill="#000" fill-opacity=".13" clip-path="url(#clip-ls-hdr)"/><path d="M50 50 L50 11" stroke="#fff" stroke-opacity=".2" stroke-width=".7"/></g><g class="am-bud"><g class="am-petal" style="--a:0deg"><use href="#t-hdr" fill="#E8402A"/><use href="#t-hdr" fill="url(#bev-hdr)"/><use href="#t-hdr" fill="#fff" opacity="0.07"/><use href="#e-hdr" stroke="#fff" stroke-opacity="0.34" stroke-width="1.6" stroke-linecap="round"/><use href="#k-hdr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g class="am-petal" style="--a:90deg"><use href="#t-hdr" fill="#F5A623"/><use href="#t-hdr" fill="url(#bev-hdr)"/><use href="#t-hdr" fill="#000" opacity="0.12"/><use href="#e-hdr" stroke="#000" stroke-opacity="0.16" stroke-width="1.6" stroke-linecap="round"/><use href="#k-hdr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g class="am-petal" style="--a:180deg"><use href="#t-hdr" fill="#17A05E"/><use href="#t-hdr" fill="url(#bev-hdr)"/><use href="#t-hdr" fill="#000" opacity="0.05"/><use href="#e-hdr" stroke="#000" stroke-opacity="0.1" stroke-width="1.6" stroke-linecap="round"/><use href="#k-hdr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g class="am-petal" style="--a:270deg"><use href="#t-hdr" fill="#2B57E8"/><use href="#t-hdr" fill="url(#bev-hdr)"/><use href="#t-hdr" fill="#fff" opacity="0.30"/><use href="#e-hdr" stroke="#fff" stroke-opacity="0.46" stroke-width="1.6" stroke-linecap="round"/><use href="#k-hdr" stroke="#000" stroke-width=".9" opacity=".2"/></g></g><g class="am-core"><circle cx="50" cy="50" r="6" fill="currentColor"/><circle cx="50" cy="50" r="6" fill="url(#core-hdr)"/></g></svg></button>
+      <a class="brand-home" href="/" aria-label="Ajna Consulting Services — home"><span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span></a>
+    </div>
+    <nav class="nav" id="nav" aria-label="Primary">
+      <a href="/services/">Services</a>
+      <a href="/insights/">Insights</a>
+      <a href="/series/">Series</a>
+      <a href="/case-studies/">Case studies</a>
+      <a href="/about/">About</a>
+      <a class="btn btn-sm" href="/contact/" style="margin-left:.4rem">Engage engineering</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn" id="themeBtn" type="button" aria-label="Switch to dark mode" aria-pressed="false"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg></button>
+      <button class="icon-btn nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+<section class="section mesh"><div class="wrap"><nav class="crumbs" aria-label="Breadcrumb"><a href="/insights/">Insights</a><span aria-hidden="true">/</span><a href="/topics/">Topics</a></nav><h1 class="h-display">Architecture</h1><p class="lede">21 articles</p></div></section>
+<section class="wrap section" aria-label="Articles about Architecture"><div class="grid g-3"><a class="card" data-card data-topics="|Programming|Architecture|Cloud Architecture|" data-search="api design for enterprise systems: the decisions that age well an api that&#39;s easy to build against is easy to build wrong. the decisions around versioning, error models, pagination, idempotency, and authentication compound over time — here&#39;s how to make the ones that don&#39;t cause regret. programming architecture cloud architecture" data-topic="Programming" href="/insights/api-design-enterprise/">
+  <div class="card-art"><img data-article-art="api-design-enterprise" src="/assets/covers/api-design-enterprise.svg" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-body">
+    <span class="chip">Programming</span>
+    <h3 class="card-title">API Design for Enterprise Systems: The Decisions That Age Well</h3>
+    <p class="card-desc">An API that&#39;s easy to build against is easy to build wrong. The decisions around versioning, error models, pagination, idempotency, and authentication compound over time — here&#39;s how to make the ones that don&#39;t cause regret.</p>
+    <div class="card-meta"><time datetime="2026-11-06">6 Nov 2026</time><span class="dot"></span><span>5 min read</span></div>
+  </div>
+</a><a class="card" data-card data-topics="|Programming|Architecture|Cloud Architecture|" data-search="system design patterns every backend engineer should know cqrs, event sourcing, saga pattern, outbox pattern — the patterns that solve specific distributed systems problems, what trade-offs they introduce, and when the simpler option is actually the right one. programming architecture cloud architecture" data-topic="Programming" href="/insights/system-design-patterns-backend/">
+  <div class="card-art"><img data-article-art="system-design-patterns-backend" src="/assets/covers/system-design-patterns-backend.svg" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-body">
+    <span class="chip">Programming</span>
+    <h3 class="card-title">System Design Patterns Every Backend Engineer Should Know</h3>
+    <p class="card-desc">CQRS, event sourcing, saga pattern, outbox pattern — the patterns that solve specific distributed systems problems, what trade-offs they introduce, and when the simpler option is actually the right one.</p>
+    <div class="card-meta"><time datetime="2026-10-28">28 Oct 2026</time><span class="dot"></span><span>5 min read</span></div>
+  </div>
+</a><a class="card" data-card data-topics="|Engineering Leadership|Architecture|Fundamentals|" data-search="platform engineering: what it is, why it emerged, and what makes it different from devops platform engineering is not rebranded devops. it is a specific organisational and technical discipline that treats internal infrastructure as a product. here is what that actually means. engineering leadership architecture fundamentals" data-topic="Engineering Leadership" href="/insights/platform-eng-what-it-is/">
+  <div class="card-art"><img data-article-art="platform-eng-what-it-is" src="/assets/covers/platform-eng-what-it-is.svg" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-body">
+    <span class="chip">Engineering Leadership</span>
+    <h3 class="card-title">Platform Engineering: What It Is, Why It Emerged, and What Makes It Different from DevOps</h3>
+    <p class="card-desc">Platform engineering is not rebranded DevOps. It is a specific organisational and technical discipline that treats internal infrastructure as a product. Here is what that actually means.</p>
+    <div class="card-meta"><time datetime="2026-10-16">16 Oct 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
+  </div>
+</a><a class="card" data-card data-topics="|DevSecOps|Architecture|Fundamentals|" data-search="platform observability: building the visibility layer every application team gets automatically how platform teams build and operate the metrics, logging, and tracing infrastructure that application teams consume without configuring — and what good platform observability coverage actually looks like. devsecops architecture fundamentals" data-topic="DevSecOps" href="/insights/platform-eng-observability/">
+  <div class="card-art"><img data-article-art="platform-eng-observability" src="/assets/covers/platform-eng-observability.svg" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-body">
+    <span class="chip">DevSecOps</span>
+    <h3 class="card-title">Platform Observability: Building the Visibility Layer Every Application Team Gets Automatically</h3>
+    <p class="card-desc">How platform teams build and operate the metrics, logging, and tracing infrastructure that application teams consume without configuring — and what good platform observability coverage actually looks like.</p>
+    <div class="card-meta"><time datetime="2026-09-16">16 Sept 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
+  </div>
+</a><a class="card" data-card data-topics="|Engineering Leadership|Architecture|Fundamentals|" data-search="measuring platform engineering success: the metrics that actually matter dora metrics, developer experience scores, cognitive load measures, and the platform health indicators that tell you whether your internal platform is creating value or creating another bottleneck. engineering leadership architecture fundamentals" data-topic="Engineering Leadership" href="/insights/platform-eng-measuring-success/">
+  <div class="card-art"><img data-article-art="platform-eng-measuring-success" src="/assets/covers/platform-eng-measuring-success.svg" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-body">
+    <span class="chip">Engineering Leadership</span>
+    <h3 class="card-title">Measuring Platform Engineering Success: The Metrics That Actually Matter</h3>
+    <p class="card-desc">DORA metrics, developer experience scores, cognitive load measures, and the platform health indicators that tell you whether your internal platform is creating value or creating another bottleneck.</p>
+    <div class="card-meta"><time datetime="2026-07-21">21 Jul 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
+  </div>
+</a><a class="card" data-card data-topics="|Engineering Leadership|Architecture|Fundamentals|" data-search="designing an internal developer platform: abstraction layers, golden paths, and the governance balance how to design the abstraction layer between your platform and your application teams — what to hide, what to expose, and how to build the golden paths that make good practices the easy practices. engineering leadership architecture fundamentals" data-topic="Engineering Leadership" href="/insights/platform-eng-idp-design/">
+  <div class="card-art"><img data-article-art="platform-eng-idp-design" src="/assets/covers/platform-eng-idp-design.svg" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-body">
+    <span class="chip">Engineering Leadership</span>
+    <h3 class="card-title">Designing an Internal Developer Platform: Abstraction Layers, Golden Paths, and the Governance Balance</h3>
+    <p class="card-desc">How to design the abstraction layer between your platform and your application teams — what to hide, what to expose, and how to build the golden paths that make good practices the easy practices.</p>
+    <div class="card-meta"><time datetime="2026-05-19">19 May 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
+  </div>
+</a><a class="card" data-card data-topics="|Architecture|Performance|Engineering Leadership|Capacity Planning|" data-search="back-of-envelope engineering: the estimation skill that filters bad architectures in minutes before the design review argues about frameworks, arithmetic should have eliminated half the options. the latency numbers worth memorizing, the estimation moves — traffic, storage, bandwidth, cost — and worked habits that turn guesses into engineering. architecture performance engineering leadership capacity planning" data-topic="Architecture" href="/insights/back-of-envelope-system-design/">
+  <div class="card-art"><img data-article-art="back-of-envelope-system-design" src="/assets/covers/back-of-envelope-system-design.svg" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-body">
+    <span class="chip">Architecture</span>
+    <h3 class="card-title">Back-of-Envelope Engineering: The Estimation Skill That Filters Bad Architectures in Minutes</h3>
+    <p class="card-desc">Before the design review argues about frameworks, arithmetic should have eliminated half the options. The latency numbers worth memorizing, the estimation moves — traffic, storage, bandwidth, cost — and worked habits that turn guesses into engineering.</p>
+    <div class="card-meta"><time datetime="2026-04-01">1 Apr 2026</time><span class="dot"></span><span>4 min read</span></div>
+  </div>
+</a><a class="card" data-card data-topics="|Java|Modernization|Technical Debt|Architecture|Engineering Practice|" data-search="modernizing legacy java: a roadmap from java 8 to 21+ without stopping the business most enterprise java still runs on versions the ecosystem has left behind. a staged roadmap for moving java 8 estates to 21+ — what breaks, what to automate, how to sequence framework upgrades, and how to sell the work to the business. java modernization technical debt architecture engineering practice" data-topic="Architecture" href="/insights/java-legacy-modernization-roadmap/">
+  <div class="card-art"><img data-article-art="java-legacy-modernization-roadmap" src="/assets/covers/java-legacy-modernization-roadmap.svg" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-body">
+    <span class="chip">Architecture</span>
+    <h3 class="card-title">Modernizing Legacy Java: A Roadmap from Java 8 to 21+ Without Stopping the Business</h3>
+    <p class="card-desc">Most enterprise Java still runs on versions the ecosystem has left behind. A staged roadmap for moving Java 8 estates to 21+ — what breaks, what to automate, how to sequence framework upgrades, and how to sell the work to the business.</p>
+    <div class="card-meta"><time datetime="2026-03-10">10 Mar 2026</time><span class="dot"></span><span>5 min read</span></div>
+  </div>
+</a><a class="card" data-card data-topics="|Java|JVM|Concurrency|Performance|Architecture|" data-search="virtual threads in the enterprise: what changes, what doesn&#39;t, and what breaks java 21&#39;s virtual threads promise massive concurrency without reactive complexity. here&#39;s what actually changes in enterprise services — thread pool math, pinning pitfalls, connection pools as the new bottleneck, and when reactive still wins. java jvm concurrency performance architecture" data-topic="Performance" href="/insights/java-virtual-threads-enterprise/">
+  <div class="card-art"><img data-article-art="java-virtual-threads-enterprise" src="/assets/covers/java-virtual-threads-enterprise.svg" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-body">
+    <span class="chip">Performance</span>
+    <h3 class="card-title">Virtual Threads in the Enterprise: What Changes, What Doesn&#39;t, and What Breaks</h3>
+    <p class="card-desc">Java 21&#39;s virtual threads promise massive concurrency without reactive complexity. Here&#39;s what actually changes in enterprise services — thread pool math, pinning pitfalls, connection pools as the new bottleneck, and when reactive still wins.</p>
+    <div class="card-meta"><time datetime="2026-02-24">24 Feb 2026</time><span class="dot"></span><span>5 min read</span></div>
+  </div>
+</a><a class="card" data-card data-topics="|Cloud Architecture|Architecture|Reliability|Disaster Recovery|Distributed Systems|" data-search="multi-region architecture patterns: what you&#39;re actually buying at each tier active-passive, pilot light, active-active, and the data problem underneath them all. a tiered framework for multi-region design that matches architecture to actual availability requirements — and prices the tiers honestly. cloud architecture architecture reliability disaster recovery distributed systems" data-topic="Cloud Architecture" href="/insights/multi-region-architecture-patterns/">
+  <div class="card-art"><img data-article-art="multi-region-architecture-patterns" src="/assets/covers/multi-region-architecture-patterns.svg" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-body">
+    <span class="chip">Cloud Architecture</span>
+    <h3 class="card-title">Multi-Region Architecture Patterns: What You&#39;re Actually Buying at Each Tier</h3>
+    <p class="card-desc">Active-passive, pilot light, active-active, and the data problem underneath them all. A tiered framework for multi-region design that matches architecture to actual availability requirements — and prices the tiers honestly.</p>
+    <div class="card-meta"><time datetime="2026-02-12">12 Feb 2026</time><span class="dot"></span><span>5 min read</span></div>
+  </div>
+</a><a class="card" data-card data-topics="|Performance|Capacity Planning|Reliability|Distributed Systems|Architecture|" data-search="queueing theory for engineers: why everything melts at 80% utilization little&#39;s law, the utilization-latency curve, and variability&#39;s tax — the three results that explain most capacity mysteries, from connection pools to on-call load. no calculus required, just the intuitions that make systems behavior predictable. performance capacity planning reliability distributed systems architecture" data-topic="Performance" href="/insights/queueing-theory-for-engineers/">
+  <div class="card-art"><img data-article-art="queueing-theory-for-engineers" src="/assets/covers/queueing-theory-for-engineers.svg" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-body">
+    <span class="chip">Performance</span>
+    <h3 class="card-title">Queueing Theory for Engineers: Why Everything Melts at 80% Utilization</h3>
+    <p class="card-desc">Little&#39;s Law, the utilization-latency curve, and variability&#39;s tax — the three results that explain most capacity mysteries, from connection pools to on-call load. No calculus required, just the intuitions that make systems behavior predictable.</p>
+    <div class="card-meta"><time datetime="2026-02-03">3 Feb 2026</time><span class="dot"></span><span>5 min read</span></div>
+  </div>
+</a><a class="card" data-card data-topics="|Legacy Modernization|Architecture|Distributed Systems|Engineering Practice|Technical Debt|" data-search="the strangler fig in practice: incremental legacy replacement that actually finishes everyone cites the strangler pattern; few finish a strangulation. the facade and routing mechanics, the data-migration sequencing that makes or breaks it, the organizational funding model, and the anti-patterns that leave estates half-strangled forever. legacy modernization architecture distributed systems engineering practice technical debt" data-topic="Architecture" href="/insights/strangler-fig-legacy-migration/">
+  <div class="card-art"><img data-article-art="strangler-fig-legacy-migration" src="/assets/covers/strangler-fig-legacy-migration.svg" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-body">
+    <span class="chip">Architecture</span>
+    <h3 class="card-title">The Strangler Fig in Practice: Incremental Legacy Replacement That Actually Finishes</h3>
+    <p class="card-desc">Everyone cites the strangler pattern; few finish a strangulation. The facade and routing mechanics, the data-migration sequencing that makes or breaks it, the organizational funding model, and the anti-patterns that leave estates half-strangled forever.</p>
+    <div class="card-meta"><time datetime="2026-01-19">19 Jan 2026</time><span class="dot"></span><span>5 min read</span></div>
+  </div>
+</a><a class="card" data-card data-topics="|DevSecOps|Architecture|" data-search="software supply chain security: sbom, dependency auditing, and what actually reduces risk the software supply chain attack surface is large and growing. sboms, dependency scanning, and provenance verification are the practical measures that reduce real risk — here&#39;s what each covers and where the gaps are. devsecops architecture" data-topic="DevSecOps" href="/insights/supply-chain-security-sbom/">
+  <div class="card-art"><img data-article-art="supply-chain-security-sbom" src="/assets/covers/supply-chain-security-sbom.svg" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-body">
+    <span class="chip">DevSecOps</span>
+    <h3 class="card-title">Software Supply Chain Security: SBOM, Dependency Auditing, and What Actually Reduces Risk</h3>
+    <p class="card-desc">The software supply chain attack surface is large and growing. SBOMs, dependency scanning, and provenance verification are the practical measures that reduce real risk — here&#39;s what each covers and where the gaps are.</p>
+    <div class="card-meta"><time datetime="2025-10-27">27 Oct 2025</time><span class="dot"></span><span>4 min read</span></div>
+  </div>
+</a><a class="card" data-card data-topics="|Java|WebLogic|Middleware|Architecture|" data-search="weblogic domains, clusters, and managed servers: the architecture explained admin servers, managed servers, clusters, machines, and node manager — the weblogic domain model explained for people who have to run it, not just pass the exam. what each piece does, how they fit together, and where production deployments go wrong. java weblogic middleware architecture" data-topic="Architecture" href="/insights/weblogic-domains-clusters-explained/">
+  <div class="card-art"><img data-article-art="weblogic-domains-clusters-explained" src="/assets/covers/weblogic-domains-clusters-explained.svg" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-body">
+    <span class="chip">Architecture</span>
+    <h3 class="card-title">WebLogic Domains, Clusters, and Managed Servers: The Architecture Explained</h3>
+    <p class="card-desc">Admin servers, managed servers, clusters, machines, and Node Manager — the WebLogic domain model explained for people who have to run it, not just pass the exam. What each piece does, how they fit together, and where production deployments go wrong.</p>
+    <div class="card-meta"><time datetime="2025-09-09">9 Sept 2025</time><span class="dot"></span><span>7 min read</span></div>
+  </div>
+</a><a class="card" data-card data-topics="|Java|WebLogic|Middleware|Messaging|Architecture|" data-search="weblogic jms in production: servers, stores, and the configuration that survives failover jms servers, persistent stores, distributed destinations, and connection factories — how weblogic messaging actually fits together, and the configuration decisions that determine whether your queues survive a server failure. java weblogic middleware messaging architecture" data-topic="Architecture" href="/insights/weblogic-jms-production-configuration/">
+  <div class="card-art"><img data-article-art="weblogic-jms-production-configuration" src="/assets/covers/weblogic-jms-production-configuration.svg" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-body">
+    <span class="chip">Architecture</span>
+    <h3 class="card-title">WebLogic JMS in Production: Servers, Stores, and the Configuration That Survives Failover</h3>
+    <p class="card-desc">JMS servers, persistent stores, distributed destinations, and connection factories — how WebLogic messaging actually fits together, and the configuration decisions that determine whether your queues survive a server failure.</p>
+    <div class="card-meta"><time datetime="2025-08-28">28 Aug 2025</time><span class="dot"></span><span>6 min read</span></div>
+  </div>
+</a><a class="card" data-card data-topics="|Java|WebLogic|Middleware|Performance|Architecture|" data-search="weblogic performance tuning: work managers, connection pools, and the knobs that actually matter a field guide to tuning weblogic server in production — the self-tuning thread pool, work managers, jdbc connection pools, jvm settings, and the diagnostic tools that tell you which knob to turn. java weblogic middleware performance architecture" data-topic="Performance" href="/insights/weblogic-performance-tuning/">
+  <div class="card-art"><img data-article-art="weblogic-performance-tuning" src="/assets/covers/weblogic-performance-tuning.svg" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-body">
+    <span class="chip">Performance</span>
+    <h3 class="card-title">WebLogic Performance Tuning: Work Managers, Connection Pools, and the Knobs That Actually Matter</h3>
+    <p class="card-desc">A field guide to tuning WebLogic Server in production — the self-tuning thread pool, work managers, JDBC connection pools, JVM settings, and the diagnostic tools that tell you which knob to turn.</p>
+    <div class="card-meta"><time datetime="2025-08-19">19 Aug 2025</time><span class="dot"></span><span>6 min read</span></div>
+  </div>
+</a><a class="card" data-card data-topics="|CDN &amp; Caching|Infrastructure|Architecture|" data-search="varnish cache configuration: a practical guide to vcl and caching strategy varnish is a powerful http accelerator, but the configuration language (vcl) has a steep learning curve. here&#39;s how to configure varnish for real workloads — including cache key design, ttl strategy, authentication handling, and esi for partial caching. cdn &amp; caching infrastructure architecture" data-topic="Infrastructure" href="/insights/varnish-cache-configuration/">
+  <div class="card-art"><img data-article-art="varnish-cache-configuration" src="/assets/covers/varnish-cache-configuration.svg" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-body">
+    <span class="chip">Infrastructure</span>
+    <h3 class="card-title">Varnish Cache Configuration: A Practical Guide to VCL and Caching Strategy</h3>
+    <p class="card-desc">Varnish is a powerful HTTP accelerator, but the configuration language (VCL) has a steep learning curve. Here&#39;s how to configure Varnish for real workloads — including cache key design, TTL strategy, authentication handling, and ESI for partial caching.</p>
+    <div class="card-meta"><time datetime="2025-03-04">4 Mar 2025</time><span class="dot"></span><span>4 min read</span></div>
+  </div>
+</a><a class="card" data-card data-topics="|Data Engineering|Redis|Architecture|Cloud Architecture|" data-search="redis in production: patterns that work and anti-patterns that will break you redis is fast until it isn&#39;t. here are the caching patterns, data structure choices, and operational decisions that determine whether redis is a performance multiplier or a fragile dependency. data engineering redis architecture cloud architecture" data-topic="Data Engineering" href="/insights/redis-production-patterns/">
+  <div class="card-art"><img data-article-art="redis-production-patterns" src="/assets/covers/redis-production-patterns.svg" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-body">
+    <span class="chip">Data Engineering</span>
+    <h3 class="card-title">Redis in Production: Patterns That Work and Anti-patterns That Will Break You</h3>
+    <p class="card-desc">Redis is fast until it isn&#39;t. Here are the caching patterns, data structure choices, and operational decisions that determine whether Redis is a performance multiplier or a fragile dependency.</p>
+    <div class="card-meta"><time datetime="2024-12-10">10 Dec 2024</time><span class="dot"></span><span>5 min read</span></div>
+  </div>
+</a><a class="card" data-card data-topics="|Cloud Architecture|Architecture|" data-search="applying the azure well-architected framework: what the pillars look like in practice the azure well-architected framework is a useful lens for reviewing cloud architectures. here&#39;s how each pillar translates from documentation to concrete design decisions for enterprise workloads. cloud architecture architecture" data-topic="Cloud Architecture" href="/insights/azure-well-architected-framework/">
+  <div class="card-art"><img data-article-art="azure-well-architected-framework" src="/assets/covers/azure-well-architected-framework.svg" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-body">
+    <span class="chip">Cloud Architecture</span>
+    <h3 class="card-title">Applying the Azure Well-Architected Framework: What the Pillars Look Like in Practice</h3>
+    <p class="card-desc">The Azure Well-Architected Framework is a useful lens for reviewing cloud architectures. Here&#39;s how each pillar translates from documentation to concrete design decisions for enterprise workloads.</p>
+    <div class="card-meta"><time datetime="2024-11-13">13 Nov 2024</time><span class="dot"></span><span>4 min read</span></div>
+  </div>
+</a><a class="card" data-card data-topics="|Data Engineering|Architecture|Performance|Infrastructure|" data-search="speed at scale: enterprise caching for oltp and olap workloads a practical guide to multi-tier caching architecture — how to design caching layers that absorb the majority of read load, handle traffic spikes without crashing, and maintain the cache hit ratios that separate resilient systems from fragile ones. data engineering architecture performance infrastructure" data-topic="Data Engineering" href="/insights/enterprise-caching-architecture/">
+  <div class="card-art"><img data-article-art="enterprise-caching-architecture" src="/assets/covers/enterprise-caching-architecture.svg" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-body">
+    <span class="chip">Data Engineering</span>
+    <h3 class="card-title">Speed at Scale: Enterprise Caching for OLTP and OLAP Workloads</h3>
+    <p class="card-desc">A practical guide to multi-tier caching architecture — how to design caching layers that absorb the majority of read load, handle traffic spikes without crashing, and maintain the cache hit ratios that separate resilient systems from fragile ones.</p>
+    <div class="card-meta"><time datetime="2024-11-01">1 Nov 2024</time><span class="dot"></span><span>5 min read</span></div>
+  </div>
+</a><a class="card" data-card data-topics="|AI &amp; MLOps|Enterprise AI|Architecture|" data-search="multi-agent ai systems: when they add value and when they add complexity multi-agent architectures are generating significant interest. before adopting one, it helps to be clear about what problem they solve, what they cost in complexity and reliability, and what simpler alternatives look like. ai &amp; mlops enterprise ai architecture" data-topic="AI &amp; MLOps" href="/insights/multi-agent-systems-enterprise/">
+  <div class="card-art"><img data-article-art="multi-agent-systems-enterprise" src="/assets/covers/multi-agent-systems-enterprise.svg" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-body">
+    <span class="chip">AI &amp; MLOps</span>
+    <h3 class="card-title">Multi-Agent AI Systems: When They Add Value and When They Add Complexity</h3>
+    <p class="card-desc">Multi-agent architectures are generating significant interest. Before adopting one, it helps to be clear about what problem they solve, what they cost in complexity and reliability, and what simpler alternatives look like.</p>
+    <div class="card-meta"><time datetime="2024-10-22">22 Oct 2024</time><span class="dot"></span><span>4 min read</span></div>
+  </div>
+</a></div></section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="grid g-4" style="gap:2rem">
+      <div>
+        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem" aria-label="Ajna Consulting Services — home">
+          <svg class="ajna-mark is-still" viewBox="0 0 100 100" width="36" height="36" fill="none" aria-hidden="true" focusable="false"><defs><path id="t-ftr" d="M 50 4 L 96 50 L 50 50 Z"/><path id="e-ftr" d="M 50 4 L 96 50"/><path id="k-ftr" d="M 50 4 L 50 50 L 96 50"/><linearGradient id="bev-ftr" gradientUnits="userSpaceOnUse" x1="50" y1="50" x2="73" y2="27"><stop offset="0" stop-color="#000" stop-opacity=".13"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity=".2"/></linearGradient><radialGradient id="core-ftr" cx=".34" cy=".3" r=".85"><stop offset="0" stop-color="#fff" stop-opacity=".42"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".45"/></radialGradient></defs><g class="am-bud"><g transform="rotate(0 50 50)"><use href="#t-ftr" fill="#E8402A"/><use href="#t-ftr" fill="url(#bev-ftr)"/><use href="#t-ftr" fill="#fff" opacity="0.07"/><use href="#e-ftr" stroke="#fff" stroke-opacity="0.34" stroke-width="1.6" stroke-linecap="round"/><use href="#k-ftr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g transform="rotate(90 50 50)"><use href="#t-ftr" fill="#F5A623"/><use href="#t-ftr" fill="url(#bev-ftr)"/><use href="#t-ftr" fill="#000" opacity="0.12"/><use href="#e-ftr" stroke="#000" stroke-opacity="0.16" stroke-width="1.6" stroke-linecap="round"/><use href="#k-ftr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g transform="rotate(180 50 50)"><use href="#t-ftr" fill="#17A05E"/><use href="#t-ftr" fill="url(#bev-ftr)"/><use href="#t-ftr" fill="#000" opacity="0.05"/><use href="#e-ftr" stroke="#000" stroke-opacity="0.1" stroke-width="1.6" stroke-linecap="round"/><use href="#k-ftr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g transform="rotate(270 50 50)"><use href="#t-ftr" fill="#2B57E8"/><use href="#t-ftr" fill="url(#bev-ftr)"/><use href="#t-ftr" fill="#fff" opacity="0.30"/><use href="#e-ftr" stroke="#fff" stroke-opacity="0.46" stroke-width="1.6" stroke-linecap="round"/><use href="#k-ftr" stroke="#000" stroke-width=".9" opacity=".2"/></g></g><g class="am-core"><circle cx="50" cy="50" r="6" fill="currentColor"/><circle cx="50" cy="50" r="6" fill="url(#core-ftr)"/></g></svg>
+          <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
+        </a>
+        <p style="font-size:.88rem;line-height:1.65;color:#9fb0d0;max-width:30ch">
+          Specialised engineering partner for enterprise architecture, AI &amp; MLOps, and technical enablement.
+        </p>
+        <div class="social" style="margin-top:1.1rem">
+          <a href="https://www.youtube.com/@TechKnowen" rel="noopener" aria-label="YouTube"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 12s0-3.8-.5-5.6a2.9 2.9 0 0 0-2-2C18.7 4 12 4 12 4s-6.7 0-8.5.4a2.9 2.9 0 0 0-2 2C1 8.2 1 12 1 12s0 3.8.5 5.6a2.9 2.9 0 0 0 2 2C5.3 20 12 20 12 20s6.7 0 8.5-.4a2.9 2.9 0 0 0 2-2C23 15.8 23 12 23 12zM9.8 15.4V8.6l5.9 3.4z"/></svg></a>
+          <a href="https://techknowen.com" rel="noopener" aria-label="TechKnowen blog"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 3h16v3H4zm0 5h16v13l-8-4-8 4z"/></svg></a>
+          <a href="/feed.xml" aria-label="RSS feed"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="6.2" cy="17.8" r="2.2"/><path d="M4 10.2v3a6.6 6.6 0 0 1 6.6 6.6h3A9.6 9.6 0 0 0 4 10.2zM4 4v3c7.2 0 13 5.8 13 13h3C20 11.2 12.8 4 4 4z"/></svg></a>
+        </div>
+      </div>
+      <div>
+        <h2 class="foot-title">Services</h2>
+        <ul>
+          <li><a href="/services/#architecture">Enterprise architecture</a></li>
+          <li><a href="/services/#ai">AI &amp; MLOps</a></li>
+          <li><a href="/services/#training">Technical enablement</a></li>
+          <li><a href="/case-studies/">Case studies</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2 class="foot-title">Insights</h2>
+        <ul>
+          <li><a href="/insights/">All articles</a></li>
+          <li><a href="/series/">Series</a></li>
+          <li><a href="/topics/">Topics</a></li>
+          <li><a href="/notes/">Personal notes</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2 class="foot-title">Contact</h2>
+        <ul>
+          <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
+          <li><a href="/contact/">Start an engagement</a></li>
+          <li><a href="/about/">About</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span id="yr">2026</span> Ajna Consulting Services. All rights reserved.</span>
+      <span style="display:flex;gap:1.2rem"><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a></span>
+    </div>
+  </div>
+</footer>
+<script src="/assets/js/site.js?v=dd970c4d" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=dd970c4d"></script>
+</body>
+</html>

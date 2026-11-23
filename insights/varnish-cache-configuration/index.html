@@ -14,14 +14,18 @@
 <meta property="og:title" content="Varnish Cache Configuration: A Practical Guide to VCL and Caching Strategy">
 <meta property="og:description" content="Varnish is a powerful HTTP accelerator, but the configuration language (VCL) has a steep learning curve. Here&#39;s how to configure Varnish for real workloads…">
 <meta property="og:url" content="https://ajnacs.com/insights/varnish-cache-configuration/">
-<meta property="og:image" content="https://ajnacs.com/assets/og/articles/varnish-cache-configuration.png?v=a3e3028edd56">
+<meta property="og:image" content="https://ajnacs.com/assets/og/articles/varnish-cache-configuration.png?v=19d4463fd39b">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Illustration for Varnish Cache Configuration: A Practical Guide to VCL and Caching Strategy">
+<meta property="article:published_time" content="2025-03-04">
+<meta property="article:modified_time" content="2026-11-23">
 <meta property="og:image:type" content="image/png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Varnish Cache Configuration: A Practical Guide to VCL and Caching Strategy">
 <meta name="twitter:description" content="Varnish is a powerful HTTP accelerator, but the configuration language (VCL) has a steep learning curve. Here&#39;s how to configure Varnish for real workloads…">
-<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/varnish-cache-configuration.png?v=a3e3028edd56">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/varnish-cache-configuration.png?v=19d4463fd39b">
+<meta name="twitter:image:alt" content="Illustration for Varnish Cache Configuration: A Practical Guide to VCL and Caching Strategy">
 
 <link rel="icon" href="/favicon.ico?v=cefc53b9" sizes="any">
 <link rel="icon" href="/images/ajna-mark.svg?v=cefc53b9" type="image/svg+xml">
@@ -29,7 +33,7 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=74a650b6">
+<link rel="stylesheet" href="/assets/css/site.css?v=dd970c4d">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
@@ -45,7 +49,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Varnish Cache Configuration: A Practical Guide to VCL and Caching Strategy","description":"Varnish is a powerful HTTP accelerator, but the configuration language (VCL) has a steep learning curve. Here's how to configure Varnish for real workloads — including cache key design, TTL strategy, authentication handling, and ESI for partial caching.","datePublished":"2025-03-04","dateModified":"2025-03-04","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/varnish-cache-configuration/","image":"https://ajnacs.com/assets/og/articles/varnish-cache-configuration.png?v=a3e3028edd56","keywords":"CDN & Caching, Infrastructure, Architecture","articleSection":"Infrastructure","wordCount":940}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Varnish Cache Configuration: A Practical Guide to VCL and Caching Strategy","description":"Varnish is a powerful HTTP accelerator, but the configuration language (VCL) has a steep learning curve. Here's how to configure Varnish for real workloads — including cache key design, TTL strategy, authentication handling, and ESI for partial caching.","datePublished":"2025-03-04","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/varnish-cache-configuration/","image":"https://ajnacs.com/assets/og/articles/varnish-cache-configuration.png?v=19d4463fd39b","keywords":"CDN & Caching, Infrastructure, Architecture","articleSection":"Infrastructure","wordCount":996}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Varnish Cache Configuration: A Practical Guide to VCL and Caching Strategy"}]}</script>
 </head>
 <body class="" data-topic="Infrastructure">
@@ -59,7 +63,7 @@ d.setAttribute('data-theme',t);
     </div>
     <nav class="nav" id="nav" aria-label="Primary">
       <a href="/services/">Services</a>
-      <a href="/insights/" aria-current="page">Insights</a>
+      <a href="/insights/">Insights</a>
       <a href="/series/">Series</a>
       <a href="/case-studies/">Case studies</a>
       <a href="/about/">About</a>
@@ -81,33 +85,33 @@ d.setAttribute('data-theme',t);
       <nav class="crumbs" aria-label="Breadcrumb">
         <a href="/">Home</a> <span aria-hidden="true">/</span>
         <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
-        <span>Infrastructure</span>
+        <a href="/topics/infrastructure/">Infrastructure</a>
       </nav>
       <h1 class="h1">Varnish Cache Configuration: A Practical Guide to VCL and Caching Strategy</h1>
       <p class="lede" style="margin-top:1rem">Varnish is a powerful HTTP accelerator, but the configuration language (VCL) has a steep learning curve. Here&#39;s how to configure Varnish for real workloads — including cache key design, TTL strategy, authentication handling, and ESI for partial caching.</p>
       <div class="article-meta">
-        <span class="chip">Infrastructure</span>
-        <time datetime="2025-03-04">4 Mar 2025</time>
+        <a class="article-byline" href="/about/#chandra-lanka">Chandra Lanka</a>
+        <span class="dot" aria-hidden="true"></span><time datetime="2025-03-04">4 Mar 2025</time>
+        <span class="dot" aria-hidden="true"></span><span>Updated <time datetime="2026-11-23">23 Nov 2026</time></span>
         <span class="dot"></span><span>4 min read</span>
         <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
       </div>
     </div>
   </header>
 
-  <div class="art-wrap"><div class="article-hero" data-topic="Infrastructure"><span class="art-wide"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 380" role="img" aria-label="Conceptual illustration for Varnish Cache Configuration: A Practical Guide to VCL and Caching Strategy: Cache, TTL, Varnish." preserveAspectRatio="xMidYMid meet" data-article-art="varnish-cache-configuration" data-art-scene="cache" data-composition="process-strip"><defs><clipPath id="cpart-varnish-cache-configuration-1200-380"><rect width="1200" height="380"/></clipPath></defs><g clip-path="url(#cpart-varnish-cache-configuration-1200-380)"><rect width="1200" height="380" fill="#f7f0e1"/><g transform="translate(0 0) scale(1)"><path d="M0 332H1200" stroke="#bd562f" stroke-width="2"/><path d="M0 337H1200" stroke="#bd562f" stroke-width="8" opacity=".12"/><text x="56" y="95" fill="#293a42" font-size="29" font-weight="650" font-family="Arial,sans-serif" text-anchor="start">Varnish Cache Configuration</text><g transform="translate(585 65) scale(1)"><rect x="18" y="48" width="94" height="94" rx="18" fill="#315c63" fill-opacity=".055" stroke="#315c63" stroke-opacity=".18"/><g transform="translate(30 60) scale(0.7)"><g fill="none" stroke="#315c63" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M33 25L10 50l23 25m34-50l23 25-23 25M59 14L42 87"/></g></g><rect x="226" y="48" width="94" height="94" rx="18" fill="#315c63" fill-opacity=".055" stroke="#315c63" stroke-opacity=".18"/><g transform="translate(238 60) scale(0.7)"><g fill="none" stroke="#315c63" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M23 12h54v77H23zM35 29h30m-30 15h30M42 58h19l-9 12h10L44 88l5-14H38z"/></g></g><rect x="434" y="48" width="94" height="94" rx="18" fill="#315c63" fill-opacity=".055" stroke="#315c63" stroke-opacity=".18"/><g transform="translate(446 60) scale(0.7)"><g fill="none" stroke="#315c63" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="50" cy="24" rx="30" ry="12"/><path d="M20 24v52c0 16 60 16 60 0V24 M20 49c0 16 60 16 60 0 M20 74c0 16 60 16 60 0"/></g></g><path d="M112 95L226 95" stroke="#315c63" stroke-width="2" opacity=".48" fill="none"/><path d="M320 95L434 95" stroke="#315c63" stroke-width="2" opacity=".48" fill="none"/><path d="M275 48Q165-15 65 48" fill="none" stroke="#bd562f" stroke-width="3" stroke-dasharray="7 5"/></g><text x="617" y="322" fill="#315c63" font-family="Arial,sans-serif" font-size="14" letter-spacing="1.1">Application</text><text x="825" y="322" fill="#315c63" font-family="Arial,sans-serif" font-size="14" letter-spacing="1.1">Cache</text><text x="1033" y="322" fill="#315c63" font-family="Arial,sans-serif" font-size="14" letter-spacing="1.1">Origin</text><text x="35" y="360" fill="#315c63" font-family="Arial,sans-serif" font-size="11" letter-spacing="1.1">AJNA / CACHE</text></g></g></svg></span><span class="art-compact"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="Conceptual illustration for Varnish Cache Configuration: A Practical Guide to VCL and Caching Strategy: Cache, TTL, Varnish." preserveAspectRatio="xMidYMid meet" data-article-art="varnish-cache-configuration" data-art-scene="cache" data-composition="process-strip"><defs><clipPath id="cpart-varnish-cache-configuration-640-360"><rect width="640" height="360"/></clipPath></defs><g clip-path="url(#cpart-varnish-cache-configuration-640-360)"><rect width="640" height="360" fill="#f7f0e1"/><g transform="translate(0 0) scale(1)"><path d="M0 312H640" stroke="#bd562f" stroke-width="2"/><path d="M0 317H640" stroke="#bd562f" stroke-width="8" opacity=".12"/><text x="35" y="40" fill="#293a42" font-size="24" font-weight="650" font-family="Arial,sans-serif" text-anchor="start">Varnish Cache Configuration</text><g transform="translate(50 115) scale(0.96)"><rect x="18" y="48" width="94" height="94" rx="18" fill="#315c63" fill-opacity=".055" stroke="#315c63" stroke-opacity=".18"/><g transform="translate(30 60) scale(0.7)"><g fill="none" stroke="#315c63" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M33 25L10 50l23 25m34-50l23 25-23 25M59 14L42 87"/></g></g><rect x="226" y="48" width="94" height="94" rx="18" fill="#315c63" fill-opacity=".055" stroke="#315c63" stroke-opacity=".18"/><g transform="translate(238 60) scale(0.7)"><g fill="none" stroke="#315c63" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M23 12h54v77H23zM35 29h30m-30 15h30M42 58h19l-9 12h10L44 88l5-14H38z"/></g></g><rect x="434" y="48" width="94" height="94" rx="18" fill="#315c63" fill-opacity=".055" stroke="#315c63" stroke-opacity=".18"/><g transform="translate(446 60) scale(0.7)"><g fill="none" stroke="#315c63" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="50" cy="24" rx="30" ry="12"/><path d="M20 24v52c0 16 60 16 60 0V24 M20 49c0 16 60 16 60 0 M20 74c0 16 60 16 60 0"/></g></g><path d="M112 95L226 95" stroke="#315c63" stroke-width="2" opacity=".48" fill="none"/><path d="M320 95L434 95" stroke="#315c63" stroke-width="2" opacity=".48" fill="none"/><path d="M275 48Q165-15 65 48" fill="none" stroke="#bd562f" stroke-width="3" stroke-dasharray="7 5"/></g><text x="77" y="302" fill="#315c63" font-family="Arial,sans-serif" font-size="12" letter-spacing="1.1">Application</text><text x="276" y="302" fill="#315c63" font-family="Arial,sans-serif" font-size="12" letter-spacing="1.1">Cache</text><text x="475" y="302" fill="#315c63" font-family="Arial,sans-serif" font-size="12" letter-spacing="1.1">Origin</text><text x="35" y="340" fill="#315c63" font-family="Arial,sans-serif" font-size="11" letter-spacing="1.1">AJNA / CACHE</text></g></g></svg></span></div></div>
+  <div class="art-wrap"><div class="article-hero" data-topic="Infrastructure"><img data-article-art="varnish-cache-configuration" src="/assets/covers/varnish-cache-configuration.svg" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div></div>
 
   <div class="art-wrap article-grid">
     <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
-  <ol><li><a href="#the-vcl-request-lifecycle">The VCL request lifecycle</a></li><li><a href="#the-minimum-config-that-makes-varnish-useful">The minimum config that makes Varnish useful</a></li><li><a href="#cache-key-design">Cache key design</a></li><li><a href="#ttl-strategy">TTL strategy</a></li><li><a href="#handling-authenticated-content">Handling authenticated content</a></li><li><a href="#purging-cached-content">Purging cached content</a></li><li><a href="#monitoring-what-varnish-is-doing">Monitoring what Varnish is doing</a></li></ol>
+  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#the-vcl-request-lifecycle">The VCL request lifecycle</a></li><li><a href="#the-minimum-config-that-makes-varnish-useful">The minimum config that makes Varnish useful</a></li><li><a href="#cache-key-design">Cache key design</a></li><li><a href="#ttl-strategy">TTL strategy</a></li><li><a href="#handling-authenticated-content">Handling authenticated content</a></li><li><a href="#purging-cached-content">Purging cached content</a></li><li><a href="#monitoring-what-varnish-is-doing">Monitoring what Varnish is doing</a></li></ol>
 </nav></div>
     <div class="prose">
 <p>Varnish Cache sits in front of your web servers and caches responses in memory. For content-heavy sites with high read traffic, a correctly configured Varnish instance absorbs most of the load that would otherwise hit your application servers. The challenge is &quot;correctly configured&quot; — Varnish&#39;s Varnish Configuration Language (VCL) is C-like and the default behavior needs adjustment for most real workloads.</p>
+<h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
+<p><strong>Avoided origin work by route.</strong> If a cacheable route receives 50,000 requests and Varnish serves 40,000 from cache, request hit rate is 80%. Break out hit-for-pass, grace and revalidation according to the actual counters so origin load is not inferred from one number.</p>
+<p><em>Illustrative measurement. Any numbers in this example are hypothetical.</em></p>
 <h2 id="the-vcl-request-lifecycle"><a class="h-anchor" href="#the-vcl-request-lifecycle" aria-hidden="true" tabindex="-1">#</a>The VCL request lifecycle</h2>
-<aside class="keyfig">
-  <p class="keyfig-label">Key figure</p>
-  <p class="keyfig-text">A well-configured Varnish instance handling content workloads should have a hit ratio above <b>90%</b>.</p>
-</aside>
 <p>Understanding Varnish means understanding its state machine. A request goes through several subroutines:</p>
 <ul>
 <li><code>vcl_recv</code>: request arrives; decide whether to cache, pass to backend, or return an error</li>
@@ -214,7 +218,7 @@ sub vcl_recv {
 <h2 id="monitoring-what-varnish-is-doing"><a class="h-anchor" href="#monitoring-what-varnish-is-doing" aria-hidden="true" tabindex="-1">#</a>Monitoring what Varnish is doing</h2>
 <p><code>varnishstat</code> shows real-time statistics: cache hit ratio, request rate, backend health. The metric to watch first: <code>cache_hit / (cache_hit + cache_miss)</code>. A well-configured Varnish instance handling content workloads should have a hit ratio above 90%.</p>
 <p><code>varnishlog</code> shows request-level logs with the cache decision for each request. Essential for debugging why specific requests aren&#39;t being cached.</p>
-<p><em>Tuning a Varnish configuration or designing a caching strategy for a high-traffic site? <a href="/contact">Happy to work through the specifics.</a></em></p>
+<p><em>Tuning a Varnish configuration or designing a caching strategy for a high-traffic site? <a href="/contact/">Happy to work through the specifics.</a></em></p>
 
     </div>
   </div>
@@ -231,7 +235,7 @@ sub vcl_recv {
 
   <div class="art-wrap article-foot">
     <div class="row" style="gap:.4rem">
-      <a class="chip chip-plain" href="/insights/?topic=CDN%20%26%20Caching">CDN &amp; Caching</a><a class="chip chip-plain" href="/insights/?topic=Infrastructure">Infrastructure</a><a class="chip chip-plain" href="/insights/?topic=Architecture">Architecture</a>
+      <a class="chip chip-plain" href="/insights/?topic=CDN%20%26%20Caching">CDN &amp; Caching</a><a class="chip chip-plain" href="/topics/infrastructure/">Infrastructure</a><a class="chip chip-plain" href="/topics/architecture/">Architecture</a>
     </div>
     <nav class="prevnext" aria-label="More articles">
       <a href="/insights/kubernetes-cost-optimization/"><span>Previous</span><strong>Kubernetes Cost Visibility — The Gap That Kills FinOps Programs</strong></a>
@@ -242,31 +246,31 @@ sub vcl_recv {
   <section class="section surface hair" style="margin-top:4rem">
     <div class="wrap">
       <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|Cloud Architecture|DevSecOps|Infrastructure|" data-search="serverless vs containers: an honest comparison for 2026 neither is universally better. the answer depends on your workload profile, your team&#39;s operational maturity, and — honestly — your tolerance for cold starts. cloud architecture devsecops infrastructure" data-topic="Cloud Architecture" href="/insights/serverless-vs-containers-2026/">
-  <div class="card-art"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="Conceptual illustration for Serverless vs Containers: An Honest Comparison for 2026: Workload, Runtime, Container." preserveAspectRatio="xMidYMid meet" data-article-art="serverless-vs-containers-2026" data-art-scene="container" data-composition="technical-cutaway"><defs><clipPath id="cpart-serverless-vs-containers-2026-640-360"><rect width="640" height="360"/></clipPath></defs><g clip-path="url(#cpart-serverless-vs-containers-2026-640-360)"><rect width="640" height="360" fill="#e9e7f2"/><g transform="translate(0 0) scale(1)"><path d="M58 291l260 65 295-70-265-63z" fill="#645b94" opacity=".1"/><path d="M73 273l245 58 275-64" fill="none" stroke="#b06d3b" stroke-width="2"/><g transform="translate(78 116) scale(0.88)"><rect x="42" y="12" width="470" height="186" rx="22" stroke="#645b94" fill="#645b94" fill-opacity=".035"/><g transform="translate(70 35) scale(0.86)"><g fill="none" stroke="#645b94" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><rect x="10" y="18" width="80" height="64" rx="6"/><path d="M26 28v44m16-44v44m16-44v44m16-44v44M10 67h80"/></g></g><g transform="translate(225 35) scale(0.86)"><g fill="none" stroke="#645b94" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><rect x="10" y="18" width="80" height="64" rx="6"/><path d="M26 28v44m16-44v44m16-44v44m16-44v44M10 67h80"/></g></g><g transform="translate(380 35) scale(0.86)"><g fill="none" stroke="#645b94" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><rect x="10" y="18" width="80" height="64" rx="6"/><path d="M26 28v44m16-44v44m16-44v44m16-44v44M10 67h80"/></g></g><path d="M65 150h426m-426 23h426" stroke="#b06d3b" stroke-width="8" opacity=".45"/></g><text x="35" y="40" fill="#33324f" font-size="24" font-weight="650" font-family="Arial,sans-serif" text-anchor="start">Serverless vs Containers</text><text x="35" y="337" fill="#645b94" font-family="Arial,sans-serif" font-size="12" letter-spacing="1.1">container</text></g></g></svg></div>
+      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|CDN &amp; Caching|Cloud Architecture|Infrastructure|" data-search="cdn strategy: choosing the right approach for your architecture cdn selection is more than picking the fastest network. origin configuration, cache invalidation, edge compute capabilities, and the overlap between your cdn and your cloud provider&#39;s services all affect the right choice. here&#39;s how to think through it. cdn &amp; caching cloud architecture infrastructure" data-topic="Cloud Architecture" href="/insights/cdn-strategy-decision-guide/">
+  <div class="card-art"><img data-article-art="cdn-strategy-decision-guide" src="/assets/covers/cdn-strategy-decision-guide.svg" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-body">
+    <span class="chip">Cloud Architecture</span>
+    <h3 class="card-title">CDN Strategy: Choosing the Right Approach for Your Architecture</h3>
+    <p class="card-desc">CDN selection is more than picking the fastest network. Origin configuration, cache invalidation, edge compute capabilities, and the overlap between your CDN and your cloud provider&#39;s services all affect the right choice. Here&#39;s how to think through it.</p>
+    <div class="card-meta"><time datetime="2025-03-13">13 Mar 2025</time><span class="dot"></span><span>4 min read</span></div>
+  </div>
+</a>
+<a class="card" data-card data-topics="|Data Engineering|Architecture|Performance|Infrastructure|" data-search="speed at scale: enterprise caching for oltp and olap workloads a practical guide to multi-tier caching architecture — how to design caching layers that absorb the majority of read load, handle traffic spikes without crashing, and maintain the cache hit ratios that separate resilient systems from fragile ones. data engineering architecture performance infrastructure" data-topic="Data Engineering" href="/insights/enterprise-caching-architecture/">
+  <div class="card-art"><img data-article-art="enterprise-caching-architecture" src="/assets/covers/enterprise-caching-architecture.svg" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-body">
+    <span class="chip">Data Engineering</span>
+    <h3 class="card-title">Speed at Scale: Enterprise Caching for OLTP and OLAP Workloads</h3>
+    <p class="card-desc">A practical guide to multi-tier caching architecture — how to design caching layers that absorb the majority of read load, handle traffic spikes without crashing, and maintain the cache hit ratios that separate resilient systems from fragile ones.</p>
+    <div class="card-meta"><time datetime="2024-11-01">1 Nov 2024</time><span class="dot"></span><span>5 min read</span></div>
+  </div>
+</a>
+<a class="card" data-card data-topics="|Cloud Architecture|DevSecOps|Infrastructure|" data-search="serverless vs containers: an honest comparison for 2026 neither is universally better. the answer depends on your workload profile, your team&#39;s operational maturity, and — honestly — your tolerance for cold starts. cloud architecture devsecops infrastructure" data-topic="Cloud Architecture" href="/insights/serverless-vs-containers-2026/">
+  <div class="card-art"><img data-article-art="serverless-vs-containers-2026" src="/assets/covers/photos/serverless-vs-containers-2026.jpg?v=13ae8a58486b" srcset="/assets/covers/photos/serverless-vs-containers-2026-640.jpg?v=13ae8a58486b 640w, /assets/covers/photos/serverless-vs-containers-2026.jpg?v=13ae8a58486b 1280w" sizes="(min-width: 800px) 420px, 100vw" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
     <span class="chip">Cloud Architecture</span>
     <h3 class="card-title">Serverless vs Containers: An Honest Comparison for 2026</h3>
     <p class="card-desc">Neither is universally better. The answer depends on your workload profile, your team&#39;s operational maturity, and — honestly — your tolerance for cold starts.</p>
     <div class="card-meta"><time datetime="2026-11-13">13 Nov 2026</time><span class="dot"></span><span>4 min read</span></div>
-  </div>
-</a>
-<a class="card" data-card data-topics="|Programming|Architecture|Cloud Architecture|" data-search="api design for enterprise systems: the decisions that age well an api that&#39;s easy to build against is easy to build wrong. the decisions around versioning, error models, pagination, idempotency, and authentication compound over time — here&#39;s how to make the ones that don&#39;t cause regret. programming architecture cloud architecture" data-topic="Programming" href="/insights/api-design-enterprise/">
-  <div class="card-art"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="Conceptual illustration for API Design for Enterprise Systems: The Decisions That Age Well: Client, Contract, Service." preserveAspectRatio="xMidYMid meet" data-article-art="api-design-enterprise" data-art-scene="api" data-composition="process-strip"><defs><clipPath id="cpart-api-design-enterprise-640-360"><rect width="640" height="360"/></clipPath></defs><g clip-path="url(#cpart-api-design-enterprise-640-360)"><rect width="640" height="360" fill="#f7f0e1"/><g transform="translate(0 0) scale(1)"><path d="M0 312H640" stroke="#bd562f" stroke-width="2"/><path d="M0 317H640" stroke="#bd562f" stroke-width="8" opacity=".12"/><text x="35" y="40" fill="#293a42" font-size="24" font-weight="650" font-family="Arial,sans-serif" text-anchor="start">API Design for Enterprise Systems</text><g transform="translate(50 115) scale(0.96)"><rect x="18" y="48" width="94" height="94" rx="18" fill="#315c63" fill-opacity=".055" stroke="#315c63" stroke-opacity=".18"/><g transform="translate(30 60) scale(0.7)"><g fill="none" stroke="#315c63" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M33 25L10 50l23 25m34-50l23 25-23 25M59 14L42 87"/></g></g><rect x="226" y="48" width="94" height="94" rx="18" fill="#315c63" fill-opacity=".055" stroke="#315c63" stroke-opacity=".18"/><g transform="translate(238 60) scale(0.7)"><g fill="none" stroke="#315c63" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10h38l18 18v62H22z M60 10v20h18 M34 45h32 M34 58h32 M34 71h21"/></g></g><rect x="434" y="48" width="94" height="94" rx="18" fill="#315c63" fill-opacity=".055" stroke="#315c63" stroke-opacity=".18"/><g transform="translate(446 60) scale(0.7)"><g fill="none" stroke="#315c63" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M18 88V12h64v76M38 30h24v58M6 88h88 M6 50h20m48 0h20 M20 44l7 6-7 6m61-12l-7 6 7 6"/></g></g><path d="M112 95L226 95" stroke="#315c63" stroke-width="2" opacity=".48" fill="none"/><path d="M320 95L434 95" stroke="#315c63" stroke-width="2" opacity=".48" fill="none"/></g><text x="77" y="302" fill="#315c63" font-family="Arial,sans-serif" font-size="12" letter-spacing="1.1">Client</text><text x="276" y="302" fill="#315c63" font-family="Arial,sans-serif" font-size="12" letter-spacing="1.1">Contract</text><text x="475" y="302" fill="#315c63" font-family="Arial,sans-serif" font-size="12" letter-spacing="1.1">Service</text><text x="35" y="340" fill="#315c63" font-family="Arial,sans-serif" font-size="11" letter-spacing="1.1">AJNA / API</text></g></g></svg></div>
-  <div class="card-body">
-    <span class="chip">Programming</span>
-    <h3 class="card-title">API Design for Enterprise Systems: The Decisions That Age Well</h3>
-    <p class="card-desc">An API that&#39;s easy to build against is easy to build wrong. The decisions around versioning, error models, pagination, idempotency, and authentication compound over time — here&#39;s how to make the ones that don&#39;t cause regret.</p>
-    <div class="card-meta"><time datetime="2026-11-06">6 Nov 2026</time><span class="dot"></span><span>5 min read</span></div>
-  </div>
-</a>
-<a class="card" data-card data-topics="|Programming|Architecture|Cloud Architecture|" data-search="system design patterns every backend engineer should know cqrs, event sourcing, saga pattern, outbox pattern — the patterns that solve specific distributed systems problems, what trade-offs they introduce, and when the simpler option is actually the right one. programming architecture cloud architecture" data-topic="Programming" href="/insights/system-design-patterns-backend/">
-  <div class="card-art"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="Conceptual illustration for System Design Patterns Every Backend Engineer Should Know: Context, Trade-off, System." preserveAspectRatio="xMidYMid meet" data-article-art="system-design-patterns-backend" data-art-scene="architecture" data-composition="drafting-board"><defs><clipPath id="cpart-system-design-patterns-backend-640-360"><rect width="640" height="360"/></clipPath></defs><g clip-path="url(#cpart-system-design-patterns-backend-640-360)"><rect width="640" height="360" fill="#102b3b"/><g transform="translate(0 0) scale(1)"><g stroke="#6195a4" stroke-width=".7" opacity=".16"><path d="M0 0V360"/><path d="M32 0V360"/><path d="M64 0V360"/><path d="M96 0V360"/><path d="M128 0V360"/><path d="M160 0V360"/><path d="M192 0V360"/><path d="M224 0V360"/><path d="M256 0V360"/><path d="M288 0V360"/><path d="M320 0V360"/><path d="M352 0V360"/><path d="M384 0V360"/><path d="M416 0V360"/><path d="M448 0V360"/><path d="M480 0V360"/><path d="M512 0V360"/><path d="M544 0V360"/><path d="M576 0V360"/><path d="M608 0V360"/><path d="M0 0H640"/><path d="M0 32H640"/><path d="M0 64H640"/><path d="M0 96H640"/><path d="M0 128H640"/><path d="M0 160H640"/><path d="M0 192H640"/><path d="M0 224H640"/><path d="M0 256H640"/><path d="M0 288H640"/><path d="M0 320H640"/><path d="M0 352H640"/></g><path d="M20 20h24m-12-12v24M596 340h24m-12-12v24" stroke="#b3d6da" opacity=".6"/><g transform="translate(55 108) scale(0.94)"><g fill="#73d2c6" fill-opacity=".04" stroke="#73d2c6" stroke-width="2"><rect x="28" y="10" width="500" height="190" rx="20"/><rect x="55" y="45" width="180" height="120" rx="12"/><rect x="325" y="45" width="175" height="120" rx="12"/><path d="M235 105h90"/></g><g transform="translate(95 65) scale(0.75)"><g fill="none" stroke="#73d2c6" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M33 25L10 50l23 25m34-50l23 25-23 25M59 14L42 87"/></g></g><g transform="translate(375 65) scale(0.75)"><g fill="none" stroke="#eda752" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="50" cy="24" rx="30" ry="12"/><path d="M20 24v52c0 16 60 16 60 0V24 M20 49c0 16 60 16 60 0 M20 74c0 16 60 16 60 0"/></g></g></g><text x="35" y="41" fill="#d5edf2" font-size="24" font-weight="650" font-family="Arial,sans-serif" text-anchor="start">System Design Patterns Every</text><text x="35" y="72" fill="#d5edf2" font-size="24" font-weight="650" font-family="Arial,sans-serif" text-anchor="start">Backend Engineer Should Know</text><text x="35" y="343" fill="#eda752" font-family="Arial,sans-serif" font-size="11" letter-spacing="1.1">architecture</text></g></g></svg></div>
-  <div class="card-body">
-    <span class="chip">Programming</span>
-    <h3 class="card-title">System Design Patterns Every Backend Engineer Should Know</h3>
-    <p class="card-desc">CQRS, event sourcing, saga pattern, outbox pattern — the patterns that solve specific distributed systems problems, what trade-offs they introduce, and when the simpler option is actually the right one.</p>
-    <div class="card-meta"><time datetime="2026-10-28">28 Oct 2026</time><span class="dot"></span><span>5 min read</span></div>
   </div>
 </a></div>
     </div>
@@ -367,7 +371,7 @@ sub vcl_recv {
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=74a650b6"></script>
+<script src="/assets/js/site.js?v=dd970c4d" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=dd970c4d"></script>
 </body>
 </html>

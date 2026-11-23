@@ -14,14 +14,18 @@
 <meta property="og:title" content="Kernel Tuning with sysctl: Memory, Networking, and I/O">
 <meta property="og:description" content="The sysctl parameters that actually matter in production — VM reclaim tuning, TCP stack optimisation, file descriptor limits, and the settings that separat…">
 <meta property="og:url" content="https://ajnacs.com/insights/os-kernel-tuning-sysctl/">
-<meta property="og:image" content="https://ajnacs.com/assets/og/articles/os-kernel-tuning-sysctl.png?v=7d8bdcac363b">
+<meta property="og:image" content="https://ajnacs.com/assets/og/articles/os-kernel-tuning-sysctl.png?v=1db6d335e5bd">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Illustration for Kernel Tuning with sysctl: Memory, Networking, and I/O">
+<meta property="article:published_time" content="2026-09-30">
+<meta property="article:modified_time" content="2026-11-23">
 <meta property="og:image:type" content="image/png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Kernel Tuning with sysctl: Memory, Networking, and I/O">
 <meta name="twitter:description" content="The sysctl parameters that actually matter in production — VM reclaim tuning, TCP stack optimisation, file descriptor limits, and the settings that separat…">
-<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/os-kernel-tuning-sysctl.png?v=7d8bdcac363b">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/os-kernel-tuning-sysctl.png?v=1db6d335e5bd">
+<meta name="twitter:image:alt" content="Illustration for Kernel Tuning with sysctl: Memory, Networking, and I/O">
 
 <link rel="icon" href="/favicon.ico?v=cefc53b9" sizes="any">
 <link rel="icon" href="/images/ajna-mark.svg?v=cefc53b9" type="image/svg+xml">
@@ -29,7 +33,7 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=74a650b6">
+<link rel="stylesheet" href="/assets/css/site.css?v=dd970c4d">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
@@ -45,7 +49,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Kernel Tuning with sysctl: Memory, Networking, and I/O","description":"The sysctl parameters that actually matter in production — VM reclaim tuning, TCP stack optimisation, file descriptor limits, and the settings that separate a well-tuned server from a default install.","datePublished":"2026-09-30","dateModified":"2026-09-30","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/os-kernel-tuning-sysctl/","image":"https://ajnacs.com/assets/og/articles/os-kernel-tuning-sysctl.png?v=7d8bdcac363b","keywords":"Programming, Fundamentals","articleSection":"Programming","wordCount":1142}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Kernel Tuning with sysctl: Memory, Networking, and I/O","description":"The sysctl parameters that actually matter in production — VM reclaim tuning, TCP stack optimisation, file descriptor limits, and the settings that separate a well-tuned server from a default install.","datePublished":"2026-09-30","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/os-kernel-tuning-sysctl/","image":"https://ajnacs.com/assets/og/articles/os-kernel-tuning-sysctl.png?v=1db6d335e5bd","keywords":"Programming, Fundamentals","articleSection":"Programming","wordCount":1204}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Kernel Tuning with sysctl: Memory, Networking, and I/O"}]}</script>
 </head>
 <body class="" data-topic="Programming">
@@ -59,7 +63,7 @@ d.setAttribute('data-theme',t);
     </div>
     <nav class="nav" id="nav" aria-label="Primary">
       <a href="/services/">Services</a>
-      <a href="/insights/" aria-current="page">Insights</a>
+      <a href="/insights/">Insights</a>
       <a href="/series/">Series</a>
       <a href="/case-studies/">Case studies</a>
       <a href="/about/">About</a>
@@ -81,36 +85,36 @@ d.setAttribute('data-theme',t);
       <nav class="crumbs" aria-label="Breadcrumb">
         <a href="/">Home</a> <span aria-hidden="true">/</span>
         <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
-        <span>Programming</span>
+        <a href="/topics/programming/">Programming</a>
       </nav>
       <h1 class="h1">Kernel Tuning with sysctl: Memory, Networking, and I/O</h1>
       <p class="lede" style="margin-top:1rem">The sysctl parameters that actually matter in production — VM reclaim tuning, TCP stack optimisation, file descriptor limits, and the settings that separate a well-tuned server from a default install.</p>
       <div class="article-meta">
-        <span class="chip">Programming</span>
-        <time datetime="2026-09-30">30 Sept 2026</time>
+        <a class="article-byline" href="/about/#chandra-lanka">Chandra Lanka</a>
+        <span class="dot" aria-hidden="true"></span><time datetime="2026-09-30">30 Sept 2026</time>
+        <span class="dot" aria-hidden="true"></span><span>Updated <time datetime="2026-11-23">23 Nov 2026</time></span>
         <span class="dot"></span><span>5 min read</span>
         <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
       </div>
     </div>
   </header>
 
-  <div class="art-wrap"><div class="article-hero" data-topic="Programming"><span class="art-wide"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 380" role="img" aria-label="Conceptual illustration for Kernel Tuning with sysctl: Memory, Networking, and I/O: Application, System, Memory." preserveAspectRatio="xMidYMid meet" data-article-art="os-kernel-tuning-sysctl" data-art-scene="compute" data-composition="technical-cutaway"><defs><clipPath id="cpart-os-kernel-tuning-sysctl-1200-380"><rect width="1200" height="380"/></clipPath></defs><g clip-path="url(#cpart-os-kernel-tuning-sysctl-1200-380)"><rect width="1200" height="380" fill="#e9e7f2"/><g transform="translate(0 0) scale(1)"><path d="M585 230l260 65 295-70-265-63z" fill="#645b94" opacity=".1"/><path d="M600 212l245 58 275-64" fill="none" stroke="#b06d3b" stroke-width="2"/><g transform="translate(605 55) scale(1)"><g transform="translate(30 55) scale(0.85)"><g fill="none" stroke="#645b94" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M33 25L10 50l23 25m34-50l23 25-23 25M59 14L42 87"/></g></g><g transform="translate(225 30) scale(1.25)"><g fill="none" stroke="#b06d3b" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><rect x="24" y="24" width="52" height="52" rx="8"/><path d="M38 6v18m12-18v18M62 6v18M38 76v18m12-18v18m12-18v18M6 38h18M6 50h18M6 62h18m52-24h18M76 50h18M76 62h18"/><rect x="37" y="37" width="26" height="26" rx="4"/></g></g><g transform="translate(445 55) scale(0.85)"><g fill="none" stroke="#645b94" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="50" cy="24" rx="30" ry="12"/><path d="M20 24v52c0 16 60 16 60 0V24 M20 49c0 16 60 16 60 0 M20 74c0 16 60 16 60 0"/></g></g><path d="M125 100L213 100" stroke="#645b94" stroke-width="2" opacity=".48" fill="none"/><path d="M362 100L432 100" stroke="#645b94" stroke-width="2" opacity=".48" fill="none"/></g><text x="60" y="112" fill="#33324f" font-size="30" font-weight="650" font-family="Arial,sans-serif" text-anchor="start">Kernel Tuning with sysctl</text><text x="60" y="357" fill="#645b94" font-family="Arial,sans-serif" font-size="12" letter-spacing="1.1">compute</text></g></g></svg></span><span class="art-compact"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="Conceptual illustration for Kernel Tuning with sysctl: Memory, Networking, and I/O: Application, System, Memory." preserveAspectRatio="xMidYMid meet" data-article-art="os-kernel-tuning-sysctl" data-art-scene="compute" data-composition="technical-cutaway"><defs><clipPath id="cpart-os-kernel-tuning-sysctl-640-360"><rect width="640" height="360"/></clipPath></defs><g clip-path="url(#cpart-os-kernel-tuning-sysctl-640-360)"><rect width="640" height="360" fill="#e9e7f2"/><g transform="translate(0 0) scale(1)"><path d="M58 291l260 65 295-70-265-63z" fill="#645b94" opacity=".1"/><path d="M73 273l245 58 275-64" fill="none" stroke="#b06d3b" stroke-width="2"/><g transform="translate(78 116) scale(0.88)"><g transform="translate(30 55) scale(0.85)"><g fill="none" stroke="#645b94" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M33 25L10 50l23 25m34-50l23 25-23 25M59 14L42 87"/></g></g><g transform="translate(225 30) scale(1.25)"><g fill="none" stroke="#b06d3b" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><rect x="24" y="24" width="52" height="52" rx="8"/><path d="M38 6v18m12-18v18M62 6v18M38 76v18m12-18v18m12-18v18M6 38h18M6 50h18M6 62h18m52-24h18M76 50h18M76 62h18"/><rect x="37" y="37" width="26" height="26" rx="4"/></g></g><g transform="translate(445 55) scale(0.85)"><g fill="none" stroke="#645b94" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="50" cy="24" rx="30" ry="12"/><path d="M20 24v52c0 16 60 16 60 0V24 M20 49c0 16 60 16 60 0 M20 74c0 16 60 16 60 0"/></g></g><path d="M125 100L213 100" stroke="#645b94" stroke-width="2" opacity=".48" fill="none"/><path d="M362 100L432 100" stroke="#645b94" stroke-width="2" opacity=".48" fill="none"/></g><text x="35" y="40" fill="#33324f" font-size="24" font-weight="650" font-family="Arial,sans-serif" text-anchor="start">Kernel Tuning with sysctl</text><text x="35" y="337" fill="#645b94" font-family="Arial,sans-serif" font-size="12" letter-spacing="1.1">compute</text></g></g></svg></span></div></div>
+  <div class="art-wrap"><div class="article-hero" data-topic="Programming"><img data-article-art="os-kernel-tuning-sysctl" src="/assets/covers/os-kernel-tuning-sysctl.svg" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div></div>
 
   <div class="art-wrap article-grid">
     <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
-  <ol><li><a href="#sysctl-basics">sysctl Basics</a></li><li><a href="#virtual-memory-tuning">Virtual Memory Tuning</a></li><li><a href="#transparent-huge-pages">Transparent Huge Pages</a></li><li><a href="#file-descriptor-and-process-limits">File Descriptor and Process Limits</a></li><li><a href="#network-stack-tuning">Network Stack Tuning</a></li><li><a href="#kernel-profiling-for-tuning-validation">Kernel Profiling for Tuning Validation</a></li><li><a href="#numa-awareness">NUMA Awareness</a></li></ol>
+  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#sysctl-basics">sysctl Basics</a></li><li><a href="#virtual-memory-tuning">Virtual Memory Tuning</a></li><li><a href="#transparent-huge-pages">Transparent Huge Pages</a></li><li><a href="#file-descriptor-and-process-limits">File Descriptor and Process Limits</a></li><li><a href="#network-stack-tuning">Network Stack Tuning</a></li><li><a href="#kernel-profiling-for-tuning-validation">Kernel Profiling for Tuning Validation</a></li><li><a href="#numa-awareness">NUMA Awareness</a></li></ol>
 </nav><nav class="chapters" aria-label="Articles in this series">
       <p class="chapters-title">Linux: A Complete Practical Course</p>
       <ol><li><a href="/insights/os-storage-management/">Linux Storage Management: Disks, Partitions, LVM, Filesystems, and Mounting</a></li><li><a href="/insights/os-disk-io-performance/">Disk I/O Performance Analysis on Linux</a></li><li aria-current="true"><a href="/insights/os-kernel-tuning-sysctl/">Kernel Tuning with sysctl: Memory, Networking, and I/O</a></li><li><a href="/insights/os-namespaces-cgroups/">Linux Namespaces and cgroups: The Foundation of Containers</a></li></ol>
     </nav></div>
     <div class="prose">
 <p>The Linux kernel exposes thousands of tunable parameters through <code>sysctl</code>. Most of them should be left at defaults. A small set of them, when tuned correctly, make a material difference for database servers, web proxies, high-throughput data pipelines, and any server running at scale. This lesson covers the ones that matter and explains why they matter.</p>
+<h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
+<p><strong>One parameter per controlled comparison.</strong> Change one setting at a time, repeat the same traffic, and record p99 latency, queue drops and CPU. If 500 of 1,000,000 connections fail before a change and 200 fail after, the observed rates are 0.05% and 0.02%; repeat to rule out load variation.</p>
+<p><em>Illustrative measurement. Any numbers in this example are hypothetical.</em></p>
 <h2 id="sysctl-basics"><a class="h-anchor" href="#sysctl-basics" aria-hidden="true" tabindex="-1">#</a>sysctl Basics</h2>
-<aside class="keyfig">
-  <p class="keyfig-label">Key figure</p>
-  <p class="keyfig-text">Memory accesses to the remote NUMA node are 2–<b>3x</b> slower.</p>
-</aside>
 <pre><code class="language-bash">## Read a parameter
 sysctl vm.swappiness
 sysctl -a | grep tcp_rmem   # search across all parameters
@@ -327,7 +331,7 @@ numactl --cpunodebind=0 --membind=0 myapp
 
   <div class="art-wrap article-foot">
     <div class="row" style="gap:.4rem">
-      <a class="chip chip-plain" href="/insights/?topic=Programming">Programming</a><a class="chip chip-plain" href="/insights/?topic=Fundamentals">Fundamentals</a>
+      <a class="chip chip-plain" href="/topics/programming/">Programming</a><a class="chip chip-plain" href="/topics/fundamentals/">Fundamentals</a>
     </div>
     <nav class="prevnext" aria-label="More articles">
       <a href="/insights/containers-security/"><span>Previous</span><strong>Container Security: The Specific Misconfigurations That Open Production Systems to Attack</strong></a>
@@ -338,31 +342,31 @@ numactl --cpunodebind=0 --membind=0 myapp
   <section class="section surface hair" style="margin-top:4rem">
     <div class="wrap">
       <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|Programming|Enterprise AI|Developer Tools|" data-search="ai coding assistants in 2026: a practical comparison github copilot, amazon q, codeium, tabnine, cody, refact.ai, and more — what each one actually does well, where they fall short, and how to pick the right one for your team. programming enterprise ai developer tools" data-topic="Programming" href="/insights/ai-coding-assistants-comparison-2026/">
-  <div class="card-art"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="Conceptual illustration for AI Coding Assistants in 2026: A Practical Comparison: Data, Model, Context." preserveAspectRatio="xMidYMid meet" data-article-art="ai-coding-assistants-comparison-2026" data-art-scene="code" data-composition="instrument-panel"><defs><clipPath id="cpart-ai-coding-assistants-comparison-2026-640-360"><rect width="640" height="360"/></clipPath></defs><g clip-path="url(#cpart-ai-coding-assistants-comparison-2026-640-360)"><rect width="640" height="360" fill="#151d2b"/><g transform="translate(0 0) scale(1)"><path d="M0 38H640" stroke="#526071"/><circle cx="20" cy="19" r="4" fill="#c37e61"/><circle cx="35" cy="19" r="4" fill="#d5b477"/><circle cx="50" cy="19" r="4" fill="#88ae92"/><text x="75" y="24" fill="#b0c3d0" font-family="Arial,sans-serif" font-size="11" letter-spacing="1.1">ASSISTANT</text><g transform="translate(50 135) scale(0.94)"><g data-subject-detail="assistant" stroke="#94c5cb" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"><rect x="25" y="20" width="320" height="175" rx="6" fill="none"/><text x="185" y="50" fill="#94c5cb" stroke="none" font-family="Arial,sans-serif" font-size="14" text-anchor="middle">Developer workspace</text><path d="M45 85L245 85"/><path d="M45 105L245 105"/><path d="M45 125L245 125"/><path d="M45 145L245 145"/><rect x="180" y="123" width="145" height="36" rx="6" fill="#e0ad6d"/><rect x="395" y="60" width="140" height="105" rx="6" fill="none"/><text x="465" y="117.5" fill="#94c5cb" stroke="none" font-family="Arial,sans-serif" font-size="14" text-anchor="middle">AI assistant</text><path d="M350 100L390 100"/></g></g><text x="30" y="78" fill="#e8e3ce" font-size="24" font-weight="650" font-family="Arial,sans-serif" text-anchor="start">AI Coding Assistants in 2026</text><path d="M20 347h60m10 0h32m10 0h90" stroke="#e0ad6d" stroke-width="2" opacity=".6"/></g></g></svg></div>
+      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|Programming|Fundamentals|" data-search="linux namespaces and cgroups: the foundation of containers how linux namespaces isolate processes, filesystems, networks, and users — and how cgroups enforce resource limits. the primitives that docker, kubernetes, and every container runtime are built on. programming fundamentals" data-topic="Programming" href="/insights/os-namespaces-cgroups/">
+  <div class="card-art"><img data-article-art="os-namespaces-cgroups" src="/assets/covers/os-namespaces-cgroups.svg" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
     <span class="chip">Programming</span>
-    <h3 class="card-title">AI Coding Assistants in 2026: A Practical Comparison</h3>
-    <p class="card-desc">GitHub Copilot, Amazon Q, Codeium, Tabnine, Cody, Refact.ai, and more — what each one actually does well, where they fall short, and how to pick the right one for your team.</p>
-    <div class="card-meta"><time datetime="2026-11-16">16 Nov 2026</time><span class="dot"></span><span>5 min read</span></div>
+    <h3 class="card-title">Linux Namespaces and cgroups: The Foundation of Containers</h3>
+    <p class="card-desc">How Linux namespaces isolate processes, filesystems, networks, and users — and how cgroups enforce resource limits. The primitives that Docker, Kubernetes, and every container runtime are built on.</p>
+    <div class="card-meta"><time datetime="2026-06-02">2 Jun 2026</time><span class="dot"></span><span>5 min read</span><span class="dot"></span><span>Series</span></div>
   </div>
 </a>
-<a class="card" data-card data-topics="|Programming|Architecture|Cloud Architecture|" data-search="api design for enterprise systems: the decisions that age well an api that&#39;s easy to build against is easy to build wrong. the decisions around versioning, error models, pagination, idempotency, and authentication compound over time — here&#39;s how to make the ones that don&#39;t cause regret. programming architecture cloud architecture" data-topic="Programming" href="/insights/api-design-enterprise/">
-  <div class="card-art"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="Conceptual illustration for API Design for Enterprise Systems: The Decisions That Age Well: Client, Contract, Service." preserveAspectRatio="xMidYMid meet" data-article-art="api-design-enterprise" data-art-scene="api" data-composition="process-strip"><defs><clipPath id="cpart-api-design-enterprise-640-360"><rect width="640" height="360"/></clipPath></defs><g clip-path="url(#cpart-api-design-enterprise-640-360)"><rect width="640" height="360" fill="#f7f0e1"/><g transform="translate(0 0) scale(1)"><path d="M0 312H640" stroke="#bd562f" stroke-width="2"/><path d="M0 317H640" stroke="#bd562f" stroke-width="8" opacity=".12"/><text x="35" y="40" fill="#293a42" font-size="24" font-weight="650" font-family="Arial,sans-serif" text-anchor="start">API Design for Enterprise Systems</text><g transform="translate(50 115) scale(0.96)"><rect x="18" y="48" width="94" height="94" rx="18" fill="#315c63" fill-opacity=".055" stroke="#315c63" stroke-opacity=".18"/><g transform="translate(30 60) scale(0.7)"><g fill="none" stroke="#315c63" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M33 25L10 50l23 25m34-50l23 25-23 25M59 14L42 87"/></g></g><rect x="226" y="48" width="94" height="94" rx="18" fill="#315c63" fill-opacity=".055" stroke="#315c63" stroke-opacity=".18"/><g transform="translate(238 60) scale(0.7)"><g fill="none" stroke="#315c63" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10h38l18 18v62H22z M60 10v20h18 M34 45h32 M34 58h32 M34 71h21"/></g></g><rect x="434" y="48" width="94" height="94" rx="18" fill="#315c63" fill-opacity=".055" stroke="#315c63" stroke-opacity=".18"/><g transform="translate(446 60) scale(0.7)"><g fill="none" stroke="#315c63" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M18 88V12h64v76M38 30h24v58M6 88h88 M6 50h20m48 0h20 M20 44l7 6-7 6m61-12l-7 6 7 6"/></g></g><path d="M112 95L226 95" stroke="#315c63" stroke-width="2" opacity=".48" fill="none"/><path d="M320 95L434 95" stroke="#315c63" stroke-width="2" opacity=".48" fill="none"/></g><text x="77" y="302" fill="#315c63" font-family="Arial,sans-serif" font-size="12" letter-spacing="1.1">Client</text><text x="276" y="302" fill="#315c63" font-family="Arial,sans-serif" font-size="12" letter-spacing="1.1">Contract</text><text x="475" y="302" fill="#315c63" font-family="Arial,sans-serif" font-size="12" letter-spacing="1.1">Service</text><text x="35" y="340" fill="#315c63" font-family="Arial,sans-serif" font-size="11" letter-spacing="1.1">AJNA / API</text></g></g></svg></div>
+<a class="card" data-card data-topics="|Programming|Fundamentals|" data-search="disk i/o performance analysis on linux using iostat, iotop, and fio to measure disk throughput, latency, and queue depth — and diagnosing the i/o bottlenecks that silently degrade production databases. programming fundamentals" data-topic="Programming" href="/insights/os-disk-io-performance/">
+  <div class="card-art"><img data-article-art="os-disk-io-performance" src="/assets/covers/os-disk-io-performance.svg" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
     <span class="chip">Programming</span>
-    <h3 class="card-title">API Design for Enterprise Systems: The Decisions That Age Well</h3>
-    <p class="card-desc">An API that&#39;s easy to build against is easy to build wrong. The decisions around versioning, error models, pagination, idempotency, and authentication compound over time — here&#39;s how to make the ones that don&#39;t cause regret.</p>
-    <div class="card-meta"><time datetime="2026-11-06">6 Nov 2026</time><span class="dot"></span><span>5 min read</span></div>
+    <h3 class="card-title">Disk I/O Performance Analysis on Linux</h3>
+    <p class="card-desc">Using iostat, iotop, and fio to measure disk throughput, latency, and queue depth — and diagnosing the I/O bottlenecks that silently degrade production databases.</p>
+    <div class="card-meta"><time datetime="2025-04-30">30 Apr 2025</time><span class="dot"></span><span>5 min read</span><span class="dot"></span><span>Series</span></div>
   </div>
 </a>
-<a class="card" data-card data-topics="|AI &amp; MLOps|Programming|Enterprise AI|" data-search="prompt engineering for production systems: beyond the demo prompt engineering for a demo is different from prompt engineering for a system that runs reliably at scale. here&#39;s how to design prompts for consistency, build evaluation frameworks, and manage the failure modes that appear in production but not in testing. ai &amp; mlops programming enterprise ai" data-topic="AI &amp; MLOps" href="/insights/prompt-engineering-production/">
-  <div class="card-art"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="Conceptual illustration for Prompt Engineering for Production Systems: Beyond the Demo: Data, Model, Evaluation." preserveAspectRatio="xMidYMid meet" data-article-art="prompt-engineering-production" data-art-scene="model" data-composition="instrument-panel"><defs><clipPath id="cpart-prompt-engineering-production-640-360"><rect width="640" height="360"/></clipPath></defs><g clip-path="url(#cpart-prompt-engineering-production-640-360)"><rect width="640" height="360" fill="#151d2b"/><g transform="translate(0 0) scale(1)"><path d="M0 38H640" stroke="#526071"/><circle cx="20" cy="19" r="4" fill="#c37e61"/><circle cx="35" cy="19" r="4" fill="#d5b477"/><circle cx="50" cy="19" r="4" fill="#88ae92"/><text x="75" y="24" fill="#b0c3d0" font-family="Arial,sans-serif" font-size="11" letter-spacing="1.1">TOKENS</text><g transform="translate(50 135) scale(0.94)"><g data-subject-detail="tokens" stroke="#94c5cb" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"><rect x="25" y="25" width="73" height="42" rx="6" fill="none"/><rect x="111" y="25" width="73" height="42" rx="6" fill="none"/><rect x="197" y="25" width="73" height="42" rx="6" fill="none"/><rect x="283" y="25" width="73" height="42" rx="6" fill="none"/><rect x="369" y="25" width="73" height="42" rx="6" fill="none"/><rect x="455" y="25" width="73" height="42" rx="6" fill="none"/><rect x="25" y="86" width="73" height="42" rx="6" fill="none"/><rect x="111" y="86" width="73" height="42" rx="6" fill="none"/><rect x="197" y="86" width="73" height="42" rx="6" fill="none"/><rect x="283" y="86" width="73" height="42" rx="6" fill="#e0ad6d"/><rect x="369" y="86" width="73" height="42" rx="6" fill="#e0ad6d"/><rect x="455" y="86" width="73" height="42" rx="6" fill="#e0ad6d"/><rect x="25" y="147" width="73" height="42" rx="6" fill="none"/><rect x="111" y="147" width="73" height="42" rx="6" fill="none"/><rect x="197" y="147" width="73" height="42" rx="6" fill="none"/><rect x="283" y="147" width="73" height="42" rx="6" fill="none"/><rect x="369" y="147" width="73" height="42" rx="6" fill="none"/><rect x="455" y="147" width="73" height="42" rx="6" fill="none"/><text x="280" y="218" fill="#94c5cb" stroke="none" font-family="Arial,sans-serif" font-size="14" text-anchor="middle">Context · tokens · generation</text></g></g><text x="30" y="78" fill="#e8e3ce" font-size="24" font-weight="650" font-family="Arial,sans-serif" text-anchor="start">Prompt Engineering for Production</text><text x="30" y="109" fill="#e8e3ce" font-size="24" font-weight="650" font-family="Arial,sans-serif" text-anchor="start">Systems</text><path d="M20 347h60m10 0h32m10 0h90" stroke="#e0ad6d" stroke-width="2" opacity=".6"/></g></g></svg></div>
+<a class="card" data-card data-topics="|Programming|Fundamentals|" data-search="linux storage management: disks, partitions, lvm, filesystems, and mounting how linux storage works from physical disk to mounted filesystem — block devices, partition tables, lvm for flexible volume management, filesystem creation and tuning, and nfs for network storage. programming fundamentals" data-topic="Programming" href="/insights/os-storage-management/">
+  <div class="card-art"><img data-article-art="os-storage-management" src="/assets/covers/os-storage-management.svg" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">AI &amp; MLOps</span>
-    <h3 class="card-title">Prompt Engineering for Production Systems: Beyond the Demo</h3>
-    <p class="card-desc">Prompt engineering for a demo is different from prompt engineering for a system that runs reliably at scale. Here&#39;s how to design prompts for consistency, build evaluation frameworks, and manage the failure modes that appear in production but not in testing.</p>
-    <div class="card-meta"><time datetime="2026-11-04">4 Nov 2026</time><span class="dot"></span><span>4 min read</span></div>
+    <span class="chip">Programming</span>
+    <h3 class="card-title">Linux Storage Management: Disks, Partitions, LVM, Filesystems, and Mounting</h3>
+    <p class="card-desc">How Linux storage works from physical disk to mounted filesystem — block devices, partition tables, LVM for flexible volume management, filesystem creation and tuning, and NFS for network storage.</p>
+    <div class="card-meta"><time datetime="2024-10-08">8 Oct 2024</time><span class="dot"></span><span>6 min read</span><span class="dot"></span><span>Series</span></div>
   </div>
 </a></div>
     </div>
@@ -473,7 +477,7 @@ numactl --cpunodebind=0 --membind=0 myapp
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=74a650b6"></script>
+<script src="/assets/js/site.js?v=dd970c4d" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=dd970c4d"></script>
 </body>
 </html>

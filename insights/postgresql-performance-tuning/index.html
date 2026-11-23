@@ -14,14 +14,18 @@
 <meta property="og:title" content="PostgreSQL Performance Tuning: The Settings and Patterns That Actually Matter">
 <meta property="og:description" content="PostgreSQL&#39;s default configuration is conservative, designed for small deployments. For production workloads, the settings that control memory, parallelism…">
 <meta property="og:url" content="https://ajnacs.com/insights/postgresql-performance-tuning/">
-<meta property="og:image" content="https://ajnacs.com/assets/og/articles/postgresql-performance-tuning.png?v=61236f291ec0">
+<meta property="og:image" content="https://ajnacs.com/assets/og/articles/postgresql-performance-tuning.png?v=4773d949cdfe">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Illustration for PostgreSQL Performance Tuning: The Settings and Patterns That Actually Matter">
+<meta property="article:published_time" content="2025-12-26">
+<meta property="article:modified_time" content="2026-11-23">
 <meta property="og:image:type" content="image/png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="PostgreSQL Performance Tuning: The Settings and Patterns That Actually Matter">
 <meta name="twitter:description" content="PostgreSQL&#39;s default configuration is conservative, designed for small deployments. For production workloads, the settings that control memory, parallelism…">
-<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/postgresql-performance-tuning.png?v=61236f291ec0">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/postgresql-performance-tuning.png?v=4773d949cdfe">
+<meta name="twitter:image:alt" content="Illustration for PostgreSQL Performance Tuning: The Settings and Patterns That Actually Matter">
 
 <link rel="icon" href="/favicon.ico?v=cefc53b9" sizes="any">
 <link rel="icon" href="/images/ajna-mark.svg?v=cefc53b9" type="image/svg+xml">
@@ -29,7 +33,7 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=74a650b6">
+<link rel="stylesheet" href="/assets/css/site.css?v=dd970c4d">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
@@ -45,7 +49,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"PostgreSQL Performance Tuning: The Settings and Patterns That Actually Matter","description":"PostgreSQL's default configuration is conservative, designed for small deployments. For production workloads, the settings that control memory, parallelism, WAL behavior, and connection handling need explicit tuning. Here's where to start.","datePublished":"2025-12-26","dateModified":"2025-12-26","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/postgresql-performance-tuning/","image":"https://ajnacs.com/assets/og/articles/postgresql-performance-tuning.png?v=61236f291ec0","keywords":"Data Engineering, Programming, Cloud Architecture","articleSection":"Data Engineering","wordCount":973}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"PostgreSQL Performance Tuning: The Settings and Patterns That Actually Matter","description":"PostgreSQL's default configuration is conservative, designed for small deployments. For production workloads, the settings that control memory, parallelism, WAL behavior, and connection handling need explicit tuning. Here's where to start.","datePublished":"2025-12-26","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/postgresql-performance-tuning/","image":"https://ajnacs.com/assets/og/articles/postgresql-performance-tuning.png?v=4773d949cdfe","keywords":"Data Engineering, Programming, Cloud Architecture","articleSection":"Data Engineering","wordCount":1040}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"PostgreSQL Performance Tuning: The Settings and Patterns That Actually Matter"}]}</script>
 </head>
 <body class="" data-topic="Data Engineering">
@@ -59,7 +63,7 @@ d.setAttribute('data-theme',t);
     </div>
     <nav class="nav" id="nav" aria-label="Primary">
       <a href="/services/">Services</a>
-      <a href="/insights/" aria-current="page">Insights</a>
+      <a href="/insights/">Insights</a>
       <a href="/series/">Series</a>
       <a href="/case-studies/">Case studies</a>
       <a href="/about/">About</a>
@@ -81,34 +85,35 @@ d.setAttribute('data-theme',t);
       <nav class="crumbs" aria-label="Breadcrumb">
         <a href="/">Home</a> <span aria-hidden="true">/</span>
         <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
-        <span>Data Engineering</span>
+        <a href="/topics/data-engineering/">Data Engineering</a>
       </nav>
       <h1 class="h1">PostgreSQL Performance Tuning: The Settings and Patterns That Actually Matter</h1>
       <p class="lede" style="margin-top:1rem">PostgreSQL&#39;s default configuration is conservative, designed for small deployments. For production workloads, the settings that control memory, parallelism, WAL behavior, and connection handling need explicit tuning. Here&#39;s where to start.</p>
       <div class="article-meta">
-        <span class="chip">Data Engineering</span>
-        <time datetime="2025-12-26">26 Dec 2025</time>
-        <span class="dot"></span><span>4 min read</span>
+        <a class="article-byline" href="/about/#chandra-lanka">Chandra Lanka</a>
+        <span class="dot" aria-hidden="true"></span><time datetime="2025-12-26">26 Dec 2025</time>
+        <span class="dot" aria-hidden="true"></span><span>Updated <time datetime="2026-11-23">23 Nov 2026</time></span>
+        <span class="dot"></span><span>5 min read</span>
         <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
       </div>
     </div>
   </header>
 
-  <div class="art-wrap"><div class="article-hero" data-topic="Data Engineering"><span class="art-wide"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 380" role="img" aria-label="Conceptual illustration for PostgreSQL Performance Tuning: The Settings and Patterns That Actually Matter: Query, Index, Planner." preserveAspectRatio="xMidYMid meet" data-article-art="postgresql-performance-tuning" data-art-scene="index" data-composition="technical-cutaway"><defs><clipPath id="cpart-postgresql-performance-tuning-1200-380"><rect width="1200" height="380"/></clipPath></defs><g clip-path="url(#cpart-postgresql-performance-tuning-1200-380)"><rect width="1200" height="380" fill="#e9e7f2"/><g transform="translate(0 0) scale(1)"><path d="M585 230l260 65 295-70-265-63z" fill="#645b94" opacity=".1"/><path d="M600 212l245 58 275-64" fill="none" stroke="#b06d3b" stroke-width="2"/><g transform="translate(605 55) scale(1)"><g transform="translate(20 60) scale(0.75)"><g fill="none" stroke="#645b94" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="43" cy="41" r="27"/><path d="M63 63l27 27M30 41h26M43 28v26"/></g></g><path d="M110 95L225 95" stroke="#645b94" stroke-width="2" opacity=".48" fill="none"/><g stroke="#645b94" fill="none" stroke-width="2"><path d="M265 45v35m0 0l-65 45m65-45v45m0-45l65 45"/><rect x="240" y="10" width="50" height="35" rx="6"/><rect x="175" y="125" width="50" height="35" rx="6"/><rect x="240" y="125" width="50" height="35" rx="6"/><rect x="305" y="125" width="50" height="35" rx="6"/></g><path d="M367 95L433 95" stroke="#645b94" stroke-width="2" opacity=".48" fill="none"/><g transform="translate(445 60) scale(0.75)"><g fill="none" stroke="#b06d3b" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="50" cy="24" rx="30" ry="12"/><path d="M20 24v52c0 16 60 16 60 0V24 M20 49c0 16 60 16 60 0 M20 74c0 16 60 16 60 0"/></g></g></g><text x="60" y="112" fill="#33324f" font-size="30" font-weight="650" font-family="Arial,sans-serif" text-anchor="start">PostgreSQL Performance Tuning</text><text x="60" y="357" fill="#645b94" font-family="Arial,sans-serif" font-size="12" letter-spacing="1.1">index</text></g></g></svg></span><span class="art-compact"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="Conceptual illustration for PostgreSQL Performance Tuning: The Settings and Patterns That Actually Matter: Query, Index, Planner." preserveAspectRatio="xMidYMid meet" data-article-art="postgresql-performance-tuning" data-art-scene="index" data-composition="technical-cutaway"><defs><clipPath id="cpart-postgresql-performance-tuning-640-360"><rect width="640" height="360"/></clipPath></defs><g clip-path="url(#cpart-postgresql-performance-tuning-640-360)"><rect width="640" height="360" fill="#e9e7f2"/><g transform="translate(0 0) scale(1)"><path d="M58 291l260 65 295-70-265-63z" fill="#645b94" opacity=".1"/><path d="M73 273l245 58 275-64" fill="none" stroke="#b06d3b" stroke-width="2"/><g transform="translate(78 116) scale(0.88)"><g transform="translate(20 60) scale(0.75)"><g fill="none" stroke="#645b94" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="43" cy="41" r="27"/><path d="M63 63l27 27M30 41h26M43 28v26"/></g></g><path d="M110 95L225 95" stroke="#645b94" stroke-width="2" opacity=".48" fill="none"/><g stroke="#645b94" fill="none" stroke-width="2"><path d="M265 45v35m0 0l-65 45m65-45v45m0-45l65 45"/><rect x="240" y="10" width="50" height="35" rx="6"/><rect x="175" y="125" width="50" height="35" rx="6"/><rect x="240" y="125" width="50" height="35" rx="6"/><rect x="305" y="125" width="50" height="35" rx="6"/></g><path d="M367 95L433 95" stroke="#645b94" stroke-width="2" opacity=".48" fill="none"/><g transform="translate(445 60) scale(0.75)"><g fill="none" stroke="#b06d3b" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="50" cy="24" rx="30" ry="12"/><path d="M20 24v52c0 16 60 16 60 0V24 M20 49c0 16 60 16 60 0 M20 74c0 16 60 16 60 0"/></g></g></g><text x="35" y="40" fill="#33324f" font-size="24" font-weight="650" font-family="Arial,sans-serif" text-anchor="start">PostgreSQL Performance Tuning</text><text x="35" y="337" fill="#645b94" font-family="Arial,sans-serif" font-size="12" letter-spacing="1.1">index</text></g></g></svg></span></div></div>
+  <div class="art-wrap"><div class="article-hero" data-topic="Data Engineering"><img data-article-art="postgresql-performance-tuning" src="/assets/covers/postgresql-performance-tuning.svg" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div></div>
 
   <div class="art-wrap article-grid">
     <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
-  <ol><li><a href="#memory-settings-the-biggest-wins">Memory settings: the biggest wins</a></li><li><a href="#wal-and-checkpoint-tuning">WAL and checkpoint tuning</a></li><li><a href="#connection-management-don39t-skip-pgbouncer">Connection management: don&#39;t skip PgBouncer</a></li><li><a href="#indexing-the-most-common-performance-problems">Indexing: the most common performance problems</a></li><li><a href="#query-analysis-with-explain-analyze">Query analysis with EXPLAIN ANALYZE</a></li></ol>
+  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#memory-settings-the-biggest-wins">Memory settings: the biggest wins</a></li><li><a href="#wal-and-checkpoint-tuning">WAL and checkpoint tuning</a></li><li><a href="#connection-management-don39t-skip-pgbouncer">Connection management: don&#39;t skip PgBouncer</a></li><li><a href="#indexing-the-most-common-performance-problems">Indexing: the most common performance problems</a></li><li><a href="#query-analysis-with-explain-analyze">Query analysis with EXPLAIN ANALYZE</a></li></ol>
 </nav></div>
     <div class="prose">
 <p>PostgreSQL ships with defaults that are deliberately conservative — tuned for a server with 256MB of RAM to avoid out-of-memory failures on resource-constrained machines. Production deployments on modern hardware leave most of that performance on the table.</p>
 <p>This isn&#39;t a comprehensive tuning guide (PostgreSQL&#39;s performance characteristics depend heavily on workload, hardware, and access patterns). It&#39;s the settings that matter most for most production workloads, with the reasoning behind each.</p>
+<h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
+<p><strong>Buffers per successful query at equivalent load.</strong> Compare the same bind parameters with <code>EXPLAIN (ANALYZE, BUFFERS)</code> in an appropriate environment. If shared block reads fall from 2,000 to 400, that is an 80% reduction for the recorded execution. Track warm versus cold cache and index maintenance cost separately.</p>
+<p><em>Illustrative measurement. Any numbers in this example are hypothetical.</em></p>
+<p>Further reading: <a href="https://www.postgresql.org/docs/current/using-explain.html" rel="noopener" target="_blank">PostgreSQL documentation on EXPLAIN</a>.</p>
 <h2 id="memory-settings-the-biggest-wins"><a class="h-anchor" href="#memory-settings-the-biggest-wins" aria-hidden="true" tabindex="-1">#</a>Memory settings: the biggest wins</h2>
-<aside class="keyfig">
-  <p class="keyfig-label">Key figure</p>
-  <p class="keyfig-text">On a dedicated database server, set to <b>25%</b> of total RAM.</p>
-</aside>
 <p><strong><code>shared_buffers</code></strong>: the amount of memory PostgreSQL uses for caching data pages. Default is 128MB. On a dedicated database server, set to 25% of total RAM. On a 32GB server: <code>shared_buffers = 8GB</code>.</p>
 <p>This is the single most impactful setting. Queries that hit the shared buffer cache (in-memory) are orders of magnitude faster than queries that require disk I/O.</p>
 <p><strong><code>effective_cache_size</code></strong>: not a memory allocation — an estimate that tells the query planner how much memory is available for caching (shared buffers + OS page cache). Set to 50-75% of total RAM. On a 32GB server: <code>effective_cache_size = 24GB</code>. This influences whether the planner chooses index scans vs sequential scans.</p>
@@ -161,7 +166,7 @@ SELECT * FROM orders WHERE customer_id = 123 AND status = &#39;pending&#39;;
 <li><code>actual rows</code> vs <code>rows</code> (estimated): large discrepancies mean stale statistics — run <code>ANALYZE tablename</code></li>
 </ul>
 <p><code>pg_stat_statements</code> extension (enable in <code>shared_preload_libraries</code>) records query execution statistics across all connections. The query with the highest <code>total_exec_time</code> divided by <code>calls</code> is your first optimization target.</p>
-<p><em>Working through a PostgreSQL performance problem or setting up a production database configuration? <a href="/contact">Happy to look at specifics.</a></em></p>
+<p><em>Working through a PostgreSQL performance problem or setting up a production database configuration? <a href="/contact/">Happy to look at specifics.</a></em></p>
 
     </div>
   </div>
@@ -178,7 +183,7 @@ SELECT * FROM orders WHERE customer_id = 123 AND status = &#39;pending&#39;;
 
   <div class="art-wrap article-foot">
     <div class="row" style="gap:.4rem">
-      <a class="chip chip-plain" href="/insights/?topic=Data%20Engineering">Data Engineering</a><a class="chip chip-plain" href="/insights/?topic=Programming">Programming</a><a class="chip chip-plain" href="/insights/?topic=Cloud%20Architecture">Cloud Architecture</a>
+      <a class="chip chip-plain" href="/topics/data-engineering/">Data Engineering</a><a class="chip chip-plain" href="/topics/programming/">Programming</a><a class="chip chip-plain" href="/topics/cloud-architecture/">Cloud Architecture</a>
     </div>
     <nav class="prevnext" aria-label="More articles">
       <a href="/insights/ai-cost-management-production/"><span>Previous</span><strong>AI Cost Management in Production: Controlling Token Spend Without Degrading Quality</strong></a>
@@ -189,31 +194,31 @@ SELECT * FROM orders WHERE customer_id = 123 AND status = &#39;pending&#39;;
   <section class="section surface hair" style="margin-top:4rem">
     <div class="wrap">
       <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|DevSecOps|Cloud Architecture|Engineering Leadership|" data-search="platform engineering in 2026: what an internal developer platform actually needs every team is building a platform. few are building one that developers actually want to use. here&#39;s what separates an idp that accelerates delivery from one that adds process overhead dressed up as self-service. devsecops cloud architecture engineering leadership" data-topic="DevSecOps" href="/insights/platform-engineering-idp-2026/">
-  <div class="card-art"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="Conceptual illustration for Platform Engineering in 2026: What an Internal Developer Platform Actually Needs: Developer, Platform, Feedback." preserveAspectRatio="xMidYMid meet" data-article-art="platform-engineering-idp-2026" data-art-scene="platform" data-composition="paper-workbench"><defs><clipPath id="cpart-platform-engineering-idp-2026-640-360"><rect width="640" height="360"/></clipPath></defs><g clip-path="url(#cpart-platform-engineering-idp-2026-640-360)"><rect width="640" height="360" fill="#f1ebe0"/><g transform="translate(0 0) scale(1)"><path d="M73 97l525 14-6 216-528-14z" fill="#9d4c35" opacity=".12"/><rect x="45" y="110" width="550" height="218" fill="#fffaf0"/><path d="M57 126h17m-8-8v16" stroke="#9d4c35"/><g transform="translate(49 118) scale(0.96)"><g transform="translate(36 55) scale(0.95)"><g fill="none" stroke="#756654" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="50" cy="28" r="15"/><path d="M19 88v-9a31 31 0 0162 0v9 M15 18a12 12 0 000 24M85 18a12 12 0 010 24M7 59a20 20 0 00-4 29m90-29a20 20 0 014 29"/></g></g><g transform="translate(228 35) scale(1.2)"><g fill="none" stroke="#9d4c35" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M18 88V12h64v76M38 30h24v58M6 88h88 M6 50h20m48 0h20 M20 44l7 6-7 6m61-12l-7 6 7 6"/></g></g><g transform="translate(440 55) scale(0.95)"><g fill="none" stroke="#756654" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="50" cy="28" r="15"/><path d="M19 88v-9a31 31 0 0162 0v9 M15 18a12 12 0 000 24M85 18a12 12 0 010 24M7 59a20 20 0 00-4 29m90-29a20 20 0 014 29"/></g></g><path d="M137 100L213 100" stroke="#756654" stroke-width="2" opacity=".48" fill="none"/><path d="M365 100L430 100" stroke="#756654" stroke-width="2" opacity=".48" fill="none"/></g><text x="35" y="42" fill="#483f39" font-size="25" font-weight="400" font-family="Georgia,serif" text-anchor="start">Platform Engineering in 2026</text><text x="35" y="345" fill="#756654" font-family="Arial,sans-serif" font-size="10" letter-spacing="1.1">PLATFORM / WORKING NOTES</text></g></g></svg></div>
+      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|Performance|Programming|Cloud Architecture|Data Engineering|FinOps|" data-search="compression in production: choosing between gzip, zstd, lz4, and brotli like it matters compression is a three-way trade — ratio, speed, and cpu — that most systems set once by default and never revisit. the algorithm landscape, placement decisions across web, storage, and streaming, dictionary compression&#39;s quiet superpower, and the measurement discipline. performance programming cloud architecture data engineering finops" data-topic="Performance" href="/insights/compression-selection-guide/">
+  <div class="card-art"><img data-article-art="compression-selection-guide" src="/assets/covers/compression-selection-guide.svg" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">DevSecOps</span>
-    <h3 class="card-title">Platform Engineering in 2026: What an Internal Developer Platform Actually Needs</h3>
-    <p class="card-desc">Every team is building a platform. Few are building one that developers actually want to use. Here&#39;s what separates an IDP that accelerates delivery from one that adds process overhead dressed up as self-service.</p>
-    <div class="card-meta"><time datetime="2026-11-20">20 Nov 2026</time><span class="dot"></span><span>4 min read</span></div>
+    <span class="chip">Performance</span>
+    <h3 class="card-title">Compression in Production: Choosing Between gzip, zstd, lz4, and Brotli Like It Matters</h3>
+    <p class="card-desc">Compression is a three-way trade — ratio, speed, and CPU — that most systems set once by default and never revisit. The algorithm landscape, placement decisions across web, storage, and streaming, dictionary compression&#39;s quiet superpower, and the measurement discipline.</p>
+    <div class="card-meta"><time datetime="2026-10-12">12 Oct 2026</time><span class="dot"></span><span>5 min read</span></div>
   </div>
 </a>
-<a class="card" data-card data-topics="|Programming|Enterprise AI|Developer Tools|" data-search="ai coding assistants in 2026: a practical comparison github copilot, amazon q, codeium, tabnine, cody, refact.ai, and more — what each one actually does well, where they fall short, and how to pick the right one for your team. programming enterprise ai developer tools" data-topic="Programming" href="/insights/ai-coding-assistants-comparison-2026/">
-  <div class="card-art"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="Conceptual illustration for AI Coding Assistants in 2026: A Practical Comparison: Data, Model, Context." preserveAspectRatio="xMidYMid meet" data-article-art="ai-coding-assistants-comparison-2026" data-art-scene="code" data-composition="instrument-panel"><defs><clipPath id="cpart-ai-coding-assistants-comparison-2026-640-360"><rect width="640" height="360"/></clipPath></defs><g clip-path="url(#cpart-ai-coding-assistants-comparison-2026-640-360)"><rect width="640" height="360" fill="#151d2b"/><g transform="translate(0 0) scale(1)"><path d="M0 38H640" stroke="#526071"/><circle cx="20" cy="19" r="4" fill="#c37e61"/><circle cx="35" cy="19" r="4" fill="#d5b477"/><circle cx="50" cy="19" r="4" fill="#88ae92"/><text x="75" y="24" fill="#b0c3d0" font-family="Arial,sans-serif" font-size="11" letter-spacing="1.1">ASSISTANT</text><g transform="translate(50 135) scale(0.94)"><g data-subject-detail="assistant" stroke="#94c5cb" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"><rect x="25" y="20" width="320" height="175" rx="6" fill="none"/><text x="185" y="50" fill="#94c5cb" stroke="none" font-family="Arial,sans-serif" font-size="14" text-anchor="middle">Developer workspace</text><path d="M45 85L245 85"/><path d="M45 105L245 105"/><path d="M45 125L245 125"/><path d="M45 145L245 145"/><rect x="180" y="123" width="145" height="36" rx="6" fill="#e0ad6d"/><rect x="395" y="60" width="140" height="105" rx="6" fill="none"/><text x="465" y="117.5" fill="#94c5cb" stroke="none" font-family="Arial,sans-serif" font-size="14" text-anchor="middle">AI assistant</text><path d="M350 100L390 100"/></g></g><text x="30" y="78" fill="#e8e3ce" font-size="24" font-weight="650" font-family="Arial,sans-serif" text-anchor="start">AI Coding Assistants in 2026</text><path d="M20 347h60m10 0h32m10 0h90" stroke="#e0ad6d" stroke-width="2" opacity=".6"/></g></g></svg></div>
+<a class="card" data-card data-topics="|Programming|Architecture|Cloud Architecture|" data-search="api design for enterprise systems: the decisions that age well an api that&#39;s easy to build against is easy to build wrong. the decisions around versioning, error models, pagination, idempotency, and authentication compound over time — here&#39;s how to make the ones that don&#39;t cause regret. programming architecture cloud architecture" data-topic="Programming" href="/insights/api-design-enterprise/">
+  <div class="card-art"><img data-article-art="api-design-enterprise" src="/assets/covers/api-design-enterprise.svg" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
     <span class="chip">Programming</span>
-    <h3 class="card-title">AI Coding Assistants in 2026: A Practical Comparison</h3>
-    <p class="card-desc">GitHub Copilot, Amazon Q, Codeium, Tabnine, Cody, Refact.ai, and more — what each one actually does well, where they fall short, and how to pick the right one for your team.</p>
-    <div class="card-meta"><time datetime="2026-11-16">16 Nov 2026</time><span class="dot"></span><span>5 min read</span></div>
+    <h3 class="card-title">API Design for Enterprise Systems: The Decisions That Age Well</h3>
+    <p class="card-desc">An API that&#39;s easy to build against is easy to build wrong. The decisions around versioning, error models, pagination, idempotency, and authentication compound over time — here&#39;s how to make the ones that don&#39;t cause regret.</p>
+    <div class="card-meta"><time datetime="2026-11-06">6 Nov 2026</time><span class="dot"></span><span>5 min read</span></div>
   </div>
 </a>
-<a class="card" data-card data-topics="|Cloud Architecture|DevSecOps|Infrastructure|" data-search="serverless vs containers: an honest comparison for 2026 neither is universally better. the answer depends on your workload profile, your team&#39;s operational maturity, and — honestly — your tolerance for cold starts. cloud architecture devsecops infrastructure" data-topic="Cloud Architecture" href="/insights/serverless-vs-containers-2026/">
-  <div class="card-art"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="Conceptual illustration for Serverless vs Containers: An Honest Comparison for 2026: Workload, Runtime, Container." preserveAspectRatio="xMidYMid meet" data-article-art="serverless-vs-containers-2026" data-art-scene="container" data-composition="technical-cutaway"><defs><clipPath id="cpart-serverless-vs-containers-2026-640-360"><rect width="640" height="360"/></clipPath></defs><g clip-path="url(#cpart-serverless-vs-containers-2026-640-360)"><rect width="640" height="360" fill="#e9e7f2"/><g transform="translate(0 0) scale(1)"><path d="M58 291l260 65 295-70-265-63z" fill="#645b94" opacity=".1"/><path d="M73 273l245 58 275-64" fill="none" stroke="#b06d3b" stroke-width="2"/><g transform="translate(78 116) scale(0.88)"><rect x="42" y="12" width="470" height="186" rx="22" stroke="#645b94" fill="#645b94" fill-opacity=".035"/><g transform="translate(70 35) scale(0.86)"><g fill="none" stroke="#645b94" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><rect x="10" y="18" width="80" height="64" rx="6"/><path d="M26 28v44m16-44v44m16-44v44m16-44v44M10 67h80"/></g></g><g transform="translate(225 35) scale(0.86)"><g fill="none" stroke="#645b94" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><rect x="10" y="18" width="80" height="64" rx="6"/><path d="M26 28v44m16-44v44m16-44v44m16-44v44M10 67h80"/></g></g><g transform="translate(380 35) scale(0.86)"><g fill="none" stroke="#645b94" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><rect x="10" y="18" width="80" height="64" rx="6"/><path d="M26 28v44m16-44v44m16-44v44m16-44v44M10 67h80"/></g></g><path d="M65 150h426m-426 23h426" stroke="#b06d3b" stroke-width="8" opacity=".45"/></g><text x="35" y="40" fill="#33324f" font-size="24" font-weight="650" font-family="Arial,sans-serif" text-anchor="start">Serverless vs Containers</text><text x="35" y="337" fill="#645b94" font-family="Arial,sans-serif" font-size="12" letter-spacing="1.1">container</text></g></g></svg></div>
+<a class="card" data-card data-topics="|Programming|Architecture|Cloud Architecture|" data-search="system design patterns every backend engineer should know cqrs, event sourcing, saga pattern, outbox pattern — the patterns that solve specific distributed systems problems, what trade-offs they introduce, and when the simpler option is actually the right one. programming architecture cloud architecture" data-topic="Programming" href="/insights/system-design-patterns-backend/">
+  <div class="card-art"><img data-article-art="system-design-patterns-backend" src="/assets/covers/system-design-patterns-backend.svg" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Cloud Architecture</span>
-    <h3 class="card-title">Serverless vs Containers: An Honest Comparison for 2026</h3>
-    <p class="card-desc">Neither is universally better. The answer depends on your workload profile, your team&#39;s operational maturity, and — honestly — your tolerance for cold starts.</p>
-    <div class="card-meta"><time datetime="2026-11-13">13 Nov 2026</time><span class="dot"></span><span>4 min read</span></div>
+    <span class="chip">Programming</span>
+    <h3 class="card-title">System Design Patterns Every Backend Engineer Should Know</h3>
+    <p class="card-desc">CQRS, event sourcing, saga pattern, outbox pattern — the patterns that solve specific distributed systems problems, what trade-offs they introduce, and when the simpler option is actually the right one.</p>
+    <div class="card-meta"><time datetime="2026-10-28">28 Oct 2026</time><span class="dot"></span><span>5 min read</span></div>
   </div>
 </a></div>
     </div>
@@ -314,7 +319,7 @@ SELECT * FROM orders WHERE customer_id = 123 AND status = &#39;pending&#39;;
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=74a650b6"></script>
+<script src="/assets/js/site.js?v=dd970c4d" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=dd970c4d"></script>
 </body>
 </html>

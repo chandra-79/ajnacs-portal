@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Python Packaging and Dependency Management in 2026: From requirements.txt Chaos to Reproducible Builds | Ajna CS</title>
+<meta name="description" content="The Python packaging story finally consolidated — pyproject.toml, lockfiles, and uv. What a modern, reproducible Python dependency setup looks like for tea…">
+<meta name="author" content="Chandra Lanka">
+<link rel="canonical" href="https://ajnacs.com/insights/python-packaging-dependency-management/">
+<meta name="robots" content="index, follow, max-image-preview:large">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Ajna Consulting Services">
+<meta property="og:title" content="Python Packaging and Dependency Management in 2026: From requirements.txt Chaos to Reproducible Builds">
+<meta property="og:description" content="The Python packaging story finally consolidated — pyproject.toml, lockfiles, and uv. What a modern, reproducible Python dependency setup looks like for tea…">
+<meta property="og:url" content="https://ajnacs.com/insights/python-packaging-dependency-management/">
+<meta property="og:image" content="https://ajnacs.com/assets/og/articles/python-packaging-dependency-management.png?v=f259011cf20a">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Illustration for Python Packaging and Dependency Management in 2026: From requirements.txt Chaos to Reproducible Builds">
+<meta property="article:published_time" content="2026-11-23">
+
+<meta property="og:image:type" content="image/png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Python Packaging and Dependency Management in 2026: From requirements.txt Chaos to Reproducible Builds">
+<meta name="twitter:description" content="The Python packaging story finally consolidated — pyproject.toml, lockfiles, and uv. What a modern, reproducible Python dependency setup looks like for tea…">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/python-packaging-dependency-management.png?v=f259011cf20a">
+<meta name="twitter:image:alt" content="Illustration for Python Packaging and Dependency Management in 2026: From requirements.txt Chaos to Reproducible Builds">
+
+<link rel="icon" href="/favicon.ico?v=cefc53b9" sizes="any">
+<link rel="icon" href="/images/ajna-mark.svg?v=cefc53b9" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png?v=cefc53b9">
+<meta name="theme-color" content="#0a1020">
+
+<link rel="stylesheet" href="/assets/fonts/fonts.css">
+<link rel="stylesheet" href="/assets/css/site.css?v=dd970c4d">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<script>
+/* Theme and reading preferences are applied before first paint, so the page
+   never flashes the wrong ground or resets someone's text size mid-read. */
+(function(){try{
+var d=document.documentElement,t=localStorage.getItem('acs-theme');
+if(t!=='dark'&&t!=='light'&&t!=='sepia')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+d.setAttribute('data-theme',t);
+['rsize','rwidth','rface'].forEach(function(k){
+  var v=localStorage.getItem('acs-'+k);
+  if(v&&/^[a-z]{1,5}$/.test(v))d.setAttribute('data-'+k,v);
+});
+
+}catch(e){}})();
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Python Packaging and Dependency Management in 2026: From requirements.txt Chaos to Reproducible Builds","description":"The Python packaging story finally consolidated — pyproject.toml, lockfiles, and uv. What a modern, reproducible Python dependency setup looks like for teams, and how to migrate an estate of requirements.txt files without drama.","datePublished":"2026-11-23","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/python-packaging-dependency-management/","image":"https://ajnacs.com/assets/og/articles/python-packaging-dependency-management.png?v=f259011cf20a","keywords":"Python, Platform Engineering, Engineering Practice, Supply Chain Security, Developer Experience","articleSection":"Platform Engineering","wordCount":947}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Python Packaging and Dependency Management in 2026: From requirements.txt Chaos to Reproducible Builds"}]}</script>
+</head>
+<body class="" data-topic="Platform Engineering">
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header" id="siteHeader">
+  <div class="wrap" style="display:flex;align-items:center;width:min(1220px,100% - var(--gutter)*2)">
+    <div class="brand">
+      <button class="brand-motion" type="button" data-ajna-motion data-arrival aria-label="Open Ajna logo" aria-pressed="false"><svg class="ajna-mark" viewBox="0 0 100 100" width="40" height="40" fill="none" aria-hidden="true" focusable="false"><defs><path id="t-hdr" d="M 50 4 L 96 50 L 50 50 Z"/><path id="e-hdr" d="M 50 4 L 96 50"/><path id="k-hdr" d="M 50 4 L 50 50 L 96 50"/><linearGradient id="bev-hdr" gradientUnits="userSpaceOnUse" x1="50" y1="50" x2="73" y2="27"><stop offset="0" stop-color="#000" stop-opacity=".13"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity=".2"/></linearGradient><radialGradient id="core-hdr" cx=".34" cy=".3" r=".85"><stop offset="0" stop-color="#fff" stop-opacity=".42"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".45"/></radialGradient><path id="ll-hdr" d="M 50 50 C 34 30.26, 40.08 9.579999999999998, 50 3 C 59.92 9.579999999999998, 66 30.26, 50 50 Z"/><path id="ls-hdr" d="M 50 50 C 36 33.620000000000005, 41.32 16.46, 50 11 C 58.68 16.46, 64 33.620000000000005, 50 50 Z"/><clipPath id="clip-ll-hdr"><use href="#ll-hdr"/></clipPath><clipPath id="clip-ls-hdr"><use href="#ls-hdr"/></clipPath></defs><g class="am-leaf" opacity="0" transform="translate(50 50) rotate(0) scale(.38 .02) translate(-50 -50)"><use href="#ll-hdr" fill="#E8402A"/><path d="M50 0 H100 V100 H50Z" fill="#000" fill-opacity=".13" clip-path="url(#clip-ll-hdr)"/><path d="M50 50 L50 3" stroke="#fff" stroke-opacity=".2" stroke-width=".7"/></g><g class="am-leaf" opacity="0" transform="translate(50 50) rotate(45) scale(.38 .02) translate(-50 -50)"><use href="#ls-hdr" fill="#E8402A"/><path d="M50 0 H100 V100 H50Z" fill="#000" fill-opacity=".13" clip-path="url(#clip-ls-hdr)"/><path d="M50 50 L50 11" stroke="#fff" stroke-opacity=".2" stroke-width=".7"/></g><g class="am-leaf" opacity="0" transform="translate(50 50) rotate(90) scale(.38 .02) translate(-50 -50)"><use href="#ll-hdr" fill="#F5A623"/><path d="M50 0 H100 V100 H50Z" fill="#000" fill-opacity=".13" clip-path="url(#clip-ll-hdr)"/><path d="M50 50 L50 3" stroke="#fff" stroke-opacity=".2" stroke-width=".7"/></g><g class="am-leaf" opacity="0" transform="translate(50 50) rotate(135) scale(.38 .02) translate(-50 -50)"><use href="#ls-hdr" fill="#F5A623"/><path d="M50 0 H100 V100 H50Z" fill="#000" fill-opacity=".13" clip-path="url(#clip-ls-hdr)"/><path d="M50 50 L50 11" stroke="#fff" stroke-opacity=".2" stroke-width=".7"/></g><g class="am-leaf" opacity="0" transform="translate(50 50) rotate(180) scale(.38 .02) translate(-50 -50)"><use href="#ll-hdr" fill="#17A05E"/><path d="M50 0 H100 V100 H50Z" fill="#000" fill-opacity=".13" clip-path="url(#clip-ll-hdr)"/><path d="M50 50 L50 3" stroke="#fff" stroke-opacity=".2" stroke-width=".7"/></g><g class="am-leaf" opacity="0" transform="translate(50 50) rotate(225) scale(.38 .02) translate(-50 -50)"><use href="#ls-hdr" fill="#17A05E"/><path d="M50 0 H100 V100 H50Z" fill="#000" fill-opacity=".13" clip-path="url(#clip-ls-hdr)"/><path d="M50 50 L50 11" stroke="#fff" stroke-opacity=".2" stroke-width=".7"/></g><g class="am-leaf" opacity="0" transform="translate(50 50) rotate(270) scale(.38 .02) translate(-50 -50)"><use href="#ll-hdr" fill="#2B57E8"/><path d="M50 0 H100 V100 H50Z" fill="#000" fill-opacity=".13" clip-path="url(#clip-ll-hdr)"/><path d="M50 50 L50 3" stroke="#fff" stroke-opacity=".2" stroke-width=".7"/></g><g class="am-leaf" opacity="0" transform="translate(50 50) rotate(315) scale(.38 .02) translate(-50 -50)"><use href="#ls-hdr" fill="#2B57E8"/><path d="M50 0 H100 V100 H50Z" fill="#000" fill-opacity=".13" clip-path="url(#clip-ls-hdr)"/><path d="M50 50 L50 11" stroke="#fff" stroke-opacity=".2" stroke-width=".7"/></g><g class="am-bud"><g class="am-petal" style="--a:0deg"><use href="#t-hdr" fill="#E8402A"/><use href="#t-hdr" fill="url(#bev-hdr)"/><use href="#t-hdr" fill="#fff" opacity="0.07"/><use href="#e-hdr" stroke="#fff" stroke-opacity="0.34" stroke-width="1.6" stroke-linecap="round"/><use href="#k-hdr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g class="am-petal" style="--a:90deg"><use href="#t-hdr" fill="#F5A623"/><use href="#t-hdr" fill="url(#bev-hdr)"/><use href="#t-hdr" fill="#000" opacity="0.12"/><use href="#e-hdr" stroke="#000" stroke-opacity="0.16" stroke-width="1.6" stroke-linecap="round"/><use href="#k-hdr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g class="am-petal" style="--a:180deg"><use href="#t-hdr" fill="#17A05E"/><use href="#t-hdr" fill="url(#bev-hdr)"/><use href="#t-hdr" fill="#000" opacity="0.05"/><use href="#e-hdr" stroke="#000" stroke-opacity="0.1" stroke-width="1.6" stroke-linecap="round"/><use href="#k-hdr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g class="am-petal" style="--a:270deg"><use href="#t-hdr" fill="#2B57E8"/><use href="#t-hdr" fill="url(#bev-hdr)"/><use href="#t-hdr" fill="#fff" opacity="0.30"/><use href="#e-hdr" stroke="#fff" stroke-opacity="0.46" stroke-width="1.6" stroke-linecap="round"/><use href="#k-hdr" stroke="#000" stroke-width=".9" opacity=".2"/></g></g><g class="am-core"><circle cx="50" cy="50" r="6" fill="currentColor"/><circle cx="50" cy="50" r="6" fill="url(#core-hdr)"/></g></svg></button>
+      <a class="brand-home" href="/" aria-label="Ajna Consulting Services — home"><span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span></a>
+    </div>
+    <nav class="nav" id="nav" aria-label="Primary">
+      <a href="/services/">Services</a>
+      <a href="/insights/">Insights</a>
+      <a href="/series/">Series</a>
+      <a href="/case-studies/">Case studies</a>
+      <a href="/about/">About</a>
+      <a class="btn btn-sm" href="/contact/" style="margin-left:.4rem">Engage engineering</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn" id="themeBtn" type="button" aria-label="Switch to dark mode" aria-pressed="false"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg></button>
+      <button class="icon-btn nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+
+<div class="read-bar" aria-hidden="true"><span id="readBar"></span></div>
+<article class="article with-toc">
+  <header class="article-head">
+    <div class="art-wrap">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a> <span aria-hidden="true">/</span>
+        <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
+        <a href="/topics/platform-engineering/">Platform Engineering</a>
+      </nav>
+      <h1 class="h1">Python Packaging and Dependency Management in 2026: From requirements.txt Chaos to Reproducible Builds</h1>
+      <p class="lede" style="margin-top:1rem">The Python packaging story finally consolidated — pyproject.toml, lockfiles, and uv. What a modern, reproducible Python dependency setup looks like for teams, and how to migrate an estate of requirements.txt files without drama.</p>
+      <div class="article-meta">
+        <a class="article-byline" href="/about/#chandra-lanka">Chandra Lanka</a>
+        <span class="dot" aria-hidden="true"></span><time datetime="2026-11-23">23 Nov 2026</time>
+        
+        <span class="dot"></span><span>4 min read</span>
+        <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="art-wrap"><div class="article-hero" data-topic="Platform Engineering"><img data-article-art="python-packaging-dependency-management" src="/assets/covers/python-packaging-dependency-management.svg" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div></div>
+
+  <div class="art-wrap article-grid">
+    <div class="reader-aside"><nav class="toc" aria-label="On this page">
+  <p class="toc-title">On this page</p>
+  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#the-consolidation-pyprojecttoml-won">The consolidation: pyproject.toml won</a></li><li><a href="#the-core-discipline-intentions-vs-resolutions">The core discipline: intentions vs. resolutions</a></li><li><a href="#the-supporting-cast">The supporting cast</a></li><li><a href="#migrating-an-estate-without-drama">Migrating an estate without drama</a></li></ol>
+</nav></div>
+    <div class="prose">
+<p>For twenty years, &quot;how do I manage Python dependencies&quot; had a dozen answers, all partially wrong: setup.py, requirements.txt, pip-tools, pipenv, poetry, conda, and a folklore layer of &quot;well, what we actually do is…&quot; The result was the most common failure mode in enterprise Python — <em>it works on my machine, fails in CI, and does something third in production</em>, because those three environments resolved dependencies at different times and got different trees.</p>
+<p>That era is genuinely ending. The standards consolidated, and the tooling caught up. Here&#39;s what current-day Python dependency management looks like, and how to get an existing estate there.</p>
+<h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
+<p><strong>Reproducibility across supported environments.</strong> Install from the lock in each supported Python and OS combination with a clean cache. If 11 of 12 jobs install and pass a smoke test, report the failing combination, package and missing wheel so teams can act. Test the built artifact as well as the editable checkout.</p>
+<p><em>Illustrative measurement. Any numbers in this example are hypothetical.</em></p>
+<h2 id="the-consolidation-pyprojecttoml-won"><a class="h-anchor" href="#the-consolidation-pyprojecttoml-won" aria-hidden="true" tabindex="-1">#</a>The consolidation: pyproject.toml won</h2>
+<p>Everything about a Python project now lives in <strong><code>pyproject.toml</code></strong> — metadata, dependencies, optional extras, build backend, and tool configuration. <code>setup.py</code> is legacy (still executable, no longer where new work goes); standalone <code>requirements.txt</code> survives only as an <em>export format</em>. The standards behind this (PEP 517/518/621 and successors) mean tools interoperate instead of inventing private universes: any modern builder can build any compliant project, and any resolver can read its requirements.</p>
+<p>The second consolidation is newer and more consequential for teams: <strong>uv</strong> — the Rust-based package/project manager — has effectively become the default recommendation for new work. One binary that replaces pip, pip-tools, virtualenv, and most of poetry&#39;s project-management surface, 10–100× faster at resolution and installation, with first-class lockfiles and Python-version management (<code>uv python install 3.12</code> — it will fetch and pin interpreters too). Speed sounds like a luxury until you remember every CI job on every PR pays the install tax; estates that switched routinely cut minutes per build. (pip + pip-tools remains a fine conservative stack, and Poetry is still respectable; but if you&#39;re choosing today with no legacy constraints, the argument for uv is short.)</p>
+<h2 id="the-core-discipline-intentions-vs-resolutions"><a class="h-anchor" href="#the-core-discipline-intentions-vs-resolutions" aria-hidden="true" tabindex="-1">#</a>The core discipline: intentions vs. resolutions</h2>
+<p>Every mature dependency setup — in any language — separates two files with two jobs:</p>
+<p><strong>What you intend</strong> (<code>pyproject.toml</code> dependencies): loose, human-edited, semantic. <code>fastapi&gt;=0.110</code>, <code>pydantic~=2.7</code>. This expresses compatibility policy, not exact state.</p>
+<p><strong>What you resolved</strong> (the lockfile — <code>uv.lock</code>, <code>poetry.lock</code>, or a pip-tools-compiled requirements file): exact versions <em>and hashes</em> of the entire transitive tree, machine-generated, committed to git. This is what CI and production install — with <code>--frozen</code>/<code>--require-hashes</code> semantics so the build fails loudly if the lock is stale or a package&#39;s content changes.</p>
+<p>Application deploys from the lockfile, always; upgrades happen by <em>deliberately</em> re-resolving (<code>uv lock --upgrade-package django</code>), reviewing the diff, and shipping it through the pipeline like any other change. This single discipline eliminates the works-on-my-machine class entirely: every environment installs byte-identical trees, and &quot;what version of cryptography are we actually running?&quot; has an answer in git history.</p>
+<p>(Libraries — code published for others to install — keep loose constraints in <code>pyproject.toml</code> and <em>don&#39;t</em> ship lockfiles to consumers; they may still commit one for their own CI. The application/library distinction resolves most packaging arguments teams have.)</p>
+<h2 id="the-supporting-cast"><a class="h-anchor" href="#the-supporting-cast" aria-hidden="true" tabindex="-1">#</a>The supporting cast</h2>
+<p><strong>Virtual environments stopped being a topic.</strong> <code>uv sync</code> creates and manages <code>.venv</code> implicitly; nobody should be sourcing activate scripts in CI YAML anymore, and the global-site-packages incident genre is extinct where this is adopted.</p>
+<p><strong>Private registries and supply chain:</strong> enterprises should front PyPI with an internal proxy (Artifactory, CodeArtifact, devpi) for availability, audit, and the ability to block a poisoned release fleet-wide within minutes. Hash-checking from lockfiles plus <code>pip-audit</code>/<code>uv</code>-integrated vulnerability scanning in CI closes the loop; typosquatting and dependency confusion are boring, real, and cheap to defend against — configure the index precedence explicitly so an internal package name can never be shadowed by a public upload.</p>
+<p><strong>Reproducible interpreter, too:</strong> pin the Python version per project (<code>.python-version</code> / <code>requires-python</code>), because &quot;3.11 locally, 3.9 in prod&quot; is the same disease at a different layer. Container builds should install from the lockfile in a <code>--no-cache</code>, multi-stage Dockerfile — dependency layer first for caching, application code after.</p>
+<p><strong>Monorepos:</strong> uv workspaces (like Cargo/pnpm workspaces) finally make multi-package Python repos livable — one lockfile at the root, shared resolution, per-package publishing.</p>
+<h2 id="migrating-an-estate-without-drama"><a class="h-anchor" href="#migrating-an-estate-without-drama" aria-hidden="true" tabindex="-1">#</a>Migrating an estate without drama</h2>
+<p>The good news: this migration is mechanical, service-by-service, and each step pays immediately.</p>
+<ol>
+<li><strong>Inventory</strong> what each service actually uses: <code>requirements.txt</code> files, setup.py installs, &quot;pip install in the Dockerfile&quot; surprises. The undocumented ones are the reason for the project.</li>
+<li><strong>Convert intentions:</strong> move top-level dependencies into <code>pyproject.toml</code> (uv/poetry both import from requirements files). Resist re-litigating versions during conversion — capture what is, upgrade later.</li>
+<li><strong>Generate the lockfile, make CI install from it frozen.</strong> This is the step that changes reliability; everything else is ergonomics.</li>
+<li><strong>Point everything at the internal proxy</strong> and turn on hash checking + vulnerability scanning as merge gates (warn-then-enforce, per the usual rollout playbook).</li>
+<li><strong>Schedule the upgrade cadence:</strong> a weekly or fortnightly automated lock-refresh PR (Renovate/Dependabot equivalents work with modern lockfiles) with test suite as arbiter. Estates that upgrade continuously in small diffs never have to do the multi-year framework leap again — the same lesson Java estates learned the expensive way.</li>
+</ol>
+<p>The one-page policy worth adopting verbatim: <em>pyproject.toml for intentions, committed lockfile for state, CI installs frozen with hashes from the internal proxy, automated refresh PRs on a cadence, and no pip install anywhere outside those rails.</em> Python packaging spent two decades as a running joke; it&#39;s now — quietly, finally — a solved problem for teams willing to adopt the solution.</p>
+
+    </div>
+  </div>
+
+  
+
+  
+
+  <div class="art-wrap article-foot">
+    <div class="row" style="gap:.4rem">
+      <a class="chip chip-plain" href="/insights/?topic=Python">Python</a><a class="chip chip-plain" href="/topics/platform-engineering/">Platform Engineering</a><a class="chip chip-plain" href="/topics/engineering-practice/">Engineering Practice</a><a class="chip chip-plain" href="/insights/?topic=Supply%20Chain%20Security">Supply Chain Security</a><a class="chip chip-plain" href="/insights/?topic=Developer%20Experience">Developer Experience</a>
+    </div>
+    <nav class="prevnext" aria-label="More articles">
+      <a href="/insights/platform-engineering-idp-2026/"><span>Previous</span><strong>Platform Engineering in 2026: What an Internal Developer Platform Actually Needs</strong></a>
+      <span></span>
+    </nav>
+  </div>
+
+  <section class="section surface hair" style="margin-top:4rem">
+    <div class="wrap">
+      <p class="eyebrow">Related</p>
+      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|Deployment|Platform Engineering|Engineering Practice|Containers|Reliability|" data-search="deployment strategies compared: rolling, blue-green, canary, and when each actually fits rolling updates, blue-green switches, canary releases, and shadow traffic — what each strategy really costs, what each protects against, and the database problem that constrains all of them. deployment platform engineering engineering practice containers reliability" data-topic="Platform Engineering" href="/insights/deployment-strategies-blue-green-canary/">
+  <div class="card-art"><img data-article-art="deployment-strategies-blue-green-canary" src="/assets/covers/deployment-strategies-blue-green-canary.svg" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-body">
+    <span class="chip">Platform Engineering</span>
+    <h3 class="card-title">Deployment Strategies Compared: Rolling, Blue-Green, Canary, and When Each Actually Fits</h3>
+    <p class="card-desc">Rolling updates, blue-green switches, canary releases, and shadow traffic — what each strategy really costs, what each protects against, and the database problem that constrains all of them.</p>
+    <div class="card-meta"><time datetime="2026-03-20">20 Mar 2026</time><span class="dot"></span><span>5 min read</span></div>
+  </div>
+</a>
+<a class="card" data-card data-topics="|Programming|Python|Cloud Architecture|DevSecOps|" data-search="python for cloud engineers: the parts that actually matter you don&#39;t need to be a data scientist to get serious value from python as a cloud practitioner. here&#39;s what actually matters — and what you can safely skip. programming python cloud architecture devsecops" data-topic="Programming" href="/insights/python-for-cloud-engineers/">
+  <div class="card-art"><img data-article-art="python-for-cloud-engineers" src="/assets/covers/python-for-cloud-engineers.svg" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-body">
+    <span class="chip">Programming</span>
+    <h3 class="card-title">Python for Cloud Engineers: The Parts That Actually Matter</h3>
+    <p class="card-desc">You don&#39;t need to be a data scientist to get serious value from Python as a cloud practitioner. Here&#39;s what actually matters — and what you can safely skip.</p>
+    <div class="card-meta"><time datetime="2026-10-19">19 Oct 2026</time><span class="dot"></span><span>3 min read</span></div>
+  </div>
+</a>
+<a class="card" data-card data-topics="|Python|Async|Performance|Programming|Cloud Architecture|" data-search="async python in production: what asyncio buys you, and what it costs a practitioner&#39;s guide to running asyncio-based services in production — when async actually helps, the blocking-call trap, structured concurrency with taskgroups, and the operational habits that keep event loops healthy. python async performance programming cloud architecture" data-topic="Performance" href="/insights/python-async-production/">
+  <div class="card-art"><img data-article-art="python-async-production" src="/assets/covers/python-async-production.svg" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-body">
+    <span class="chip">Performance</span>
+    <h3 class="card-title">Async Python in Production: What asyncio Buys You, and What It Costs</h3>
+    <p class="card-desc">A practitioner&#39;s guide to running asyncio-based services in production — when async actually helps, the blocking-call trap, structured concurrency with TaskGroups, and the operational habits that keep event loops healthy.</p>
+    <div class="card-meta"><time datetime="2026-10-07">7 Oct 2026</time><span class="dot"></span><span>5 min read</span></div>
+  </div>
+</a></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="art-wrap"><div class="cta-panel">
+      <h2 class="h2">Working on this in production?</h2>
+      <p class="lede" style="margin-top:.7rem">We do this work directly alongside engineering teams — architecture review, migration, and hands-on enablement.</p>
+      <div class="row" style="margin-top:1.4rem">
+        <a class="btn" href="/contact/">Engage engineering <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="btn btn-ghost" href="/services/">See what we do</a>
+      </div>
+    </div></div>
+  </section>
+</article>
+
+<div class="reader-tools">
+  <button class="icon-btn" id="readerBtn" type="button" aria-expanded="false" aria-controls="readerPanel" title="Reading settings" aria-label="Reading settings"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2.2"/><circle cx="10" cy="17" r="2.2"/></svg></button>
+  <button class="icon-btn" id="focusBtn" type="button" aria-pressed="false" title="Focus mode" aria-label="Enter focus mode"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></button>
+</div>
+<div class="reader-panel" id="readerPanel" role="dialog" aria-label="Reading settings" hidden>
+  <fieldset><legend>Text size</legend>
+    <div class="seg" data-pref="rsize">
+      <button type="button" data-val="s" aria-pressed="false"><span class="sample s">Aa</span>Small</button><button type="button" data-val="m" aria-pressed="false"><span class="sample ">Aa</span>Default</button><button type="button" data-val="l" aria-pressed="false"><span class="sample l">Aa</span>Large</button><button type="button" data-val="xl" aria-pressed="false"><span class="sample l">Aa</span>Largest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Ground</legend>
+    <div class="seg" data-pref="theme">
+      <button type="button" data-val="light" aria-pressed="false"><span class="swatch light"></span>Light</button><button type="button" data-val="sepia" aria-pressed="false"><span class="swatch sepia"></span>Sepia</button><button type="button" data-val="dark" aria-pressed="false"><span class="swatch dark"></span>Dark</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Column width</legend>
+    <div class="seg" data-pref="rwidth">
+      <button type="button" data-val="s" aria-pressed="false">Narrow</button><button type="button" data-val="m" aria-pressed="false">Default</button><button type="button" data-val="l" aria-pressed="false">Wide</button><button type="button" data-val="xl" aria-pressed="false">Widest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Typeface</legend>
+    <div class="seg" data-pref="rface">
+      <button type="button" data-val="sans" aria-pressed="false"><span class="sample">Aa</span>Sans</button>
+      <button type="button" data-val="serif" aria-pressed="false"><span class="sample serif">Aa</span>Serif</button>
+    </div>
+  </fieldset>
+  <button class="reader-reset" id="readerReset" type="button">Reset to defaults</button>
+  <p class="reader-note">Saved in this browser only — these settings do not follow you to another device.</p>
+</div>
+<button class="focus-exit" id="focusExit" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h6V3M21 9h-6V3M3 15h6v6M21 15h-6v6"/></svg> Exit focus</button>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="grid g-4" style="gap:2rem">
+      <div>
+        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem" aria-label="Ajna Consulting Services — home">
+          <svg class="ajna-mark is-still" viewBox="0 0 100 100" width="36" height="36" fill="none" aria-hidden="true" focusable="false"><defs><path id="t-ftr" d="M 50 4 L 96 50 L 50 50 Z"/><path id="e-ftr" d="M 50 4 L 96 50"/><path id="k-ftr" d="M 50 4 L 50 50 L 96 50"/><linearGradient id="bev-ftr" gradientUnits="userSpaceOnUse" x1="50" y1="50" x2="73" y2="27"><stop offset="0" stop-color="#000" stop-opacity=".13"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity=".2"/></linearGradient><radialGradient id="core-ftr" cx=".34" cy=".3" r=".85"><stop offset="0" stop-color="#fff" stop-opacity=".42"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".45"/></radialGradient></defs><g class="am-bud"><g transform="rotate(0 50 50)"><use href="#t-ftr" fill="#E8402A"/><use href="#t-ftr" fill="url(#bev-ftr)"/><use href="#t-ftr" fill="#fff" opacity="0.07"/><use href="#e-ftr" stroke="#fff" stroke-opacity="0.34" stroke-width="1.6" stroke-linecap="round"/><use href="#k-ftr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g transform="rotate(90 50 50)"><use href="#t-ftr" fill="#F5A623"/><use href="#t-ftr" fill="url(#bev-ftr)"/><use href="#t-ftr" fill="#000" opacity="0.12"/><use href="#e-ftr" stroke="#000" stroke-opacity="0.16" stroke-width="1.6" stroke-linecap="round"/><use href="#k-ftr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g transform="rotate(180 50 50)"><use href="#t-ftr" fill="#17A05E"/><use href="#t-ftr" fill="url(#bev-ftr)"/><use href="#t-ftr" fill="#000" opacity="0.05"/><use href="#e-ftr" stroke="#000" stroke-opacity="0.1" stroke-width="1.6" stroke-linecap="round"/><use href="#k-ftr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g transform="rotate(270 50 50)"><use href="#t-ftr" fill="#2B57E8"/><use href="#t-ftr" fill="url(#bev-ftr)"/><use href="#t-ftr" fill="#fff" opacity="0.30"/><use href="#e-ftr" stroke="#fff" stroke-opacity="0.46" stroke-width="1.6" stroke-linecap="round"/><use href="#k-ftr" stroke="#000" stroke-width=".9" opacity=".2"/></g></g><g class="am-core"><circle cx="50" cy="50" r="6" fill="currentColor"/><circle cx="50" cy="50" r="6" fill="url(#core-ftr)"/></g></svg>
+          <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
+        </a>
+        <p style="font-size:.88rem;line-height:1.65;color:#9fb0d0;max-width:30ch">
+          Specialised engineering partner for enterprise architecture, AI &amp; MLOps, and technical enablement.
+        </p>
+        <div class="social" style="margin-top:1.1rem">
+          <a href="https://www.youtube.com/@TechKnowen" rel="noopener" aria-label="YouTube"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 12s0-3.8-.5-5.6a2.9 2.9 0 0 0-2-2C18.7 4 12 4 12 4s-6.7 0-8.5.4a2.9 2.9 0 0 0-2 2C1 8.2 1 12 1 12s0 3.8.5 5.6a2.9 2.9 0 0 0 2 2C5.3 20 12 20 12 20s6.7 0 8.5-.4a2.9 2.9 0 0 0 2-2C23 15.8 23 12 23 12zM9.8 15.4V8.6l5.9 3.4z"/></svg></a>
+          <a href="https://techknowen.com" rel="noopener" aria-label="TechKnowen blog"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 3h16v3H4zm0 5h16v13l-8-4-8 4z"/></svg></a>
+          <a href="/feed.xml" aria-label="RSS feed"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="6.2" cy="17.8" r="2.2"/><path d="M4 10.2v3a6.6 6.6 0 0 1 6.6 6.6h3A9.6 9.6 0 0 0 4 10.2zM4 4v3c7.2 0 13 5.8 13 13h3C20 11.2 12.8 4 4 4z"/></svg></a>
+        </div>
+      </div>
+      <div>
+        <h2 class="foot-title">Services</h2>
+        <ul>
+          <li><a href="/services/#architecture">Enterprise architecture</a></li>
+          <li><a href="/services/#ai">AI &amp; MLOps</a></li>
+          <li><a href="/services/#training">Technical enablement</a></li>
+          <li><a href="/case-studies/">Case studies</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2 class="foot-title">Insights</h2>
+        <ul>
+          <li><a href="/insights/">All articles</a></li>
+          <li><a href="/series/">Series</a></li>
+          <li><a href="/topics/">Topics</a></li>
+          <li><a href="/notes/">Personal notes</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2 class="foot-title">Contact</h2>
+        <ul>
+          <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
+          <li><a href="/contact/">Start an engagement</a></li>
+          <li><a href="/about/">About</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span id="yr">2026</span> Ajna Consulting Services. All rights reserved.</span>
+      <span style="display:flex;gap:1.2rem"><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a></span>
+    </div>
+  </div>
+</footer>
+<script src="/assets/js/site.js?v=dd970c4d" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=dd970c4d"></script>
+</body>
+</html>
