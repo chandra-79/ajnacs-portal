@@ -33,7 +33,7 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=809689a9">
+<link rel="stylesheet" href="/assets/css/site.css?v=80901545">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
@@ -79,9 +79,9 @@ d.setAttribute('data-theme',t);
 <main id="main" tabindex="-1">
 
 <div class="read-bar" aria-hidden="true"><span id="readBar"></span></div>
-<article class="article with-toc">
-  <header class="article-head">
-    <div class="art-wrap">
+<article class="article">
+  <div class="reading-layout">
+    <header class="article-head">
       <nav class="crumbs" aria-label="Breadcrumb">
         <a href="/">Home</a> <span aria-hidden="true">/</span>
         <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
@@ -96,17 +96,15 @@ d.setAttribute('data-theme',t);
         <span class="dot"></span><span>6 min read</span>
         <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
       </div>
-    </div>
-  </header>
+    </header>
 
-  <div class="art-wrap"><div class="article-hero" data-topic="Architecture"><img data-article-art="weblogic-jms-production-configuration" src="/assets/covers/weblogic-jms-production-configuration.svg?v=1103de5c5813" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div></div>
-
-  <div class="art-wrap article-grid">
-    <div class="reader-aside"><nav class="toc" aria-label="On this page">
+    <div class="article-hero" data-topic="Architecture"><img data-article-art="weblogic-jms-production-configuration" src="/assets/covers/weblogic-jms-production-configuration.svg?v=1103de5c5813" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div>
+<div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#the-object-model-who-owns-what">The object model: who owns what</a></li><li><a href="#uniform-distributed-destinations-the-default-you-should-use">Uniform distributed destinations: the default you should use</a></li><li><a href="#service-migration-the-part-everyone-skips">Service migration: the part everyone skips</a></li><li><a href="#persistent-stores-file-vs-jdbc">Persistent stores: file vs JDBC</a></li><li><a href="#quotas-paging-and-flow-control-surviving-the-flood">Quotas, paging, and flow control: surviving the flood</a></li><li><a href="#connection-factories-the-client-side-settings-that-matter">Connection factories: the client-side settings that matter</a></li><li><a href="#mdbs-consuming-correctly">MDBs: consuming correctly</a></li><li><a href="#the-checklist">The checklist</a></li></ol>
 </nav></div>
-    <div class="prose">
+    <div class="article-copy">
+      <div class="prose">
 <p>WebLogic JMS is one of the most battle-tested message brokers in existence, and also one of the most misconfigured. The domain model gives you a lot of knobs — JMS servers, persistent stores, modules, subdeployments, distributed destinations — and the relationships between them are where production incidents are born.</p>
 <p>This is the explainer for people who have to keep messages flowing at 2 AM, not pass a certification exam.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
@@ -161,27 +159,43 @@ d.setAttribute('data-theme',t);
 <p>For a production-ready WebLogic JMS estate: dedicated persistent store per JMS server on shared-accessible storage, uniform distributed destinations with subdeployments pinning members correctly, automatic service migration configured with database leasing and actually tested, quotas plus paging plus flow control sized against heap, MDBs targeted at the cluster with redelivery limits and error destinations, and monitoring on queue depth, store size, and error destinations.</p>
 <p>None of it is exotic. All of it is the difference between &quot;a server failed and nobody noticed&quot; and &quot;a server failed and we spent the weekend replaying messages from database backups.&quot;</p>
 
-    </div>
-  </div>
+      </div>
 
-  <div class="art-wrap"><aside class="refs" aria-labelledby="refs-h">
+<aside class="refs" aria-labelledby="refs-h">
   <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
   <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
   <ul>
     <li><a href="https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/" rel="noopener nofollow" target="_blank">Oracle WebLogic Server documentation</a><span>Work managers, pools and tuning.</span></li>
   </ul>
-</aside></div>
+</aside>
 
-  
 
-  <div class="art-wrap article-foot">
-    <div class="row" style="gap:.4rem">
-      <a class="chip chip-plain" href="/insights/?topic=Java">Java</a><a class="chip chip-plain" href="/insights/?topic=WebLogic">WebLogic</a><a class="chip chip-plain" href="/insights/?topic=Middleware">Middleware</a><a class="chip chip-plain" href="/insights/?topic=Messaging">Messaging</a><a class="chip chip-plain" href="/topics/architecture/">Architecture</a>
+
+      <footer class="article-foot">
+        <div class="row" style="gap:.4rem">
+          <a class="chip chip-plain" href="/insights/?topic=Java">Java</a><a class="chip chip-plain" href="/insights/?topic=WebLogic">WebLogic</a><a class="chip chip-plain" href="/insights/?topic=Middleware">Middleware</a><a class="chip chip-plain" href="/insights/?topic=Messaging">Messaging</a><a class="chip chip-plain" href="/topics/architecture/">Architecture</a>
+        </div>
+        <nav class="prevnext" aria-label="More articles">
+          <a href="/insights/weblogic-performance-tuning/"><span>Previous</span><strong>WebLogic Performance Tuning: Work Managers, Connection Pools, and the Knobs That Actually Matter</strong></a>
+          <a href="/insights/weblogic-domains-clusters-explained/" class="next"><span>Next</span><strong>WebLogic Domains, Clusters, and Managed Servers: The Architecture Explained</strong></a>
+        </nav>
+      </footer>
     </div>
-    <nav class="prevnext" aria-label="More articles">
-      <a href="/insights/weblogic-performance-tuning/"><span>Previous</span><strong>WebLogic Performance Tuning: Work Managers, Connection Pools, and the Knobs That Actually Matter</strong></a>
-      <a href="/insights/weblogic-domains-clusters-explained/" class="next"><span>Next</span><strong>WebLogic Domains, Clusters, and Managed Servers: The Architecture Explained</strong></a>
-    </nav>
+    <aside class="writing-promos" aria-label="Promotions" data-ad-slot="article-rail">
+  <p class="promo-label">From our projects</p>
+  <div class="promo-cards">
+    <section class="promo-card promo-techknowen" aria-label="TechKnowen">
+      <p class="promo-name">TechKnowen</p>
+      <p>Practical reading on software, architecture, and engineering.</p>
+      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+    </section>
+    <section class="promo-card promo-ziggle" aria-label="Ziggle">
+      <p class="promo-name">Ziggle</p>
+      <p>A new place to play brain teasers.</p>
+      <p class="promo-status">Coming soon</p>
+    </section>
+  </div>
+</aside>
   </div>
 
   <section class="section surface hair" style="margin-top:4rem">
@@ -322,7 +336,7 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=809689a9" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=809689a9"></script>
+<script src="/assets/js/site.js?v=80901545" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=80901545"></script>
 </body>
 </html>

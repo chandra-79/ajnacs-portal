@@ -33,7 +33,7 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=809689a9">
+<link rel="stylesheet" href="/assets/css/site.css?v=80901545">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
@@ -79,9 +79,9 @@ d.setAttribute('data-theme',t);
 <main id="main" tabindex="-1">
 
 <div class="read-bar" aria-hidden="true"><span id="readBar"></span></div>
-<article class="article with-toc">
-  <header class="article-head">
-    <div class="art-wrap">
+<article class="article">
+  <div class="reading-layout">
+    <header class="article-head">
       <nav class="crumbs" aria-label="Breadcrumb">
         <a href="/">Home</a> <span aria-hidden="true">/</span>
         <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
@@ -96,17 +96,15 @@ d.setAttribute('data-theme',t);
         <span class="dot"></span><span>5 min read</span>
         <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
       </div>
-    </div>
-  </header>
+    </header>
 
-  <div class="art-wrap"><div class="article-hero" data-topic="Data Engineering"><img data-article-art="postgresql-performance-tuning" src="/assets/covers/postgresql-performance-tuning.svg?v=0513939531f9" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div></div>
-
-  <div class="art-wrap article-grid">
-    <div class="reader-aside"><nav class="toc" aria-label="On this page">
+    <div class="article-hero" data-topic="Data Engineering"><img data-article-art="postgresql-performance-tuning" src="/assets/covers/postgresql-performance-tuning.svg?v=0513939531f9" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div>
+<div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#memory-settings-the-biggest-wins">Memory settings: the biggest wins</a></li><li><a href="#wal-and-checkpoint-tuning">WAL and checkpoint tuning</a></li><li><a href="#connection-management-don39t-skip-pgbouncer">Connection management: don&#39;t skip PgBouncer</a></li><li><a href="#indexing-the-most-common-performance-problems">Indexing: the most common performance problems</a></li><li><a href="#query-analysis-with-explain-analyze">Query analysis with EXPLAIN ANALYZE</a></li></ol>
 </nav></div>
-    <div class="prose">
+    <div class="article-copy">
+      <div class="prose">
 <p>PostgreSQL ships with defaults that are deliberately conservative — tuned for a server with 256MB of RAM to avoid out-of-memory failures on resource-constrained machines. Production deployments on modern hardware leave most of that performance on the table.</p>
 <p>This isn&#39;t a comprehensive tuning guide (PostgreSQL&#39;s performance characteristics depend heavily on workload, hardware, and access patterns). It&#39;s the settings that matter most for most production workloads, with the reasoning behind each.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
@@ -168,27 +166,43 @@ SELECT * FROM orders WHERE customer_id = 123 AND status = &#39;pending&#39;;
 <p><code>pg_stat_statements</code> extension (enable in <code>shared_preload_libraries</code>) records query execution statistics across all connections. The query with the highest <code>total_exec_time</code> divided by <code>calls</code> is your first optimization target.</p>
 <p><em>Working through a PostgreSQL performance problem or setting up a production database configuration? <a href="/contact/">Happy to look at specifics.</a></em></p>
 
-    </div>
-  </div>
+      </div>
 
-  <div class="art-wrap"><aside class="refs" aria-labelledby="refs-h">
+<aside class="refs" aria-labelledby="refs-h">
   <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
   <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
   <ul>
     <li><a href="https://www.postgresql.org/docs/current/" rel="noopener nofollow" target="_blank">PostgreSQL documentation</a><span>Configuration and planner behaviour.</span></li>
   </ul>
-</aside></div>
+</aside>
 
-  
 
-  <div class="art-wrap article-foot">
-    <div class="row" style="gap:.4rem">
-      <a class="chip chip-plain" href="/topics/data-engineering/">Data Engineering</a><a class="chip chip-plain" href="/topics/programming/">Programming</a><a class="chip chip-plain" href="/topics/cloud-architecture/">Cloud Architecture</a>
+
+      <footer class="article-foot">
+        <div class="row" style="gap:.4rem">
+          <a class="chip chip-plain" href="/topics/data-engineering/">Data Engineering</a><a class="chip chip-plain" href="/topics/programming/">Programming</a><a class="chip chip-plain" href="/topics/cloud-architecture/">Cloud Architecture</a>
+        </div>
+        <nav class="prevnext" aria-label="More articles">
+          <a href="/insights/ai-cost-management-production/"><span>Previous</span><strong>AI Cost Management in Production: Controlling Token Spend Without Degrading Quality</strong></a>
+          <a href="/insights/designing-for-failure-resilience-patterns/" class="next"><span>Next</span><strong>Designing for Failure: Resilience Patterns That Actually Hold in Production</strong></a>
+        </nav>
+      </footer>
     </div>
-    <nav class="prevnext" aria-label="More articles">
-      <a href="/insights/ai-cost-management-production/"><span>Previous</span><strong>AI Cost Management in Production: Controlling Token Spend Without Degrading Quality</strong></a>
-      <a href="/insights/designing-for-failure-resilience-patterns/" class="next"><span>Next</span><strong>Designing for Failure: Resilience Patterns That Actually Hold in Production</strong></a>
-    </nav>
+    <aside class="writing-promos" aria-label="Promotions" data-ad-slot="article-rail">
+  <p class="promo-label">From our projects</p>
+  <div class="promo-cards">
+    <section class="promo-card promo-techknowen" aria-label="TechKnowen">
+      <p class="promo-name">TechKnowen</p>
+      <p>Practical reading on software, architecture, and engineering.</p>
+      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+    </section>
+    <section class="promo-card promo-ziggle" aria-label="Ziggle">
+      <p class="promo-name">Ziggle</p>
+      <p>A new place to play brain teasers.</p>
+      <p class="promo-status">Coming soon</p>
+    </section>
+  </div>
+</aside>
   </div>
 
   <section class="section surface hair" style="margin-top:4rem">
@@ -319,7 +333,7 @@ SELECT * FROM orders WHERE customer_id = 123 AND status = &#39;pending&#39;;
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=809689a9" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=809689a9"></script>
+<script src="/assets/js/site.js?v=80901545" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=80901545"></script>
 </body>
 </html>

@@ -33,7 +33,7 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=809689a9">
+<link rel="stylesheet" href="/assets/css/site.css?v=80901545">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
@@ -79,9 +79,9 @@ d.setAttribute('data-theme',t);
 <main id="main" tabindex="-1">
 
 <div class="read-bar" aria-hidden="true"><span id="readBar"></span></div>
-<article class="article with-toc">
-  <header class="article-head">
-    <div class="art-wrap">
+<article class="article">
+  <div class="reading-layout">
+    <header class="article-head">
       <nav class="crumbs" aria-label="Breadcrumb">
         <a href="/">Home</a> <span aria-hidden="true">/</span>
         <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
@@ -96,20 +96,18 @@ d.setAttribute('data-theme',t);
         <span class="dot"></span><span>4 min read</span>
         <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
       </div>
-    </div>
-  </header>
+    </header>
 
-  <div class="art-wrap"><div class="article-hero" data-topic="FinOps"><img data-article-art="cloud-unit-economics" src="/assets/covers/photos/cloud-unit-economics.jpg?v=13f326efe010" srcset="/assets/covers/photos/cloud-unit-economics-640.jpg?v=13f326efe010 640w, /assets/covers/photos/cloud-unit-economics.jpg?v=13f326efe010 1280w" sizes="(min-width: 1280px) 1180px, 100vw" width="1280" height="720" alt="A cost ledger and a stack of completed orders sit on opposite sides of a balance" decoding="async" fetchpriority="high"></div></div>
-
-  <div class="art-wrap article-grid">
-    <div class="reader-aside"><nav class="toc" aria-label="On this page">
+    <div class="article-hero" data-topic="FinOps"><img data-article-art="cloud-unit-economics" src="/assets/covers/photos/cloud-unit-economics.jpg?v=13f326efe010" srcset="/assets/covers/photos/cloud-unit-economics-640.jpg?v=13f326efe010 640w, /assets/covers/photos/cloud-unit-economics.jpg?v=13f326efe010 1280w" sizes="(min-width: 90rem) 1180px, (min-width: 74rem) 65vw, 100vw" width="1280" height="720" alt="A cost ledger and a stack of completed orders sit on opposite sides of a balance" decoding="async" fetchpriority="high"></div>
+<div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#why-absolute-spend-is-the-wrong-metric">Why absolute spend is the wrong metric</a></li><li><a href="#defining-the-right-unit">Defining the right unit</a></li><li><a href="#how-to-calculate-it">How to calculate it</a></li><li><a href="#benchmarks-and-thresholds">Benchmarks and thresholds</a></li><li><a href="#the-conversation-unit-economics-enables">The conversation unit economics enables</a></li></ol>
 </nav><nav class="chapters" aria-label="Articles in this series">
       <p class="chapters-title">FinOps from Zero to Production</p>
       <ol><li><a href="/insights/finops-tagging-policy/">Cloud Tagging Policy Template: The Foundation FinOps Actually Requires</a></li><li><a href="/insights/reserved-instance-rationalization/">Reserved Instance Rationalisation: How to Commit to the Right Resources</a></li><li aria-current="true"><a href="/insights/cloud-unit-economics/">Cloud Unit Economics: The Metric That Makes Cloud Spend Conversations Productive</a></li><li><a href="/insights/finops-anomaly-detection/">Cloud Cost Anomaly Detection: Catching Runaway Spend Before It Becomes a Bill</a></li><li><a href="/insights/finops-chargeback-maturity/">From Showback to Chargeback: Building a Cloud Cost Ownership Model That Sticks</a></li></ol>
     </nav></div>
-    <div class="prose">
+    <div class="article-copy">
+      <div class="prose">
 <p>Most cloud cost conversations go in circles because they&#39;re comparing the wrong things. &quot;Our AWS bill went up 20% this quarter&quot; is a statement that could mean we&#39;re growing efficiently, we&#39;re scaling poorly, or someone left a cluster running — and you can&#39;t tell which from the number alone.</p>
 <p>Unit economics cuts through this. Cost per unit of business output — per active user, per transaction, per API call, per GB of data processed — contextualises spend against the business it&#39;s supporting.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
@@ -164,28 +162,44 @@ d.setAttribute('data-theme',t);
 <p>The return on that investment is conversations like the one above, instead of conversations about whether $200k is too much.</p>
 <p><em>Working toward this kind of visibility in your organization? The data infrastructure that supports unit economics is worth building. <a href="/contact/">Happy to compare approaches.</a></em></p>
 
-    </div>
-  </div>
+      </div>
 
-  <div class="art-wrap"><aside class="refs" aria-labelledby="refs-h">
+<aside class="refs" aria-labelledby="refs-h">
   <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
   <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
   <ul>
     <li><a href="https://kubernetes.io/docs/" rel="noopener nofollow" target="_blank">Kubernetes documentation</a><span>Primary reference for the concepts used here.</span></li>
     <li><a href="https://www.finops.org/" rel="noopener nofollow" target="_blank">FinOps Foundation</a><span>Framework, capabilities and terminology.</span></li>
   </ul>
-</aside></div>
+</aside>
 
-  
 
-  <div class="art-wrap article-foot">
-    <div class="row" style="gap:.4rem">
-      <a class="chip chip-plain" href="/topics/finops/">FinOps</a><a class="chip chip-plain" href="/insights/?topic=Cost%20Optimisation">Cost Optimisation</a><a class="chip chip-plain" href="/topics/engineering-leadership/">Engineering Leadership</a>
+
+      <footer class="article-foot">
+        <div class="row" style="gap:.4rem">
+          <a class="chip chip-plain" href="/topics/finops/">FinOps</a><a class="chip chip-plain" href="/insights/?topic=Cost%20Optimisation">Cost Optimisation</a><a class="chip chip-plain" href="/topics/engineering-leadership/">Engineering Leadership</a>
+        </div>
+        <nav class="prevnext" aria-label="More articles">
+          <a href="/insights/structured-logging-practices/"><span>Previous</span><strong>Structured Logging That Pays for Itself: Schema, Context, and Cost Discipline</strong></a>
+          <a href="/insights/supply-chain-security-sbom/" class="next"><span>Next</span><strong>Software Supply Chain Security: SBOM, Dependency Auditing, and What Actually Reduces Risk</strong></a>
+        </nav>
+      </footer>
     </div>
-    <nav class="prevnext" aria-label="More articles">
-      <a href="/insights/structured-logging-practices/"><span>Previous</span><strong>Structured Logging That Pays for Itself: Schema, Context, and Cost Discipline</strong></a>
-      <a href="/insights/supply-chain-security-sbom/" class="next"><span>Next</span><strong>Software Supply Chain Security: SBOM, Dependency Auditing, and What Actually Reduces Risk</strong></a>
-    </nav>
+    <aside class="writing-promos" aria-label="Promotions" data-ad-slot="article-rail">
+  <p class="promo-label">From our projects</p>
+  <div class="promo-cards">
+    <section class="promo-card promo-techknowen" aria-label="TechKnowen">
+      <p class="promo-name">TechKnowen</p>
+      <p>Practical reading on software, architecture, and engineering.</p>
+      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+    </section>
+    <section class="promo-card promo-ziggle" aria-label="Ziggle">
+      <p class="promo-name">Ziggle</p>
+      <p>A new place to play brain teasers.</p>
+      <p class="promo-status">Coming soon</p>
+    </section>
+  </div>
+</aside>
   </div>
 
   <section class="section surface hair" style="margin-top:4rem">
@@ -326,7 +340,7 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=809689a9" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=809689a9"></script>
+<script src="/assets/js/site.js?v=80901545" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=80901545"></script>
 </body>
 </html>

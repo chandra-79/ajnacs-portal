@@ -33,7 +33,7 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=809689a9">
+<link rel="stylesheet" href="/assets/css/site.css?v=80901545">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
@@ -79,9 +79,9 @@ d.setAttribute('data-theme',t);
 <main id="main" tabindex="-1">
 
 <div class="read-bar" aria-hidden="true"><span id="readBar"></span></div>
-<article class="article with-toc">
-  <header class="article-head">
-    <div class="art-wrap">
+<article class="article">
+  <div class="reading-layout">
+    <header class="article-head">
       <nav class="crumbs" aria-label="Breadcrumb">
         <a href="/">Home</a> <span aria-hidden="true">/</span>
         <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
@@ -96,17 +96,15 @@ d.setAttribute('data-theme',t);
         <span class="dot"></span><span>5 min read</span>
         <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
       </div>
-    </div>
-  </header>
+    </header>
 
-  <div class="art-wrap"><div class="article-hero" data-topic="DevSecOps"><img data-article-art="kubernetes-security-hardening" src="/assets/covers/kubernetes-security-hardening.svg?v=c395e5201150" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div></div>
-
-  <div class="art-wrap article-grid">
-    <div class="reader-aside"><nav class="toc" aria-label="On this page">
+    <div class="article-hero" data-topic="DevSecOps"><img data-article-art="kubernetes-security-hardening" src="/assets/covers/kubernetes-security-hardening.svg?v=c395e5201150" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div>
+<div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#rbac-the-principle-of-least-privilege-for-cluster-access">RBAC: the principle of least privilege for cluster access</a></li><li><a href="#pod-security-standards-replacing-podsecuritypolicy">Pod Security Standards: replacing PodSecurityPolicy</a></li><li><a href="#network-policies-default-deny-allow-explicitly">Network policies: default-deny, allow explicitly</a></li><li><a href="#image-security-admission-control-and-signed-images">Image security: admission control and signed images</a></li><li><a href="#secrets-don39t-trust-etcd-at-rest-by-default">Secrets: don&#39;t trust etcd at rest by default</a></li><li><a href="#audit-logging">Audit logging</a></li></ol>
 </nav></div>
-    <div class="prose">
+    <div class="article-copy">
+      <div class="prose">
 <p>A Kubernetes cluster out of the box has a large attack surface. Pods can communicate freely. Containers run as root by default. Any pod can access the Kubernetes API with the default service account, which has broad permissions in many configurations. Secrets are base64-encoded, not encrypted.</p>
 <p>None of these are unfixable. They&#39;re defaults chosen for developer convenience, not production security. Here&#39;s the set of controls I consider baseline for any production cluster.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
@@ -224,10 +222,9 @@ spec:
 <p>Audit logs should be shipped to a central logging system (CloudWatch Logs, Azure Monitor, GCP Cloud Logging, or your own ELK stack) where they&#39;re retained and searchable. The default audit policy logs everything, which is voluminous; a policy that logs at <code>RequestResponse</code> level for sensitive operations (secret access, RBAC changes) and <code>Metadata</code> level for routine operations is more manageable.</p>
 <p><em>Reviewing your cluster security posture or hardening a new cluster? <a href="/contact/">Happy to compare configurations.</a></em></p>
 
-    </div>
-  </div>
+      </div>
 
-  <div class="art-wrap"><aside class="refs" aria-labelledby="refs-h">
+<aside class="refs" aria-labelledby="refs-h">
   <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
   <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
   <ul>
@@ -235,18 +232,35 @@ spec:
     <li><a href="https://www.openpolicyagent.org/docs/" rel="noopener nofollow" target="_blank">Open Policy Agent</a><span>Policy engine and the Rego language.</span></li>
     <li><a href="https://www.sigstore.dev/" rel="noopener nofollow" target="_blank">Sigstore</a><span>Signing and verification for artifacts.</span></li>
   </ul>
-</aside></div>
+</aside>
 
-  
 
-  <div class="art-wrap article-foot">
-    <div class="row" style="gap:.4rem">
-      <a class="chip chip-plain" href="/topics/devsecops/">DevSecOps</a><a class="chip chip-plain" href="/topics/containers/">Containers</a><a class="chip chip-plain" href="/insights/?topic=Security">Security</a>
+
+      <footer class="article-foot">
+        <div class="row" style="gap:.4rem">
+          <a class="chip chip-plain" href="/topics/devsecops/">DevSecOps</a><a class="chip chip-plain" href="/topics/containers/">Containers</a><a class="chip chip-plain" href="/insights/?topic=Security">Security</a>
+        </div>
+        <nav class="prevnext" aria-label="More articles">
+          <a href="/insights/back-of-envelope-system-design/"><span>Previous</span><strong>Back-of-Envelope Engineering: The Estimation Skill That Filters Bad Architectures in Minutes</strong></a>
+          <a href="/insights/containers-networking/" class="next"><span>Next</span><strong>Container Networking: How Containers Talk to Each Other and to the Outside World</strong></a>
+        </nav>
+      </footer>
     </div>
-    <nav class="prevnext" aria-label="More articles">
-      <a href="/insights/back-of-envelope-system-design/"><span>Previous</span><strong>Back-of-Envelope Engineering: The Estimation Skill That Filters Bad Architectures in Minutes</strong></a>
-      <a href="/insights/containers-networking/" class="next"><span>Next</span><strong>Container Networking: How Containers Talk to Each Other and to the Outside World</strong></a>
-    </nav>
+    <aside class="writing-promos" aria-label="Promotions" data-ad-slot="article-rail">
+  <p class="promo-label">From our projects</p>
+  <div class="promo-cards">
+    <section class="promo-card promo-techknowen" aria-label="TechKnowen">
+      <p class="promo-name">TechKnowen</p>
+      <p>Practical reading on software, architecture, and engineering.</p>
+      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+    </section>
+    <section class="promo-card promo-ziggle" aria-label="Ziggle">
+      <p class="promo-name">Ziggle</p>
+      <p>A new place to play brain teasers.</p>
+      <p class="promo-status">Coming soon</p>
+    </section>
+  </div>
+</aside>
   </div>
 
   <section class="section surface hair" style="margin-top:4rem">
@@ -387,7 +401,7 @@ spec:
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=809689a9" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=809689a9"></script>
+<script src="/assets/js/site.js?v=80901545" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=80901545"></script>
 </body>
 </html>

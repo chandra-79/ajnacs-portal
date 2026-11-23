@@ -33,7 +33,7 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=809689a9">
+<link rel="stylesheet" href="/assets/css/site.css?v=80901545">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
@@ -79,9 +79,9 @@ d.setAttribute('data-theme',t);
 <main id="main" tabindex="-1">
 
 <div class="read-bar" aria-hidden="true"><span id="readBar"></span></div>
-<article class="article with-toc">
-  <header class="article-head">
-    <div class="art-wrap">
+<article class="article">
+  <div class="reading-layout">
+    <header class="article-head">
       <nav class="crumbs" aria-label="Breadcrumb">
         <a href="/">Home</a> <span aria-hidden="true">/</span>
         <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
@@ -96,17 +96,15 @@ d.setAttribute('data-theme',t);
         <span class="dot"></span><span>4 min read</span>
         <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
       </div>
-    </div>
-  </header>
+    </header>
 
-  <div class="art-wrap"><div class="article-hero" data-topic="Platform Engineering"><img data-article-art="python-packaging-dependency-management" src="/assets/covers/python-packaging-dependency-management.svg?v=6e961a943279" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div></div>
-
-  <div class="art-wrap article-grid">
-    <div class="reader-aside"><nav class="toc" aria-label="On this page">
+    <div class="article-hero" data-topic="Platform Engineering"><img data-article-art="python-packaging-dependency-management" src="/assets/covers/python-packaging-dependency-management.svg?v=6e961a943279" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div>
+<div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#the-consolidation-pyprojecttoml-won">The consolidation: pyproject.toml won</a></li><li><a href="#the-core-discipline-intentions-vs-resolutions">The core discipline: intentions vs. resolutions</a></li><li><a href="#the-supporting-cast">The supporting cast</a></li><li><a href="#migrating-an-estate-without-drama">Migrating an estate without drama</a></li></ol>
 </nav></div>
-    <div class="prose">
+    <div class="article-copy">
+      <div class="prose">
 <p>For twenty years, &quot;how do I manage Python dependencies&quot; had a dozen answers, all partially wrong: setup.py, requirements.txt, pip-tools, pipenv, poetry, conda, and a folklore layer of &quot;well, what we actually do is…&quot; The result was the most common failure mode in enterprise Python — <em>it works on my machine, fails in CI, and does something third in production</em>, because those three environments resolved dependencies at different times and got different trees.</p>
 <p>That era is genuinely ending. The standards consolidated, and the tooling caught up. Here&#39;s what current-day Python dependency management looks like, and how to get an existing estate there.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
@@ -137,21 +135,37 @@ d.setAttribute('data-theme',t);
 </ol>
 <p>The one-page policy worth adopting verbatim: <em>pyproject.toml for intentions, committed lockfile for state, CI installs frozen with hashes from the internal proxy, automated refresh PRs on a cadence, and no pip install anywhere outside those rails.</em> Python packaging spent two decades as a running joke; it&#39;s now — quietly, finally — a solved problem for teams willing to adopt the solution.</p>
 
+      </div>
+
+
+
+
+
+      <footer class="article-foot">
+        <div class="row" style="gap:.4rem">
+          <a class="chip chip-plain" href="/insights/?topic=Python">Python</a><a class="chip chip-plain" href="/topics/platform-engineering/">Platform Engineering</a><a class="chip chip-plain" href="/topics/engineering-practice/">Engineering Practice</a><a class="chip chip-plain" href="/insights/?topic=Supply%20Chain%20Security">Supply Chain Security</a><a class="chip chip-plain" href="/insights/?topic=Developer%20Experience">Developer Experience</a>
+        </div>
+        <nav class="prevnext" aria-label="More articles">
+          <a href="/insights/platform-engineering-idp-2026/"><span>Previous</span><strong>Platform Engineering in 2026: What an Internal Developer Platform Actually Needs</strong></a>
+          <span></span>
+        </nav>
+      </footer>
     </div>
+    <aside class="writing-promos" aria-label="Promotions" data-ad-slot="article-rail">
+  <p class="promo-label">From our projects</p>
+  <div class="promo-cards">
+    <section class="promo-card promo-techknowen" aria-label="TechKnowen">
+      <p class="promo-name">TechKnowen</p>
+      <p>Practical reading on software, architecture, and engineering.</p>
+      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+    </section>
+    <section class="promo-card promo-ziggle" aria-label="Ziggle">
+      <p class="promo-name">Ziggle</p>
+      <p>A new place to play brain teasers.</p>
+      <p class="promo-status">Coming soon</p>
+    </section>
   </div>
-
-  
-
-  
-
-  <div class="art-wrap article-foot">
-    <div class="row" style="gap:.4rem">
-      <a class="chip chip-plain" href="/insights/?topic=Python">Python</a><a class="chip chip-plain" href="/topics/platform-engineering/">Platform Engineering</a><a class="chip chip-plain" href="/topics/engineering-practice/">Engineering Practice</a><a class="chip chip-plain" href="/insights/?topic=Supply%20Chain%20Security">Supply Chain Security</a><a class="chip chip-plain" href="/insights/?topic=Developer%20Experience">Developer Experience</a>
-    </div>
-    <nav class="prevnext" aria-label="More articles">
-      <a href="/insights/platform-engineering-idp-2026/"><span>Previous</span><strong>Platform Engineering in 2026: What an Internal Developer Platform Actually Needs</strong></a>
-      <span></span>
-    </nav>
+</aside>
   </div>
 
   <section class="section surface hair" style="margin-top:4rem">
@@ -282,7 +296,7 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=809689a9" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=809689a9"></script>
+<script src="/assets/js/site.js?v=80901545" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=80901545"></script>
 </body>
 </html>

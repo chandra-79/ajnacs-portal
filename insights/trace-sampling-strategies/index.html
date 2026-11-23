@@ -33,7 +33,7 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=809689a9">
+<link rel="stylesheet" href="/assets/css/site.css?v=80901545">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
@@ -79,9 +79,9 @@ d.setAttribute('data-theme',t);
 <main id="main" tabindex="-1">
 
 <div class="read-bar" aria-hidden="true"><span id="readBar"></span></div>
-<article class="article with-toc">
-  <header class="article-head">
-    <div class="art-wrap">
+<article class="article">
+  <div class="reading-layout">
+    <header class="article-head">
       <nav class="crumbs" aria-label="Breadcrumb">
         <a href="/">Home</a> <span aria-hidden="true">/</span>
         <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
@@ -96,17 +96,15 @@ d.setAttribute('data-theme',t);
         <span class="dot"></span><span>4 min read</span>
         <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
       </div>
-    </div>
-  </header>
+    </header>
 
-  <div class="art-wrap"><div class="article-hero" data-topic="Observability"><img data-article-art="trace-sampling-strategies" src="/assets/covers/trace-sampling-strategies.svg?v=664c8573561c" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div></div>
-
-  <div class="art-wrap article-grid">
-    <div class="reader-aside"><nav class="toc" aria-label="On this page">
+    <div class="article-hero" data-topic="Observability"><img data-article-art="trace-sampling-strategies" src="/assets/covers/trace-sampling-strategies.svg?v=664c8573561c" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div>
+<div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#the-consistency-rule-that-everything-rests-on">The consistency rule that everything rests on</a></li><li><a href="#head-vs-tail-deciding-early-and-cheap-or-late-and-smart">Head vs tail: deciding early and cheap, or late and smart</a></li><li><a href="#the-operational-rim">The operational rim</a></li></ol>
 </nav></div>
-    <div class="prose">
+    <div class="article-copy">
+      <div class="prose">
 <p>Distributed tracing&#39;s pitch — every request&#39;s journey across services, reconstructible on demand — collides at production scale with arithmetic nobody escapes: a mid-size estate serving 50k requests/sec, each touching a dozen services with a handful of spans apiece, generates <em>billions of spans daily</em>, and storing them all costs more than the incidents they&#39;d explain. Tracing at scale is therefore a <strong>retention-policy problem</strong>: which traces do you keep, decided by what logic, enforced where — and the quality of those decisions determines whether the tracing system answers the 3 AM question (&quot;show me a trace of the failure&quot;) or delivers its most demoralizing failure mode: perfect instrumentation, 1% sampling, and <em>no trace of the incident anyone is debugging</em>, because uniform randomness keeps mostly the healthy majority.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
 <p><strong>Retention across error and normal cohorts.</strong> If 180 of 200 error traces and 980 of 9,800 normal traces survive, cohort retention is 90% and 10%, respectively. Keep the full denominators for verification, and measure late spans and collector memory at the configured decision delay.</p>
@@ -121,28 +119,44 @@ d.setAttribute('data-theme',t);
 <p>The details that separate working pipelines from aspirational ones: <strong>sample-rate metadata on every kept trace</strong> (the decision and its rate recorded as span attributes, so analytical queries can re-weight — a kept-at-1% trace represents a hundred; count-style analysis over traces without rate-awareness is silently wrong arithmetic), <strong>per-signal budgets with owners</strong> (trace volume by service on the same FinOps-style dashboards as log ingestion — the cardinality-and-cost review from logging practice, applied to spans; the service exporting 40% of the estate&#39;s spans for no queried benefit is this pipeline&#39;s unused-index equivalent), <strong>dynamic and per-tenant overrides</strong> (the debug-sampling toggle — crank a route/tenant to 100% during investigation without a deploy, per the runtime-toggle disciplines; and the whale tenant&#39;s traces rate-capped per the fairness rules), and <strong>retention tiers matching query patterns</strong> (hot full-fidelity days for incident work, downsampled/aggregated weeks for trends — the lifecycle economics, as everywhere). And the honesty check that keeps the whole system accountable: periodically, during a real incident review, ask <em>&quot;did we have the trace?&quot;</em> — the tracing pipeline&#39;s single meaningful SLO is trace-availability-for-investigated-incidents, and a quarter of misses is the signal to rebalance policies toward the tail.</p>
 <p>The closing frame: sampling isn&#39;t the compromise tracing makes with cost — it&#39;s the design surface where an observability team encodes <em>what questions the organization has committed to answering</em>. Keep the errors, keep the outliers, keep whole traces or none, let metrics carry the aggregates, link them with exemplars, and cap the volume everywhere else — and 1% storage delivers 95% of the answers, which is the trade every honest telemetry budget was always going to make. The only unacceptable policy is the accidental one.</p>
 
-    </div>
-  </div>
+      </div>
 
-  <div class="art-wrap"><aside class="refs" aria-labelledby="refs-h">
+<aside class="refs" aria-labelledby="refs-h">
   <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
   <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
   <ul>
     <li><a href="https://opentelemetry.io/docs/" rel="noopener nofollow" target="_blank">OpenTelemetry</a><span>Specification and language SDKs.</span></li>
     <li><a href="https://www.finops.org/" rel="noopener nofollow" target="_blank">FinOps Foundation</a><span>Framework, capabilities and terminology.</span></li>
   </ul>
-</aside></div>
+</aside>
 
-  
 
-  <div class="art-wrap article-foot">
-    <div class="row" style="gap:.4rem">
-      <a class="chip chip-plain" href="/topics/observability/">Observability</a><a class="chip chip-plain" href="/topics/distributed-systems/">Distributed Systems</a><a class="chip chip-plain" href="/topics/reliability/">Reliability</a><a class="chip chip-plain" href="/topics/performance/">Performance</a><a class="chip chip-plain" href="/topics/cloud-architecture/">Cloud Architecture</a>
+
+      <footer class="article-foot">
+        <div class="row" style="gap:.4rem">
+          <a class="chip chip-plain" href="/topics/observability/">Observability</a><a class="chip chip-plain" href="/topics/distributed-systems/">Distributed Systems</a><a class="chip chip-plain" href="/topics/reliability/">Reliability</a><a class="chip chip-plain" href="/topics/performance/">Performance</a><a class="chip chip-plain" href="/topics/cloud-architecture/">Cloud Architecture</a>
+        </div>
+        <nav class="prevnext" aria-label="More articles">
+          <a href="/insights/weblogic-domains-clusters-explained/"><span>Previous</span><strong>WebLogic Domains, Clusters, and Managed Servers: The Architecture Explained</strong></a>
+          <a href="/insights/structured-logging-practices/" class="next"><span>Next</span><strong>Structured Logging That Pays for Itself: Schema, Context, and Cost Discipline</strong></a>
+        </nav>
+      </footer>
     </div>
-    <nav class="prevnext" aria-label="More articles">
-      <a href="/insights/weblogic-domains-clusters-explained/"><span>Previous</span><strong>WebLogic Domains, Clusters, and Managed Servers: The Architecture Explained</strong></a>
-      <a href="/insights/structured-logging-practices/" class="next"><span>Next</span><strong>Structured Logging That Pays for Itself: Schema, Context, and Cost Discipline</strong></a>
-    </nav>
+    <aside class="writing-promos" aria-label="Promotions" data-ad-slot="article-rail">
+  <p class="promo-label">From our projects</p>
+  <div class="promo-cards">
+    <section class="promo-card promo-techknowen" aria-label="TechKnowen">
+      <p class="promo-name">TechKnowen</p>
+      <p>Practical reading on software, architecture, and engineering.</p>
+      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+    </section>
+    <section class="promo-card promo-ziggle" aria-label="Ziggle">
+      <p class="promo-name">Ziggle</p>
+      <p>A new place to play brain teasers.</p>
+      <p class="promo-status">Coming soon</p>
+    </section>
+  </div>
+</aside>
   </div>
 
   <section class="section surface hair" style="margin-top:4rem">
@@ -273,7 +287,7 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=809689a9" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=809689a9"></script>
+<script src="/assets/js/site.js?v=80901545" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=80901545"></script>
 </body>
 </html>

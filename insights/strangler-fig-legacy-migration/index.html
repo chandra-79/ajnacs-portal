@@ -33,7 +33,7 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=809689a9">
+<link rel="stylesheet" href="/assets/css/site.css?v=80901545">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
@@ -79,9 +79,9 @@ d.setAttribute('data-theme',t);
 <main id="main" tabindex="-1">
 
 <div class="read-bar" aria-hidden="true"><span id="readBar"></span></div>
-<article class="article with-toc">
-  <header class="article-head">
-    <div class="art-wrap">
+<article class="article">
+  <div class="reading-layout">
+    <header class="article-head">
       <nav class="crumbs" aria-label="Breadcrumb">
         <a href="/">Home</a> <span aria-hidden="true">/</span>
         <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
@@ -96,17 +96,15 @@ d.setAttribute('data-theme',t);
         <span class="dot"></span><span>5 min read</span>
         <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
       </div>
-    </div>
-  </header>
+    </header>
 
-  <div class="art-wrap"><div class="article-hero" data-topic="Architecture"><img data-article-art="strangler-fig-legacy-migration" src="/assets/covers/strangler-fig-legacy-migration.svg?v=af67847ea207" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div></div>
-
-  <div class="art-wrap article-grid">
-    <div class="reader-aside"><nav class="toc" aria-label="On this page">
+    <div class="article-hero" data-topic="Architecture"><img data-article-art="strangler-fig-legacy-migration" src="/assets/covers/strangler-fig-legacy-migration.svg?v=af67847ea207" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div>
+<div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#the-mechanics-facade-routing-and-the-seam-catalog">The mechanics: facade, routing, and the seam catalog</a></li><li><a href="#data-is-the-boss-fight-again">Data is the boss fight (again)</a></li><li><a href="#the-organizational-mechanics-decide-the-outcome">The organizational mechanics decide the outcome</a></li><li><a href="#when-the-strangler-is-wrong">When the strangler is wrong</a></li></ol>
 </nav></div>
-    <div class="prose">
+    <div class="article-copy">
+      <div class="prose">
 <p>The strangler fig pattern — grow the new system around the old, route traffic incrementally, retire the legacy when nothing calls it — has won the argument against the big-bang rewrite so thoroughly that citing it is now table stakes in every modernization deck. What the decks omit is the base rate: most strangulations stall. The industry is full of estates running <em>both</em> systems indefinitely — the legacy not retired, the new system not complete, integration complexity doubled, the worst of both worlds achieved and institutionalized. The pattern works; it&#39;s the practice that fails, and it fails in knowable places.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
 <p><strong>Traffic served by the new slice with equivalent outcomes.</strong> If the new service handles 8,000 of 40,000 eligible requests, the migrated share is 20%. Compare correctness and tail latency with the original path under equivalent traffic, and rehearse a switchback that accounts for writes during the cutover.</p>
@@ -127,21 +125,37 @@ d.setAttribute('data-theme',t);
 <p>Completeness demands the counter-cases: <strong>small systems</strong> (a bounded system rewritable in a quarter doesn&#39;t need a two-year incremental scaffold — the pattern&#39;s overhead only pays above a size threshold); <strong>doomed capabilities</strong> (don&#39;t strangle what should be retired outright or bought — the build-vs-buy question precedes the migration question); and <strong>the un-seamable monolith</strong> (systems whose internals resist capability boundaries — shared mutable state everywhere — sometimes need an internal decoupling investment <em>first</em>, or an honest acceptance that replacement will be chunkier than the pattern&#39;s ideal). The pattern is a strategy for <em>managing risk over a long replacement</em>, and where the replacement isn&#39;t long or the risk isn&#39;t high, simpler plans win.</p>
 <p>The strangler fig&#39;s real lesson was never the routing trick — it&#39;s that <strong>legacy replacement is a delivery program with all the disciplines that implies</strong>: incremental value, measured progress, funded completion, and an explicit definition of done that includes the funeral. Estates that adopt the pattern&#39;s diagram without those disciplines get the pattern&#39;s namesake outcome in the wrong direction — two systems, intertwined, both alive, forever. Estates that adopt the disciplines finish — and finishing, in legacy modernization, is the entire point.</p>
 
+      </div>
+
+
+
+
+
+      <footer class="article-foot">
+        <div class="row" style="gap:.4rem">
+          <a class="chip chip-plain" href="/insights/?topic=Legacy%20Modernization">Legacy Modernization</a><a class="chip chip-plain" href="/topics/architecture/">Architecture</a><a class="chip chip-plain" href="/topics/distributed-systems/">Distributed Systems</a><a class="chip chip-plain" href="/topics/engineering-practice/">Engineering Practice</a><a class="chip chip-plain" href="/insights/?topic=Technical%20Debt">Technical Debt</a>
+        </div>
+        <nav class="prevnext" aria-label="More articles">
+          <a href="/insights/designing-for-failure-resilience-patterns/"><span>Previous</span><strong>Designing for Failure: Resilience Patterns That Actually Hold in Production</strong></a>
+          <a href="/insights/queueing-theory-for-engineers/" class="next"><span>Next</span><strong>Queueing Theory for Engineers: Why Everything Melts at 80% Utilization</strong></a>
+        </nav>
+      </footer>
     </div>
+    <aside class="writing-promos" aria-label="Promotions" data-ad-slot="article-rail">
+  <p class="promo-label">From our projects</p>
+  <div class="promo-cards">
+    <section class="promo-card promo-techknowen" aria-label="TechKnowen">
+      <p class="promo-name">TechKnowen</p>
+      <p>Practical reading on software, architecture, and engineering.</p>
+      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+    </section>
+    <section class="promo-card promo-ziggle" aria-label="Ziggle">
+      <p class="promo-name">Ziggle</p>
+      <p>A new place to play brain teasers.</p>
+      <p class="promo-status">Coming soon</p>
+    </section>
   </div>
-
-  
-
-  
-
-  <div class="art-wrap article-foot">
-    <div class="row" style="gap:.4rem">
-      <a class="chip chip-plain" href="/insights/?topic=Legacy%20Modernization">Legacy Modernization</a><a class="chip chip-plain" href="/topics/architecture/">Architecture</a><a class="chip chip-plain" href="/topics/distributed-systems/">Distributed Systems</a><a class="chip chip-plain" href="/topics/engineering-practice/">Engineering Practice</a><a class="chip chip-plain" href="/insights/?topic=Technical%20Debt">Technical Debt</a>
-    </div>
-    <nav class="prevnext" aria-label="More articles">
-      <a href="/insights/designing-for-failure-resilience-patterns/"><span>Previous</span><strong>Designing for Failure: Resilience Patterns That Actually Hold in Production</strong></a>
-      <a href="/insights/queueing-theory-for-engineers/" class="next"><span>Next</span><strong>Queueing Theory for Engineers: Why Everything Melts at 80% Utilization</strong></a>
-    </nav>
+</aside>
   </div>
 
   <section class="section surface hair" style="margin-top:4rem">
@@ -272,7 +286,7 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=809689a9" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=809689a9"></script>
+<script src="/assets/js/site.js?v=80901545" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=80901545"></script>
 </body>
 </html>

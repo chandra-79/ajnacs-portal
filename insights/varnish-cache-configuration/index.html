@@ -33,7 +33,7 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=809689a9">
+<link rel="stylesheet" href="/assets/css/site.css?v=80901545">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
@@ -79,9 +79,9 @@ d.setAttribute('data-theme',t);
 <main id="main" tabindex="-1">
 
 <div class="read-bar" aria-hidden="true"><span id="readBar"></span></div>
-<article class="article with-toc">
-  <header class="article-head">
-    <div class="art-wrap">
+<article class="article">
+  <div class="reading-layout">
+    <header class="article-head">
       <nav class="crumbs" aria-label="Breadcrumb">
         <a href="/">Home</a> <span aria-hidden="true">/</span>
         <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
@@ -96,17 +96,15 @@ d.setAttribute('data-theme',t);
         <span class="dot"></span><span>4 min read</span>
         <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
       </div>
-    </div>
-  </header>
+    </header>
 
-  <div class="art-wrap"><div class="article-hero" data-topic="Infrastructure"><img data-article-art="varnish-cache-configuration" src="/assets/covers/varnish-cache-configuration.svg?v=0149e08cfcec" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div></div>
-
-  <div class="art-wrap article-grid">
-    <div class="reader-aside"><nav class="toc" aria-label="On this page">
+    <div class="article-hero" data-topic="Infrastructure"><img data-article-art="varnish-cache-configuration" src="/assets/covers/varnish-cache-configuration.svg?v=0149e08cfcec" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div>
+<div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#the-vcl-request-lifecycle">The VCL request lifecycle</a></li><li><a href="#the-minimum-config-that-makes-varnish-useful">The minimum config that makes Varnish useful</a></li><li><a href="#cache-key-design">Cache key design</a></li><li><a href="#ttl-strategy">TTL strategy</a></li><li><a href="#handling-authenticated-content">Handling authenticated content</a></li><li><a href="#purging-cached-content">Purging cached content</a></li><li><a href="#monitoring-what-varnish-is-doing">Monitoring what Varnish is doing</a></li></ol>
 </nav></div>
-    <div class="prose">
+    <div class="article-copy">
+      <div class="prose">
 <p>Varnish Cache sits in front of your web servers and caches responses in memory. For content-heavy sites with high read traffic, a correctly configured Varnish instance absorbs most of the load that would otherwise hit your application servers. The challenge is &quot;correctly configured&quot; — Varnish&#39;s Varnish Configuration Language (VCL) is C-like and the default behavior needs adjustment for most real workloads.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
 <p><strong>Avoided origin work by route.</strong> If a cacheable route receives 50,000 requests and Varnish serves 40,000 from cache, request hit rate is 80%. Break out hit-for-pass, grace and revalidation according to the actual counters so origin load is not inferred from one number.</p>
@@ -220,27 +218,43 @@ sub vcl_recv {
 <p><code>varnishlog</code> shows request-level logs with the cache decision for each request. Essential for debugging why specific requests aren&#39;t being cached.</p>
 <p><em>Tuning a Varnish configuration or designing a caching strategy for a high-traffic site? <a href="/contact/">Happy to work through the specifics.</a></em></p>
 
-    </div>
-  </div>
+      </div>
 
-  <div class="art-wrap"><aside class="refs" aria-labelledby="refs-h">
+<aside class="refs" aria-labelledby="refs-h">
   <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
   <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
   <ul>
     <li><a href="https://varnish-cache.org/docs/" rel="noopener nofollow" target="_blank">Varnish Cache</a><span>VCL reference and caching behaviour.</span></li>
   </ul>
-</aside></div>
+</aside>
 
-  
 
-  <div class="art-wrap article-foot">
-    <div class="row" style="gap:.4rem">
-      <a class="chip chip-plain" href="/insights/?topic=CDN%20%26%20Caching">CDN &amp; Caching</a><a class="chip chip-plain" href="/topics/infrastructure/">Infrastructure</a><a class="chip chip-plain" href="/topics/architecture/">Architecture</a>
+
+      <footer class="article-foot">
+        <div class="row" style="gap:.4rem">
+          <a class="chip chip-plain" href="/insights/?topic=CDN%20%26%20Caching">CDN &amp; Caching</a><a class="chip chip-plain" href="/topics/infrastructure/">Infrastructure</a><a class="chip chip-plain" href="/topics/architecture/">Architecture</a>
+        </div>
+        <nav class="prevnext" aria-label="More articles">
+          <a href="/insights/kubernetes-cost-optimization/"><span>Previous</span><strong>Kubernetes Cost Visibility — The Gap That Kills FinOps Programs</strong></a>
+          <a href="/insights/cdn-strategy-decision-guide/" class="next"><span>Next</span><strong>CDN Strategy: Choosing the Right Approach for Your Architecture</strong></a>
+        </nav>
+      </footer>
     </div>
-    <nav class="prevnext" aria-label="More articles">
-      <a href="/insights/kubernetes-cost-optimization/"><span>Previous</span><strong>Kubernetes Cost Visibility — The Gap That Kills FinOps Programs</strong></a>
-      <a href="/insights/cdn-strategy-decision-guide/" class="next"><span>Next</span><strong>CDN Strategy: Choosing the Right Approach for Your Architecture</strong></a>
-    </nav>
+    <aside class="writing-promos" aria-label="Promotions" data-ad-slot="article-rail">
+  <p class="promo-label">From our projects</p>
+  <div class="promo-cards">
+    <section class="promo-card promo-techknowen" aria-label="TechKnowen">
+      <p class="promo-name">TechKnowen</p>
+      <p>Practical reading on software, architecture, and engineering.</p>
+      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+    </section>
+    <section class="promo-card promo-ziggle" aria-label="Ziggle">
+      <p class="promo-name">Ziggle</p>
+      <p>A new place to play brain teasers.</p>
+      <p class="promo-status">Coming soon</p>
+    </section>
+  </div>
+</aside>
   </div>
 
   <section class="section surface hair" style="margin-top:4rem">
@@ -371,7 +385,7 @@ sub vcl_recv {
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=809689a9" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=809689a9"></script>
+<script src="/assets/js/site.js?v=80901545" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=80901545"></script>
 </body>
 </html>

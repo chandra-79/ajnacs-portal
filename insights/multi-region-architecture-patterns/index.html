@@ -33,7 +33,7 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=809689a9">
+<link rel="stylesheet" href="/assets/css/site.css?v=80901545">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
@@ -79,9 +79,9 @@ d.setAttribute('data-theme',t);
 <main id="main" tabindex="-1">
 
 <div class="read-bar" aria-hidden="true"><span id="readBar"></span></div>
-<article class="article with-toc">
-  <header class="article-head">
-    <div class="art-wrap">
+<article class="article">
+  <div class="reading-layout">
+    <header class="article-head">
       <nav class="crumbs" aria-label="Breadcrumb">
         <a href="/">Home</a> <span aria-hidden="true">/</span>
         <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
@@ -96,17 +96,15 @@ d.setAttribute('data-theme',t);
         <span class="dot"></span><span>5 min read</span>
         <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
       </div>
-    </div>
-  </header>
+    </header>
 
-  <div class="art-wrap"><div class="article-hero" data-topic="Cloud Architecture"><img data-article-art="multi-region-architecture-patterns" src="/assets/covers/multi-region-architecture-patterns.svg?v=2d4e43cac29c" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div></div>
-
-  <div class="art-wrap article-grid">
-    <div class="reader-aside"><nav class="toc" aria-label="On this page">
+    <div class="article-hero" data-topic="Cloud Architecture"><img data-article-art="multi-region-architecture-patterns" src="/assets/covers/multi-region-architecture-patterns.svg?v=2d4e43cac29c" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div>
+<div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#first-the-two-numbers-that-decide-everything">First, the two numbers that decide everything</a></li><li><a href="#the-tiers-priced-honestly">The tiers, priced honestly</a></li><li><a href="#the-data-layer-is-the-architecture">The data layer is the architecture</a></li><li><a href="#failover-mechanics-the-details-that-decide-whether-it-works">Failover mechanics: the details that decide whether it works</a></li><li><a href="#the-test-is-the-architecture">The test is the architecture</a></li></ol>
 </nav></div>
-    <div class="prose">
+    <div class="article-copy">
+      <div class="prose">
 <p>Multi-region is where cloud architecture conversations most reliably outrun their requirements. A team that has never tested a backup restore declares a need for active-active across three regions; a workload with a four-hour RTO tolerance gets an architecture priced for four seconds. The corrective isn&#39;t cynicism about multi-region — regional outages are real, and the big ones are always a surprise — it&#39;s a tiered model where each tier has a price, a promise, and a test, and workloads are placed by their <em>written</em> recovery requirements rather than their owners&#39; anxiety.</p>
 <p>Here&#39;s that model, and the data-layer truths that dominate it.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
@@ -135,21 +133,37 @@ d.setAttribute('data-theme',t);
 <p>An untested failover path is a diagram, and diagrams don&#39;t serve traffic. The practice ladder: quarterly restore tests (Tier 0), standby inflation drills (Tier 1), scheduled <em>real</em> traffic shifts for Tier 2–3 — the organizations that trust their multi-region posture are the ones that fail over <em>routinely, on purpose, during business hours</em>, because a failover that only happens under adrenaline is a different, worse procedure. Game days that sever a region&#39;s database replication or its identity provider find the re-coupling dependencies before the outage does.</p>
 <p>The executive summary: buy the tier your written RTO/RPO requires, put the engineering into the data-layer decision (single-writer and home-region models cover far more of the world than their marketing budget suggests), rehearse until failover is boring — and let the handful of workloads that genuinely need Tier 3 pay for it knowingly, rather than letting the whole portfolio drift there by prestige. Regional resilience is a product you buy with discipline, not a property you declare with architecture slides.</p>
 
+      </div>
+
+
+
+
+
+      <footer class="article-foot">
+        <div class="row" style="gap:.4rem">
+          <a class="chip chip-plain" href="/topics/cloud-architecture/">Cloud Architecture</a><a class="chip chip-plain" href="/topics/architecture/">Architecture</a><a class="chip chip-plain" href="/topics/reliability/">Reliability</a><a class="chip chip-plain" href="/insights/?topic=Disaster%20Recovery">Disaster Recovery</a><a class="chip chip-plain" href="/topics/distributed-systems/">Distributed Systems</a>
+        </div>
+        <nav class="prevnext" aria-label="More articles">
+          <a href="/insights/queueing-theory-for-engineers/"><span>Previous</span><strong>Queueing Theory for Engineers: Why Everything Melts at 80% Utilization</strong></a>
+          <a href="/insights/java-virtual-threads-enterprise/" class="next"><span>Next</span><strong>Virtual Threads in the Enterprise: What Changes, What Doesn&#39;t, and What Breaks</strong></a>
+        </nav>
+      </footer>
     </div>
+    <aside class="writing-promos" aria-label="Promotions" data-ad-slot="article-rail">
+  <p class="promo-label">From our projects</p>
+  <div class="promo-cards">
+    <section class="promo-card promo-techknowen" aria-label="TechKnowen">
+      <p class="promo-name">TechKnowen</p>
+      <p>Practical reading on software, architecture, and engineering.</p>
+      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+    </section>
+    <section class="promo-card promo-ziggle" aria-label="Ziggle">
+      <p class="promo-name">Ziggle</p>
+      <p>A new place to play brain teasers.</p>
+      <p class="promo-status">Coming soon</p>
+    </section>
   </div>
-
-  
-
-  
-
-  <div class="art-wrap article-foot">
-    <div class="row" style="gap:.4rem">
-      <a class="chip chip-plain" href="/topics/cloud-architecture/">Cloud Architecture</a><a class="chip chip-plain" href="/topics/architecture/">Architecture</a><a class="chip chip-plain" href="/topics/reliability/">Reliability</a><a class="chip chip-plain" href="/insights/?topic=Disaster%20Recovery">Disaster Recovery</a><a class="chip chip-plain" href="/topics/distributed-systems/">Distributed Systems</a>
-    </div>
-    <nav class="prevnext" aria-label="More articles">
-      <a href="/insights/queueing-theory-for-engineers/"><span>Previous</span><strong>Queueing Theory for Engineers: Why Everything Melts at 80% Utilization</strong></a>
-      <a href="/insights/java-virtual-threads-enterprise/" class="next"><span>Next</span><strong>Virtual Threads in the Enterprise: What Changes, What Doesn&#39;t, and What Breaks</strong></a>
-    </nav>
+</aside>
   </div>
 
   <section class="section surface hair" style="margin-top:4rem">
@@ -290,7 +304,7 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=809689a9" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=809689a9"></script>
+<script src="/assets/js/site.js?v=80901545" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=80901545"></script>
 </body>
 </html>

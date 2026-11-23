@@ -33,7 +33,7 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=809689a9">
+<link rel="stylesheet" href="/assets/css/site.css?v=80901545">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
@@ -79,9 +79,9 @@ d.setAttribute('data-theme',t);
 <main id="main" tabindex="-1">
 
 <div class="read-bar" aria-hidden="true"><span id="readBar"></span></div>
-<article class="article with-toc">
-  <header class="article-head">
-    <div class="art-wrap">
+<article class="article">
+  <div class="reading-layout">
+    <header class="article-head">
       <nav class="crumbs" aria-label="Breadcrumb">
         <a href="/">Home</a> <span aria-hidden="true">/</span>
         <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
@@ -96,17 +96,15 @@ d.setAttribute('data-theme',t);
         <span class="dot"></span><span>5 min read</span>
         <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
       </div>
-    </div>
-  </header>
+    </header>
 
-  <div class="art-wrap"><div class="article-hero" data-topic="Platform Engineering"><img data-article-art="deployment-strategies-blue-green-canary" src="/assets/covers/deployment-strategies-blue-green-canary.svg?v=cd0c09adb697" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div></div>
-
-  <div class="art-wrap article-grid">
-    <div class="reader-aside"><nav class="toc" aria-label="On this page">
+    <div class="article-hero" data-topic="Platform Engineering"><img data-article-art="deployment-strategies-blue-green-canary" src="/assets/covers/deployment-strategies-blue-green-canary.svg?v=cd0c09adb697" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div>
+<div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#the-baseline-rolling-updates">The baseline: rolling updates</a></li><li><a href="#blue-green-the-binary-switch">Blue-green: the binary switch</a></li><li><a href="#canary-measured-exposure">Canary: measured exposure</a></li><li><a href="#the-constraint-underneath-all-of-them-the-database">The constraint underneath all of them: the database</a></li><li><a href="#choosing-and-the-maturity-path">Choosing, and the maturity path</a></li></ol>
 </nav></div>
-    <div class="prose">
+    <div class="article-copy">
+      <div class="prose">
 <p>Deployment strategy discussions have a way of floating free of their constraints. Teams debate blue-green versus canary as if choosing a philosophy, when the real determinants are unglamorous: how many instances you run, whether your traffic layer can split by percentage, what your observability can detect in five minutes, and — above all — whether your database schema can serve two application versions at once.</p>
 <p>Here&#39;s the strategy landscape with the constraints attached.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
@@ -134,10 +132,9 @@ d.setAttribute('data-theme',t);
 <p>The selection heuristic in one breath: <strong>rolling</strong> for routine low-risk changes with good pre-prod coverage; <strong>blue-green</strong> when rollback-in-seconds is the requirement and all-at-once exposure is acceptable after smoke tests; <strong>canary</strong> when user-facing risk must be bounded and you have (or will build) the observability to automate judgment; <strong>shadow</strong> before big rewrites. These compose — plenty of mature shops blue-green the infrastructure layer while canarying application releases through it.</p>
 <p>And note what all four strategies quietly assume: <strong>decoupling deploy from release</strong>. Feature flags let code ship dark and activate independently, which shrinks deployment risk to &quot;does the binary run&quot; while product risk is managed per-feature. Teams that internalize that separation stop needing deployment strategies to carry product risk at all — which is the actual end state worth aiming for: deploys so routine and reversible that the strategy discussion gets boring. Boring is the win condition.</p>
 
-    </div>
-  </div>
+      </div>
 
-  <div class="art-wrap"><aside class="refs" aria-labelledby="refs-h">
+<aside class="refs" aria-labelledby="refs-h">
   <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
   <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
   <ul>
@@ -145,18 +142,35 @@ d.setAttribute('data-theme',t);
     <li><a href="https://kubernetes.io/docs/" rel="noopener nofollow" target="_blank">Kubernetes documentation</a><span>Primary reference for the concepts used here.</span></li>
     <li><a href="https://prometheus.io/docs/" rel="noopener nofollow" target="_blank">Prometheus</a><span>Query language and operational guidance.</span></li>
   </ul>
-</aside></div>
+</aside>
 
-  
 
-  <div class="art-wrap article-foot">
-    <div class="row" style="gap:.4rem">
-      <a class="chip chip-plain" href="/insights/?topic=Deployment">Deployment</a><a class="chip chip-plain" href="/topics/platform-engineering/">Platform Engineering</a><a class="chip chip-plain" href="/topics/engineering-practice/">Engineering Practice</a><a class="chip chip-plain" href="/topics/containers/">Containers</a><a class="chip chip-plain" href="/topics/reliability/">Reliability</a>
+
+      <footer class="article-foot">
+        <div class="row" style="gap:.4rem">
+          <a class="chip chip-plain" href="/insights/?topic=Deployment">Deployment</a><a class="chip chip-plain" href="/topics/platform-engineering/">Platform Engineering</a><a class="chip chip-plain" href="/topics/engineering-practice/">Engineering Practice</a><a class="chip chip-plain" href="/topics/containers/">Containers</a><a class="chip chip-plain" href="/topics/reliability/">Reliability</a>
+        </div>
+        <nav class="prevnext" aria-label="More articles">
+          <a href="/insights/java-legacy-modernization-roadmap/"><span>Previous</span><strong>Modernizing Legacy Java: A Roadmap from Java 8 to 21+ Without Stopping the Business</strong></a>
+          <a href="/insights/back-of-envelope-system-design/" class="next"><span>Next</span><strong>Back-of-Envelope Engineering: The Estimation Skill That Filters Bad Architectures in Minutes</strong></a>
+        </nav>
+      </footer>
     </div>
-    <nav class="prevnext" aria-label="More articles">
-      <a href="/insights/java-legacy-modernization-roadmap/"><span>Previous</span><strong>Modernizing Legacy Java: A Roadmap from Java 8 to 21+ Without Stopping the Business</strong></a>
-      <a href="/insights/back-of-envelope-system-design/" class="next"><span>Next</span><strong>Back-of-Envelope Engineering: The Estimation Skill That Filters Bad Architectures in Minutes</strong></a>
-    </nav>
+    <aside class="writing-promos" aria-label="Promotions" data-ad-slot="article-rail">
+  <p class="promo-label">From our projects</p>
+  <div class="promo-cards">
+    <section class="promo-card promo-techknowen" aria-label="TechKnowen">
+      <p class="promo-name">TechKnowen</p>
+      <p>Practical reading on software, architecture, and engineering.</p>
+      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+    </section>
+    <section class="promo-card promo-ziggle" aria-label="Ziggle">
+      <p class="promo-name">Ziggle</p>
+      <p>A new place to play brain teasers.</p>
+      <p class="promo-status">Coming soon</p>
+    </section>
+  </div>
+</aside>
   </div>
 
   <section class="section surface hair" style="margin-top:4rem">
@@ -287,7 +301,7 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=809689a9" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=809689a9"></script>
+<script src="/assets/js/site.js?v=80901545" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=80901545"></script>
 </body>
 </html>

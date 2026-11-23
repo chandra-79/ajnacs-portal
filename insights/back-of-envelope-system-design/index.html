@@ -33,7 +33,7 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=809689a9">
+<link rel="stylesheet" href="/assets/css/site.css?v=80901545">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
@@ -79,9 +79,9 @@ d.setAttribute('data-theme',t);
 <main id="main" tabindex="-1">
 
 <div class="read-bar" aria-hidden="true"><span id="readBar"></span></div>
-<article class="article with-toc">
-  <header class="article-head">
-    <div class="art-wrap">
+<article class="article">
+  <div class="reading-layout">
+    <header class="article-head">
       <nav class="crumbs" aria-label="Breadcrumb">
         <a href="/">Home</a> <span aria-hidden="true">/</span>
         <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
@@ -96,17 +96,15 @@ d.setAttribute('data-theme',t);
         <span class="dot"></span><span>4 min read</span>
         <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
       </div>
-    </div>
-  </header>
+    </header>
 
-  <div class="art-wrap"><div class="article-hero" data-topic="Architecture"><img data-article-art="back-of-envelope-system-design" src="/assets/covers/back-of-envelope-system-design.svg?v=969af28dcfef" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div></div>
-
-  <div class="art-wrap article-grid">
-    <div class="reader-aside"><nav class="toc" aria-label="On this page">
+    <div class="article-hero" data-topic="Architecture"><img data-article-art="back-of-envelope-system-design" src="/assets/covers/back-of-envelope-system-design.svg?v=969af28dcfef" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div>
+<div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#the-numbers-worth-carrying">The numbers worth carrying</a></li><li><a href="#the-moves-a-repeatable-sequence">The moves: a repeatable sequence</a></li><li><a href="#where-it-earns-its-keep">Where it earns its keep</a></li></ol>
 </nav></div>
-    <div class="prose">
+    <div class="article-copy">
+      <div class="prose">
 <p>There&#39;s a moment in good design reviews that separates engineering from opinion: someone does thirty seconds of arithmetic and an entire architectural option quietly dies. &quot;That&#39;s 40 billion writes a month — at DynamoDB pricing that&#39;s six figures annually; next option.&quot; &quot;Each request fans out to 30 services at 2ms each — sequentially that&#39;s your whole latency budget; this needs parallelism or fewer hops.&quot; Back-of-envelope calculation is the cheapest analysis in the field — no prototypes, no benchmarks, no meetings — and it&#39;s systematically undertaught, treated as interview theater rather than what it is: the daily filter that keeps designs tethered to physics and prices before anyone writes code.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
 <p><strong>Average and peak throughput.</strong> Five million requests a day average about 58 requests/s. An assumed 10× peak produces about 580 requests/s for a first sizing pass. Replace that multiplier with observed peak windows once traffic data exists.</p>
@@ -124,27 +122,43 @@ d.setAttribute('data-theme',t);
 <p>The applications beyond the design review: <strong>sanity-checking vendor claims and benchmarks</strong> (does the promised throughput exceed what the instance&#39;s memory bandwidth could physically deliver? — marketing decks fail envelope math at an instructive rate), <strong>incident triage</strong> (&quot;the queue is growing at 5k/sec and drains at 3k/sec — we have 40 minutes of buffer&quot; is envelope math under adrenaline, and the responders who do it steer better), <strong>capacity and headroom reasoning</strong> (the time-to-wall trajectory from capacity planning is an envelope calculation maintained quarterly), <strong>prioritization</strong> (&quot;this optimization saves 2ms on a path that runs 100 times/day&quot; versus &quot;0.2ms on one that runs 10k/sec&quot; — total-time thinking, the profiler&#39;s lesson, computable before profiling), and — increasingly — <strong>AI-era feasibility</strong> (tokens × price × volume is the new storage-math; many an LLM feature has died or been re-scoped in one line of per-request cost arithmetic, exactly as it should).</p>
 <p>The deeper case for the habit is cultural: teams that estimate publicly develop a shared sense of <em>scale</em> — the collective instinct for what&#39;s big, what&#39;s cheap, what&#39;s absurd — which is the actual foundation under every judgment this series describes: choosing databases by working set, deployment strategies by blast radius, architectures by fan-out, tools by workload shape. None of those judgments require precision; all of them require knowing the orders of magnitude, and orders of magnitude are exactly what the envelope delivers. Thirty seconds of arithmetic before every consequential choice — assumptions written, ranges bracketed, dollars attached — is the highest-return ritual available to a technical organization. The prototype confirms; the envelope <em>decides</em>.</p>
 
-    </div>
-  </div>
+      </div>
 
-  <div class="art-wrap"><aside class="refs" aria-labelledby="refs-h">
+<aside class="refs" aria-labelledby="refs-h">
   <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
   <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
   <ul>
     <li><a href="https://www.postgresql.org/docs/current/" rel="noopener nofollow" target="_blank">PostgreSQL documentation</a><span>Configuration and planner behaviour.</span></li>
   </ul>
-</aside></div>
+</aside>
 
-  
 
-  <div class="art-wrap article-foot">
-    <div class="row" style="gap:.4rem">
-      <a class="chip chip-plain" href="/topics/architecture/">Architecture</a><a class="chip chip-plain" href="/topics/performance/">Performance</a><a class="chip chip-plain" href="/topics/engineering-leadership/">Engineering Leadership</a><a class="chip chip-plain" href="/insights/?topic=Capacity%20Planning">Capacity Planning</a>
+
+      <footer class="article-foot">
+        <div class="row" style="gap:.4rem">
+          <a class="chip chip-plain" href="/topics/architecture/">Architecture</a><a class="chip chip-plain" href="/topics/performance/">Performance</a><a class="chip chip-plain" href="/topics/engineering-leadership/">Engineering Leadership</a><a class="chip chip-plain" href="/insights/?topic=Capacity%20Planning">Capacity Planning</a>
+        </div>
+        <nav class="prevnext" aria-label="More articles">
+          <a href="/insights/deployment-strategies-blue-green-canary/"><span>Previous</span><strong>Deployment Strategies Compared: Rolling, Blue-Green, Canary, and When Each Actually Fits</strong></a>
+          <a href="/insights/kubernetes-security-hardening/" class="next"><span>Next</span><strong>Kubernetes Security Hardening: The Controls That Actually Reduce Attack Surface</strong></a>
+        </nav>
+      </footer>
     </div>
-    <nav class="prevnext" aria-label="More articles">
-      <a href="/insights/deployment-strategies-blue-green-canary/"><span>Previous</span><strong>Deployment Strategies Compared: Rolling, Blue-Green, Canary, and When Each Actually Fits</strong></a>
-      <a href="/insights/kubernetes-security-hardening/" class="next"><span>Next</span><strong>Kubernetes Security Hardening: The Controls That Actually Reduce Attack Surface</strong></a>
-    </nav>
+    <aside class="writing-promos" aria-label="Promotions" data-ad-slot="article-rail">
+  <p class="promo-label">From our projects</p>
+  <div class="promo-cards">
+    <section class="promo-card promo-techknowen" aria-label="TechKnowen">
+      <p class="promo-name">TechKnowen</p>
+      <p>Practical reading on software, architecture, and engineering.</p>
+      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+    </section>
+    <section class="promo-card promo-ziggle" aria-label="Ziggle">
+      <p class="promo-name">Ziggle</p>
+      <p>A new place to play brain teasers.</p>
+      <p class="promo-status">Coming soon</p>
+    </section>
+  </div>
+</aside>
   </div>
 
   <section class="section surface hair" style="margin-top:4rem">
@@ -275,7 +289,7 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=809689a9" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=809689a9"></script>
+<script src="/assets/js/site.js?v=80901545" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=80901545"></script>
 </body>
 </html>

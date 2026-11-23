@@ -33,7 +33,7 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=809689a9">
+<link rel="stylesheet" href="/assets/css/site.css?v=80901545">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
@@ -79,9 +79,9 @@ d.setAttribute('data-theme',t);
 <main id="main" tabindex="-1">
 
 <div class="read-bar" aria-hidden="true"><span id="readBar"></span></div>
-<article class="article with-toc">
-  <header class="article-head">
-    <div class="art-wrap">
+<article class="article">
+  <div class="reading-layout">
+    <header class="article-head">
       <nav class="crumbs" aria-label="Breadcrumb">
         <a href="/">Home</a> <span aria-hidden="true">/</span>
         <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
@@ -96,20 +96,18 @@ d.setAttribute('data-theme',t);
         <span class="dot"></span><span>5 min read</span>
         <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
       </div>
-    </div>
-  </header>
+    </header>
 
-  <div class="art-wrap"><div class="article-hero" data-topic="Programming"><img data-article-art="os-namespaces-cgroups" src="/assets/covers/os-namespaces-cgroups.svg?v=f7cddf38f8fc" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div></div>
-
-  <div class="art-wrap article-grid">
-    <div class="reader-aside"><nav class="toc" aria-label="On this page">
+    <div class="article-hero" data-topic="Programming"><img data-article-art="os-namespaces-cgroups" src="/assets/covers/os-namespaces-cgroups.svg?v=f7cddf38f8fc" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div>
+<div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#namespaces">Namespaces</a></li><li><a href="#cgroups-v2">cgroups v2</a></li><li><a href="#systemd-and-cgroups">systemd and cgroups</a></li><li><a href="#how-container-runtimes-use-these-primitives">How Container Runtimes Use These Primitives</a></li><li><a href="#seccomp-syscall-filtering">Seccomp — syscall filtering</a></li><li><a href="#container-escape-via-cgroup-and-namespace-abuse">Container Escape via cgroup and Namespace Abuse</a></li></ol>
 </nav><nav class="chapters" aria-label="Articles in this series">
       <p class="chapters-title">Linux: A Complete Practical Course</p>
       <ol><li><a href="/insights/os-storage-management/">Linux Storage Management: Disks, Partitions, LVM, Filesystems, and Mounting</a></li><li><a href="/insights/os-disk-io-performance/">Disk I/O Performance Analysis on Linux</a></li><li><a href="/insights/os-kernel-tuning-sysctl/">Kernel Tuning with sysctl: Memory, Networking, and I/O</a></li><li aria-current="true"><a href="/insights/os-namespaces-cgroups/">Linux Namespaces and cgroups: The Foundation of Containers</a></li></ol>
     </nav></div>
-    <div class="prose">
+    <div class="article-copy">
+      <div class="prose">
 <p>Containers are not a Linux feature. There is no <code>container</code> system call. What containers are is a combination of two existing kernel primitives — namespaces and cgroups — wrapped in a user-space runtime. Understanding these primitives explains why containers work, what their security boundaries actually are, and what happens when they fail.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
 <p><strong>Throttling and memory pressure by workload.</strong> If cgroup CPU metrics show 250 throttled periods out of 1,000, throttling occurred in 25% of observed periods. Keep this distinct from the fraction of CPU time lost; inspect throttled duration and request latency under the same traffic.</p>
@@ -293,27 +291,43 @@ ls /proc | wc -l
 </code></pre>
 <p>The container runtime (containerd, CRI-O) handles namespace and cgroup creation, but the policy decisions about what capabilities to grant, what Seccomp profile to apply, and what namespaces to share are the operator&#39;s responsibility. The kernel will enforce exactly what you configure — no more, no less.</p>
 
-    </div>
-  </div>
+      </div>
 
-  <div class="art-wrap"><aside class="refs" aria-labelledby="refs-h">
+<aside class="refs" aria-labelledby="refs-h">
   <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
   <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
   <ul>
     <li><a href="https://kubernetes.io/docs/" rel="noopener nofollow" target="_blank">Kubernetes documentation</a><span>Primary reference for the concepts used here.</span></li>
   </ul>
-</aside></div>
+</aside>
 
-  
 
-  <div class="art-wrap article-foot">
-    <div class="row" style="gap:.4rem">
-      <a class="chip chip-plain" href="/topics/programming/">Programming</a><a class="chip chip-plain" href="/topics/fundamentals/">Fundamentals</a>
+
+      <footer class="article-foot">
+        <div class="row" style="gap:.4rem">
+          <a class="chip chip-plain" href="/topics/programming/">Programming</a><a class="chip chip-plain" href="/topics/fundamentals/">Fundamentals</a>
+        </div>
+        <nav class="prevnext" aria-label="More articles">
+          <a href="/insights/platform-eng-idp-design/"><span>Previous</span><strong>Designing an Internal Developer Platform: Abstraction Layers, Golden Paths, and the Governance Balance</strong></a>
+          <a href="/insights/finops-tagging-policy/" class="next"><span>Next</span><strong>Cloud Tagging Policy Template: The Foundation FinOps Actually Requires</strong></a>
+        </nav>
+      </footer>
     </div>
-    <nav class="prevnext" aria-label="More articles">
-      <a href="/insights/platform-eng-idp-design/"><span>Previous</span><strong>Designing an Internal Developer Platform: Abstraction Layers, Golden Paths, and the Governance Balance</strong></a>
-      <a href="/insights/finops-tagging-policy/" class="next"><span>Next</span><strong>Cloud Tagging Policy Template: The Foundation FinOps Actually Requires</strong></a>
-    </nav>
+    <aside class="writing-promos" aria-label="Promotions" data-ad-slot="article-rail">
+  <p class="promo-label">From our projects</p>
+  <div class="promo-cards">
+    <section class="promo-card promo-techknowen" aria-label="TechKnowen">
+      <p class="promo-name">TechKnowen</p>
+      <p>Practical reading on software, architecture, and engineering.</p>
+      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+    </section>
+    <section class="promo-card promo-ziggle" aria-label="Ziggle">
+      <p class="promo-name">Ziggle</p>
+      <p>A new place to play brain teasers.</p>
+      <p class="promo-status">Coming soon</p>
+    </section>
+  </div>
+</aside>
   </div>
 
   <section class="section surface hair" style="margin-top:4rem">
@@ -454,7 +468,7 @@ ls /proc | wc -l
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=809689a9" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=809689a9"></script>
+<script src="/assets/js/site.js?v=80901545" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=80901545"></script>
 </body>
 </html>

@@ -33,7 +33,7 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=809689a9">
+<link rel="stylesheet" href="/assets/css/site.css?v=80901545">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
@@ -79,9 +79,9 @@ d.setAttribute('data-theme',t);
 <main id="main" tabindex="-1">
 
 <div class="read-bar" aria-hidden="true"><span id="readBar"></span></div>
-<article class="article with-toc">
-  <header class="article-head">
-    <div class="art-wrap">
+<article class="article">
+  <div class="reading-layout">
+    <header class="article-head">
       <nav class="crumbs" aria-label="Breadcrumb">
         <a href="/">Home</a> <span aria-hidden="true">/</span>
         <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
@@ -96,20 +96,18 @@ d.setAttribute('data-theme',t);
         <span class="dot"></span><span>4 min read</span>
         <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
       </div>
-    </div>
-  </header>
+    </header>
 
-  <div class="art-wrap"><div class="article-hero" data-topic="AI &amp; MLOps"><img data-article-art="aiml-neural-networks" src="/assets/covers/aiml-neural-networks.svg?v=66ce49bca579" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div></div>
-
-  <div class="art-wrap article-grid">
-    <div class="reader-aside"><nav class="toc" aria-label="On this page">
+    <div class="article-hero" data-topic="AI &amp; MLOps"><img data-article-art="aiml-neural-networks" src="/assets/covers/aiml-neural-networks.svg?v=66ce49bca579" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div>
+<div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#the-basic-unit-the-artificial-neuron">The Basic Unit: The Artificial Neuron</a></li><li><a href="#why-activation-functions-matter">Why Activation Functions Matter</a></li><li><a href="#layers-organising-neurons-into-networks">Layers: Organising Neurons into Networks</a></li><li><a href="#how-learning-works-loss-gradient-descent-backpropagation">How Learning Works: Loss, Gradient Descent, Backpropagation</a></li><li><a href="#what-quottrainingquot-looks-like-operationally">What &quot;Training&quot; Looks Like Operationally</a></li><li><a href="#why-neural-networks-generalise">Why Neural Networks Generalise</a></li></ol>
 </nav><nav class="chapters" aria-label="Articles in this series">
       <p class="chapters-title">AI, ML, LLMs, and Neural Networks: A Practitioner&#39;s Introduction</p>
       <ol><li><a href="/insights/aiml-what-is-machine-learning/">What Machine Learning Actually Is — Before the Hype and After the Buzzwords</a></li><li aria-current="true"><a href="/insights/aiml-neural-networks/">Neural Networks Explained: What They Are, How They Learn, and Why They Work</a></li><li><a href="/insights/aiml-llms-explained/">Large Language Models: What They Are, How They Are Built, and What They Cannot Do</a></li><li><a href="/insights/aiml-rag-and-prompting/">RAG, Prompting, and Building Applications on LLMs: The Practitioner&#39;s Guide</a></li><li><a href="/insights/aiml-production-ai/">Putting AI in Production: What Enterprise AI Deployment Actually Requires</a></li></ol>
     </nav></div>
-    <div class="prose">
+    <div class="article-copy">
+      <div class="prose">
 <p>Neural networks have produced most of the significant AI results of the last decade: image recognition that surpasses human accuracy, protein structure prediction that eluded biology for fifty years, and language models that can write, reason, and code. Understanding the basic mechanics — why neural networks are capable of learning complex functions — is foundational for any engineer working with modern AI systems.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
 <p><strong>Generalisation gap.</strong> Use disjoint training and validation sets. An accuracy of 96% on training data and 84% on validation data gives a 12-percentage-point gap. Compare both against a simple baseline and inspect class-level errors before changing the network.</p>
@@ -198,27 +196,43 @@ for epoch in range(num_epochs):
 <p>The empirical answer: neural networks, when trained correctly with regularisation (dropout, weight decay), tend to learn compressed, generalisable representations of patterns rather than memorising specific examples. The large parameter count is offset by the regularisation pressure and the gradient descent dynamics that favour smooth, generalisable solutions over sharp, overfit ones.</p>
 <p>Understanding this tension — between fitting the training data and generalising to new data — is the central challenge of every supervised learning project. The next lesson applies these foundations to the architecture that produced the current generation of AI systems: the transformer.</p>
 
-    </div>
-  </div>
+      </div>
 
-  <div class="art-wrap"><aside class="refs" aria-labelledby="refs-h">
+<aside class="refs" aria-labelledby="refs-h">
   <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
   <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
   <ul>
     <li><a href="https://pytorch.org/docs/stable/" rel="noopener nofollow" target="_blank">PyTorch</a><span>Reference for the APIs discussed.</span></li>
   </ul>
-</aside></div>
+</aside>
 
-  
 
-  <div class="art-wrap article-foot">
-    <div class="row" style="gap:.4rem">
-      <a class="chip chip-plain" href="/topics/ai-mlops/">AI &amp; MLOps</a><a class="chip chip-plain" href="/topics/fundamentals/">Fundamentals</a>
+
+      <footer class="article-foot">
+        <div class="row" style="gap:.4rem">
+          <a class="chip chip-plain" href="/topics/ai-mlops/">AI &amp; MLOps</a><a class="chip chip-plain" href="/topics/fundamentals/">Fundamentals</a>
+        </div>
+        <nav class="prevnext" aria-label="More articles">
+          <a href="/insights/aiml-rag-and-prompting/"><span>Previous</span><strong>RAG, Prompting, and Building Applications on LLMs: The Practitioner&#39;s Guide</strong></a>
+          <a href="/insights/platform-eng-observability/" class="next"><span>Next</span><strong>Platform Observability: Building the Visibility Layer Every Application Team Gets Automatically</strong></a>
+        </nav>
+      </footer>
     </div>
-    <nav class="prevnext" aria-label="More articles">
-      <a href="/insights/aiml-rag-and-prompting/"><span>Previous</span><strong>RAG, Prompting, and Building Applications on LLMs: The Practitioner&#39;s Guide</strong></a>
-      <a href="/insights/platform-eng-observability/" class="next"><span>Next</span><strong>Platform Observability: Building the Visibility Layer Every Application Team Gets Automatically</strong></a>
-    </nav>
+    <aside class="writing-promos" aria-label="Promotions" data-ad-slot="article-rail">
+  <p class="promo-label">From our projects</p>
+  <div class="promo-cards">
+    <section class="promo-card promo-techknowen" aria-label="TechKnowen">
+      <p class="promo-name">TechKnowen</p>
+      <p>Practical reading on software, architecture, and engineering.</p>
+      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+    </section>
+    <section class="promo-card promo-ziggle" aria-label="Ziggle">
+      <p class="promo-name">Ziggle</p>
+      <p>A new place to play brain teasers.</p>
+      <p class="promo-status">Coming soon</p>
+    </section>
+  </div>
+</aside>
   </div>
 
   <section class="section surface hair" style="margin-top:4rem">
@@ -359,7 +373,7 @@ for epoch in range(num_epochs):
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=809689a9" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=809689a9"></script>
+<script src="/assets/js/site.js?v=80901545" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=80901545"></script>
 </body>
 </html>

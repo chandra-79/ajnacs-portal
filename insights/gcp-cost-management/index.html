@@ -33,7 +33,7 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=809689a9">
+<link rel="stylesheet" href="/assets/css/site.css?v=80901545">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
@@ -79,9 +79,9 @@ d.setAttribute('data-theme',t);
 <main id="main" tabindex="-1">
 
 <div class="read-bar" aria-hidden="true"><span id="readBar"></span></div>
-<article class="article with-toc">
-  <header class="article-head">
-    <div class="art-wrap">
+<article class="article">
+  <div class="reading-layout">
+    <header class="article-head">
       <nav class="crumbs" aria-label="Breadcrumb">
         <a href="/">Home</a> <span aria-hidden="true">/</span>
         <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
@@ -96,17 +96,15 @@ d.setAttribute('data-theme',t);
         <span class="dot"></span><span>4 min read</span>
         <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
       </div>
-    </div>
-  </header>
+    </header>
 
-  <div class="art-wrap"><div class="article-hero" data-topic="FinOps"><img data-article-art="gcp-cost-management" src="/assets/covers/gcp-cost-management.svg?v=5d4dd4d8e120" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div></div>
-
-  <div class="art-wrap article-grid">
-    <div class="reader-aside"><nav class="toc" aria-label="On this page">
+    <div class="article-hero" data-topic="FinOps"><img data-article-art="gcp-cost-management" src="/assets/covers/gcp-cost-management.svg?v=5d4dd4d8e120" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div>
+<div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#sustained-use-discounts-the-automatic-discount-nobody-talks-">Sustained Use Discounts: the automatic discount nobody talks about</a></li><li><a href="#committed-use-discounts">Committed Use Discounts</a></li><li><a href="#bigquery-billing-export">BigQuery billing export</a></li><li><a href="#the-recommender-api">The Recommender API</a></li><li><a href="#labels-as-finops-infrastructure">Labels as FinOps infrastructure</a></li></ol>
 </nav></div>
-    <div class="prose">
+    <div class="article-copy">
+      <div class="prose">
 <p>GCP cost management has a different character than AWS or Azure FinOps. GCP&#39;s pricing model (particularly Sustained Use Discounts and Committed Use Discounts) is less visible than AWS Reserved Instances but often results in lower effective compute prices for workloads with consistent usage. The tooling — Recommender API, Active Assist, billing export to BigQuery — is sophisticated once you know where to find it.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
 <p><strong>BigQuery bytes and cost per workload.</strong> If a representative query drops from 4 TB to 0.5 TB scanned, the scan reduction is 87.5%. Translate that to billed cost only if the pricing model charges for the billed bytes. Record slot time separately for capacity-based pricing.</p>
@@ -176,27 +174,43 @@ cost-centre: engineering | data-science
 <p>GCP billing export + labels = team-level cost showback without requiring separate projects per team.</p>
 <p><em>Managing GCP costs at scale or building a FinOps practice across GCP projects? <a href="/contact/">Happy to compare approaches for your specific usage patterns.</a></em></p>
 
-    </div>
-  </div>
+      </div>
 
-  <div class="art-wrap"><aside class="refs" aria-labelledby="refs-h">
+<aside class="refs" aria-labelledby="refs-h">
   <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
   <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
   <ul>
     <li><a href="https://www.finops.org/" rel="noopener nofollow" target="_blank">FinOps Foundation</a><span>Framework, capabilities and terminology.</span></li>
   </ul>
-</aside></div>
+</aside>
 
-  
 
-  <div class="art-wrap article-foot">
-    <div class="row" style="gap:.4rem">
-      <a class="chip chip-plain" href="/topics/finops/">FinOps</a><a class="chip chip-plain" href="/topics/cloud-architecture/">Cloud Architecture</a>
+
+      <footer class="article-foot">
+        <div class="row" style="gap:.4rem">
+          <a class="chip chip-plain" href="/topics/finops/">FinOps</a><a class="chip chip-plain" href="/topics/cloud-architecture/">Cloud Architecture</a>
+        </div>
+        <nav class="prevnext" aria-label="More articles">
+          <a href="/insights/supply-chain-security-sbom/"><span>Previous</span><strong>Software Supply Chain Security: SBOM, Dependency Auditing, and What Actually Reduces Risk</strong></a>
+          <a href="/insights/reserved-instance-rationalization/" class="next"><span>Next</span><strong>Reserved Instance Rationalisation: How to Commit to the Right Resources</strong></a>
+        </nav>
+      </footer>
     </div>
-    <nav class="prevnext" aria-label="More articles">
-      <a href="/insights/supply-chain-security-sbom/"><span>Previous</span><strong>Software Supply Chain Security: SBOM, Dependency Auditing, and What Actually Reduces Risk</strong></a>
-      <a href="/insights/reserved-instance-rationalization/" class="next"><span>Next</span><strong>Reserved Instance Rationalisation: How to Commit to the Right Resources</strong></a>
-    </nav>
+    <aside class="writing-promos" aria-label="Promotions" data-ad-slot="article-rail">
+  <p class="promo-label">From our projects</p>
+  <div class="promo-cards">
+    <section class="promo-card promo-techknowen" aria-label="TechKnowen">
+      <p class="promo-name">TechKnowen</p>
+      <p>Practical reading on software, architecture, and engineering.</p>
+      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+    </section>
+    <section class="promo-card promo-ziggle" aria-label="Ziggle">
+      <p class="promo-name">Ziggle</p>
+      <p>A new place to play brain teasers.</p>
+      <p class="promo-status">Coming soon</p>
+    </section>
+  </div>
+</aside>
   </div>
 
   <section class="section surface hair" style="margin-top:4rem">
@@ -327,7 +341,7 @@ cost-centre: engineering | data-science
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=809689a9" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=809689a9"></script>
+<script src="/assets/js/site.js?v=80901545" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=80901545"></script>
 </body>
 </html>

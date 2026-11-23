@@ -33,7 +33,7 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=809689a9">
+<link rel="stylesheet" href="/assets/css/site.css?v=80901545">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
@@ -79,9 +79,9 @@ d.setAttribute('data-theme',t);
 <main id="main" tabindex="-1">
 
 <div class="read-bar" aria-hidden="true"><span id="readBar"></span></div>
-<article class="article with-toc">
-  <header class="article-head">
-    <div class="art-wrap">
+<article class="article">
+  <div class="reading-layout">
+    <header class="article-head">
       <nav class="crumbs" aria-label="Breadcrumb">
         <a href="/">Home</a> <span aria-hidden="true">/</span>
         <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
@@ -96,17 +96,15 @@ d.setAttribute('data-theme',t);
         <span class="dot"></span><span>5 min read</span>
         <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
       </div>
-    </div>
-  </header>
+    </header>
 
-  <div class="art-wrap"><div class="article-hero" data-topic="AI &amp; MLOps"><img data-article-art="hpc-network-topology-patterns" src="/assets/covers/hpc-network-topology-patterns.svg?v=b1a03a07d72a" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div></div>
-
-  <div class="art-wrap article-grid">
-    <div class="reader-aside"><nav class="toc" aria-label="On this page">
+    <div class="article-hero" data-topic="AI &amp; MLOps"><img data-article-art="hpc-network-topology-patterns" src="/assets/covers/hpc-network-topology-patterns.svg?v=b1a03a07d72a" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div>
+<div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#fat-tree-full-bisection-bandwidth-high-cost">Fat-tree: full bisection bandwidth, high cost</a></li><li><a href="#torus-low-diameter-bandwidth-penalty-for-non-local-traffic">Torus: low diameter, bandwidth penalty for non-local traffic</a></li><li><a href="#dragonfly-low-diameter-moderate-cost">Dragonfly: low diameter, moderate cost</a></li><li><a href="#rail-optimized-topology-for-ai-training">Rail-optimized topology for AI training</a></li><li><a href="#choosing-for-your-workload">Choosing for your workload</a></li></ol>
 </nav></div>
-    <div class="prose">
+    <div class="article-copy">
+      <div class="prose">
 <p>The network fabric of a high-performance computing cluster isn&#39;t just cabling — it&#39;s an architectural decision that determines the performance ceiling of every job that runs on it. The topology defines how bandwidth scales with cluster size, how much any-to-any communication costs, and how many switches and cables you need.</p>
 <p>Three topologies dominate HPC and AI training infrastructure: fat-tree, torus, and dragonfly. Each makes different trade-offs between bandwidth, diameter (maximum hops between any two nodes), cost, and engineering complexity.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
@@ -168,21 +166,37 @@ d.setAttribute('data-theme',t);
 <p>For most enterprise AI training clusters under 1,000 GPUs, a fat-tree with RoCE or InfiniBand at 200–400 Gbps is the pragmatic choice: well-understood, supported by standard tooling, and delivers the bandwidth that distributed training requires.</p>
 <p><em>Designing or evaluating network infrastructure for HPC or AI training? <a href="/contact/">Happy to compare configurations.</a></em></p>
 
+      </div>
+
+
+
+
+
+      <footer class="article-foot">
+        <div class="row" style="gap:.4rem">
+          <a class="chip chip-plain" href="/insights/?topic=Systems">Systems</a><a class="chip chip-plain" href="/insights/?topic=HPC">HPC</a><a class="chip chip-plain" href="/topics/ai-mlops/">AI &amp; MLOps</a>
+        </div>
+        <nav class="prevnext" aria-label="More articles">
+          <a href="/insights/system-design-patterns-backend/"><span>Previous</span><strong>System Design Patterns Every Backend Engineer Should Know</strong></a>
+          <a href="/insights/roce-vs-iwarp-networking/" class="next"><span>Next</span><strong>RoCE vs iWARP: Choosing the Right RDMA Technology for Your Workload</strong></a>
+        </nav>
+      </footer>
     </div>
+    <aside class="writing-promos" aria-label="Promotions" data-ad-slot="article-rail">
+  <p class="promo-label">From our projects</p>
+  <div class="promo-cards">
+    <section class="promo-card promo-techknowen" aria-label="TechKnowen">
+      <p class="promo-name">TechKnowen</p>
+      <p>Practical reading on software, architecture, and engineering.</p>
+      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+    </section>
+    <section class="promo-card promo-ziggle" aria-label="Ziggle">
+      <p class="promo-name">Ziggle</p>
+      <p>A new place to play brain teasers.</p>
+      <p class="promo-status">Coming soon</p>
+    </section>
   </div>
-
-  
-
-  
-
-  <div class="art-wrap article-foot">
-    <div class="row" style="gap:.4rem">
-      <a class="chip chip-plain" href="/insights/?topic=Systems">Systems</a><a class="chip chip-plain" href="/insights/?topic=HPC">HPC</a><a class="chip chip-plain" href="/topics/ai-mlops/">AI &amp; MLOps</a>
-    </div>
-    <nav class="prevnext" aria-label="More articles">
-      <a href="/insights/system-design-patterns-backend/"><span>Previous</span><strong>System Design Patterns Every Backend Engineer Should Know</strong></a>
-      <a href="/insights/roce-vs-iwarp-networking/" class="next"><span>Next</span><strong>RoCE vs iWARP: Choosing the Right RDMA Technology for Your Workload</strong></a>
-    </nav>
+</aside>
   </div>
 
   <section class="section surface hair" style="margin-top:4rem">
@@ -313,7 +327,7 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=809689a9" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=809689a9"></script>
+<script src="/assets/js/site.js?v=80901545" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=80901545"></script>
 </body>
 </html>
