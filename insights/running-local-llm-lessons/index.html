@@ -33,7 +33,7 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=809689a9">
+<link rel="stylesheet" href="/assets/css/site.css?v=80901545">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
@@ -79,9 +79,9 @@ d.setAttribute('data-theme',t);
 <main id="main" tabindex="-1">
 
 <div class="read-bar" aria-hidden="true"><span id="readBar"></span></div>
-<article class="article with-toc">
-  <header class="article-head">
-    <div class="art-wrap">
+<article class="article">
+  <div class="reading-layout">
+    <header class="article-head">
       <nav class="crumbs" aria-label="Breadcrumb">
         <a href="/">Home</a> <span aria-hidden="true">/</span>
         <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
@@ -96,17 +96,15 @@ d.setAttribute('data-theme',t);
         <span class="dot"></span><span>4 min read</span>
         <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
       </div>
-    </div>
-  </header>
+    </header>
 
-  <div class="art-wrap"><div class="article-hero" data-topic="Enterprise AI"><img data-article-art="running-local-llm-lessons" src="/assets/covers/running-local-llm-lessons.svg?v=bcdb3e093b8c" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div></div>
-
-  <div class="art-wrap article-grid">
-    <div class="reader-aside"><nav class="toc" aria-label="On this page">
+    <div class="article-hero" data-topic="Enterprise AI"><img data-article-art="running-local-llm-lessons" src="/assets/covers/running-local-llm-lessons.svg?v=bcdb3e093b8c" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div>
+<div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#the-tooling-that-actually-works">The Tooling That Actually Works</a></li><li><a href="#what-hardware-you-actually-need">What Hardware You Actually Need</a></li><li><a href="#the-models-worth-running-locally">The Models Worth Running Locally</a></li><li><a href="#the-enterprise-case-that39s-being-underweighted">The Enterprise Case That&#39;s Being Underweighted</a></li><li><a href="#what-local-llms-still-can39t-do-well">What Local LLMs Still Can&#39;t Do Well</a></li></ol>
 </nav></div>
-    <div class="prose">
+    <div class="article-copy">
+      <div class="prose">
 <p>I started running LLMs locally because I was spending more than I expected on API calls. That&#39;s the honest origin — cost, not principle. What I discovered over the following six months changed how I think about AI infrastructure for enterprise environments more broadly.</p>
 <p>The short version: local LLMs are genuinely useful for a specific set of tasks, the tooling has matured considerably, and the enterprise case for on-premises model hosting is stronger than most cloud-first conversations acknowledge.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
@@ -149,27 +147,43 @@ ollama run llama3.2
 <p>The right framing is not &quot;local vs. cloud&quot; but &quot;which tasks warrant local and which warrant cloud.&quot; Routine, high-volume, latency-sensitive tasks with data sensitivity concerns → local. Novel, complex reasoning tasks where quality is the primary constraint → cloud. Most organizations need both.</p>
 <p><em>Running local inference in production or evaluating it for an enterprise use case? I&#39;m interested in comparing notes — <a href="/contact/">get in touch</a>.</em></p>
 
-    </div>
-  </div>
+      </div>
 
-  <div class="art-wrap"><aside class="refs" aria-labelledby="refs-h">
+<aside class="refs" aria-labelledby="refs-h">
   <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
   <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
   <ul>
     <li><a href="https://huggingface.co/docs" rel="noopener nofollow" target="_blank">Hugging Face</a><span>Model and dataset hubs.</span></li>
   </ul>
-</aside></div>
+</aside>
 
-  
 
-  <div class="art-wrap article-foot">
-    <div class="row" style="gap:.4rem">
-      <a class="chip chip-plain" href="/topics/enterprise-ai/">Enterprise AI</a><a class="chip chip-plain" href="/insights/?topic=Emerging%20Technology">Emerging Technology</a>
+
+      <footer class="article-foot">
+        <div class="row" style="gap:.4rem">
+          <a class="chip chip-plain" href="/topics/enterprise-ai/">Enterprise AI</a><a class="chip chip-plain" href="/insights/?topic=Emerging%20Technology">Emerging Technology</a>
+        </div>
+        <nav class="prevnext" aria-label="More articles">
+          <a href="/insights/aws-savings-plans/"><span>Previous</span><strong>AWS Savings Plans vs Reserved Instances: Making the Commitment Decision</strong></a>
+          <a href="/insights/mttr-reduction-playbook/" class="next"><span>Next</span><strong>The MTTR Reduction Playbook: Investments That Actually Move the Needle</strong></a>
+        </nav>
+      </footer>
     </div>
-    <nav class="prevnext" aria-label="More articles">
-      <a href="/insights/aws-savings-plans/"><span>Previous</span><strong>AWS Savings Plans vs Reserved Instances: Making the Commitment Decision</strong></a>
-      <a href="/insights/mttr-reduction-playbook/" class="next"><span>Next</span><strong>The MTTR Reduction Playbook: Investments That Actually Move the Needle</strong></a>
-    </nav>
+    <aside class="writing-promos" aria-label="Promotions" data-ad-slot="article-rail">
+  <p class="promo-label">From our projects</p>
+  <div class="promo-cards">
+    <section class="promo-card promo-techknowen" aria-label="TechKnowen">
+      <p class="promo-name">TechKnowen</p>
+      <p>Practical reading on software, architecture, and engineering.</p>
+      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+    </section>
+    <section class="promo-card promo-ziggle" aria-label="Ziggle">
+      <p class="promo-name">Ziggle</p>
+      <p>A new place to play brain teasers.</p>
+      <p class="promo-status">Coming soon</p>
+    </section>
+  </div>
+</aside>
   </div>
 
   <section class="section surface hair" style="margin-top:4rem">
@@ -300,7 +314,7 @@ ollama run llama3.2
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=809689a9" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=809689a9"></script>
+<script src="/assets/js/site.js?v=80901545" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=80901545"></script>
 </body>
 </html>

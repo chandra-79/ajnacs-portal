@@ -58,6 +58,24 @@ const out = async (rel, html) => {
 };
 
 /* ---------- shared bits ---------- */
+/* One static house-promotion group per page. Slots stay in the document
+   flow so swapping the contents cannot move the article or the archive. */
+const housePromotions = (placement) => `<aside class="writing-promos" aria-label="Promotions" data-ad-slot="${placement}">
+  <p class="promo-label">From our projects</p>
+  <div class="promo-cards">
+    <section class="promo-card promo-techknowen" aria-label="TechKnowen">
+      <p class="promo-name">TechKnowen</p>
+      <p>Practical reading on software, architecture, and engineering.</p>
+      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+    </section>
+    <section class="promo-card promo-ziggle" aria-label="Ziggle">
+      <p class="promo-name">Ziggle</p>
+      <p>A new place to play brain teasers.</p>
+      <p class="promo-status">Coming soon</p>
+    </section>
+  </div>
+</aside>`;
+
 const cardFor = (m, base) => {
   const topic = primaryTopic(m.tags);
   return `<a class="card" data-card data-topics="|${esc(m.tags.join("|"))}|" data-search="${esc((m.title + " " + m.description + " " + m.tags.join(" ")).toLowerCase())}" data-topic="${esc(topic)}" href="${base}/${m.slug}/">
@@ -166,9 +184,9 @@ ${longForm ? `<div class="chapter-bar" id="chapterBar">
 
   const body_ = `
 <div class="read-bar" aria-hidden="true"><span id="readBar"></span></div>
-<article class="article${asideHtml ? " with-toc" : ""}">
-  <header class="article-head">
-    <div class="art-wrap">
+<article class="article">
+  <div class="reading-layout">
+    <header class="article-head">
       <nav class="crumbs" aria-label="Breadcrumb">
         <a href="/">Home</a> <span aria-hidden="true">/</span>
         <a href="${base}/">${m.section === "notes" ? "Notes" : "Insights"}</a> <span aria-hidden="true">/</span>
@@ -183,38 +201,36 @@ ${longForm ? `<div class="chapter-bar" id="chapterBar">
         <span class="dot"></span><span>${readingTime(m.words)} min read</span>
         <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
       </div>
-    </div>
-  </header>
+    </header>
 
-  <div class="art-wrap"><div class="article-hero" data-topic="${esc(topic)}">${coverFor(m, { hero: true, sizes: '(min-width: 1280px) 1180px, 100vw' })}</div></div>
-
-  <div class="art-wrap article-grid">
-    ${asideHtml}
-    <div class="prose">
+    <div class="article-hero" data-topic="${esc(topic)}">${coverFor(m, { hero: true, sizes: '(min-width: 90rem) 1180px, (min-width: 74rem) 65vw, 100vw' })}</div>
+${asideHtml}
+    <div class="article-copy">
+      <div class="prose">
 ${html}
+      </div>
+
+${refsHtml}
+
+${seriesItems.length > 1 && !chaptersHtml ? `<aside class="series-box" style="margin-top:3rem">
+        <p class="eyebrow">Series</p>
+        <h2 class="h3" style="margin:.5rem 0 1rem">${esc(m.series)}</h2>
+        <ol class="series-list">
+          ${seriesItems.map(s => `<li${s.slug === m.slug ? ' aria-current="true"' : ""}><a href="/insights/${s.slug}/">${esc(s.title)}</a></li>`).join("\n          ")}
+        </ol>
+      </aside>` : ""}
+
+      <footer class="article-foot">
+        <div class="row" style="gap:.4rem">
+          ${m.tags.map(t => m.section === 'notes' ? `<span class="chip chip-plain">${esc(t)}</span>` : `<a class="chip chip-plain" href="${articleTopicPath(t)}">${esc(t)}</a>`).join("")}
+        </div>
+        <nav class="prevnext" aria-label="More articles">
+          ${older ? `<a href="${base}/${older.slug}/"><span>Previous</span><strong>${esc(older.title)}</strong></a>` : "<span></span>"}
+          ${newer ? `<a href="${base}/${newer.slug}/" class="next"><span>Next</span><strong>${esc(newer.title)}</strong></a>` : "<span></span>"}
+        </nav>
+      </footer>
     </div>
-  </div>
-
-  ${refsHtml ? `<div class="art-wrap">${refsHtml}</div>` : ""}
-
-  ${seriesItems.length > 1 && !chaptersHtml ? `<div class="art-wrap" style="margin-top:3rem">
-    <aside class="series-box">
-      <p class="eyebrow">Series</p>
-      <h2 class="h3" style="margin:.5rem 0 1rem">${esc(m.series)}</h2>
-      <ol class="series-list">
-        ${seriesItems.map(s => `<li${s.slug === m.slug ? ' aria-current="true"' : ""}><a href="/insights/${s.slug}/">${esc(s.title)}</a></li>`).join("\n        ")}
-      </ol>
-    </aside>
-  </div>` : ""}
-
-  <div class="art-wrap article-foot">
-    <div class="row" style="gap:.4rem">
-      ${m.tags.map(t => m.section === 'notes' ? `<span class="chip chip-plain">${esc(t)}</span>` : `<a class="chip chip-plain" href="${articleTopicPath(t)}">${esc(t)}</a>`).join("")}
-    </div>
-    <nav class="prevnext" aria-label="More articles">
-      ${older ? `<a href="${base}/${older.slug}/"><span>Previous</span><strong>${esc(older.title)}</strong></a>` : "<span></span>"}
-      ${newer ? `<a href="${base}/${newer.slug}/" class="next"><span>Next</span><strong>${esc(newer.title)}</strong></a>` : "<span></span>"}
-    </nav>
+    ${housePromotions("article-rail")}
   </div>
 
   ${related.length ? `<section class="section surface hair" style="margin-top:4rem">
@@ -280,7 +296,7 @@ await out("insights", page({
   path: "/insights/",
   body: `
 <section class="section mesh">
-  <div class="wrap">
+  <div class="publication-wrap">
     <p class="eyebrow">Insights</p>
     <h1 class="h-display" style="margin-top:.8rem;max-width:18ch">Engineering, written down.</h1>
     <p class="lede" style="margin-top:1.2rem;max-width:62ch">Architecture decisions, production failures and the trade-offs behind them. Written for the people who build and run production systems.</p>
@@ -288,7 +304,8 @@ await out("insights", page({
   </div>
 </section>
 
-<section class="wrap" style="padding-bottom:var(--section-y)">
+<section class="publication-wrap archive-layout">
+  <div class="archive-main">
   <section class="archive-collections" aria-labelledby="archive-start"><h2 class="h3" id="archive-start">Start with a guide</h2><div class="grid g-3">
     ${featuredCollections.filter(({slug}) => insights.some(m => m.slug === slug)).map(({slug,label,description}) => `<a class="guide-link" href="/insights/${slug}/"><strong>${esc(label)}</strong><span>${esc(description)}</span></a>`).join('')}
   </div></section>
@@ -310,11 +327,13 @@ await out("insights", page({
     ${topicList.map(([t, n]) => `<button class="chip chip-plain" type="button" data-topic-filter="${esc(t)}" aria-pressed="false">${esc(t)} <span class="muted">${n}</span></button>`).join("\n    ")}
   </div>
 
-  <div class="grid g-3" id="postList" style="margin-top:2rem">
+  <div class="grid archive-cards" id="postList" style="margin-top:2rem">
     ${insights.map(m => cardFor(m, "/insights")).join("\n")}
   </div>
   <p id="postEmpty" hidden class="center muted" style="padding:3rem 0">No articles match that. Try another topic or search term.</p>
   <div class="center" style="margin-top:2.5rem"><button class="btn btn-ghost" id="postMore" type="button" hidden>Show more</button></div>
+  </div>
+  ${housePromotions("insights-rail")}
 </section>`,
   jsonld: [{
     "@context": "https://schema.org", "@type": "Blog",
@@ -333,13 +352,13 @@ await out("notes", page({
   path: "/notes/",
   body: `
 <section class="section">
-  <div class="wrap-narrow">
+  <div class="publication-wrap">
     <p class="eyebrow">Personal</p>
     <h1 class="h1" style="margin-top:.8rem">Notes</h1>
     <p class="lede" style="margin-top:1rem">Personal writing by Chandra Lanka — on craft, career and the things that do not belong in a service brochure. Separate from the engineering work on purpose.</p>
   </div>
 </section>
-<section class="wrap" style="padding-bottom:var(--section-y)">
+<section class="publication-wrap archive-layout">
   <div class="notes-list">
     ${notes.map(m => `<a class="note-row" href="/notes/${m.slug}/">
       <div class="content-thumbnail">${coverFor(m)}</div>
@@ -350,6 +369,7 @@ await out("notes", page({
       </div>
     </a>`).join("\n")}
   </div>
+  ${housePromotions("notes-rail")}
 </section>`,
 }));
 
@@ -369,15 +389,16 @@ for (const [name, items] of seriesMap) {
     topic: primaryTopic(items[0].tags),
     body: `
 <section class="section mesh">
-  <div class="wrap-narrow">
+  <div class="publication-wrap">
     <p class="eyebrow">Series · ${items.length} parts</p>
-    <h1 class="h1" style="margin-top:.8rem">${esc(name)}</h1>
+    <h1 class="h-display series-title">${esc(name)}</h1>
   </div>
 </section>
-<section class="wrap" style="padding-bottom:var(--section-y)">
+<section class="publication-wrap archive-layout">
   <ol class="series-index">
     ${items.map((m, i) => `<li><a href="/insights/${m.slug}/"><div class="content-thumbnail">${coverFor(m, { sizes: '(min-width: 600px) 160px, 100vw' })}</div><span class="n">${String(i + 1).padStart(2, "0")}</span><span><strong>${esc(m.title)}</strong><em>${esc(m.description)}</em></span></a></li>`).join("\n    ")}
   </ol>
+  ${housePromotions("series-chapters-rail")}
 </section>`,
   }));
 }
@@ -387,14 +408,15 @@ await out("series", page({
   path: "/series/",
   body: `
 <section class="section mesh">
-  <div class="wrap">
+  <div class="publication-wrap">
     <p class="eyebrow">Series</p>
     <h1 class="h-display" style="margin-top:.8rem;max-width:16ch">Read it in order.</h1>
     <p class="lede" style="margin-top:1.2rem;max-width:58ch">Longer arcs, written to be read start to finish rather than dipped into.</p>
   </div>
 </section>
-<section class="wrap" style="padding-bottom:var(--section-y)">
-  <div class="grid g-2">
+<section class="publication-wrap archive-layout">
+  <div class="archive-main">
+  <div class="grid series-cards">
     ${[...seriesMap].map(([name, items]) => {
       const t = primaryTopic(items[0].tags);
       return `<a class="card" data-topic="${esc(t)}" href="/series/${seriesSlug(name)}/">
@@ -407,6 +429,8 @@ await out("series", page({
     }).join("\n")}
   </div>
   ${seriesMap.size === 0 ? '<p class="muted center" style="padding:3rem 0">Series are being published progressively — the first parts are on their way.</p>' : ""}
+  </div>
+  ${housePromotions("series-rail")}
 </section>`,
 }));
 
@@ -437,8 +461,11 @@ for (const topic of hubTopics) {
     title: `${topic} articles and guides`,
     description: `Browse ${topic} articles from Ajna Consulting Services, with production trade-offs, worked measurements and implementation guides.`,
     path: url, topic,
-    body: `<section class="section mesh"><div class="wrap"><nav class="crumbs" aria-label="Breadcrumb"><a href="/insights/">Insights</a><span aria-hidden="true">/</span><a href="/topics/">Topics</a></nav><h1 class="h-display">${esc(topic)}</h1><p class="lede">${articles.length} articles</p></div></section>
-<section class="wrap section" aria-label="Articles about ${esc(topic)}"><div class="grid g-3">${articles.map(m => cardFor(m, '/insights')).join('')}</div></section>`,
+    body: `<section class="section mesh"><div class="publication-wrap"><nav class="crumbs" aria-label="Breadcrumb"><a href="/insights/">Insights</a><span aria-hidden="true">/</span><a href="/topics/">Topics</a></nav><h1 class="h-display">${esc(topic)}</h1><p class="lede">${articles.length} articles</p></div></section>
+<section class="publication-wrap archive-layout" aria-label="Articles about ${esc(topic)}">
+  <div class="grid archive-cards">${articles.map(m => cardFor(m, '/insights')).join('')}</div>
+  ${housePromotions("topic-rail")}
+</section>`,
   }));
 }
 

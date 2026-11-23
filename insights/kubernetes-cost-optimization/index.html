@@ -33,7 +33,7 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=809689a9">
+<link rel="stylesheet" href="/assets/css/site.css?v=80901545">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
@@ -79,9 +79,9 @@ d.setAttribute('data-theme',t);
 <main id="main" tabindex="-1">
 
 <div class="read-bar" aria-hidden="true"><span id="readBar"></span></div>
-<article class="article with-toc">
-  <header class="article-head">
-    <div class="art-wrap">
+<article class="article">
+  <div class="reading-layout">
+    <header class="article-head">
       <nav class="crumbs" aria-label="Breadcrumb">
         <a href="/">Home</a> <span aria-hidden="true">/</span>
         <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
@@ -96,17 +96,15 @@ d.setAttribute('data-theme',t);
         <span class="dot"></span><span>3 min read</span>
         <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
       </div>
-    </div>
-  </header>
+    </header>
 
-  <div class="art-wrap"><div class="article-hero" data-topic="FinOps"><img data-article-art="kubernetes-cost-optimization" src="/assets/covers/kubernetes-cost-optimization.svg?v=28f22d48b868" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div></div>
-
-  <div class="art-wrap article-grid">
-    <div class="reader-aside"><nav class="toc" aria-label="On this page">
+    <div class="article-hero" data-topic="FinOps"><img data-article-art="kubernetes-cost-optimization" src="/assets/covers/kubernetes-cost-optimization.svg?v=28f22d48b868" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div>
+<div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#why-standard-cloud-billing-falls-short">Why Standard Cloud Billing Falls Short</a></li><li><a href="#the-three-layers-of-kubernetes-cost-visibility">The Three Layers of Kubernetes Cost Visibility</a></li><li><a href="#the-common-over-provisioning-pattern">The Common Over-Provisioning Pattern</a></li><li><a href="#namespace-and-label-discipline">Namespace and Label Discipline</a></li><li><a href="#the-cluster-architecture-question">The Cluster Architecture Question</a></li><li><a href="#what-a-90-day-finops-programme-for-kubernetes-looks-like">What a 90-Day FinOps Programme for Kubernetes Looks Like</a></li></ol>
 </nav></div>
-    <div class="prose">
+    <div class="article-copy">
+      <div class="prose">
 <p>Kubernetes is, from a FinOps perspective, a visibility problem masquerading as a cost problem.</p>
 <p>Cloud billing APIs tell you what a cluster costs. They tell you almost nothing about <em>why</em> — which workloads are driving that cost, which are over-provisioned, which are idle, and whether your bin-packing efficiency is anywhere near where it should be. That gap is where FinOps programs break down.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
@@ -168,10 +166,9 @@ Cost attribution to individual deployments, with efficiency metrics — actual c
 <p>The technology was straightforward. The time was spent on change management — convincing service owners that reducing their resource requests wouldn&#39;t cause instability.</p>
 <p><em>Running Kubernetes at scale and struggling with cost visibility? <a href="/contact/">Worth a conversation.</a></em></p>
 
-    </div>
-  </div>
+      </div>
 
-  <div class="art-wrap"><aside class="refs" aria-labelledby="refs-h">
+<aside class="refs" aria-labelledby="refs-h">
   <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
   <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
   <ul>
@@ -179,18 +176,35 @@ Cost attribution to individual deployments, with efficiency metrics — actual c
     <li><a href="https://www.openpolicyagent.org/docs/" rel="noopener nofollow" target="_blank">Open Policy Agent</a><span>Policy engine and the Rego language.</span></li>
     <li><a href="https://www.finops.org/" rel="noopener nofollow" target="_blank">FinOps Foundation</a><span>Framework, capabilities and terminology.</span></li>
   </ul>
-</aside></div>
+</aside>
 
-  
 
-  <div class="art-wrap article-foot">
-    <div class="row" style="gap:.4rem">
-      <a class="chip chip-plain" href="/topics/finops/">FinOps</a><a class="chip chip-plain" href="/topics/containers/">Containers</a><a class="chip chip-plain" href="/topics/cloud-architecture/">Cloud Architecture</a>
+
+      <footer class="article-foot">
+        <div class="row" style="gap:.4rem">
+          <a class="chip chip-plain" href="/topics/finops/">FinOps</a><a class="chip chip-plain" href="/topics/containers/">Containers</a><a class="chip chip-plain" href="/topics/cloud-architecture/">Cloud Architecture</a>
+        </div>
+        <nav class="prevnext" aria-label="More articles">
+          <a href="/insights/kubernetes-operators-custom-resources/"><span>Previous</span><strong>Kubernetes Operators: When to Build One and When to Stop at CRDs</strong></a>
+          <a href="/insights/varnish-cache-configuration/" class="next"><span>Next</span><strong>Varnish Cache Configuration: A Practical Guide to VCL and Caching Strategy</strong></a>
+        </nav>
+      </footer>
     </div>
-    <nav class="prevnext" aria-label="More articles">
-      <a href="/insights/kubernetes-operators-custom-resources/"><span>Previous</span><strong>Kubernetes Operators: When to Build One and When to Stop at CRDs</strong></a>
-      <a href="/insights/varnish-cache-configuration/" class="next"><span>Next</span><strong>Varnish Cache Configuration: A Practical Guide to VCL and Caching Strategy</strong></a>
-    </nav>
+    <aside class="writing-promos" aria-label="Promotions" data-ad-slot="article-rail">
+  <p class="promo-label">From our projects</p>
+  <div class="promo-cards">
+    <section class="promo-card promo-techknowen" aria-label="TechKnowen">
+      <p class="promo-name">TechKnowen</p>
+      <p>Practical reading on software, architecture, and engineering.</p>
+      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+    </section>
+    <section class="promo-card promo-ziggle" aria-label="Ziggle">
+      <p class="promo-name">Ziggle</p>
+      <p>A new place to play brain teasers.</p>
+      <p class="promo-status">Coming soon</p>
+    </section>
+  </div>
+</aside>
   </div>
 
   <section class="section surface hair" style="margin-top:4rem">
@@ -321,7 +335,7 @@ Cost attribution to individual deployments, with efficiency metrics — actual c
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=809689a9" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=809689a9"></script>
+<script src="/assets/js/site.js?v=80901545" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=80901545"></script>
 </body>
 </html>

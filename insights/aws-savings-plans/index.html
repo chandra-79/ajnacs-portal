@@ -33,7 +33,7 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=809689a9">
+<link rel="stylesheet" href="/assets/css/site.css?v=80901545">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
@@ -79,9 +79,9 @@ d.setAttribute('data-theme',t);
 <main id="main" tabindex="-1">
 
 <div class="read-bar" aria-hidden="true"><span id="readBar"></span></div>
-<article class="article with-toc">
-  <header class="article-head">
-    <div class="art-wrap">
+<article class="article">
+  <div class="reading-layout">
+    <header class="article-head">
       <nav class="crumbs" aria-label="Breadcrumb">
         <a href="/">Home</a> <span aria-hidden="true">/</span>
         <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
@@ -96,17 +96,15 @@ d.setAttribute('data-theme',t);
         <span class="dot"></span><span>3 min read</span>
         <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
       </div>
-    </div>
-  </header>
+    </header>
 
-  <div class="art-wrap"><div class="article-hero" data-topic="FinOps"><img data-article-art="aws-savings-plans" src="/assets/covers/aws-savings-plans.svg?v=5da0bcf3f8f3" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div></div>
-
-  <div class="art-wrap article-grid">
-    <div class="reader-aside"><nav class="toc" aria-label="On this page">
+    <div class="article-hero" data-topic="FinOps"><img data-article-art="aws-savings-plans" src="/assets/covers/aws-savings-plans.svg?v=5da0bcf3f8f3" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div>
+<div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#how-savings-plans-work">How Savings Plans work</a></li><li><a href="#how-reserved-instances-work">How Reserved Instances work</a></li><li><a href="#the-analysis-workflow">The analysis workflow</a></li><li><a href="#term-length-1-year-vs-3-year">Term length: 1-year vs. 3-year</a></li><li><a href="#payment-options">Payment options</a></li></ol>
 </nav></div>
-    <div class="prose">
+    <div class="article-copy">
+      <div class="prose">
 <p>AWS introduced Savings Plans in 2019 as a more flexible alternative to EC2 Reserved Instances. For most workloads, they are now the better choice. For some specific workloads, Reserved Instances still offer a price advantage. Understanding when each applies is the core FinOps decision for reducing AWS compute costs.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
 <p><strong>Coverage, utilisation and effective savings.</strong> Record eligible usage covered by commitments and the share of committed spend actually used. If $80 of a $100 hourly commitment is used, utilisation is 80%. Calculate effective savings against an equivalent on-demand workload after accounting for the unused commitment.</p>
@@ -150,27 +148,43 @@ d.setAttribute('data-theme',t);
 <p>Most organizations use no-upfront or partial-upfront Savings Plans. The all-upfront discount rarely justifies the cash commitment for a 1-year term; it is more compelling for a 3-year term at scale.</p>
 <p><em>Modeling Savings Plans or RI purchases for a significant AWS spend? The commitment analysis requires a solid understanding of your usage patterns over time. <a href="/contact/">Happy to walk through the approach.</a></em></p>
 
-    </div>
-  </div>
+      </div>
 
-  <div class="art-wrap"><aside class="refs" aria-labelledby="refs-h">
+<aside class="refs" aria-labelledby="refs-h">
   <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
   <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
   <ul>
     <li><a href="https://www.finops.org/" rel="noopener nofollow" target="_blank">FinOps Foundation</a><span>Framework, capabilities and terminology.</span></li>
   </ul>
-</aside></div>
+</aside>
 
-  
 
-  <div class="art-wrap article-foot">
-    <div class="row" style="gap:.4rem">
-      <a class="chip chip-plain" href="/topics/finops/">FinOps</a><a class="chip chip-plain" href="/topics/cloud-architecture/">Cloud Architecture</a>
+
+      <footer class="article-foot">
+        <div class="row" style="gap:.4rem">
+          <a class="chip chip-plain" href="/topics/finops/">FinOps</a><a class="chip chip-plain" href="/topics/cloud-architecture/">Cloud Architecture</a>
+        </div>
+        <nav class="prevnext" aria-label="More articles">
+          <a href="/insights/k8s-networking-cni/"><span>Previous</span><strong>Kubernetes Networking: CNI Plugins, Network Policies, and Why It Matters for Security</strong></a>
+          <a href="/insights/running-local-llm-lessons/" class="next"><span>Next</span><strong>Running LLMs Locally: What Six Months of Daily Use Actually Taught Me</strong></a>
+        </nav>
+      </footer>
     </div>
-    <nav class="prevnext" aria-label="More articles">
-      <a href="/insights/k8s-networking-cni/"><span>Previous</span><strong>Kubernetes Networking: CNI Plugins, Network Policies, and Why It Matters for Security</strong></a>
-      <a href="/insights/running-local-llm-lessons/" class="next"><span>Next</span><strong>Running LLMs Locally: What Six Months of Daily Use Actually Taught Me</strong></a>
-    </nav>
+    <aside class="writing-promos" aria-label="Promotions" data-ad-slot="article-rail">
+  <p class="promo-label">From our projects</p>
+  <div class="promo-cards">
+    <section class="promo-card promo-techknowen" aria-label="TechKnowen">
+      <p class="promo-name">TechKnowen</p>
+      <p>Practical reading on software, architecture, and engineering.</p>
+      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+    </section>
+    <section class="promo-card promo-ziggle" aria-label="Ziggle">
+      <p class="promo-name">Ziggle</p>
+      <p>A new place to play brain teasers.</p>
+      <p class="promo-status">Coming soon</p>
+    </section>
+  </div>
+</aside>
   </div>
 
   <section class="section surface hair" style="margin-top:4rem">
@@ -301,7 +315,7 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=809689a9" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=809689a9"></script>
+<script src="/assets/js/site.js?v=80901545" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=80901545"></script>
 </body>
 </html>

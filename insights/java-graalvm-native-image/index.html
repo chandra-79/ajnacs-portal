@@ -33,7 +33,7 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=809689a9">
+<link rel="stylesheet" href="/assets/css/site.css?v=80901545">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
@@ -79,9 +79,9 @@ d.setAttribute('data-theme',t);
 <main id="main" tabindex="-1">
 
 <div class="read-bar" aria-hidden="true"><span id="readBar"></span></div>
-<article class="article with-toc">
-  <header class="article-head">
-    <div class="art-wrap">
+<article class="article">
+  <div class="reading-layout">
+    <header class="article-head">
       <nav class="crumbs" aria-label="Breadcrumb">
         <a href="/">Home</a> <span aria-hidden="true">/</span>
         <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
@@ -96,17 +96,15 @@ d.setAttribute('data-theme',t);
         <span class="dot"></span><span>5 min read</span>
         <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
       </div>
-    </div>
-  </header>
+    </header>
 
-  <div class="art-wrap"><div class="article-hero" data-topic="Cloud Architecture"><img data-article-art="java-graalvm-native-image" src="/assets/covers/java-graalvm-native-image.svg?v=19aa5f526e76" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div></div>
-
-  <div class="art-wrap article-grid">
-    <div class="reader-aside"><nav class="toc" aria-label="On this page">
+    <div class="article-hero" data-topic="Cloud Architecture"><img data-article-art="java-graalvm-native-image" src="/assets/covers/java-graalvm-native-image.svg?v=19aa5f526e76" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div>
+<div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#what-native-image-actually-does">What Native Image actually does</a></li><li><a href="#what-breaks-dynamism-meets-the-closed-world">What breaks: dynamism meets the closed world</a></li><li><a href="#the-decision-framework">The decision framework</a></li><li><a href="#adopting-without-regret">Adopting without regret</a></li></ol>
 </nav></div>
-    <div class="prose">
+    <div class="article-copy">
+      <div class="prose">
 <p>The JVM&#39;s defining bargain has always been: pay at startup (class loading, interpretation, JIT warmup), profit at steady state (profile-guided optimization that beats ahead-of-time compilers on long-running workloads). For twenty years that bargain suited enterprise Java perfectly — servers started weekly and ran hot for months.</p>
 <p>Then the deployment world changed shape. Serverless functions bill by the millisecond and cold-start constantly. Autoscalers spin instances up for traffic spikes measured in seconds. Container platforms pack density by memory footprint. Against those economics, &quot;give me 30 seconds and 2 GB and I&#39;ll be brilliant eventually&quot; stopped being a winning pitch — and GraalVM Native Image is the JVM ecosystem&#39;s answer: compile the application, ahead of time, into a standalone native executable that starts in tens of milliseconds and idles in tens of megabytes.</p>
 <p>The trade is real and the trade-offs are sharp. Here&#39;s the honest map.</p>
@@ -131,27 +129,43 @@ d.setAttribute('data-theme',t);
 <p>The playbook for a first production native service: pick a <strong>new, small, stateless service on Quarkus/Micronaut/Spring Boot 3</strong> (never a legacy migration as the pilot); keep <strong>dual-mode builds</strong> (JVM for dev inner loop and as a fallback artifact, native in CI with the full test suite against the binary); wire the <strong>tracing agent into integration tests</strong> to keep metadata current; expect and budget the <strong>CI cost</strong> (native compilation wants beefy build runners and caching); and validate <strong>observability early</strong> — metrics and OpenTelemetry work fine, but your APM vendor&#39;s agent story for native is a procurement question to ask <em>before</em> the pilot, not after.</p>
 <p>Strategically, Native Image is best understood not as &quot;the new way to run Java&quot; but as Java regaining a deployment class it had ceded — the Go/Rust-shaped niche of instant, lean, standalone binaries — while keeping the ecosystem, the language, and (mostly) the libraries. For an enterprise portfolio, that means the decision isn&#39;t JVM <em>or</em> native; it&#39;s a routing rule: hot, long-lived cores stay on the JIT; the elastic edge — functions, sidecars, spiky microservices — increasingly compiles ahead of time. Teams that set up the dual-mode pipeline once get to make that call per service, per quarter, with a config flag — which is exactly the kind of optionality a platform team should be manufacturing.</p>
 
-    </div>
-  </div>
+      </div>
 
-  <div class="art-wrap"><aside class="refs" aria-labelledby="refs-h">
+<aside class="refs" aria-labelledby="refs-h">
   <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
   <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
   <ul>
     <li><a href="https://opentelemetry.io/docs/" rel="noopener nofollow" target="_blank">OpenTelemetry</a><span>Specification and language SDKs.</span></li>
   </ul>
-</aside></div>
+</aside>
 
-  
 
-  <div class="art-wrap article-foot">
-    <div class="row" style="gap:.4rem">
-      <a class="chip chip-plain" href="/insights/?topic=Java">Java</a><a class="chip chip-plain" href="/insights/?topic=JVM">JVM</a><a class="chip chip-plain" href="/insights/?topic=GraalVM">GraalVM</a><a class="chip chip-plain" href="/topics/cloud-architecture/">Cloud Architecture</a><a class="chip chip-plain" href="/topics/performance/">Performance</a>
+
+      <footer class="article-foot">
+        <div class="row" style="gap:.4rem">
+          <a class="chip chip-plain" href="/insights/?topic=Java">Java</a><a class="chip chip-plain" href="/insights/?topic=JVM">JVM</a><a class="chip chip-plain" href="/insights/?topic=GraalVM">GraalVM</a><a class="chip chip-plain" href="/topics/cloud-architecture/">Cloud Architecture</a><a class="chip chip-plain" href="/topics/performance/">Performance</a>
+        </div>
+        <nav class="prevnext" aria-label="More articles">
+          <a href="/insights/finops-chargeback-maturity/"><span>Previous</span><strong>From Showback to Chargeback: Building a Cloud Cost Ownership Model That Sticks</strong></a>
+          <a href="/insights/system-design-patterns-backend/" class="next"><span>Next</span><strong>System Design Patterns Every Backend Engineer Should Know</strong></a>
+        </nav>
+      </footer>
     </div>
-    <nav class="prevnext" aria-label="More articles">
-      <a href="/insights/finops-chargeback-maturity/"><span>Previous</span><strong>From Showback to Chargeback: Building a Cloud Cost Ownership Model That Sticks</strong></a>
-      <a href="/insights/system-design-patterns-backend/" class="next"><span>Next</span><strong>System Design Patterns Every Backend Engineer Should Know</strong></a>
-    </nav>
+    <aside class="writing-promos" aria-label="Promotions" data-ad-slot="article-rail">
+  <p class="promo-label">From our projects</p>
+  <div class="promo-cards">
+    <section class="promo-card promo-techknowen" aria-label="TechKnowen">
+      <p class="promo-name">TechKnowen</p>
+      <p>Practical reading on software, architecture, and engineering.</p>
+      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+    </section>
+    <section class="promo-card promo-ziggle" aria-label="Ziggle">
+      <p class="promo-name">Ziggle</p>
+      <p>A new place to play brain teasers.</p>
+      <p class="promo-status">Coming soon</p>
+    </section>
+  </div>
+</aside>
   </div>
 
   <section class="section surface hair" style="margin-top:4rem">
@@ -282,7 +296,7 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=809689a9" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=809689a9"></script>
+<script src="/assets/js/site.js?v=80901545" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=80901545"></script>
 </body>
 </html>

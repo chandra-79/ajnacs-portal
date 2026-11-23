@@ -33,7 +33,7 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=809689a9">
+<link rel="stylesheet" href="/assets/css/site.css?v=80901545">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
@@ -79,9 +79,9 @@ d.setAttribute('data-theme',t);
 <main id="main" tabindex="-1">
 
 <div class="read-bar" aria-hidden="true"><span id="readBar"></span></div>
-<article class="article with-toc">
-  <header class="article-head">
-    <div class="art-wrap">
+<article class="article">
+  <div class="reading-layout">
+    <header class="article-head">
       <nav class="crumbs" aria-label="Breadcrumb">
         <a href="/">Home</a> <span aria-hidden="true">/</span>
         <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
@@ -96,17 +96,15 @@ d.setAttribute('data-theme',t);
         <span class="dot"></span><span>5 min read</span>
         <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
       </div>
-    </div>
-  </header>
+    </header>
 
-  <div class="art-wrap"><div class="article-hero" data-topic="Observability"><img data-article-art="structured-logging-practices" src="/assets/covers/structured-logging-practices.svg?v=8d951869e265" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div></div>
-
-  <div class="art-wrap article-grid">
-    <div class="reader-aside"><nav class="toc" aria-label="On this page">
+    <div class="article-hero" data-topic="Observability"><img data-article-art="structured-logging-practices" src="/assets/covers/structured-logging-practices.svg?v=8d951869e265" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div>
+<div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#events-not-sentences">Events, not sentences</a></li><li><a href="#context-is-what-makes-logs-debuggable">Context is what makes logs debuggable</a></li><li><a href="#levels-sampling-and-the-cost-model">Levels, sampling, and the cost model</a></li><li><a href="#the-summary-schema">The summary schema</a></li></ol>
 </nav></div>
-    <div class="prose">
+    <div class="article-copy">
+      <div class="prose">
 <p>Logging is the telemetry everyone has and almost nobody designs. Metrics get dashboards reviews and traces get instrumentation sprints, while logs just… accumulate — printf archaeology wrapped in an ingestion bill that grows 40% annually until finance asks why the observability vendor costs more than the compute. The waste and the weakness have the same root: logs treated as <em>text a developer emits</em> rather than what production logging actually is — <strong>a stream of structured events, designed for machines to filter and humans to trust, with an explicit cost model.</strong> Here&#39;s the design.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
 <p><strong>Field completeness and cost per debugged incident.</strong> If 940 of 1,000 eligible log records have a usable trace identifier, correlation coverage is 94%. Track ingestion volume and inspect sensitive-field redaction. Better coverage is valuable when operators can reconstruct incidents faster.</p>
@@ -124,27 +122,43 @@ d.setAttribute('data-theme',t);
 <h2 id="the-summary-schema"><a class="h-anchor" href="#the-summary-schema" aria-hidden="true" tabindex="-1">#</a>The summary schema</h2>
 <p>Structured events against a shared convention; stable names treated as API; one rich canonical line per request; correlation IDs injected at boundaries and present everywhere; secrets and PII engineered out at the library layer; levels that mean things, with DEBUG dynamically switchable; sampling and tiered retention as designed policy rather than vendor-bill archaeology; and a review loop that deletes what nobody queries. None of it is glamorous, all of it compounds — because logs are where every incident investigation actually ends up at 3 AM, and the difference between fifteen minutes and three hours of that investigation was decided months earlier, by whether someone designed the events or just let the printfs accumulate.</p>
 
-    </div>
-  </div>
+      </div>
 
-  <div class="art-wrap"><aside class="refs" aria-labelledby="refs-h">
+<aside class="refs" aria-labelledby="refs-h">
   <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
   <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
   <ul>
     <li><a href="https://opentelemetry.io/docs/" rel="noopener nofollow" target="_blank">OpenTelemetry</a><span>Specification and language SDKs.</span></li>
   </ul>
-</aside></div>
+</aside>
 
-  
 
-  <div class="art-wrap article-foot">
-    <div class="row" style="gap:.4rem">
-      <a class="chip chip-plain" href="/topics/observability/">Observability</a><a class="chip chip-plain" href="/topics/programming/">Programming</a><a class="chip chip-plain" href="/topics/platform-engineering/">Platform Engineering</a><a class="chip chip-plain" href="/topics/reliability/">Reliability</a><a class="chip chip-plain" href="/topics/cloud-architecture/">Cloud Architecture</a>
+
+      <footer class="article-foot">
+        <div class="row" style="gap:.4rem">
+          <a class="chip chip-plain" href="/topics/observability/">Observability</a><a class="chip chip-plain" href="/topics/programming/">Programming</a><a class="chip chip-plain" href="/topics/platform-engineering/">Platform Engineering</a><a class="chip chip-plain" href="/topics/reliability/">Reliability</a><a class="chip chip-plain" href="/topics/cloud-architecture/">Cloud Architecture</a>
+        </div>
+        <nav class="prevnext" aria-label="More articles">
+          <a href="/insights/trace-sampling-strategies/"><span>Previous</span><strong>Trace Sampling: Keeping the Traces That Matter When You Can&#39;t Keep Them All</strong></a>
+          <a href="/insights/cloud-unit-economics/" class="next"><span>Next</span><strong>Cloud Unit Economics: The Metric That Makes Cloud Spend Conversations Productive</strong></a>
+        </nav>
+      </footer>
     </div>
-    <nav class="prevnext" aria-label="More articles">
-      <a href="/insights/trace-sampling-strategies/"><span>Previous</span><strong>Trace Sampling: Keeping the Traces That Matter When You Can&#39;t Keep Them All</strong></a>
-      <a href="/insights/cloud-unit-economics/" class="next"><span>Next</span><strong>Cloud Unit Economics: The Metric That Makes Cloud Spend Conversations Productive</strong></a>
-    </nav>
+    <aside class="writing-promos" aria-label="Promotions" data-ad-slot="article-rail">
+  <p class="promo-label">From our projects</p>
+  <div class="promo-cards">
+    <section class="promo-card promo-techknowen" aria-label="TechKnowen">
+      <p class="promo-name">TechKnowen</p>
+      <p>Practical reading on software, architecture, and engineering.</p>
+      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+    </section>
+    <section class="promo-card promo-ziggle" aria-label="Ziggle">
+      <p class="promo-name">Ziggle</p>
+      <p>A new place to play brain teasers.</p>
+      <p class="promo-status">Coming soon</p>
+    </section>
+  </div>
+</aside>
   </div>
 
   <section class="section surface hair" style="margin-top:4rem">
@@ -275,7 +289,7 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=809689a9" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=809689a9"></script>
+<script src="/assets/js/site.js?v=80901545" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=80901545"></script>
 </body>
 </html>

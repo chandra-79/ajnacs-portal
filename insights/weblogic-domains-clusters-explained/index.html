@@ -33,7 +33,7 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=809689a9">
+<link rel="stylesheet" href="/assets/css/site.css?v=80901545">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
@@ -79,9 +79,9 @@ d.setAttribute('data-theme',t);
 <main id="main" tabindex="-1">
 
 <div class="read-bar" aria-hidden="true"><span id="readBar"></span></div>
-<article class="article with-toc">
-  <header class="article-head">
-    <div class="art-wrap">
+<article class="article">
+  <div class="reading-layout">
+    <header class="article-head">
       <nav class="crumbs" aria-label="Breadcrumb">
         <a href="/">Home</a> <span aria-hidden="true">/</span>
         <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
@@ -96,17 +96,15 @@ d.setAttribute('data-theme',t);
         <span class="dot"></span><span>7 min read</span>
         <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
       </div>
-    </div>
-  </header>
+    </header>
 
-  <div class="art-wrap"><div class="article-hero" data-topic="Architecture"><img data-article-art="weblogic-domains-clusters-explained" src="/assets/covers/weblogic-domains-clusters-explained.svg?v=985cb16a8800" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div></div>
-
-  <div class="art-wrap article-grid">
-    <div class="reader-aside"><nav class="toc" aria-label="On this page">
+    <div class="article-hero" data-topic="Architecture"><img data-article-art="weblogic-domains-clusters-explained" src="/assets/covers/weblogic-domains-clusters-explained.svg?v=985cb16a8800" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div>
+<div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#the-domain-is-the-unit-of-administration">The domain is the unit of administration</a></li><li><a href="#admin-server-the-control-plane-not-the-data-plane">Admin server: the control plane, not the data plane</a></li><li><a href="#managed-servers-where-applications-actually-run">Managed servers: where applications actually run</a></li><li><a href="#clusters-replication-and-failover-not-just-load-balancing">Clusters: replication and failover, not just load balancing</a></li><li><a href="#machines-and-node-manager-process-supervision">Machines and Node Manager: process supervision</a></li><li><a href="#configuration-management-the-part-everyone-gets-wrong">Configuration management: the part everyone gets wrong</a></li><li><a href="#the-mental-model-that-makes-it-all-cohere">The mental model that makes it all cohere</a></li></ol>
 </nav></div>
-    <div class="prose">
+    <div class="article-copy">
+      <div class="prose">
 <p>WebLogic Server has been running critical workloads in banks, telcos, insurers, and government systems for over twenty-five years, and it isn&#39;t going anywhere soon — there is simply too much revenue-generating code deployed on it. Yet most engineers who inherit a WebLogic estate learn it by archaeology: poking at a domain someone built in 2014, guessing at why there are eleven managed servers and a cluster named <code>cluster1_NEW_final</code>.</p>
 <p>This post is the explainer I wish those engineers had. Not exam trivia — the domain model as it actually matters in production.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
@@ -170,28 +168,44 @@ d.setAttribute('data-theme',t);
 </ol>
 <p>Every WebLogic production incident I&#39;ve been called into ultimately traced back to a violation at one of these layers: applications on the admin server, JMS singletons without migration, sessions that weren&#39;t serializable, servers started outside Node Manager, or configuration that existed nowhere but the running domain. The product is old, but it is coherent — and estates that respect the model are quiet estates.</p>
 
-    </div>
-  </div>
+      </div>
 
-  <div class="art-wrap"><aside class="refs" aria-labelledby="refs-h">
+<aside class="refs" aria-labelledby="refs-h">
   <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
   <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
   <ul>
     <li><a href="https://kubernetes.io/docs/" rel="noopener nofollow" target="_blank">Kubernetes documentation</a><span>Primary reference for the concepts used here.</span></li>
     <li><a href="https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/" rel="noopener nofollow" target="_blank">Oracle WebLogic Server documentation</a><span>Work managers, pools and tuning.</span></li>
   </ul>
-</aside></div>
+</aside>
 
-  
 
-  <div class="art-wrap article-foot">
-    <div class="row" style="gap:.4rem">
-      <a class="chip chip-plain" href="/insights/?topic=Java">Java</a><a class="chip chip-plain" href="/insights/?topic=WebLogic">WebLogic</a><a class="chip chip-plain" href="/insights/?topic=Middleware">Middleware</a><a class="chip chip-plain" href="/topics/architecture/">Architecture</a>
+
+      <footer class="article-foot">
+        <div class="row" style="gap:.4rem">
+          <a class="chip chip-plain" href="/insights/?topic=Java">Java</a><a class="chip chip-plain" href="/insights/?topic=WebLogic">WebLogic</a><a class="chip chip-plain" href="/insights/?topic=Middleware">Middleware</a><a class="chip chip-plain" href="/topics/architecture/">Architecture</a>
+        </div>
+        <nav class="prevnext" aria-label="More articles">
+          <a href="/insights/weblogic-jms-production-configuration/"><span>Previous</span><strong>WebLogic JMS in Production: Servers, Stores, and the Configuration That Survives Failover</strong></a>
+          <a href="/insights/trace-sampling-strategies/" class="next"><span>Next</span><strong>Trace Sampling: Keeping the Traces That Matter When You Can&#39;t Keep Them All</strong></a>
+        </nav>
+      </footer>
     </div>
-    <nav class="prevnext" aria-label="More articles">
-      <a href="/insights/weblogic-jms-production-configuration/"><span>Previous</span><strong>WebLogic JMS in Production: Servers, Stores, and the Configuration That Survives Failover</strong></a>
-      <a href="/insights/trace-sampling-strategies/" class="next"><span>Next</span><strong>Trace Sampling: Keeping the Traces That Matter When You Can&#39;t Keep Them All</strong></a>
-    </nav>
+    <aside class="writing-promos" aria-label="Promotions" data-ad-slot="article-rail">
+  <p class="promo-label">From our projects</p>
+  <div class="promo-cards">
+    <section class="promo-card promo-techknowen" aria-label="TechKnowen">
+      <p class="promo-name">TechKnowen</p>
+      <p>Practical reading on software, architecture, and engineering.</p>
+      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+    </section>
+    <section class="promo-card promo-ziggle" aria-label="Ziggle">
+      <p class="promo-name">Ziggle</p>
+      <p>A new place to play brain teasers.</p>
+      <p class="promo-status">Coming soon</p>
+    </section>
+  </div>
+</aside>
   </div>
 
   <section class="section surface hair" style="margin-top:4rem">
@@ -332,7 +346,7 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=809689a9" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=809689a9"></script>
+<script src="/assets/js/site.js?v=80901545" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=80901545"></script>
 </body>
 </html>

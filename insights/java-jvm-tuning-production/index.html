@@ -33,7 +33,7 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=809689a9">
+<link rel="stylesheet" href="/assets/css/site.css?v=80901545">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
@@ -79,9 +79,9 @@ d.setAttribute('data-theme',t);
 <main id="main" tabindex="-1">
 
 <div class="read-bar" aria-hidden="true"><span id="readBar"></span></div>
-<article class="article with-toc">
-  <header class="article-head">
-    <div class="art-wrap">
+<article class="article">
+  <div class="reading-layout">
+    <header class="article-head">
       <nav class="crumbs" aria-label="Breadcrumb">
         <a href="/">Home</a> <span aria-hidden="true">/</span>
         <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
@@ -96,17 +96,15 @@ d.setAttribute('data-theme',t);
         <span class="dot"></span><span>5 min read</span>
         <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
       </div>
-    </div>
-  </header>
+    </header>
 
-  <div class="art-wrap"><div class="article-hero" data-topic="Performance"><img data-article-art="java-jvm-tuning-production" src="/assets/covers/java-jvm-tuning-production.svg?v=362da9c24bb1" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div></div>
-
-  <div class="art-wrap article-grid">
-    <div class="reader-aside"><nav class="toc" aria-label="On this page">
+    <div class="article-hero" data-topic="Performance"><img data-article-art="java-jvm-tuning-production" src="/assets/covers/java-jvm-tuning-production.svg?v=362da9c24bb1" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div>
+<div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#heap-sizing-the-decision-that-drives-everything-else">Heap sizing: the decision that drives everything else</a></li><li><a href="#choosing-a-collector-an-actual-decision-tree">Choosing a collector: an actual decision tree</a></li><li><a href="#the-flags-every-production-jvm-should-carry">The flags every production JVM should carry</a></li><li><a href="#reading-the-signals-a-short-diagnostic-grammar">Reading the signals: a short diagnostic grammar</a></li><li><a href="#what-modern-java-changed">What modern Java changed</a></li><li><a href="#the-discipline">The discipline</a></li></ol>
 </nav></div>
-    <div class="prose">
+    <div class="article-copy">
+      <div class="prose">
 <p>JVM tuning has a reputation problem: it&#39;s either treated as dark magic requiring a specialist with a beard, or dismissed entirely because &quot;the defaults are fine now.&quot; Both takes are wrong. The defaults <em>are</em> dramatically better than a decade ago — and a handful of deliberate decisions still separate services that hum from services that page you.</p>
 <p>Here&#39;s the 2026 version of what&#39;s worth knowing, for engineers running Java services on JDK 17/21+ in containers and clouds.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
@@ -142,28 +140,44 @@ d.setAttribute('data-theme',t);
 <p>Every flag in production should have: a reason written down, a date, the JDK version it was tested on, and a benchmark result. Re-validate the whole set at every major JDK upgrade — collectors improve, and yesterday&#39;s workaround is tomorrow&#39;s regression. Tune one thing at a time against a load test that resembles production, and let the GC log — not the vibe — declare the winner.</p>
 <p>The JVM in 2026 is a superb piece of engineering that mostly tunes itself. Your job is to size it honestly, pick the collector that matches your latency contract, keep the observability flags on, and resist the urge to help it more than that.</p>
 
-    </div>
-  </div>
+      </div>
 
-  <div class="art-wrap"><aside class="refs" aria-labelledby="refs-h">
+<aside class="refs" aria-labelledby="refs-h">
   <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
   <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
   <ul>
     <li><a href="https://kafka.apache.org/documentation/" rel="noopener nofollow" target="_blank">Apache Kafka documentation</a><span>Partitioning, consumer groups and delivery semantics.</span></li>
     <li><a href="https://spark.apache.org/docs/latest/" rel="noopener nofollow" target="_blank">Apache Spark</a><span>Execution model and tuning.</span></li>
   </ul>
-</aside></div>
+</aside>
 
-  
 
-  <div class="art-wrap article-foot">
-    <div class="row" style="gap:.4rem">
-      <a class="chip chip-plain" href="/insights/?topic=Java">Java</a><a class="chip chip-plain" href="/insights/?topic=JVM">JVM</a><a class="chip chip-plain" href="/topics/performance/">Performance</a><a class="chip chip-plain" href="/topics/cloud-architecture/">Cloud Architecture</a>
+
+      <footer class="article-foot">
+        <div class="row" style="gap:.4rem">
+          <a class="chip chip-plain" href="/insights/?topic=Java">Java</a><a class="chip chip-plain" href="/insights/?topic=JVM">JVM</a><a class="chip chip-plain" href="/topics/performance/">Performance</a><a class="chip chip-plain" href="/topics/cloud-architecture/">Cloud Architecture</a>
+        </div>
+        <nav class="prevnext" aria-label="More articles">
+          <a href="/insights/compression-selection-guide/"><span>Previous</span><strong>Compression in Production: Choosing Between gzip, zstd, lz4, and Brotli Like It Matters</strong></a>
+          <a href="/insights/platform-eng-what-it-is/" class="next"><span>Next</span><strong>Platform Engineering: What It Is, Why It Emerged, and What Makes It Different from DevOps</strong></a>
+        </nav>
+      </footer>
     </div>
-    <nav class="prevnext" aria-label="More articles">
-      <a href="/insights/compression-selection-guide/"><span>Previous</span><strong>Compression in Production: Choosing Between gzip, zstd, lz4, and Brotli Like It Matters</strong></a>
-      <a href="/insights/platform-eng-what-it-is/" class="next"><span>Next</span><strong>Platform Engineering: What It Is, Why It Emerged, and What Makes It Different from DevOps</strong></a>
-    </nav>
+    <aside class="writing-promos" aria-label="Promotions" data-ad-slot="article-rail">
+  <p class="promo-label">From our projects</p>
+  <div class="promo-cards">
+    <section class="promo-card promo-techknowen" aria-label="TechKnowen">
+      <p class="promo-name">TechKnowen</p>
+      <p>Practical reading on software, architecture, and engineering.</p>
+      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+    </section>
+    <section class="promo-card promo-ziggle" aria-label="Ziggle">
+      <p class="promo-name">Ziggle</p>
+      <p>A new place to play brain teasers.</p>
+      <p class="promo-status">Coming soon</p>
+    </section>
+  </div>
+</aside>
   </div>
 
   <section class="section surface hair" style="margin-top:4rem">
@@ -294,7 +308,7 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=809689a9" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=809689a9"></script>
+<script src="/assets/js/site.js?v=80901545" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=80901545"></script>
 </body>
 </html>

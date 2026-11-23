@@ -33,7 +33,7 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=809689a9">
+<link rel="stylesheet" href="/assets/css/site.css?v=80901545">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
@@ -79,9 +79,9 @@ d.setAttribute('data-theme',t);
 <main id="main" tabindex="-1">
 
 <div class="read-bar" aria-hidden="true"><span id="readBar"></span></div>
-<article class="article with-toc">
-  <header class="article-head">
-    <div class="art-wrap">
+<article class="article">
+  <div class="reading-layout">
+    <header class="article-head">
       <nav class="crumbs" aria-label="Breadcrumb">
         <a href="/">Home</a> <span aria-hidden="true">/</span>
         <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
@@ -96,17 +96,15 @@ d.setAttribute('data-theme',t);
         <span class="dot"></span><span>5 min read</span>
         <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
       </div>
-    </div>
-  </header>
+    </header>
 
-  <div class="art-wrap"><div class="article-hero" data-topic="Engineering Leadership"><img data-article-art="mttr-reduction-playbook" src="/assets/covers/mttr-reduction-playbook.svg?v=4def36e354fa" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div></div>
-
-  <div class="art-wrap article-grid">
-    <div class="reader-aside"><nav class="toc" aria-label="On this page">
+    <div class="article-hero" data-topic="Engineering Leadership"><img data-article-art="mttr-reduction-playbook" src="/assets/covers/mttr-reduction-playbook.svg?v=4def36e354fa" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div>
+<div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#decompose-mttr-before-trying-to-reduce-it">Decompose MTTR before trying to reduce it</a></li><li><a href="#detection-alerting-that-finds-real-problems-quickly">Detection: alerting that finds real problems quickly</a></li><li><a href="#diagnosis-distributed-tracing-and-correlated-observability">Diagnosis: distributed tracing and correlated observability</a></li><li><a href="#runbooks-the-most-underinvested-asset">Runbooks: the most underinvested asset</a></li><li><a href="#game-days-and-chaos-engineering-practising-recovery">Game days and chaos engineering: practising recovery</a></li><li><a href="#architecture-changes-that-reduce-remediation-time">Architecture changes that reduce remediation time</a></li><li><a href="#measuring-improvement">Measuring improvement</a></li></ol>
 </nav></div>
-    <div class="prose">
+    <div class="article-copy">
+      <div class="prose">
 <p>MTTR (Mean Time to Recover or Mean Time to Resolve, depending on who you ask) measures how long it takes your organization to recover from an incident. It&#39;s one of the four DORA metrics for software delivery performance, and it&#39;s the one most directly connected to user impact.</p>
 <p>Reducing MTTR is deceptively hard to target directly. You can&#39;t improve MTTR by trying harder during incidents — you improve it by investing in capabilities before incidents happen. This playbook focuses on those leading investments.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
@@ -170,10 +168,9 @@ d.setAttribute('data-theme',t);
 <p>Set targets: what would &quot;good&quot; look like for each severity level, for each component? Work backward from those targets to the investments that would get you there.</p>
 <p><em>Working on incident response capability or building the observability foundation? <a href="/contact/">Happy to compare what&#39;s worked.</a></em></p>
 
-    </div>
-  </div>
+      </div>
 
-  <div class="art-wrap"><aside class="refs" aria-labelledby="refs-h">
+<aside class="refs" aria-labelledby="refs-h">
   <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
   <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
   <ul>
@@ -181,18 +178,35 @@ d.setAttribute('data-theme',t);
     <li><a href="https://opentelemetry.io/docs/" rel="noopener nofollow" target="_blank">OpenTelemetry</a><span>Specification and language SDKs.</span></li>
     <li><a href="https://prometheus.io/docs/" rel="noopener nofollow" target="_blank">Prometheus</a><span>Query language and operational guidance.</span></li>
   </ul>
-</aside></div>
+</aside>
 
-  
 
-  <div class="art-wrap article-foot">
-    <div class="row" style="gap:.4rem">
-      <a class="chip chip-plain" href="/topics/engineering-leadership/">Engineering Leadership</a><a class="chip chip-plain" href="/topics/observability/">Observability</a><a class="chip chip-plain" href="/topics/devsecops/">DevSecOps</a>
+
+      <footer class="article-foot">
+        <div class="row" style="gap:.4rem">
+          <a class="chip chip-plain" href="/topics/engineering-leadership/">Engineering Leadership</a><a class="chip chip-plain" href="/topics/observability/">Observability</a><a class="chip chip-plain" href="/topics/devsecops/">DevSecOps</a>
+        </div>
+        <nav class="prevnext" aria-label="More articles">
+          <a href="/insights/running-local-llm-lessons/"><span>Previous</span><strong>Running LLMs Locally: What Six Months of Daily Use Actually Taught Me</strong></a>
+          <a href="/insights/database-migration-strategies/" class="next"><span>Next</span><strong>Database Migration Strategies: Moving Production Data Without Downtime</strong></a>
+        </nav>
+      </footer>
     </div>
-    <nav class="prevnext" aria-label="More articles">
-      <a href="/insights/running-local-llm-lessons/"><span>Previous</span><strong>Running LLMs Locally: What Six Months of Daily Use Actually Taught Me</strong></a>
-      <a href="/insights/database-migration-strategies/" class="next"><span>Next</span><strong>Database Migration Strategies: Moving Production Data Without Downtime</strong></a>
-    </nav>
+    <aside class="writing-promos" aria-label="Promotions" data-ad-slot="article-rail">
+  <p class="promo-label">From our projects</p>
+  <div class="promo-cards">
+    <section class="promo-card promo-techknowen" aria-label="TechKnowen">
+      <p class="promo-name">TechKnowen</p>
+      <p>Practical reading on software, architecture, and engineering.</p>
+      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+    </section>
+    <section class="promo-card promo-ziggle" aria-label="Ziggle">
+      <p class="promo-name">Ziggle</p>
+      <p>A new place to play brain teasers.</p>
+      <p class="promo-status">Coming soon</p>
+    </section>
+  </div>
+</aside>
   </div>
 
   <section class="section surface hair" style="margin-top:4rem">
@@ -323,7 +337,7 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=809689a9" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=809689a9"></script>
+<script src="/assets/js/site.js?v=80901545" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=80901545"></script>
 </body>
 </html>

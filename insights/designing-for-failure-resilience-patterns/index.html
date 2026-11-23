@@ -33,7 +33,7 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=809689a9">
+<link rel="stylesheet" href="/assets/css/site.css?v=80901545">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
@@ -79,9 +79,9 @@ d.setAttribute('data-theme',t);
 <main id="main" tabindex="-1">
 
 <div class="read-bar" aria-hidden="true"><span id="readBar"></span></div>
-<article class="article with-toc">
-  <header class="article-head">
-    <div class="art-wrap">
+<article class="article">
+  <div class="reading-layout">
+    <header class="article-head">
       <nav class="crumbs" aria-label="Breadcrumb">
         <a href="/">Home</a> <span aria-hidden="true">/</span>
         <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
@@ -96,17 +96,15 @@ d.setAttribute('data-theme',t);
         <span class="dot"></span><span>6 min read</span>
         <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
       </div>
-    </div>
-  </header>
+    </header>
 
-  <div class="art-wrap"><div class="article-hero" data-topic="Cloud Architecture"><img data-article-art="designing-for-failure-resilience-patterns" src="/assets/covers/designing-for-failure-resilience-patterns.svg?v=b1a0be3f9b70" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div></div>
-
-  <div class="art-wrap article-grid">
-    <div class="reader-aside"><nav class="toc" aria-label="On this page">
+    <div class="article-hero" data-topic="Cloud Architecture"><img data-article-art="designing-for-failure-resilience-patterns" src="/assets/covers/designing-for-failure-resilience-patterns.svg?v=b1a0be3f9b70" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div>
+<div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#the-circuit-breaker-useful-but-often-implemented-wrong">The circuit breaker — useful, but often implemented wrong</a></li><li><a href="#bulkheads-the-most-underused-pattern">Bulkheads — the most underused pattern</a></li><li><a href="#retry-logic-helpful-and-dangerous">Retry logic — helpful and dangerous</a></li><li><a href="#timeouts-the-most-basic-thing-that39s-most-often-misconfigur">Timeouts — the most basic thing that&#39;s most often misconfigured</a></li><li><a href="#graceful-degradation-the-gap-between-theory-and-practice">Graceful degradation — the gap between theory and practice</a></li><li><a href="#chaos-engineering-valuable-but-start-small">Chaos engineering — valuable, but start small</a></li><li><a href="#what-actually-moves-the-needle-on-mttr">What actually moves the needle on MTTR</a></li></ol>
 </nav></div>
-    <div class="prose">
+    <div class="article-copy">
+      <div class="prose">
 <p>Something shifts in how you think about system design after you&#39;ve been in enough production incidents. You stop trying to prevent all failure and start designing for recovery. The question changes from &quot;how do we make sure this never breaks&quot; to &quot;when this breaks — and it will — how fast do we get back?&quot;</p>
 <p>Here are the patterns I&#39;ve found worth investing in, and a few that sound better in theory than they perform under pressure.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
@@ -171,28 +169,44 @@ def retry_with_backoff(func, max_retries=3, base_delay=1.0):
 <p>The patterns are the architecture. The operational discipline — the runbooks, the drills, the regular review cycles — is what makes them work under pressure.</p>
 <p><em>What&#39;s your current MTTR, and what&#39;s the biggest contributor to it? <a href="/about/">I&#39;d like to hear.</a></em></p>
 
-    </div>
-  </div>
+      </div>
 
-  <div class="art-wrap"><aside class="refs" aria-labelledby="refs-h">
+<aside class="refs" aria-labelledby="refs-h">
   <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
   <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
   <ul>
     <li><a href="https://opentelemetry.io/docs/" rel="noopener nofollow" target="_blank">OpenTelemetry</a><span>Specification and language SDKs.</span></li>
     <li><a href="https://prometheus.io/docs/" rel="noopener nofollow" target="_blank">Prometheus</a><span>Query language and operational guidance.</span></li>
   </ul>
-</aside></div>
+</aside>
 
-  
 
-  <div class="art-wrap article-foot">
-    <div class="row" style="gap:.4rem">
-      <a class="chip chip-plain" href="/topics/cloud-architecture/">Cloud Architecture</a><a class="chip chip-plain" href="/topics/infrastructure/">Infrastructure</a><a class="chip chip-plain" href="/topics/observability/">Observability</a>
+
+      <footer class="article-foot">
+        <div class="row" style="gap:.4rem">
+          <a class="chip chip-plain" href="/topics/cloud-architecture/">Cloud Architecture</a><a class="chip chip-plain" href="/topics/infrastructure/">Infrastructure</a><a class="chip chip-plain" href="/topics/observability/">Observability</a>
+        </div>
+        <nav class="prevnext" aria-label="More articles">
+          <a href="/insights/postgresql-performance-tuning/"><span>Previous</span><strong>PostgreSQL Performance Tuning: The Settings and Patterns That Actually Matter</strong></a>
+          <a href="/insights/strangler-fig-legacy-migration/" class="next"><span>Next</span><strong>The Strangler Fig in Practice: Incremental Legacy Replacement That Actually Finishes</strong></a>
+        </nav>
+      </footer>
     </div>
-    <nav class="prevnext" aria-label="More articles">
-      <a href="/insights/postgresql-performance-tuning/"><span>Previous</span><strong>PostgreSQL Performance Tuning: The Settings and Patterns That Actually Matter</strong></a>
-      <a href="/insights/strangler-fig-legacy-migration/" class="next"><span>Next</span><strong>The Strangler Fig in Practice: Incremental Legacy Replacement That Actually Finishes</strong></a>
-    </nav>
+    <aside class="writing-promos" aria-label="Promotions" data-ad-slot="article-rail">
+  <p class="promo-label">From our projects</p>
+  <div class="promo-cards">
+    <section class="promo-card promo-techknowen" aria-label="TechKnowen">
+      <p class="promo-name">TechKnowen</p>
+      <p>Practical reading on software, architecture, and engineering.</p>
+      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+    </section>
+    <section class="promo-card promo-ziggle" aria-label="Ziggle">
+      <p class="promo-name">Ziggle</p>
+      <p>A new place to play brain teasers.</p>
+      <p class="promo-status">Coming soon</p>
+    </section>
+  </div>
+</aside>
   </div>
 
   <section class="section surface hair" style="margin-top:4rem">
@@ -333,7 +347,7 @@ def retry_with_backoff(func, max_retries=3, base_delay=1.0):
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=809689a9" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=809689a9"></script>
+<script src="/assets/js/site.js?v=80901545" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=80901545"></script>
 </body>
 </html>

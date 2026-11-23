@@ -33,7 +33,7 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=809689a9">
+<link rel="stylesheet" href="/assets/css/site.css?v=80901545">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
@@ -79,9 +79,9 @@ d.setAttribute('data-theme',t);
 <main id="main" tabindex="-1">
 
 <div class="read-bar" aria-hidden="true"><span id="readBar"></span></div>
-<article class="article with-toc">
-  <header class="article-head">
-    <div class="art-wrap">
+<article class="article">
+  <div class="reading-layout">
+    <header class="article-head">
       <nav class="crumbs" aria-label="Breadcrumb">
         <a href="/">Home</a> <span aria-hidden="true">/</span>
         <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
@@ -96,20 +96,18 @@ d.setAttribute('data-theme',t);
         <span class="dot"></span><span>4 min read</span>
         <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
       </div>
-    </div>
-  </header>
+    </header>
 
-  <div class="art-wrap"><div class="article-hero" data-topic="FinOps"><img data-article-art="reserved-instance-rationalization" src="/assets/covers/reserved-instance-rationalization.svg?v=7ff18fb5d675" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div></div>
-
-  <div class="art-wrap article-grid">
-    <div class="reader-aside"><nav class="toc" aria-label="On this page">
+    <div class="article-hero" data-topic="FinOps"><img data-article-art="reserved-instance-rationalization" src="/assets/covers/reserved-instance-rationalization.svg?v=7ff18fb5d675" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div>
+<div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#the-baseline-analysis-what39s-actually-steady-state">The baseline analysis: what&#39;s actually steady-state?</a></li><li><a href="#savings-plans-vs-reserved-instances-aws-specific">Savings Plans vs Reserved Instances (AWS-specific)</a></li><li><a href="#the-coverage-vs-utilization-trade-off">The coverage vs utilization trade-off</a></li><li><a href="#the-right-cadence-for-reviewing-commitments">The right cadence for reviewing commitments</a></li><li><a href="#the-aws-marketplace-for-unwanted-ris">The AWS Marketplace for unwanted RIs</a></li></ol>
 </nav><nav class="chapters" aria-label="Articles in this series">
       <p class="chapters-title">FinOps from Zero to Production</p>
       <ol><li><a href="/insights/finops-tagging-policy/">Cloud Tagging Policy Template: The Foundation FinOps Actually Requires</a></li><li aria-current="true"><a href="/insights/reserved-instance-rationalization/">Reserved Instance Rationalisation: How to Commit to the Right Resources</a></li><li><a href="/insights/cloud-unit-economics/">Cloud Unit Economics: The Metric That Makes Cloud Spend Conversations Productive</a></li><li><a href="/insights/finops-anomaly-detection/">Cloud Cost Anomaly Detection: Catching Runaway Spend Before It Becomes a Bill</a></li><li><a href="/insights/finops-chargeback-maturity/">From Showback to Chargeback: Building a Cloud Cost Ownership Model That Sticks</a></li></ol>
     </nav></div>
-    <div class="prose">
+    <div class="article-copy">
+      <div class="prose">
 <p>Committed use discounts go by different names across cloud providers — Reserved Instances (AWS), Reserved VM Instances and Committed Use Discounts (GCP), Reserved VM Instances (Azure) — but they all work on the same principle: commit to a minimum spend level or specific resource configuration for 1 or 3 years, receive a discount compared to on-demand pricing.</p>
 <p>On most instance types, the 1-year no-upfront Reserved Instance discount runs somewhere in the 35-40% range compared to on-demand. The 3-year equivalent often runs 55-65%. These are significant discounts for the right workloads.</p>
 <p>The risk: commit to an EC2 instance type that you end up not using (because you migrated to containers, or the workload scaled differently than expected, or a newer instance type became available), and you&#39;re paying for something you&#39;ve moved away from.</p>
@@ -151,27 +149,43 @@ d.setAttribute('data-theme',t);
 <p>If you have Reserved Instances you&#39;re not using, AWS&#39;s Reserved Instance Marketplace allows you to sell them to other AWS customers. The discount from the original purchase may be partially recovered. This is worth knowing about before you commit to a 3-year Reserved Instance for a workload you&#39;re not fully confident about — an exit exists, but it&#39;s not guaranteed (demand in the marketplace varies by instance type and region).</p>
 <p><em>Building a commitment strategy for your cloud spend? The right cadence and analytical approach matter more than any individual tool. <a href="/contact/">Happy to think through your specific situation.</a></em></p>
 
-    </div>
-  </div>
+      </div>
 
-  <div class="art-wrap"><aside class="refs" aria-labelledby="refs-h">
+<aside class="refs" aria-labelledby="refs-h">
   <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
   <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
   <ul>
     <li><a href="https://www.finops.org/" rel="noopener nofollow" target="_blank">FinOps Foundation</a><span>Framework, capabilities and terminology.</span></li>
   </ul>
-</aside></div>
+</aside>
 
-  
 
-  <div class="art-wrap article-foot">
-    <div class="row" style="gap:.4rem">
-      <a class="chip chip-plain" href="/topics/finops/">FinOps</a><a class="chip chip-plain" href="/insights/?topic=Cost%20Optimisation">Cost Optimisation</a><a class="chip chip-plain" href="/topics/cloud-architecture/">Cloud Architecture</a>
+
+      <footer class="article-foot">
+        <div class="row" style="gap:.4rem">
+          <a class="chip chip-plain" href="/topics/finops/">FinOps</a><a class="chip chip-plain" href="/insights/?topic=Cost%20Optimisation">Cost Optimisation</a><a class="chip chip-plain" href="/topics/cloud-architecture/">Cloud Architecture</a>
+        </div>
+        <nav class="prevnext" aria-label="More articles">
+          <a href="/insights/gcp-cost-management/"><span>Previous</span><strong>GCP Cost Management: Committed Use Discounts, Recommenders, and What Cloud Billing Doesn&#39;t Show You</strong></a>
+          <a href="/insights/containers-kubernetes-fundamentals/" class="next"><span>Next</span><strong>Kubernetes Fundamentals: What It Is, What It Does, and When You Actually Need It</strong></a>
+        </nav>
+      </footer>
     </div>
-    <nav class="prevnext" aria-label="More articles">
-      <a href="/insights/gcp-cost-management/"><span>Previous</span><strong>GCP Cost Management: Committed Use Discounts, Recommenders, and What Cloud Billing Doesn&#39;t Show You</strong></a>
-      <a href="/insights/containers-kubernetes-fundamentals/" class="next"><span>Next</span><strong>Kubernetes Fundamentals: What It Is, What It Does, and When You Actually Need It</strong></a>
-    </nav>
+    <aside class="writing-promos" aria-label="Promotions" data-ad-slot="article-rail">
+  <p class="promo-label">From our projects</p>
+  <div class="promo-cards">
+    <section class="promo-card promo-techknowen" aria-label="TechKnowen">
+      <p class="promo-name">TechKnowen</p>
+      <p>Practical reading on software, architecture, and engineering.</p>
+      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+    </section>
+    <section class="promo-card promo-ziggle" aria-label="Ziggle">
+      <p class="promo-name">Ziggle</p>
+      <p>A new place to play brain teasers.</p>
+      <p class="promo-status">Coming soon</p>
+    </section>
+  </div>
+</aside>
   </div>
 
   <section class="section surface hair" style="margin-top:4rem">
@@ -312,7 +326,7 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=809689a9" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=809689a9"></script>
+<script src="/assets/js/site.js?v=80901545" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=80901545"></script>
 </body>
 </html>

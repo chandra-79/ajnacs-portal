@@ -33,7 +33,7 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=809689a9">
+<link rel="stylesheet" href="/assets/css/site.css?v=80901545">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
@@ -79,9 +79,9 @@ d.setAttribute('data-theme',t);
 <main id="main" tabindex="-1">
 
 <div class="read-bar" aria-hidden="true"><span id="readBar"></span></div>
-<article class="article with-toc">
-  <header class="article-head">
-    <div class="art-wrap">
+<article class="article">
+  <div class="reading-layout">
+    <header class="article-head">
       <nav class="crumbs" aria-label="Breadcrumb">
         <a href="/">Home</a> <span aria-hidden="true">/</span>
         <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
@@ -96,17 +96,15 @@ d.setAttribute('data-theme',t);
         <span class="dot"></span><span>4 min read</span>
         <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
       </div>
-    </div>
-  </header>
+    </header>
 
-  <div class="art-wrap"><div class="article-hero" data-topic="Data Engineering"><img data-article-art="oracle-db-performance-tuning" src="/assets/covers/oracle-db-performance-tuning.svg?v=4e9d91690cbc" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div></div>
-
-  <div class="art-wrap article-grid">
-    <div class="reader-aside"><nav class="toc" aria-label="On this page">
+    <div class="article-hero" data-topic="Data Engineering"><img data-article-art="oracle-db-performance-tuning" src="/assets/covers/oracle-db-performance-tuning.svg?v=4e9d91690cbc" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div>
+<div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#1-identify-the-top-sql-statements-by-resource-consumption-fi">1. Identify the Top SQL Statements by Resource Consumption First</a></li><li><a href="#2-use-dbmsxplandisplaycursor-not-explain-plan">2. Use DBMS_XPLAN.DISPLAY_CURSOR, Not EXPLAIN PLAN</a></li><li><a href="#3-index-design-is-query-specific-not-table-specific">3. Index Design Is Query-Specific, Not Table-Specific</a></li><li><a href="#4-statistics-matter-more-than-most-people-realise">4. Statistics Matter More Than Most People Realise</a></li><li><a href="#5-bind-variables-for-everything-that-runs-more-than-once">5. Bind Variables for Everything That Runs More Than Once</a></li><li><a href="#6-sga-sizing-memory-is-not-the-first-answer">6. SGA Sizing: Memory Is Not the First Answer</a></li><li><a href="#7-redo-log-sizing-for-write-heavy-workloads">7. Redo Log Sizing for Write-Heavy Workloads</a></li><li><a href="#8-partitioning-for-large-tables-with-range-based-queries">8. Partitioning for Large Tables with Range-Based Queries</a></li><li><a href="#9-awr-snapshots-are-non-negotiable-in-production">9. AWR Snapshots Are Non-Negotiable in Production</a></li><li><a href="#10-wait-event-analysis-what-is-the-database-actually-waiting">10. Wait Event Analysis: What Is the Database Actually Waiting For?</a></li></ol>
 </nav></div>
-    <div class="prose">
+    <div class="article-copy">
+      <div class="prose">
 <p>Oracle DB performance tuning has a reputation for being arcane — and parts of it are. But in my experience, the improvements that actually move the needle on production workloads come from a small set of decisions that are well-established, repeatable, and don&#39;t require deep specialisation to implement.</p>
 <p>Twenty years and a significant number of production Oracle databases later, here are the ten things I keep coming back to.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
@@ -162,21 +160,37 @@ ORDER BY time_waited DESC;
 <p>The wait event profile tells you where to look. Everything else is detective work in that direction.</p>
 <p><em>Working on Oracle DB performance challenges or planning a migration? <a href="/contact/">Happy to discuss.</a></em></p>
 
+      </div>
+
+
+
+
+
+      <footer class="article-foot">
+        <div class="row" style="gap:.4rem">
+          <a class="chip chip-plain" href="/topics/data-engineering/">Data Engineering</a><a class="chip chip-plain" href="/insights/?topic=Oracle">Oracle</a><a class="chip chip-plain" href="/topics/performance/">Performance</a>
+        </div>
+        <nav class="prevnext" aria-label="More articles">
+          <a href="/insights/ai-training-cluster-networking/"><span>Previous</span><strong>AI Training Cluster Networking: Architecture for Large-Scale Model Training</strong></a>
+          <a href="/insights/os-disk-io-performance/" class="next"><span>Next</span><strong>Disk I/O Performance Analysis on Linux</strong></a>
+        </nav>
+      </footer>
     </div>
+    <aside class="writing-promos" aria-label="Promotions" data-ad-slot="article-rail">
+  <p class="promo-label">From our projects</p>
+  <div class="promo-cards">
+    <section class="promo-card promo-techknowen" aria-label="TechKnowen">
+      <p class="promo-name">TechKnowen</p>
+      <p>Practical reading on software, architecture, and engineering.</p>
+      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+    </section>
+    <section class="promo-card promo-ziggle" aria-label="Ziggle">
+      <p class="promo-name">Ziggle</p>
+      <p>A new place to play brain teasers.</p>
+      <p class="promo-status">Coming soon</p>
+    </section>
   </div>
-
-  
-
-  
-
-  <div class="art-wrap article-foot">
-    <div class="row" style="gap:.4rem">
-      <a class="chip chip-plain" href="/topics/data-engineering/">Data Engineering</a><a class="chip chip-plain" href="/insights/?topic=Oracle">Oracle</a><a class="chip chip-plain" href="/topics/performance/">Performance</a>
-    </div>
-    <nav class="prevnext" aria-label="More articles">
-      <a href="/insights/ai-training-cluster-networking/"><span>Previous</span><strong>AI Training Cluster Networking: Architecture for Large-Scale Model Training</strong></a>
-      <a href="/insights/os-disk-io-performance/" class="next"><span>Next</span><strong>Disk I/O Performance Analysis on Linux</strong></a>
-    </nav>
+</aside>
   </div>
 
   <section class="section surface hair" style="margin-top:4rem">
@@ -307,7 +321,7 @@ ORDER BY time_waited DESC;
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=809689a9" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=809689a9"></script>
+<script src="/assets/js/site.js?v=80901545" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=80901545"></script>
 </body>
 </html>

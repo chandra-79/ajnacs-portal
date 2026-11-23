@@ -29,9 +29,11 @@
   --shadow-3:0 10px 30px rgba(16,26,48,.12), 0 30px 70px rgba(16,26,48,.14);
 
   --measure:74ch;
-  --art-col:700px;
-  --art-aside:214px;
-  --art-gap:3rem;
+  --art-col:62rem;
+  --art-measure:72ch;
+  --publication-width:90rem;
+  --publication-rail:clamp(16rem, 20vw, 19rem);
+  --publication-gap:clamp(1.75rem, 3vw, 3.5rem);
   --nav-h:68px;
   --gutter:clamp(1.15rem, 4vw, 2.75rem);
   --section-y:clamp(3.5rem, 8vw, 7rem);
@@ -90,10 +92,9 @@
 [data-rsize="m"]{--art-scale:1;--art-lh:1.8}
 [data-rsize="l"]{--art-scale:1.13;--art-lh:1.82}
 [data-rsize="xl"]{--art-scale:1.26;--art-lh:1.85}
-[data-rwidth="s"]{--art-col:600px}
-[data-rwidth="m"]{--art-col:700px}
-[data-rwidth="l"]{--art-col:820px}
-[data-rwidth="xl"]{--art-col:940px}
+[data-rwidth="s"]{--art-col:45rem;--art-measure:58ch}
+[data-rwidth="l"]{--art-col:68rem;--art-measure:76ch}
+[data-rwidth="xl"]{--art-col:74rem;--art-measure:80ch}
 [data-rface="sans"]{--font-read:var(--font-body);--font-read-head:var(--font-display)}
 [data-rface="serif"]{
   --font-read:'Newsreader',Georgia,'Iowan Old Style',serif;
@@ -523,13 +524,12 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:800;line-height:1.12;
 .article-hero .art-wide{display:block;width:100%;height:100%}
 .article-hero .art-compact{display:none;width:100%;height:100%}
 @media(max-width:600px){.article-hero{aspect-ratio:640/360}.article-hero .art-wide{display:none}.article-hero .art-compact{display:block}}
-/* One column governs the whole article. The title, the hero, the body, the
-   references and the footer all take their width and their left edge from
-   --art-col, so nothing shifts sideways as you scroll. The contents list is
-   the only thing that sits outside it, in its own track on wide screens. */
 .art-wrap{width:min(var(--art-col),100% - var(--gutter)*2);margin-inline:auto}
-.article .prose{max-width:none;margin-inline:0;font-family:var(--font-read);font-size:var(--art-fs);line-height:var(--art-lh)}
-.article-grid{display:block}
+.reading-layout{width:min(var(--art-col),100% - var(--gutter)*2);margin-inline:auto;min-width:0}
+.reading-layout > *{min-width:0}
+.article-head .h1,.series-title{overflow-wrap:anywhere}
+.article .prose{max-width:none;margin-inline:0;font-family:var(--font-read);font-size:var(--art-fs);line-height:var(--art-lh);overflow-wrap:anywhere}
+.article .prose > :is(p,ol,ul,blockquote,h2,h3){max-inline-size:var(--art-measure)}
 .toc{
   margin:0 0 2.2rem;padding:1.1rem 1.3rem;background:var(--paper-2);
   border:1px solid var(--line);border-radius:var(--radius);
@@ -540,29 +540,6 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:800;line-height:1.12;
 .toc a{font-size:.9rem;color:var(--text-2);text-decoration:none;display:block}
 .toc a::before{content:counter(t,decimal-leading-zero);font-family:var(--font-mono);font-size:.74rem;color:var(--accent);margin-right:.6rem}
 .toc a:hover{color:var(--accent-ink);text-decoration:underline}
-@media (min-width:1180px){
-  /* Widen the shared container by exactly the aside track, then cap every
-     block back to --art-col. The text column keeps the same left edge it had
-     at every other width; only the contents list moves out beside it. */
-  .article.with-toc .art-wrap{
-    width:min(calc(var(--art-col) + var(--art-gap) + var(--art-aside)),100% - var(--gutter)*2);
-  }
-  .article.with-toc .art-wrap > *{max-width:var(--art-col)}
-  .article.with-toc .article-grid{
-    display:grid;grid-template-columns:minmax(0,var(--art-col)) var(--art-aside);
-    gap:var(--art-gap);align-items:start;
-  }
-  .article.with-toc .article-grid > *{max-width:none}
-  /* The aside is the grid child, not the contents list inside it, so the
-     order and the sticky both belong here. */
-  .article.with-toc .reader-aside{order:2;position:sticky;top:calc(var(--nav-h) + 1.4rem);margin-bottom:0}
-  .article.with-toc .prose{order:1}
-  .article.with-toc .toc,
-  .article.with-toc .chapters{
-    margin:0;background:none;border:0;border-left:1px solid var(--line);border-radius:0;
-    padding:.15rem 0 .15rem 1.2rem;
-  }
-}
 .table-wrap{overflow-x:auto;margin-block:1.6em;border:1px solid var(--line);border-radius:var(--radius)}
 .table-wrap table{margin:0}
 .table-wrap th,.table-wrap td{white-space:normal}
@@ -881,6 +858,7 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:800;line-height:1.12;
 /* ---------- contents panel ---------- */
 .reader-aside{display:flex;flex-direction:column;gap:1.6rem;margin-bottom:2.2rem}
 .reader-aside .toc{margin:0}
+.reader-aside :is(.chapters,.toc) a{overflow-wrap:anywhere}
 .chapters{margin-top:.2rem}
 .chapters-title{
   font-family:var(--font-display);font-size:.72rem;font-weight:800;letter-spacing:.14em;
@@ -1110,3 +1088,65 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:800;line-height:1.12;
 .home-outcomes{display:flex;flex-wrap:wrap;gap:.65rem;margin:2rem 0 0;padding:0;list-style:none}
 .home-outcomes li{border:1px solid #46597f;border-radius:999px;padding:.4rem .85rem;color:#dbe6ff;font-size:.9rem}
 .topic-select{max-width:100%;min-height:2.75rem;border:1px solid var(--line);border-radius:var(--radius);background:var(--paper-2);color:var(--text);padding:.4rem .7rem;font:inherit}
+
+/* The desktop rail uses the same positions as the publication archives.
+   Static house cards occupy the slot immediately and scroll with the page. */
+.publication-wrap{width:min(var(--publication-width),100% - var(--gutter)*2);margin-inline:auto}
+.archive-layout{padding-bottom:var(--section-y)}
+.archive-main{min-width:0}
+.archive-cards{grid-template-columns:repeat(auto-fill,minmax(min(17rem,100%),1fr))}
+.series-cards{grid-template-columns:repeat(auto-fit,minmax(min(17rem,100%),1fr))}
+.series-title{margin-top:.8rem}
+.series-index .content-thumbnail{width:clamp(10rem,17vw,14rem)}
+@media (max-width:600px){.series-index .content-thumbnail{width:100%}}
+.writing-promos{min-width:0;margin-top:2rem}
+.promo-label{
+  margin-bottom:.7rem;color:var(--text-3);font-size:.78rem;font-weight:750;
+  letter-spacing:.085em;text-transform:uppercase;
+}
+.promo-cards{display:grid;gap:.8rem}
+.promo-card{
+  display:flex;flex-direction:column;align-items:flex-start;gap:.45rem;
+  min-width:0;padding:1rem 1.1rem;border:1px solid var(--line);
+  border-radius:var(--radius);background:var(--paper-2);overflow-wrap:anywhere;
+}
+.promo-card p:not(.promo-name,.promo-status){color:var(--text-2);line-height:1.5;font-size:.9rem}
+.promo-name{font-family:var(--font-display);font-size:1.1rem;font-weight:800;line-height:1.3}
+.promo-techknowen{border-inline-start:3px solid var(--blue)}
+.promo-ziggle{border-inline-start:3px solid var(--amber)}
+.promo-card a{font-size:.875rem;font-weight:700;text-underline-offset:.18em;color:var(--accent-ink)}
+.promo-card a:hover{text-decoration-thickness:2px}
+.promo-status{font-size:.875rem;font-weight:700;color:var(--text-2)}
+.search-field{min-width:min(100%,16rem)}
+.search-field input{min-width:0}
+@media (min-width:40rem) and (max-width:73.999rem){
+  .promo-cards{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (min-width:74rem){
+  .archive-layout{
+    display:grid;grid-template-columns:minmax(0,1fr) var(--publication-rail);
+    gap:var(--publication-gap);align-items:start;
+  }
+  .writing-promos{min-block-size:17rem}
+  .archive-layout > .writing-promos{margin-top:0}
+  .reading-layout{
+    width:min(var(--publication-width),calc(var(--art-col) + var(--publication-gap) + var(--publication-rail)),100% - var(--gutter)*2);
+    display:grid;grid-template-columns:minmax(0,1fr) var(--publication-rail);
+    grid-template-areas:"headline promotion" "cover promotion" "copy navigation";
+    column-gap:var(--publication-gap);align-items:start;
+  }
+  .article-head{grid-area:headline}
+  .article-hero{grid-area:cover}
+  .article-copy{grid-area:copy}
+  .reading-layout > .writing-promos{grid-area:promotion;margin-top:clamp(4.5rem,7vw,7rem)}
+  .reading-layout > .reader-aside{grid-area:navigation;margin:0}
+  .reader-aside .chapters{
+    border:1px solid var(--line);border-radius:var(--radius);background:var(--paper-2);
+    padding:1rem 1.3rem;
+  }
+  [data-focus="on"] .reading-layout{
+    display:block;width:min(var(--art-col),100% - var(--gutter)*2);
+  }
+}
+[data-focus="on"] .reading-layout > :is(.writing-promos,.reader-aside){display:none}
+@media print{.writing-promos{display:none!important}.reading-layout,.archive-layout{display:block}}
