@@ -4,6 +4,7 @@ import { constants } from "node:fs";
 import path from "node:path";
 import { createHash } from "node:crypto";
 import { markFile } from "./mark.mjs";
+import { seriesSlug } from "./lib.mjs";
 import { publicationDate } from "./publication.mjs";
 
 let failures = 0;
@@ -129,6 +130,31 @@ if (braces !== 0) fail(`site.css braces unbalanced by ${braces}`); else ok("site
   if (!/--art-col:/.test(css)) fail("--art-col is gone; the article column is undefined");
   else ok("article column width is tokenised");
 }
+
+// The mobile reading order follows the DOM. Promotions occupy one slot
+// after the article or listing, and the desktop grid moves that same slot.
+const promotionPlacements = new Map([
+  ["insights/index.html", "insights-rail"],
+  ["notes/index.html", "notes-rail"],
+  ["series/index.html", "series-rail"],
+  ...live.map(m => [`${m.section}/${m.slug}/index.html`, "article-rail"]),
+  ...live.filter(m => m.series).map(m => [`series/${seriesSlug(m.series)}/index.html`, "series-chapters-rail"]),
+]);
+let promotionErrors = 0;
+for (const [file, placement] of promotionPlacements) {
+  const html = await readFile(file, "utf8");
+  const slots = [...html.matchAll(/<aside class="writing-promos" aria-label="Promotions" data-ad-slot="([^"]+)">([\s\S]*?)<\/aside>/g)];
+  const [slot] = slots;
+  const article = placement === "article-rail";
+  if (slots.length !== 1 || slot[1] !== placement ||
+      !slot[2].includes('href="https://www.techknowen.com/"') ||
+      !slot[2].includes("Coming soon") || slot[2].match(/<a\b/g)?.length !== 1 ||
+      (article && (!html.includes('class="reading-layout"') || slot.index < html.indexOf('class="article-copy"')))) {
+    fail(`${file}: invalid publication layout or house promotion`);
+    promotionErrors++;
+  }
+}
+if (!promotionErrors) ok("one house promotion slot per writing page, after the content in DOM order");
 
 console.log("\nBrand & reader");
 {
