@@ -14,6 +14,14 @@ The result is a FinOps program with visibility but no behavior change. Teams see
 
 Chargeback changes that. When a team's cloud costs appear in their cost center's P&L, infrastructure decisions start to feel like budget decisions. The organizational dynamic shifts.
 
+## What to measure
+
+**Allocation completeness and dispute rate.** If $91,000 of $100,000 in scope is assigned to confirmed owners, allocation coverage is 91%. Keep the $9,000 unallocated balance visible. Track disputed charges by invoice cycle and confirm that corrections flow back into the allocation rules.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
+Further reading: [FinOps Foundation, State of FinOps 2026](https://data.finops.org/).
+
 ## Why showback often fails to change behavior
 
 Showback gives teams information. It doesn't give them authority or accountability. The missing element: a connection between the cost data and something a team lead actually controls.
@@ -73,4 +81,4 @@ The transition that works:
 
 The teams that resist chargeback most strongly are usually the ones with the most cost attribution problems — resources without owners, shared infrastructure nobody claimed, legacy workloads that predate the tagging policy. These are exactly the problems you want to surface.
 
-*Building a cost ownership model across a multi-team or multi-BU organization? The technical implementation is usually simpler than the organizational alignment. [Happy to compare approaches.](/contact)*
+*Building a cost ownership model across a multi-team or multi-BU organization? The technical implementation is usually simpler than the organizational alignment. [Happy to compare approaches.](/contact/)*

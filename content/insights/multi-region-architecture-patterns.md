@@ -10,6 +10,14 @@ Multi-region is where cloud architecture conversations most reliably outrun thei
 
 Here's that model, and the data-layer truths that dominate it.
 
+## What to measure
+
+**Recovery time and lost writes under failover.** If service restores in 7 minutes against a 15-minute objective, record the observed time and what health check defined recovery. Separately reconcile writes acknowledged in the failed region; success against the time objective does not imply zero data loss.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
+Further reading: [Google’s SRE Workbook, Implementing SLOs](https://sre.google/workbook/implementing-slos/).
+
 ## First, the two numbers that decide everything
 
 **RTO** (how long can this be down?) and **RPO** (how much data can we lose?) — per workload, written down, signed by the business owner. Everything else in this article is a lookup table against those two numbers. The conversation that produces them is more valuable than any diagram: when an owner sees the cost curve, "zero downtime, zero loss" reliably becomes "an hour and five minutes of data is fine" for all but a handful of systems. Corollary: a *portfolio* has tiers — the payment path and the reporting warehouse do not deserve the same architecture, and pretending otherwise funds the warehouse's redundancy with the payment path's budget.

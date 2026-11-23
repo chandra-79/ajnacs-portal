@@ -10,6 +10,12 @@ format: article
 
 The Linux kernel exposes thousands of tunable parameters through `sysctl`. Most of them should be left at defaults. A small set of them, when tuned correctly, make a material difference for database servers, web proxies, high-throughput data pipelines, and any server running at scale. This lesson covers the ones that matter and explains why they matter.
 
+## What to measure
+
+**One parameter per controlled comparison.** Change one setting at a time, repeat the same traffic, and record p99 latency, queue drops and CPU. If 500 of 1,000,000 connections fail before a change and 200 fail after, the observed rates are 0.05% and 0.02%; repeat to rule out load variation.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
 ## sysctl Basics
 
 ```bash

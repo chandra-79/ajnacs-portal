@@ -10,6 +10,12 @@ The network fabric of a high-performance computing cluster isn't just cabling �
 
 Three topologies dominate HPC and AI training infrastructure: fat-tree, torus, and dragonfly. Each makes different trade-offs between bandwidth, diameter (maximum hops between any two nodes), cost, and engineering complexity.
 
+## What to measure
+
+**Bisection capacity under competing jobs.** If eight endpoints can each offer 100 Gb/s across a cut provisioned at 400 Gb/s, offered load is 2× capacity. Compare cross-rack collective performance while other jobs run, rather than relying on an unloaded pairwise benchmark.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
 ## Fat-tree: full bisection bandwidth, high cost
 
 Fat-tree (also called Clos or folded Clos) is the most widely deployed topology for data centres, HPC clusters, and large-scale AI training. The name comes from the original Leiserson fat-tree paper, though the implementation used in practice is the three-tier Clos: edge (top-of-rack) switches connected to aggregation switches connected to core switches.
@@ -88,4 +94,4 @@ NVIDIA's NVLink switch fabric operates on this principle within a rack; multi-ra
 
 For most enterprise AI training clusters under 1,000 GPUs, a fat-tree with RoCE or InfiniBand at 200–400 Gbps is the pragmatic choice: well-understood, supported by standard tooling, and delivers the bandwidth that distributed training requires.
 
-*Designing or evaluating network infrastructure for HPC or AI training? [Happy to compare configurations.](/contact)*
+*Designing or evaluating network infrastructure for HPC or AI training? [Happy to compare configurations.](/contact/)*

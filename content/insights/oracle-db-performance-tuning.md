@@ -10,6 +10,12 @@ Oracle DB performance tuning has a reputation for being arcane — and parts of 
 
 Twenty years and a significant number of production Oracle databases later, here are the ten things I keep coming back to.
 
+## What to measure
+
+**DB time and wait mix at the same throughput.** If DB time falls from 300 to 240 seconds for the same 2,000 executions, average DB time per execution goes from 150 ms to 120 ms. Compare top waits, plans and bind patterns before interpreting the drop as an end-user latency improvement.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
 ## 1. Identify the Top SQL Statements by Resource Consumption First
 
 Before any other tuning activity, run an AWR (Automatic Workload Repository) report and identify the top SQL statements by CPU, elapsed time, physical reads, and logical reads. Ninety percent of performance problems in production Oracle databases come from fewer than twenty SQL statements.
@@ -96,4 +102,4 @@ Every performance problem manifests as wait events. `db file sequential read` is
 
 The wait event profile tells you where to look. Everything else is detective work in that direction.
 
-*Working on Oracle DB performance challenges or planning a migration? [Happy to discuss.](/contact)*
+*Working on Oracle DB performance challenges or planning a migration? [Happy to discuss.](/contact/)*

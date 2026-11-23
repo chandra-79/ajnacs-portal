@@ -9,7 +9,7 @@ derived: true
 
 There is a particular moment that happens to people who have lived far from where they grew up for a long time. You are at a dinner table, or on the phone with your parents, and you reach for a word or a reference and you realize the other person does not have the same frame of reference for it. Not because they are uninformed — because the shared context that you once assumed now has gaps in it.
 
-This is not loneliness exactly. It is something quieter. A recognition that two versions of you have been accumulating experiences separately, and the gap between them grows wider with time.
+This is something quieter than loneliness. It is something quieter. A recognition that two versions of you have been accumulating experiences separately, and the gap between them grows wider with time.
 
 I have lived outside India for most of my adult life. The career opportunities, the professional networks, the daily routines — all of it is here. The version of me that navigates this world is fluent in it. The version of me that is from somewhere else watches all of it with a slight double consciousness, noticing the places where the cultural assumptions differ.
 

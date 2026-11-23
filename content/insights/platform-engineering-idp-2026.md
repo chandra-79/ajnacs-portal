@@ -1,6 +1,6 @@
 ---
 title: "Platform Engineering in 2026: What an Internal Developer Platform Actually Needs"
-description: "Every team is building a platform. Few are building one that developers actually want to use. Here's what separates an IDP that accelerates delivery from one that adds process overhead dressed up as self-service."
+description: "Design an internal developer platform around self-service, supported deployment paths and policy checks. Measure onboarding, adoption and change failures before expanding it."
 date: 2027-08-16
 tags: ["DevSecOps", "Cloud Architecture", "Engineering Leadership"]
 format: article
@@ -9,6 +9,14 @@ format: article
 The pitch for an internal developer platform is always the same: reduce cognitive load, standardise environments, let developers self-serve infrastructure. The reality, for many IDP initiatives, is a portal that developers route around and a platform team that spends most of their time answering questions about why the portal doesn't support their use case.
 
 The gap between pitch and reality comes down to a few decisions made early.
+
+## What to measure
+
+**First deployment lead time, adoption and failure.** If the median time from service creation to first production deployment falls from 3 days to 1, report the 2-day reduction alongside sample size. Check change failures and opt-outs before expanding beyond the pilot.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
+Further reading: [CNCF’s 2025 Annual Cloud Native Survey](https://www.cncf.io/announcements/2026/01/20/kubernetes-established-as-the-de-facto-operating-system-for-ai-as-production-use-hits-82-in-2025-cncf-annual-cloud-native-survey/).
 
 ## The product mindset that most platform teams miss
 
@@ -63,4 +71,4 @@ Platform engineering is not the same as infrastructure automation. Infrastructur
 
 Platform engineering is not a solution to governance problems. If the platform is primarily a mechanism for enforcing standards on developers rather than accelerating them, developers will treat it as overhead. Governance is a constraint; the platform's job is to make compliance the path of least resistance, not to be a gatekeeper.
 
-*Building or scaling an internal developer platform? [Happy to compare approaches — the design decisions compound.](/contact)*
+*Building or scaling an internal developer platform? [Happy to compare approaches — the design decisions compound.](/contact/)*

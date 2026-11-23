@@ -10,6 +10,12 @@ WebLogic Server has been running critical workloads in banks, telcos, insurers, 
 
 This post is the explainer I wish those engineers had. Not exam trivia — the domain model as it actually matters in production.
 
+## What to measure
+
+**Capacity under managed-server loss.** At a fixed workload, stop one managed server in staging and track error rate, sustained throughput and session recovery. If traffic exceeds the remaining cluster’s measured capacity, document the headroom gap and the affected applications separately.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
 ## The domain is the unit of administration
 
 Everything in WebLogic lives inside a **domain**: a logically related group of server instances managed as a single unit. One domain, one configuration repository (`config.xml` plus the config directory tree), one administrative boundary, one security realm by default.

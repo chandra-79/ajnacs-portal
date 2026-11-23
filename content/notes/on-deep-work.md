@@ -9,7 +9,7 @@ derived: true
 
 The kind of work I find most valuable — designing something genuinely difficult, thinking through an architectural problem, writing something that requires sustained attention — does not happen in fragments. It happens in stretches of uninterrupted time where the problem can be held in working memory and turned over until the shape of it becomes clear.
 
-This kind of work is also the kind that modern work culture is systematically hostile to.
+A workday organised around quick replies makes that kind of attention hard to sustain.
 
 The interruptions are not malicious. Slack messages are sent by people who have reasonable questions. Meeting invitations come from people who need to make decisions. The open-plan office was designed by people who genuinely believed that spontaneous collaboration is good (it sometimes is). None of the individual interruptions is unreasonable.
 

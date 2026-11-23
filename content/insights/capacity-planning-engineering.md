@@ -8,6 +8,12 @@ format: article
 
 Capacity planning was supposed to be one of the disciplines the cloud made obsolete — why forecast when you can autoscale? A decade of production experience delivered the correction: elasticity moved capacity planning from *procurement* (buy servers eighteen months ahead) to *engineering* (ensure the system can actually absorb demand growth), and teams that dropped the discipline entirely rediscovered it through its failure modes — the quota that capped scale-out during the biggest launch of the year, the database that autoscaling couldn't help, the cloud bill that doubled because "elastic" also means "elastic upward, silently." Capacity planning in the cloud era is the practice of knowing your **constraints, headroom, and demand trajectory** well enough that neither incidents nor invoices arrive as surprises.
 
+## What to measure
+
+**Headroom after a failure.** A fleet with four nodes sustaining 300 requests/s each has 900 requests/s remaining after one node fails. At a peak of 750 requests/s, 150 requests/s remain, or about 17% of post-failure capacity. Check this at the target tail latency, not at saturation.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
 ## Demand: model the driver, not the metric
 
 Infrastructure metrics (CPU, RPS) are *consequences*; planning starts from **business drivers** — users, orders, tenants, data volume — and the translation function between them ("each active tenant adds ~N queries/sec and ~M GB/year"). This two-layer model is what lets engineering consume the business's forecasts (marketing knows the campaign calendar; sales knows the enterprise-deal pipeline whose single onboarding might add 20% to load) and what makes capacity conversations legible upward — "we can absorb 3× current tenants before the primary database becomes the constraint" is a sentence executives can act on; "CPU is at 60%" is not.

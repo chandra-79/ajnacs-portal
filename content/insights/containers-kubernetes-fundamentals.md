@@ -10,6 +10,14 @@ format: article
 
 Kubernetes is a container orchestration platform. That description is accurate and tells you very little about what it actually does. A more useful description: Kubernetes is a system that continuously compares the state you want (declared in YAML files) with the state that actually exists (running containers, network rules, storage volumes) and makes changes to close the gap.
 
+## What to measure
+
+**Scheduling headroom after losing a node.** If workloads request 18 vCPU and the remaining nodes have 20 allocatable vCPU after one node is drained, the aggregate margin is 2 vCPU. Check memory, topology and pod placement too; aggregate headroom can coexist with an unschedulable pod.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
+The [2025 CNCF survey](https://www.cncf.io/announcements/2026/01/20/kubernetes-established-as-the-de-facto-operating-system-for-ai-as-production-use-hits-82-in-2025-cncf-annual-cloud-native-survey/) reports production Kubernetes use among 82% of container users in its survey. That figure describes this cohort; cluster sizing still depends on your workloads.
+
 ## The Core Concept: Desired State and the Control Loop
 
 You tell Kubernetes what you want. Kubernetes figures out how to achieve it and maintains it.

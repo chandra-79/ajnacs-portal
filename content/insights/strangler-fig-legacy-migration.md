@@ -8,6 +8,12 @@ format: article
 
 The strangler fig pattern — grow the new system around the old, route traffic incrementally, retire the legacy when nothing calls it — has won the argument against the big-bang rewrite so thoroughly that citing it is now table stakes in every modernization deck. What the decks omit is the base rate: most strangulations stall. The industry is full of estates running *both* systems indefinitely — the legacy not retired, the new system not complete, integration complexity doubled, the worst of both worlds achieved and institutionalized. The pattern works; it's the practice that fails, and it fails in knowable places.
 
+## What to measure
+
+**Traffic served by the new slice with equivalent outcomes.** If the new service handles 8,000 of 40,000 eligible requests, the migrated share is 20%. Compare correctness and tail latency with the original path under equivalent traffic, and rehearse a switchback that accounts for writes during the cutover.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
 ## The mechanics: facade, routing, and the seam catalog
 
 The load-bearing component is the **facade** — the interception layer (API gateway, reverse proxy, or an explicit anti-corruption layer) through which *all* consumers reach the capability being replaced. Its jobs: route each request to legacy or new by rule (per endpoint, per tenant, per percentage — the progressive-delivery machinery applied to migration), translate between old and new contracts so consumers never care which side answered, and *measure* — per-route traffic, error deltas, latency comparisons between the systems. No facade, no strangulation: if consumers call the legacy directly through a dozen undocumented paths (the ODBC connection from finance, the file drop, the shared database read — the integration archaeology from migration practice), step zero is herding every path through the interception point, and it's often a project of its own. Budget it honestly; it's also where half the discovery value lives.

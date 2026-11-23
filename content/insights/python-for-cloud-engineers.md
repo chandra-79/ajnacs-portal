@@ -10,6 +10,12 @@ The first time I wrote Python for a cloud engineering task, I spent two weeks le
 
 If you're a cloud or infrastructure engineer evaluating whether Python is worth investing in: it is. But the reasons are specific, and so is what you need to know.
 
+## What to measure
+
+**Repeatable run time and safe re-runs.** Run a script against the same 1,000-resource input in a test account. Record elapsed time, API errors by operation and planned changes. When inputs are unchanged, a second apply should produce zero unexpected writes.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
 ## The Problems Where Python Genuinely Wins
 
 **Cloud SDK automation**: The native Python SDKs for Azure (`azure-mgmt-*`), AWS (boto3), GCP (`google-cloud-*`), and OCI are comprehensive, well-maintained, and significantly more powerful than what you can express in CLI scripts. When you need dynamic logic — paginate through hundreds of resources, apply conditions based on state, generate compliance reports — Python is the tool.
@@ -77,4 +83,4 @@ For sequential automation scripts, synchronous code is simpler and almost always
 
 The engineering investment pays off most clearly when you're writing tools you'll ship and maintain, not quick one-offs. Know the difference before you architect the solution.
 
-*Questions about building Python tooling for cloud automation? [Happy to share more.](/contact)*
+*Questions about building Python tooling for cloud automation? [Happy to share more.](/contact/)*

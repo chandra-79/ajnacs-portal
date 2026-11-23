@@ -10,6 +10,12 @@ The testing pyramid exists because not all tests are equivalent. Fast tests belo
 
 Here's how I think about testing Java services built for cloud deployment.
 
+## What to measure
+
+**Escaped failures and signal latency.** Review a month of service incidents. If 8 of 20 regressions could have been detected by published contract checks, prioritise those integration boundaries. Report the feedback time of the new tests and flaky reruns so higher coverage does not hide slower delivery.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
 ## Unit tests: fast, focused, free of infrastructure
 
 Unit tests verify a single class or method in isolation. They run in milliseconds, they catch regressions in business logic, and they give immediate feedback during development. The value is high; the infrastructure cost is zero.
@@ -117,4 +123,4 @@ E2E tests:         deploy to staging + run E2E suite  (~20min)
 
 The goal: fast feedback on every commit, comprehensive verification before merge. Engineers see unit test failures in seconds; integration failures in minutes; end-to-end failures before anything reaches production.
 
-*Building a test suite from scratch or restructuring an existing one? [Happy to think through the right layers.](/contact)*
+*Building a test suite from scratch or restructuring an existing one? [Happy to think through the right layers.](/contact/)*

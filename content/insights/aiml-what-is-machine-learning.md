@@ -10,6 +10,12 @@ format: article
 
 Machine learning is a method for building programs that improve with experience — specifically, programs that adjust their behaviour based on data rather than being explicitly programmed with rules. That definition is precise enough to be useful and broad enough to cover a wide range of techniques. Before diving into neural networks and large language models, understanding the broader landscape of ML prevents the category errors that lead to picking the wrong approach for a given problem.
 
+## What to measure
+
+**Precision and recall at a stated threshold.** If a classifier flags 50 records and 35 are true positives, precision is 70%. If the held-out set contains 70 positives, recall is 50%. Report the decision threshold and class balance alongside both measures.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
 ## The Fundamental Distinction: Rules vs Learning
 
 Traditional programming: a developer writes rules. Data goes in, the rules process it, output comes out.

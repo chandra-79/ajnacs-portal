@@ -10,6 +10,14 @@ The serverless vs containers debate has been running long enough that both sides
 
 Here's how I think about it.
 
+## What to measure
+
+**Cost per successful request across two loads.** Replay a bursty trace and a steady trace, keeping region, memory and quality objectives fixed. If a platform spends $12 on 200,000 successful requests, it costs $60 per million successful requests. Include idle capacity, provisioned concurrency and request or network charges as applicable.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
+Further reading: [AWS Lambda pricing and billing dimensions](https://aws.amazon.com/lambda/pricing/).
+
 ## What each one actually is
 
 **Containers** (Docker, deployed on Kubernetes, ECS, Cloud Run, etc.) give you a packaged, portable runtime environment. Your application runs in a defined environment with defined resources. You pay for those resources whether the application is actively processing requests or idle.
@@ -72,4 +80,4 @@ If the answer is "I don't know yet" → start with serverless, migrate if cost o
 
 The last answer is more common than people admit, and it's a perfectly reasonable starting point. Serverless is easier to evacuate than a Kubernetes workload.
 
-*What's your current mix, and what's driving the decisions? [Curious to hear.](/about)*
+*What's your current mix, and what's driving the decisions? [Curious to hear.](/about/)*

@@ -10,6 +10,14 @@ The first month an LLM-powered feature goes to production is usually fine. The s
 
 Getting cost management right before production is much cheaper than retrofitting it after.
 
+## What to measure
+
+**Cost per successful AI task.** Divide inference, retrieval and retry spend by tasks that pass the acceptance check. At $720 for 12,000 attempts with 9,000 accepted outputs, the cost is $0.08 per accepted task. Report the acceptance rate (75%) alongside the cost so a cheaper model cannot win by failing more tasks.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
+For context, 98% of respondents in the [2026 State of FinOps report](https://data.finops.org/) reported managing or planning to manage AI spend. The survey describes FinOps practitioners; it does not measure savings from prompt or model changes.
+
 ## Why LLM costs are different from infrastructure costs
 
 Infrastructure costs are predictable within a narrow range. An EC2 instance costs X per hour; scaling out doubles the cost. The relationship is linear and auditable.
@@ -20,11 +28,11 @@ The variables that matter:
 
 **Input tokens**: the system prompt, conversation history, retrieved context (for RAG), and the user's message. System prompts are often large and repeated on every request — a 2,000-token system prompt sent 1 million times per month is 2 billion input tokens.
 
-**Output tokens**: model response length. Output tokens are typically 2-4x more expensive per token than input tokens (GPT-4o pricing: $5/M input, $15/M output as of mid-2026). Long responses driven by instruction ("always explain your reasoning in detail") are expensive.
+**Output tokens** contribute a separate charge on many APIs. Use your current model and region’s output price and track response length by feature.
 
-**Model selection**: GPT-4o costs roughly 10-15x more than GPT-4o-mini for the same token count. Most tasks don't require the flagship model.
+**Model selection** changes both price and the rate of acceptable responses. Compare total cost per accepted result at the same evaluation bar.
 
-**Caching**: prompt caching (available on Anthropic and OpenAI APIs) can reduce input token costs by 80-90% for repeated system prompts. Not using it for high-volume endpoints is leaving significant savings on the table.
+**Caching** can reduce charges for eligible repeated input. Measure cache-hit rate and include cache write, read and storage charges where applicable.
 
 ## Building cost visibility
 
@@ -95,7 +103,7 @@ def select_model(task_type: str, complexity_score: float) -> str:
 
 The complexity score can be derived from input characteristics: length, presence of specialized terminology, ambiguity signals from a lightweight pre-classifier.
 
-The escalation pattern is also useful: attempt with the cheaper model, check output confidence or quality signals, retry with the more capable model if needed. For most workloads, 70-80% of requests succeed on the first attempt with the cheaper model.
+The escalation pattern is also useful: attempt with the cheaper model, check output confidence or quality signals, retry with the more capable model if needed. Measure the actual share of requests that pass without escalation on your workload before projecting savings.
 
 ## Caching strategies
 
@@ -113,8 +121,8 @@ Monthly surprises are preventable. The mechanisms:
 
 **User-level rate limiting**: for user-facing features, rate limit both requests per minute and tokens per day per user. This prevents both abuse and unexpectedly expensive usage patterns.
 
-**Account-level hard limits**: both OpenAI and Anthropic support hard monthly spend limits that stop all API calls when reached. This is a last-resort protection — you don't want to hit it in production. Set it at 150% of expected monthly spend and treat any month where it's approached as a signal that costs are out of control.
+**Enforced spend limits**: confirm whether your provider’s budget setting alerts or blocks calls. Where you need a hard ceiling, enforce a separate limit in your own gateway and verify what happens at that ceiling.
 
 **Anomaly alerts**: alert when any feature's daily token spend is more than 2x its 7-day average. Cost spikes are usually symptoms of bugs (infinite loops, runaway retries, prompt injection), not organic growth.
 
-*Building LLM-powered features and working through the cost architecture? The decisions made before launch are much cheaper to change than the ones discovered post-invoice. [Happy to compare approaches.](/contact)*
+*Building LLM-powered features and working through the cost architecture? The decisions made before launch are much cheaper to change than the ones discovered post-invoice. [Happy to compare approaches.](/contact/)*

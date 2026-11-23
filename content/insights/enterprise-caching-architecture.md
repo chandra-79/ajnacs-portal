@@ -10,6 +10,12 @@ In most enterprise systems I've worked on, the database is the first thing that 
 
 Caching is the answer, but "add Redis" isn't a strategy. Here's how to think about multi-tier caching properly, and what actually matters in production.
 
+## What to measure
+
+**Cache-miss amplification.** If 1,000 requests for an expired key reach origin and a single-flight mechanism reduces origin fills to one, the test shows a 1,000-to-1 reduction in fills for that key. Repeat with many hot keys and verify that callers’ tail latency stays within budget.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
 ## Why caching matters more than most people plan for
 
 The numbers are stark:
@@ -131,4 +137,4 @@ This is how you get from a 70% hit ratio to 92%+.
 
 The 95% database load reduction that caching enables isn't magic — it's the compound effect of designing the right layers, choosing the right strategies per workload type, and monitoring the hit ratio religiously. The architecture isn't complicated. The discipline is.
 
-*Questions about caching design for a specific workload? [Get in touch](/about).*
+*Questions about caching design for a specific workload? [Get in touch](/about/).*

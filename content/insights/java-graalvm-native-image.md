@@ -12,6 +12,12 @@ Then the deployment world changed shape. Serverless functions bill by the millis
 
 The trade is real and the trade-offs are sharp. Here's the honest map.
 
+## What to measure
+
+**Cold start and sustained CPU.** Record time from process creation to the first successful request for JVM and native builds. If p95 is 900 ms versus 120 ms over the same launch protocol, the difference is 780 ms for that test. Also measure memory and CPU under steady load after the JVM has warmed up.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
 ## What Native Image actually does
 
 At build time, Native Image performs **closed-world analysis**: starting from your main entry point, it walks every reachable method, class, and field; compiles that reachable set to machine code; runs your static initializers *at build time* where possible and snapshots the resulting heap into the image; and discards everything else — including, by default, the machinery for loading code it didn't see. The output is a single executable with no JVM to install, embedding a lightweight runtime (SubstrateVM) for GC and threading.

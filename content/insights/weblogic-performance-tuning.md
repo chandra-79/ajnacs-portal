@@ -10,6 +10,12 @@ WebLogic tuning advice on the internet is mostly cargo cult: lists of parameters
 
 Here's the short list of what matters, why, and how to know when to change it.
 
+## What to measure
+
+**Request tails and thread queue residence.** At a fixed offered load, record p95 response time, work-manager queue time and JDBC wait before changing pool or thread settings. If p95 falls from 600 ms to 420 ms, report the 30% observed improvement with the configuration and traffic profile.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
 ## First principle: WebLogic manages its own threads
 
 Modern WebLogic uses a **single self-tuning thread pool** per server. There is no servlet thread pool to size, no execute queue count to guess (those died with WebLogic 8.1). The pool grows and shrinks based on measured throughput: WebLogic samples how throughput responds to thread count and adjusts.

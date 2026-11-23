@@ -10,6 +10,14 @@ format: article
 
 Platform engineering is one of the most discussed topics in enterprise technology right now, which means it is also one of the most confused. It is variously described as DevOps with a product mindset, internal tooling done properly, or the evolution of the SRE model. These descriptions are partially true. A more precise definition: platform engineering is the discipline of building and operating internal platforms that improve developer productivity and reduce cognitive load for application teams.
 
+## What to measure
+
+**Measure product adoption against eligible teams.** If 30 of 50 eligible teams use an approved workflow monthly, adoption is 60%. Segment voluntary and mandatory usage, and track median task completion time and change failures. A mandatory migration can boost adoption without improving the experience.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
+Further reading: [DORA’s software delivery performance metrics](https://dora.dev/guides/dora-metrics/).
+
 ## Why Platform Engineering Emerged
 
 The DevOps movement succeeded in establishing that development and operations should not be siloed functions. It did not fully answer the question of how to scale operational excellence across dozens or hundreds of application teams.

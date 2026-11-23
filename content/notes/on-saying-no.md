@@ -7,7 +7,7 @@ format: article
 derived: true
 ---
 
-Saying no is a skill that most people in professional settings are systematically trained against.
+Early in a career, most of the signals at work encourage you to say yes.
 
 The default professional posture is availability: responsive, accommodating, willing to help. Being described as easy to work with, a team player, someone who never drops the ball — these are universally positive in early career. They require saying yes to most things that are asked.
 

@@ -10,15 +10,27 @@ format: article
 
 Platform engineering teams face a measurement challenge: their output is other teams' productivity. A platform feature that saves 200 engineering hours per month across 20 application teams delivers enormous value that is invisible in the platform team's own delivery metrics. Building the right measurement framework is essential for making that value visible, justifying continued investment, and identifying where the platform is failing to meet developer needs.
 
+## What to measure
+
+**A balanced platform scorecard.** Pair adoption, time to first deployment and service reliability. If 45 of 60 eligible teams use the path, adoption is 75%; a 10-team rollout is not a valid denominator for all 60 teams. Track change failures and rework to check that speed has not shifted work downstream.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
+Further reading: [DORA’s software delivery performance metrics](https://dora.dev/guides/dora-metrics/).
+
 ## The Primary Metric: Developer Productivity
 
 The platform exists to make application developers more productive. Productivity is multidimensional, but three signals are reliable:
 
-**DORA metrics** (measured across teams using the platform, not just the platform team):
-- Deployment frequency: how often do application teams deploy to production?
-- Lead time for changes: how long from code commit to production deployment?
-- Change failure rate: what percentage of deployments cause incidents?
-- MTTR: when an incident occurs, how quickly is it resolved?
+**[DORA’s five delivery performance metrics](https://dora.dev/guides/dora-metrics/)**, measured per application or service:
+
+- Change lead time
+- Deployment frequency
+- Failed deployment recovery time
+- Change fail rate
+- Deployment rework rate
+
+Measure recovery from failed deployments here. Keep customer-facing incidents with other causes in your reliability review.
 
 A platform that is working should improve these metrics over time. If deployment frequency is flat a year after platform adoption, the platform is not reducing friction in the deployment path. If change failure rate is rising, the platform's testing and deployment gates may be providing false confidence.
 

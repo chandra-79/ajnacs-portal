@@ -10,6 +10,12 @@ format: article
 
 Most Dockerfiles work. Few Dockerfiles are production-grade. The difference shows up in image size (which affects pull time and cold start), build speed (which affects developer experience and CI runtime), and security posture (which affects your attack surface). This lesson covers the specific decisions that move a Dockerfile from working to production-ready.
 
+## What to measure
+
+**Image weight and build time.** If a multi-stage build reduces the compressed registry image from 480 MB to 120 MB, that is 75% less transfer per cold pull. Record cold and warm build durations separately and verify the runtime libraries still meet application needs.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
 ## Start with the Right Base Image
 
 The base image determines your starting attack surface, your image size, and what package manager is available.

@@ -8,6 +8,12 @@ format: article
 
 Varnish Cache sits in front of your web servers and caches responses in memory. For content-heavy sites with high read traffic, a correctly configured Varnish instance absorbs most of the load that would otherwise hit your application servers. The challenge is "correctly configured" — Varnish's Varnish Configuration Language (VCL) is C-like and the default behavior needs adjustment for most real workloads.
 
+## What to measure
+
+**Avoided origin work by route.** If a cacheable route receives 50,000 requests and Varnish serves 40,000 from cache, request hit rate is 80%. Break out hit-for-pass, grace and revalidation according to the actual counters so origin load is not inferred from one number.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
 ## The VCL request lifecycle
 
 Understanding Varnish means understanding its state machine. A request goes through several subroutines:
@@ -160,4 +166,4 @@ In production, restrict purge requests to trusted internal IPs.
 
 `varnishlog` shows request-level logs with the cache decision for each request. Essential for debugging why specific requests aren't being cached.
 
-*Tuning a Varnish configuration or designing a caching strategy for a high-traffic site? [Happy to work through the specifics.](/contact)*
+*Tuning a Varnish configuration or designing a caching strategy for a high-traffic site? [Happy to work through the specifics.](/contact/)*

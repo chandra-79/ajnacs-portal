@@ -14,14 +14,18 @@
 <meta property="og:title" content="Redis in Production: Patterns That Work and Anti-patterns That Will Break You">
 <meta property="og:description" content="Redis is fast until it isn&#39;t. Here are the caching patterns, data structure choices, and operational decisions that determine whether Redis is a performanc…">
 <meta property="og:url" content="https://ajnacs.com/insights/redis-production-patterns/">
-<meta property="og:image" content="https://ajnacs.com/assets/og/articles/redis-production-patterns.png?v=7791122d0935">
+<meta property="og:image" content="https://ajnacs.com/assets/og/articles/redis-production-patterns.png?v=5a653b67c0aa">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Illustration for Redis in Production: Patterns That Work and Anti-patterns That Will Break You">
+<meta property="article:published_time" content="2024-12-10">
+<meta property="article:modified_time" content="2026-11-23">
 <meta property="og:image:type" content="image/png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Redis in Production: Patterns That Work and Anti-patterns That Will Break You">
 <meta name="twitter:description" content="Redis is fast until it isn&#39;t. Here are the caching patterns, data structure choices, and operational decisions that determine whether Redis is a performanc…">
-<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/redis-production-patterns.png?v=7791122d0935">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/redis-production-patterns.png?v=5a653b67c0aa">
+<meta name="twitter:image:alt" content="Illustration for Redis in Production: Patterns That Work and Anti-patterns That Will Break You">
 
 <link rel="icon" href="/favicon.ico?v=cefc53b9" sizes="any">
 <link rel="icon" href="/images/ajna-mark.svg?v=cefc53b9" type="image/svg+xml">
@@ -29,7 +33,7 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=74a650b6">
+<link rel="stylesheet" href="/assets/css/site.css?v=dd970c4d">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
@@ -45,7 +49,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Redis in Production: Patterns That Work and Anti-patterns That Will Break You","description":"Redis is fast until it isn't. Here are the caching patterns, data structure choices, and operational decisions that determine whether Redis is a performance multiplier or a fragile dependency.","datePublished":"2024-12-10","dateModified":"2024-12-10","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/redis-production-patterns/","image":"https://ajnacs.com/assets/og/articles/redis-production-patterns.png?v=7791122d0935","keywords":"Data Engineering, Redis, Architecture, Cloud Architecture","articleSection":"Data Engineering","wordCount":1156}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Redis in Production: Patterns That Work and Anti-patterns That Will Break You","description":"Redis is fast until it isn't. Here are the caching patterns, data structure choices, and operational decisions that determine whether Redis is a performance multiplier or a fragile dependency.","datePublished":"2024-12-10","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/redis-production-patterns/","image":"https://ajnacs.com/assets/og/articles/redis-production-patterns.png?v=5a653b67c0aa","keywords":"Data Engineering, Redis, Architecture, Cloud Architecture","articleSection":"Data Engineering","wordCount":1216}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Redis in Production: Patterns That Work and Anti-patterns That Will Break You"}]}</script>
 </head>
 <body class="" data-topic="Data Engineering">
@@ -59,7 +63,7 @@ d.setAttribute('data-theme',t);
     </div>
     <nav class="nav" id="nav" aria-label="Primary">
       <a href="/services/">Services</a>
-      <a href="/insights/" aria-current="page">Insights</a>
+      <a href="/insights/">Insights</a>
       <a href="/series/">Series</a>
       <a href="/case-studies/">Case studies</a>
       <a href="/about/">About</a>
@@ -81,34 +85,34 @@ d.setAttribute('data-theme',t);
       <nav class="crumbs" aria-label="Breadcrumb">
         <a href="/">Home</a> <span aria-hidden="true">/</span>
         <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
-        <span>Data Engineering</span>
+        <a href="/topics/data-engineering/">Data Engineering</a>
       </nav>
       <h1 class="h1">Redis in Production: Patterns That Work and Anti-patterns That Will Break You</h1>
       <p class="lede" style="margin-top:1rem">Redis is fast until it isn&#39;t. Here are the caching patterns, data structure choices, and operational decisions that determine whether Redis is a performance multiplier or a fragile dependency.</p>
       <div class="article-meta">
-        <span class="chip">Data Engineering</span>
-        <time datetime="2024-12-10">10 Dec 2024</time>
+        <a class="article-byline" href="/about/#chandra-lanka">Chandra Lanka</a>
+        <span class="dot" aria-hidden="true"></span><time datetime="2024-12-10">10 Dec 2024</time>
+        <span class="dot" aria-hidden="true"></span><span>Updated <time datetime="2026-11-23">23 Nov 2026</time></span>
         <span class="dot"></span><span>5 min read</span>
         <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
       </div>
     </div>
   </header>
 
-  <div class="art-wrap"><div class="article-hero" data-topic="Data Engineering"><span class="art-wide"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 380" role="img" aria-label="Conceptual illustration for Redis in Production: Patterns That Work and Anti-patterns That Will Break You: Cache, Origin, TTL." preserveAspectRatio="xMidYMid meet" data-article-art="redis-production-patterns" data-art-scene="cache" data-composition="process-strip"><defs><clipPath id="cpart-redis-production-patterns-1200-380"><rect width="1200" height="380"/></clipPath></defs><g clip-path="url(#cpart-redis-production-patterns-1200-380)"><rect width="1200" height="380" fill="#f7f0e1"/><g transform="translate(0 0) scale(1)"><path d="M0 332H1200" stroke="#bd562f" stroke-width="2"/><path d="M0 337H1200" stroke="#bd562f" stroke-width="8" opacity=".12"/><text x="56" y="95" fill="#293a42" font-size="29" font-weight="650" font-family="Arial,sans-serif" text-anchor="start">Redis in Production</text><g transform="translate(585 65) scale(1)"><rect x="18" y="48" width="94" height="94" rx="18" fill="#315c63" fill-opacity=".055" stroke="#315c63" stroke-opacity=".18"/><g transform="translate(30 60) scale(0.7)"><g fill="none" stroke="#315c63" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M33 25L10 50l23 25m34-50l23 25-23 25M59 14L42 87"/></g></g><rect x="226" y="48" width="94" height="94" rx="18" fill="#315c63" fill-opacity=".055" stroke="#315c63" stroke-opacity=".18"/><g transform="translate(238 60) scale(0.7)"><g fill="none" stroke="#315c63" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M23 12h54v77H23zM35 29h30m-30 15h30M42 58h19l-9 12h10L44 88l5-14H38z"/></g></g><rect x="434" y="48" width="94" height="94" rx="18" fill="#315c63" fill-opacity=".055" stroke="#315c63" stroke-opacity=".18"/><g transform="translate(446 60) scale(0.7)"><g fill="none" stroke="#315c63" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="50" cy="24" rx="30" ry="12"/><path d="M20 24v52c0 16 60 16 60 0V24 M20 49c0 16 60 16 60 0 M20 74c0 16 60 16 60 0"/></g></g><path d="M112 95L226 95" stroke="#315c63" stroke-width="2" opacity=".48" fill="none"/><path d="M320 95L434 95" stroke="#315c63" stroke-width="2" opacity=".48" fill="none"/><path d="M275 48Q165-15 65 48" fill="none" stroke="#bd562f" stroke-width="3" stroke-dasharray="7 5"/></g><text x="617" y="322" fill="#315c63" font-family="Arial,sans-serif" font-size="14" letter-spacing="1.1">Application</text><text x="825" y="322" fill="#315c63" font-family="Arial,sans-serif" font-size="14" letter-spacing="1.1">Cache</text><text x="1033" y="322" fill="#315c63" font-family="Arial,sans-serif" font-size="14" letter-spacing="1.1">Origin</text><text x="35" y="360" fill="#315c63" font-family="Arial,sans-serif" font-size="11" letter-spacing="1.1">AJNA / CACHE</text></g></g></svg></span><span class="art-compact"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="Conceptual illustration for Redis in Production: Patterns That Work and Anti-patterns That Will Break You: Cache, Origin, TTL." preserveAspectRatio="xMidYMid meet" data-article-art="redis-production-patterns" data-art-scene="cache" data-composition="process-strip"><defs><clipPath id="cpart-redis-production-patterns-640-360"><rect width="640" height="360"/></clipPath></defs><g clip-path="url(#cpart-redis-production-patterns-640-360)"><rect width="640" height="360" fill="#f7f0e1"/><g transform="translate(0 0) scale(1)"><path d="M0 312H640" stroke="#bd562f" stroke-width="2"/><path d="M0 317H640" stroke="#bd562f" stroke-width="8" opacity=".12"/><text x="35" y="40" fill="#293a42" font-size="24" font-weight="650" font-family="Arial,sans-serif" text-anchor="start">Redis in Production</text><g transform="translate(50 115) scale(0.96)"><rect x="18" y="48" width="94" height="94" rx="18" fill="#315c63" fill-opacity=".055" stroke="#315c63" stroke-opacity=".18"/><g transform="translate(30 60) scale(0.7)"><g fill="none" stroke="#315c63" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M33 25L10 50l23 25m34-50l23 25-23 25M59 14L42 87"/></g></g><rect x="226" y="48" width="94" height="94" rx="18" fill="#315c63" fill-opacity=".055" stroke="#315c63" stroke-opacity=".18"/><g transform="translate(238 60) scale(0.7)"><g fill="none" stroke="#315c63" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M23 12h54v77H23zM35 29h30m-30 15h30M42 58h19l-9 12h10L44 88l5-14H38z"/></g></g><rect x="434" y="48" width="94" height="94" rx="18" fill="#315c63" fill-opacity=".055" stroke="#315c63" stroke-opacity=".18"/><g transform="translate(446 60) scale(0.7)"><g fill="none" stroke="#315c63" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="50" cy="24" rx="30" ry="12"/><path d="M20 24v52c0 16 60 16 60 0V24 M20 49c0 16 60 16 60 0 M20 74c0 16 60 16 60 0"/></g></g><path d="M112 95L226 95" stroke="#315c63" stroke-width="2" opacity=".48" fill="none"/><path d="M320 95L434 95" stroke="#315c63" stroke-width="2" opacity=".48" fill="none"/><path d="M275 48Q165-15 65 48" fill="none" stroke="#bd562f" stroke-width="3" stroke-dasharray="7 5"/></g><text x="77" y="302" fill="#315c63" font-family="Arial,sans-serif" font-size="12" letter-spacing="1.1">Application</text><text x="276" y="302" fill="#315c63" font-family="Arial,sans-serif" font-size="12" letter-spacing="1.1">Cache</text><text x="475" y="302" fill="#315c63" font-family="Arial,sans-serif" font-size="12" letter-spacing="1.1">Origin</text><text x="35" y="340" fill="#315c63" font-family="Arial,sans-serif" font-size="11" letter-spacing="1.1">AJNA / CACHE</text></g></g></svg></span></div></div>
+  <div class="art-wrap"><div class="article-hero" data-topic="Data Engineering"><img data-article-art="redis-production-patterns" src="/assets/covers/redis-production-patterns.svg" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div></div>
 
   <div class="art-wrap article-grid">
     <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
-  <ol><li><a href="#data-structure-selection-is-architectural">Data structure selection is architectural</a></li><li><a href="#ttl-is-not-optional">TTL is not optional</a></li><li><a href="#the-distributed-lock-problem">The distributed lock problem</a></li><li><a href="#memory-management-eviction-policies-and-memory-pressure">Memory management: eviction policies and memory pressure</a></li><li><a href="#the-hot-key-problem">The hot key problem</a></li><li><a href="#sentinel-vs-cluster-vs-managed-services">Sentinel vs. Cluster vs. managed services</a></li></ol>
+  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#data-structure-selection-is-architectural">Data structure selection is architectural</a></li><li><a href="#ttl-is-not-optional">TTL is not optional</a></li><li><a href="#the-distributed-lock-problem">The distributed lock problem</a></li><li><a href="#memory-management-eviction-policies-and-memory-pressure">Memory management: eviction policies and memory pressure</a></li><li><a href="#the-hot-key-problem">The hot key problem</a></li><li><a href="#sentinel-vs-cluster-vs-managed-services">Sentinel vs. Cluster vs. managed services</a></li></ol>
 </nav></div>
     <div class="prose">
 <p>Redis is the database most teams add without a meeting. You add it for caching, it works immediately, and six months later it&#39;s carrying session state, rate limiting, pub/sub messaging, distributed locks, and the leaderboard. The original cache is fine. The session store is fine. The distributed lock implementation is broken in a subtle way that only manifests under specific failure conditions.</p>
 <p>The patterns matter. Here&#39;s what I&#39;ve learned from running Redis at scale.</p>
+<h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
+<p><strong>Evictions and origin fallback under pressure.</strong> If 5,000 keys are evicted while 1 million cache requests run, log the window and trend evictions per minute alongside the origin’s request rate. Reproduce with production-like key sizes and TTL distribution. Check that failure paths preserve the source of truth.</p>
+<p><em>Illustrative measurement. Any numbers in this example are hypothetical.</em></p>
 <h2 id="data-structure-selection-is-architectural"><a class="h-anchor" href="#data-structure-selection-is-architectural" aria-hidden="true" tabindex="-1">#</a>Data structure selection is architectural</h2>
-<aside class="keyfig">
-  <p class="keyfig-label">Key figure</p>
-  <p class="keyfig-text">Reduces Redis load by the request rate times <b>100ms</b>.</p>
-</aside>
 <p>Redis isn&#39;t a key-value store. It&#39;s a data structure server that happens to have strings. The data structure you choose affects performance, memory usage, and correctness.</p>
 <p><strong>Strings</strong>: for simple values, counters, and serialised JSON. Use <code>INCR</code> and <code>INCRBY</code> for counters — they&#39;re atomic. Don&#39;t store large JSON objects as strings if you frequently update single fields; you&#39;ll serialise/deserialise the whole object on every write.</p>
 <p><strong>Hashes</strong>: for objects with multiple fields where you update fields independently. A user profile stored as a Hash lets you <code>HSET user:123 email new@email.com</code> without touching the rest of the profile. Hashes are also memory-efficient for small collections — Redis uses a more compact encoding for hashes with fewer than 128 fields.</p>
@@ -158,7 +162,7 @@ end
 <p><strong>Redis Cluster</strong>: horizontal scaling across multiple nodes. Data is partitioned across 16,384 hash slots. Supports multiple primaries with their own replicas. Operations involving multiple keys must map to the same hash slot (use hash tags: <code>{user:123}:profile</code> and <code>{user:123}:sessions</code> both map to the same slot).</p>
 <p><strong>Managed services</strong> (AWS ElastiCache, Azure Cache for Redis, GCP Memorystore): operational overhead handled by the cloud provider. Automatic failover, patching, monitoring. If you&#39;re running on cloud infrastructure, there&#39;s rarely a good reason to run self-managed Redis — the operational cost of self-managing doesn&#39;t justify the control you get.</p>
 <p>The choice between Sentinel and Cluster depends on throughput. If a single Redis instance handles your peak load comfortably with headroom, use Sentinel. If you&#39;re hitting single-instance CPU or memory limits, move to Cluster.</p>
-<p><em>Diagnosing Redis performance issues or planning a migration from single-node to cluster? <a href="/contact">Happy to talk through the specifics.</a></em></p>
+<p><em>Diagnosing Redis performance issues or planning a migration from single-node to cluster? <a href="/contact/">Happy to talk through the specifics.</a></em></p>
 
     </div>
   </div>
@@ -177,7 +181,7 @@ end
 
   <div class="art-wrap article-foot">
     <div class="row" style="gap:.4rem">
-      <a class="chip chip-plain" href="/insights/?topic=Data%20Engineering">Data Engineering</a><a class="chip chip-plain" href="/insights/?topic=Redis">Redis</a><a class="chip chip-plain" href="/insights/?topic=Architecture">Architecture</a><a class="chip chip-plain" href="/insights/?topic=Cloud%20Architecture">Cloud Architecture</a>
+      <a class="chip chip-plain" href="/topics/data-engineering/">Data Engineering</a><a class="chip chip-plain" href="/insights/?topic=Redis">Redis</a><a class="chip chip-plain" href="/topics/architecture/">Architecture</a><a class="chip chip-plain" href="/topics/cloud-architecture/">Cloud Architecture</a>
     </div>
     <nav class="prevnext" aria-label="More articles">
       <a href="/insights/java-testing-cloud-microservices/"><span>Previous</span><strong>Java Testing Strategies for Cloud Microservices: What Actually Works in CI</strong></a>
@@ -188,31 +192,31 @@ end
   <section class="section surface hair" style="margin-top:4rem">
     <div class="wrap">
       <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|DevSecOps|Cloud Architecture|Engineering Leadership|" data-search="platform engineering in 2026: what an internal developer platform actually needs every team is building a platform. few are building one that developers actually want to use. here&#39;s what separates an idp that accelerates delivery from one that adds process overhead dressed up as self-service. devsecops cloud architecture engineering leadership" data-topic="DevSecOps" href="/insights/platform-engineering-idp-2026/">
-  <div class="card-art"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="Conceptual illustration for Platform Engineering in 2026: What an Internal Developer Platform Actually Needs: Developer, Platform, Feedback." preserveAspectRatio="xMidYMid meet" data-article-art="platform-engineering-idp-2026" data-art-scene="platform" data-composition="paper-workbench"><defs><clipPath id="cpart-platform-engineering-idp-2026-640-360"><rect width="640" height="360"/></clipPath></defs><g clip-path="url(#cpart-platform-engineering-idp-2026-640-360)"><rect width="640" height="360" fill="#f1ebe0"/><g transform="translate(0 0) scale(1)"><path d="M73 97l525 14-6 216-528-14z" fill="#9d4c35" opacity=".12"/><rect x="45" y="110" width="550" height="218" fill="#fffaf0"/><path d="M57 126h17m-8-8v16" stroke="#9d4c35"/><g transform="translate(49 118) scale(0.96)"><g transform="translate(36 55) scale(0.95)"><g fill="none" stroke="#756654" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="50" cy="28" r="15"/><path d="M19 88v-9a31 31 0 0162 0v9 M15 18a12 12 0 000 24M85 18a12 12 0 010 24M7 59a20 20 0 00-4 29m90-29a20 20 0 014 29"/></g></g><g transform="translate(228 35) scale(1.2)"><g fill="none" stroke="#9d4c35" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M18 88V12h64v76M38 30h24v58M6 88h88 M6 50h20m48 0h20 M20 44l7 6-7 6m61-12l-7 6 7 6"/></g></g><g transform="translate(440 55) scale(0.95)"><g fill="none" stroke="#756654" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="50" cy="28" r="15"/><path d="M19 88v-9a31 31 0 0162 0v9 M15 18a12 12 0 000 24M85 18a12 12 0 010 24M7 59a20 20 0 00-4 29m90-29a20 20 0 014 29"/></g></g><path d="M137 100L213 100" stroke="#756654" stroke-width="2" opacity=".48" fill="none"/><path d="M365 100L430 100" stroke="#756654" stroke-width="2" opacity=".48" fill="none"/></g><text x="35" y="42" fill="#483f39" font-size="25" font-weight="400" font-family="Georgia,serif" text-anchor="start">Platform Engineering in 2026</text><text x="35" y="345" fill="#756654" font-family="Arial,sans-serif" font-size="10" letter-spacing="1.1">PLATFORM / WORKING NOTES</text></g></g></svg></div>
+      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|Programming|Architecture|Cloud Architecture|" data-search="api design for enterprise systems: the decisions that age well an api that&#39;s easy to build against is easy to build wrong. the decisions around versioning, error models, pagination, idempotency, and authentication compound over time — here&#39;s how to make the ones that don&#39;t cause regret. programming architecture cloud architecture" data-topic="Programming" href="/insights/api-design-enterprise/">
+  <div class="card-art"><img data-article-art="api-design-enterprise" src="/assets/covers/api-design-enterprise.svg" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">DevSecOps</span>
-    <h3 class="card-title">Platform Engineering in 2026: What an Internal Developer Platform Actually Needs</h3>
-    <p class="card-desc">Every team is building a platform. Few are building one that developers actually want to use. Here&#39;s what separates an IDP that accelerates delivery from one that adds process overhead dressed up as self-service.</p>
-    <div class="card-meta"><time datetime="2026-11-20">20 Nov 2026</time><span class="dot"></span><span>4 min read</span></div>
+    <span class="chip">Programming</span>
+    <h3 class="card-title">API Design for Enterprise Systems: The Decisions That Age Well</h3>
+    <p class="card-desc">An API that&#39;s easy to build against is easy to build wrong. The decisions around versioning, error models, pagination, idempotency, and authentication compound over time — here&#39;s how to make the ones that don&#39;t cause regret.</p>
+    <div class="card-meta"><time datetime="2026-11-06">6 Nov 2026</time><span class="dot"></span><span>5 min read</span></div>
   </div>
 </a>
-<a class="card" data-card data-topics="|Cloud Architecture|DevSecOps|Infrastructure|" data-search="serverless vs containers: an honest comparison for 2026 neither is universally better. the answer depends on your workload profile, your team&#39;s operational maturity, and — honestly — your tolerance for cold starts. cloud architecture devsecops infrastructure" data-topic="Cloud Architecture" href="/insights/serverless-vs-containers-2026/">
-  <div class="card-art"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="Conceptual illustration for Serverless vs Containers: An Honest Comparison for 2026: Workload, Runtime, Container." preserveAspectRatio="xMidYMid meet" data-article-art="serverless-vs-containers-2026" data-art-scene="container" data-composition="technical-cutaway"><defs><clipPath id="cpart-serverless-vs-containers-2026-640-360"><rect width="640" height="360"/></clipPath></defs><g clip-path="url(#cpart-serverless-vs-containers-2026-640-360)"><rect width="640" height="360" fill="#e9e7f2"/><g transform="translate(0 0) scale(1)"><path d="M58 291l260 65 295-70-265-63z" fill="#645b94" opacity=".1"/><path d="M73 273l245 58 275-64" fill="none" stroke="#b06d3b" stroke-width="2"/><g transform="translate(78 116) scale(0.88)"><rect x="42" y="12" width="470" height="186" rx="22" stroke="#645b94" fill="#645b94" fill-opacity=".035"/><g transform="translate(70 35) scale(0.86)"><g fill="none" stroke="#645b94" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><rect x="10" y="18" width="80" height="64" rx="6"/><path d="M26 28v44m16-44v44m16-44v44m16-44v44M10 67h80"/></g></g><g transform="translate(225 35) scale(0.86)"><g fill="none" stroke="#645b94" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><rect x="10" y="18" width="80" height="64" rx="6"/><path d="M26 28v44m16-44v44m16-44v44m16-44v44M10 67h80"/></g></g><g transform="translate(380 35) scale(0.86)"><g fill="none" stroke="#645b94" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><rect x="10" y="18" width="80" height="64" rx="6"/><path d="M26 28v44m16-44v44m16-44v44m16-44v44M10 67h80"/></g></g><path d="M65 150h426m-426 23h426" stroke="#b06d3b" stroke-width="8" opacity=".45"/></g><text x="35" y="40" fill="#33324f" font-size="24" font-weight="650" font-family="Arial,sans-serif" text-anchor="start">Serverless vs Containers</text><text x="35" y="337" fill="#645b94" font-family="Arial,sans-serif" font-size="12" letter-spacing="1.1">container</text></g></g></svg></div>
+<a class="card" data-card data-topics="|Programming|Architecture|Cloud Architecture|" data-search="system design patterns every backend engineer should know cqrs, event sourcing, saga pattern, outbox pattern — the patterns that solve specific distributed systems problems, what trade-offs they introduce, and when the simpler option is actually the right one. programming architecture cloud architecture" data-topic="Programming" href="/insights/system-design-patterns-backend/">
+  <div class="card-art"><img data-article-art="system-design-patterns-backend" src="/assets/covers/system-design-patterns-backend.svg" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Cloud Architecture</span>
-    <h3 class="card-title">Serverless vs Containers: An Honest Comparison for 2026</h3>
-    <p class="card-desc">Neither is universally better. The answer depends on your workload profile, your team&#39;s operational maturity, and — honestly — your tolerance for cold starts.</p>
-    <div class="card-meta"><time datetime="2026-11-13">13 Nov 2026</time><span class="dot"></span><span>4 min read</span></div>
+    <span class="chip">Programming</span>
+    <h3 class="card-title">System Design Patterns Every Backend Engineer Should Know</h3>
+    <p class="card-desc">CQRS, event sourcing, saga pattern, outbox pattern — the patterns that solve specific distributed systems problems, what trade-offs they introduce, and when the simpler option is actually the right one.</p>
+    <div class="card-meta"><time datetime="2026-10-28">28 Oct 2026</time><span class="dot"></span><span>5 min read</span></div>
   </div>
 </a>
-<a class="card" data-card data-topics="|Cloud Architecture|DevSecOps|" data-search="chaos engineering: testing reliability before production tests it for you chaos engineering injects controlled failures to validate that systems actually behave as designed under real-world failure conditions. the gap between the architecture diagram and production behavior is where reliability lives. cloud architecture devsecops" data-topic="Cloud Architecture" href="/insights/chaos-engineering-practices/">
-  <div class="card-art"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="Conceptual illustration for Chaos Engineering: Testing Reliability Before Production Tests It For You: Respond, Recover, Incident." preserveAspectRatio="xMidYMid meet" data-article-art="chaos-engineering-practices" data-art-scene="incident" data-composition="narrative-landscape"><defs><clipPath id="cpart-chaos-engineering-practices-640-360"><rect width="640" height="360"/></clipPath></defs><g clip-path="url(#cpart-chaos-engineering-practices-640-360)"><rect width="640" height="360" fill="#f2e6d4"/><g transform="translate(0 0) scale(1)"><path d="M-20 322Q160 250 358.40000000000003 325T660 305V360H0Z" fill="#677c62" opacity=".14"/><circle cx="578" cy="48" r="30" fill="#b26342" opacity=".2"/><g transform="translate(50 24) scale(0.96)"><g transform="translate(30 50) scale(0.9)"><g fill="none" stroke="#677c62" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="50" cy="50" r="37"/><path d="M50 25v28l19 11M50 13v7m37 30h-7M50 87v-7M13 50h7"/></g></g><g transform="translate(235 50) scale(0.9)"><g fill="none" stroke="#b26342" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M50 9L83 22v27c0 22-17 35-33 43-16-8-33-21-33-43V22z M33 50l12 13 24-28"/></g></g><g transform="translate(440 50) scale(0.9)"><g fill="none" stroke="#677c62" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M50 26C36 12 17 13 7 18v64c15-7 29-4 43 7 14-11 28-14 43-7V18c-10-5-29-6-43 8v63 M18 33c8-2 16 0 23 4m-23 9c8-2 16 0 23 4m18-13c7-4 15-6 23-4m-23 17c7-4 15-6 23-4"/></g></g><path d="M70 177h420" stroke="#677c62" stroke-width="3"/><circle cx="75" cy="177" r="6" fill="#677c62"/><circle cx="280" cy="177" r="6" fill="#677c62"/><circle cx="485" cy="177" r="6" fill="#677c62"/></g><text x="35" y="270" fill="#4e4438" font-size="24" font-weight="400" font-family="Georgia,serif" text-anchor="start">Chaos Engineering</text></g></g></svg></div>
+<a class="card" data-card data-topics="|Performance|Programming|Cloud Architecture|Data Engineering|FinOps|" data-search="compression in production: choosing between gzip, zstd, lz4, and brotli like it matters compression is a three-way trade — ratio, speed, and cpu — that most systems set once by default and never revisit. the algorithm landscape, placement decisions across web, storage, and streaming, dictionary compression&#39;s quiet superpower, and the measurement discipline. performance programming cloud architecture data engineering finops" data-topic="Performance" href="/insights/compression-selection-guide/">
+  <div class="card-art"><img data-article-art="compression-selection-guide" src="/assets/covers/compression-selection-guide.svg" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Cloud Architecture</span>
-    <h3 class="card-title">Chaos Engineering: Testing Reliability Before Production Tests It For You</h3>
-    <p class="card-desc">Chaos engineering injects controlled failures to validate that systems actually behave as designed under real-world failure conditions. The gap between the architecture diagram and production behavior is where reliability lives.</p>
-    <div class="card-meta"><time datetime="2026-11-11">11 Nov 2026</time><span class="dot"></span><span>3 min read</span></div>
+    <span class="chip">Performance</span>
+    <h3 class="card-title">Compression in Production: Choosing Between gzip, zstd, lz4, and Brotli Like It Matters</h3>
+    <p class="card-desc">Compression is a three-way trade — ratio, speed, and CPU — that most systems set once by default and never revisit. The algorithm landscape, placement decisions across web, storage, and streaming, dictionary compression&#39;s quiet superpower, and the measurement discipline.</p>
+    <div class="card-meta"><time datetime="2026-10-12">12 Oct 2026</time><span class="dot"></span><span>5 min read</span></div>
   </div>
 </a></div>
     </div>
@@ -260,7 +264,17 @@ end
   <p class="reader-note">Saved in this browser only — these settings do not follow you to another device.</p>
 </div>
 <button class="focus-exit" id="focusExit" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h6V3M21 9h-6V3M3 15h6v6M21 15h-6v6"/></svg> Exit focus</button>
-
+<div class="chapter-bar" id="chapterBar">
+  <div class="chapter-where">
+    <b>Redis in Production: Patterns That Work and Anti-patterns That Will Break You</b>
+    <span>Data Engineering</span>
+  </div>
+  <span class="chapter-left" id="chapterLeft"></span>
+  <nav class="chapter-step" aria-label="Article navigation">
+    <a href="/insights/java-testing-cloud-microservices/" aria-label="Previous: Java Testing Strategies for Cloud Microservices: What Actually Works in CI"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a>
+    <a href="/insights/mlops-pipelines-azure-sagemaker/" aria-label="Next: MLOps Pipelines That Actually Work: Lessons from Azure ML and SageMaker"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
+  </nav>
+</div>
 </main>
 
 <footer class="site-footer">
@@ -313,7 +327,7 @@ end
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=74a650b6"></script>
+<script src="/assets/js/site.js?v=dd970c4d" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=dd970c4d"></script>
 </body>
 </html>

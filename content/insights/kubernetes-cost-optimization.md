@@ -10,6 +10,14 @@ Kubernetes is, from a FinOps perspective, a visibility problem masquerading as a
 
 Cloud billing APIs tell you what a cluster costs. They tell you almost nothing about *why* — which workloads are driving that cost, which are over-provisioned, which are idle, and whether your bin-packing efficiency is anywhere near where it should be. That gap is where FinOps programs break down.
 
+## What to measure
+
+**Cost per unit with requests and usage visible.** If nodes cost $1,800 to serve 12 million successful jobs, allocation is $0.15 per 1,000 jobs. Pair it with requested versus used CPU and memory. A higher utilisation ratio only helps if cost or capacity improves at the same reliability objective.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
+Further reading: [FinOps Foundation, State of FinOps 2026](https://data.finops.org/).
+
 ## Why Standard Cloud Billing Falls Short
 
 When you look at an EKS, AKS, or GKE line item in your billing dashboard, you see:
@@ -86,4 +94,4 @@ Outcome: 31% reduction in cluster cost without a single service incident.
 
 The technology was straightforward. The time was spent on change management — convincing service owners that reducing their resource requests wouldn't cause instability.
 
-*Running Kubernetes at scale and struggling with cost visibility? [Worth a conversation.](/contact)*
+*Running Kubernetes at scale and struggling with cost visibility? [Worth a conversation.](/contact/)*

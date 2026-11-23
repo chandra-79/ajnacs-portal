@@ -10,6 +10,12 @@ format: article
 
 Large language models are the most consequential technology development in AI since the GPU made deep learning practical. Understanding their architecture, their training process, and their limitations is essential for any engineer building on top of them — because the limitations are architectural, not incidental, and they shape what is safe and unsafe to build.
 
+## What to measure
+
+**Useful answers out of all attempts.** Have a reviewer score 100 representative prompts using a fixed rubric. If 82 pass, 12 give unsupported answers and 6 abstain, report all three outcomes. An 82% pass rate on this prompt set does not describe performance on other tasks.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
 ## The Transformer: The Architecture That Changed Everything
 
 Every major language model — GPT, Claude, Llama, Gemini, Mistral — is built on the transformer architecture, introduced in the 2017 paper "Attention Is All You Need" by Vaswani et al.

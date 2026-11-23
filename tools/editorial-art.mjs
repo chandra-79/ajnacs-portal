@@ -216,6 +216,10 @@ function sceneFor(layout, c1, c2) {
   return `${kinds.map((kind,i)=>node(kind,30+i*208,60)).join('')}${line(112,95,226,95)}${line(320,95,434,95)}`;
 }
 
+export function articleDrawing(direction, ink, accent) {
+  return articleSpecificScene(direction, ink, accent) || sceneFor(direction.scene, ink, accent);
+}
+
 export function compositionFor(direction) {
   if(direction.section==='notes'||['reading','library','conversation','reflection'].includes(direction.scene))return 'editorial-vignette';
   if(['fabric','network','consensus','hashring','architecture'].includes(direction.scene))return 'drafting-board';

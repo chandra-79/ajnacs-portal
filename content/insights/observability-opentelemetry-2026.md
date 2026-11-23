@@ -12,6 +12,12 @@ A fully observable system is one where, given a symptom (high error rate, slow P
 
 OpenTelemetry has become the standard for generating, collecting, and exporting these signals. Here's how to get it working.
 
+## What to measure
+
+**Coverage for buffered versus dropped telemetry.** If 980,000 of 1,000,000 eligible spans reach storage, observed delivery is 98%. Keep sampled-out events separate from collector drops, label delayed arrivals, and test that a collector outage does not breach request latency objectives.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
 ## OpenTelemetry: what it is and what it isn't
 
 OpenTelemetry (OTel) is an observability framework: a vendor-neutral standard for instrumenting applications to produce traces, metrics, and logs, and for collecting and exporting that telemetry to any backend.
@@ -74,7 +80,7 @@ Metrics are numerical measurements at points in time — request rate, error rat
 
 **The RED method** (Rate, Errors, Duration) for services: every service should have metrics for request rate, error rate, and request duration percentiles (P50, P95, P99).
 
-The P99 latency matters more than the average. An average response time of 100ms can hide a P99 of 2 seconds — 1% of requests taking 20x longer than typical. For services at any meaningful scale, 1% is a lot of users.
+Report tail latency alongside the average. An average of 100 ms and a p99 of 2 seconds can describe the same sample. A p99 near 2 seconds puts the slowest portion of requests near or beyond that threshold, depending on sample size and the quantile implementation. For services at any meaningful scale, 1% is a lot of users.
 
 ```java
 // OTel metrics
@@ -175,4 +181,4 @@ Grafana's Explore view allows correlating all three signals: start with a metric
 
 For teams at scale or with managed service requirements: Datadog, Honeycomb, and Grafana Cloud all support OTel natively — instrument once, use managed infrastructure.
 
-*Building observability for a new system or migrating from a vendor-specific instrumentation library? [Happy to compare approaches.](/contact)*
+*Building observability for a new system or migrating from a vendor-specific instrumentation library? [Happy to compare approaches.](/contact/)*

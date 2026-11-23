@@ -10,6 +10,12 @@ The OCI Architect Associate exam (1Z0-1072) tests Oracle Cloud Infrastructure-sp
 
 Here's what the exam emphasises, organised by weight.
 
+## What to measure
+
+**Repeatable hands-on verification.** Track whether you can finish a lab from a blank tenancy and explain each design choice without notes. For 12 labs with 9 completed unaided, unaided completion is 75%. Revisit failed domains and verify the current exam blueprint directly before booking.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
 ## Tenancy and IAM: the foundation the exam builds on
 
 OCI's identity model is compartment-based. Everything in OCI lives in a compartment — a logical grouping of resources that forms the boundary for policies, quotas, and access control. Understanding the compartment hierarchy and how policies attach to compartments (not individual resources) is fundamental to OCI IAM.
@@ -74,4 +80,4 @@ For engineers already certified on AWS or Azure:
 
 The exam is 60 questions, 90 minutes. The question style is scenario-based: given an architecture requirement, which OCI services and configuration meets it?
 
-*Preparing for OCI certification alongside other cloud certs? [Happy to share what's worked.](/contact)*
+*Preparing for OCI certification alongside other cloud certs? [Happy to share what's worked.](/contact/)*

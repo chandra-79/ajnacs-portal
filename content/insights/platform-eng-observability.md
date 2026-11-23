@@ -12,6 +12,14 @@ One of the highest-value things a platform team can provide: every service deplo
 
 This is achievable. Here is how to build it.
 
+## What to measure
+
+**Availability measured by developer journeys.** Run synthetic scaffold, build and deploy tasks against the platform. If 4 of 800 attempts fail within the measurement window, journey success is 99.5%. Break failures down by identity, registry, runners and deployment target so owners can act.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
+Further reading: [Google’s SRE Workbook, Implementing SLOs](https://sre.google/workbook/implementing-slos/).
+
 ## The Three Pillars and How to Automate Them
 
 **Logs**: every application emits logs. The platform should collect them without requiring the developer to configure a logging agent.

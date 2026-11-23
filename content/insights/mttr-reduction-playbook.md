@@ -10,6 +10,14 @@ MTTR (Mean Time to Recover or Mean Time to Resolve, depending on who you ask) me
 
 Reducing MTTR is deceptively hard to target directly. You can't improve MTTR by trying harder during incidents — you improve it by investing in capabilities before incidents happen. This playbook focuses on those leading investments.
 
+## What to measure
+
+**Median and p90 recovery time.** Publish time from incident start to service restoration by severity. In a 20-incident set, the median can improve while the longest events still dominate user impact. Report both the median and a tail percentile, the sample size, and whether customer recovery or ticket closure stops the clock.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
+Further reading: [DORA’s software delivery performance metrics](https://dora.dev/guides/dora-metrics/).
+
 ## Decompose MTTR before trying to reduce it
 
 MTTR as a single number hides the bottleneck. Time to recovery is the sum of:
@@ -89,4 +97,4 @@ Track each MTTR component (detection, diagnosis, remediation, validation) separa
 
 Set targets: what would "good" look like for each severity level, for each component? Work backward from those targets to the investments that would get you there.
 
-*Working on incident response capability or building the observability foundation? [Happy to compare what's worked.](/contact)*
+*Working on incident response capability or building the observability foundation? [Happy to compare what's worked.](/contact/)*

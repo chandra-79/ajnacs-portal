@@ -12,6 +12,11 @@ Network fabric decisions don't get talked about enough in enterprise architectur
 
 Here's how I think about the Ethernet vs. InfiniBand question in 2026.
 
+## What to measure
+
+**Effective collective throughput.** Transfer 8 GB per rank in 0.16 s to get 50 GB/s algorithmic throughput for that test. Compare at identical message sizes, load, GPU topology and collective algorithm, and declare whether numbers are algorithmic or bus bandwidth.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
 
 ## The short version
 
@@ -92,6 +97,6 @@ A quick framework:
 
 There's genuinely no universal right answer here — it depends on workload characteristics, scale, team skills, and budget. What I've found useful is having a clear mental model of where each fabric was designed to operate, and then mapping your actual requirements against that rather than chasing the higher headline number.
 
-Happy to go deeper on any of the specific decision points — drop a comment or [get in touch](/about).
+Happy to go deeper on any of the specific decision points — drop a comment or [get in touch](/about/).
 
 *Tagged: Networking · Infrastructure · AI · Cloud Architecture · HPC*

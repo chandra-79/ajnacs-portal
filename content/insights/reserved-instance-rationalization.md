@@ -16,6 +16,14 @@ The risk: commit to an EC2 instance type that you end up not using (because you 
 
 The analysis that makes the difference is identifying what's genuinely stable — and being honest about what isn't.
 
+## What to measure
+
+**Commitment savings after waste.** Suppose equivalent on-demand usage costs $10,000. If the combination of commitments (used and unused) plus uncovered usage costs $8,700, realised savings are $1,300, or 13%. Track hourly utilisation as well as monthly totals to expose persistent surplus.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
+Further reading: [FinOps Foundation, State of FinOps 2026](https://data.finops.org/).
+
 ## The baseline analysis: what's actually steady-state?
 
 Before committing to anything, run three months of historical usage data through your cloud cost management tool (AWS Cost Explorer, Azure Cost Management, GCP Cost Recommender) and answer three questions:
@@ -54,7 +62,7 @@ There are two metrics that matter for committed use discount programs:
 
 The goal: high coverage on stable workloads, high utilization by not over-committing. These are in tension — pushing for higher coverage increases the risk of under-utilization.
 
-A reasonable initial target: 70-80% RI/Savings Plan coverage of steady-state EC2 spend, with > 90% utilization. Increase coverage as you develop confidence in what's truly stable.
+Set your coverage target from the stable portion of hourly demand. Model utilisation after a downsizing or migration, then buy incrementally once you know the commitment survives those changes.
 
 ## The right cadence for reviewing commitments
 
@@ -70,4 +78,4 @@ The cloud providers' own tools (AWS Cost Explorer's RI recommendations, Azure Ad
 
 If you have Reserved Instances you're not using, AWS's Reserved Instance Marketplace allows you to sell them to other AWS customers. The discount from the original purchase may be partially recovered. This is worth knowing about before you commit to a 3-year Reserved Instance for a workload you're not fully confident about — an exit exists, but it's not guaranteed (demand in the marketplace varies by instance type and region).
 
-*Building a commitment strategy for your cloud spend? The right cadence and analytical approach matter more than any individual tool. [Happy to think through your specific situation.](/contact)*
+*Building a commitment strategy for your cloud spend? The right cadence and analytical approach matter more than any individual tool. [Happy to think through your specific situation.](/contact/)*

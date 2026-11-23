@@ -10,6 +10,12 @@ WebLogic JMS is one of the most battle-tested message brokers in existence, and 
 
 This is the explainer for people who have to keep messages flowing at 2 AM, not pass a certification exam.
 
+## What to measure
+
+**Backlog growth, drain time and redelivery.** If producers send 500 messages/s and consumers acknowledge 450, backlog grows by 50/s. With producers stopped and the same consumption rate, 9,000 messages would drain in 20 seconds. Measure redelivery and duplicates individually when reconciling actual results.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
 ## The object model: who owns what
 
 The pieces, from the bottom up:

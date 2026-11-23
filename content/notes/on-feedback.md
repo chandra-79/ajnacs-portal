@@ -7,7 +7,7 @@ format: article
 derived: true
 ---
 
-The feedback conversation is one of the most consistently handled poorly in professional settings. Both directions: feedback given too softly to be useful, feedback received as an attack rather than information.
+Feedback goes wrong in both directions. We soften it until it is hard to act on, or we hear it as an attack and miss the information in it.
 
 I've been on both sides of this enough times to have some views.
 

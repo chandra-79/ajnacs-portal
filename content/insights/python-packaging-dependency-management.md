@@ -10,6 +10,12 @@ For twenty years, "how do I manage Python dependencies" had a dozen answers, all
 
 That era is genuinely ending. The standards consolidated, and the tooling caught up. Here's what current-day Python dependency management looks like, and how to get an existing estate there.
 
+## What to measure
+
+**Reproducibility across supported environments.** Install from the lock in each supported Python and OS combination with a clean cache. If 11 of 12 jobs install and pass a smoke test, report the failing combination, package and missing wheel so teams can act. Test the built artifact as well as the editable checkout.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
 ## The consolidation: pyproject.toml won
 
 Everything about a Python project now lives in **`pyproject.toml`** — metadata, dependencies, optional extras, build backend, and tool configuration. `setup.py` is legacy (still executable, no longer where new work goes); standalone `requirements.txt` survives only as an *export format*. The standards behind this (PEP 517/518/621 and successors) mean tools interoperate instead of inventing private universes: any modern builder can build any compliant project, and any resolver can read its requirements.

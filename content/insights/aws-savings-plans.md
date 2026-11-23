@@ -8,6 +8,12 @@ format: article
 
 AWS introduced Savings Plans in 2019 as a more flexible alternative to EC2 Reserved Instances. For most workloads, they are now the better choice. For some specific workloads, Reserved Instances still offer a price advantage. Understanding when each applies is the core FinOps decision for reducing AWS compute costs.
 
+## What to measure
+
+**Coverage, utilisation and effective savings.** Record eligible usage covered by commitments and the share of committed spend actually used. If $80 of a $100 hourly commitment is used, utilisation is 80%. Calculate effective savings against an equivalent on-demand workload after accounting for the unused commitment.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
 ## How Savings Plans work
 
 Savings Plans commit to a consistent hourly spend (e.g., $10/hour) in exchange for a discount on eligible charges. The discount applies automatically to matching usage as it occurs — you don't allocate a Savings Plan to a specific instance type.
@@ -55,8 +61,8 @@ The 3-year term makes most sense for: core infrastructure workloads that have be
 
 - **No upfront**: no upfront cost; monthly charges at discounted rate. No cash flow impact; slightly lower discount.
 - **Partial upfront**: upfront payment for some of the term; monthly charges for the remainder. Better discount.
-- **All upfront**: full payment for the term upfront. Maximum discount (typically 5-7% better than no-upfront). Opportunity cost on the cash; appropriate for organizations with favorable cost of capital.
+- **All upfront**: full payment for the term upfront. Compare the quoted rate with other payment options for the same commitment and term. Include the cost of tying up cash in your comparison.
 
 Most organizations use no-upfront or partial-upfront Savings Plans. The all-upfront discount rarely justifies the cash commitment for a 1-year term; it is more compelling for a 3-year term at scale.
 
-*Modeling Savings Plans or RI purchases for a significant AWS spend? The commitment analysis requires a solid understanding of your usage patterns over time. [Happy to walk through the approach.](/contact)*
+*Modeling Savings Plans or RI purchases for a significant AWS spend? The commitment analysis requires a solid understanding of your usage patterns over time. [Happy to walk through the approach.](/contact/)*

@@ -10,6 +10,12 @@ format: article
 
 Containers are not a Linux feature. There is no `container` system call. What containers are is a combination of two existing kernel primitives — namespaces and cgroups — wrapped in a user-space runtime. Understanding these primitives explains why containers work, what their security boundaries actually are, and what happens when they fail.
 
+## What to measure
+
+**Throttling and memory pressure by workload.** If cgroup CPU metrics show 250 throttled periods out of 1,000, throttling occurred in 25% of observed periods. Keep this distinct from the fraction of CPU time lost; inspect throttled duration and request latency under the same traffic.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
 ## Namespaces
 
 A namespace wraps a global resource and makes processes inside the namespace believe they have their own isolated copy of it. Processes in different namespaces cannot see or affect each other's resources.

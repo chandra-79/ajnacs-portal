@@ -10,6 +10,12 @@ Cloud migration success rates are worse than most organizations expect. Projects
 
 The patterns behind failed migrations are well-documented at this point. Most of them are avoidable.
 
+## What to measure
+
+**Traffic shifted with measurable rollback time.** During a trial cutover, migrate 5,000 of 100,000 requests and time rollback from the decision to the first clean measurement window. Track data reconciliation lag separately so traffic reversal does not mask leftover writes.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
 ## Lift-and-shift with no optimization plan
 
 The fastest path to cloud is lifting an on-premises workload and dropping it in a cloud VM with a similar specification. This works in the short term and almost always produces disappointing economics in the medium term.
@@ -55,4 +61,4 @@ Migrations that are underprepared for cutover often have not tested the cloud en
 
 A cutover without a tested rollback is not a deployment — it is a bet. Rollback procedures are worth as much investment as the forward migration.
 
-*Planning a cloud migration or troubleshooting one that is not going as expected? [Happy to share what the preparation phase should cover.](/contact)*
+*Planning a cloud migration or troubleshooting one that is not going as expected? [Happy to share what the preparation phase should cover.](/contact/)*

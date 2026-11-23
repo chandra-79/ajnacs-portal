@@ -595,8 +595,8 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:800;line-height:1.12;
 
 /* ---------- case studies ---------- */
 .case{display:flex;flex-direction:column;background:var(--paper);border:1px solid var(--line);border-radius:var(--radius-lg);overflow:hidden}
-.case-art{aspect-ratio:16/7;border-bottom:1px solid var(--line)}
-.case-art svg{width:100%;height:100%;display:block}
+.case-art{aspect-ratio:16/9;overflow:hidden;background:#fcf0e4;border-bottom:1px solid var(--line)}
+.case-art img{display:block;width:100%;height:100%;object-fit:cover}
 .case-body{padding:1.6rem 1.6rem 1.7rem}
 .case-measure{margin-top:1.2rem;padding-top:.9rem;border-top:1px solid var(--line);font-size:.85rem;color:var(--accent-ink);font-weight:600}
 
@@ -1067,7 +1067,6 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:800;line-height:1.12;
    the composition is unchanged and only its presence on the ground moves. */
 [data-theme="dark"] .card-art svg,
 [data-theme="dark"] .article-hero svg,
-[data-theme="dark"] .case-art svg,
 [data-theme="dark"] .hero .art svg{filter:brightness(1.5) saturate(1.1)}
 [data-theme="dark"] svg[data-article-art]{filter:none;--art-ink:#e1e9ff;--art-stroke:#9bb7ed;--art-accent:#a9d7e4}
 [data-theme="dark"] .prose pre{box-shadow:var(--lift)}
@@ -1096,3 +1095,18 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:800;line-height:1.12;
   font-family:var(--font-display);font-size:.78rem;font-weight:800;letter-spacing:.12em;
   text-transform:uppercase;color:rgba(255,255,255,.62);margin-bottom:.9rem;
 }
+
+/* Editorial covers and archive entry points */
+.card-art img,.content-thumbnail img,.article-hero img,.feature-post .art img{display:block;width:100%;height:100%;object-fit:cover}
+.article-hero{aspect-ratio:16/9;max-height:none;background:#fcf0e4}
+.article-byline{color:var(--accent-ink);font-weight:650;text-decoration:underline;text-underline-offset:.2em}
+.insights-actions{margin-top:1.3rem;gap:.75rem}
+.archive-collections{margin:0 0 2.5rem}
+.archive-collections .grid{margin-top:.85rem}
+.guide-link{display:flex;flex-direction:column;gap:.35rem;align-items:flex-start;padding:1.1rem 1.25rem;border:1px solid var(--line);border-radius:var(--radius);background:var(--paper-2);text-decoration:none}
+.guide-link strong{color:var(--accent-ink)}
+.guide-link:hover strong,.guide-link:focus-visible strong{text-decoration:underline;text-underline-offset:.2em}
+.guide-link span{color:var(--text-2)}
+.home-outcomes{display:flex;flex-wrap:wrap;gap:.65rem;margin:2rem 0 0;padding:0;list-style:none}
+.home-outcomes li{border:1px solid #46597f;border-radius:999px;padding:.4rem .85rem;color:#dbe6ff;font-size:.9rem}
+.topic-select{max-width:100%;min-height:2.75rem;border:1px solid var(--line);border-radius:var(--radius);background:var(--paper-2);color:var(--text);padding:.4rem .7rem;font:inherit}

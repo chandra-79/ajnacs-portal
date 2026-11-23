@@ -10,6 +10,12 @@ The GPU cluster is provisioned. 256 A100s. Expensive, powerful, and sitting at 4
 
 The bottleneck is not the GPUs. The bottleneck is the network.
 
+## What to measure
+
+**Collective completion at representative load.** Compare p50 and p99 all-reduce duration at the same payload and rank count. A median of 20 ms with a p99 of 60 ms tells a different story from a median of 24 ms with a p99 of 29 ms. Test simultaneous jobs before standardising the fabric.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
 ## Why distributed AI training is a network problem
 
 Modern large model training uses distributed data parallelism or tensor parallelism, which requires frequent synchronization of gradients or activations across GPUs. The synchronization involves a lot of data moving very fast:

@@ -10,6 +10,13 @@ Quantum computing gets announced every few months as "a breakthrough" — and ea
 
 Here's what's actually happened in the past six years and what to make of it.
 
+## What to measure
+
+**Logical error under comparable conditions.** Compare logical error per cycle, code distance, physical-qubit count and the number of cycles. A logical error rate of 0.1% at one distance and 0.05% at a greater distance represents a 2× reduction in that experiment. Keep gate fidelity and application runtime in separate categories.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
+Further reading: [Google Quantum AI, Quantum error correction below the surface code threshold](https://arxiv.org/abs/2408.13687).
 
 ## The milestones, in plain language
 
@@ -84,4 +91,4 @@ A few things worth keeping in mind as you follow this space:
 
 The quantum computing race is genuinely interesting — not because it's about to change everything next year, but because multiple fundamentally different physical approaches are converging on the same goal from completely different directions. That's unusual in technology, and it means we don't yet know which approach will dominate. That uncertainty is part of what makes it worth watching.
 
-*Following quantum computing developments for your organization? [Start a conversation.](/about)*
+*Following quantum computing developments for your organization? [Start a conversation.](/about/)*

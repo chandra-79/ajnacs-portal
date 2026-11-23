@@ -8,6 +8,12 @@ format: article
 
 GCP cost management has a different character than AWS or Azure FinOps. GCP's pricing model (particularly Sustained Use Discounts and Committed Use Discounts) is less visible than AWS Reserved Instances but often results in lower effective compute prices for workloads with consistent usage. The tooling — Recommender API, Active Assist, billing export to BigQuery — is sophisticated once you know where to find it.
 
+## What to measure
+
+**BigQuery bytes and cost per workload.** If a representative query drops from 4 TB to 0.5 TB scanned, the scan reduction is 87.5%. Translate that to billed cost only if the pricing model charges for the billed bytes. Record slot time separately for capacity-based pricing.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
 ## Sustained Use Discounts: the automatic discount nobody talks about
 
 GCP Compute Engine applies Sustained Use Discounts (SUDs) automatically for VMs that run for a significant portion of the month — no commitment required. A VM running for the full month receives a 30% discount on the base price. No RI purchase, no upfront commitment.
@@ -73,7 +79,7 @@ gcloud recommender recommendations list \
   --format="table(name,description,primaryImpact.costProjection.cost)"
 ```
 
-Reviewing Recommender output monthly and actioning high-confidence recommendations typically produces 10-20% compute cost reduction without architectural changes.
+Review Recommender output monthly. After each change, compare compute cost per workload at comparable demand and annotate any reliability impact. Savings depend on the waste in the baseline.
 
 ## Labels as FinOps infrastructure
 
@@ -92,4 +98,4 @@ Enforce label policies via Organization Policies: require specific labels on res
 
 GCP billing export + labels = team-level cost showback without requiring separate projects per team.
 
-*Managing GCP costs at scale or building a FinOps practice across GCP projects? [Happy to compare approaches for your specific usage patterns.](/contact)*
+*Managing GCP costs at scale or building a FinOps practice across GCP projects? [Happy to compare approaches for your specific usage patterns.](/contact/)*

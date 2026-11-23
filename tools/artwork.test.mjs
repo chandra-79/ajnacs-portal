@@ -5,6 +5,7 @@ import { createHash } from 'node:crypto';
 import { articleDirection, compositionFor } from './editorial-art.mjs';
 import { artwork } from './visuals.mjs';
 import { publicationDate } from './publication.mjs';
+import { coverArt, photoFor } from './covers.mjs';
 
 const articles = JSON.parse(readFileSync(new URL('../content/manifest.json', import.meta.url), 'utf8'));
 
@@ -118,24 +119,49 @@ test('every published and planned article has a real 1200 by 630 social preview'
     assert.equal(bytes.readUInt32BE(16),1200);
     assert.equal(bytes.readUInt32BE(20),630);
     assert.ok(bytes.length>1000,`empty preview for ${article.slug}`);
-    const svg=artwork(article.slug,article.tags,{w:1200,h:630,title:article.title,calm:article.section==='notes'})
+    const svg=article.date <= publicationDate() ? coverArt(article.slug, 1200, 630) : artwork(article.slug,article.tags,{w:1200,h:630,title:article.title,calm:article.section==='notes'})
       .replace(/var\(--[\w-]+,\s*(#[0-9a-fA-F]+)\)/g,'$1');
     assert.equal(sources[article.slug],createHash('sha256').update(svg).digest('hex'),`outdated preview for ${article.slug}`);
   }
 });
 
-test('published pages advertise the exact current preview version and actual PNG type',()=>{
+test('published pages advertise the exact preview version, dimensions and content type',()=>{
   const articleHashes=JSON.parse(readFileSync(new URL('../assets/og/articles/sources.json',import.meta.url),'utf8'));
   const pageHashes=JSON.parse(readFileSync(new URL('../assets/og/pages/sources.json',import.meta.url),'utf8'));
   for(const a of articles.filter(a=>a.date<=publicationDate())){
     const html=readFileSync(new URL(`../${a.section}/${a.slug}/index.html`,import.meta.url),'utf8');
-    assert.ok(html.includes(`/assets/og/articles/${a.slug}.png?v=${articleHashes[a.slug].slice(0,12)}`));
-    assert.ok(html.includes('property="og:image:type" content="image/png"'));
+    const photo = photoFor(a.slug);
+    const versioned = photo?.path || `/assets/og/articles/${a.slug}.png?v=${articleHashes[a.slug].slice(0,12)}`;
+    assert.ok(html.includes(versioned));
+    assert.ok(html.includes(`property="og:image:type" content="image/${photo ? 'jpeg' : 'png'}"`));
+    assert.ok(html.includes(`property="og:image:width" content="${photo?.width || 1200}"`));
+    assert.ok(html.includes(`property="og:image:height" content="${photo?.height || 630}"`));
+    const hero = html.match(/<div class="article-hero"[^>]*>([^<]*<img[^>]+>)/)?.[1];
+    assert.ok(hero?.includes('fetchpriority="high"'), a.slug);
+    if (photo) assert.ok(hero.includes(photo.small));
+    else assert.ok(readFileSync(new URL(`../assets/covers/${a.slug}.svg`,import.meta.url),'utf8') === coverArt(a.slug));
   }
   for(const [url,p]of Object.entries(pageHashes)){
     const file=url==='/'?'index.html':url.endsWith('/')?url.slice(1)+'index.html':url.slice(1);
     const html=readFileSync(new URL('../'+file,import.meta.url),'utf8');
     assert.ok(html.includes('/'+p.file+'?v='+p.hash.slice(0,12)),`stale page preview ${url}`);
     assert.ok(html.includes('property="og:image:type" content="image/png"'));
+  }
+});
+
+
+test('each case study lists its own full-width raster cover', () => {
+  const html = readFileSync(new URL('../case-studies/index.html', import.meta.url), 'utf8');
+  const covers = [...html.matchAll(/<div class="case-art">([^<]*<img[^>]*>)<\/div>/g)];
+  const slugs = ['architecture-audit', 'legacy-modernisation', 'ai-into-production', 'team-enablement'];
+  assert.equal(covers.length, slugs.length);
+  for (const [index, slug] of slugs.entries()) {
+    const image = covers[index][1];
+    const path = `/assets/covers/case-studies/${slug}.webp`;
+    const bytes = readFileSync(new URL(`..${path}`, import.meta.url));
+    const version = createHash('sha256').update(bytes).digest('hex').slice(0, 12);
+    assert.ok(image.includes(`src="${path}?v=${version}"`), slug);
+    assert.match(image, /width="960" height="540" alt="[^"]+"/);
+    assert.equal(bytes.subarray(8,12).toString(), 'WEBP');
   }
 });

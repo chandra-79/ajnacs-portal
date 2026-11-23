@@ -10,6 +10,12 @@ Multi-agent systems are compelling in demos. A coordinator agent breaks down a t
 
 In production, multi-agent architectures are harder to operate than single-model pipelines, more difficult to debug when they fail, and rarely necessary for the tasks most enterprise applications actually need. The question worth asking before building one: what specifically requires multiple agents rather than a well-designed single prompt or pipeline?
 
+## What to measure
+
+**Task completion and human intervention.** On a fixed set of 100 workflows, record successful completion, handoffs and total cost. If 70 succeed without intervention and 20 more succeed after escalation, autonomous success is 70% and overall success is 90%. Compare with a single-agent baseline at the same quality bar.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
 ## What multi-agent architectures actually solve
 
 The genuine use cases:
@@ -84,4 +90,4 @@ else:
 
 **Graceful degradation**: define the behavior when an agent fails. Does the coordinator retry? Fall back to a simpler approach? Return a partial result? "Raise an exception and fail the entire workflow" is usually the wrong answer for user-facing applications.
 
-*Building a production AI pipeline and evaluating whether multi-agent architecture fits your use case? The design decision has significant operational implications downstream. [Happy to think through the specific requirements.](/contact)*
+*Building a production AI pipeline and evaluating whether multi-agent architecture fits your use case? The design decision has significant operational implications downstream. [Happy to think through the specific requirements.](/contact/)*

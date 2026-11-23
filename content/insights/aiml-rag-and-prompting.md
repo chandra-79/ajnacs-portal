@@ -10,6 +10,12 @@ format: article
 
 The gap between a demo that works and an application that is reliable in production is wider for LLM-based systems than for most software categories. The model generates plausible output, not correct output. The engineering work in production LLM applications is largely about closing that gap — through information retrieval that provides accurate context, prompt engineering that constraints outputs, and evaluation frameworks that catch degradation before users do.
 
+## What to measure
+
+**Retrieval coverage versus answer grounding.** If 75 of 100 questions retrieve the required evidence in the top five chunks, retrieval coverage at five is 75%. If 68 of those 75 answers accurately cite that evidence, conditional grounding is about 91%. Report the end-to-end result of 68 out of 100 as well.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
 ## Retrieval-Augmented Generation (RAG)
 
 LLMs have fixed training knowledge. RAG extends this by retrieving relevant documents at inference time and including them in the context sent to the model.

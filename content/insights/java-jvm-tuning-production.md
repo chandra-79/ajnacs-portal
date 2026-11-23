@@ -10,6 +10,12 @@ JVM tuning has a reputation problem: it's either treated as dark magic requiring
 
 Here's the 2026 version of what's worth knowing, for engineers running Java services on JDK 17/21+ in containers and clouds.
 
+## What to measure
+
+**Tail latency and GC contribution.** Measure request latency, pause duration and allocation rate under identical traffic. If request p99 falls from 250 ms to 190 ms, the reduction is 24%. Correlate per-window pause events with request traces before attributing the whole improvement to GC.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
 ## Heap sizing: the decision that drives everything else
 
 **Set `-Xms` equal to `-Xmx`.** Growing the heap is work the JVM does at the worst time (under load), and in containers the memory is reserved anyway. Predictability beats elasticity inside a single process.

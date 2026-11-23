@@ -10,6 +10,12 @@ The data landscape spent a decade in a pendulum swing. First the data warehouse 
 
 The data lakehouse is the current consensus architecture: object storage as the foundation (cheap, scalable), open table formats that add ACID transactions, schema enforcement, and query performance on top of that storage, and a separation of storage from compute.
 
+## What to measure
+
+**Scan bytes, freshness and compute cost.** A query scanning 40 GB after partition pruning instead of 800 GB reads 95% fewer bytes. Compare compute cost and runtime at the same concurrency, with warm cache documented. Freshness still needs its own objective measured from ingest to query visibility.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
 ## The three open table formats
 
 The technical foundation of the lakehouse is an open table format — a metadata layer on top of Parquet files in object storage that provides ACID transactions, schema evolution, partitioning, and time travel.
@@ -70,4 +76,4 @@ A lakehouse without a data catalogue is a data lake — you can find the files, 
 
 Access control: row-level and column-level security should be enforced at the catalogue/governance layer, not in downstream query tools. A customer PII column masked at the governance layer is masked everywhere; a column masked by a BI tool setting is only masked in that tool.
 
-*Designing a lakehouse architecture or migrating from a traditional data warehouse? The table format and partition design choices compound — worth getting right early. [Happy to compare approaches.](/contact)*
+*Designing a lakehouse architecture or migrating from a traditional data warehouse? The table format and partition design choices compound — worth getting right early. [Happy to compare approaches.](/contact/)*

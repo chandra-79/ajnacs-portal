@@ -10,6 +10,12 @@ There's a version of ML engineering that stops at model accuracy. Build the mode
 
 MLOps exists to close that loop. Here's what the loop actually looks like when it's working.
 
+## What to measure
+
+**Model promotion with evaluation and rollback.** Count promotions that pass data, model and deployment gates. If 18 of 20 candidates pass but one promoted version must be reverted, report both the 90% gate pass rate and the rollback. Measure how long the previous serving version takes to recover service.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
 ## The five components that matter
 
 Before getting into platform specifics: the components of a working MLOps pipeline don't change much regardless of what platform you're on.
@@ -76,4 +82,4 @@ Start with the platform your team already knows. If you're on Azure, use Azure M
 
 The framework matters less than the discipline: versioned data, tracked experiments, a model registry, deployment gates, and production monitoring. Get these five things working before worrying about anything else.
 
-*Building or reviewing an MLOps setup? [Happy to think through specific design questions.](/about)*
+*Building or reviewing an MLOps setup? [Happy to think through specific design questions.](/about/)*

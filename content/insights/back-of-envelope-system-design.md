@@ -8,6 +8,12 @@ format: article
 
 There's a moment in good design reviews that separates engineering from opinion: someone does thirty seconds of arithmetic and an entire architectural option quietly dies. "That's 40 billion writes a month — at DynamoDB pricing that's six figures annually; next option." "Each request fans out to 30 services at 2ms each — sequentially that's your whole latency budget; this needs parallelism or fewer hops." Back-of-envelope calculation is the cheapest analysis in the field — no prototypes, no benchmarks, no meetings — and it's systematically undertaught, treated as interview theater rather than what it is: the daily filter that keeps designs tethered to physics and prices before anyone writes code.
 
+## What to measure
+
+**Average and peak throughput.** Five million requests a day average about 58 requests/s. An assumed 10× peak produces about 580 requests/s for a first sizing pass. Replace that multiplier with observed peak windows once traffic data exists.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
 ## The numbers worth carrying
 
 The method needs a small mental almanac — order-of-magnitude values, not precision: **latency's ladder** (L1 cache ~1ns; RAM ~100ns; NVMe read ~100μs; same-zone network round trip ~0.5ms; cross-region ~50–150ms; disk-vs-memory is three orders of magnitude, and *cross-region-vs-same-zone is two* — the number underneath every data-locality and multi-region argument), **throughput's anchors** (a modern server pushes millions of simple ops/sec in memory, tens-of-thousands of database transactions/sec; a single Postgres comfortably serves thousands of mixed QPS before architecture is the answer; NICs are 10–100Gbps and rarely the bottleneck you think), **time's conversions** (1 day ≈ 86,400s — so 1M requests/day ≈ 12/sec, a number that has ended a thousand premature-scaling conversations; 1 month ≈ 2.6M seconds; a year of 1/sec ≈ 31M events), **storage's scale** (1KB per event × 1B events = 1TB — the "can this fit in one Postgres" arithmetic; RAM-per-node in the hundreds-of-GB means "just cache it all" is often literal), and **cost's handles** (object storage ~$0.02/GB-month; the egress multiple; a vCPU-hour's rough price; the 10–100× spread between hot-database and cold-object storage per GB — the tiering economics in one ratio). Precision is the enemy here: these move yearly, but their *ratios* — the orders of magnitude between tiers — are the stable furniture of judgment.

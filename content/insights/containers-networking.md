@@ -10,6 +10,12 @@ format: article
 
 Container networking is the source of a disproportionate fraction of production incidents. Containers cannot reach each other, external traffic cannot reach a container, DNS resolution fails inside the container, or a connection that works on localhost fails in a deployed environment. These failures are diagnosable once you understand how the network is actually constructed.
 
+## What to measure
+
+**Latency and packet loss along the same path.** Compare identical same-node and cross-node requests at a controlled payload and load. If p99 goes from 4 ms to 12 ms, isolate DNS, service routing, encapsulation and policy handling before blaming container networking in general.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
 ## The Bridge Network: Single-Host Networking
 
 When Docker starts, it creates a default bridge network (`docker0`). Every container attached to this bridge gets a private IP address and can communicate with other containers on the same bridge.

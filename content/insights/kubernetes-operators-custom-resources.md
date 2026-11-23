@@ -10,6 +10,12 @@ Kubernetes Operators are applications that extend the Kubernetes API with domain
 
 The concept is genuinely powerful. The reality is that most teams don't need to write operators; they need to use the right ones that already exist, and understand when a simpler pattern (a Helm chart, a simple CRD with a scripted reconciler) is appropriate.
 
+## What to measure
+
+**Reconciliation time and steady-state churn.** If 150 objects converge within the target in a 160-object recovery drill, success within target is 93.75%. Track p95 convergence time, API errors and reconciles per unchanged object to detect needless writes.
+
+*Illustrative measurement. Any numbers in this example are hypothetical.*
+
 ## The controller pattern that operators implement
 
 Kubernetes is declarative. You describe the desired state; Kubernetes (and operators) work to make actual state match desired state continuously.
@@ -93,4 +99,4 @@ Before writing an operator, check if one exists:
 
 The ecosystem of mature, production-ready operators is large enough that most infrastructure needs are covered. Writing your own should be reserved for domain-specific logic that doesn't have an existing solution.
 
-*Building a Kubernetes operator or deciding whether an operator is the right pattern for a use case? [Happy to think through the design.](/contact)*
+*Building a Kubernetes operator or deciding whether an operator is the right pattern for a use case? [Happy to think through the design.](/contact/)*
