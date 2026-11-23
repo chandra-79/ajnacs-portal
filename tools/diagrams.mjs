@@ -7,12 +7,12 @@
    hundred bytes each instead of 160KB of broken raster. */
 import { writeFile } from "node:fs/promises";
 
-const INK = "#16203a", MUTE = "#5f6b86", LINE = "#c9d2e4";
-const BLUE = "#2f6fed", TEAL = "#0d9488", AMBER = "#e8a317";
+const INK = "#1b354c", MUTE = "#445970", LINE = "#526f87";
+const BLUE = "#365e88", TEAL = "#346f68", AMBER = "#976342";
 
 /* Boxes, not circles: a label sets the width, so nothing can be clipped. */
 const box = (x, y, w, h, label, sub, tone) => `
-  <rect x="${x}" y="${y}" width="${w}" height="${h}" rx="9" fill="${tone}18" stroke="${tone}" stroke-width="1.5"/>
+  <rect x="${x}" y="${y}" width="${w}" height="${h}" rx="12" fill="${tone}15" stroke="${tone}" stroke-width="2"/>
   <text x="${x + w / 2}" y="${y + (sub ? h / 2 - 3 : h / 2 + 5)}" text-anchor="middle"
         font-family="Montserrat,system-ui,sans-serif" font-size="14" font-weight="700" fill="${INK}">${label}</text>
   ${sub ? `<text x="${x + w / 2}" y="${y + h / 2 + 16}" text-anchor="middle"
@@ -26,9 +26,10 @@ const arrow = (x1, y1, x2, y2, label) => `
 const frame = (w, h, title, inner) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" role="img" aria-label="${title}">
   <defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
     <path d="M 0 0 L 10 5 L 0 10 z" fill="${LINE}"/></marker></defs>
-  <rect width="${w}" height="${h}" rx="12" fill="#ffffff"/>
+  <rect width="${w}" height="${h}" rx="12" fill="#eaf0ef"/>
+  <path d="M0 63h${w}M18 ${h-28}h${w-36}" stroke="#a2b3be" opacity=".55"/>
   <text x="26" y="34" font-family="Montserrat,system-ui,sans-serif" font-size="13" font-weight="800"
-        letter-spacing="1.6" fill="${MUTE}">${title.toUpperCase()}</text>
+        letter-spacing=".4" fill="${INK}">${title}</text>
   ${inner}
 </svg>`;
 

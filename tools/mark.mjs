@@ -15,7 +15,7 @@
    property rather than a transform attribute, because a CSS transform would
    overwrite the attribute outright. That is what lets the mark bloom. */
 
-export const MARK_COLOURS = ["#E8402A", "#F5A623", "#17A05E", "#2B57E8"]; // red, amber, green, blue
+export const MARK_COLOURS = ["#D95547", "#E8A347", "#348C72", "#3B69C4"]; // red, amber, green, blue
 export const MARK_INK = "#0B1226";
 
 const C = 50, R = 46;
@@ -28,7 +28,7 @@ const CUT = `M ${C} ${C - R} L ${C} ${C} L ${C + R} ${C}`;
    in the light, the red and green ones edge on, and the amber one in shade.
    Positive lifts with white, negative sinks with black. */
 const KEY = { 0: 0.07, 90: -0.12, 180: -0.05, 270: 0.3 };
-const RIM_LIGHT = { 0: 0.34, 90: 0, 180: 0, 270: 0.46 };
+const RIM_LIGHT = { 0: 0.27, 90: 0, 180: 0, 270: 0.37 };
 const RIM_DARK = { 0: 0, 90: 0.16, 180: 0.1, 270: 0 };
 
 /* Option B keeps the solid rhombus at the heart of eight broad leaves.
