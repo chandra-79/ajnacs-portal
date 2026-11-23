@@ -6,6 +6,7 @@ import { articleDirection, compositionFor } from './editorial-art.mjs';
 import { artwork } from './visuals.mjs';
 import { publicationDate } from './publication.mjs';
 import { coverArt, photoFor } from './covers.mjs';
+import { noteCover } from './note-covers.mjs';
 
 const articles = JSON.parse(readFileSync(new URL('../content/manifest.json', import.meta.url), 'utf8'));
 
@@ -150,18 +151,31 @@ test('published pages advertise the exact preview version, dimensions and conten
 });
 
 
-test('each case study lists its own full-width raster cover', () => {
+test('each case study uses its own full-bleed composition', () => {
   const html = readFileSync(new URL('../case-studies/index.html', import.meta.url), 'utf8');
-  const covers = [...html.matchAll(/<div class="case-art">([^<]*<img[^>]*>)<\/div>/g)];
+  const artwork = [...html.matchAll(/<div class="case-art">(<svg[\s\S]*?<\/svg>)/g)];
   const slugs = ['architecture-audit', 'legacy-modernisation', 'ai-into-production', 'team-enablement'];
-  assert.equal(covers.length, slugs.length);
+  assert.equal(artwork.length, slugs.length);
   for (const [index, slug] of slugs.entries()) {
-    const image = covers[index][1];
-    const path = `/assets/covers/case-studies/${slug}.webp`;
-    const bytes = readFileSync(new URL(`..${path}`, import.meta.url));
-    const version = createHash('sha256').update(bytes).digest('hex').slice(0, 12);
-    assert.ok(image.includes(`src="${path}?v=${version}"`), slug);
-    assert.match(image, /width="960" height="540" alt="[^"]+"/);
-    assert.equal(bytes.subarray(8,12).toString(), 'WEBP');
+    assert.ok(artwork[index][1].includes(`data-article-art="${slug}"`));
+    assert.match(artwork[index][1], /role="img" aria-label="[^"]+"/);
+    assert.match(artwork[index][1], /viewBox="0 0 640 360"/);
+  }
+});
+
+test('The Notes refresh gives each original essay its own composition on the list and the article', () => {
+  const index = readFileSync(new URL('../notes/index.html', import.meta.url), 'utf8');
+  const drawings = new Set();
+  for (const { slug } of articles.filter(article => article.section === 'notes' && article.date <= '2026-11-23' && article.date <= publicationDate())) {
+    const cover = noteCover(slug, 1280, 720);
+    assert.ok(cover?.alt, `missing custom essay cover: ${slug}`);
+    const drawing = cover.svg.split('</title>')[1];
+    assert.ok(!drawings.has(drawing), `duplicate essay image: ${slug}`);
+    drawings.add(drawing);
+    assert.doesNotMatch(cover.svg, /data-composition|id="paper"|linearGradient/);
+    const version = createHash('sha256').update(cover.svg).digest('hex').slice(0, 12);
+    const src = `/assets/covers/${slug}.svg?v=${version}`;
+    const page = readFileSync(new URL(`../notes/${slug}/index.html`, import.meta.url), 'utf8');
+    assert.ok(index.includes(src) && page.includes(src));
   }
 });

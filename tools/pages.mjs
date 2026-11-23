@@ -4,16 +4,8 @@ import { SITE, esc, icon, fmtDate, readingTime, primaryTopic, seriesSlug } from 
 import { page } from "./shell.mjs";
 import { artwork } from "./visuals.mjs";
 import { coverFor } from "./covers.mjs";
-import { createHash } from "node:crypto";
-import { readFileSync } from "node:fs";
+import { caseCoverArt } from "./case-covers.mjs";
 const thumbnail=(title,tags,slug='')=>`<div class="content-thumbnail">${artwork(slug||'content-'+title.toLowerCase().replace(/[^a-z0-9]+/g,'-'),tags,{title})}</div>`;
-
-function caseStudyCover(slug, alt, first) {
-  const src = `/assets/covers/case-studies/${slug}.webp`;
-  const bytes = readFileSync(new URL(`..${src}`, import.meta.url));
-  const version = createHash('sha256').update(bytes).digest('hex').slice(0, 12);
-  return `<img data-article-art="${slug}" src="${src}?v=${version}" width="960" height="540" alt="${esc(alt)}" decoding="async"${first ? ' fetchpriority="high"' : ' loading="lazy"'}>`;
-}
 
 const SERVICES = [
   {
@@ -318,8 +310,8 @@ ${SERVICES.map(s => `<section class="section ${s.id === "ai" ? "surface hair" : 
     ["team-enablement", "Three lab workstations share a training bench and an open runbook", "Team enablement", "Engineering Leadership", "Lab-based instruction on the stack the team actually runs.",
       ["Curriculum built against your architecture", "Hands-on environments, not slideware", "Runbooks the team wrote themselves"],
       "Measured on: operational independence after handover."],
-  ].map(([slug, alt, t, topic, lede, bullets, measure], index) => `<article class="case" data-topic="${esc(topic)}">
-    <div class="case-art">${caseStudyCover(slug, alt, index === 0)}</div>
+  ].map(([slug, alt, t, topic, lede, bullets, measure]) => `<article class="case" data-topic="${esc(topic)}">
+    <div class="case-art">${caseCoverArt(slug, alt)}</div>
     <div class="case-body">
       <span class="chip">${esc(topic)}</span>
       <h2 class="h3" style="margin-top:.7rem">${esc(t)}</h2>

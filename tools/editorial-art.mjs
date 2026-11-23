@@ -1,6 +1,7 @@
 /* Article artwork is an illustration of named concepts in the article, rather
    than a random geometric texture. No numbers in these illustrations are data. */
 import { readFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 import { parseFront } from './lib.mjs';
 import { subjectOverride, articleSpecificScene } from './article-scenes.mjs';
 
@@ -231,71 +232,89 @@ export function compositionFor(direction) {
   return 'paper-workbench';
 }
 
-export function editorialArtwork(direction, { w, h, c1, c2, id }) {
-  const wide=w/h>2.3,W=wide?1200:640,H=wide?380:360;
-  const family=compositionFor(direction),clip='cp'+id;
-  const fit=Math.min(w/W,h/H),tx=(w-W*fit)/2,ty=(h-H*fit)/2;
-  const dark=['drafting-board','instrument-panel'].includes(family);
-  const styles={
-    'drafting-board':['#102b3b','#d5edf2','#73d2c6','#eda752'],
-    'process-strip':['#f7f0e1','#293a42','#315c63','#bd562f'],
-    'technical-cutaway':['#e9e7f2','#33324f','#645b94','#b06d3b'],
-    'narrative-landscape':['#f2e6d4','#4e4438','#677c62','#b26342'],
-    'instrument-panel':['#151d2b','#e8e3ce','#94c5cb','#e0ad6d'],
-    'symbolic-object':['#e6eee9','#25443c','#326e60','#ad563f'],
-    'paper-workbench':['#f1ebe0','#483f39','#756654','#9d4c35'],
-    'editorial-vignette':['#f7f0e8','#473b3c','#80685c','#ab6951'],
-  };
-  const [paper,ink,stroke,accent]=styles[family];
-  const short=direction.subject,words=short.split(' '),lines=[];
-  for(const word of words){if(!lines.length||(lines.at(-1)+' '+word).length>(wide?31:34))lines.push(word);else lines[lines.length-1]+=' '+word;}
-  const maxLines=(family==='symbolic-object'||family==='editorial-vignette')?2:3;
-  const headingLines=lines.slice(0,maxLines);if(lines.length>maxLines)headingLines[maxLines-1]+='…';
-  const title=(x,y,size=wide?29:25,serif=false,align='start')=>headingLines.map((s,i)=>`<text x="${x}" y="${y+i*(size+7)}" fill="${ink}" font-size="${size}" font-weight="${serif?400:650}" font-family="${serif?'Georgia,serif':'Arial,sans-serif'}" text-anchor="${align}">${escape(s)}</text>`).join('');
-  const custom=articleSpecificScene(direction,stroke,accent);
-  const scene=custom||sceneFor(direction.scene,stroke,accent);
-  const drawing=(x,y,s=1)=>`<g transform="translate(${x} ${y}) scale(${s})">${scene}</g>`;
-  const label=(x,y,s,color=ink,size=12)=>`<text x="${x}" y="${y}" fill="${color}" font-family="Arial,sans-serif" font-size="${size}" letter-spacing="1.1">${escape(s)}</text>`;
-  const caption=direction.terms.slice(0,3).join(' · ');
-  let body='';
-  if(family==='drafting-board'){
-    body=`<g stroke="#6195a4" stroke-width=".7" opacity=".16">${Array.from({length:Math.ceil(W/32)},(_,i)=>`<path d="M${i*32} 0V${H}"/>`).join('')}${Array.from({length:Math.ceil(H/32)},(_,i)=>`<path d="M0 ${i*32}H${W}"/>`).join('')}</g><path d="M20 20h24m-12-12v24M${W-44} ${H-20}h24m-12-12v24" stroke="#b3d6da" opacity=".6"/>`;
-    body+=wide?title(55,115,30)+drawing(585,60,1):drawing(55,108,.94)+title(35,41,24);
-    body+=label(35,H-17,direction.detail?direction.detail.replaceAll('-',' '):direction.scene,accent,11);
-  }else if(family==='process-strip'){
-    body=`<path d="M0 ${H-48}H${W}" stroke="${accent}" stroke-width="2"/><path d="M0 ${H-43}H${W}" stroke="${accent}" stroke-width="8" opacity=".12"/>`;
-    body+=wide?title(56,95,29)+drawing(585,65,1):title(35,40,24)+drawing(50,115,.96);
-    const roles=custom?[]:(sceneLabels[direction.scene]||[]);
-    body+=roles.map((s,i)=>label((wide?617:77)+i*(wide?208:199),H-58,s,stroke,wide?14:12)).join('');
-    body+=label(35,H-20,'AJNA / '+direction.scene.toUpperCase(),stroke,11);
-  }else if(family==='technical-cutaway'){
-    const x=wide?605:78,y=wide?55:116,scale=wide?1:.88;
-    body=`<path d="M${x-20} ${y+175}l260 65 295-70-265-63z" fill="${stroke}" opacity=".1"/><path d="M${x-5} ${y+157}l245 58 275-64" fill="none" stroke="${accent}" stroke-width="2"/>`+drawing(x,y,scale);
-    body+=wide?title(60,112,30):title(35,40,24);
-    body+=label(wide?60:35,H-23,direction.detail?direction.detail.replaceAll('-',' '):direction.scene,stroke,12);
-  }else if(family==='narrative-landscape'){
-    body=`<path d="M-20 ${H-38}Q${W*.25} ${H-110} ${W*.56} ${H-35}T${W+20} ${H-55}V${H}H0Z" fill="${stroke}" opacity=".14"/><circle cx="${wide?W-95:W-62}" cy="${wide?72:48}" r="${wide?44:30}" fill="${accent}" opacity=".2"/>`;
-    body+=wide?title(55,93,30,true)+drawing(580,65,1):drawing(50,24,.96)+title(35,270,24,true);
-  }else if(family==='instrument-panel'){
-    body=`<path d="M0 38H${W}" stroke="#526071"/><circle cx="20" cy="19" r="4" fill="#c37e61"/><circle cx="35" cy="19" r="4" fill="#d5b477"/><circle cx="50" cy="19" r="4" fill="#88ae92"/>`+label(75,24,direction.detail?direction.detail.toUpperCase().replaceAll('-',' '):direction.scene.toUpperCase(),'#b0c3d0',11);
-    body+=wide?title(50,115,29)+drawing(585,70,1):drawing(50,135,.94)+title(30,78,24);
-    body+=`<path d="M20 ${H-13}h60m10 0h32m10 0h90" stroke="${accent}" stroke-width="2" opacity=".6"/>`;
-  }else if(family==='symbolic-object'){
-    const kind={security:'shield',identity:'gateway',accessibility:'keyboard',energy:'leaf',quantum:'chip'}[direction.scene]||'shield';
-    const x=wide?860:325,y=wide?175:145,r=wide?130:109;
-    body=`<circle cx="${x}" cy="${y}" r="${r}" fill="${stroke}" opacity=".09"/><circle cx="${x+26}" cy="${y-14}" r="${r*.72}" fill="none" stroke="${accent}" stroke-width="2" opacity=".3"/>`;
-    body+=custom?drawing(wide?590:55,wide?70:38,wide?1:.94):`<g transform="translate(${x-r*.63} ${y-r*.63}) scale(${r*.0126})">${glyph(kind,stroke)}</g>`;
-    body+=wide?title(58,104,31,true):title(35,278,24,true);
-    body+=label(wide?60:35,H-20,direction.scene.toUpperCase(),accent,11);
-  }else if(family==='paper-workbench'){
-    const x=wide?575:45,y=wide?43:110;
-    body=`<path d="M${x+28} ${y-13}l525 14-6 216-528-14z" fill="${accent}" opacity=".12"/><rect x="${x}" y="${y}" width="550" height="218" fill="#fffaf0"/><path d="M${x+12} ${y+16}h17m-8-8v16" stroke="${accent}"/>`+drawing(x+4,y+8,.96);
-    body+=wide?title(55,107,30,true):title(35,42,25,true);
-    body+=label(35,H-15,direction.scene.toUpperCase()+' / WORKING NOTES',stroke,10);
-  }else{
-    body=`<ellipse cx="${wide?880:325}" cy="${wide?292:232}" rx="${wide?245:225}" ry="20" fill="${stroke}" opacity=".07"/>`;
-    body+=wide?drawing(585,54,1)+title(55,120,31,true):drawing(55,29,.94)+title(35,271,24,true);
-    body+=label(wide?58:35,H-19,direction.section==='notes'?'CHANDRA LANKA / A PERSONAL NOTE':'AJNA / '+direction.scene.toUpperCase(),accent,10);
+export function editorialArtwork(direction, { w, h, c1, c2, id, cover = false }) {
+  const wide = w / h > 2.3;
+  const W = wide ? 1200 : 640, H = wide ? 380 : 360;
+  const family = compositionFor(direction);
+  const clip = `cp${id}`;
+  const fit = Math.min(w / W, h / H);
+  const tx = (w - W * fit) / 2, ty = (h - H * fit) / 2;
+  const seed = createHash('sha256').update(direction.slug).digest();
+  const schemes = [
+    ['#e5ebf6', '#1c365a', '#355d89', '#ae5b45'],
+    ['#ede3d2', '#384c45', '#466f68', '#b05348'],
+    ['#172e3e', '#efeadc', '#93c3c3', '#f1b471'],
+    ['#eddcd5', '#563a54', '#755880', '#ad4b47'],
+    ['#e3ebdb', '#224d4a', '#426f64', '#a25438'],
+    ['#262c46', '#f2e8e2', '#aeb8da', '#eda382'],
+    ['#eee3bd', '#3e414d', '#545a77', '#9c4c38'],
+    ['#dce6e7', '#243d4d', '#456878', '#a7524f'],
+  ];
+  const [paper, ink, stroke, accent] = schemes[seed[0] % schemes.length];
+  const custom = articleSpecificScene(direction, stroke, accent);
+  const scene = custom || sceneFor(direction.scene, stroke, accent);
+  const draw = (x, y, scale) => `<g transform="translate(${x} ${y}) scale(${scale})">${scene}</g>`;
+  const flip = seed[1] % 2;
+  const phase = (seed[2] % 5 - 2) * 8;
+  const ridge = Math.round(W * (flip ? .62 : .38)) + phase;
+  const sceneX = wide ? 600 + phase : 53 + phase;
+  const sceneY = wide ? 76 : cover ? 76 : 106;
+  const dot = (x, y, r, fill = accent) => `<circle cx="${x}" cy="${y}" r="${r}" fill="${fill}"/>`;
+
+  let ground;
+  switch (family) {
+    case 'drafting-board':
+      ground = `<path d="M0 0H${ridge}L${W} ${H}H0Z" fill="${stroke}" opacity=".14"/>
+        <path d="M34 34h${W - 68}v${H - 68}H34z" fill="none" stroke="${stroke}" stroke-opacity=".32" stroke-dasharray="5 8"/>
+        <path d="M36 70h20m-10-10v20M${W - 56} ${H - 70}h20m-10-10v20" stroke="${accent}" stroke-width="2"/>`;
+      break;
+    case 'process-strip':
+      ground = `<path d="M0 ${H * .62}L${W} ${H * .29}V${H}H0z" fill="${stroke}" opacity=".13"/>
+        <path d="M0 ${H - 25}H${W}" stroke="${accent}" stroke-width="4" opacity=".75"/>`;
+      break;
+    case 'technical-cutaway':
+      ground = `<path d="M${ridge} 0H${W}V${H}H${ridge + phase * 2}Z" fill="${stroke}" opacity=".13"/>
+        <path d="M36 ${H - 53}l${W * .48} 23 ${W * .39}-37" fill="none" stroke="${accent}" stroke-opacity=".44" stroke-width="3"/>`;
+      break;
+    case 'narrative-landscape':
+      ground = `<path d="M0 ${H * .76}Q${ridge} ${H * .44} ${W} ${H * .79}V${H}H0Z" fill="${stroke}" opacity=".16"/>
+        <path d="M0 ${H * .88}Q${ridge} ${H * .58} ${W} ${H * .88}" stroke="${accent}" stroke-width="2" fill="none" opacity=".5"/>
+        ${dot(flip ? W - 85 : 85, 74, 41, stroke).replace('/>', ' opacity=".22"/>')}`;
+      break;
+    case 'instrument-panel':
+      ground = `<path d="M0 0H${W}V12H0zM0 ${H - 17}H${W}V${H}H0z" fill="${stroke}" opacity=".19"/>
+        <path d="M32 ${H - 35}h115m11 0h53m15 0h35M${W - 125} 41h92" stroke="${accent}" stroke-width="4" opacity=".7"/>
+        ${dot(W - 43, 40, 6)}`;
+      break;
+    case 'symbolic-object':
+      ground = `<circle cx="${ridge}" cy="${H / 2}" r="123" fill="${stroke}" opacity=".15"/>
+        <circle cx="${ridge}" cy="${H / 2}" r="139" stroke="${accent}" stroke-width="2" stroke-dasharray="5 10" stroke-opacity=".53" fill="none"/>`;
+      break;
+    case 'paper-workbench':
+      ground = `<path d="M${W * .06} ${H * .2}l${W * .78} -23 17 ${H * .65}-${W * .81} 18z" fill="${stroke}" opacity=".12"/>
+        <path d="M0 ${H - 38}L${W} ${H - 97}" fill="none" stroke="${accent}" stroke-width="4" stroke-opacity=".48"/>`;
+      break;
+    default:
+      ground = `<path d="M0 0H${ridge}L${ridge + 84} ${H}H0Z" fill="${stroke}" opacity=".16"/>
+        <ellipse cx="${W * .58}" cy="${H - 27}" rx="${W * .39}" ry="13" fill="${accent}" opacity=".2"/>`;
   }
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" role="img" aria-label="${escape(direction.description)}" preserveAspectRatio="xMidYMid meet" data-article-art="${escape(direction.slug)}" data-art-scene="${direction.scene}" data-composition="${family}"><defs><clipPath id="${clip}"><rect width="${w}" height="${h}"/></clipPath></defs><g clip-path="url(#${clip})"><rect width="${w}" height="${h}" fill="${paper}"/><g transform="translate(${tx} ${ty}) scale(${fit})">${body}</g></g></svg>`;
+
+  const lines = [];
+  for (const word of direction.subject.split(' ')) {
+    if (!lines.length || (lines.at(-1) + ' ' + word).length > (wide ? 26 : 39)) lines.push(word);
+    else lines[lines.length - 1] += ' ' + word;
+  }
+  const headings = lines.slice(0, 3);
+  if (lines.length > headings.length) headings[headings.length - 1] += '…';
+  const label = (value, x, y, size, color = ink, weight = 700) =>
+    `<text x="${x}" y="${y}" fill="${color}" font-size="${size}" font-weight="${weight}" font-family="Arial,sans-serif">${escape(value)}</text>`;
+  const title = headings.map((value, i) => label(value, 42, (wide ? 120 : 50) + i * 27, wide ? 28 : 21)).join('');
+  const roleLabels = !cover && !custom && family === 'process-strip' ? sceneLabels[direction.scene] || [] : [];
+  const roles = roleLabels.map((value, i) => label(value, sceneX + 28 + i * 195, H - 29, 11, ink, 500)).join('');
+  const footer = wide && direction.terms.length
+    ? label(direction.terms.slice(0, 2).join(' · '), 42, H - 61, 15, ink, 500)
+    : '';
+  const drawing = draw(sceneX, sceneY, wide ? 1 : .93);
+  const edge = cover && c1 && c2 ? `<path d="M0 0h${W}v4H0z" fill="${seed[3] % 2 ? c1 : c2}" opacity=".9"/>` : '';
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" role="img" aria-label="${escape(direction.description)}" preserveAspectRatio="xMidYMid meet" data-article-art="${escape(direction.slug)}" data-art-scene="${direction.scene}" data-composition="${family}"><defs><clipPath id="${clip}"><rect width="${w}" height="${h}"/></clipPath></defs><g clip-path="url(#${clip})"><rect width="${w}" height="${h}" fill="${paper}"/><g transform="translate(${tx} ${ty}) scale(${fit})">${ground}${edge}${drawing}${cover ? '' : title + roles + footer}</g></g></svg>`;
 }
