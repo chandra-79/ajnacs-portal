@@ -106,8 +106,8 @@ console.log("\nCase studies and article discovery");
       const image = await readFile(`assets/cases/${route.name}.png`);
       const hash = createHash("sha256").update(image).digest("hex");
       if (caseImages.has(hash) || image.readUInt32BE(16) !== 960 || image.readUInt32BE(20) !== 540 ||
-          !html.includes(`<img src="/assets/cases/${route.name}.png?v=`) ||
-          !categoryHtml.includes(`<img src="/assets/cases/${route.name}.png?v=`)) {
+          !html.includes(`<img src="/assets/cases/${route.name}.png?v=${hash.slice(0, 12)}"`) ||
+          !categoryHtml.includes(`<img src="/assets/cases/${route.name}.png?v=${hash.slice(0, 12)}"`)) {
         fail(`case art missing, wrong size or duplicated: ${path}`);
       }
       caseImages.add(hash);
@@ -155,7 +155,7 @@ console.log("\nDeep dives");
       const hash = createHash("sha256").update(png).digest("hex");
       if (!indexed.includes(`<loc>https://ajnacs.com${lesson.path}</loc>`) ||
           !paths.includes(`href="${lesson.path}"`) || !html.includes(`Level ${lesson.level} ·`) ||
-          !html.includes(`href="${lesson.path}chart.csv"`) || !html.includes(`<div class="article-hero depth-chart"><img src="/${asset}?v=`) ||
+          !html.includes(`href="${lesson.path}chart.csv"`) || !html.includes(`<div class="article-hero depth-chart"><img src="/${asset}?v=${hash.slice(0, 12)}"`) ||
           !html.includes("Limits of the example") || !html.includes("The chart uses illustrative inputs.") ||
           !html.includes(`href="${track.lessons[index - 1]?.path || "/" + track.start + "/"}"`) ||
           (track.lessons[index + 1] && !html.includes(`href="${track.lessons[index + 1].path}"`)) ||

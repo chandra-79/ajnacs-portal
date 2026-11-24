@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { Resvg } from "@resvg/resvg-js";
+import { renderEditorialPng } from "./raster-art.mjs";
 import { editorialArtwork } from "./editorial-art.mjs";
 import { colorFor } from "./visuals.mjs";
 
@@ -51,8 +51,9 @@ export async function caseIllustration(out, item, topic) {
     w: width, h: height, c1, c2, id: slug, cover: true,
   });
   const path = `assets/cases/${item.slug}.png`;
-  const version = createHash("sha256").update(svg).digest("hex").slice(0, 12);
-  await out(path, new Resvg(svg, { font: { loadSystemFonts: true, defaultFontFamily: "Arial" } }).render().asPng());
+  const contents = renderEditorialPng(svg);
+  const version = createHash("sha256").update(contents).digest("hex").slice(0, 12);
+  await out(path, contents);
   const src = `/${path}?v=${version}`;
   return { src, description, width, height };
 }

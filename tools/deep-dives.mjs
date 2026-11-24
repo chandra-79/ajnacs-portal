@@ -1,7 +1,7 @@
 import { readFile } from "node:fs/promises";
 import { createHash } from "node:crypto";
 import { Marked } from "marked";
-import { Resvg } from "@resvg/resvg-js";
+import { renderEditorialPng } from "./raster-art.mjs";
 import { SITE, esc, parseFront } from "./lib.mjs";
 import { page } from "./shell.mjs";
 import { headingAnchors, makeRenderer, tableOfContents } from "./render.mjs";
@@ -102,14 +102,15 @@ function chart(lesson, color) {
   }).join("");
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
     <rect width="${width}" height="${height}" rx="16" fill="#f4f7fa"/>
-    <g font-family="Arial, sans-serif" fill="#152b40" font-size="17">
+    <g font-family="Inter, sans-serif" fill="#152b40" font-size="17">
       <text x="38" y="46" font-size="25" font-weight="bold">${esc(lesson.metric)}</text>
       <text x="38" y="74">Worked example · ${esc(lesson.unit)}</text>
       ${marks}${bars}
     </g>
   </svg>`;
-  const version = createHash("sha256").update(svg).digest("hex").slice(0, 12);
-  return { contents: new Resvg(svg).render().asPng(), version, width, height };
+  const contents = renderEditorialPng(svg);
+  const version = createHash("sha256").update(contents).digest("hex").slice(0, 12);
+  return { contents, version, width, height };
 }
 
 export async function publishDeepDives(out, catalog, existing) {
