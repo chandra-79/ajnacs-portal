@@ -1,0 +1,208 @@
+{
+  "id": "cloud-modernisation",
+  "title": "Cloud modernisation",
+  "category": "architecture",
+  "description": "Make workload migration or retention decisions from dependencies, data integrity, recovery evidence, and operating cost.",
+  "methodology": "## Start with the workload decision\n\nCloud modernisation should improve a named business capability, operating constraint, or delivery problem. Moving infrastructure is a possible intervention, not the objective itself. A proposed engagement begins with one workload and a decision the organisation needs to make: retain the current platform, move it with limited changes, adopt a managed component, replace a capability, or redesign a bounded part. The examples below are hypothetical delivery plans with synthetic numbers. They describe how work could be performed and evaluated; they are not claims about customer engagements or guaranteed results.\n\nThe initial charter identifies the sponsor, service owner, users, critical journeys, commercial constraints, and the evidence required to proceed. It also states what remains outside scope. A database migration does not silently include redesigning every application, and an infrastructure assessment does not confer permission to change production. Discovery ends with a documented option comparison and an accountable decision, including the option to retain the workload where a move is not justified.\n\n## Inventory dependencies before choosing a destination\n\nBuild an inventory from interviews, configuration, deployment records, traffic evidence, and controlled observation. Record application versions, runtime support, data stores, batch schedules, identity providers, external APIs, file exchanges, certificates, and operational ownership. Trace a small set of real business journeys across those components. A list of virtual machines misses dependencies expressed through shared storage, scheduled jobs, service accounts, and undocumented network rules.\n\nClassify evidence by confidence. An owner saying a database is unused is a hypothesis until retention obligations, scheduled activity, and downstream consumers have been checked. Record observation windows, including month-end or seasonal work that may be absent from a short trace. Maintain an unresolved-dependency register with an owner and a validation step. The migration plan should expose uncertainty instead of converting an incomplete inventory into a confident diagram.\n\n## Agree access and data contracts\n\nUse named, time-bounded access appropriate to the discovery task. Prefer read-only inventory and metrics access initially, with separate approval for changes. Document the accounts, regions, repositories, secrets systems, billing exports, and databases involved. Credentials belong in the organisation's approved secret-management process, not assessment documents or examples. Keep a record of who can authorize temporary access and who verifies its removal at handover.\n\nFor data, define classification, permitted locations, retention, deletion, encryption ownership, and the allowed use of production-derived samples. Masking does not automatically make a dataset anonymous. Synthetic fixtures may be more suitable for early tests, while carefully controlled representative data may be needed to reveal encoding, size, or referential-integrity problems. Specify schema versions, identifier meaning, time zones, null handling, and reconciliation rules before building a transfer pipeline.\n\n## Compare architecture options against constraints\n\nUse an architecture decision record for each consequential choice. The record includes alternatives, evidence, expected benefit, new obligations, reversibility, and review triggers. Migration categories such as retain, rehost, replatform, and refactor help describe scope; they do not rank approaches from bad to good. A well-operated modular application may be preferable to several services when independent scaling or ownership does not justify distributed failure modes.\n\nCompare total operating requirements rather than only infrastructure features. A managed database changes patching responsibilities but still needs schema ownership, access control, capacity planning, restore tests, and application compatibility work. Containers can improve packaging consistency while adding orchestration and image-maintenance obligations. A second region can support a recovery design, but replication lag, shared identity dependencies, and failover procedures determine what the design actually achieves.\n\n## Establish measurable acceptance before implementation\n\nDefine a small acceptance matrix linking each requirement to a test and an approver. Functional correctness might mean that selected order states, exports, and user permissions behave equivalently. Performance requirements should name the operation, load model, duration, dataset, client location, and percentile calculation. Reliability requirements should distinguish request success from elapsed outage time. A request-based objective cannot be translated into minutes of downtime without assumptions about traffic.\n\nData acceptance needs more than a row count. Compare totals, keys, relationships, selected field values, and business invariants. Specify how late writes, duplicates, deleted records, and clock differences are handled. Recovery acceptance should state the recovery-time and recovery-point objectives and the actual start and end events used to measure them. An objective is a target; only a controlled rehearsal provides evidence of a particular observed recovery.\n\n## Build a reproducible target foundation\n\nCreate the target through reviewed infrastructure definitions wherever the chosen platform supports it. Separate environments, define identity boundaries, establish logging and cost attribution, and document network paths. Use narrowly scoped workload identities rather than long-lived shared credentials where supported. Record platform versions and configuration inputs so another engineer can recreate the environment and explain differences between test and production.\n\nStart with the minimum foundation required by the pilot. A large landing-zone programme can overwhelm a small workload assessment if every possible future feature becomes a prerequisite. Conversely, bypassing identity, logging, or network ownership creates expensive ambiguity later. Make those tradeoffs explicit. The foundation is ready when the pilot can deploy, communicate, emit useful telemetry, obtain required credentials, and be removed through a documented process.\n\n## Move data with a consistency plan\n\nChoose bulk copy, change capture, dual operation, or a maintenance-window transfer according to the data model and tolerated interruption. Each approach introduces different risks. Change capture needs a known starting position and a way to determine catch-up. Dual writes can diverge when one destination succeeds and the other fails. A maintenance window simplifies some consistency problems but requires a realistic estimate of transfer and validation time.\n\nRehearse the sequence with representative volume before scheduling production. Record throughput distributions and bottlenecks rather than extrapolating from one small file. Verify permissions, indexes, sequences, character encoding, and application semantics after transfer. Keep source and target ownership clear during cutover. If the target accepts writes, returning traffic to the source may require reverse replication or reconciliation; switching DNS alone does not restore consistency.\n\n## Test a bounded pilot\n\nSelect a pilot with meaningful dependencies and a recoverable scope. Define traffic limits, test accounts, permitted data, maximum resource consumption, and abort conditions. Exercise normal paths, slow dependencies, unavailable credentials, retry behavior, and restoration from backup. Include scheduled work and operational procedures, not only interactive requests. Record test environment differences that prevent direct generalisation to production.\n\nA synthetic example can illustrate the method. Suppose a rehearsal contains 10,000 source orders. The initial validation finds 9,970 records with matching required fields and 30 requiring investigation. After correcting a timestamp transformation, all 10,000 match the defined comparison. The chart reports 99.7% and 100% reconciliation coverage. It does not claim zero defects, production success, or a measured customer outcome; it covers only the declared fields and sample.\n\n## Cut over through explicit gates\n\nCreate a timed runbook with decision owners, communication channels, prerequisite checks, commands or automation references, and verification evidence. Separate technical readiness from business authorization. The person coordinating the cutover should know who can pause it and what information supports that decision. Define a latest safe reversal point before irreversible data or contractual changes occur.\n\nReduce exposure gradually where the architecture permits it. A traffic percentage is only meaningful if routing, session affinity, caches, and background consumers are understood. Observe business outcomes alongside infrastructure health. A service can return successful HTTP responses while generating incorrect invoices or failing to publish required events. Keep the old environment available for the approved recovery period, with clear rules about whether it may receive writes.\n\n## Rehearse rollback and forward recovery\n\nFor each change, identify what can be reversed directly, what requires restoring data, and what needs a compensating business action. Application binaries, schema changes, external messages, and user-visible decisions have different reversibility. Prefer compatible schema expansion before removing fields or old code paths. Test that the previous application version can still operate during the intended rollback window.\n\nDo not call an untested backup a rollback plan. Restore into an isolated environment, verify the application can use the restored data, and measure the complete recovery sequence. Include key access, networking, deployment, reconciliation, and business validation. If a failure after cutover requires forward repair, document that explicitly and ensure the team has the tools and authority to perform it.\n\n## Operate the new system deliberately\n\nAssign ownership for patching, capacity, certificates, access reviews, alerting, backups, cost anomalies, and dependency upgrades. Establish dashboards around the service's critical journeys and failure modes. Alerts should identify an actionable condition, a responsible responder, and a useful first step. Retire obsolete checks only after confirming that their intended protection exists in the new operating model.\n\nObserve the workload across relevant business cycles before declaring the transition complete. A quiet first week may omit billing, reporting, or peak demand. Track support effort and manual work introduced by the new platform. Modernisation can reduce one kind of toil while creating another, such as managing a new deployment abstraction or investigating unfamiliar managed-service limits. Include those costs in the review.\n\n## Handover evidence and retire safely\n\nHandover includes architecture decisions, infrastructure definitions, data contracts, test evidence, recovery procedures, dependency ownership, and known limitations. Ask an engineer who did not build the pilot to deploy a change, diagnose a controlled fault, and follow the recovery guide. Their ability to complete those tasks is stronger evidence of usable documentation than a large document bundle alone.\n\nRetirement has its own checklist: confirm no required traffic or jobs remain, preserve approved records, remove credentials, terminate unnecessary resources, update inventories, and reconcile the final bill. Retention and licensing decisions belong to the appropriate organisational owners. Savings should be measured after overlap and transition costs are accounted for; deleting an invoice line in a spreadsheet does not demonstrate that the resource was safely removed.\n\n## Use a decision worksheet and publish limits\n\nThe working worksheet records the workload, current constraint, alternatives, selected option, dependencies, data scope, acceptance tests, rollback boundary, owners, and open assumptions. For each proposed benefit, specify the baseline, formula, measurement window, and source. Separate recurring operating cost, one-time migration effort, and temporary dual-running cost. State the confidence range instead of presenting a single speculative payback date as certainty.\n\nReview the worksheet at discovery, pilot acceptance, cutover, and operational handover. A newly discovered dependency or failed restore test can change the correct decision. The intended outcome is a defensible migration or retention choice with evidence that the chosen workload can be operated. The method does not promise that every application belongs in the cloud or that every cloud move reduces cost, latency, or organisational complexity.\n\n## Confirm the commercial and exit assumptions\n\nReview licensing, support eligibility, data-transfer charges, minimum commitments, and the cost of retaining a fallback environment. A technically compatible target may still be unsuitable when contract terms or staffing requirements are considered. Record the date and source of each commercial assumption and have the appropriate owner validate it before a purchase or commitment.\n\nAlso test an exit path at the scale relevant to the decision. Document how data can be exported, which formats preserve meaning, and which managed features would require application changes elsewhere. This does not require avoiding every provider-specific feature. It makes the benefit and the future switching work visible so the organisation can choose deliberately. An exit assessment should include restoration and application validation, rather than treating a successful file download as proof of portability.\n",
+  "figure": {
+    "slug": "service-cloud-modernisation",
+    "kind": "bar",
+    "title": "Synthetic migration reconciliation coverage",
+    "unit": "percent matching",
+    "points": [
+      {
+        "label": "Initial rehearsal",
+        "value": 99.7
+      },
+      {
+        "label": "Corrected rehearsal",
+        "value": 100
+      }
+    ],
+    "method": "Synthetic 10, 000-order fixture:9970/10000 = 99.7% before a transformation fix; 10000/10000 = 100% afterward. Only declared fields and sample are assessed.",
+    "alt": "Synthetic reconciliation improves from 99.7% to 100% for a defined order fixture.",
+    "dataOrigin": "synthetic",
+    "steps": [],
+    "studyPaths": [
+      "migration"
+    ]
+  },
+  "references": [
+    {
+      "label": "AWS Prescriptive Guidance: migration strategies",
+      "url": "https://docs.aws.amazon.com/prescriptive-guidance/latest/large-migration-guide/migration-strategies.html"
+    },
+    {
+      "label": "AWS Well-Architected Framework",
+      "url": "https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html"
+    },
+    {
+      "label": "PostgreSQL: backup and restore",
+      "url": "https://www.postgresql.org/docs/current/backup.html"
+    },
+    {
+      "label": "Google SRE Workbook: implementing SLOs",
+      "url": "https://sre.google/workbook/implementing-slos/"
+    }
+  ],
+  "useCases": [
+    {
+      "id": "retail-order-platform",
+      "title": "Move an order platform without splitting every component",
+      "industry": "Retail",
+      "description": "A proposed replatforming pilot preserves order invariants and measures reconciliation before seasonal cutover.",
+      "body": "## Hypothetical scope and constraint\n\nA fictional retailer operates an order application, a relational database, and overnight exports to a warehouse partner. Its immediate problem is an unsupported operating-system release and slow environment provisioning, not an established need for microservices. The proposed engagement would replatform one order-processing workload while retaining the application's modular structure. Peak-season dates and partner file formats constrain the cutover window.\n\nDiscovery would trace checkout, payment confirmation, reservation, cancellation, and export completion. The team would request read-only configuration and metrics access, a synthetic order fixture, and explicit permission before examining production-derived records. Payment details would remain outside the assessment dataset. An owner would confirm which system is authoritative for order state and how late partner acknowledgements are reconciled.\n\n## Design and delivery\n\nThe proposed target would use reproducible application deployment, a supported database configuration, and a durable export workflow. A decision record would compare a managed database with a maintained self-hosted option, including extension compatibility, backup responsibilities, and recurring cost. The plan would avoid introducing service boundaries unless independent ownership or scaling justified them. Credentials and partner endpoints would be environment-specific inputs managed through approved systems.\n\nA rehearsal would bulk-copy a representative order set, apply the chosen catch-up mechanism, and compare keys, amounts, state transitions, and export identifiers. Retry tests would establish that a repeated export attempt does not silently create a second partner order. Cutover would pause the authoritative writer at a documented point, complete final reconciliation, then enable the target writer. Reversal after new target writes would require reconciliation rather than a simple traffic switch.\n\n## Synthetic measurement and interpretation\n\nAssume a rehearsal compares 20,000 orders across a declared set of required fields. Initially, 19,900 match and 100 have an incorrect date conversion. Matching coverage is `19,900 / 20,000 = 99.5%`. After repairing the transformation and rerunning the comparison, 20,000 match, giving 100%. The chart shows those two percentages. These are invented test inputs, not customer results, and matching the selected fields does not establish complete business equivalence.\n\nAcceptance would additionally require successful cancellation, refund-event handling, partner acknowledgement, restore, and a bounded load test using the expected order mix. The team would compare latency distributions without averaging percentiles from separate runs. A performance regression, unexplained mismatch, or missing partner acknowledgement would stop progression at the agreed gate.\n\n## Operations and handover\n\nThe handover would include the export replay procedure, database recovery evidence, ownership of partner failures, and a schedule for patching and certificate renewal. The old environment would remain available only for the approved recovery period. Retirement would follow a full export cycle and removal of obsolete credentials. [AWS migration strategy guidance](https://docs.aws.amazon.com/prescriptive-guidance/latest/large-migration-guide/migration-strategies.html) supports comparing migration approaches; the specific design and numbers here are a proposed exercise.",
+      "figure": {
+        "slug": "service-cloud-modernisation-retail-order-platform",
+        "kind": "bar",
+        "title": "Order reconciliation in a synthetic migration",
+        "unit": "percent matching",
+        "points": [
+          {
+            "label": "Initial comparison",
+            "value": 99.5
+          },
+          {
+            "label": "Corrected comparison",
+            "value": 100
+          }
+        ],
+        "method": "Synthetic 20, 000-order fixture:19, 900/20, 000 = 99.5%; 20, 000/20, 000 = 100% after a modeled date-transform fix. Only declared fields are compared.",
+        "alt": "Synthetic reconciliation coverage increases from 99.5% to 100% for the defined order fields.",
+        "dataOrigin": "synthetic",
+        "steps": [],
+        "studyPaths": [
+          "migration"
+        ]
+      }
+    },
+    {
+      "id": "healthcare-appointment-service",
+      "title": "Modernise appointment scheduling with controlled data access",
+      "industry": "Healthcare",
+      "description": "A proposed scheduling migration separates administrative availability from clinical systems and protects recovery scope.",
+      "body": "## Hypothetical scope and constraint\n\nA fictional healthcare provider wants to move an appointment-booking service from ageing infrastructure. The service handles appointment availability and administrative identifiers; clinical records and treatment decisions are outside scope. The proposed work would improve maintainability while preserving booking correctness and access boundaries. Data-location, retention, and permitted processing requirements would be confirmed with the provider's responsible teams rather than inferred from an industry label.\n\nDiscovery would map booking, cancellation, reminder delivery, identity integration, and downstream scheduling feeds. The team would distinguish staff access from patient access and document how consent or communication preferences reach the reminder process. Early tests would use synthetic appointments. Any representative production-derived data would require a specific access and handling agreement, with identifiers minimized and deletion verified at the end of the exercise.\n\n## Design and controlled implementation\n\nThe design would preserve a single authoritative booking decision and use explicit concurrency controls to prevent two callers reserving the same slot. A managed database would be evaluated for supported transaction semantics, restore capability, access auditing, and regional availability. The application would remain a coherent service unless a separate reminder worker provided a justified operational boundary. A queue would not be treated as proof that every reminder is delivered exactly once.\n\nImplementation would first create a reproducible non-production environment and test identity, access restrictions, and booking races. Migration rehearsal would compare appointment identifiers, slot ownership, cancellation status, and reminder eligibility. A bounded cutover would stop conflicting writers, verify catch-up, and activate the target. A rollback decision would account for appointments created after the change; losing or duplicating those bookings would be unacceptable even if infrastructure recovery were quick.\n\n## Synthetic recovery worksheet\n\nSuppose an isolated rehearsal takes 18 minutes to provision the recovery environment, 22 minutes to restore data, 10 minutes to deploy and connect the application, and 10 minutes to validate booking behavior. Total observed rehearsal time would be `18 + 22 + 10 + 10 = 60 minutes`. A second modeled procedure reduces provisioning to 8 minutes while leaving the other stages unchanged, producing 50 minutes. The chart compares these synthetic totals, not an uptime guarantee.\n\nAcceptance would require that the complete recovery fits the agreed recovery-time objective and that the restored data's latest recoverable point satisfies the separately defined recovery-point objective. The latter cannot be inferred from the 50-minute total. Tests would include simultaneous booking attempts, expired credentials, delayed reminders, and a denied user role, with no real patient notifications sent.\n\n## Handover and measurement limits\n\nOperations would receive a booking reconciliation guide, an approved restore runbook, access ownership, and a controlled reminder replay procedure. The service owner would review a full scheduling cycle before retiring the source. [PostgreSQL backup guidance](https://www.postgresql.org/docs/current/backup.html) provides technical recovery concepts; product-specific implementation and healthcare obligations would still require validation for the chosen deployment.",
+      "figure": {
+        "slug": "service-cloud-modernisation-healthcare-appointment-service",
+        "kind": "bar",
+        "title": "Synthetic appointment-service recovery rehearsal",
+        "unit": "minutes",
+        "points": [
+          {
+            "label": "Initial procedure",
+            "value": 60
+          },
+          {
+            "label": "Revised procedure",
+            "value": 50
+          }
+        ],
+        "method": "Synthetic initial stages 18 + 22 + 10 + 10 = 60 minutes; revised 8 + 22 + 10 + 10 = 50. Includes provisioning, restore, deployment, validation. Does not establish RPO or production recovery.",
+        "alt": "Modeled recovery totals decrease from 60 to 50 minutes through reduced provisioning time.",
+        "dataOrigin": "synthetic",
+        "steps": [],
+        "studyPaths": [
+          "migration",
+          "reliability"
+        ]
+      }
+    },
+    {
+      "id": "manufacturing-plant-integration",
+      "title": "Move plant reporting while retaining local control",
+      "industry": "Manufacturing",
+      "description": "A proposed hybrid design keeps machine control local and tests buffered reporting across network interruptions.",
+      "body": "## Hypothetical scope and constraint\n\nA fictional manufacturer wants central reporting across several plants, but production equipment must continue operating when the wide-area connection is unavailable. The proposed engagement would modernise reporting and data exchange while leaving safety-related control loops and machine control outside scope. Cloud connectivity would not become an implicit prerequisite for continuing local production.\n\nDiscovery would identify the source of each measurement, its timestamp meaning, the sampling interval, and the business use of delayed data. Plant engineering would confirm which interfaces are read-only and which changes require a maintenance window. The team would use approved test equipment or recorded synthetic signals rather than experimenting on live machinery. Access would be separated between reporting collectors and control networks, with explicit ownership of firewall and identity changes.\n\n## Proposed architecture and delivery\n\nThe design would use a local collector with bounded durable buffering and an upstream ingestion interface. Each record would have a stable source identifier, sequence or event identifier, and event time. The receiving service would handle duplicates and late arrivals explicitly. A dashboard would distinguish current readings from delayed or missing data instead of presenting an old value as a live observation.\n\nA pilot at one noncritical reporting boundary would test normal transmission, interrupted connectivity, collector restart, and replay after reconnection. Buffer capacity would be derived from measured record size and rate, including overhead and a safety margin. The plan would define what happens when capacity is exhausted: drop according to an approved policy, stop a nonessential collector, or alert an operator. Unlimited buffering would not be promised.\n\n## Synthetic capacity calculation\n\nAssume the pilot produces 50 records per second and each stored record averages 400 bytes after the chosen serialization. Raw storage growth is `50 × 400 = 20,000 bytes/second`. One hour requires 72,000,000 bytes, or 72 decimal MB. Four hours require 288 MB and eight hours require 576 MB. The chart uses those synthetic raw values. Indexes, filesystem overhead, compression, retries, and bursts are excluded and must be measured before selecting a real buffer size.\n\nAcceptance would require that a controlled outage lasting the agreed test interval produces the expected backlog, that replay does not create duplicate business records, and that the dashboard exposes data age correctly. A sequence-gap check would distinguish missing data from delayed delivery. The test would also verify that the collector's CPU, memory, and disk use remain within the plant-approved limits.\n\n## Rollback and operational ownership\n\nRollback would restore the prior reporting path without changing machine control. The team would retain a reconciliation record for data produced during the transition and define which destination remains authoritative. Handover would include buffer monitoring, replay limits, source-clock assumptions, certificate renewal, and a maintenance-window procedure. [AWS Well-Architected guidance](https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html) supports explicit operational and reliability tradeoffs; this hybrid design is a hypothetical proposal, not a measured plant deployment.",
+      "figure": {
+        "slug": "service-cloud-modernisation-manufacturing-plant-integration",
+        "kind": "bar",
+        "title": "Raw buffer storage for a synthetic reporting stream",
+        "unit": "decimal MB",
+        "points": [
+          {
+            "label": "1 hour",
+            "value": 72
+          },
+          {
+            "label": "4 hours",
+            "value": 288
+          },
+          {
+            "label": "8 hours",
+            "value": 576
+          }
+        ],
+        "method": "Synthetic 50 records/s × 400 bytes × 3600 seconds/hour ÷ 1, 000, 000 = 72 MB/hour. Excludes overhead, compression, bursts and indexes.",
+        "alt": "Synthetic raw reporting storage grows from 72 MB per hour to 576 MB over eight hours.",
+        "dataOrigin": "synthetic",
+        "steps": [],
+        "studyPaths": [
+          "migration",
+          "networks"
+        ]
+      }
+    },
+    {
+      "id": "university-research-portal",
+      "title": "Replatform a research portal around semester demand",
+      "industry": "Higher education",
+      "description": "A proposed portal migration preserves identity federation and tests burst capacity without exposing research datasets.",
+      "body": "## Hypothetical scope and constraint\n\nA fictional university operates a research-project portal with document metadata, access requests, and links to separately governed datasets. Semester starts create short demand bursts, while grant reporting introduces less frequent workflows. The proposed modernisation would replatform the portal and its metadata store, leaving restricted research datasets in their approved locations. It would not assume that all data may move because the web application can.\n\nDiscovery would map federation, group membership, project ownership, metadata exports, and scheduled reporting. The team would ask how access is revoked when a researcher changes institution or a project closes. A synthetic dataset would represent large projects, unusual names, inactive accounts, and permission changes. The data contract would distinguish public metadata from restricted identifiers and specify which test logs may retain those values.\n\n## Architecture and implementation\n\nThe proposed target would separate static content delivery from authenticated portal requests and preserve server-side authorization on every protected operation. Caching would be reviewed for user-specific responses rather than enabled indiscriminately. The migration decision would compare a supported application platform with container deployment, including staffing and patching obligations. A larger platform would not be introduced solely to make the architecture look modern.\n\nDelivery would begin with identity integration and a read-only portal path, followed by metadata writes and reporting jobs. Rehearsals would test expired federation assertions, group changes, concurrent project updates, and export completeness. A staged cutover could route a defined staff cohort first, provided sessions and write ownership remain coherent. The previous environment would not continue accepting conflicting writes during a rollback window.\n\n## Synthetic burst worksheet\n\nSuppose a controlled test submits 6,000 eligible portal requests during a fixed ten-minute interval. The first configuration completes 5,700 within the declared one-second threshold, so its threshold attainment is `5,700 / 6,000 = 95%`. A second modeled configuration completes 5,940 within that threshold, giving 99%. The chart compares these synthetic proportions. This is a request-based latency indicator under a declared load, not availability over a semester or a claim about all users.\n\nAcceptance would require correct authorization and data integrity in addition to latency. The test would preserve arrival timing and request mix rather than letting faster responses create more requests and change the comparison. Failed requests would remain visible in the denominator according to the documented indicator contract. Cache state, client location, and dataset size would be recorded with each run.\n\n## Recovery and handover\n\nRollback would include session behavior, metadata changes made during the pilot, and queued report jobs. A restore rehearsal would verify that the portal can reconnect to the recovered metadata store and that access checks still work. Handover would assign identity, application, dataset-link, and export ownership separately. [Google's SLO implementation guidance](https://sre.google/workbook/implementing-slos/) informs the measurement contract; all counts and outcomes in this example are hypothetical.",
+      "figure": {
+        "slug": "service-cloud-modernisation-university-research-portal",
+        "kind": "bar",
+        "title": "Synthetic portal requests meeting a latency threshold",
+        "unit": "percent of eligible requests",
+        "points": [
+          {
+            "label": "Initial configuration",
+            "value": 95
+          },
+          {
+            "label": "Revised configuration",
+            "value": 99
+          }
+        ],
+        "method": "Synthetic fixed 6000 requests in 10 minutes:5700/6000 = 95% and 5940/6000 = 99% complete within 1 second. Fixed arrival schedule and mix; not time availability.",
+        "alt": "Synthetic one-second threshold attainment increases from 95% to 99% in the defined portal test.",
+        "dataOrigin": "synthetic",
+        "steps": [],
+        "studyPaths": [
+          "migration",
+          "performance"
+        ]
+      }
+    },
+    {
+      "id": "insurance-document-workflow",
+      "title": "Modernise document intake with auditable reconciliation",
+      "industry": "Insurance",
+      "description": "A proposed intake migration separates document storage, workflow state, and downstream processing obligations.",
+      "body": "## Hypothetical scope and constraint\n\nA fictional insurer receives claim documents through a portal, email gateway, and partner feed. The current application stores files on shared storage and records workflow state in a database. The proposed engagement would modernise intake and processing while preserving document identity, retention rules, and authorized access. It would not automate claim decisions or infer legal retention requirements from generic examples.\n\nDiscovery would identify accepted file types, maximum sizes, malware-screening behavior, document versions, duplicate submissions, and downstream acknowledgements. The data contract would define a stable document identifier and distinguish an uploaded object from an accepted business document. Access to representative files would be tightly controlled; synthetic documents would cover most functional tests without exposing policyholder information.\n\n## Proposed design and delivery\n\nThe design would place documents in controlled object storage and maintain authoritative workflow state separately. A durable processing record would connect the two. The team would define how to recover when the file upload succeeds but the metadata transaction fails, and how to handle a repeated notification. A queue would carry work references rather than large sensitive documents where practical, with restricted access and explicit retention.\n\nA pilot would implement intake validation, storage, workflow transition, and one downstream acknowledgement path. Tests would inject duplicate notifications, delayed scanning, unavailable storage, and a worker restart after external processing. Reconciliation would identify orphaned objects, missing metadata, and incomplete downstream acknowledgement. The migration would preserve the source inventory until counts and selected content hashes have been checked under the approved comparison policy.\n\n## Synthetic reconciliation example\n\nAssume a rehearsal contains 8,000 expected document identifiers. The initial scan finds 7,920 with both a stored object and a valid workflow record, giving `7,920 / 8,000 = 99%` completeness under that definition. Eighty records need repair or explanation. After a modeled replay and metadata correction, 7,996 meet the definition, or 99.95%, leaving four unresolved. The chart deliberately retains the unresolved gap rather than reporting an invented perfect result.\n\nAcceptance would depend on the business-approved tolerance, which may require resolving all four exceptions before cutover. Completeness of the object-record pair does not prove that a file is readable, correctly classified, safe, or available to the right user. Separate tests would cover those properties, retention behavior, and a restore of both metadata and file references.\n\n## Reversal and handover\n\nA rollback would preserve documents accepted by the target during the transition and reconcile them into the authoritative workflow before traffic returns. Handover would include an exception queue, replay limits, access-review ownership, storage lifecycle rules, and evidence that a restored workflow can locate its objects. [AWS architecture guidance](https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html) provides a review framework; the design, counts, and proposed repair sequence here are illustrative rather than customer evidence.",
+      "figure": {
+        "slug": "service-cloud-modernisation-insurance-document-workflow",
+        "kind": "bar",
+        "title": "Synthetic document-pair reconciliation coverage",
+        "unit": "percent complete",
+        "points": [
+          {
+            "label": "Initial scan",
+            "value": 99
+          },
+          {
+            "label": "After proposed repair",
+            "value": 99.95
+          }
+        ],
+        "method": "Synthetic 8000 expected documents:7920 valid object-record pairs = 99%; 7996 = 99.95%, leaving 4 unresolved. Pair completeness does not establish content or authorization correctness.",
+        "alt": "Synthetic object-record completeness rises from 99% to 99.95%, with four exceptions still unresolved.",
+        "dataOrigin": "synthetic",
+        "steps": [],
+        "studyPaths": [
+          "migration",
+          "reliability"
+        ]
+      }
+    }
+  ]
+}

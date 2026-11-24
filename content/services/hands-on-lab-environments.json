@@ -1,0 +1,234 @@
+{
+  "id": "hands-on-lab-environments",
+  "title": "Hands-on Lab Environments",
+  "category": "training",
+  "description": "Design reproducible, contained technical labs with scoped access, synthetic fixtures, fault scenarios, assessment, reset and accountable cleanup.",
+  "methodology": "## A laboratory is a learning product with an operating model\n\nThis proposed service designs reusable technical labs that let people practise a defined skill safely and produce evidence of what they learned. The deliverable is more than a collection of virtual machines. It includes setup, identity, synthetic data, instructions, failure scenarios, assessment, reset, cost controls and a maintained handover. All scenarios and calculations on this page are hypothetical designs; they do not describe customer deployments or measured training results.\n\nDiscovery begins with the task a learner should perform independently: diagnose a Linux service, deploy an application, recover a database fixture, inspect a network path or review a delivery pipeline. The team identifies prerequisites, expected duration, allowed tools and the evidence that would demonstrate success. A lab that merely asks someone to paste commands may demonstrate instruction following while leaving the underlying concept untested. The design therefore includes prediction, observation and explanation as well as execution.\n\n## Baseline participants and the delivery environment\n\nAssess both technical readiness and access needs before choosing the platform. Record operating system, processor architecture, available memory, administrative permissions, network restrictions and accessibility requirements. Do not assume every participant can install a hypervisor or run a large container image on a managed laptop. Provide a supported remote alternative where local restrictions would otherwise make the assessment unfair or impossible.\n\nA short baseline task checks the relevant prerequisite rather than the entire curriculum. For a Linux lab, it might involve reading service status and a log; for an API lab, making an authenticated request with a synthetic credential. Separate environment failures from skill gaps in the assessment record. A learner blocked by a corporate proxy should not receive the same result as a learner who cannot explain the task after the environment is working.\n\n## Choose the smallest faithful execution model\n\nContainers are useful for application dependencies and repeatable toolchains. Virtual machines are useful when the objective involves a guest operating system, boot sequence, system services or stronger separation from the host environment. An isolated cloud environment may be required for provider identity, managed storage or network behaviour. Choose according to the learning objective and threat model, not according to which provisioning tool is fashionable.\n\nDocument what the model cannot establish. A local VM does not reproduce a managed cloud control plane, and a container does not automatically provide every behaviour of a full operating-system instance. Processor architecture can affect image availability, native extensions and performance. Emulation may change timing substantially. The lab's acceptance tests must check the behaviour that matters instead of assuming that a successful image launch means production equivalence.\n\n## Define the lab as versioned inputs and observable outputs\n\nThe lab package contains a version manifest, provisioning configuration, application artifacts, synthetic-data generator and acceptance checks. Pin or record versions at the level necessary for reproducibility, including base image identity and dependency resolution. A moving “latest” reference can make two cohorts receive different software without an intentional curriculum change. Keep a supported update process so pinning does not become indefinite use of vulnerable components.\n\nSeparate infrastructure setup from the learner's exercise. A setup check verifies that the environment is ready; an exercise check verifies the learner's result. If the learner's goal is to diagnose a deliberately broken service, the platform should still be able to confirm that the intended fault is present. This prevents an unrelated provisioning failure from masquerading as a teaching challenge and wasting the participant's time.\n\n## Provisioning must wait for readiness and preserve errors\n\nFor VM-based labs, a launch command may return before initialization has completed. The setup workflow must inspect the provisioning system's documented status and wait for the relevant completion condition with a bounded timeout. The cloud-init guidance is useful for distinguishing process launch from completed initialization. The workflow should preserve a concise diagnostic record when setup fails instead of reporting success because the VM exists.\n\nMake provisioning rerunnable where practical and define which actions are destructive. A reset can recreate the lab from declared inputs, restore a known fixture or clear selected state; those choices have different implications. Verify target identity before deletion, and keep lab resources distinct from unrelated personal or work resources. A convenient wildcard cleanup command is unacceptable if it can remove objects outside the assigned exercise.\n\n## Identity, permissions and network boundaries\n\nIssue each learner or pair a scoped identity. Instructor privileges are separate from ordinary exercise permissions, and elevated tasks occur only in explicitly designated disposable environments. Rootless container execution can reduce some risks where supported, but it is not a complete sandbox guarantee. Review host mounts, container privileges, daemon access, network exposure and the trustworthiness of supplied images and scripts.\n\nUse synthetic credentials and data. Where a real cloud account is needed, give it bounded permissions and an expiry process; do not distribute a shared production administrator key. Deny unnecessary external destinations and make allowed dependencies explicit, including package repositories and documentation services. A network-isolated lab may need a preloaded dependency mirror, while an internet-connected lab needs controls against accidental access to live business systems.\n\n## Secrets and infrastructure state need their own lifecycle\n\nProvisioning systems can retain sensitive values in state, plans, logs or generated files. Marking an output as sensitive can change display behaviour without removing the underlying value from storage. Review the actual tool's supported ephemeral and sensitive-data mechanisms, state backend permissions and retention. A lab repository should not contain credentials simply because they are described as temporary.\n\nRotate or revoke training credentials after use and verify that the old identity no longer works. Preserve non-sensitive evidence separately from environment state so cleanup does not require retaining secrets. If assessment recordings are used, avoid showing tokens and collect only what the training purpose needs. Define who can access recordings and when they expire. The learning platform should not create a new uncontrolled collection of operational credentials or personal information.\n\n## Build useful synthetic data and controlled faults\n\nFixtures should preserve the structural properties relevant to the exercise: cardinality, skew, relationships, duplicate identities, missing values or late arrival. They do not need to resemble real people to teach those behaviours. Record the generator seed and expected invariants so the instructor can reproduce a result. A model trained on sensitive records does not automatically produce privacy-safe synthetic data; independently invented fixtures are the default for this service.\n\nFaults are deliberate, bounded and reversible within the lab. Examples include a stopped service, invalid configuration, expired synthetic credential, delayed fake dependency or a database constraint violation. Each fault card names the intended symptom, underlying cause, observable evidence and reset procedure. Avoid combining so many faults that the exercise becomes a guessing game. The final assessment changes a meaningful variable so learners must reason beyond the guided example.\n\n## Design instructions for independent use\n\nEvery exercise begins with its purpose, prerequisites, starting state and acceptance result. Commands are copyable and explain the important options. Expected output is described by meaning, not only by a screenshot that may change with versions. Instructions identify the environment in which a command runs so a learner does not execute a guest-destructive command on the host by mistake.\n\nInclude checkpoints and progressive hints. The first hint points toward an observation, the next narrows the boundary and the final hint may explain the repair. Record hint use without treating it as failure of the entire programme. Provide text alternatives for diagrams and data tables for charts. The material should remain usable with keyboard navigation, magnification and a supported screen reader, with alternative routes for interfaces that cannot meet the participant's needs.\n\n## Assessment needs evidence beyond a green button\n\nAn automated check can verify a file, response, state or policy outcome, but it cannot always establish that the learner understands why it works. Combine executable acceptance with a short explanation and an unseen variation. A participant who disables a control to make a check pass has not met an objective that requires that control. The rubric therefore includes safe execution and reasoning as well as the final state.\n\nKeep setup success, task completion, independent completion and retained capability separate. Report the number of participants and the exact denominator. A median completion time among successful participants can hide people who never completed. Preserve assistance, environment failures and exclusions so the report is interpretable. The programme should not claim a productivity percentage based on a small synthetic classroom exercise.\n\n## Plan capacity and cost in measurable units\n\nEstimate peak concurrency before provisioning. A hypothetical VM cohort with eight simultaneous guests configured for three GiB each has 24 GiB of guest memory allocation. Adding an eight-GiB planning reserve for the host and supporting services gives a 32-GiB planning total. The figure shows those quantities. This is a resource worksheet, not a measured resident-memory footprint or a guarantee that a 32-GiB host can run every workload comfortably.\n\nCPU, storage, image downloads, snapshots, telemetry and network egress need separate estimates. Overcommit can change performance and make assessment timing unfair. If environments are shared, document the scheduling and isolation implications. For cloud labs, use allowed resource types, quotas, expiry and budget notifications, while recognizing that notifications and many quotas are not absolute spending caps. Record actual usage after a pilot and revise the plan from evidence.\n\n## Validate the complete participant workflow\n\nBefore delivery, run the lab from a clean supported machine or account using only the published instructions. Test enrollment, authentication, provisioning, exercise execution, evidence export, reset and teardown. Repeat with a failed setup and an interrupted session. A lab that works only after an instructor manually edits configuration is not ready for independent use.\n\nTest the recovery path when a participant closes a browser, loses connectivity or exceeds a quota. Define what work persists and what is intentionally discarded. A dev-container rebuild may preserve some workspace data while replacing container state; the platform's actual lifecycle must be explained. Use checks to verify the promised persistence rather than relying on the word “rebuild” to mean the same thing across tools.\n\n## Capstone and delivery operations\n\nThe capstone asks participants to provision a fresh environment, perform the target technical task, diagnose a new fault and remove the environment safely. The assessor checks both the result and the artifact trail: configuration revision, synthetic inputs, observations, repair and cleanup. A clean teardown is part of the learning outcome because abandoned resources and credentials are operational defects, not administrative details.\n\nDuring delivery, an instructor dashboard separates platform incidents from learner questions. A support runbook names the environment owner, reset mechanism, budget exception process and escalation path. Keep a small reserve of validated replacement environments when the platform permits, but do not hide recurring setup defects by replacing machines indefinitely. Feed those defects into the lab's maintenance backlog with reproducible evidence.\n\n## Handover and measured transfer\n\nThe handover package includes the lab manifest, provisioning and reset configuration, synthetic fixtures, scenario cards, acceptance checks, rubric, accessibility notes and source references. An internal maintainer demonstrates a clean rebuild and a deliberately failed setup. Assign ownership for dependency updates, image retirement, cost review and documentation changes. The programme is reusable only when someone can maintain it after the original instructor leaves.\n\nA delayed transfer exercise uses a related environment with a changed version or fault. Participants must identify which assumptions still hold, consult official documentation and adapt the procedure safely. The final report distinguishes demonstrated lab skill from later workplace results. The proposed service produces a controlled practice environment and evidence of capability; production adoption still follows the organisation's normal architecture, security and change controls.",
+  "figure": {
+    "slug": "service-hands-on-lab-environments",
+    "kind": "bar",
+    "title": "RAM planning for eight fictional VM labs",
+    "unit": "GiB planned",
+    "points": [
+      {
+        "label": "Eight guest allocations",
+        "value": 24
+      },
+      {
+        "label": "Host and service reserve",
+        "value": 8
+      },
+      {
+        "label": "Planning total",
+        "value": 32
+      }
+    ],
+    "method": "Synthetic 8 guests×3 GiB=24 GiB plus 8 GiB planning reserve gives 32 GiB. Allocation is not measured resident memory, and workload/host overhead can require more capacity.",
+    "alt": "RAM planning for eight fictional VM labs. Eight guest allocations: 24 GiB planned; Host and service reserve: 8 GiB planned; Planning total: 32 GiB planned. Hypothetical planning inputs.",
+    "dataOrigin": "synthetic",
+    "steps": [],
+    "studyPaths": [
+      "learning",
+      "platform"
+    ]
+  },
+  "references": [
+    {
+      "label": "Multipass launch reference",
+      "url": "https://canonical.com/multipass/docs/latest/reference/command-line-interface/launch/"
+    },
+    {
+      "label": "cloud-init readiness",
+      "url": "https://docs.cloud-init.io/en/latest/howto/wait_for_cloud_init.html"
+    },
+    {
+      "label": "Docker rootless mode",
+      "url": "https://docs.docker.com/engine/security/rootless/"
+    },
+    {
+      "label": "Terraform sensitive data",
+      "url": "https://developer.hashicorp.com/terraform/language/manage-sensitive-data"
+    },
+    {
+      "label": "Codespaces rebuild lifecycle",
+      "url": "https://docs.github.com/en/codespaces/developing-in-a-codespace/rebuilding-the-container-in-a-codespace"
+    },
+    {
+      "label": "GitHub Actions secure use",
+      "url": "https://docs.github.com/en/actions/reference/security/secure-use"
+    }
+  ],
+  "useCases": [
+    {
+      "id": "university-linux-labs",
+      "title": "Provide reproducible Linux service labs across mixed laptops",
+      "industry": "Higher education",
+      "description": "A hypothetical teaching environment separates provisioning readiness from a learner’s service-diagnosis task.",
+      "body": "## Hypothetical need and access baseline\n\nA fictional university computing programme has students using different laptop operating systems and processor architectures. The proposed lab teaches Linux service diagnosis with invented application data. It does not describe a delivered university engagement. Discovery records available memory, installation permissions, network restrictions and accessibility needs before deciding which students use local VMs and which need a supported remote environment.\n\n## Environment and teaching design\n\nThe package includes a pinned guest image, cloud-init configuration, a small HTTP service and a deliberately broken configuration variant. Setup waits for initialization and verifies the expected starting state. The [cloud-init readiness guidance](https://docs.cloud-init.io/en/latest/howto/wait_for_cloud_init.html) supports that distinction: a running VM is not sufficient evidence that package installation and configuration have completed.\n\nThe learner's task begins only after the environment check passes. Students inspect service status, logs, listening sockets and a local request, then explain the fault before repairing it. The instructor supplies progressive hints and records whether the learner needed help with Linux concepts or with the environment itself. The capstone changes the configuration error so memorizing a restart command is insufficient.\n\n## Synthetic capacity calculation\n\nA hypothetical teaching session supports 12 local or remote guest environments, each configured with two GiB of memory. Guest allocation totals 24 GiB across the selected hosts. Four additional environments used for instructor demonstration and replacements add eight GiB, giving 32 GiB of guest allocation overall. The chart shows participant, support and combined allocation. It excludes host overhead and does not imply that all guests run on one 32-GiB machine.\n\nThe planning worksheet also records CPU, disk, download size and concurrency per host. A participant whose hardware cannot support the configuration receives the remote route before the assessment. Timing comparisons exclude provisioning incidents or report them separately rather than attributing them to student ability.\n\n## Acceptance, cleanup and handover\n\nAcceptance requires a fresh setup, correct diagnosis, a verified service response and an explanation of the evidence. The learner then resets the environment and demonstrates that the seeded fault returns reproducibly. Cleanup removes only the named lab guest and associated synthetic files, with explicit host-versus-guest command labels.\n\nNo production credentials or personal student records are placed inside the exercise. Access to remote environments expires after the planned retention period. Handover includes image and architecture support notes, readiness checks, fault variants and the rubric. A delayed exercise changes the service port and dependency configuration, assessing whether students can reapply the diagnostic method rather than repeat the exact original commands.",
+      "figure": {
+        "slug": "service-hands-on-lab-environments-university-linux-labs",
+        "kind": "bar",
+        "title": "Planned guest-memory allocation for a fictional cohort",
+        "unit": "GiB allocated",
+        "points": [
+          {
+            "label": "Twelve participant guests",
+            "value": 24
+          },
+          {
+            "label": "Four support guests",
+            "value": 8
+          },
+          {
+            "label": "Combined guest allocation",
+            "value": 32
+          }
+        ],
+        "method": "Synthetic guests each allocate 2 GiB: 12×2=24, 4×2=8, total 32 GiB across selected hosts. Excludes host overhead; not measured RSS or a single-host sizing guarantee.",
+        "alt": "Planned guest-memory allocation for a fictional cohort. Twelve participant guests: 24 GiB allocated; Four support guests: 8 GiB allocated; Combined guest allocation: 32 GiB allocated. Hypothetical planning inputs.",
+        "dataOrigin": "synthetic",
+        "steps": [],
+        "studyPaths": [
+          "learning",
+          "platform"
+        ]
+      }
+    },
+    {
+      "id": "finance-pipeline-sandbox",
+      "title": "Practise secure pipeline changes without production credentials",
+      "industry": "Financial technology",
+      "description": "A hypothetical CI training sandbox tests untrusted-code boundaries, secret handling and reproducible teardown.",
+      "body": "## Hypothetical learning problem\n\nA fictional financial-technology team wants developers to understand why some pipeline jobs may use deployment credentials and others must not. The proposed environment uses a disposable repository and fake deployment target. It contains no real financial records or production keys. The baseline task asks participants to identify which workflow inputs are untrusted and which jobs can publish or deploy an artifact.\n\n## Technical design and delivery\n\nThe sandbox includes a pull-request test workflow, a reviewed artifact build and a restricted deployment exercise. The instructor seeds an unsafe configuration that would combine untrusted contribution code with a powerful token if used in a real system. The lab uses a harmless synthetic token and a mock endpoint so the risk can be demonstrated without exposing genuine access.\n\nLearners consult [GitHub Actions secure-use guidance](https://docs.github.com/en/actions/reference/security/secure-use), inspect permission scopes and separate trust boundaries. They verify that a denied job cannot obtain the deployment capability and that the approved path still works. Automatic log redaction is not treated as proof that transformed secrets cannot appear in output. The exercise includes an intentionally encoded marker to test whether evidence collection handles sensitive-looking material appropriately.\n\n## Synthetic assessment matrix\n\nThe invented acceptance matrix contains 15 checks: six for permission boundaries, five for artifact identity and four for cleanup. The chart shows those categories. These counts describe the planned exercise, not a security certification or a measured reduction in incidents. A missing permission boundary cannot be offset by passing additional cleanup checks; every mandatory condition has an explicit result.\n\nParticipants record workflow revision, event type, effective permissions, artifact digest and deployment outcome. The fake deployment target verifies the expected artifact rather than accepting any successful HTTP call as a release. A rerun must preserve the intended trust model, and a failed build must not publish a misleading success artifact.\n\n## Acceptance and lifecycle\n\nThe capstone asks learners to add a test job and a release check without widening credential access. Acceptance requires both allowed and denied paths to behave correctly, a reviewable diff and an explanation of residual trust in third-party actions. The participant demonstrates how to revoke the synthetic credential and confirms that old access fails.\n\nThe repository and target have expiry owners and a bounded runtime budget. Cleanup removes credentials, generated artifacts and runner state according to the platform design. Handover includes the trust-boundary diagram, test matrix and incident-style investigation worksheet. A delayed transfer exercise changes the triggering event and contribution source, testing whether participants reassess the permission model instead of copying a workflow that was safe only in the original context.",
+      "figure": {
+        "slug": "service-hands-on-lab-environments-finance-pipeline-sandbox",
+        "kind": "bar",
+        "title": "Designed secure-pipeline evidence categories",
+        "unit": "checks",
+        "points": [
+          {
+            "label": "Permission boundaries",
+            "value": 6
+          },
+          {
+            "label": "Artifact identity",
+            "value": 5
+          },
+          {
+            "label": "Cleanup",
+            "value": 4
+          }
+        ],
+        "method": "Hypothetical 15-check design: 6 permission + 5 artifact + 4 cleanup checks. All mandatory checks must pass; counts are not a security-risk score.",
+        "alt": "Designed secure-pipeline evidence categories. Permission boundaries: 6 checks; Artifact identity: 5 checks; Cleanup: 4 checks. Hypothetical planning inputs.",
+        "dataOrigin": "synthetic",
+        "steps": [],
+        "studyPaths": [
+          "learning",
+          "platform"
+        ]
+      }
+    },
+    {
+      "id": "research-reproducible-runtime",
+      "title": "Rebuild an analysis environment from declared inputs",
+      "industry": "Research and analytics",
+      "description": "A hypothetical lab teaches environment provenance, deterministic fixtures and honest limits on reproducibility.",
+      "body": "## Hypothetical context and baseline\n\nA fictional research analytics group wants new engineers to reproduce a small analysis without relying on an author's laptop. The proposed lab uses independently generated data and no confidential research participants. It does not claim a scientific result or universal bit-for-bit reproducibility. The baseline asks learners to identify source revision, dependency versions, random seed, runtime architecture and output definition.\n\n## Environment design\n\nThe package contains a versioned analysis script, dependency lock information, synthetic-data generator and a container or VM configuration appropriate to the selected libraries. Participants rebuild from a clean starting point and compare outputs using declared tolerances. Floating-point reductions, parallel execution and architecture can affect exact results, so the acceptance rule distinguishes semantic agreement from byte-for-byte identity where necessary.\n\nThe lab uses a supported development-container workflow and explicitly tests what survives a rebuild. The [Codespaces rebuild documentation](https://docs.github.com/en/codespaces/developing-in-a-codespace/rebuilding-the-container-in-a-codespace) is one reference for that lifecycle. A cached successful build is compared with a fresh rebuild to reveal undeclared downloads, manually installed packages or files stored only in transient container state.\n\n## Synthetic worksheet and figure\n\nThe invented analysis processes 10,000 generated rows in each of three runs. The declared expected valid-row count is 9,800, with 200 rejected by a specified validation rule. The chart shows 10,000 input rows, 9,800 valid rows and 200 rejected rows. These are fixture counts, not scientific measurements or an estimate of real data quality. The exact rejected identities are preserved so matching totals cannot conceal different filtering behaviour.\n\nLearners record the generator seed, input hash, configuration and output summary. They deliberately change the validation threshold and verify that the expected result changes in an explainable way. The exercise teaches provenance: a changed result can be legitimate when an input changed, but an unexplained difference is an investigation item rather than a number to average away.\n\n## Acceptance and transfer\n\nThe capstone requires a clean rebuild, correct fixture result, an explanation of tolerance and a documented command another engineer can run. The learner must identify any external dependency that prevents offline reproduction and propose an approved cache or artifact strategy. A screenshot of the author's successful notebook does not pass.\n\nResource limits bound CPU, memory and generated output. No credentials are embedded in notebooks or image layers. Cleanup removes temporary environments while preserving the version manifest and synthetic evidence. Handover includes setup, data-generation and validation instructions plus known architecture limits. A delayed task updates one dependency and changes the execution architecture where supported, measuring whether participants can assess compatibility and explain differences instead of assuming the old environment definition remains sufficient.",
+      "figure": {
+        "slug": "service-hands-on-lab-environments-research-reproducible-runtime",
+        "kind": "bar",
+        "title": "Expected synthetic analysis fixture counts",
+        "unit": "rows",
+        "points": [
+          {
+            "label": "Generated input",
+            "value": 10000
+          },
+          {
+            "label": "Valid rows",
+            "value": 9800
+          },
+          {
+            "label": "Rejected rows",
+            "value": 200
+          }
+        ],
+        "method": "Invented 10,000-row fixture with an explicit rule rejecting 200 rows, leaving 9,800. Same identities and semantics must reconcile across rebuilds; not a scientific result.",
+        "alt": "Expected synthetic analysis fixture counts. Generated input: 10000 rows; Valid rows: 9800 rows; Rejected rows: 200 rows. Hypothetical planning inputs.",
+        "dataOrigin": "synthetic",
+        "steps": [],
+        "studyPaths": [
+          "learning",
+          "platform"
+        ]
+      }
+    },
+    {
+      "id": "manufacturing-edge-vms",
+      "title": "Practise offline edge-service recovery in disposable VMs",
+      "industry": "Manufacturing technology",
+      "description": "A hypothetical lab simulates intermittent connectivity and recoverable local work without touching industrial controls.",
+      "body": "## Hypothetical problem and boundaries\n\nA fictional manufacturing technology team needs engineers to understand how a local service behaves when its upstream connection disappears. The proposed environment uses simulated sensors and a fake upstream endpoint. It never connects to industrial controllers and does not certify a safety-critical system. The baseline asks participants to distinguish locally accepted work, durable queued work and upstream acknowledgement.\n\n## Technical and teaching design\n\nEach pair receives a disposable VM with a small service, local persistent store and controlled network-failure switch. The VM model is selected because service startup, local disk state and restart behaviour are part of the objective. The [Multipass launch reference](https://canonical.com/multipass/docs/latest/reference/command-line-interface/launch/) supports one possible provisioning route; host architecture and driver support are checked before delivery.\n\nLearners generate synthetic records, disconnect the fake upstream and restart the local service. They inspect whether accepted work survives and whether replay creates duplicates. The instructor includes a misleading implementation that writes an acknowledgement before durable storage. Participants must demonstrate the loss window rather than infer durability from a successful API response.\n\n## Synthetic backlog calculation\n\nThe invented input rate is five records per second during a 120-second disconnection, creating 600 pending records if all are durably accepted and the queue starts empty. The chart shows 150 records after 30 seconds, 300 after 60 seconds and 600 after 120 seconds. These are constant-rate planning values, not factory telemetry or a promised outage tolerance.\n\nThe worksheet includes storage per record, maximum queue size, expiry policy and behaviour when the limit is reached. Unbounded local buffering is not accepted as a recovery design. After reconnection, learners measure completion and deduplicate by stable record identity. They distinguish the time required to drain old work from the continuing arrival rate and check the oldest record's age.\n\n## Acceptance, cleanup and handover\n\nThe capstone requires survival of the declared restart, correct replay identities, an honest full-queue response and a documented recovery sequence. A zero pending count is not sufficient if records were discarded. Learners reconcile generated, accepted, rejected and upstream-completed sets and explain every difference.\n\nThe environment has no route to live plant networks, uses synthetic credentials and has bounded disk allocation. Cleanup removes the named VM and fixture data after non-sensitive evidence is exported. Handover includes fault controls, storage assumptions and restart tests. A delayed transfer exercise changes the input rate and disk budget, requiring engineers to recalculate capacity and define admission behaviour rather than reuse the original 600-record answer.",
+      "figure": {
+        "slug": "service-hands-on-lab-environments-manufacturing-edge-vms",
+        "kind": "bar",
+        "title": "Pending records during a synthetic disconnection",
+        "unit": "records",
+        "points": [
+          {
+            "label": "After 30 seconds",
+            "value": 150
+          },
+          {
+            "label": "After 60 seconds",
+            "value": 300
+          },
+          {
+            "label": "After 120 seconds",
+            "value": 600
+          }
+        ],
+        "method": "Synthetic constant 5 records/s with empty initial queue and no upstream completion: backlog=5×seconds. Assumes durable acceptance and no rejection; not a production outage-tolerance claim.",
+        "alt": "Pending records during a synthetic disconnection. After 30 seconds: 150 records; After 60 seconds: 300 records; After 120 seconds: 600 records. Hypothetical planning inputs.",
+        "dataOrigin": "synthetic",
+        "steps": [],
+        "studyPaths": [
+          "learning",
+          "platform"
+        ]
+      }
+    },
+    {
+      "id": "public-sector-resettable-labs",
+      "title": "Make a restricted-device training lab recoverable",
+      "industry": "Public-sector IT",
+      "description": "A hypothetical remote-lab design supports constrained laptops, interrupted sessions and independent teardown verification.",
+      "body": "## Hypothetical access problem\n\nA fictional public-sector IT group has managed laptops that do not permit local virtualization or administrator installation. The proposed service provides a remote disposable lab for a basic deployment and diagnosis exercise. It uses invented application records and does not access government systems. Discovery checks browser support, network policy, accessibility needs and identity requirements before treating remote access as a solved problem.\n\n## Technical design and delivery\n\nThe lab separates participant authentication from the runtime identity used inside the environment. Each learner receives a scoped workspace with explicit persistence and expiry rules. Setup verifies the required tools and synthetic service before the exercise begins. The instructor tests a lost browser connection, an expired session and a failed environment build so support procedures exist before the cohort arrives.\n\nInfrastructure definitions and state are access-controlled. The [Terraform sensitive-data guidance](https://developer.hashicorp.com/terraform/language/manage-sensitive-data) illustrates why a hidden output is not automatically absent from state. The design avoids putting shared administrator credentials in workspace files. Learners can reset their own disposable resources but cannot delete another participant's environment or change the underlying platform account.\n\n## Synthetic scheduling worksheet\n\nThe invented cohort has 20 learners, with ten environments available concurrently. Two scheduled groups therefore each use ten environments for a two-hour exercise, totalling 40 environment-hours before setup and support overhead. Provisioning 20 environments for an eight-hour day would total 160 environment-hours. The chart compares 40 and 160 under these explicit assumptions. It describes runtime quantities, not a cloud-price quote or a guaranteed cost reduction.\n\nScheduling fewer concurrent environments may affect convenience and support capacity, so the worksheet records those tradeoffs. It also includes retained storage, image preparation and the time needed for reset between groups. The team measures actual pilot usage rather than assuming the simplified environment-hour ratio exactly predicts the bill.\n\n## Acceptance and lifecycle\n\nThe capstone requires the learner to reconnect after an interruption, recover the declared persistent work, complete the deployment check and remove the environment safely. The assessor verifies that credentials expire and that no cross-workspace access is possible through the supported interfaces. A learner who loses work that the instructions promised to preserve has encountered a platform defect, not a failed skills assessment.\n\nCleanup checks workspaces, storage, addresses, logs and state retention rather than only the visible compute instance. Handover includes the access checklist, interruption runbook, persistence contract and inventory-based teardown procedure. An internal maintainer runs a complete fresh cohort setup and cleanup. A later transfer exercise changes the workspace image and access policy, testing whether the team revalidates the full participant workflow rather than assuming a new image preserves every lifecycle guarantee.",
+      "figure": {
+        "slug": "service-hands-on-lab-environments-public-sector-resettable-labs",
+        "kind": "bar",
+        "title": "Synthetic remote-lab scheduling quantities",
+        "unit": "environment-hours",
+        "points": [
+          {
+            "label": "Two scheduled groups",
+            "value": 40
+          },
+          {
+            "label": "Twenty for full day",
+            "value": 160
+          }
+        ],
+        "method": "Invented scheduling: 2 groups×10 environments×2h=40 environment-hours; 20×8h=160. Excludes setup, reset, retained storage and support. Not a quoted cost saving.",
+        "alt": "Synthetic remote-lab scheduling quantities. Two scheduled groups: 40 environment-hours; Twenty for full day: 160 environment-hours. Hypothetical planning inputs.",
+        "dataOrigin": "synthetic",
+        "steps": [],
+        "studyPaths": [
+          "learning",
+          "platform"
+        ]
+      }
+    }
+  ]
+}

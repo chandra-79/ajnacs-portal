@@ -1,0 +1,234 @@
+{
+  "id": "mlops-data-pipelines",
+  "title": "MLOps and data pipelines",
+  "category": "ai",
+  "description": "Build reproducible data-to-model delivery with temporal correctness, validated releases, recoverable processing and accountable operation.",
+  "methodology": "## The proposed delivery outcome\n\nThis service describes a proposed engineering method for moving data and models through a reproducible, supportable lifecycle. The examples use hypothetical organizations and synthetic inputs. They are not reports of customer engagements or promises of a particular model improvement. The concrete deliverable is a tested path from source records to an accepted prediction service or batch output, with evidence that the path can be rebuilt and recovered.\n\nThe scope includes ingestion contracts, transformation logic, training datasets, evaluation, artifact registration, deployment, monitoring and handover. It does not assume that every project needs a feature store, streaming platform or dedicated model registry product. A small batch workflow may be best served by versioned files and a simple scheduler. Architecture follows the required latency, reproducibility and ownership rather than a maturity checklist.\n\n## Discover the decision and the data lifecycle\n\nStart with the business decision that consumes the model output. Identify who acts, when the information is needed and what happens if it is wrong or unavailable. A daily planning forecast and a real-time transaction score require different operating contracts. Define the accepted output and the ordinary fallback before discussing orchestration tools.\n\nMap source systems, owners, identities, schemas, event timing, update patterns and retention requirements. Record whether historical values can change and whether source systems expose a reliable snapshot or change log. Confirm permission for each use, including training and evaluation; permission to read a record for one operational task does not automatically authorize retaining it in a model-development dataset.\n\nThe discovery record should distinguish missing data, delayed data and corrected data. A source may report an event that occurred yesterday but only became available today. That distinction can change whether it was legitimate input to a historical prediction. Ask source owners to explain their clocks and correction process, then encode the answer in the contract rather than assuming every timestamp has the same meaning.\n\n## Define source and transformation contracts\n\nFor each input, specify entity keys, schema version, valid ranges, required fields, deduplication identifiers, event time and availability time. Define how invalid records are handled and who resolves them. Quarantining a record is useful only when the record can be traced, corrected and replayed; silently dropping it creates an invisible change in the model's population.\n\nTransformation contracts include units, timezone, window boundaries, null semantics and cancellation rules. A field called recent_spend should state which transactions count and what information was available at the prediction cutoff. Version semantic changes even if the field type remains numeric. Changing a default from unknown to zero can alter behavior as materially as replacing model weights.\n\nUse explicit ownership for shared features. The owner publishes definitions, freshness expectations and deprecation rules, while consumers declare compatible versions. A feature store can coordinate these relationships, but does not make inconsistent source data correct. For a small project, a reviewed library and versioned outputs may provide the needed control with less operational overhead.\n\n## Architecture and data flow\n\nA practical pipeline separates immutable or versioned raw inputs, validated records, transformed features, training datasets, model artifacts and serving outputs. Each stage records its inputs and configuration. Access should narrow as data becomes specialized, and derived stores should remain within the reviewed data boundary. Metadata and logs can themselves contain sensitive information and need appropriate handling.\n\nBatch and streaming paths should share definitions where feasible and be tested for parity where implementations differ. The offline path reconstructs historical inputs; the online path serves current values with a freshness status. Point-in-time retrieval needs to reflect both event time and actual availability when late arrivals or corrections matter. The Feast documentation illustrates this distinction and the importance of source timestamp semantics.\n\nThe model artifact belongs to a compatible release set: preprocessing, feature schema, weights, tokenizer where applicable, serving code and configuration. A model file alone is not a complete deployable unit. Store digests and references so an operator can determine which combination produced an output and whether a previous combination can be restored.\n\n## Implement reproducible processing first\n\nBegin with a small synthetic fixture whose expected transformations can be calculated by hand. Test boundary timestamps, duplicates, missing values and corrected records before scaling volume. Extract stable notebook logic into explicit functions with inputs and outputs. A clean-environment run should not depend on a developer's local files or a previously executed notebook cell.\n\nPin the dependencies necessary to reconstruct the run and record environment information. Reproducibility can mean exact transformation equality or model metrics within a declared tolerance, depending on stochastic and hardware behavior. State which requirement applies. A saved random seed is useful but does not guarantee identical results across every distributed training environment.\n\nBuild rerun safety into the output transaction. Use dataset version, model version and scoring period as part of a suitable identity for a batch result. Commit validated outputs atomically where the storage system supports it. If a process fails between computation and publication, the next run should either complete the same output or detect that it already exists, rather than creating duplicates.\n\n## Training and evaluation without future information\n\nDefine labels and their observation windows before assembling the training set. A churn outcome that requires thirty days of inactivity is not mature the morning after a prediction. Preserve that maturity rule in evaluation cohorts. Do not train on later account changes or outcome-derived features that would not have been available at the decision time.\n\nChoose splits that reflect deployment. Time-based splits are appropriate when predicting future periods, while related entities may need grouping to avoid near-duplicate leakage. Fit preprocessing only on training data and apply the learned transformation to validation and test data. The scikit-learn common-pitfalls guidance provides a concrete foundation for this distinction.\n\nMaintain a simple baseline and evaluate the entire input-to-output path. A sophisticated model that improves an offline score but depends on unavailable features is not a viable release. Report subgroup performance, missingness and uncertainty alongside the headline metric. Keep development examples separate from an unseen release set where practical, and document repeated tuning against a holdout.\n\n## Synthetic pipeline acceptance accounting\n\nConsider a rehearsal with 200 synthetic source records. Schema and range checks accept 190. Temporal and entity joins produce 180 usable feature records. Final eligibility checks yield 174 records for scoring. The chart shows the four nested counts. Validation coverage is 190/200 = 95%; feature coverage is 180/200 = 90%; final scoring coverage is 174/200 = 87%.\n\nThe twenty-six records not scored need explicit dispositions: ten invalid at ingress, ten unable to form the required feature join and six ineligible under the declared rule. These are invented counts that demonstrate reconciliation. They do not establish acceptable production coverage. A missingness pattern concentrated in one population could make an apparently high overall percentage unsuitable.\n\nEvery stage should reconcile its input, output, rejected and pending counts. A pipeline returning success while losing records between stages has failed its contract. Record duplicate suppression separately from rejected unique records so operational reports do not confuse harmless retries with data loss. Publish the calculation and category definitions with the chart.\n\n## Bounded test and security plan\n\nTest transformations with deterministic fixtures, training with leakage checks and serving with compatible artifacts. Add integration tests for source outages, partial writes, stale features, schema changes and replay after interruption. Performance tests should use representative record sizes, key distributions and arrival patterns. A uniform toy dataset can conceal skewed partitions and hot entities.\n\nSecurity tests should verify source and destination permissions, secret handling, artifact integrity and cross-tenant boundaries. A training job should run with the intended restricted identity, not a developer's broad account. Inspect build and deployment artifacts for unintended data or credentials. An experiment-tracking interface must not become a general download portal for sensitive datasets.\n\nUse bounded failure injection in a non-production environment with synthetic data. Stop a worker after it writes output but before it records completion, delay one partition and revoke a test credential. Observe whether the system reconciles, retries or stops according to the contract. Do not interpret a successful happy-path run as evidence that recovery works.\n\n## Release criteria and rollout\n\nAcceptance should cover data completeness, temporal correctness, model quality, freshness, latency, cost and recovery. Critical data-access failures remain separate blockers rather than small penalties in a composite score. The product and operational owners should choose thresholds based on consequence and the baseline. Generic targets copied from another project are not a substitute for that decision.\n\nFor batch systems, compare candidate outputs with the existing process on a fixed period before changing the downstream consumer. For online systems, use an appropriate shadow or limited-cohort rollout with explicit traffic assignment. Shadow predictions do not establish user benefit because they do not influence decisions; they are useful for checking behavior and capacity before a controlled operational pilot.\n\nThe release record contains artifact identities, input definitions, evaluation methodology, known limitations and rollback instructions. If a feature definition changes, evaluate consumers and coordinate the transition. A model registry approval flag is only a record of a decision; it should link to the evidence and compatible serving configuration that support it.\n\n## Recovery, monitoring and operations\n\nDefine recovery objectives for each stage and test them against actual data volume. Reconstructing a model from raw inputs can take much longer than restoring a serving artifact, so keep appropriate recovery paths for both. Backups need restore rehearsals, and a successful storage restore should be followed by validation of data and prediction compatibility.\n\nMonitor ingestion lag, schema failures, feature freshness, entity coverage, prediction distribution and delayed outcome quality. Drift is a diagnostic signal, not an automatic command to retrain. Investigate source changes and label quality before learning from a potentially corrupted period. A previous model may also fail on a genuinely changed population, so rollback is not the only response.\n\nCost reporting should use an accepted output denominator: qualified prediction, completed scoring period or training run meeting the declared evaluation criteria. Include rejected work, retries and idle serving capacity where relevant. A faster training job is not necessarily cheaper over its lifecycle if it requires more frequent repairs or a more expensive feature pipeline.\n\n## Handover and practical worksheet\n\nThe receiving team should reproduce a dataset, load a registered artifact, rerun a failed period and recover a serving instance during handover. Supply source contracts, transformation definitions, fixtures, lineage records, deployment instructions and incident runbooks. A walkthrough is incomplete until the operator performs a recovery without relying on the original author's informal knowledge.\n\nComplete a worksheet for every pipeline: decision served, source owner, entity key, event clock, availability clock, label maturity, transformation version, output transaction, quality gate, freshness budget, recovery objective, retention rule and accountable operator. Attach evidence for each field and mark unknowns explicitly. This makes unfinished discovery visible before the system becomes a dependency for other teams.\n\n## Limits and architectural tradeoffs\n\nA shared platform can reduce duplication while concentrating failure risk. Streaming can improve freshness while increasing state and replay complexity. Historical retention can improve reproducibility while increasing cost and privacy obligations. The design should explain these tradeoffs in relation to the actual decision, rather than assuming more infrastructure is inherently more mature.\n\nThis method cannot guarantee that a model will be useful or that source data will remain stable. It can make those assumptions inspectable and changes recoverable. If the baseline is already adequate or the data cannot support the intended prediction, the appropriate outcome may be a simpler reporting pipeline or a narrower use case. That is a valid engineering conclusion, not a failed attempt to justify an ML platform.",
+  "figure": {
+    "slug": "service-mlops-data-pipelines",
+    "kind": "bar",
+    "title": "Synthetic source-to-scoring record reconciliation",
+    "unit": "records",
+    "points": [
+      {
+        "label": "Source records",
+        "value": 200
+      },
+      {
+        "label": "Validated",
+        "value": 190
+      },
+      {
+        "label": "Feature joins usable",
+        "value": 180
+      },
+      {
+        "label": "Eligible for scoring",
+        "value": 174
+      }
+    ],
+    "method": "Synthetic200records. Nested stage counts200→190→180→174; removals10,10,6. Final coverage174/200=87%. Every removed record needs a disposition; not a production completeness target.",
+    "alt": "Synthetic source-to-scoring record reconciliation. Source records: 200 records, Validated: 190 records, Feature joins usable: 180 records, Eligible for scoring: 174 records. Synthetic illustration.",
+    "dataOrigin": "synthetic",
+    "steps": [],
+    "studyPaths": [
+      "ai-evaluation",
+      "platform"
+    ]
+  },
+  "references": [
+    {
+      "label": "Feast, Point-in-time joins",
+      "url": "https://docs.feast.dev/getting-started/concepts/point-in-time-joins"
+    },
+    {
+      "label": "scikit-learn, Common pitfalls and data leakage",
+      "url": "https://scikit-learn.org/stable/common_pitfalls.html"
+    },
+    {
+      "label": "Breck et al., The ML Test Score",
+      "url": "https://research.google/pubs/the-ml-test-score-a-rubric-for-ml-production-readiness-and-technical-debt-reduction/"
+    },
+    {
+      "label": "Sculley et al., Hidden Technical Debt in Machine Learning Systems",
+      "url": "https://research.google/pubs/hidden-technical-debt-in-machine-learning-systems/"
+    },
+    {
+      "label": "NIST AI Risk Management Framework",
+      "url": "https://www.nist.gov/itl/ai-risk-management-framework"
+    }
+  ],
+  "useCases": [
+    {
+      "id": "retail-inventory-features",
+      "title": "Keep inventory features fresh without leaking future sales",
+      "industry": "Retail",
+      "description": "Hypothetical feature pipeline for replenishment planning with event-time and availability-time controls.",
+      "body": "## Proposed problem and discovery\n\nA hypothetical retailer wants a daily replenishment model to use recent sales and stock movements. Historical reports are corrected after late transactions arrive, so a naive training join can use information that planners did not have at the time. The proposed work would establish temporal contracts and a reproducible feature dataset before changing the model. All records and results in this case are synthetic.\n\nDiscovery would identify store, product, transaction and correction identifiers, along with event and availability timestamps. The accepted dataset would reproduce the information available at the planning cutoff. Cancelled sales, returns and delayed store uploads would have explicit treatment. The model's downstream recommendation would remain subject to the existing purchasing decision process.\n\n## Architecture and delivery\n\nRaw events would be retained under a reviewed policy, validated and transformed into versioned daily features. A historical path would reconstruct cutoff-specific values, while an operational path would expose the latest eligible values with freshness metadata. The team would test parity on hand-calculated fixtures before introducing a feature-store product. [Feast's point-in-time documentation](https://docs.feast.dev/getting-started/concepts/point-in-time-joins) explains why creation or availability timestamps can matter alongside event time.\n\nDelivery would include duplicate suppression, correction replay and a deterministic output identity for each store-product-date-feature version. A failed backfill would not overwrite a newer production value. Access would be scoped to the required commercial records, and model-development extracts would avoid unnecessary customer identifiers.\n\n## Synthetic calculation\n\nSuppose 1,000 store-product feature rows are expected each morning. Eight hundred fifty are fresh by the cutoff, one hundred are late and fifty are missing. The chart shows those exclusive categories. Fresh coverage is 850/1,000 = 85%. If a pipeline change makes sixty late rows available before the cutoff, fresh coverage becomes 910/1,000 = 91%, a six-percentage-point improvement.\n\nThis is an invented scenario, not evidence of forecast improvement. The model may be insensitive to some late features and highly sensitive to others. Evaluation would therefore compare feature freshness with accepted planning outcomes, while keeping the forecast model fixed when testing the pipeline change itself.\n\n## Acceptance and operation\n\nAcceptance would require correct historical reconstruction, complete row reconciliation, tested duplicate handling and a visible fallback for missing features. The owner would set the freshness threshold by product importance and planning cadence. Tests would include a store uploading yesterday's events after today's cutoff and a correction arriving after a training snapshot was frozen.\n\nRollback would restore the prior feature definition and compatible model configuration. Handover would include lineage queries, backfill limits, freshness alerts and an exercise where an operator explains why a particular row was unavailable. The limitation is explicit: a dependable feature pipeline improves evidence quality but does not guarantee that a replenishment model makes better commercial decisions.",
+      "figure": {
+        "slug": "service-mlops-data-pipelines-retail-inventory-features",
+        "kind": "bar",
+        "title": "Synthetic morning feature freshness",
+        "unit": "rows",
+        "points": [
+          {
+            "label": "Fresh at cutoff",
+            "value": 850
+          },
+          {
+            "label": "Late",
+            "value": 100
+          },
+          {
+            "label": "Missing",
+            "value": 50
+          }
+        ],
+        "method": "Synthetic1000expected rows:850fresh+100late+50missing. Moving60late rows before cutoff gives910/1000=91% versus85%,a6-point difference. No forecast-accuracy claim.",
+        "alt": "Synthetic morning feature freshness. Fresh at cutoff: 850 rows, Late: 100 rows, Missing: 50 rows. Synthetic illustration.",
+        "dataOrigin": "synthetic",
+        "steps": [],
+        "studyPaths": [
+          "ai-evaluation",
+          "platform"
+        ]
+      }
+    },
+    {
+      "id": "factory-sensor-replay",
+      "title": "Build replayable sensor data for maintenance models",
+      "industry": "Industrial manufacturing",
+      "description": "Hypothetical ingestion and replay design that preserves sensor timing, quality flags and maintenance-label provenance.",
+      "body": "## Proposed problem and operating scope\n\nA hypothetical factory has equipment sensors and maintenance records stored in separate systems. Analysts can train a failure-risk model, but cannot reliably reconstruct the inputs used for a past prediction. The proposed work would build a replayable data path and a validated scoring release. It would not authorize automatic machine shutdown or replace the plant's maintenance safety procedures. All measurements below are synthetic.\n\nDiscovery would map sensor clocks, sampling rates, device resets, missing intervals and maintenance-label creation. A repair recorded after a failure must not leak into features used before that failure. The team would also identify which sensor values are diagnostic quality flags rather than physical measurements. Treating a missing signal as a real zero could create a false operating condition.\n\n## Architecture and implementation\n\nThe ingestion layer would preserve raw event identifiers and timestamps, then validate units and ranges. A transformation stage would produce versioned windows with explicit missingness and clock-quality indicators. Training datasets would join only information available at the prediction cutoff. The scoring artifact would include the preprocessing version and a documented fallback when sensor coverage is inadequate.\n\nImplementation would use synthetic traces with a device reset, a duplicated batch and a delayed maintenance record. Replay would be tested from a recorded checkpoint, with output identities preventing duplicate scoring records. A bounded failure rehearsal would stop a worker mid-window and confirm that resumed processing reconstructs the same accepted window values. The [ML Test Score](https://research.google/pubs/the-ml-test-score-a-rubric-for-ml-production-readiness-and-technical-debt-reduction/) provides useful background for these data and infrastructure checks.\n\n## Synthetic replay arithmetic\n\nAssume a rehearsal has 600 expected sensor windows. Five hundred forty meet the coverage rule, forty contain insufficient samples and twenty fail clock validation. The chart shows the three exclusive outcomes. Eligible-window coverage is 540/600 = 90%. The sixty ineligible windows should retain their reason codes instead of disappearing from the training population.\n\nIf a new buffering policy recovers twenty of the forty sparse windows, eligible coverage becomes 560/600, approximately 93.3%. That does not prove a lower equipment-failure rate or improved model accuracy. It demonstrates a specific data-availability change whose downstream effect still requires separate evaluation.\n\n## Acceptance and handover\n\nAcceptance would require reproducible window values, no future maintenance information in historical features, explicit quality flags and successful restart recovery. Model quality would be reviewed on a time-appropriate holdout with equipment grouping where needed. The proposed system would expose risk estimates to qualified maintenance staff, not issue unreviewed safety actions.\n\nRollback would restore the previous transformation and model pair, while preserving raw data needed for replay. Handover would include clock assumptions, source ownership, replay capacity, missing-data runbooks and a demonstration of tracing one prediction to its sensor windows. The principal limitation is label quality: a technically sound pipeline cannot turn incomplete maintenance records into definitive failure ground truth.",
+      "figure": {
+        "slug": "service-mlops-data-pipelines-factory-sensor-replay",
+        "kind": "bar",
+        "title": "Synthetic sensor-window eligibility",
+        "unit": "windows",
+        "points": [
+          {
+            "label": "Eligible coverage",
+            "value": 540
+          },
+          {
+            "label": "Insufficient samples",
+            "value": 40
+          },
+          {
+            "label": "Clock validation failed",
+            "value": 20
+          }
+        ],
+        "method": "Synthetic600windows:540+40+20. Eligible540/600=90%; recovering20sparse windows gives560/600=93.3%. No equipment-failure or prediction-quality claim.",
+        "alt": "Synthetic sensor-window eligibility. Eligible coverage: 540 windows, Insufficient samples: 40 windows, Clock validation failed: 20 windows. Synthetic illustration.",
+        "dataOrigin": "synthetic",
+        "steps": [],
+        "studyPaths": [
+          "ai-evaluation",
+          "reliability"
+        ]
+      }
+    },
+    {
+      "id": "financial-reporting-lineage",
+      "title": "Reconstruct model inputs for financial reporting review",
+      "industry": "Financial operations",
+      "description": "Hypothetical lineage and controlled-release pipeline for an internal forecasting model, with explicit review scope.",
+      "body": "## Proposed problem and scope\n\nA hypothetical finance operations team uses a model to forecast internal cash-flow categories. Reports can be reproduced only by asking the analyst who ran the original notebook. The proposed work would make source snapshots, transformations, model artifacts and review decisions traceable. It would not claim regulatory compliance or automate credit decisions. All figures below are synthetic planning values.\n\nDiscovery would identify the reporting purpose, accounting cutoffs, correction process and the owner authorized to approve outputs. The team would distinguish original postings from later adjustments and document which version belongs in a historical reconstruction. Access to development datasets would be reviewed separately from access to the operational ledger, with unnecessary identifiers removed where possible.\n\n## Proposed architecture and delivery\n\nA snapshot manifest would reference approved source extracts and their integrity checks. Versioned transformations would produce the model input table, and a release manifest would bind that table definition to the model and reporting code. Reports would include a run identifier that resolves to their evidence package. The downstream reviewer would retain authority to accept or reject the forecast.\n\nImplementation would first reproduce one fictional reporting period in a clean environment. Tests would cover a corrected posting, a missing exchange-rate input, duplicate ingestion and an interrupted report publication. Output publication would be atomic where possible, so readers cannot mistake a partial file for a completed report. The design follows the concern about hidden dependencies described in [Hidden Technical Debt in Machine Learning Systems](https://research.google/pubs/hidden-technical-debt-in-machine-learning-systems/).\n\n## Synthetic reconstruction example\n\nAssume twenty historical practice runs are selected. Before the proposed controls, twelve can be reconstructed from documented inputs, five require analyst intervention and three lack necessary artifacts. The chart shows these exclusive outcomes. Independent reconstruction coverage is 12/20 = 60%. If four intervention-dependent runs and two missing-artifact runs become reconstructible, coverage becomes 18/20 = 90%.\n\nThis thirty-percentage-point difference is a synthetic scenario, not a customer audit result. Reconstruction does not establish that the forecast was correct or that every applicable reporting obligation was met. The evaluation would separately compare forecast error, reconciliation totals and the reviewer's ability to explain assumptions.\n\n## Acceptance, recovery and limitations\n\nAcceptance would require an independent operator to reconstruct the selected period, explain every input version and identify later corrections without silently rewriting history. Tests would verify that a model update cannot overwrite the previously approved artifact reference. Sensitive diagnostic access would follow the organization's reviewed policy rather than broad default logging.\n\nRollback would restore the prior compatible reporting release and preserve the superseded report with its status. Handover would include the manifest schema, reconstruction commands, retention decisions and a rehearsal of a missing-source incident. The limitation is that reproducibility cannot exceed source retention: if an upstream system cannot provide the required historical evidence, the program must record that gap and adjust the operating promise.",
+      "figure": {
+        "slug": "service-mlops-data-pipelines-financial-reporting-lineage",
+        "kind": "bar",
+        "title": "Synthetic reporting-run reconstruction status",
+        "unit": "runs",
+        "points": [
+          {
+            "label": "Independently reproduced",
+            "value": 12
+          },
+          {
+            "label": "Analyst intervention",
+            "value": 5
+          },
+          {
+            "label": "Artifacts missing",
+            "value": 3
+          }
+        ],
+        "method": "Synthetic20runs:12+5+3. Independent coverage12/20=60%; resolving six specified cases gives18/20=90%. Reproducibility is not forecast correctness or compliance certification.",
+        "alt": "Synthetic reporting-run reconstruction status. Independently reproduced: 12 runs, Analyst intervention: 5 runs, Artifacts missing: 3 runs. Synthetic illustration.",
+        "dataOrigin": "synthetic",
+        "steps": [],
+        "studyPaths": [
+          "ai-evaluation",
+          "platform"
+        ]
+      }
+    },
+    {
+      "id": "hospital-capacity-batches",
+      "title": "Deliver reliable administrative capacity forecasts",
+      "industry": "Healthcare operations",
+      "description": "Hypothetical batch pipeline for aggregate staffing demand, with delayed outcomes and non-clinical operating limits.",
+      "body": "## Proposed problem and boundary\n\nA hypothetical healthcare operations team forecasts daily administrative workload to plan staffing. Data arrives from several scheduling systems, and late corrections make model evaluation inconsistent. The proposed work would create a controlled batch pipeline using appropriately governed aggregate inputs. It would not make patient-level clinical decisions or claim that aggregate data is automatically free of privacy risk. All example counts are synthetic.\n\nDiscovery would define the forecast horizon, workload unit and outcome-maturity window. A day's final administrative volume may not be known until cancellations and corrections settle. The team would identify which source combinations can reveal sensitive information and choose the minimum data needed. The accepted output would include a forecast, data-quality status and a documented fallback for incomplete inputs.\n\n## Architecture and implementation\n\nIngestion would preserve source-period identifiers and correction versions. A validation stage would reconcile expected locations and dates before feature generation. Training and evaluation would use the same cutoff semantics, while delayed labels would join to the original prediction rather than a recomputed one. Release manifests would bind transformation code, model artifact and output schema.\n\nImplementation would begin with fictional location-day data and explicit missing periods. Tests would simulate a source arriving after the planning deadline, a duplicate daily file and a corrected outcome. The pipeline would publish a degraded-data status when coverage falls below the agreed threshold rather than silently substituting zeros. The [scikit-learn leakage guidance](https://scikit-learn.org/stable/common_pitfalls.html) supports separating information available during prediction from later observations.\n\n## Synthetic label-maturity arithmetic\n\nSuppose a review contains 300 location-day forecasts. Two hundred forty have mature outcomes, forty are still within the correction window and twenty have unresolved source gaps. The chart shows these exclusive states. Mature-label coverage is 240/300 = 80%. Computing an error metric on the 240 mature cases is legitimate only when its restricted population is stated.\n\nIf the forty pending outcomes later mature, coverage rises to 280/300, approximately 93.3%, while the twenty source gaps remain unresolved. This is not evidence that the model improved. It is a change in the evaluation denominator. Reports would preserve both cohort maturity and metric version so readers can distinguish those explanations.\n\n## Acceptance and operating handover\n\nAcceptance would require correct period reconciliation, visible incomplete-input status, stable prediction identifiers and tested correction handling. Forecast quality would be assessed on mature, representative outcomes with operational review of under- and overstaffing consequences. The owner would set tolerance according to the actual planning process, not a generic accuracy target.\n\nRollback would restore the previous forecasting configuration or the existing manual planning method. Handover would include source contacts, maturity rules, late-file recovery and a rehearsal in which an operator explains why a metric changed after labels arrived. The limitation is that a reliable pipeline cannot eliminate uncertainty in demand; it makes the data and timing assumptions visible enough for planners to use the forecast responsibly.",
+      "figure": {
+        "slug": "service-mlops-data-pipelines-hospital-capacity-batches",
+        "kind": "bar",
+        "title": "Synthetic forecast-outcome maturity",
+        "unit": "forecasts",
+        "points": [
+          {
+            "label": "Mature outcomes",
+            "value": 240
+          },
+          {
+            "label": "Pending corrections",
+            "value": 40
+          },
+          {
+            "label": "Source gaps",
+            "value": 20
+          }
+        ],
+        "method": "Synthetic300location-day forecasts:240+40+20. Mature coverage80%; when40pending labels mature,280/300=93.3%. This is label coverage, not forecast accuracy.",
+        "alt": "Synthetic forecast-outcome maturity. Mature outcomes: 240 forecasts, Pending corrections: 40 forecasts, Source gaps: 20 forecasts. Synthetic illustration.",
+        "dataOrigin": "synthetic",
+        "steps": [],
+        "studyPaths": [
+          "ai-evaluation",
+          "reliability"
+        ]
+      }
+    },
+    {
+      "id": "energy-model-release",
+      "title": "Release energy-demand models with reproducible backfills",
+      "industry": "Energy operations",
+      "description": "Hypothetical batch model release process with aligned weather inputs, backfill isolation and controlled rollback.",
+      "body": "## Proposed problem and scope\n\nA hypothetical energy services organization forecasts demand for operational planning. Analysts use historical weather values that differ from the forecasts available when decisions were made, producing overly optimistic evaluations. The proposed work would preserve forecast vintages and create a reproducible release process. It would not automate grid-control actions or claim an observed reduction in energy cost. All numerical examples are synthetic.\n\nDiscovery would map demand measurements, weather-forecast issue times, later weather observations and planning cutoffs. The accepted training dataset would use the forecast vintage genuinely available at each decision. Actual future weather would remain useful for retrospective analysis, but would not be substituted into the operational evaluation without a clear label.\n\n## Architecture and delivery\n\nThe raw layer would retain approved demand and weather-vintage records. Transformations would select the correct issue time and produce versioned features. A model registry or simpler artifact catalog would bind the trained model to those definitions, while batch publication would identify the forecast period and release version. Backfills would run under resource limits separate from the production deadline path.\n\nImplementation would use synthetic days containing a missing weather issue, a corrected demand reading and a model update. Tests would verify cutoff selection, rerun idempotency and recovery from a worker interruption. A comparison with the existing forecasting baseline would hold the evaluation horizon and input availability constant. [TimeSeriesSplit documentation](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.TimeSeriesSplit.html) offers a starting point for temporal evaluation, while the actual business horizon may require additional grouping and gaps.\n\n## Synthetic backfill capacity calculation\n\nAssume a backfill contains 360 daily partitions. A single worker processes six partitions per hour, requiring sixty worker-hours. Three equally capable workers could finish in twenty elapsed hours under ideal parallelism; coordination, storage contention and skew may make the real duration longer. The chart shows the sixty-hour single-worker estimate and twenty-hour ideal three-worker estimate.\n\nThe calculation is 360/6 = 60 and 360/(3 × 6) = 20. Total ideal worker-hours remain sixty, so parallelism does not imply lower compute cost. This synthetic planning model would be checked with a representative rehearsal before committing to a recovery objective. Production batches would retain priority so historical work cannot consume their deadline capacity.\n\n## Acceptance, rollback and handover\n\nAcceptance would require correct weather-vintage selection, complete partition reconciliation, equivalent output on rerun and a tested compatible rollback. Forecast error would be measured independently of pipeline throughput. A fast backfill that uses future observations would fail the temporal contract even if its predictions appear better.\n\nHandover would include partition manifests, resource budgets, source-vintage queries and a rehearsal restoring a previous model with its feature configuration. The operator would identify unfinished partitions and resume them without republishing duplicates. The main limitation is upstream history: if forecast vintages were never retained, the team must disclose that past operational performance cannot be reconstructed exactly rather than presenting a hindsight evaluation as a live forecast result.",
+      "figure": {
+        "slug": "service-mlops-data-pipelines-energy-model-release",
+        "kind": "bar",
+        "title": "Synthetic ideal backfill elapsed time",
+        "unit": "hours",
+        "points": [
+          {
+            "label": "One worker",
+            "value": 60
+          },
+          {
+            "label": "Three workers ideal",
+            "value": 20
+          }
+        ],
+        "method": "Synthetic360partitions at6partitions per worker-hour. One360/6=60h; three360/(3×6)=20h ideal. Both60worker-hours; excludes coordination, contention and skew, so not a cost-saving claim.",
+        "alt": "Synthetic ideal backfill elapsed time. One worker: 60 hours, Three workers ideal: 20 hours. Synthetic illustration.",
+        "dataOrigin": "synthetic",
+        "steps": [],
+        "studyPaths": [
+          "ai-evaluation",
+          "performance"
+        ]
+      }
+    }
+  ]
+}

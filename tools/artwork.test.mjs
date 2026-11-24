@@ -8,6 +8,7 @@ import { publicationDate } from './publication.mjs';
 import { coverArt, photoFor } from './covers.mjs';
 import { noteCover } from './note-covers.mjs';
 import { conceptFor } from './concept-figures.mjs';
+import { loadServiceLibrary, servicePath } from './service-library.mjs';
 
 const articles = JSON.parse(readFileSync(new URL('../content/manifest.json', import.meta.url), 'utf8'));
 
@@ -89,10 +90,47 @@ test('every editorial content card and row carries a genuine subject thumbnail',
   for(const file of pages){
     const html=readFileSync(new URL('../'+file,import.meta.url),'utf8');
     const starts=[...html.matchAll(/<(?:div|article|a|figure)\b[^>]*class="([^"]+)"[^>]*>/g)].filter(m=>m[1].split(' ').some(c=>selectors.includes(c)));
-    for(const m of starts){const end=html.slice(m.index).search(/<(?:h[1-6]|strong|blockquote|time)\b/);const beforeHeading=html.slice(m.index,end>0?m.index+end:m.index+3000);assert.ok(beforeHeading.includes('data-article-art='),`${file}: ${m[1]} has no subject thumbnail`);checked++;}
+    for(const m of starts){
+      const end=html.slice(m.index).search(/<(?:h[1-6]|strong|blockquote|time)\b/);
+      const beforeHeading=html.slice(m.index,end>0?m.index+end:m.index+3000);
+      const image=beforeHeading.match(/<img[^>]+src="(\/assets\/services\/[^"?]+)(?:\?[^"]*)?"[^>]+alt="([^"]+)"/);
+      if(image){
+        const svg=readFileSync(new URL('..'+image[1],import.meta.url),'utf8');
+        assert.match(svg,/data-article-art="service-[^"]+"/);
+        assert.ok(image[2].length>=20,`${file}: service thumbnail needs meaningful alternative text`);
+      }else assert.ok(beforeHeading.includes('data-article-art='),`${file}: ${m[1]} has no subject thumbnail`);
+      checked++;
+    }
     if(file==='index.html')for(const m of html.matchAll(/<li><div class="content-thumbnail">/g))checked++;
   }
   assert.ok(checked>=140,'the complete editorial-card templates were checked');
+});
+
+test('all 72 service pages advertise distinct source figures and correctly versioned raster previews', async () => {
+  const services=await loadServiceLibrary(), images=new Set();
+  let checked=0;
+  for(const service of services)for(const item of [null,...service.useCases]){
+    const stem=`assets/services/${service.id}/${item?.id || 'methodology'}`;
+    const svg=readFileSync(new URL(`../${stem}.svg`,import.meta.url),'utf8');
+    const png=readFileSync(new URL(`../${stem}-social.png`,import.meta.url));
+    const svgHash=createHash('sha256').update(svg).digest('hex').slice(0,12);
+    const pngHash=createHash('sha256').update(png).digest('hex').slice(0,12);
+    const route=servicePath(service.id,item?.id);
+    const html=readFileSync(new URL(`..${route}index.html`,import.meta.url),'utf8');
+    assert.match(svg,new RegExp(`data-article-art="${(item?.figure || service.figure).slug}"`));
+    assert.match(svg,/font-family="Inter, sans-serif"/);
+    assert.doesNotMatch(svg,/<script|<foreignObject|<image/);
+    assert.equal(png.subarray(1,4).toString(),'PNG');
+    assert.equal(png.readUInt32BE(16),1200);
+    assert.equal(png.readUInt32BE(20),630);
+    assert.ok(!images.has(pngHash),`Reused service preview ${route}`);
+    images.add(pngHash);
+    assert.ok(html.includes(`src="/${stem}.svg?v=${svgHash}"`),`Stale service hero ${route}`);
+    assert.ok(html.includes(`content="https://ajnacs.com/${stem}-social.png?v=${pngHash}"`),`Stale service social preview ${route}`);
+    assert.match(html,/property="og:image:type" content="image\/png"/);
+    checked++;
+  }
+  assert.equal(checked,72);
 });
 
 for(const [slug,scene,detail]of [

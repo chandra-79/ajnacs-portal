@@ -1,0 +1,206 @@
+{
+  "id": "devops-automation",
+  "title": "DevOps automation",
+  "category": "architecture",
+  "description": "Create a traceable, tested path from source to production with scoped identities, useful gates, bounded releases, and rehearsed recovery.",
+  "methodology": "## Automate a delivery path with a clear contract\n\nDevOps automation should make a defined change easier to build, verify, release, and operate. It should not merely replace manual steps with an opaque pipeline. A proposed engagement begins with one service or repository and a concrete delivery problem: inconsistent environments, slow feedback, fragile credentials, untraceable artifacts, or a release procedure that depends on one person. The cases below are hypothetical proposals with synthetic measurements, not claims about customer delivery or guaranteed productivity gains.\n\nThe initial charter identifies the service owner, repository owners, release authority, environments, data sensitivity, and required evidence. It distinguishes a development preview from a production release. A workflow can be automated while still requiring a meaningful approval at a particular boundary. The goal is a reliable, understandable path with explicit responsibilities, rather than the maximum possible number of unattended actions.\n\n## Map the existing change journey\n\nTrace several representative changes from request through code, review, build, testing, deployment, and operational verification. Include routine changes, urgent fixes, and changes involving data. Record active effort separately from waiting. A slow release may be dominated by environment access or approval queues rather than build execution. Automating a fast step will not resolve a bottleneck elsewhere.\n\nInspect actual pipeline definitions, scripts, dependency files, deployment manifests, and recent failure records. Interview developers and operators about work performed outside the formal workflow. Manual database changes, copied credentials, and undocumented artifact rebuilds often determine whether the process is reproducible. Record those gaps as specific risks and design questions, not evidence that an entire team is working badly.\n\n## Agree repository, access, and data boundaries\n\nUse the minimum repository and environment permissions required for discovery. Separate access to read pipeline configuration from authority to change production workflows or credentials. Document which branches, environments, identities, and approvers may deploy. Temporary access should expire and be removed at handover. Logs and artifacts should be reviewed for secrets or sensitive data before they become widely accessible.\n\nDefine the data available to tests. Synthetic fixtures are useful for many functional paths, but representative schema and volume may be needed for compatibility or performance checks. Production-derived data requires an approved handling contract, not an assumption that a test environment is harmless. State retention, masking limits, permitted locations, and cleanup responsibilities. Prevent test jobs from sending real emails, payments, or partner requests unless explicitly authorized.\n\n## Make the source-to-artifact relationship explicit\n\nA deployable artifact should have an identity that can be traced to the source revision, build process, dependency inputs, and relevant verification. Prefer promoting the same tested artifact between environments rather than rebuilding it with potentially different dependencies. Environment configuration can vary, but its source and change history should remain visible. A tag that can be moved is not equivalent to an immutable digest.\n\nRecord what the build evidence establishes and what it does not. Provenance can describe how an artifact was produced; a signature does not prove that the application has no vulnerabilities or that the code meets business requirements. Dependency inventories and vulnerability findings need ownership, triage, and updates. The design should connect evidence to a release decision rather than accumulating files nobody verifies.\n\n## Design credentials for the actual trust boundary\n\nWhere the platform supports it, short-lived workload credentials can reduce reliance on stored long-lived secrets. Configure the trust relationship narrowly, including the expected repository, workflow context, branch or environment, audience, and permissions. OpenID Connect is a mechanism for establishing identity context; a broad trust policy can still grant excessive access. Test both an allowed workflow and a deliberately disallowed context.\n\nKeep untrusted pull-request execution separated from privileged deployment. A job that builds contributor code should not automatically receive production credentials. Review third-party actions, runner isolation, cache permissions, and artifact access. Pin or otherwise control dependencies according to the organization's policy, and plan how updates are reviewed. Credential rotation and emergency revocation remain operational responsibilities even when tokens are short-lived.\n\n## Build a layered verification strategy\n\nChoose tests from the failure modes the service must prevent. Fast deterministic checks can cover parsing, calculations, and state transitions. Integration tests should exercise important contracts with real or representative dependencies. A small number of end-to-end journeys can verify the deployed path. Static analysis, type checking, security scanning, and policy checks provide additional evidence with their own limitations.\n\nEvery gate should have a purpose, an owner, and a response when it fails. A flaky test that is routinely retried until green weakens confidence. A scanner with unreviewed exceptions can become ceremonial. Track unresolved failures and quarantines explicitly. Avoid imposing the same expensive suite on every change when a justified dependency-aware selection can provide faster feedback, while retaining broader checks at appropriate release boundaries.\n\n## Make environments reproducible and observable\n\nDescribe required infrastructure and deployment configuration in reviewed, versioned form where possible. Separate environment-specific values from application artifacts, and document defaults. Validate configuration before rollout. A deployment that succeeds only because a long-lived server contains an undocumented package is not reproducible. Test creation from a clean starting point to expose those hidden dependencies.\n\nProvide useful logs and status for the pipeline itself. Record queue time, setup, execution, cleanup, and external waits separately. Protect sensitive output and keep retention proportionate. A red build should identify the failing stage and preserve enough evidence to investigate without rerunning a dangerous action. Cleanup failures should be visible because abandoned environments and credentials can create both cost and security problems.\n\n## Optimize feedback without weakening evidence\n\nStart with measured bottlenecks: dependency download, repeated environment setup, serial tests, or an unreliable external service. Cache only inputs whose identity and trust are understood. Parallelize work that can safely run independently, with isolated databases, ports, and temporary resources. A faster test suite that shares mutable state may produce misleading results or intermittent failures.\n\nA synthetic example illustrates the measurement. An initial pipeline spends twelve minutes preparing dependencies, eight running checks, and five packaging an artifact, totaling twenty-five minutes. A proposed revision spends six, five, and four minutes, totaling fifteen. The chart reports a 40% reduction in execution duration under identical job selection. It excludes queueing, code review, deployment, and maintenance effort, so it is not a claim about overall delivery lead time.\n\n## Release through bounded exposure\n\nChoose a release strategy that matches state, traffic, and operational capability. A canary, rolling deployment, blue-green switch, or scheduled maintenance window can each be appropriate. Define what is being compared, how traffic is assigned, which signals decide progression, and who can stop the release. A small traffic percentage does not necessarily mean a small business risk if it includes critical customers or shared data writes.\n\nVerify business behavior alongside infrastructure health. Successful process startup or HTTP status alone may miss incorrect calculations, missing events, or broken authorization. Set an observation period appropriate to the workflow and traffic volume. Low-volume services may need deliberate test transactions because a quiet canary cannot provide much statistical evidence. Preserve the limitations of the test rather than declaring success from an empty error chart.\n\n## Treat database changes as a separate compatibility problem\n\nApplication rollback and data rollback are different operations. Prefer compatible schema expansion, migration, and later cleanup where the application permits that sequence. Test old and new application versions against the intermediate schema. A destructive migration can remove the ability to return to a previous release even when the deployment platform offers a rollback button.\n\nDocument how background jobs, events, and external side effects behave during mixed-version operation. A message emitted by the new version may remain in a queue after the application is reverted. Consumers need a compatible contract or a recovery procedure. For data changes that cannot be reversed directly, define forward repair or compensating actions and obtain the appropriate approval before release.\n\n## Rehearse failure and recovery\n\nTest partial deployment, unavailable secrets, an unhealthy dependency, a failed migration, and cancellation during a job. Use a bounded non-production environment first. Record the expected state after each failure and verify that rerunning the workflow does not duplicate a destructive action. Idempotency should be demonstrated for the relevant operation, not inferred from the fact that a script can be executed twice.\n\nA recovery runbook should identify the deployed artifact, configuration revision, database compatibility state, and outstanding work. Measure detection, decision, reversal or repair, and validation separately. Recovery ends when the agreed user journey and data checks pass, not when the pipeline reports a completed rollback command. Keep an authorized manual route for cases where the automation control plane itself is unavailable.\n\n## Accept the workflow against explicit evidence\n\nAcceptance should cover functional correctness, required security controls, environment reproducibility, artifact traceability, release verification, and recovery. Each criterion needs a test record and an accountable owner. A pipeline diagram is not evidence that every change follows the intended route. Test bypass paths, stale approvals, changed branches, and the privileges of administrators or emergency workflows.\n\nAlso evaluate ease of use. A developer should understand how to run checks locally, request an environment, interpret failure, and find the release state. An operator should identify what is running and how to recover it. Documentation should use the actual commands and access paths available to those roles, with placeholders clearly marked and expected output described.\n\n## Measure delivery performance responsibly\n\nUse delivery metrics to understand a service's process over time, with stable definitions and meaningful cohorts. DORA's metrics include throughput and instability perspectives; they are not an individual ranking system. Record what counts as a deployment, a failed change, and recovery from a failed deployment. A pipeline-stage duration is useful diagnostic evidence but should not be mislabeled as the full change lead time.\n\nCompare speed with failure, rework, and user outcomes. Increasing deployment frequency by making trivial releases does not necessarily improve useful delivery. Shortening a gate by removing needed validation can shift cost into incidents. Publish sample sizes, observation windows, and known process changes. When the data is sparse, describe the observed examples rather than drawing confident population-wide conclusions.\n\n## Handover ownership and an update process\n\nDeliver versioned workflow definitions, runner configuration, identity policies, artifact verification, environment setup, release and recovery procedures, and known exceptions. Ask an engineer outside the implementation team to make a small authorized change, interpret a controlled failure, and complete a recovery exercise. Their experience tests whether the workflow is understandable and maintainable, not merely technically functional.\n\nAssign owners for runner updates, action dependencies, vulnerability triage, credentials, test reliability, and deployment templates. Establish how a template change reaches consuming repositories and how teams can report a problem. A shared platform should support versioned adoption rather than forcing every service to absorb an untested change simultaneously. The handover should reduce dependence on the people who originally built the automation.\n\n## Complete the delivery worksheet\n\nThe worksheet records the service, current bottleneck, intended change, source and artifact identity, test evidence, permissions, release strategy, acceptance signals, rollback boundary, and owner. For each measurement, state the start event, end event, included stages, excluded waiting, sample count, and environment. Keep synthetic examples separate from observed production results and preserve the raw evidence behind published charts.\n\nThe final outcome is a tested delivery path with clear operating responsibilities and known limits. It may improve feedback time, reduce manual steps, or strengthen release evidence, but those benefits should be measured separately. Automation is successful when people can use it safely, explain its decisions, recover when it fails, and maintain it as the service changes.",
+  "figure": {
+    "slug": "service-devops-automation",
+    "kind": "bar",
+    "title": "Synthetic pipeline execution time for fixed checks",
+    "unit": "minutes",
+    "points": [
+      {
+        "label": "Initial pipeline",
+        "value": 25
+      },
+      {
+        "label": "Proposed pipeline",
+        "value": 15
+      }
+    ],
+    "method": "Synthetic initial preparation 12 + checks 8 + packaging 5 = 25 minutes; proposed 6 + 5 + 4 = 15. Same job selection. Excludes queueing, review, deployment and maintenance.",
+    "alt": "Synthetic pipeline execution decreases from 25 to 15 minutes without changing the selected checks.",
+    "dataOrigin": "synthetic",
+    "steps": [],
+    "studyPaths": [
+      "platform"
+    ]
+  },
+  "references": [
+    {
+      "label": "DORA: software delivery performance metrics",
+      "url": "https://dora.dev/guides/dora-metrics/"
+    },
+    {
+      "label": "NIST SP 800-218: Secure Software Development Framework",
+      "url": "https://csrc.nist.gov/pubs/sp/800/218/final"
+    },
+    {
+      "label": "SLSA: supply-chain security specification",
+      "url": "https://slsa.dev/spec/v1.1/"
+    },
+    {
+      "label": "GitHub Actions: OpenID Connect security",
+      "url": "https://docs.github.com/en/actions/concepts/security/openid-connect"
+    },
+    {
+      "label": "Google SRE Workbook: canarying releases",
+      "url": "https://sre.google/workbook/canarying-releases/"
+    }
+  ],
+  "useCases": [
+    {
+      "id": "banking-release-evidence",
+      "title": "Automate release evidence without removing meaningful approval",
+      "industry": "Banking technology",
+      "description": "A proposed release workflow produces traceable artifacts and test evidence while preserving authorized production decisions.",
+      "body": "## Hypothetical scope and constraint\n\nA fictional bank's internal reporting application uses a release checklist assembled from screenshots, copied test output, and manual artifact uploads. The proposed engagement would automate evidence collection and deployment for that application while retaining the organization's required production approval. It would not claim that a pipeline alone satisfies a regulatory framework or that every approval should disappear.\n\nDiscovery would trace source review, build identity, test results, artifact transfer, approval, deployment, and post-release validation. The team would request scoped repository and non-production access first. Production authority would remain with the designated release owner. Test data would be synthetic or approved for the environment, and evidence retention would exclude credentials and unnecessary business records.\n\n## Proposed architecture and delivery\n\nThe design would build a uniquely identified artifact, attach verification results and provenance, and promote that same artifact through environments. The production approval would reference the artifact identity and relevant evidence rather than an ambiguous version label. Deployment credentials would use a narrowly scoped workload identity where supported, with a tested denial for unauthorized branches or workflow contexts.\n\nImplementation would begin with a non-production release and a controlled failure. Tests would cover a changed artifact after approval, expired credentials, a failed verification gate, and a partial deployment. Database compatibility would be reviewed separately. The workflow would preserve an emergency path with explicit authorization and retrospective evidence rather than encouraging undocumented bypasses when the normal path is unavailable.\n\n## Synthetic effort calculation\n\nAssume a release initially requires thirty hands-on minutes preparing evidence, thirty checking it, twenty executing deployment, and ten recording the result: ninety minutes in total. A proposed workflow requires ten, ten, five, and five minutes respectively, totaling thirty. The chart compares those synthetic hands-on totals, a reduction of sixty minutes per release. It does not measure elapsed approval time, total change lead time, or ongoing automation maintenance.\n\nAcceptance would require that reviewers can trace the deployed digest to source and tests, that an unapproved artifact is rejected, and that the post-release business check succeeds. A lower effort total would not justify removing required independent review. The report would include the number and complexity of releases sampled before making any claim about a sustained improvement.\n\n## Recovery and handover\n\nRollback would use a compatible prior artifact and configuration, with data changes handled through the agreed recovery design. Handover would include identity policies, approval ownership, evidence retention, and a procedure for runner or artifact-store failure. [NIST SSDF](https://csrc.nist.gov/pubs/sp/800/218/final) provides secure-development context, while [SLSA](https://slsa.dev/spec/v1.1/) explains provenance concepts. The institution and numbers here are hypothetical.",
+      "figure": {
+        "slug": "service-devops-automation-banking-release-evidence",
+        "kind": "bar",
+        "title": "Synthetic hands-on release effort",
+        "unit": "minutes per release",
+        "points": [
+          {
+            "label": "Manual evidence path",
+            "value": 90
+          },
+          {
+            "label": "Proposed workflow",
+            "value": 30
+          }
+        ],
+        "method": "Synthetic initial 30 + 30 + 20 + 10 = 90 minutes; proposed 10 + 10 + 5 + 5 = 30. Stages cover preparation, review, execution, recording. Excludes waiting and maintenance.",
+        "alt": "Synthetic hands-on release effort decreases from 90 to 30 minutes while approval remains a separate control.",
+        "dataOrigin": "synthetic",
+        "steps": [],
+        "studyPaths": [
+          "platform"
+        ]
+      }
+    },
+    {
+      "id": "public-sector-artifact-trust",
+      "title": "Verify what reaches a citizen-service environment",
+      "industry": "Public-sector digital services",
+      "description": "A proposed artifact-verification gate connects approved source, build evidence, and deployment identity.",
+      "body": "## Hypothetical problem and scope\n\nA fictional public-sector team operates a citizen-service portal with several deployable components. Some components are built by a central pipeline, while others are uploaded manually during urgent fixes. The proposed engagement would establish a consistent source-to-artifact verification path for one release portfolio. It would not claim that signed artifacts prove accessibility, privacy compliance, or absence of vulnerabilities.\n\nDiscovery would inventory artifact producers, repositories, registries, deployment identities, and emergency procedures. The team would identify which components can be traced to reviewed source and which have incomplete evidence. Access would initially be read-only, with changes limited to a non-production verification environment. Citizen data would not be needed for artifact identity tests; functional testing would use approved synthetic records.\n\n## Proposed design and implementation\n\nThe design would require an artifact digest and expected provenance before deployment. Verification would check the declared producer and relevant build context against an explicit policy. The team would distinguish a valid signature from an authorized artifact: a correctly signed build from an unapproved workflow should still be rejected. Registry retention and recovery would preserve the artifacts needed for the supported rollback window.\n\nA pilot would test a valid artifact, a modified artifact, missing provenance, an unexpected producer, and an expired or revoked trust condition where applicable. The deployment workflow would report a useful failure rather than silently bypass the gate. Accessibility and service-function tests would remain separate release evidence because provenance cannot establish those properties.\n\n## Synthetic coverage calculation\n\nAssume a defined portfolio contains forty deployable artifacts. Initially, thirty-two meet the agreed provenance-and-verification policy, giving `32 / 40 = 80%` coverage. After a proposed migration, all forty meet it, giving 100%. The chart shows these synthetic coverage values. It does not claim that all forty artifacts are secure, correct, or compliant; it describes only the declared verification control.\n\nAcceptance would require that unauthorized test artifacts are rejected and authorized ones can be deployed reproducibly. The inventory denominator would be held fixed for the comparison, with additions or removals reported separately. The team would also test the operational consequence of a verification service outage and agree whether deployment pauses or follows a tightly authorized emergency process.\n\n## Handover and limits\n\nHandover would include producer ownership, trust-policy review, registry recovery, emergency authorization, and evidence that the prior version remains deployable. A template update would be rolled out gradually to consuming components. [SLSA's specification](https://slsa.dev/spec/v1.1/) informs provenance and verification, while [NIST SSDF](https://csrc.nist.gov/pubs/sp/800/218/final) provides broader development practices. This scenario and all counts are hypothetical.",
+      "figure": {
+        "slug": "service-devops-automation-public-sector-artifact-trust",
+        "kind": "bar",
+        "title": "Synthetic artifact-verification policy coverage",
+        "unit": "percent of fixed artifact inventory",
+        "points": [
+          {
+            "label": "Initial inventory",
+            "value": 80
+          },
+          {
+            "label": "After proposed migration",
+            "value": 100
+          }
+        ],
+        "method": "Synthetic fixed 40 artifacts:32 satisfy the declared verification policy = 80%; 40 = 100%. Coverage does not establish artifact correctness, security or compliance.",
+        "alt": "Synthetic verification-policy coverage rises from 80% to 100% across a fixed forty-artifact inventory.",
+        "dataOrigin": "synthetic",
+        "steps": [],
+        "studyPaths": [
+          "platform"
+        ]
+      }
+    },
+    {
+      "id": "logistics-safe-rollout",
+      "title": "Rehearse a dispatch-service rollout and recovery",
+      "industry": "Transport and logistics",
+      "description": "A proposed deployment path protects in-flight work and measures recovery through business validation.",
+      "body": "## Hypothetical problem and constraint\n\nA fictional logistics company releases a dispatch service during operating hours. Reverting the application is easy, but queued events and partially completed assignments make recovery uncertain. The proposed engagement would design and rehearse a release path for one dispatch workflow. It would not assume that an orchestration rollback button can reverse external assignments or data changes.\n\nDiscovery would trace request handling, assignment state, emitted events, worker versions, and downstream acknowledgements. The team would define stable operation identifiers and identify schema changes that affect older consumers. Test environments would use synthetic routes and assignments, with external carrier actions redirected to controlled endpoints. Production release authority and abort conditions would be agreed before any live pilot.\n\n## Proposed design and delivery\n\nThe design would promote a tested artifact and use a bounded rollout with compatible message and schema changes. Business-level checks would verify that assignments are neither lost nor duplicated. The release controller would observe errors, latency, queue age, and assignment reconciliation. A small traffic share would not be treated as low risk if it still writes shared state used by the whole service.\n\nA rehearsal would introduce a faulty release, stop progression, and return to the compatible prior version. Tests would include an event produced by the new version but consumed after reversal, a worker stopped after an external acknowledgement, and a delayed retry. The recovery procedure would preserve durable completion state and explicitly reconcile ambiguous assignments before declaring the service restored.\n\n## Synthetic recovery timeline\n\nAssume a modeled failed release takes four minutes to detect, six to decide, twelve to reverse deployment, and eight to validate dispatch behavior: thirty minutes total. A revised procedure takes four, three, five, and eight minutes, totaling twenty. The chart compares these synthetic recovery durations. The unchanged eight-minute validation stage is deliberate; faster reversal should not remove the business checks needed to establish recovery.\n\nThese values are not an uptime commitment or a population estimate of failed-deployment recovery time. Acceptance would record the exact failure start, detection, decision, reversal, and validation events for each rehearsal. The report would state the environment, workload, and excluded external dependencies. A successful rehearsal would support readiness for the tested failure mode, not every possible production failure.\n\n## Operational handover\n\nHandover would include mixed-version compatibility, release progression rules, artifact identity, queue reconciliation, and an authorized manual recovery path. The team would keep the prior configuration and artifact available for the agreed window. [Google's canarying guidance](https://sre.google/workbook/canarying-releases/) informs bounded exposure, while [DORA's metric definitions](https://dora.dev/guides/dora-metrics/) help distinguish recovery measures. The organization and numbers are hypothetical.",
+      "figure": {
+        "slug": "service-devops-automation-logistics-safe-rollout",
+        "kind": "bar",
+        "title": "Synthetic failed-release recovery rehearsal",
+        "unit": "minutes",
+        "points": [
+          {
+            "label": "Initial procedure",
+            "value": 30
+          },
+          {
+            "label": "Revised procedure",
+            "value": 20
+          }
+        ],
+        "method": "Synthetic initial 4 + 6 + 12 + 8 = 30 minutes; revised 4 + 3 + 5 + 8 = 20. Stages are detection, decision, reversal, business validation. Not a production uptime commitment.",
+        "alt": "Synthetic recovery duration falls from 30 to 20 minutes while eight minutes of business validation remain.",
+        "dataOrigin": "synthetic",
+        "steps": [],
+        "studyPaths": [
+          "platform",
+          "reliability"
+        ]
+      }
+    },
+    {
+      "id": "healthcare-administration-tests",
+      "title": "Build a trustworthy release gate for administrative workflows",
+      "industry": "Healthcare administration",
+      "description": "A proposed test pipeline verifies scheduling and document workflows without using real patient notifications.",
+      "body": "## Hypothetical scope and constraint\n\nA fictional healthcare administration provider maintains scheduling, referral tracking, and document-routing features. Releases depend on a manual checklist whose coverage varies with the available tester. The proposed engagement would create a repeatable verification path for selected administrative workflows. It would not automate clinical decisions or claim that a test suite alone proves patient safety or regulatory compliance.\n\nDiscovery would identify the workflows, role boundaries, integration contracts, and known failure modes. The team would agree which test data may be used and ensure that email, messaging, and partner integrations are redirected to controlled endpoints. Synthetic records would represent appointment conflicts, missing documents, cancelled referrals, and restricted user roles. Access to production-derived records would require separate authorization and handling controls.\n\n## Proposed test and delivery design\n\nThe design would combine deterministic unit checks, integration tests against representative dependencies, and a small deployed workflow suite. Fixtures would isolate state between tests and parallel workers. Each gate would have an owner and a defined response to failure. A quarantine would record the missing protection and repair deadline rather than silently converting an unreliable test into permanent noncoverage.\n\nImplementation would start with a risk-based inventory and add observable assertions for the chosen workflows. Tests would cover duplicate submission, concurrent scheduling, denied access, delayed integration acknowledgement, and a failed background worker. The pipeline would promote the tested artifact to a non-production environment and record its identity. Required human review would remain where automated evidence cannot assess the complete workflow.\n\n## Synthetic coverage calculation\n\nAssume the agreed inventory contains twenty-four workflow checks. Initially, eighteen have repeatable automated verification under the declared test conditions, giving `18 / 24 = 75%` coverage. A proposed implementation adds the remaining six, reaching 100% of that fixed inventory. The chart reports those synthetic proportions. It does not mean every possible defect, user journey, accessibility need, or security property is covered.\n\nAcceptance would require deliberate fault injection showing that important assertions fail when the corresponding behavior is broken. Merely executing each screen would not count as verification. The team would also test clean-environment setup, fixture cleanup, and an unavailable integration stub. Runtime, false failures, and unresolved exceptions would remain visible alongside the coverage count.\n\n## Handover and recovery\n\nHandover would include workflow ownership, fixture contracts, test-data cleanup, local execution instructions, and a process for updating checks when business rules change. A failed release would follow a compatible artifact and data recovery procedure rather than bypassing the gate without review. [NIST SSDF](https://csrc.nist.gov/pubs/sp/800/218/final) supports integrating verification into development; all organization details and counts in this example are hypothetical.",
+      "figure": {
+        "slug": "service-devops-automation-healthcare-administration-tests",
+        "kind": "bar",
+        "title": "Synthetic coverage of a fixed workflow-check inventory",
+        "unit": "percent of selected checks",
+        "points": [
+          {
+            "label": "Initial repeatable checks",
+            "value": 75
+          },
+          {
+            "label": "Proposed coverage",
+            "value": 100
+          }
+        ],
+        "method": "Synthetic fixed 24 workflow checks:18 automated repeatably = 75%; 24 = 100%. This is inventory coverage, not defect detection probability or compliance assurance.",
+        "alt": "Synthetic repeatable-check coverage increases from 75% to 100% for twenty-four selected administrative workflows.",
+        "dataOrigin": "synthetic",
+        "steps": [],
+        "studyPaths": [
+          "platform",
+          "reliability"
+        ]
+      }
+    },
+    {
+      "id": "saas-developer-onboarding",
+      "title": "Measure the path to a first qualifying deployment",
+      "industry": "B2B software platforms",
+      "description": "A proposed self-service path reduces setup ambiguity while preserving ownership, observability, and recovery requirements.",
+      "body": "## Hypothetical problem and scope\n\nA fictional software company asks new service teams to copy an old repository, request credentials through chat, and wait for a platform engineer to create infrastructure. The proposed engagement would build a supported path to a first qualifying non-production deployment for one common service type. It would not claim that a template replaces engineering judgment or that every application should use the same architecture.\n\nDiscovery would observe the existing onboarding path and record active work, waiting, failed attempts, and support requests. The definition of first deployment would include an accessible service, correct workload identity, useful logs, an owner, and a tested removal path. A deployment that merely creates a container would not qualify. Access to the pilot would use approved test accounts and synthetic service data.\n\n## Proposed platform and delivery design\n\nThe design would provide a versioned starter, infrastructure module, pipeline, and documentation for the supported use case. Defaults would be explicit, with a route for exceptions when a service needs different dependencies or security boundaries. Credentials would use narrowly scoped workload identity where supported. The template would include observability and recovery basics without exposing implementation details that a user does not need to decide about.\n\nA pilot with several engineers would test clean-machine setup, missing permissions, a failed build, an unavailable dependency, and rollback of a template version. Support interactions would be recorded to identify unclear instructions. The platform team would distinguish a reusable product improvement from a one-off workaround. Existing services would adopt template updates through a controlled version process rather than an unreviewed global change.\n\n## Synthetic elapsed-time worksheet\n\nAssume an initial sequential onboarding path contains 120 minutes of active work and 240 minutes of waiting, totaling 360 minutes. A proposed path contains 90 active minutes and 60 waiting minutes, totaling 150. The chart compares these synthetic elapsed totals, a reduction of 210 minutes. The model assumes stages do not overlap and excludes unrelated meetings, overnight boundaries, and later production readiness work.\n\nAcceptance would verify the qualifying-deployment checklist, not only speed. The service must have ownership, restricted identity, observable health, and a documented recovery or removal route. The team would retain active and waiting components separately so a faster result can be explained. A small pilot would not establish a universal onboarding improvement across every role or service type.\n\n## Handover and continuing ownership\n\nHandover would include template versioning, support ownership, exception handling, update testing, and a feedback channel for confusing steps. The previous supported template would remain available during a controlled transition. [GitHub's OIDC guidance](https://docs.github.com/en/actions/concepts/security/openid-connect) informs the identity mechanism, while [DORA metrics](https://dora.dev/guides/dora-metrics/) provide broader delivery context. The scenario and measurements are hypothetical.",
+      "figure": {
+        "slug": "service-devops-automation-saas-developer-onboarding",
+        "kind": "bar",
+        "title": "Synthetic time to a qualifying pilot deployment",
+        "unit": "elapsed minutes",
+        "points": [
+          {
+            "label": "Initial path",
+            "value": 360
+          },
+          {
+            "label": "Proposed path",
+            "value": 150
+          }
+        ],
+        "method": "Synthetic sequential path:120 active + 240 waiting = 360 minutes; proposed 90 + 60 = 150. Excludes overnight boundaries and production readiness. Qualifying deployment criteria remain fixed.",
+        "alt": "Synthetic elapsed time to a qualifying non-production deployment changes from 360 to 150 minutes.",
+        "dataOrigin": "synthetic",
+        "steps": [],
+        "studyPaths": [
+          "platform"
+        ]
+      }
+    }
+  ]
+}

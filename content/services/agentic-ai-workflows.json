@@ -1,0 +1,233 @@
+{
+  "id": "agentic-ai-workflows",
+  "title": "Agentic AI workflows",
+  "category": "ai",
+  "description": "Design bounded assistants that gather evidence, prepare proposals and execute only explicitly authorized operations with measurable recovery paths.",
+  "methodology": "## What this service is designed to deliver\n\nThis is a proposed delivery methodology, illustrated with hypothetical organizations and synthetic measurements. It describes how an engineering team could build an assistant that completes a bounded workflow across tools. It is not a claim of completed customer work, a guarantee of savings or evidence from an undisclosed engagement. The five scenarios below demonstrate different applications of the method and the measurements needed before a real release.\n\nThe deliverable is an operating workflow with clear authority, evidence and recovery. A language model may interpret a request, select an appropriate tool or draft a proposal. Deterministic services still enforce identity, permissions, valid state transitions and resource limits. The model is not the source of authorization. The project succeeds when a user can complete the intended task reliably and an operator can explain every consequential effect.\n\n## Discovery: choose a task with a finish line\n\nBegin by observing the existing workflow with the people who perform and support it. Identify the trigger, required information, decision points, external systems and completion condition. Record ordinary cases and exceptions separately. A request such as \"handle procurement\" is too broad; \"prepare a purchase request from an approved catalog for a named requester\" supplies a boundary that can be implemented and tested.\n\nBuild a baseline using accepted tasks, including preparation, review, correction and recovery effort. Count abandoned attempts rather than removing them from the denominator. Ask which steps require judgment, which merely copy information and which can cause irreversible effects. This mapping often reveals that a conventional form or integration solves part of the problem more predictably than an agent.\n\nAccess discovery follows the actual data path. List user identities, workload identities, tool endpoints, document stores, model processors and telemetry destinations. Confirm the permitted data classes and retention rules for each. Use synthetic records while access is being reviewed. A development account with broad permissions is not an acceptable substitute for the restricted identity intended for production.\n\n## Contracts: define evidence, proposals and effects\n\nWrite a contract for each tool: input schema, output schema, permissions, side effects, retry behavior, timeout and error categories. Separate read operations from proposal creation and execution. A proposal should identify the exact resource, requested change, evidence and expiry. Execution should reference that proposal and an authoritative approval or preauthorized policy, rather than accepting a model-generated statement that permission exists.\n\nBind approval to the actual effect. If a recipient, amount or resource changes, the previous approval should no longer authorize the changed operation. Include resource versions where concurrent updates matter. For repeatable mutations, define idempotency keys and request fingerprints. The service must atomically enforce the relationship between a recorded result and the corresponding effect; adding a key field to the tool description does not achieve this by itself.\n\nClassify errors so the application can recover sensibly. Invalid input needs correction, authorization denial needs an appropriate access path, stale state needs refreshed evidence, and temporary unavailability may permit a bounded retry. A single catch-all instruction to \"try again\" can create duplicate effects, excessive load or a privilege escalation attempt during recovery.\n\n## Architecture and data flow\n\nA practical architecture has an authenticated entry point, a workflow state store, a model orchestration layer, scoped tool adapters, an authorization boundary and an event log. Retrieved or user-supplied content remains evidence rather than authority. The state store records proposed, approved, committed, failed and cancelled states so an interrupted conversation can resume without relying on a generated summary of what happened.\n\nThe model receives only the information needed for the current step. Context assembly preserves source identifiers and access labels, with explicit limits on history and tool results. Large result sets should support pagination or targeted follow-up instead of silently truncating critical records. Memory used across sessions needs provenance, expiry and deletion behavior, especially when a temporary instruction might otherwise become a permanent preference.\n\nFor HTTP MCP integrations, implement the applicable authorization flow and validate tokens for the intended resource. The current specification is a starting point, not permission to bypass application-level object authorization. Tool descriptions and annotations influence selection but do not establish trust. A server must independently verify which user or workload may act on which resource in the current state.\n\n## Implementation in reviewable increments\n\nFirst build a deterministic happy path using a fake tool service and a small synthetic fixture. This confirms schemas, state transitions and the completion contract without model variability. Add the model only where interpretation or synthesis is useful. Compare the result with the deterministic baseline so additional complexity has a measurable reason to exist.\n\nNext implement exception paths: missing evidence, conflicting records, expired approval, version conflict, rate limiting and a timeout after commitment. Keep all effects in the fake environment until those paths can be inspected. Introduce production adapters behind narrow credentials and feature controls, with separate configuration for approved data boundaries. Review tool-name and description changes because they can alter model selection even when the backend API remains unchanged.\n\nSet budgets across the entire workflow, not only individual calls. Bound attempts, elapsed time, tokens, tool invocations and monetary spend where applicable. Propagate cancellation to downstream services when supported. A request abandoned by the user should not continue an expensive exploratory loop indefinitely. For an ambiguous committed effect, surface the known state rather than fabricating success or failure.\n\n## A synthetic delivery scorecard\n\nImagine a fixed rehearsal of 100 workflow requests. Eighty contain sufficient evidence; twenty are intentionally incomplete. The assistant produces valid proposals for 72 of the eighty complete requests and correctly requests clarification for 18 of the twenty incomplete requests. The chart shows 100 attempted requests, 80 complete inputs, 72 valid proposals and 18 appropriate clarifications. These measures overlap and must not be summed as independent groups.\n\nProposal success among complete inputs is 72/80, or 90%. Appropriate clarification among incomplete inputs is 18/20, also 90%. If the acceptance rule is a valid proposal or correct clarification, 72 + 18 = 90 of 100 cases meet it. This synthetic 90% is an illustration of the calculation, not a target suitable for every workflow or a measured model result.\n\nA release decision also needs effect integrity, latency, user review effort and recovery evidence. A workflow can pass its language-quality rubric and still fail because it acts on the wrong tenant. Critical authorization tests are separate pass/fail requirements; they should not be averaged into a favorable overall score. Publish case definitions, versions, exclusions and reviewer disagreement alongside any quality percentage.\n\n## Bounded testing and security review\n\nBuild tests at three layers. Tool-service tests call APIs directly with malformed, unauthorized and stale requests. Workflow tests exercise state transitions and interruption recovery. Model evaluations assess selection, evidence use, clarification and proposal quality on representative tasks. A model that behaves well cannot compensate for a tool service that accepts arbitrary object identifiers.\n\nDefensive prompt-injection tests should use harmless markers and fake resources within an authorized test environment. Place conflicting instructions in retrieved documents and tool responses, then measure answer contamination, unauthorized proposals and committed effects separately. Include clean inputs to quantify the cost of overblocking. The objective is to verify boundaries, not to produce an impressive attack demonstration against unrelated systems.\n\nTest retries after a server has committed but before the client receives the response. Confirm that the same operation returns the recorded result and a changed payload using the same key returns a conflict. Rehearse dependency outages, revoked access and a model that emits validly structured but semantically incorrect arguments. Keep the failure corpus versioned and expand it when real incidents reveal a new class.\n\n## Acceptance and staged release\n\nAgree on acceptance criteria before tuning. They should identify eligible tasks, required evidence, prohibited effects, latency bounds, maximum review burden and recovery behavior. The exact numerical thresholds belong to the workflow owner. A high-consequence action may require stricter controls than an internal draft, even if the model's average quality is identical.\n\nRelease first in shadow or proposal-only mode where appropriate, then to a defined cohort under explicit authority. Record the assignment and scope so pilot outcomes can be interpreted. Compare accepted-task effort with the baseline, including reviewer time. Do not infer causal productivity gains from a voluntary group of enthusiastic early adopters without acknowledging selection and learning effects.\n\nA release package contains the configuration manifest, evaluation report, authorization map, runbook, cost model and known limitations. Approval should concern this concrete package. Changing the workflow's authority or data class requires review of the changed boundary, while routine operation within approved scope should remain usable without repeated unnecessary confirmation.\n\n## Rollback, operation and handover\n\nRollback restores the compatible model, prompt, tool schema and workflow policy, not only a model identifier. It cannot undo an external effect automatically. Define compensating actions where possible and a manual recovery path where reversal is unsafe or unavailable. Preserve pending requests and their last authoritative state so users do not have to repeat a consequential action blindly.\n\nMonitor service health, quality samples, tool failures, denied actions, retry volume and accepted-task cost. Keep random quality samples separate from complaint-driven traces. Limit sensitive content capture and control diagnostic access. Operators need correlation identifiers and authoritative events; a fluent assistant narrative is not sufficient evidence of what executed.\n\nHandover includes a practical rehearsal in which the receiving team investigates a failed task, disables a capability, restores a compatible release and explains the audit trail. Supply tool contracts, fixture data, evaluation scripts, deployment instructions and an owner map. Record which assumptions remain untested and which integrations depend on vendor behavior. The service should be supportable without relying on the original implementer's memory.\n\n## Decision worksheet and limitations\n\nFor each proposed workflow, complete: intended user, trigger, accepted outcome, data sources, permitted effects, authoritative approval, idempotency boundary, evaluation cohort, failure consequence, fallback, operator and retirement condition. Require evidence beside every important claim. A blank field identifies unfinished discovery rather than a detail to hide behind a confident architecture diagram.\n\nAgentic workflows are a poor fit when the task has no inspectable success criterion, the required authority cannot be constrained, or errors cannot be detected before unacceptable harm. Some tasks are better handled by deterministic automation or a human decision supported by search. The methodology supports that conclusion as a successful discovery outcome. Expansion of autonomy should follow demonstrated capability and recoverability, not the availability of another tool.\n\n## Design for the person supervising the workflow\n\nThe interface should show the proposed effect, the evidence used and the unresolved uncertainty together. A reviewer should not need to open several unrelated logs to discover that an amount changed or that a source is outdated. Use concrete status language such as draft prepared, approval expired or execution outcome unknown. Avoid a generic success banner when only one stage completed.\n\nMeasure whether users can recover from an error without repeating the whole task. Preserve safe draft work, explain which input needs correction and make cancellation visible. Accessibility, keyboard navigation and readable source links matter because oversight is only useful when people can actually inspect the decision. Include these interactions in the pilot acceptance exercise, alongside model quality and backend controls. An assistant that is technically bounded but difficult to supervise can still create unnecessary work and encourage users to approve proposals without adequate review.",
+  "figure": {
+    "slug": "service-agentic-ai-workflows",
+    "kind": "bar",
+    "title": "Synthetic workflow acceptance accounting",
+    "unit": "requests",
+    "points": [
+      {
+        "label": "Attempted",
+        "value": 100
+      },
+      {
+        "label": "Complete inputs",
+        "value": 80
+      },
+      {
+        "label": "Valid proposals",
+        "value": 72
+      },
+      {
+        "label": "Correct clarifications",
+        "value": 18
+      }
+    ],
+    "method": "Synthetic100 requests:80complete and20incomplete.72/80=90% valid proposals;18/20=90% correct clarifications.Overall accepted disposition(72+18)/100=90%.Counts overlap; authorization remains a separate requirement.",
+    "alt": "Synthetic workflow acceptance accounting. Attempted: 100 requests, Complete inputs: 80 requests, Valid proposals: 72 requests, Correct clarifications: 18 requests. Synthetic illustration.",
+    "dataOrigin": "synthetic",
+    "steps": [],
+    "studyPaths": [
+      "ai-evaluation"
+    ]
+  },
+  "references": [
+    {
+      "label": "Model Context Protocol authorization specification, July 2026",
+      "url": "https://modelcontextprotocol.io/specification/2026-07-28/basic/authorization"
+    },
+    {
+      "label": "IETF RFC 9700, OAuth 2.0 Security Best Current Practice",
+      "url": "https://www.rfc-editor.org/rfc/rfc9700.html"
+    },
+    {
+      "label": "OWASP, Prompt Injection",
+      "url": "https://genai.owasp.org/llmrisk/llm01-prompt-injection/"
+    },
+    {
+      "label": "Breck et al., The ML Test Score",
+      "url": "https://research.google/pubs/the-ml-test-score-a-rubric-for-ml-production-readiness-and-technical-debt-reduction/"
+    },
+    {
+      "label": "NIST AI Risk Management Framework",
+      "url": "https://www.nist.gov/itl/ai-risk-management-framework"
+    }
+  ],
+  "useCases": [
+    {
+      "id": "catalog-purchase-requests",
+      "title": "Prepare catalog purchase requests with bounded approval",
+      "industry": "Manufacturing procurement",
+      "description": "Hypothetical workflow for turning approved catalog selections into reviewable purchase proposals without autonomous spending.",
+      "body": "## Proposed problem and operating boundary\n\nA hypothetical manufacturer receives purchase requests through free-text messages. Staff manually identify catalog items, check requester eligibility and prepare requisitions. The proposed assistant would gather missing information and draft a requisition, while the purchasing system retains budget checks and approval authority. All records and numbers in this case are synthetic; no customer result is implied.\n\nDiscovery would sample ordinary requests, ambiguous part numbers and requests outside the approved catalog. The team would define the accepted outcome as a complete proposal with requester, catalog identifier, quantity, current price reference and cost center. The assistant would have no payment credential and no authority to add vendors. A requester asking for an urgent exception would receive the documented exception route rather than a model-invented workaround.\n\n## Design and delivery\n\nA read adapter would query the catalog and return versioned item records. A proposal service would calculate totals using authoritative prices and decimal-safe monetary rules. Approval would bind the proposal identifier, amount and cost center; changed quantities would invalidate the previous approval. Execution would use an idempotency key and enforce requester entitlements server-side, following the separation between identity and resource authorization described in the [MCP authorization specification](https://modelcontextprotocol.io/specification/2026-07-28/basic/authorization).\n\nDelivery would begin with a fake catalog and ten request fixtures, then add the actual procurement adapter under a restricted identity. Tests would cover discontinued items, duplicate submission, changed prices, expired approval and a timeout after requisition creation. The interface would show the exact proposal and source price rather than relying on the assistant's summary.\n\n## Synthetic calculation and measurement\n\nAssume 120 monthly requests currently require twelve minutes of preparation each: 1,440 minutes. A proposed assisted scenario uses four minutes of preparation and five minutes of review per request: 1,080 minutes. The chart compares these complete effort totals. The hypothetical saving is 360/1,440, or 25%, before setup and support costs. It is a planning assumption to test, not a promised improvement.\n\nA pilot would record preparation, review, corrections, exceptions and abandoned attempts using the same completion rule. Requests outside the catalog would remain in the denominator and be reported separately. Comparing only easy accepted proposals would overstate value.\n\n## Acceptance, recovery and handover\n\nAcceptance would require correct item and amount references, no unauthorized requisition effects, successful duplicate suppression and a tested manual path for exceptions. The owner would choose the allowable review effort and latency after observing the baseline. Rollback would disable proposal execution while retaining safe drafts and recorded requisition identifiers.\n\nThe handover worksheet would name catalog owner, approval policy, proposal expiry, idempotency retention, reconciliation procedure and unresolved vendor limitations. A receiving operator would rehearse locating a duplicate attempt and proving that only one requisition was created. This evidence is more useful than a claim that the agent understands procurement policy.",
+      "figure": {
+        "slug": "service-agentic-ai-workflows-catalog-purchase-requests",
+        "kind": "bar",
+        "title": "Synthetic purchase-request preparation effort",
+        "unit": "minutes",
+        "points": [
+          {
+            "label": "Manual total",
+            "value": 1440
+          },
+          {
+            "label": "Assisted plus review",
+            "value": 1080
+          }
+        ],
+        "method": "Synthetic120requests. Manual120×12=1440min; assisted120×(4+5)=1080min. Difference360min=25%.Excludes setup/support and requires equal acceptance rules.",
+        "alt": "Synthetic purchase-request preparation effort. Manual total: 1440 minutes, Assisted plus review: 1080 minutes. Synthetic illustration.",
+        "dataOrigin": "synthetic",
+        "steps": [],
+        "studyPaths": [
+          "ai-evaluation"
+        ]
+      }
+    },
+    {
+      "id": "shipment-exception-triage",
+      "title": "Triage shipment exceptions without changing delivery promises",
+      "industry": "Logistics",
+      "description": "Hypothetical evidence-gathering assistant that prepares exception options while dispatch retains control of customer commitments.",
+      "body": "## Proposed problem and scope\n\nA hypothetical logistics operator receives delayed-shipment alerts from several carriers. Dispatchers reconcile tracking events, contractual commitments and customer messages before deciding what to do. The proposed assistant would assemble an evidence packet and draft options. It would not promise a delivery time, book replacement transport or message customers without the required authorization. Every operational quantity below is invented for planning.\n\nDiscovery would distinguish stale tracking data from an actual delay. Carrier timestamps, time zones and event ordering would be normalized while original records remain available. The accepted outcome would include the latest verified status, missing evidence, applicable service commitment and an option that a dispatcher can inspect. Unknown status would remain unknown instead of becoming an inferred arrival estimate.\n\n## Architecture and implementation\n\nRead-only adapters would retrieve shipment and contract records under the dispatcher's scope. A state store would bind each evidence packet to a shipment version and retrieval time. A separate draft service would prepare internal notes. If external communication were later added, approval would bind the recipient and exact message, and the messaging service would enforce that authorization independently.\n\nImplementation would start with synthetic event sequences containing duplicate scans, out-of-order updates and contradictory carrier responses. A later integration rehearsal would simulate a carrier outage and an event arriving after a draft was prepared. The assistant would refresh evidence before presenting a consequential option rather than treating an old draft as permanently valid.\n\n## Synthetic workload arithmetic\n\nAssume a test contains 200 exception alerts. Eighty are duplicate or superseded alerts, seventy have complete evidence and fifty need additional information. The chart shows these exclusive categories. Deduplicating the eighty alerts leaves 120 distinct cases for review, a 40% reduction in alert count. That does not establish a 40% reduction in dispatcher effort: the remaining cases may be substantially harder.\n\nMeasurement would therefore include accepted evidence packets, time spent reconciling status, incorrect duplicate merges and customer-impacting errors. A duplicate rule would use authoritative shipment and event identifiers rather than semantic similarity alone. The test would deliberately include two different shipments with similar descriptions to expose accidental merging.\n\n## Acceptance and recovery\n\nThe proposed acceptance criteria would require no cross-customer record exposure, accurate source timestamps, correct identification of missing evidence and no unauthorized outbound message. Dispatcher review would assess whether each packet supports an action, not whether the prose sounds plausible. The [ML Test Score](https://research.google/pubs/the-ml-test-score-a-rubric-for-ml-production-readiness-and-technical-debt-reduction/) provides useful background for separating data, model and operational checks.\n\nRollback would return dispatchers to the existing tracking interface and stop new assistant drafts. Pending evidence packets would retain their source identifiers and expiry. Handover would include carrier-specific failure modes, deduplication rules, freshness thresholds and a rehearsal in which an operator resolves conflicting events. The limitation is explicit: better evidence assembly cannot make an unreliable carrier feed authoritative.",
+      "figure": {
+        "slug": "service-agentic-ai-workflows-shipment-exception-triage",
+        "kind": "bar",
+        "title": "Synthetic shipment-alert triage categories",
+        "unit": "alerts",
+        "points": [
+          {
+            "label": "Duplicate or superseded",
+            "value": 80
+          },
+          {
+            "label": "Complete evidence",
+            "value": 70
+          },
+          {
+            "label": "More information needed",
+            "value": 50
+          }
+        ],
+        "method": "Synthetic200alerts in exclusive categories80+70+50. Removing80duplicates leaves120cases,40% fewer alerts. This is not a labor-saving or delivery-performance claim.",
+        "alt": "Synthetic shipment-alert triage categories. Duplicate or superseded: 80 alerts, Complete evidence: 70 alerts, More information needed: 50 alerts. Synthetic illustration.",
+        "dataOrigin": "synthetic",
+        "steps": [],
+        "studyPaths": [
+          "ai-evaluation"
+        ]
+      }
+    },
+    {
+      "id": "clinic-administration-drafts",
+      "title": "Prepare appointment administration drafts without clinical decisions",
+      "industry": "Healthcare administration",
+      "description": "Hypothetical scheduling support with scoped records, explicit uncertainty and staff-controlled communication.",
+      "body": "## Proposed problem and boundary\n\nA hypothetical outpatient organization wants to reduce repetitive appointment-administration work. The proposed assistant would summarize scheduling requests, identify missing administrative details and prepare staff-reviewed responses. It would not diagnose symptoms, recommend treatment, determine urgency or change a clinical plan. All cases and measurements here are synthetic; a real deployment would need its own privacy and regulatory review.\n\nDiscovery would map the exact information needed for scheduling and remove unnecessary clinical content from model inputs. Staff would identify requests that must leave the administrative workflow, such as a message asking for medical advice. The accepted outcome would be a correct administrative draft or an appropriate escalation, with no unsupported promise about availability or care.\n\n## Proposed design and delivery\n\nA scoped scheduling adapter would return permitted appointment slots and administrative policy references. The model would receive only the relevant request and records. A deterministic service would check slot availability again before any booking proposal is executed. Staff approval would bind the selected patient record, slot and communication destination, while the backend verifies access independently.\n\nThe implementation fixture would use fictional people and calendars. Tests would include two people with similar names, a cancelled slot, a missing contact preference and a request containing clinical language. The assistant would stop and route the clinical request to the established staff process. Retrieved text would remain untrusted, consistent with the defensive boundary described by [OWASP's prompt-injection guidance](https://genai.owasp.org/llmrisk/llm01-prompt-injection/).\n\n## Synthetic measurement example\n\nSuppose a rehearsal contains 100 requests: seventy ordinary scheduling requests and thirty needing clarification or escalation. The assistant prepares sixty-three acceptable ordinary drafts and correctly routes twenty-seven exceptional requests. The chart shows seventy ordinary inputs, sixty-three acceptable drafts, thirty exceptional inputs and twenty-seven correct routes. Success is 63/70 = 90% for ordinary drafting and 27/30 = 90% for routing.\n\nThe combined 90/100 accepted disposition rate is only an illustration. It would not establish clinical safety, privacy compliance or suitability for production. Reviewers would separately inspect wrong-person access, inappropriate clinical content and unauthorized communication as critical failures rather than averaging them into a quality score.\n\n## Acceptance, fallback and handover\n\nA limited pilot would require a reviewed data boundary, accurate record matching, correct administrative scope and a usable staff review screen. Effort measurement would include time spent checking and correcting drafts. An attractive draft that takes longer to verify than writing from scratch would not justify expansion.\n\nRollback would disable assistant-generated suggestions while preserving the existing scheduling workflow. Pending drafts would be clearly marked unapproved and would never be sent automatically after recovery. Handover would include escalation ownership, slot-conflict handling, retention rules and an exercise in which staff correct a wrong administrative assumption. The proposed benefit is reduced clerical effort with inspectable boundaries, not replacement of clinical judgment.",
+      "figure": {
+        "slug": "service-agentic-ai-workflows-clinic-administration-drafts",
+        "kind": "bar",
+        "title": "Synthetic administrative draft and routing checks",
+        "unit": "requests",
+        "points": [
+          {
+            "label": "Ordinary inputs",
+            "value": 70
+          },
+          {
+            "label": "Accepted drafts",
+            "value": 63
+          },
+          {
+            "label": "Exceptional inputs",
+            "value": 30
+          },
+          {
+            "label": "Correct routes",
+            "value": 27
+          }
+        ],
+        "method": "Synthetic100requests:70ordinary,30exceptional.63/70=90% accepted drafts;27/30=90% correct routes;90/100accepted dispositions.Overlapping bars; no clinical or compliance claim.",
+        "alt": "Synthetic administrative draft and routing checks. Ordinary inputs: 70 requests, Accepted drafts: 63 requests, Exceptional inputs: 30 requests, Correct routes: 27 requests. Synthetic illustration.",
+        "dataOrigin": "synthetic",
+        "steps": [],
+        "studyPaths": [
+          "ai-evaluation"
+        ]
+      }
+    },
+    {
+      "id": "incident-evidence-assistant",
+      "title": "Assemble incident evidence while engineers control production",
+      "industry": "Software operations",
+      "description": "Hypothetical assistant that collects scoped telemetry and proposes diagnostic steps without autonomous remediation.",
+      "body": "## Proposed incident workflow\n\nA hypothetical software team wants an assistant to assemble incident evidence from alerts, deployment records and runbooks. The proposed scope is investigation support: summarize observed changes, link relevant telemetry and prepare diagnostic options. It would not restart services, change access policies or deploy a fix autonomously. Every timing and count in this example is synthetic.\n\nDiscovery would examine how responders distinguish symptoms from causes. An alert and a deployment occurring close together do not prove causation. The accepted evidence packet would list timestamps, source links, known limitations and competing explanations. Missing telemetry would be visible rather than replaced by a confident narrative that a deployment caused the outage.\n\n## Architecture and delivery\n\nThe assistant would use read-only adapters with service and environment restrictions. Queries would have time-range, result-size and rate limits so investigation cannot overload an already stressed monitoring system. Tool responses would include the query and source timestamp. A workflow record would preserve which evidence was actually available when a diagnostic proposal was made.\n\nImplementation would use a local incident fixture with synthetic metrics and deployment events. Tests would include clock skew, a monitoring outage, an unrelated deployment and a malicious instruction embedded in a log message. The model could propose an unsafe action, but no remediation tool would be exposed in this initial scope. Any future execution capability would require a separate review of authority and recovery.\n\n## Synthetic effort calculation\n\nAssume ten practice incidents each require eighteen minutes of manual evidence collection and twelve minutes of interpretation, totaling 300 minutes. A proposed assistant reduces collection to eight minutes but leaves interpretation at twelve, totaling 200 minutes. The chart compares collection and interpretation totals: manual collection 180, assisted collection 80 and interpretation 120 in either workflow.\n\nThe hypothetical difference is 100/300, or approximately 33.3% of total practice effort. It is not a reduction in production recovery time. Real incident duration also depends on diagnosis, coordination, mitigation and external dependencies. Measurement would preserve those phases separately and avoid claiming that faster evidence assembly proves faster service restoration.\n\n## Acceptance and operational limits\n\nAcceptance would require traceable statements, correct time windows, no cross-environment access and a clear distinction between observation and hypothesis. Responders would score whether the packet helps choose the next investigation, not whether it names a plausible root cause. The [NIST AI RMF](https://www.nist.gov/itl/ai-risk-management-framework) supports documenting intended use and limitations as part of this operating decision.\n\nFallback would retain direct access to existing dashboards and runbooks. If the assistant is unavailable, incident response must continue without it. Handover would include query budgets, source freshness, credential rotation and an exercise where the receiving on-call engineer rejects an unsupported hypothesis. The assistant's incident record should complement the authoritative event timeline and postmortem, never overwrite them.",
+      "figure": {
+        "slug": "service-agentic-ai-workflows-incident-evidence-assistant",
+        "kind": "bar",
+        "title": "Synthetic incident-investigation effort",
+        "unit": "minutes",
+        "points": [
+          {
+            "label": "Manual collection",
+            "value": 180
+          },
+          {
+            "label": "Assisted collection",
+            "value": 80
+          },
+          {
+            "label": "Interpretation either way",
+            "value": 120
+          }
+        ],
+        "method": "Synthetic10practice incidents. Manual10×(18+12)=300min; assisted10×(8+12)=200min. Interpretation120min applies to each workflow.100/300=33.3% effort difference; not a production recovery-time claim.",
+        "alt": "Synthetic incident-investigation effort. Manual collection: 180 minutes, Assisted collection: 80 minutes, Interpretation either way: 120 minutes. Synthetic illustration.",
+        "dataOrigin": "synthetic",
+        "steps": [],
+        "studyPaths": [
+          "ai-evaluation",
+          "reliability"
+        ]
+      }
+    },
+    {
+      "id": "editorial-rights-review",
+      "title": "Prepare editorial evidence packets with rights-aware publication gates",
+      "industry": "Publishing",
+      "description": "Hypothetical research assistant that links sources and prepares drafts while editors retain factual and publication decisions.",
+      "body": "## Proposed editorial problem\n\nA hypothetical technical publisher wants help preparing source-backed article drafts. Writers currently collect references, check claims, identify image rights and assemble an editorial handoff. The proposed assistant would organize evidence and draft text, while editors remain responsible for accuracy, permissions and publication. All article counts and results below are synthetic, not reported publishing outcomes.\n\nDiscovery would define what counts as a supported claim and distinguish primary evidence from commentary. A source link alone is not sufficient: the cited passage must support the nearby statement. The team would also define acceptable image provenance, attribution requirements and the treatment of uncertain or conflicting findings. The assistant would not fabricate quotations, customer results or rights permissions.\n\n## Design and implementation\n\nA research adapter would retrieve approved sources and retain title, URL, access date and relevant excerpt under the publisher's policies. The draft record would map claims to evidence and mark unresolved questions. An asset registry would track original illustrations, licensed material and items awaiting permission. Publication would remain a separate authenticated action that cannot be authorized by text found in a source document.\n\nDelivery would begin with fictional article briefs and public technical references. Tests would include a retracted claim, a source that does not support the sentence, a broken citation and an image with unknown rights. The assistant would route these to review rather than filling the gap with a plausible assertion. The [ML Test Score](https://research.google/pubs/the-ml-test-score-a-rubric-for-ml-production-readiness-and-technical-debt-reduction/) is useful background for maintaining test cases around the full delivery pipeline.\n\n## Synthetic quality accounting\n\nSuppose a rehearsal checks 80 draft claims. Fifty-six have direct primary support, sixteen need narrower wording and eight lack adequate evidence. The chart shows those exclusive categories. Directly supported coverage is 56/80, or 70%. If editors successfully narrow twelve of the sixteen qualified claims, supported coverage becomes 68/80, or 85%, while twelve claims still require action.\n\nThese values describe a constructed review exercise. They do not demonstrate that generated content is 85% accurate, because support and truth are related but distinct, and the source itself may have limitations. Reviewers would inspect both source quality and faithful representation. Unresolved claims would be removed, revised or held rather than hidden in an aggregate score.\n\n## Acceptance and handover\n\nAcceptance would require inspectable claim-to-source mappings, explicit hypothetical labels for invented scenarios and a valid asset status for every image. The editor should be able to find the evidence without repeating the research from scratch. Measurement would include verification time and substantive corrections, not merely the speed of producing a draft.\n\nRollback would withdraw an unpublished candidate or restore a prior published revision under the publisher's normal process. Handover would include citation checks, correction workflow, asset provenance and an exercise correcting a misleading claim after publication. The limitation is clear: an assistant can organize research and propose language, but editorial accountability and permission to publish remain external decisions.",
+      "figure": {
+        "slug": "service-agentic-ai-workflows-editorial-rights-review",
+        "kind": "bar",
+        "title": "Synthetic editorial claim review",
+        "unit": "claims",
+        "points": [
+          {
+            "label": "Direct primary support",
+            "value": 56
+          },
+          {
+            "label": "Wording needs narrowing",
+            "value": 16
+          },
+          {
+            "label": "Evidence missing",
+            "value": 8
+          }
+        ],
+        "method": "Synthetic80claims:56+16+8. Initially supported56/80=70%.Revising12eligible claims gives68/80=85%,with12unresolved. Support coverage is not a universal factual-accuracy estimate.",
+        "alt": "Synthetic editorial claim review. Direct primary support: 56 claims, Wording needs narrowing: 16 claims, Evidence missing: 8 claims. Synthetic illustration.",
+        "dataOrigin": "synthetic",
+        "steps": [],
+        "studyPaths": [
+          "ai-evaluation"
+        ]
+      }
+    }
+  ]
+}

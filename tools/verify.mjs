@@ -4,14 +4,15 @@ import { constants } from "node:fs";
 import path from "node:path";
 import { createHash } from "node:crypto";
 import { markFile } from "./mark.mjs";
-import { seriesSlug } from "./lib.mjs";
+import { SITE, esc, seriesSlug } from "./lib.mjs";
 import { publicationDate } from "./publication.mjs";
 import { fieldGuides, worksheetCsv } from "./field-guides.mjs";
 import { models } from "../assets/js/field-math.mjs";
 import { caseCategories } from "./case-library.mjs";
 import { topicPath } from "./discovery.mjs";
 import { loadDeepDives } from "./deep-dives.mjs";
-import { conceptFor } from "./concept-figures.mjs";
+import { conceptFor, conceptCsv, conceptSvg } from "./concept-figures.mjs";
+import { loadServiceLibrary, servicePath, servicePaths, serviceScenarioNotice } from "./service-library.mjs";
 
 let failures = 0;
 const fail = (m) => { console.error("  ✗ " + m); failures++; };
@@ -202,6 +203,64 @@ console.log("\nDeep dives");
   if (!failures) ok(`${tracks.length} paths with ${images.size} distinct visual examples and downloadable chart data`);
 }
 
+console.log("\nService methodologies and industry scenarios");
+{
+  const before = failures;
+  const services = await loadServiceLibrary();
+  const routes = servicePaths(services);
+  const landing = await readFile("services/index.html", "utf8");
+  const sitemap = await readFile("sitemap.xml", "utf8");
+  const indexed = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(match => match[1]);
+  const socialImages = new Set();
+  if ((landing.match(/class="card service-card"/g) || []).length !== 12) fail("Service landing must contain twelve illustrated detail cards");
+  if (!landing.includes("60 hypothetical industry scenarios") || /predictive incident detection|full auditability|every AI interaction/.test(landing)) fail("Service landing must distinguish illustrative scenarios and avoid unsupported guarantees");
+  for (const service of services) {
+    const parentRoute = servicePath(service.id);
+    if (!landing.includes(`href="${parentRoute}"`)) fail(`Service not linked from landing: ${service.id}`);
+    let parent;
+    try { parent = await readFile(`.${parentRoute}index.html`, "utf8"); } catch { fail(`Missing service methodology: ${parentRoute}`); continue; }
+    for (const item of [null, ...service.useCases]) {
+      const route = servicePath(service.id, item?.id);
+      const figure = item?.figure || service.figure;
+      const stem = `/assets/services/${service.id}/${item?.id || "methodology"}`;
+      let html, svg, png;
+      try {
+        [html, svg, png] = await Promise.all([readFile(`.${route}index.html`, "utf8"), readFile(`.${stem}.svg`, "utf8"), readFile(`.${stem}-social.png`)]);
+      } catch (error) { fail(`${route}: missing page or illustration (${error.code})`); continue; }
+      checkReadingControls(html, route);
+      const svgHash = createHash("sha256").update(svg).digest("hex").slice(0, 12);
+      const pngHash = createHash("sha256").update(png).digest("hex").slice(0, 12);
+      if (svg !== conceptSvg(figure)) fail(`${route}: hero differs from authored figure`);
+      if (png.subarray(1, 4).toString() !== "PNG" || png.readUInt32BE(16) !== 1200 || png.readUInt32BE(20) !== 630 || socialImages.has(pngHash)) fail(`${route}: invalid or reused social image`);
+      socialImages.add(pngHash);
+      if (!html.includes(`src="${stem}.svg?v=${svgHash}"`) || !html.includes(`property="og:image" content="${SITE.url}${stem}-social.png?v=${pngHash}"`) || !html.includes('property="og:image:type" content="image/png"')) fail(`${route}: image version or metadata mismatch`);
+      if (!html.includes(`<link rel="canonical" href="${SITE.url}${route}">`) || indexed.filter(url => url === SITE.url + route).length !== 1) fail(`${route}: canonical or unique sitemap entry missing`);
+      if (!html.includes(esc(figure.method)) || !html.includes('id="concept-method-title"')) fail(`${route}: figure methodology missing`);
+      if (figure.kind !== "flow") {
+        let csv = "";
+        try { csv = await readFile(`.${stem}.csv`, "utf8"); } catch { fail(`${route}: missing CSV`); }
+        if (csv !== conceptCsv(figure) || !html.includes(`href="${stem}.csv"`)) fail(`${route}: CSV does not match authored values`);
+      }
+      const toc = html.match(/<nav class="toc"[\s\S]*?<\/nav>/)?.[0];
+      if (!toc) fail(`${route}: missing contents navigation`);
+      for (const [, id] of (toc || "").matchAll(/href="#([^"]+)"/g)) if (html.split(`id="${id}"`).length !== 2) fail(`${route}: contents target ${id} missing or duplicated`);
+      if (!html.includes('href="/contact/"') || !html.includes('id="service-read-next-title"') || !html.includes('class="reading-layout"')) fail(`${route}: contact, onward reading or consistent layout missing`);
+      const scripts = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map(match => JSON.parse(match[1]));
+      const article = scripts.find(data => data["@type"] === "Article");
+      if (article?.mainEntityOfPage !== SITE.url + route || article?.about?.["@id"] !== SITE.url + parentRoute + "#service" || article?.image !== SITE.url + stem + `-social.png?v=${pngHash}`) fail(`${route}: article structured data does not match canonical service and image`);
+      if (item) {
+        if (!parent.includes(`href="${route}"`) || !html.includes(`href="${parentRoute}"`) || !html.includes(serviceScenarioNotice) || article?.genre !== "Hypothetical industry scenario") fail(`${route}: scenario disclosure or parent-child navigation missing`);
+      } else {
+        const entity = scripts.find(data => data["@type"] === "Service");
+        if (entity?.url !== SITE.url + parentRoute || entity?.["@id"] !== SITE.url + parentRoute + "#service") fail(`${route}: Service structured data missing`);
+        if ((html.match(/class="card case-card service-case-card"/g) || []).length !== 5) fail(`${route}: expected five scenario cards`);
+      }
+    }
+  }
+  if (routes.length !== 72) fail("Service library must publish twelve methods and sixty scenarios");
+  if (failures === before) ok(`${services.length} methodologies, ${routes.length - services.length} scenarios and ${socialImages.size} distinct figure previews verified`);
+}
+
 console.log("\nQuality");
 let noDesc = 0, noTitle = 0, badCanon = 0, noJsonLd = 0, orphanHero = 0;
 for (const d of dirs) {
@@ -276,13 +335,14 @@ const promotionPlacements = new Map([
   ["series/index.html", "series-rail"],
   ...live.map(m => [`${m.section}/${m.slug}/index.html`, "article-rail"]),
   ...live.filter(m => m.series).map(m => [`series/${seriesSlug(m.series)}/index.html`, "series-chapters-rail"]),
+  ...(await loadServiceLibrary()).flatMap(service => [[`${servicePath(service.id).slice(1)}index.html`, "service-methodology-rail"], ...service.useCases.map(item => [`${servicePath(service.id, item.id).slice(1)}index.html`, "service-scenario-rail"])]),
 ]);
 let promotionErrors = 0;
 for (const [file, placement] of promotionPlacements) {
   const html = await readFile(file, "utf8");
   const slots = [...html.matchAll(/<aside class="writing-promos" aria-label="Promotions" data-ad-slot="([^"]+)">([\s\S]*?)<\/aside>/g)];
   const [slot] = slots;
-  const article = placement === "article-rail";
+  const article = placement === "article-rail" || placement.startsWith("service-");
   if (slots.length !== 1 || slot[1] !== placement ||
       !slot[2].includes('href="https://www.techknowen.com/"') ||
       !slot[2].includes("Coming soon") || !slot[2].includes('href="/projects/ziggle/"') || slot[2].match(/<a\b/g)?.length !== 2 ||
@@ -399,7 +459,7 @@ console.log("\nAssets");
   const cards = new Set();
   for (const f of pages) {
     const h = await readFile(f, "utf8");
-    for (const m of h.matchAll(/(?:og:image|twitter:image)" content="[^"]*?(\/assets\/(?:og|covers)\/[^"]+)"/g)) cards.add(m[1]);
+    for (const m of h.matchAll(/(?:og:image|twitter:image)" content="[^"]*?(\/assets\/(?:og|covers|services)\/[^"]+)"/g)) cards.add(m[1]);
   }
   const missingCards = [];
   for (const c of cards) { try { await access(c.replace(/^\//, "").split(/[?#]/)[0], constants.R_OK); } catch { missingCards.push(c); } }
