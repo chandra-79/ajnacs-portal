@@ -1,0 +1,23 @@
+{
+  "slug": "performance-issue-only-in-production",
+  "kind": "bar",
+  "title": "Queries for a synthetic 200-account request",
+  "unit": "queries",
+  "points": [
+    {
+      "label": "Per-account lookup",
+      "value": 201
+    },
+    {
+      "label": "Batched lookup",
+      "value": 2
+    }
+  ],
+  "method": "The first implementation performs 1 list query + 200 preference lookups. The second performs 1 list query + 1 batched preference query. Counts exclude unrelated queries and do not establish a latency multiplier.",
+  "alt": "Queries for a synthetic 200-account request. Per-account lookup: 201 queries; Batched lookup: 2 queries. Illustrative inputs.",
+  "dataOrigin": "synthetic",
+  "steps": [],
+  "studyPaths": [
+    "performance"
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "slug": "orm-tradeoffs-data-access",
+  "kind": "bar",
+  "title": "Statements for 25 orders and their line items",
+  "unit": "SQL statements",
+  "points": [
+    {
+      "label": "Lazy collection loading",
+      "value": 26
+    },
+    {
+      "label": "One select-in batch",
+      "value": 2
+    },
+    {
+      "label": "Joined loading",
+      "value": 1
+    }
+  ],
+  "method": "Synthetic fixture: 25 orders × 4 line items. Lazy strategy uses 1 + 25 statements; one compatible select-in batch uses 2; join uses 1 and returns 100 joined rows. Assumes no extra loads or batch splitting. Fewer statements need not mean lower latency.",
+  "alt": "Statements for 25 orders and their line items. Lazy collection loading: 26 SQL statements; One select-in batch: 2 SQL statements; Joined loading: 1 SQL statements. Illustrative inputs.",
+  "dataOrigin": "synthetic",
+  "steps": [],
+  "studyPaths": [
+    "performance",
+    "platform"
+  ]
+}

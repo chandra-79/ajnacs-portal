@@ -1,0 +1,24 @@
+{
+  "slug": "api-sdk-design",
+  "kind": "bar",
+  "title": "Hypothetical layered retry ceilings",
+  "unit": "HTTP attempts",
+  "points": [
+    {
+      "label": "Nested three-attempt loops",
+      "value": 900
+    },
+    {
+      "label": "One three-attempt policy",
+      "value": 300
+    }
+  ],
+  "method": "Assume 100 logical operations. Nested SDK and application limits of 3 attempts yield 100×3×3=900; one coordinated 3-attempt policy yields 300. Upper bounds assume all failures are retry-eligible; no recovery rate is implied.",
+  "alt": "Hypothetical layered retry ceilings. Nested three-attempt loops: 900 HTTP attempts; One three-attempt policy: 300 HTTP attempts. Illustrative inputs.",
+  "dataOrigin": "synthetic",
+  "steps": [],
+  "studyPaths": [
+    "platform",
+    "reliability"
+  ]
+}

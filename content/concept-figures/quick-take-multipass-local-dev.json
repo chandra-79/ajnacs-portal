@@ -1,0 +1,27 @@
+{
+  "slug": "quick-take-multipass-local-dev",
+  "kind": "bar",
+  "title": "Illustrative worker memory model",
+  "unit": "MiB",
+  "points": [
+    {
+      "label": "Idle",
+      "value": 350
+    },
+    {
+      "label": "Two concurrent documents",
+      "value": 510
+    },
+    {
+      "label": "Four concurrent documents",
+      "value": 670
+    }
+  ],
+  "method": "Assumed resident memory = 350 MiB idle + 80 MiB per concurrent document. Compare with a 600 MiB process budget. Measure actual peaks; the model excludes nonlinear allocator, cache and runtime effects.",
+  "alt": "Illustrative worker memory model. Idle: 350 MiB; Two concurrent documents: 510 MiB; Four concurrent documents: 670 MiB. Illustrative inputs.",
+  "dataOrigin": "synthetic",
+  "steps": [],
+  "studyPaths": [
+    "platform"
+  ]
+}

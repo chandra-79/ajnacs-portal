@@ -1,0 +1,24 @@
+{
+  "slug": "file-uploads-at-scale",
+  "kind": "bar",
+  "title": "Retry traffic for an interrupted 500 MiB upload",
+  "unit": "MiB transferred",
+  "points": [
+    {
+      "label": "Restart whole file",
+      "value": 950
+    },
+    {
+      "label": "Resume final part",
+      "value": 500
+    }
+  ],
+  "method": "Synthetic ten-part file: 10 × 50 MiB = 500 MiB. Failure occurs after nine complete parts and before any useful tenth-part bytes. Restart: 450 + 500 = 950 MiB; resume: 450 + 50 = 500 MiB. Excludes transport and request overhead.",
+  "alt": "Retry traffic for an interrupted 500 MiB upload. Restart whole file: 950 MiB transferred; Resume final part: 500 MiB transferred. Illustrative inputs.",
+  "dataOrigin": "synthetic",
+  "steps": [],
+  "studyPaths": [
+    "reliability",
+    "platform"
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "slug": "event-driven-architecture",
+  "kind": "bar",
+  "title": "A fictional burst and drain cycle",
+  "unit": "queued events",
+  "points": [
+    {
+      "label": "Start",
+      "value": 0
+    },
+    {
+      "label": "After 300-second burst",
+      "value": 6000
+    },
+    {
+      "label": "After 150-second drain",
+      "value": 0
+    }
+  ],
+  "method": "Start empty. Burst arrivals 120/s minus processing 100/s for 300 s yields 6,000 events. Then processing 100/s minus arrivals 60/s drains 6,000 in 150 s. Constant rates, no failures, no expiry, no partition skew.",
+  "alt": "A fictional burst and drain cycle. Start: 0 queued events; After 300-second burst: 6000 queued events; After 150-second drain: 0 queued events. Illustrative inputs.",
+  "dataOrigin": "synthetic",
+  "steps": [],
+  "studyPaths": [
+    "reliability",
+    "platform"
+  ]
+}

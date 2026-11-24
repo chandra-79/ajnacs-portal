@@ -1,0 +1,24 @@
+{
+  "slug": "fastapi-production-service-design",
+  "kind": "bar",
+  "title": "Configured database connection ceilings",
+  "unit": "connections",
+  "points": [
+    {
+      "label": "Two workers per replica",
+      "value": 48
+    },
+    {
+      "label": "Four workers per replica",
+      "value": 96
+    }
+  ],
+  "method": "Synthetic deployment: 3 replicas × workers per replica × 8 connections per worker. Two workers yields 48; four yields 96. Overflow, administrators, migrations and other clients are excluded; actual concurrency is not measured.",
+  "alt": "Configured database connection ceilings. Two workers per replica: 48 connections; Four workers per replica: 96 connections. Illustrative inputs.",
+  "dataOrigin": "synthetic",
+  "steps": [],
+  "studyPaths": [
+    "platform",
+    "performance"
+  ]
+}

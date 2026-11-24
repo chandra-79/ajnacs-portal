@@ -22,7 +22,7 @@ Local development environments are optimized for iteration speed. Production env
 
 **Service discovery.** Local Compose uses simple DNS resolution between containers. Kubernetes uses its own DNS, service objects, and endpoint resolution. An application that assumes a specific hostname format may fail when the format changes.
 
-**Volume and storage.** Local development uses host-mounted volumes for data persistence. Production uses persistent volume claims with specific storage classes. The performance characteristics and availability guarantees are completely different.
+**Volume and storage.** Local development uses host-mounted volumes for data persistence. Production uses persistent volume claims with specific storage classes. Performance and failure behaviour can differ with the driver, backend, network and deployment. Test the production storage contract explicitly; a local mount does not establish durability or availability for the production path.
 
 ## Closing the gap
 
@@ -30,6 +30,29 @@ Local development environments are optimized for iteration speed. Production env
 
 **Enforce resource limits in local development.** Adding CPU and memory limits to local Compose files or Kubernetes manifests makes resource constraint failures visible locally, where they are cheap to debug.
 
-**Use the same secret retrieval path.** If production uses AWS Secrets Manager, the local development environment should also use it (with test secrets) rather than a different mechanism.
+**Use the same secret retrieval path.** If production uses a secret service, test the same retrieval interface with isolated test credentials where practical, and document any local adapter.
 
-The goal is not identical environments — that is impractical. The goal is environments that fail in the same ways. Failures that only appear in production are expensive. Failures that appear locally are free.
+The goal is not identical environments — that is impractical. The goal is environments that fail in the same ways. Finding a representative failure locally usually reduces investigation risk, although local environments still cost time and resources to maintain.
+
+## Choose the failure you want to reproduce
+
+A local environment is useful when it answers a bounded question. A VM can reproduce a Linux service manager, permissions, and a constrained memory budget. A local Kubernetes cluster can exercise manifests and some control-plane behaviour. Neither reproduces a cloud identity service, a multi-zone network, or a managed database merely because the application starts successfully.
+
+Write the parity contract down. For one service, it might include the same application build, startup command, database major version, schema migration, and declared resource limit. List deliberate differences separately: one local node, synthetic data, test credentials, and a local queue. The list helps reviewers understand what a passing test establishes and what still requires a staging or production-safe test.
+
+Consider a hypothetical worker that needs 350 MiB while idle and adds approximately 80 MiB for each concurrently decoded document. Two simultaneous documents imply about 510 MiB; four imply about 670 MiB. Under a 600 MiB process budget, four documents exceed the planning envelope. These numbers are assumptions for a test design, not measured Multipass performance. The exercise should verify actual peak resident memory, including library allocations and buffers, instead of trusting this linear model.
+
+## A repeatable local rehearsal
+
+Create a disposable VM from a versioned bootstrap description. Set a named CPU and memory allocation rather than inheriting the developer laptop's available capacity. Start the application as a non-root user using the same service command intended for deployment. Use a synthetic document with a known checksum, process it, and compare the expected output before introducing failure.
+
+Next, run two and then four concurrent jobs. Record throughput, peak memory, queue wait, and the exit status when a process is terminated. Restart the worker and determine whether a partially completed job is duplicated, lost, or safely resumed. The valuable result is the recovery behaviour, not a screenshot showing four green containers.
+
+Test the credential interface with a dedicated development account or an explicit test adapter. Production secrets do not belong in the VM image or bootstrap file. Access to a real secret store can be valuable in an isolated test account, but local tests should not depend on permission to read production data.
+
+Destroy and recreate the VM when the exercise is complete, then rerun the bootstrap without manual repair. Any undocumented command needed to make the second run work becomes part of the setup defect list. Keep cloud-specific identity, load-balancer behaviour, and storage durability in a separate validation plan. Local parity reduces uncertainty; it does not eliminate it.
+
+## Further reading and source boundaries
+
+- [Canonical Multipass documentation](https://canonical.com/multipass/docs/latest/)
+- [PostgreSQL: Using EXPLAIN](https://www.postgresql.org/docs/current/using-explain.html)

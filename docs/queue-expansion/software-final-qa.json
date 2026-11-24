@@ -1,0 +1,360 @@
+[
+  {
+    "slug": "api-documentation-developer-experience",
+    "corrections": 2,
+    "originalPhrases": [
+      "the highest-traffic tier in mature docs",
+      "every recurring \"how do I\" ticket is a docs gap with a cost attached"
+    ]
+  },
+  {
+    "slug": "api-pagination-patterns",
+    "corrections": 2,
+    "originalPhrases": [
+      "an empty page with `has_more: true` is legal and *will* happen",
+      "encode, encrypt-or-sign, and reserve the right to change the innards"
+    ]
+  },
+  {
+    "slug": "api-sdk-design",
+    "corrections": 2,
+    "originalPhrases": [
+      "a good client library makes every API design decision \u2014 the idempotency keys, the retry semantics, the pagination cursors \u2014 *automatic* for consumers who'd otherwise implement them wrong",
+      "SDK telemetry showing version and feature adoption is how you know when the old major can actually die"
+    ]
+  },
+  {
+    "slug": "c4-model-architecture-diagrams",
+    "corrections": 2,
+    "originalPhrases": [
+      "Mermaid's C4 syntax (weaker, but it renders in the repo host's markdown, which is distribution nobody has to build)",
+      "and reliably the highest-value-per-effort artifact in the whole practice, because most organizations have never drawn even this"
+    ]
+  },
+  {
+    "slug": "contract-testing-pact-practice",
+    "corrections": 1,
+    "originalPhrases": [
+      "The closing calibration: the integration environment was always a workaround \u2014 an attempt to test *coordination* by colocating everything, paid for in contention and flake."
+    ]
+  },
+  {
+    "slug": "email-deliverability-engineering",
+    "corrections": 4,
+    "originalPhrases": [
+      "**DKIM** cryptographically signs message content and headers with a key published in your DNS",
+      "Mailbox providers score sending domains and IPs continuously on engagement signals (opens, replies, deletes-without-reading, spam-button presses) and hygiene signals (bounce rates against nonexistent addresses, spam-trap hits, volume consistency) \u2014 and the score determines inbox, spam folder, or silent throttling.",
+      "a spam-button press is an unsubscribe *and* a signal you're being scored on",
+      "graduated volume over weeks; the burst from a cold IP is indistinguishable from a spammer's"
+    ]
+  },
+  {
+    "slug": "fastapi-production-service-design",
+    "corrections": 2,
+    "originalPhrases": [
+      "shared, connection-pooled instances \u2014 never constructed per request",
+      "House rule: `async def` only where every await path is genuinely async (asyncpg/SQLAlchemy-async, httpx, redis.asyncio); everything else stays `def` until proven."
+    ]
+  },
+  {
+    "slug": "file-uploads-at-scale",
+    "corrections": 3,
+    "originalPhrases": [
+      "the event-notification from storage, or a verification check, is the truth",
+      "**never serve user uploads from your application origin**",
+      "the isolation move the major platforms all made"
+    ]
+  },
+  {
+    "slug": "graphql-enterprise-adoption",
+    "corrections": 2,
+    "originalPhrases": [
+      "deprecation with usage tracking (you can *see* which clients still use the deprecated field \u2014 the API-evolution superpower REST never standardized)",
+      "**persisted queries** (clients register queries at build time; production accepts only the registered set)"
+    ]
+  },
+  {
+    "slug": "hexagonal-architecture-ports-adapters",
+    "corrections": 1,
+    "originalPhrases": [
+      "**the anemic center** (entities as bags of getters, all logic in \"service\" classes that are really transaction scripts \u2014 hexagonal folders around a procedural heart; the structure without the modeling)"
+    ]
+  },
+  {
+    "slug": "http-caching-conditional-requests",
+    "corrections": 4,
+    "originalPhrases": [
+      "within it, the request never leaves the cache (avoiding an origin request when served by a suitable cache, while lookup and network costs can remain)",
+      "serve the stale copy instantly while refreshing in the background",
+      "`Cache-Control: private` (browser-only)",
+      "authenticated, personalized responses must carry `private` (or `no-store` for the sensitive tier) *and* your CDN must be configured to respect it"
+    ]
+  },
+  {
+    "slug": "java-memory-leak-diagnosis",
+    "corrections": 6,
+    "originalPhrases": [
+      "A ThreadLocal set during request handling and never removed survives as long as the pool thread does \u2014 effectively forever, multiplied by pool size, and invisible until you know to look.",
+      "Retained size in the dominator tree exposes it instantly \u2014 entries \"should\" be 2 KB and are 800 KB.",
+      "Put `maximumSize` on every cache as a code-review rule \u2014 an eviction policy is a bug-report generator you'll never read; an unbounded cache is a pager.",
+      "Run with heap-dump-on-OOM and a disk budget for it in every environment, so every crash is born with its evidence attached.",
+      "Its cousin: a map keyed by objects missing `equals`/`hashCode`, where every put is a unique key forever.",
+      "Modern fix: stop hot-deploying \u2014 restart processes/containers instead \u2014 which converts this entire category into a non-problem and is half the operational argument for containerized Java."
+    ]
+  },
+  {
+    "slug": "load-testing-strategy",
+    "corrections": 5,
+    "originalPhrases": [
+      "a **mix** (70% reads of hot keys, 20% searches, 10% writes \u2014 and the searches cost 50\u00d7 the reads)",
+      "a **distribution** (requests cluster on power-law-popular entities \u2014 which is what makes caches work; uniform-random test data defeats caching and tests a system you don't run)",
+      "generate load open-loop when latency is the question",
+      "**Full-scale replica** \u2014 accurate and expensive; justified for the systems whose failure is existential.",
+      "**Testing in production** \u2014 increasingly the mature answer for the workload-realism problem"
+    ]
+  },
+  {
+    "slug": "mainframe-modernization-strategy",
+    "corrections": 3,
+    "originalPhrases": [
+      "the core systems still process a staggering share of the world's transactions with reliability records cloud estates envy; the constraint that actually forces action is *people*",
+      "the modernization graveyard is filled disproportionately by big-bang rewrites of exactly these systems",
+      "**Automated conversion** (COBOL-to-Java transpilation) produces running code in a modern language that reads like COBOL wearing a Java costume"
+    ]
+  },
+  {
+    "slug": "modular-monolith-architecture",
+    "corrections": 1,
+    "originalPhrases": [
+      "everything else is inaccessible: not discouraged, *inaccessible*, because \"please don't import our internals\" has the compliance rate of any politeness under deadline"
+    ]
+  },
+  {
+    "slug": "multi-tenancy-isolation-models",
+    "corrections": 3,
+    "originalPhrases": [
+      "the economics only close at enterprise price points",
+      "so the blast radius of an injection is one tenant",
+      "cell-based partitioning at scale** (tenants sharded across independent cells/stacks \u2014 the blast-radius architecture that turns \"the database is down\" into \"8% of tenants are down\""
+    ]
+  },
+  {
+    "slug": "probabilistic-data-structures",
+    "corrections": 3,
+    "originalPhrases": [
+      "**\"no\" is certain; \"yes\" might be wrong**",
+      "dashboards, capacity metrics, and unique-visitor analytics take 2% error gratefully; billing does not",
+      "\"unique counts \u00b12%, frequency estimates use a declared additive-error and confidence model\""
+    ]
+  },
+  {
+    "slug": "python-performance-profiling",
+    "corrections": 3,
+    "originalPhrases": [
+      "or Polars, whose lazy engine and parallelism have made it the modern default for heavy dataframe work",
+      "compile the *5%* the profiler named",
+      "where the GIL was never your problem anyway"
+    ]
+  },
+  {
+    "slug": "reliable-batch-jobs",
+    "corrections": 1,
+    "originalPhrases": [
+      "a \"successful\" run that processed 40% of normal volume is the completeness failure from data-quality practice"
+    ]
+  },
+  {
+    "slug": "typescript-strictness-enterprise",
+    "corrections": 2,
+    "originalPhrases": [
+      "every `response as User` is a runtime bug with a compile-time alibi",
+      "the one most estates haven't turned on because of the migration noise"
+    ]
+  },
+  {
+    "slug": "webassembly-server-side",
+    "corrections": 1,
+    "originalPhrases": [
+      "users write plugins in any compiling language (Rust, Go, C#, Python via various toolchains)"
+    ]
+  },
+  {
+    "slug": "os-memory-management",
+    "corrections": 10,
+    "originalPhrases": [
+      "Memory errors are among the most common causes of production incidents: out-of-memory kills, swap pressure causing latency spikes, memory leaks growing until the process crashes. Understanding how the OS manages memory turns these from mysterious failures into diagnosable, preventable problems.",
+      "Every process operates in virtual address space \u2014 a continuous range of addresses from 0 to some maximum, as if the process owned all of memory. In reality, physical RAM is shared across all processes and the hardware has far less of it than the total virtual address space suggests.",
+      "typically 4KB of contiguous memory",
+      "It cannot accidentally (or maliciously) access another process's memory.",
+      "**Minor page fault**: the page exists (in memory or already mapped) but the page table entry is not yet set up. The OS updates the page table and execution continues.",
+      "## Monitor page faults in real time\nvmstat 1",
+      "**Swap**: disk space used as an overflow for physical RAM. When RAM is full and the OS needs to allocate a page, it evicts a less-recently-used page to swap. If the evicted page is needed again, it must be read back from disk \u2014 the major page fault.",
+      "A memory leak occurs when a program allocates memory and retains a reference to it indefinitely, preventing garbage collection or explicit deallocation.",
+      "The selection is based on a heuristic score that weighs memory usage, process priority, and whether the process is a system critical process.",
+      "- [Linux manual: process resource statistics](https://man7.org/linux/man-pages/man5/proc_pid_stat.5.html)"
+    ]
+  },
+  {
+    "slug": "os-processes-and-concurrency",
+    "corrections": 9,
+    "originalPhrases": [
+      "When two threads modify the same data simultaneously without coordination, the result depends on which thread runs first. This is a race condition.",
+      "## The operation is actually three steps:\n## 1. Read count from memory into CPU register\n## 2. Add 1 to the register value\n## 3. Write the result back to memory",
+      "This bug is non-deterministic \u2014 it only manifests when threads are interleaved at exactly the wrong point. It may not reproduce in testing.",
+      "with lock:          # Only one thread at a time\n        count += 1      # Safe: no concurrent modification",
+      "A web server handling 1000 requests on 4 cores is concurrent and parallel: each core runs one request at a time, but all 1000 requests are in progress simultaneously (most are waiting on I/O).",
+      "**CPU-bound Python code**: threading does not improve throughput. Use `multiprocessing` (separate processes) instead.",
+      "**I/O-bound Python code**: threading works fine, because threads release the GIL while waiting on I/O.",
+      "**Java, Go, C#, Rust**: no GIL. Multiple threads execute truly in parallel. Thread safety must be managed explicitly.",
+      "Understanding these diagnostics is what separates engineers who describe a performance problem (\"the app is slow\") from engineers who can quantify it (\"the process has 200 threads, 40 of which are blocked waiting on a database lock, CPU idle is 85% \u2014 this is lock contention, not CPU starvation\")."
+    ]
+  },
+  {
+    "slug": "prog-lang-how-computers-think",
+    "corrections": 7,
+    "originalPhrases": [
+      "Each instruction is simple: move this value to that register, add these two numbers, compare this value to zero and jump to a different address if the result is true. That is essentially the complete vocabulary.",
+      "**Heap memory** is larger and longer-lived but requires explicit management. Data that needs to outlive the function that created it lives on the heap. Someone \u2014 either you, the runtime, or a garbage collector \u2014 must eventually release it.",
+      "**Rust**: the compiler enforces memory safety rules at compile time, with no garbage collector. Ownership and borrowing require a different mental model; runtime performance still depends on the program.",
+      "The compiler catches type mismatches before the program runs.",
+      "**Compiled languages** (C, C++, Go, Rust) are translated to machine code before running. The compilation step takes time; the resulting program runs fast.",
+      "**JIT-compiled languages** (Java via the JVM, JavaScript via V8) start interpreted and selectively compile hot code paths to machine code during execution. A middle path that performs well for sustained workloads.",
+      "Knowing this model means you understand *why* Python is slower than Go at CPU-intensive tasks (interpreter overhead, dynamic typing), why runtime configuration and object representations can affect memory use, and why a segmentation fault in C means you accessed memory you should not have."
+    ]
+  },
+  {
+    "slug": "os-what-it-actually-does",
+    "corrections": 1,
+    "originalPhrases": [
+      "enforces that one process cannot read or write another process's memory"
+    ]
+  },
+  {
+    "slug": "event-driven-architecture",
+    "corrections": 2,
+    "originalPhrases": [
+      "the consistency challenges that arise when you cannot lock across services",
+      "**Exactly-once delivery is harder than it looks**: most message brokers guarantee at-least-once delivery. Idempotent consumers (safe to process the same event twice) are a design requirement, not an optional consideration. Without idempotency, duplicate events produce duplicate effects \u2014 double-charges, double-shipments, double-notifications."
+    ]
+  },
+  {
+    "slug": "why-astro-framework",
+    "corrections": 7,
+    "originalPhrases": [
+      "individual components opt into hydration explicitly, and only those components ship JavaScript to the browser. Everything else stays static.",
+      "The component renders at build time if it's an Astro component, or hydrates on the client if you mark it with a `client:` directive.",
+      "## What Took Adjustment",
+      "In React, state flows down and everything re-renders when it changes.",
+      "requires either a shared store (nanostores is the community-recommended choice) or rethinking whether you actually need that coupling.",
+      "On a more application-like site \u2014 dashboards, authenticated interfaces, complex form flows \u2014 the friction would be higher and Next.js would likely be the right call.",
+      "The framing I find useful: Astro is optimized for the site that has pages. Next.js is optimized for the application that has routes. Both can do the other's job; neither does it as cleanly."
+    ]
+  },
+  {
+    "slug": "quick-take-multipass-local-dev",
+    "corrections": 1,
+    "originalPhrases": [
+      "The performance characteristics and availability guarantees are completely different."
+    ]
+  },
+  {
+    "slug": "quick-take-microservice-that-should-be-module",
+    "corrections": 1,
+    "originalPhrases": [
+      "Each module has a defined API boundary \u2014 other modules cannot reach into its internals. They call its public functions."
+    ]
+  },
+  {
+    "slug": "quick-take-documentation-for-the-writer",
+    "corrections": 1,
+    "originalPhrases": [
+      "Once you understand how the authentication middleware works, it is almost impossible to write documentation that genuinely helps someone who does not."
+    ]
+  },
+  {
+    "slug": "spring-boot-microservices-patterns",
+    "corrections": 8,
+    "originalPhrases": [
+      "New microservices teams routinely underestimate how often dependent services fail or respond slowly. A direct synchronous call to another service that works in development will, in production:",
+      "The foundational pattern: **never call a downstream service without resilience wrapping.**",
+      "In a distributed system, you cannot guarantee exactly-once delivery. Network failures, retries, and queue redeliveries mean your service will receive the same message more than once. If your business logic isn't idempotent, duplicates cause data corruption.",
+      "The minimum viable setup: every log line includes `traceId`, `spanId`, `service`, and `environment`.",
+      "The database-per-service pattern is correct in theory and routinely botched in practice. Botched versions:\n- Each service technically has its own schema, but they're all in the same database cluster with shared connection pools",
+      "The operational cost of this is real. The trade-off is only worth making if you're actually operating the services independently. If your services all deploy together and scale together, you have a distributed monolith, not microservices \u2014 and the added complexity without the benefit.",
+      "A service that starts successfully but whose database connection pool is exhausted should not receive traffic.",
+      "**Liveness probes** should detect states the application cannot recover from: deadlocks, memory exhaustion, persistent failures requiring a restart."
+    ]
+  },
+  {
+    "slug": "os-linux-networking",
+    "corrections": 4,
+    "originalPhrases": [
+      "`TIME_WAIT`: connection closed, waiting to ensure the other side received the FIN (normal, but excessive TIME_WAIT indicates high connection turnover)",
+      "`CLOSE_WAIT`: the remote side closed the connection but your application has not called `close()` yet (often a bug \u2014 leaked socket)",
+      "ss -tupna state time-wait | wc -l   # how many TIME_WAIT",
+      "ss -tupna state close-wait | wc -l  # how many CLOSE_WAIT (should be near zero)"
+    ]
+  },
+  {
+    "slug": "os-strace-tracing",
+    "corrections": 5,
+    "originalPhrases": [
+      "Every file it opens, every network connection it makes, every signal it receives \u2014 all visible.",
+      "## Trace syscalls for a PID (low overhead)\nsudo perf trace -p 1234 -- sleep 10",
+      "sudo perf trace -e openat,read,write -p 1234 -- sleep 10",
+      "sudo perf trace -s -p 1234 -- sleep 30",
+      "## System-wide trace for 10 seconds\nsudo perf trace -a -- sleep 10 2>&1 | head -100"
+    ]
+  },
+  {
+    "slug": "prog-lang-data-structures",
+    "corrections": 2,
+    "originalPhrases": [
+      "A tree is a set of nodes where each node has zero or more children and exactly one parent (except the root, which has none).",
+      "If you find yourself scanning an array looking for a matching field, a hash map is almost certainly the right structure."
+    ]
+  },
+  {
+    "slug": "quick-take-api-that-was-temporary",
+    "corrections": 2,
+    "originalPhrases": [
+      "Why temporary API integrations never get replaced, what makes them so sticky, and the four conditions that turn a weekend workaround into a five-year maintenance burden.",
+      "A common failure pattern looks like this."
+    ]
+  },
+  {
+    "slug": "os-shell-scripting",
+    "corrections": 8,
+    "originalPhrases": [
+      "file_count=$(find /var/log -name \"*.log\" | wc -l)",
+      "    sleep 5\n    attempts=$((attempts + 1))\ndone",
+      "    local timeout=\"${2:-30}\"    # second argument with default\n",
+      "    local delay=\"$2\"\n    shift 2",
+      "        log_info \"Attempt $i/$attempts failed. Retrying in ${delay}s...\"\n        sleep \"$delay\"",
+      "retry 3 5 curl -sf \"https://api.service.internal/health\"",
+      "    local endpoint=\"$1\"\n    for (( i=1; i<=30; i++ )); do",
+      "        sleep 5\n    done\n    die \"Health check timed out: $endpoint\""
+    ]
+  },
+  {
+    "slug": "quick-take-api-versioning-regrets",
+    "corrections": 1,
+    "originalPhrases": [
+      "If you never remove old versions, you support them forever, and the complexity of maintaining four active API versions eventually becomes more expensive than the breaking change would have been."
+    ]
+  },
+  {
+    "slug": "documentation-for-the-writer",
+    "corrections": 1,
+    "originalPhrases": [
+      "Every pause is a gap the author assumed was obvious. That feedback is worth more than any amount of self-review."
+    ]
+  },
+  {
+    "slug": "accessibility-engineering-practice",
+    "corrections": 1,
+    "originalPhrases": [
+      "the palette that cannot produce a failing pairing beats the linter that catches one"
+    ]
+  }
+]

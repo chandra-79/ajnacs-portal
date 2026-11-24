@@ -1,14 +1,14 @@
 ---
-title: "Variables, Types, Control Flow, Functions: The Four Concepts That Run Every Program"
-description: "Every programming language is built from the same four building blocks. Master these in one language and you have transferred 80 percent of what you need to learn the next one."
-date: 2028-02-11
+title: "Variables, Types, Control Flow and Functions: A Practical Introduction"
+description: "Learn four useful programming concepts through explicit inputs, boundary cases, and a small cost calculator."
+date: 2028-05-22
 tags: ["Programming", "Fundamentals"]
 series: "Getting Started with Programming Languages"
 seriesOrder: 3
 format: article
 ---
 
-Every program ever written — from the first UNIX shell to a large language model training run — is built from four concepts: variables, types, control flow, and functions. The syntax differs by language. The concepts do not. This lesson explains each using Python examples, with notes on how they appear differently in statically typed languages.
+Variables, types, control flow, and functions are four useful concepts for learning many mainstream languages. Their exact semantics differ, and some programming paradigms express computation differently. This lesson explains each using Python examples, with notes on how they appear differently in statically typed languages.
 
 ## Variables: Named Storage
 
@@ -43,7 +43,7 @@ Type errors occur when you apply an operation to a value whose type does not sup
 result = "25" + 5    # TypeError: can only concatenate str to str
 ```
 
-In Python this error appears at runtime — when the line executes. In TypeScript or Java, the same error is caught at compile time, before the program runs. This is the central practical difference between dynamic and static typing.
+In Python this error appears at runtime — when the line executes. Static type checkers can reject many incompatible operations before execution. However, this particular string-plus-number expression performs concatenation in Java and JavaScript/TypeScript, illustrating why language-specific semantics matter.
 
 **Custom types**: Every language lets you define your own types — classes in Python and Java, structs in Go and Rust. Complex programs are mostly built from custom types that model the problem domain.
 
@@ -97,9 +97,9 @@ cost = calculate_monthly_cost(daily_rate=12.50, days=31, discount=0.15)
 
 **Parameters and arguments**: the variable names in the function definition are parameters. The values you pass when calling the function are arguments.
 
-**Return values**: a function that does not explicitly return a value returns `None` in Python, `null` in Java, `nil` in Go. Be explicit about what your functions return.
+**Return values**: a Python function that reaches its end returns `None`. Java methods declared `void` return no value, and Go functions may have no result parameters; neither implicitly returns a null-like value in that case. Be explicit about what your functions return.
 
-**Scope**: variables defined inside a function are local to that function. They do not exist outside it. This is fundamental to managing complexity — functions are isolated units.
+**Scope**: variables defined inside a function are local to that function. The local names are not directly available outside their scope, although referenced objects can outlive the call and functions can still affect shared state.
 
 ## Putting It Together: A Real Example
 
@@ -129,6 +129,45 @@ bill = calculate_cloud_bill(services)
 print(f"Total: ${bill['total']:.2f}")
 ```
 
-This small program uses all four concepts: variables (`total`, `breakdown`, `cost`), types (float, list, dict, str), control flow (a for loop), and a function (`calculate_cloud_bill`). Everything else a program does is a combination of these.
+This small program uses all four concepts: variables (`total`, `breakdown`, `cost`), types (float, list, dict, str), control flow (a for loop), and a function (`calculate_cloud_bill`). These concepts provide a foundation for understanding the example; real systems also require models for effects, concurrency, and external state.
 
 The next lesson covers data structures — the containers that organise values at scale — and why choosing the right one determines whether your program runs in milliseconds or minutes.
+
+## Make the calculator's contract explicit
+
+The earlier cost calculator is a learning example, not a billing system. Its inputs need rules: are days whole numbers, may a service appear twice, what currency applies, and what should happen to a negative amount? Those choices determine correct behaviour more directly than the programming language does.
+
+Using the fictional rates already shown, compute costs are 45.00 multiplied by 31, or 1,395.00 currency units. Storage is 8.50 multiplied by 31, or 263.50. Egress is 3.20 multiplied by 31, or 99.20. The total is 1,757.70. The chart displays those three components; it is not a provider price comparison or a customer bill. Days and rates are chosen teaching inputs.
+
+Notice the difference between an input and a derived value. `days` and `daily_cost` arrive in the record. `cost` is computed for that record. `total` accumulates across records. `breakdown` associates a name with an amount. Reading a loop as a sequence of state changes is a useful way to check whether it handles every record exactly once.
+
+## Trace the loop by hand
+
+Create a worksheet with one row per iteration and columns for service name, prior total, current cost, and new total. The first row starts at zero and ends at 1,395.00. The second starts at 1,395.00 and ends at 1,658.50. The third ends at 1,757.70. If a program produces a different result, compare the earliest differing row instead of staring at the final total.
+
+Now add a second record named `compute`. The original dictionary assignment overwrites the earlier entry in `breakdown`, while `total` still includes both records. The output no longer has the implied property that the breakdown sums to the total. This is a logical bug even though every operation is permitted by the language's type rules.
+
+Decide which contract you want. Reject duplicate service names if each service must appear once, or add each cost into the existing breakdown entry if multiple records are legitimate. Test the chosen behaviour explicitly. Avoid silently changing the contract just to make a test pass; the caller needs to know what duplicate input means.
+
+## Use precise representations when the domain requires them
+
+Binary floating-point cannot represent every decimal fraction exactly. For a teaching display rounded to two decimals, the simple example is useful. For a financial computation, define the currency, precision, rounding mode, and point at which rounding occurs. Python's decimal type or integer minor units can support an explicit policy, but neither chooses that policy for you.
+
+For example, if three independently billable line items each calculate to 0.005 currency units, rounding each item can differ from rounding their sum. The correct answer depends on the agreed billing rule. The programming lesson is to make domain assumptions visible rather than assume that changing a numeric type settles the question.
+
+Type annotations help communicate the expected shapes but do not validate a Python dictionary at runtime. An external JSON payload might contain the string `"31"`, a missing key, or a boolean where an integer was expected. Validate at the input boundary and return a clear error before accumulating a partial result. The core calculation can then work with a smaller set of trusted assumptions.
+
+## A practical progression of exercises
+
+First, write assertions for an empty input and one valid service. Second, test the three-record example against the hand-calculated total. Third, introduce duplicate names and implement the chosen rule. Fourth, reject a missing rate and a negative day count. Fifth, separate input parsing from arithmetic so each can be tested independently.
+
+For each exercise, state the expected result before modifying the function. Keep output formatting outside the calculation; a function returning structured values is easier to test than one that only prints a sentence. Give errors meaningful names or messages so a caller can distinguish invalid input from an unexpected internal failure.
+
+Finally, explain the function aloud without relying on syntax: it accepts validated records, computes each cost, combines costs under a declared duplicate rule, and returns totals in a stated currency. If that explanation is unclear, more language features will not fix it. Variables, types, control flow, and functions become useful when they express a precise contract that another person can check.
+
+## Further reading and source boundaries
+
+- [Python tutorial: control flow](https://docs.python.org/3.12/tutorial/controlflow.html)
+- [Python tutorial: data structures](https://docs.python.org/3.12/tutorial/datastructures.html)
+- [Rust book: ownership](https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html)
+- [Python: decimal arithmetic](https://docs.python.org/3.12/library/decimal.html)
