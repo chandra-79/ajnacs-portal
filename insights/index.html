@@ -33,7 +33,7 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=e62cd288">
+<link rel="stylesheet" href="/assets/css/site.css?v=c555195e">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
 <link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
@@ -96,13 +96,14 @@ d.setAttribute('data-theme',t);
     <div class="search-field">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
       <label class="sr-only" for="postSearch">Search articles</label>
-      <input type="search" id="postSearch" placeholder="Search the archive…" autocomplete="off">
+      <input type="search" id="postSearch" placeholder="Search the archive…" autocomplete="off" aria-controls="postList">
     </div>
     <label class="sr-only" for="postTopic">Filter by topic</label>
-    <select id="postTopic" class="topic-select" hidden>
+    <select id="postTopic" class="topic-select" aria-controls="postList" hidden>
       <option value="">All topics</option>
       <option value="Cloud Architecture">Cloud Architecture (38)</option><option value="Architecture">Architecture (21)</option><option value="Fundamentals">Fundamentals (19)</option><option value="DevSecOps">DevSecOps (18)</option><option value="Programming">Programming (15)</option><option value="Engineering Leadership">Engineering Leadership (13)</option><option value="AI &amp; MLOps">AI &amp; MLOps (13)</option><option value="Enterprise AI">Enterprise AI (11)</option><option value="FinOps">FinOps (11)</option><option value="Performance">Performance (11)</option><option value="Data Engineering">Data Engineering (8)</option><option value="Infrastructure">Infrastructure (7)</option><option value="Reliability">Reliability (6)</option><option value="Containers">Containers (5)</option><option value="Observability">Observability (5)</option><option value="Engineering Practice">Engineering Practice (4)</option><option value="Distributed Systems">Distributed Systems (4)</option><option value="Platform Engineering">Platform Engineering (3)</option><option value="Security">Security (1)</option><option value="Async">Async (1)</option><option value="CDN &amp; Caching">CDN &amp; Caching (2)</option><option value="CI/CD">CI/CD (1)</option><option value="Capacity Planning">Capacity Planning (2)</option><option value="Certifications">Certifications (1)</option><option value="Concurrency">Concurrency (1)</option><option value="Cost Optimisation">Cost Optimisation (5)</option><option value="Deployment">Deployment (1)</option><option value="Developer Experience">Developer Experience (1)</option><option value="Developer Tools">Developer Tools (1)</option><option value="Disaster Recovery">Disaster Recovery (1)</option><option value="Emerging Technology">Emerging Technology (2)</option><option value="GraalVM">GraalVM (1)</option><option value="HPC">HPC (4)</option><option value="JVM">JVM (3)</option><option value="Java">Java (8)</option><option value="Legacy Modernization">Legacy Modernization (1)</option><option value="Messaging">Messaging (1)</option><option value="Middleware">Middleware (3)</option><option value="Modernization">Modernization (1)</option><option value="OCI">OCI (1)</option><option value="Oracle">Oracle (1)</option><option value="Python">Python (3)</option><option value="Quantum Computing">Quantum Computing (1)</option><option value="Redis">Redis (1)</option><option value="Supply Chain Security">Supply Chain Security (1)</option><option value="Systems">Systems (6)</option><option value="Technical Debt">Technical Debt (2)</option><option value="WebLogic">WebLogic (3)</option>
     </select>
+    <button type="button" class="btn btn-ghost btn-sm" id="postClear" hidden>Clear filters</button>
     <p class="small muted" id="postCount" role="status" aria-live="polite"></p>
   </div>
 
@@ -896,7 +897,7 @@ d.setAttribute('data-theme',t);
 </article>
   </div>
   <p id="postEmpty" hidden class="center muted" style="padding:3rem 0">No articles match that. Try another topic or search term.</p>
-  <div class="center" style="margin-top:2.5rem"><button class="btn btn-ghost" id="postMore" type="button" hidden>Show more</button></div>
+  <div class="center" style="margin-top:2.5rem"><button class="btn btn-ghost" id="postMore" type="button" aria-controls="postList" hidden>Show more</button></div>
   </div>
   <aside class="writing-promos" aria-label="Promotions" data-ad-slot="insights-rail">
   <p class="promo-label">From our projects</p>
@@ -969,7 +970,7 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=e62cd288" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=e62cd288"></script>
+<script src="/assets/js/site.js?v=c555195e" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=c555195e"></script>
 </body>
 </html>

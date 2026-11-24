@@ -33,7 +33,7 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=e62cd288">
+<link rel="stylesheet" href="/assets/css/site.css?v=c555195e">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
 <link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
@@ -84,6 +84,14 @@ d.setAttribute('data-theme',t);
       <h1 class="h1">Reduce AI cost per accepted answer while keeping the quality gate</h1>
       <p class="lede field-intro">Route ordinary queries to a smaller model with a reviewable escalation path and a per-accepted-answer cost ledger.</p>
       <p class="case-notice">Hypothetical engagement. The organisation, delivery events, and measurements are simulated.</p>
+      <div class="copy-control">
+    <button class="btn btn-ghost btn-sm" id="copyLink" type="button">Copy link</button>
+    <span class="sr-only" id="copyStatus" role="status"></span>
+    <label class="copy-fallback" id="copyFallback" hidden>Page link
+      <input id="copyValue" type="text" readonly>
+      <span>Select and copy this link.</span>
+    </label>
+  </div>
     </header>
     <div class="article-hero" data-topic="Enterprise AI"><img src="/assets/cases/model-routing-unit-cost.png?v=78f8bfd79aa2" alt="Alternative configurations are compared on measures of the work they produce." width="960" height="540" fetchpriority="high" decoding="async"></div>
     <div class="reader-aside"><nav class="toc" aria-label="On this page">
@@ -159,6 +167,40 @@ d.setAttribute('data-theme',t);
   </div>
 </aside>
   </div>
+<div class="read-bar" aria-hidden="true"><span id="readBar"></span></div>
+
+<div class="reader-tools">
+  <button class="icon-btn" id="readerBtn" type="button" aria-expanded="false" aria-controls="readerPanel" title="Reading settings" aria-label="Reading settings"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2.2"/><circle cx="10" cy="17" r="2.2"/></svg></button>
+  <button class="icon-btn" id="focusBtn" type="button" aria-pressed="false" title="Focus mode" aria-label="Enter focus mode"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></button>
+</div>
+<div class="reader-panel" id="readerPanel" role="dialog" aria-label="Reading settings" hidden>
+  <fieldset><legend>Text size</legend>
+    <div class="seg" data-pref="rsize">
+      <button type="button" data-val="s" aria-pressed="false"><span class="sample s">Aa</span>Small</button><button type="button" data-val="m" aria-pressed="false"><span class="sample ">Aa</span>Default</button><button type="button" data-val="l" aria-pressed="false"><span class="sample l">Aa</span>Large</button><button type="button" data-val="xl" aria-pressed="false"><span class="sample l">Aa</span>Largest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Ground</legend>
+    <div class="seg" data-pref="theme">
+      <button type="button" data-val="light" aria-pressed="false"><span class="swatch light"></span>Light</button><button type="button" data-val="sepia" aria-pressed="false"><span class="swatch sepia"></span>Sepia</button><button type="button" data-val="dark" aria-pressed="false"><span class="swatch dark"></span>Dark</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Column width</legend>
+    <div class="seg" data-pref="rwidth">
+      <button type="button" data-val="s" aria-pressed="false">Narrow</button><button type="button" data-val="m" aria-pressed="false">Default</button><button type="button" data-val="l" aria-pressed="false">Wide</button><button type="button" data-val="xl" aria-pressed="false">Widest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Typeface</legend>
+    <div class="seg" data-pref="rface">
+      <button type="button" data-val="sans" aria-pressed="false"><span class="sample">Aa</span>Sans</button>
+      <button type="button" data-val="serif" aria-pressed="false"><span class="sample serif">Aa</span>Serif</button>
+    </div>
+  </fieldset>
+  <button class="reader-close btn btn-ghost btn-sm" id="readerClose" type="button">Close settings</button>
+  <button class="reader-reset" id="readerReset" type="button">Reset reading layout</button>
+  <p class="reader-note">Reading preferences are saved in this browser.</p>
+</div>
+<button class="focus-exit" id="focusExit" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h6V3M21 9h-6V3M3 15h6v6M21 15h-6v6"/></svg> Exit focus</button>
+
 </article>
 </main>
 
@@ -215,7 +257,7 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=e62cd288" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=e62cd288"></script>
+<script src="/assets/js/site.js?v=c555195e" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=c555195e"></script>
 </body>
 </html>
