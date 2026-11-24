@@ -92,6 +92,7 @@ console.log("\nField guides");
 console.log("\nCase studies and article discovery");
 {
   let count = 0;
+  const caseImages = new Set();
   for (const { id } of caseCategories) {
     const folder = `case-studies/${id}`;
     const routes = (await readdir(folder, { withFileTypes: true })).filter(entry => entry.isDirectory());
@@ -101,6 +102,14 @@ console.log("\nCase studies and article discovery");
       const path = `${folder}/${route.name}`;
       const html = await readFile(`${path}/index.html`, "utf8");
       const csv = await readFile(`${path}.csv`, "utf8");
+      const image = await readFile(`assets/cases/${route.name}.png`);
+      const hash = createHash("sha256").update(image).digest("hex");
+      if (caseImages.has(hash) || image.readUInt32BE(16) !== 960 || image.readUInt32BE(20) !== 540 ||
+          !html.includes(`<img src="/assets/cases/${route.name}.png?v=`) ||
+          !categoryHtml.includes(`<img src="/assets/cases/${route.name}.png?v=`)) {
+        fail(`case art missing, wrong size or duplicated: ${path}`);
+      }
+      caseImages.add(hash);
       if (!html.includes("Hypothetical engagement") || !html.includes("Simulated figures") ||
           !html.includes('class="delivery-flow"') || !csv.includes('"synthetic"') ||
           !categoryHtml.includes(`href="/${path}/"`)) fail(`case study or supporting evidence missing: ${path}`);
@@ -122,7 +131,7 @@ console.log("\nCase studies and article discovery");
     if (article.section === "insights" && !html.includes('class="refs-title"')) fail(`References missing: ${article.slug}`);
     if (article.tags.some(tag => !html.includes(`href="${topicPath(tag, tags)}"`))) fail(`Topic links missing: ${article.slug}`);
   }
-  if (!failures) ok(`${count} case studies, ${revised.length} archive revisions and ${tags.size} topic paths verified`);
+  if (!failures) ok(`${count} case studies, ${revised.length} archive revisions, ${caseImages.size} case illustrations and ${tags.size} topic paths verified`);
 }
 
 console.log("\nQuality");

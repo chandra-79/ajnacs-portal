@@ -36,7 +36,7 @@ export async function localInferenceNote() {
     <li><a href="/field-guides/data/run-local-inference-lab.py" download>Download the Python runner</a></li>
   </ul>
   <p>Tokenisers and weight formats differ. The run measures decoding on one short prompt with one model loaded at a time. It does not measure answer quality, first-token latency, memory, GPU acceleration or multi-user capacity.</p>
-  <pre><code>${esc("python3 run-local-inference-lab.py /path/to/gemma.gguf /path/to/qwen.gguf results.csv")}</code></pre>
+  <div class="prose"><pre><code>${esc("python3 run-local-inference-lab.py /path/to/gemma.gguf /path/to/qwen.gguf results.csv")}</code></pre></div>
 </section>`,
   };
 }
