@@ -32,7 +32,7 @@ These are legitimate benefits. They come with real costs.
 
 ## The costs
 
-**Reliability compounds downward.** A three-agent pipeline where each agent has 90% reliability has roughly 73% end-to-end reliability (0.9 × 0.9 × 0.9). Each additional agent in a chain reduces overall reliability. For a pipeline that needs to be reliable enough for production use, every agent is a risk factor.
+**Reliability compounds downward.** If all three stages must pass and each has a 90% conditional probability of passing after every earlier stage passed, the overall pass probability is 72.9%. Separate marginal pass rates are insufficient if failures are correlated. Fallbacks or review also change the outcome. Compare paired task results, latency, cost and handoff failures.
 
 **Failure modes are harder to debug.** When a single LLM call fails or produces a bad output, the failure is localized and inspectable. When a multi-agent system produces a wrong answer, tracing why requires understanding which agent's output was wrong, whether it was a tool call, a hallucination, a bad decision in the orchestration logic, or a context window issue in the coordinator. This is significantly harder to debug than a monolithic pipeline.
 

@@ -28,13 +28,13 @@ Three types:
 
 ## How Reserved Instances work
 
-Reserved Instances reserve capacity for a specific instance type in a specific region (or Availability Zone). Standard RIs offer up to 72% off on-demand; Convertible RIs offer up to 66% with the ability to change instance type within the RI term.
+Regional EC2 Reserved Instances provide a billing discount without reserving capacity. Zonal EC2 Reserved Instances reserve capacity in a specific Availability Zone. Standard and Convertible terms differ: inspect matching requirements, exchanges and the effective rate for your actual usage.
 
 **Where RIs still have an advantage**:
 
-- **Capacity reservation**: Standard RIs in a specific AZ guarantee that capacity. Savings Plans and Compute RIs do not reserve capacity — they only discount it. For workloads that need guaranteed capacity on specific instance types (large ML training instances, specialized compute), Standard RIs with capacity reservation are the only option that guarantees you will be able to launch when needed.
+- **Capacity reservation**: Zonal Reserved Instances and [EC2 On-Demand Capacity Reservations](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-capacity-reservations.html) are capacity mechanisms subject to their terms. A Savings Plan applies a billing discount. A matching Capacity Reservation can be considered separately.
 
-- **RDS, Redshift, ElastiCache, OpenSearch**: Savings Plans do not cover these services. Reserved Instances for managed database services are the only commitment discount available.
+- **RDS, Redshift, ElastiCache, OpenSearch**: Savings Plans do not cover these services. Review each managed service’s current purchase options and eligibility separately.
 
 - **Specific instance family + region commitment with maximum discount**: EC2 Instance Savings Plans and Standard RIs offer similar discounts for committed usage in a specific family/region, but RIs are slightly more flexible in instance size flexibility within the family.
 

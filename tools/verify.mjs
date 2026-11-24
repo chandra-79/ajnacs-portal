@@ -170,7 +170,7 @@ for (const [file, placement] of promotionPlacements) {
   const article = placement === "article-rail";
   if (slots.length !== 1 || slot[1] !== placement ||
       !slot[2].includes('href="https://www.techknowen.com/"') ||
-      !slot[2].includes("Coming soon") || slot[2].match(/<a\b/g)?.length !== 1 ||
+      !slot[2].includes("Coming soon") || !slot[2].includes('href="/projects/ziggle/"') || slot[2].match(/<a\b/g)?.length !== 2 ||
       (article && (!html.includes('class="reading-layout"') || slot.index < html.indexOf('class="article-copy"')))) {
     fail(`${file}: invalid publication layout or house promotion`);
     promotionErrors++;

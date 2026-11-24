@@ -20,13 +20,13 @@ Large language models are the most consequential technology development in AI si
 
 Every major language model — GPT, Claude, Llama, Gemini, Mistral — is built on the transformer architecture, introduced in the 2017 paper "Attention Is All You Need" by Vaswani et al.
 
-The transformer's key innovation: the **attention mechanism**, which allows every token (word or subword) in the input to directly attend to every other token, regardless of distance. Earlier architectures (RNNs, LSTMs) processed sequences left-to-right, making it difficult to connect information that was far apart in the sequence. Attention removes the distance constraint.
+The transformer's key innovation: the **attention mechanism**, which mixes information from allowed positions. In dense causal attention a position can attend to itself and earlier positions. Local or sparse attention uses narrower patterns. Earlier architectures (RNNs, LSTMs) processed sequences left-to-right, making it difficult to connect information that was far apart in the sequence. Attention removes the distance constraint.
 
-**How attention works conceptually**: for each token, attention computes a weighted sum of all other tokens in the sequence, where the weights reflect how relevant each token is to understanding the current one. "The bank by the river was steep" — when computing the representation of "bank," attention assigns high weight to "river" (suggesting geographic bank, not financial bank) and lower weight to "steep."
+**How attention works conceptually**: for each token, attention computes a weighted combination of value vectors from the permitted positions, where the weights reflect how relevant each token is to understanding the current one. "The bank by the river was steep" — when computing the representation of "bank," attention assigns high weight to "river" (suggesting geographic bank, not financial bank) and lower weight to "steep."
 
 The transformer has two main components:
 - **Encoder**: reads the input and builds contextualised representations (used in BERT and similar models for classification, named entity recognition, etc.)
-- **Decoder**: generates output tokens one at a time, attending to both the encoder output and its own previous output (used in GPT-style models for text generation)
+- **Decoder**: generates output tokens one at a time, using earlier output positions and, in an encoder–decoder model, encoder output. A decoder-only model uses a single causal stream
 
 GPT, Claude, and most modern LLMs are decoder-only transformers.
 
@@ -38,7 +38,7 @@ Given "The capital of France is", the model should predict "Paris" with high pro
 
 The result is a model with broad world knowledge and language capability encoded in its billions of parameters.
 
-**Scale matters dramatically**: GPT-2 (2019, 1.5B parameters) could write coherent paragraphs. GPT-3 (2020, 175B parameters) could follow instructions, translate languages, and write working code. GPT-4 and Claude 3 (2023–2024, estimated hundreds of billions of parameters) can reason through complex problems, write nuanced essays, and pass professional exams.
+**Scale matters dramatically**: GPT-2 (2019, 1.5B parameters) could write coherent paragraphs. GPT-3 (2020, 175B parameters) could follow instructions, translate languages, and write working code. Later proprietary models improved on selected evaluations. Compare published tasks, controls, and contamination checks. The GPT-4 report does not publish its parameter count.
 
 ## Fine-Tuning and RLHF: From Predictor to Assistant
 
@@ -58,9 +58,9 @@ Understanding limitations is more important than understanding capabilities for 
 
 **LLMs are not search engines.** They do not retrieve information from a database; they synthesise text based on patterns learned during training. Two queries about the same fact may produce different answers.
 
-**LLMs have context window limits.** They can only attend to a fixed number of tokens at once (context window). GPT-4 supports 128K tokens; Claude supports up to 200K. Beyond the context window, the model cannot access information.
+**LLMs have context window limits.** They can only attend to a fixed number of tokens at once (context window). Check context and output limits for the exact deployed model and API. Beyond the context window, the model cannot access information.
 
-**LLMs do not reason in the way humans do.** Chain-of-thought prompting improves performance on reasoning tasks, but the model is generating text that looks like reasoning, not executing a reasoning algorithm. It can fail at simple logical tasks that require consistent rule application.
+**LLMs do not reason in the way humans do.** Explicit intermediate steps can help on some tasks, while generated explanations can misrepresent why an answer was produced. Verify the answer and any claimed intermediate results. It can fail at simple logical tasks that require consistent rule application.
 
 **LLMs do not have persistent memory.** Each conversation starts fresh. The model does not remember previous conversations unless that history is explicitly included in the context window.
 

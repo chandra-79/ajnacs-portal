@@ -25,7 +25,7 @@ ollama pull llama3.2
 ollama run llama3.2
 ```
 
-You're talking to a model in 60 seconds. The Ollama API exposes `/api/chat` and `/api/generate` endpoints compatible enough with OpenAI's spec that tools like Continue (VS Code extension for AI coding assistance) connect without modification.
+The native Ollama API exposes `/api/chat` and `/api/generate`. Tools expecting an OpenAI-style API can use the supported [compatibility endpoints](https://docs.ollama.com/api/openai-compatibility) under `/v1/` and should verify the operations they need.
 
 **LM Studio** is the right choice if you want a GUI and want to experiment with models from Hugging Face without writing anything. It handles quantised model downloads (GGUF format), has a built-in chat interface, and exposes a local API server. For non-technical stakeholders who want to evaluate local models, LM Studio lowers the barrier considerably.
 
@@ -37,17 +37,17 @@ For production-style deployments where you need inference server semantics — b
 
 The honest answer: less than the internet will tell you, but more than you might have.
 
-Apple Silicon is the standout story here. The unified memory architecture means the M-series chips can use all installed RAM as GPU memory, which allows running larger models than any similarly-priced discrete GPU setup. A MacBook Pro M3 Max with 96 GB RAM can run a 70B parameter model at 4-bit quantisation at usable speeds — 15–25 tokens per second, which is slower than a hosted API but fast enough for interactive use.
+Apple Silicon shares memory across the CPU and GPU. Model weights compete for that memory with context cache, runtime buffers and other processes. Measure the expected context, prompt processing speed, time to first token and decode speed before sizing a machine.
 
-On x86 hardware without a GPU, expect 3–8 tokens per second for 7B models and slower still for larger ones. This is workable for batch tasks (summarisation, classification over documents) but frustrating for interactive conversation. If you're serious about x86 CPU inference, 64 GB RAM minimum and a recent-generation processor with AVX-512 support materially improves throughput.
+CPU-only inference can be useful for batch or lower-volume workloads. Benchmark the exact model and quantisation against your response-time target. SIMD instruction support, memory bandwidth, thread count and runtime all affect the result.
 
-GPU acceleration via CUDA or ROCm brings the experience much closer to hosted API response times. An NVIDIA RTX 4090 with 24 GB VRAM handles 13B parameter models at 4-bit quantisation at 80–100 tokens per second — essentially indistinguishable from a hosted API in terms of latency.
+GPU acceleration can change throughput and concurrency. Size memory for weights and the KV cache together, and verify the deployed runtime’s support for your hardware and operators.
 
 ## The Models Worth Running Locally
 
 Not every model is worth the weight. My practical shortlist as of mid-2026:
 
-**Llama 3.2 (3B and 8B)** — excellent performance-to-size ratio, strong instruction following, genuinely useful for coding assistance and document tasks on modest hardware.
+**Llama 3.2 text models** are published at 1B and 3B. Llama 3.1 includes an 8B model. Compare the exact weights, context and license for the intended use.
 
 **Mistral 7B and Mistral Nemo** — fast, capable, and surprisingly good at structured output tasks. The Nemo variant has a 128K context window, which changes what you can do with long documents locally.
 
@@ -63,9 +63,9 @@ The privacy argument is obvious — data that doesn't leave your network can't b
 
 **Air-gapped environments.** Classified or sensitive networks can't reach commercial AI APIs. Local inference is not optional — it's the only path. The same applies to operational technology networks in critical infrastructure.
 
-**Latency-sensitive agentic workflows.** When you're running multi-step agentic processes — code review, document analysis pipelines, evaluation loops — API call latency compounds. Local inference at 50+ tokens per second, even for a smaller model, can deliver end-to-end pipeline performance that beats a larger hosted model with network overhead.
+**Multi-step workflows.** Time the whole run, including prompt processing, generation and system calls. A local runtime avoids the trip to the inference provider, while model speed, capacity and workflow quality still need testing.
 
-**Cost at scale.** The break-even calculation depends on usage patterns, but organizations running more than 10 million tokens per day against commercial APIs are typically at a scale where dedicated inference infrastructure pays for itself within 12–18 months.
+**Cost at scale.** Estimate effective cost per accepted result across expected load. Include idle capacity, the host, maintenance and the quality effects of quantisation. A break-even point requires measured utilisation and quality, and depends on the alternative service price.
 
 ## What Local LLMs Still Can't Do Well
 

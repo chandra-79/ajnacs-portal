@@ -67,11 +67,11 @@ The Container Network Interface (CNI) plugin is the network implementation for y
 
 **Flannel**: simple, widely used, only provides basic pod networking. Does not enforce Network Policies. Appropriate for development clusters where network segmentation is not required.
 
-**Calico**: full-featured network plugin with Network Policy enforcement plus extended network policies (GlobalNetworkPolicy covering cluster-wide rules, policies that can reference hostnames and CIDR ranges). Strong performance. The default for many production Kubernetes deployments.
+**Calico** enforces Kubernetes NetworkPolicy and offers extended policy resources. Domain-based egress allow rules are a feature of Calico Enterprise and Cloud. Review the [selected product’s policy documentation](https://docs.tigera.io/calico-enterprise/latest/network-policy/domain-based-policy) and test the intended traffic matrix.
 
 **Cilium**: eBPF-based networking. Instead of modifying iptables rules (as most CNIs do), Cilium uses eBPF programs loaded into the Linux kernel. Benefits: significantly better performance at scale, L7 policy (allow specific HTTP paths and methods, not just ports), identity-based policy (using Kubernetes labels, not just IPs). Increasingly common in large-scale production deployments.
 
-**AWS VPC CNI** (for EKS): assigns VPC IP addresses directly to pods. Pods are on the VPC network, not an overlay network. Network policies require Calico or Cilium to be installed alongside the VPC CNI for enforcement.
+**AWS VPC CNI** gives EKS Pods VPC addresses. Supported versions and configurations can enforce Kubernetes network policies natively. Confirm network policy is enabled for the nodes and workloads you are testing using the [EKS network policy guide](https://docs.aws.amazon.com/eks/latest/userguide/cni-network-policy.html).
 
 For new clusters, Cilium is the forward-looking choice. For existing clusters with Calico, the upgrade is possible but non-trivial. The important thing is that whatever CNI you choose, verify it enforces Network Policies — this is not universally supported and is non-obvious from documentation.
 

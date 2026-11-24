@@ -8,7 +8,9 @@ import { page } from "./shell.mjs";
 import { artwork, colorFor } from "./visuals.mjs";
 import { makeRenderer, tableOfContents, headingAnchors } from "./render.mjs";
 import { staticPages } from "./pages.mjs";
-import { referencesFor, referencesBlock } from "./references.mjs";
+import { caseLibrary } from "./case-library.mjs";
+import { examplesCsv, readWorkedExamples, workedExample } from "./worked-examples.mjs";
+import { readResearchLinks, referencesFor, referencesBlock } from "./references.mjs";
 import { publicationDate } from "./publication.mjs";
 import { buildArticleImages } from "./article-images.mjs";
 import { buildPageImage } from "./site-images.mjs";
@@ -29,6 +31,8 @@ const live = manifest
   .sort((a, b) => b.date.localeCompare(a.date));
 const insights = live.filter(m => m.section === "insights");
 const notes = live.filter(m => m.section === "notes");
+const examples = await readWorkedExamples();
+const researchLinks = await readResearchLinks();
 const guideBySlug = new Map(fieldGuides.map(guide => [guide.slug, guide]));
 
 const topicCounts = {};
@@ -37,8 +41,9 @@ const topicList = Object.entries(topicCounts).sort((a, b) => b[1] - a[1]);
 
 const tagsInUse = new Set(insights.flatMap(m => m.tags));
 const filters = [...topicList, ...[...tagsInUse].filter(t => !PRIMARY_TOPICS.includes(t)).sort().map(t => [t, insights.filter(m => m.tags.includes(t)).length])];
-const hubTopics = new Set(topicList.map(([topic, count]) => count >= 3 ? topic : null).filter(Boolean));
+const hubTopics = new Set(live.flatMap(article => article.tags));
 const articleTopicPath = topic => topicPath(topic, hubTopics);
+const topicChip = topic => `<a class="chip" href="${articleTopicPath(topic)}">${esc(topic)}</a>`;
 
 
 const out = async (rel, html) => {
@@ -68,27 +73,27 @@ const housePromotions = (placement) => `<aside class="writing-promos" aria-label
     <section class="promo-card promo-techknowen" aria-label="TechKnowen">
       <p class="promo-name">TechKnowen</p>
       <p>Practical reading on software, architecture, and engineering.</p>
-      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+      <a class="card-destination" href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
     </section>
     <section class="promo-card promo-ziggle" aria-label="Ziggle">
       <p class="promo-name">Ziggle</p>
       <p>A new place to play brain teasers.</p>
-      <p class="promo-status">Coming soon</p>
+      <a class="card-destination" href="/projects/ziggle/">Ziggle preview</a> <span class="promo-status">Coming soon</span>
     </section>
   </div>
 </aside>`;
 
 const cardFor = (m, base) => {
   const topic = primaryTopic(m.tags);
-  return `<a class="card" data-card data-topics="|${esc(m.tags.join("|"))}|" data-search="${esc((m.title + " " + m.description + " " + m.tags.join(" ")).toLowerCase())}" data-topic="${esc(topic)}" href="${base}/${m.slug}/">
+  return `<article class="card" data-card data-topics="|${esc(m.tags.join("|"))}|" data-search="${esc((m.title + " " + m.description + " " + m.tags.join(" ")).toLowerCase())}" data-topic="${esc(topic)}">
   <div class="card-art">${coverFor(m)}</div>
   <div class="card-body">
-    <span class="chip">${esc(topic)}</span>
-    <h3 class="card-title">${esc(m.title)}</h3>
+    ${topicChip(topic)}
+    <h3 class="card-title"><a class="card-destination" href="${base}/${m.slug}/">${esc(m.title)}</a></h3>
     <p class="card-desc">${esc(m.description)}</p>
     <div class="card-meta"><time datetime="${m.date}">${fmtDate(m.date)}</time><span class="dot"></span><span>${readingTime(m.words)} min read</span>${m.series ? `<span class="dot"></span><span>Series</span>` : ""}</div>
   </div>
-</a>`;
+</article>`;
 };
 
 /* ---------- article pages ---------- */
@@ -97,6 +102,8 @@ for (const m of live) {
   const raw = await readFile(`content/${m.section}/${m.slug}.md`, "utf8");
   const { body } = parseFront(raw);
   const fieldGuide = guideBySlug.get(m.slug);
+  const example = examples.get(m.slug);
+  if (!fieldGuide && !example && m.date <= "2026-11-23") throw new Error(`Missing worked example: ${m.slug}`);
   const { marked, headings } = makeRenderer();
   let html = await marked.parse(body);
 
@@ -104,7 +111,9 @@ for (const m of live) {
   html = headingAnchors(html);
 
   const tocHtml = tableOfContents(headings);
-  const refsHtml = m.section === "insights" ? referencesBlock(referencesFor(body)) : "";
+  const curated = researchLinks.get(m.slug) || [];
+  if (m.section === "insights" && m.date <= "2026-11-23" && !curated.length) throw new Error(`Missing curated reference: ${m.slug}`);
+  const refsHtml = m.section === "insights" ? referencesBlock(referencesFor(body, { curated })) : "";
 
   /* Every article's subject-specific preview is prepared before publication. */
   const photo = photoFor(m.slug);
@@ -210,9 +219,10 @@ ${longForm ? `<div class="chapter-bar" id="chapterBar">
 ${asideHtml}
     <div class="article-copy">
       <div class="prose">
+${example && m.section === "insights" ? `<p class="article-opening">${esc(example.lead)}</p>` : ""}
 ${html}
       </div>
-${fieldGuide ? worksheet(fieldGuide) : ""}
+${fieldGuide ? worksheet(fieldGuide) : example ? workedExample(example, m.section === "notes") : ""}
 
 ${refsHtml}
 
@@ -226,7 +236,7 @@ ${seriesItems.length > 1 && !chaptersHtml ? `<aside class="series-box" style="ma
 
       <footer class="article-foot">
         <div class="row" style="gap:.4rem">
-          ${m.tags.map(t => m.section === 'notes' ? `<span class="chip chip-plain">${esc(t)}</span>` : `<a class="chip chip-plain" href="${articleTopicPath(t)}">${esc(t)}</a>`).join("")}
+          ${m.tags.map(topicChip).join("")}
         </div>
         <nav class="prevnext" aria-label="More articles">
           ${older ? `<a href="${base}/${older.slug}/"><span>Previous</span><strong>${esc(older.title)}</strong></a>` : "<span></span>"}
@@ -304,7 +314,7 @@ await out("insights", page({
     <p class="eyebrow">Insights</p>
     <h1 class="h-display" style="margin-top:.8rem;max-width:18ch">Engineering, written down.</h1>
     <p class="lede" style="margin-top:1.2rem;max-width:62ch">Architecture decisions, production failures and the trade-offs behind them. Written for the people who build and run production systems.</p>
-    <div class="row insights-actions"><a class="btn" href="/field-guides/">Field guides and worksheets</a><a class="btn btn-ghost" href="/topics/">Browse topics</a><a class="btn btn-ghost" href="/feed.xml">Subscribe via RSS</a></div>
+    <div class="row insights-actions"><a class="btn" href="/field-guides/">Field guides and worksheets</a><a class="btn btn-ghost" href="/topics/">Browse topics</a><a class="btn btn-ghost" href="/follow/">Follow Ajna Insights</a></div>
   </div>
 </section>
 
@@ -426,7 +436,7 @@ await out("series", page({
       return `<a class="card" data-topic="${esc(t)}" href="/series/${seriesSlug(name)}/">
       <div class="card-art">${artwork(seriesSlug(name), items[0].tags, { title: name })}</div>
       <div class="card-body">
-        <span class="chip">${items.length} parts</span>
+        <span class="muted series-length">${items.length} parts</span>
         <h2 class="card-title">${esc(name)}</h2>
         <p class="card-desc">${esc(items[0].description)}</p>
       </div></a>`;
@@ -448,9 +458,9 @@ await out("topics", page({
   <p class="eyebrow">Topics</p>
   <h1 class="h-display" style="margin-top:.8rem;max-width:16ch">Browse by subject.</h1>
 </div></section>
-<section class="wrap" style="padding-bottom:var(--section-y)">
+<section class="publication-wrap" style="padding-bottom:var(--section-y)">
   <div class="grid g-4">
-    ${topicList.map(([t, n]) => `<a class="topic-tile" data-topic="${esc(t)}" href="${articleTopicPath(t)}">
+    ${[...hubTopics].sort((a,b) => a.localeCompare(b)).map(t => [t, live.filter(article => article.tags.includes(t)).length]).map(([t, n]) => `<a class="topic-tile" data-topic="${esc(t)}" href="${articleTopicPath(t)}">
       <div class="content-thumbnail">${artwork('topic-'+t.toLowerCase().replace(/[^a-z0-9]+/g,'-'),[t],{title:t})}</div>
       <strong>${esc(t)}</strong><span>${n} article${n === 1 ? "" : "s"}</span></a>`).join("\n    ")}
   </div>
@@ -460,14 +470,14 @@ await out("topics", page({
 /* ---------- searchable topic hubs ---------- */
 for (const topic of hubTopics) {
   const url = articleTopicPath(topic);
-  const articles = insights.filter(m => m.tags.includes(topic));
+  const articles = live.filter(m => m.tags.includes(topic));
   await out(url.slice(1, -1), page({
     title: `${topic} articles and guides`,
     description: `Browse ${topic} articles from Ajna Consulting Services, with production trade-offs, worked measurements and implementation guides.`,
     path: url, topic,
     body: `<section class="section mesh"><div class="publication-wrap"><nav class="crumbs" aria-label="Breadcrumb"><a href="/insights/">Insights</a><span aria-hidden="true">/</span><a href="/topics/">Topics</a></nav><h1 class="h-display">${esc(topic)}</h1><p class="lede">${articles.length} articles</p></div></section>
 <section class="publication-wrap archive-layout" aria-label="Articles about ${esc(topic)}">
-  <div class="grid archive-cards">${articles.map(m => cardFor(m, '/insights')).join('')}</div>
+  <div class="grid archive-cards">${articles.map(m => cardFor(m, `/${m.section}`)).join('')}</div>
   ${housePromotions("topic-rail")}
 </section>`,
   }));
@@ -485,7 +495,7 @@ await out("field-guides", page({
     <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/insights/">Insights</a></nav>
     <h1 class="h-display">Engineering field guides</h1>
     <p class="lede field-intro">Measure recurring production work, first deployment, and the cost of delivering an order. Each guide pairs a practical decision with a worked example and its method.</p>
-    <div class="row insights-actions"><a class="btn btn-ghost" href="/feed.xml">Follow Insights via RSS</a></div>
+    <div class="row insights-actions"><a class="btn btn-ghost" href="/follow/">Follow new guides and revisions</a><a class="btn btn-ghost" href="/field-guides/methods/">Read the methods</a></div>
   </div>
 </section>
 <section class="publication-wrap archive-layout" aria-label="Field guides and worksheets">
@@ -501,16 +511,46 @@ await out("field-guides", page({
   ${housePromotions("field-guides-rail")}
 </section>`,
 }));
+await out("field-guides/worked-examples.csv", examplesCsv(examples));
 for (const guide of publishedGuides) {
   await out(`field-guides/${guide.slug}.csv`, worksheetCsv(guide));
 }
 
 /* ---------- static pages ---------- */
-for (const [rel, html] of Object.entries(staticPages({ insights, notes, seriesMap, topicList, cardFor }))) {
+for (const [rel, html] of Object.entries(staticPages({ insights, notes, seriesMap, topicList, cardFor, topicChip }))) {
   await out(rel, html);
 }
 
+const caseUrls = await caseLibrary(out);
+
 /* ---------- feeds and robots ---------- */
+const stamp = date => new Date(date + "T09:00:00Z").toISOString();
+const updatedInsights = [...insights].sort((a, b) =>
+  (b.modified || b.date).localeCompare(a.modified || a.date) || b.date.localeCompare(a.date));
+const updateItems = [...new Map([...publishedGuides.map(guide => insights.find(article => article.slug === guide.slug)), ...updatedInsights]
+  .map(article => [article.slug, article])).values()].slice(0, 40);
+const updated = updateItems.map(article => article.modified || article.date).sort().at(-1) || TODAY;
+await out("updates.xml", `<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>${esc(SITE.name)} — Engineering updates</title>
+  <id>${SITE.url}/updates.xml</id>
+  <link rel="self" href="${SITE.url}/updates.xml"/>
+  <link href="${SITE.url}/follow/"/>
+  <icon>${SITE.url}/favicon.png</icon>
+  <updated>${stamp(updated)}</updated>
+  <author><name>${esc(SITE.name)}</name></author>
+  ${updateItems.map(article => {
+    const url = `${SITE.url}/insights/${article.slug}/`;
+    return `<entry>
+    <title>${esc(article.title)}</title>
+    <id>${url}</id>
+    <link href="${url}"/>
+    <published>${stamp(article.date)}</published>
+    <updated>${stamp(article.modified || article.date)}</updated>
+    <summary>${esc(article.description)}</summary>
+  </entry>`;
+  }).join("\n  ")}
+</feed>`);
 const feedItems = insights.slice(0, 40).map(m => `  <item>
     <title>${esc(m.title)}</title>
     <link>${SITE.url}/insights/${m.slug}/</link>
@@ -540,7 +580,9 @@ ${feedItems}
 </rss>`);
 
 const urls = [
-  ...['/', '/services/', '/insights/', '/series/', '/topics/', '/field-guides/', '/case-studies/', '/about/', '/contact/', '/notes/', '/privacy/', '/terms/'].map(url => [url]),
+  ...caseUrls.map(url => [url]),
+  ["/follow/"], ["/field-guides/methods/"],
+  ...['/', '/services/', '/insights/', '/series/', '/topics/', '/field-guides/', '/case-studies/', '/about/', '/contact/', '/notes/', '/privacy/', '/terms/', '/projects/ziggle/'].map(url => [url]),
   ...live.map(m => [`/${m.section}/${m.slug}/`, m.modified || m.date]),
   ...[...seriesMap.keys()].map(n => [`/series/${seriesSlug(n)}/`]),
   ...[...hubTopics].map(topic => [articleTopicPath(topic)]),

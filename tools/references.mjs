@@ -4,6 +4,7 @@
    attributed to a source the author did not mention. Every URL below was
    checked before it was added. */
 import { esc } from "./lib.mjs";
+import { readFile } from "node:fs/promises";
 
 export const SOURCES = [
   // framework / research
@@ -42,9 +43,23 @@ export const SOURCES = [
   [/\bWebLogic\b/i, "Oracle WebLogic Server documentation", "https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/", "Work managers, pools and tuning."],
 ];
 
-export function referencesFor(body, { max = 5 } = {}) {
-  const hits = [];
-  const seen = new Set();
+export async function readResearchLinks() {
+  const links = new Map();
+  const rows = (await readFile("content/research-links.txt", "utf8")).split("\n");
+  for (const row of rows.map(line => line.trim()).filter(line => line && !line.startsWith("#"))) {
+    const [slugs, name, url, note] = row.split(" | ");
+    if (!name || !note || !url?.startsWith("https://")) throw new Error(`Invalid editorial reference: ${row}`);
+    for (const slug of slugs.split(",")) {
+      if (!links.has(slug)) links.set(slug, []);
+      links.get(slug).push({ name, url, note });
+    }
+  }
+  return links;
+}
+
+export function referencesFor(body, { max = 5, curated = [] } = {}) {
+  const hits = [...curated];
+  const seen = new Set(hits.map(ref => ref.url));
   for (const [re, name, url, note] of SOURCES) {
     if (hits.length >= max) break;
     if (seen.has(url)) continue;
@@ -57,9 +72,9 @@ export function referencesBlock(refs) {
   if (!refs.length) return "";
   return `<aside class="refs" aria-labelledby="refs-h">
   <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
-  <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
+  <p class="refs-note">Primary documentation, standards and research for the methods discussed here.</p>
   <ul>
-${refs.map(r => `    <li><a href="${esc(r.url)}" rel="noopener nofollow" target="_blank">${esc(r.name)}</a><span>${esc(r.note)}</span></li>`).join("\n")}
+${refs.map(r => `    <li><a href="${esc(r.url)}" rel="noopener" target="_blank">${esc(r.name)}</a><span>${esc(r.note)}</span></li>`).join("\n")}
   </ul>
 </aside>`;
 }

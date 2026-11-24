@@ -5,6 +5,7 @@ import { page } from "./shell.mjs";
 import { artwork } from "./visuals.mjs";
 import { coverFor } from "./covers.mjs";
 import { caseCoverArt } from "./case-covers.mjs";
+import { caseCategories } from "./case-library.mjs";
 const thumbnail=(title,tags,slug='')=>`<div class="content-thumbnail">${artwork(slug||'content-'+title.toLowerCase().replace(/[^a-z0-9]+/g,'-'),tags,{title})}</div>`;
 
 const SERVICES = [
@@ -101,7 +102,7 @@ const contactForm = (id, compact = false) => `
   <p class="form-note">We use what you send only to reply. No lists, no resale — see our <a href="/privacy/">privacy notice</a>.</p>
 </form>`;
 
-export function staticPages({ insights, notes, seriesMap, topicList, cardFor }) {
+export function staticPages({ insights, notes, seriesMap, topicList, cardFor, topicChip }) {
   const featured = insights.slice(0, 7);
   const pages = {};
 
@@ -152,7 +153,7 @@ export function staticPages({ insights, notes, seriesMap, topicList, cardFor }) 
         <h3 class="h3" style="margin-top:.8rem">${esc(s.title)}</h3>
         <p class="muted" style="margin-top:.7rem;font-size:.95rem">${esc(s.lede)}</p>
         <ul class="tick-list">${s.items.slice(0, 3).map(([t]) => `<li>${esc(t)}</li>`).join("")}</ul>
-        <a class="link-arrow" href="/services/#${s.id}" style="margin-top:1.2rem">Detail ${icon.arrow}</a>
+        <a class="link-arrow card-destination" href="/services/#${s.id}" style="margin-top:1.2rem">Detail ${icon.arrow}</a>
       </article>`).join("\n")}
     </div>
   </div>
@@ -177,15 +178,15 @@ export function staticPages({ insights, notes, seriesMap, topicList, cardFor }) 
       </div>
       <a class="link-arrow" href="/insights/">Further reading ${icon.arrow}</a>
     </div>
-    ${featured.length ? `<a class="feature-post" data-topic="${esc(primaryTopic(featured[0].tags))}" href="/insights/${featured[0].slug}/" style="margin-top:2.6rem">
+    ${featured.length ? `<article class="feature-post" data-topic="${esc(primaryTopic(featured[0].tags))}" style="margin-top:2.6rem">
       <span class="art">${coverFor(featured[0], { sizes: "(min-width: 800px) 640px, 100vw" })}</span>
-      <span class="body">
-        <span class="chip" style="align-self:flex-start">${esc(primaryTopic(featured[0].tags))}</span>
-        <h3>${esc(featured[0].title)}</h3>
+      <div class="body">
+        ${topicChip(primaryTopic(featured[0].tags))}
+        <h3><a class="card-destination" href="/insights/${featured[0].slug}/">${esc(featured[0].title)}</a></h3>
         <p>${esc(featured[0].description)}</p>
-        <span class="link-arrow">Read it ${icon.arrow}</span>
-      </span>
-    </a>` : ""}
+        <span class="link-arrow" aria-hidden="true">Read it ${icon.arrow}</span>
+      </div>
+    </article>` : ""}
     <div class="grid g-3" style="margin-top:1.4rem">
       ${featured.slice(1).map(m => cardFor(m, "/insights")).join("\n")}
     </div>
@@ -199,7 +200,7 @@ ${seriesMap.size ? `<section class="section band band-warm">
     <div class="grid g-3" style="margin-top:2.4rem">
       ${[...seriesMap].slice(0, 3).map(([name, items]) => `<a class="card" data-topic="${esc(primaryTopic(items[0].tags))}" href="/series/${seriesSlug(name)}/">
         <div class="card-art">${artwork(seriesSlug(name), items[0].tags, { title:name })}</div>
-        <div class="card-body"><span class="chip">${items.length} parts</span>
+        <div class="card-body"><span class="muted series-length">${items.length} parts</span>
         <h3 class="card-title">${esc(name)}</h3></div></a>`).join("\n")}
     </div>
   </div>
@@ -207,20 +208,16 @@ ${seriesMap.size ? `<section class="section band band-warm">
 
 <section class="section band band-deep">
   <div class="wrap">
-    <p class="eyebrow">Industry acclaim</p>
-    <h2 class="h1" style="margin-top:.8rem;max-width:24ch">What stakeholders say.</h2>
-    <div class="grid g-3" style="margin-top:2.4rem">
-      ${[
-        ["Delivered high-impact architecture solutions and exceptional technical leadership, consistently exceeding enterprise operational targets.", "VP of Engineering", "Global operations"],
-        ["Recognised for driving successful enterprise platform migrations, resolving complex technical challenges, and maintaining rigorous stakeholder confidence.", "Project Sponsor", "Financial institution"],
-        ["Known for precise architectural documentation and scenario-based labs, significantly improving our engineering team's systemic understanding.", "Engineering Lead", "Logistics sector"],
-      ].map(([q, who, org],i) => `<figure class="quote">
-        ${thumbnail(['Architecture delivery','Platform migration','Scenario-based technical learning'][i],[['Architecture'],['Cloud Architecture'],['Engineering Leadership']][i],'engagement-feedback-'+i)}
-        <blockquote>${esc(q)}</blockquote>
-        <figcaption><strong>${esc(who)}</strong><span>${esc(org)}</span></figcaption>
-      </figure>`).join("\n")}
+    <div class="between">
+      <div><h2 class="h1">See how the work runs</h2><p class="lede field-intro">Explore simulated engineering engagements with decisions, acceptance tests, and measured examples.</p></div>
+      <a class="link-arrow" href="/case-studies/">Browse case studies ${icon.arrow}</a>
     </div>
-    <p class="small" style="margin-top:1.2rem;color:#8fa0c4">Feedback from engagement stakeholders. Names withheld under client confidentiality.</p>
+    <div class="grid g-2 capability-grid case-home">
+      ${caseCategories.map(({id, alt, title, topic, description}) => `<article class="case" data-topic="${esc(topic)}">
+        <div class="case-art">${caseCoverArt(id, alt)}</div>
+        <div class="case-body"><h3 class="h3"><a class="card-destination" href="/case-studies/${id}/">${esc(title)}</a></h3><p class="muted">${esc(description)}</p></div>
+      </article>`).join("\n")}
+    </div>
   </div>
 </section>
 
@@ -285,49 +282,96 @@ ${SERVICES.map(s => `<section class="section ${s.id === "ai" ? "surface hair" : 
 
   /* ---------------- case studies ---------------- */
   pages["case-studies"] = page({
-    title: "Engagements",
-    description: "The shapes engagements take — audit, modernisation, AI in production, and enablement — and what each is measured on.",
+    title: "Engineering case studies",
+    description: "Hypothetical engineering scenarios on architecture audits, legacy modernisation, production AI and team enablement.",
     path: "/case-studies/",
     body: `
-<section class="section mesh"><div class="wrap">
-  <p class="eyebrow">Engagements</p>
-  <h1 class="h-display" style="margin-top:.8rem;max-width:18ch">What the work looks like.</h1>
-  <p class="lede" style="margin-top:1.3rem;max-width:60ch">Client engagements are covered by confidentiality, so these describe the shape of the work and what it is measured on, rather than naming organisations.</p>
+<section class="section mesh"><div class="publication-wrap">
+  <h1 class="h-display">Engineering case studies</h1>
+  <p class="lede field-intro">See how we would scope, execute, and hand over an engagement. Each scenario includes a delivery sequence, acceptance criteria, and measurements you can inspect.</p>
+  <p class="case-notice">The public scenarios are hypothetical. Organisations, delivery events and results are simulated.</p>
 </div></section>
 
-<section class="wrap" style="padding-bottom:var(--section-y)">
+<section class="publication-wrap case-library" aria-label="Engagement categories">
   <div class="grid g-2 capability-grid">
-  ${[
-    ["architecture-audit", "A magnifying glass reveals a bottleneck in a layered system", "Architecture audit", "Architecture", "A fixed-scope technical audit of middleware, cloud spend and systemic bottlenecks.",
-      ["Where the architectural debt actually sits", "Which bottlenecks are structural and which are configuration", "A sequenced remediation plan with costs attached"],
-      "Measured on: decisions the engineering team can act on immediately."],
-    ["legacy-modernisation", "A switching track routes workload packages from a mainframe to modular cloud services", "Legacy modernisation", "Cloud Architecture", "Decoupling monolithic assets into event-driven services across multi-region deployments.",
-      ["Domain boundaries drawn against real call patterns", "Incremental strangler migration, not a rewrite", "CI/CD and IaC so deployment stops being an event"],
-      "Measured on: release frequency and change failure rate."],
-    ["ai-into-production", "A model moves from a prototype through a validation gate to production servers", "AI into production", "Enterprise AI", "Taking a model or agent from a working prototype to something that can be operated.",
-      ["Evaluation harness before launch, not after", "Versioning, rollback and drift detection", "Zero-trust boundaries around corporate data"],
-      "Measured on: whether it still works in month six."],
-    ["team-enablement", "Three lab workstations share a training bench and an open runbook", "Team enablement", "Engineering Leadership", "Lab-based instruction on the stack the team actually runs.",
-      ["Curriculum built against your architecture", "Hands-on environments, not slideware", "Runbooks the team wrote themselves"],
-      "Measured on: operational independence after handover."],
-  ].map(([slug, alt, t, topic, lede, bullets, measure]) => `<article class="case" data-topic="${esc(topic)}">
-    <div class="case-art">${caseCoverArt(slug, alt)}</div>
+  ${caseCategories.map(({id, alt, title, topic, description}) => `<article class="case" data-topic="${esc(topic)}">
+    <div class="case-art">${caseCoverArt(id, alt)}</div>
     <div class="case-body">
-      <span class="chip">${esc(topic)}</span>
-      <h2 class="h3" style="margin-top:.7rem">${esc(t)}</h2>
-      <p class="muted" style="margin-top:.6rem;font-size:.95rem">${esc(lede)}</p>
-      <ul class="tick-list">${bullets.map(b => `<li>${esc(b)}</li>`).join("")}</ul>
-      <p class="case-measure">${esc(measure)}</p>
+      <h2 class="h3"><a class="card-destination" href="/case-studies/${id}/">${esc(title)}</a></h2>
+      <p class="muted">${esc(description)}</p>
+      <a class="case-measure" href="/case-studies/${id}/">Explore ${esc(title.toLowerCase())} scenarios</a>
     </div>
   </article>`).join("\n")}
   </div>
 </section>
 
 <section class="section surface hair"><div class="wrap cta-panel cta-wide">
-  <div><h2 class="h1" style="max-width:20ch">Want the detail under NDA?</h2>
-  <p class="lede" style="margin-top:1rem;max-width:46ch">We can walk through comparable engagements, including what went wrong and what it cost to fix.</p></div>
-  <a class="btn btn-lg" href="/contact/">Request a walkthrough ${icon.arrow}</a>
+  <div><h2 class="h1">Bring a delivery problem.</h2>
+  <p class="lede">We can discuss scope, evidence and acceptance criteria for your system. Real engagement details can be shared only where the parties involved have approved disclosure.</p></div>
+  <a class="btn btn-lg" href="/contact/">Discuss an engagement ${icon.arrow}</a>
 </div></section>`,
+  });
+
+  pages["projects/ziggle"] = page({
+    title: "Ziggle project preview",
+    description: "Ziggle is an upcoming place to play brain teasers. Read about the project and its launch status.",
+    path: "/projects/ziggle/",
+    body: `<section class="section mesh"><div class="publication-wrap">
+  <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a></nav>
+  <h1 class="h-display">Ziggle</h1>
+  <p class="lede field-intro">An upcoming place to play brain teasers. Status: coming soon.</p>
+</div></section>
+<section class="wrap-narrow prose case-library">
+  <h2>What Ziggle is for</h2>
+  <p>Ziggle is being developed for people who enjoy working through a puzzle. It will have its own destination when it is ready to play. This page will carry the launch link when it becomes available.</p>
+  <h2>Ajna's other project</h2>
+  <p><a href="https://www.techknowen.com/" rel="noopener">TechKnowen</a> publishes practical writing on software, architecture, and engineering.</p>
+</section>`,
+  });
+
+  pages["follow"] = page({
+    title: "Follow Ajna engineering writing",
+    description: "Follow new Ajna Insights and substantive revisions to existing field guides in the feed reader you use.",
+    path: "/follow/",
+    body: `<section class="section mesh"><div class="publication-wrap">
+  <nav class="crumbs" aria-label="Breadcrumb"><a href="/insights/">Insights</a></nav>
+  <h1 class="h-display">Follow Ajna engineering writing</h1>
+  <p class="lede field-intro">Follow new articles, guide revisions and methods you can use. Add one of these feeds to your reader.</p>
+</div></section>
+<section class="publication-wrap case-library" aria-label="Publication feeds">
+  <div class="grid g-2">
+    <article class="guide-tile"><h2 class="h3"><a class="card-destination" href="/updates.xml">Engineering updates (Atom)</a></h2><p>Start here for new writing and revised guides. The feed keeps one identity per article and includes publication and update dates.</p></article>
+    <article class="guide-tile"><h2 class="h3"><a class="card-destination" href="/feed.xml">New Insights (RSS)</a></h2><p>Follow articles in publication order.</p></article>
+  </div>
+  <div class="row follow-links"><a class="btn" href="/field-guides/">Start with a field guide</a><a class="btn btn-ghost" href="/case-studies/">Read case studies</a></div>
+</section>`,
+  });
+
+  pages["field-guides/methods"] = page({
+    title: "Methods and data",
+    description: "How Ajna defines measures, publishes illustrative datasets and reports repeatable observations.",
+    path: "/field-guides/methods/",
+    body: `<section class="section mesh"><div class="publication-wrap">
+  <nav class="crumbs" aria-label="Breadcrumb"><a href="/field-guides/">Field guides</a></nav>
+  <h1 class="h-display">Methods and data</h1>
+  <p class="lede field-intro">Check the inputs, definitions and limits behind a chart before using its result.</p>
+</div></section>
+<section class="wrap-narrow prose case-library">
+  <h2>Three starting points</h2>
+  <ul>
+    <li><a href="/insights/sre-toil-reduction/#methodology">SRE toil method</a> counts active work and ongoing upkeep in equal windows.</li>
+    <li><a href="/insights/platform-engineering-idp-2026/#methodology">Platform onboarding method</a> includes unfinished attempts and shows time among completions.</li>
+    <li><a href="/insights/cloud-unit-economics/#methodology">Cloud cost per unit method</a> matches effective costs and unique successful units by scope and period.</li>
+  </ul>
+  <h2>Data origin</h2>
+  <p>Figures marked simulated or illustrative are worked examples. The case studies call out their context, acceptance criteria, handover and limits. Each one includes its own downloadable values. The article archive <a href="/field-guides/worked-examples.csv" download>worked examples CSV</a> records input strings, chart values and each method.</p>
+  <p>Where observations were actually collected, say how they were produced, report the environment and sample selection, and publish the data and code where possible. Keep attribution and causal claims within the scope of that experiment.</p>
+  <h2>References</h2>
+  <ul>
+    <li><a href="https://radar.cloudflare.com/about">Cloudflare Radar data sources</a></li>
+    <li><a href="https://doi.org/10.1007/s10664-008-9102-8">Runeson and Höst, guidelines for case study research in software engineering</a></li>
+  </ul>
+</section>`,
   });
 
   /* ---------------- about ---------------- */

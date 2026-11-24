@@ -22,9 +22,9 @@ Inference (using the model to make predictions) in production is different from 
 
 - **Latency requirements**: a user-facing application may require < 500ms end-to-end. A batch analytics job may tolerate hours.
 - **Throughput requirements**: a popular application serves hundreds of requests per second simultaneously.
-- **Cost at scale**: GPT-4 inference at $0.01 per 1K input tokens is negligible for a demo. At 10M requests per day with 2K tokens average, it is $200K per month.
+- **Cost at scale**: At an illustrative $0.01 per 1,000 input tokens, 10 million daily requests of 2,000 input tokens cost $200,000 a day and $6 million over 30 days before output or other charges.
 
-**Self-hosted models**: for cost-sensitive or privacy-sensitive workloads, running open-weight models (Llama, Mistral, Qwen) on your own GPU infrastructure reduces per-token costs but adds operational overhead. Typical serving stack: vLLM or TGI (Text Generation Inference) running on NVIDIA A100s or H100s.
+**Self-hosted models**: for cost-sensitive or privacy-sensitive workloads, running open-weight models (Llama, Mistral, Qwen) on your own GPU infrastructure can reduce per-result costs at sufficient utilisation and acceptable quality, while adding infrastructure and operational work. Typical serving stack: vLLM or TGI (Text Generation Inference) running on NVIDIA A100s or H100s.
 
 **API-based models**: OpenAI, Anthropic, Google — managed inference with no infrastructure overhead but higher per-token cost and data residency considerations.
 
@@ -77,7 +77,7 @@ input_tokens_per_request = 2000   # system prompt + context + user query
 output_tokens_per_request = 500   # generated response
 requests_per_day = 100_000
 
-## GPT-4o pricing (approximate, verify current rates)
+## Illustrative rates for the worksheet, independent of any provider price
 input_cost_per_1k = 0.005
 output_cost_per_1k = 0.015
 
@@ -88,7 +88,7 @@ daily_cost = (
 
 monthly_cost = daily_cost * 30
 print(f"Estimated monthly: ${monthly_cost:,.0f}")
-## With these numbers: ~$135,000/month
+## With these numbers: $52,500 over 30 days
 ```
 
 **Cost reduction approaches**:
@@ -107,7 +107,7 @@ AI systems need a monitoring layer beyond standard application metrics:
 - Track distribution of response lengths (sudden changes indicate prompt or model changes)
 - Monitor user feedback signals (thumbs up/down, regeneration requests, conversation abandonment)
 
-**Model drift**: LLM API providers update models. A model version update can change response quality. Monitor for changes in key metrics after provider updates.
+**Provider updates and drift**: evaluate a provider version change as an upstream release. Separately monitor shifts in inputs and, where labels exist, changes in the relationship between inputs and outcomes.
 
 **Hallucination detection**: for RAG systems, monitor whether responses cite documents that exist and whether cited content matches the document. Automated citation verification is achievable.
 

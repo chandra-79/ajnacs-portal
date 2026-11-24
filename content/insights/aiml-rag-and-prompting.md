@@ -60,7 +60,7 @@ def cosine_similarity(a: list[float], b: list[float]) -> float:
 
 ## Prompt Engineering That Matters in Production
 
-The system prompt is the most powerful tool for constraining model behaviour.
+The system prompt can guide answers. Enforce source entitlements, tool authorisation and write permissions in application code outside the model.
 
 ```python
 SYSTEM_PROMPT = """You are a cloud cost analysis assistant for Acme Corp.
@@ -96,7 +96,7 @@ Assistant: AWS accounts for 62% of cloud spend, Azure 31%, and GCP 7%.
 """
 ```
 
-**Chain-of-thought prompting**: for reasoning tasks, instruct the model to show its reasoning before giving the final answer. "Think step by step" or including reasoning steps in few-shot examples improves accuracy on multi-step problems.
+**Reasoning tasks**: test model-specific guidance and ask for verifiable evidence or calculations. A generic instruction to think step by step does not reliably improve results, especially when the model already handles reasoning internally.
 
 ## Structured Output
 
@@ -115,7 +115,7 @@ class CostSummary(BaseModel):
     top_services: list[str]
     anomalies_detected: bool
 
-response = client.beta.chat.completions.parse(
+response = client.chat.completions.parse(
     model="gpt-4o",
     messages=[
         {"role": "system", "content": "Extract cost summary from the provided bill."},
@@ -124,8 +124,11 @@ response = client.beta.chat.completions.parse(
     response_format=CostSummary,
 )
 
-summary = response.choices[0].message.parsed
-## summary.total_cost, summary.top_services — strongly typed
+choice = response.choices[0]
+if choice.finish_reason != "stop" or choice.message.refusal or choice.message.parsed is None:
+    raise ValueError("No complete cost summary")
+summary = choice.message.parsed
+# Reconcile totals and source provenance before use.
 ```
 
 ## Evaluation: The Work Nobody Does Until It Is Expensive

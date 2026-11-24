@@ -56,7 +56,7 @@ Not tuning — observability. These cost almost nothing and pay for themselves t
 
 **Process RSS grows, heap flat** → native: direct buffers, metaspace (classloader leak — the classic in anything doing hot redeploys), or a native library. `jcmd VM.native_memory` after starting with NMT answers which.
 
-The tools, in the order to reach for them: GC log (free, always there), `jcmd` (thread dumps, heap histograms, NMT — all safe in production), JFR + JDK Mission Control (the profiler you already have), async-profiler when you want flame graphs with native frames.
+Start with GC logging or a scoped JFR recording. Use `jcmd` diagnostics after checking the documented impact for that exact command and JDK. Oracle classifies `GC.class_histogram` and `GC.heap_dump` as high impact. A heap dump can request a full GC and consume significant disk space. Review the [JDK diagnostic command reference](https://docs.oracle.com/en/java/javase/25/docs/specs/man/jcmd.html).
 
 ## What modern Java changed
 
