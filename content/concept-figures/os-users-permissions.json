@@ -1,0 +1,32 @@
+{
+  "kind": "flow",
+  "title": "File creation and later access are separate checks",
+  "unit": "",
+  "points": [],
+  "steps": [
+    {
+      "label": "Requested mode",
+      "detail": "Program requests 0666 for a regular file"
+    },
+    {
+      "label": "Creation policy",
+      "detail": "umask 0027 clears bits; default ACLs change rules"
+    },
+    {
+      "label": "Created mode",
+      "detail": "Ordinary example produces 0640"
+    },
+    {
+      "label": "Access check",
+      "detail": "Credentials, parents, ACLs and MAC still apply"
+    }
+  ],
+  "method": "Conceptual ordinary creation example:0666 & ~0027 =0640; directory 0777 becomes 0750. Excludes default ACL inheritance.",
+  "alt": "Requested mode is filtered by creation policy, then later access depends on process credentials and other controls.",
+  "dataOrigin": "conceptual",
+  "studyPaths": [
+    "reliability",
+    "learning"
+  ],
+  "slug": "os-users-permissions"
+}

@@ -1,0 +1,31 @@
+{
+  "kind": "flow",
+  "title": "Outbox responsibilities and duplicate handling",
+  "unit": "",
+  "points": [],
+  "steps": [
+    {
+      "label": "Commit",
+      "detail": "Save order and outbox event in one transaction"
+    },
+    {
+      "label": "Relay",
+      "detail": "Publish committed events; retry after failures"
+    },
+    {
+      "label": "Broker",
+      "detail": "Deliver events under its configured guarantees"
+    },
+    {
+      "label": "Consumer",
+      "detail": "Apply effects with explicit deduplication"
+    }
+  ],
+  "method": "Conceptual flow. Synthetic prose example:100 distinct events,103 deliveries,3 duplicates,100 effects when deduplication is correct.",
+  "alt": "An order and event commit together, a relay publishes, a broker delivers, and a consumer handles duplicates.",
+  "dataOrigin": "conceptual",
+  "studyPaths": [
+    "learning"
+  ],
+  "slug": "architecture-decision-records-guide"
+}

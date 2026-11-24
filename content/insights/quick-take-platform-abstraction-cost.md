@@ -27,3 +27,32 @@ Abstraction is not worthwhile when: the abstraction is not meaningfully simpler 
 The platform team that builds abstractions with this calculus explicitly produces fewer, more valuable abstractions that application teams actually use. The platform team that builds abstractions reflexively produces a complex, under-maintained collection that becomes the biggest source of engineering friction in the organization.
 
 Build fewer abstractions. Make them excellent. Maintain them as a commitment, not as an afterthought.
+
+## Review the contract the abstraction promises
+
+Write down what a consumer can rely on: supported inputs, generated resources, upgrade behavior, failure reporting and the escape route. A deployment wrapper that silently changes resource names or permissions can break consumers even when its visible interface stays the same. Treat those behaviors as part of the contract and test them across supported versions.
+
+Distinguish configuration defaults from mandatory controls. A default may be overridden by a team that owns the consequence. A required control needs a clear policy and an approved exception process. Hiding both behind the same undocumented template makes it difficult for users to know whether a customization is safe or forbidden.
+
+## Model the consumer and provider effort
+
+Suppose a fictional platform supports 20 services. Without the wrapper, each service spends 90 minutes on a recurring setup task, totaling 30 hours per cycle. The wrapper reduces each consumer's work to 20 minutes, or about 6.67 hours across 20 services. Maintaining and supporting the wrapper requires 12 hours per cycle. Combined follow-up effort is about 18.67 hours, a net reduction of about 11.33 hours.
+
+The chart compares 30 hours of direct setup with 18.67 hours of combined consumer and provider work. It includes provider effort to avoid claiming that work vanished when it moved to the platform team. It excludes the initial build, security value and risk of a shared failure. If the eligible service count falls, the arithmetic should be recalculated rather than treating the initial business case as permanent.
+
+## Test a failure through the abstraction
+
+In a sandbox, supply an invalid configuration, make a required dependency unavailable and interrupt an operation after some resources have been created. Observe what the consumer sees and what the platform operator must do. An abstraction that handles success cleanly but leaves partial state unexplained can increase support load precisely when the system is under stress.
+
+Document the recovery action and its ownership. Can a consumer safely retry? Does the operation have a stable identity? Which resources can be deleted without losing data? Keep the expected result close to the instructions. A generic “contact support” message is acceptable for some rare failures, but recurring escalation should feed the product backlog with the evidence needed to improve it.
+
+## Decide when to narrow or retire the abstraction
+
+Review the distribution of consumer needs. If most support work comes from a small unsupported workload class, narrowing the contract may be more effective than adding another configuration switch. If an upstream capability now solves the original problem, test a migration path before maintaining two layers indefinitely. Keep the remaining unique controls visible in the decision.
+
+Plan deprecation as a consumer migration, not just a repository deletion. Identify usage, communicate the replacement, validate representative workloads and retain a rollback option where feasible. Publish a supported end state and remove obsolete documentation after the transition. The platform's value includes making the next change understandable; maintaining a wrapper forever is not the only way to honor its consumers.
+
+## Sources and further reading
+
+- [DORA · Platform engineering](https://dora.dev/capabilities/platform-engineering/)
+- [Architectural Decision Records · Motivation and definitions](https://adr.github.io/)

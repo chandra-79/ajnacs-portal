@@ -1,6 +1,6 @@
 ---
-title: "Most Failed Tool Adoptions Solved the Wrong Problem With the Right Tool"
-description: "Tool adoption failures are usually misdiagnosis failures. The tool works. The problem it was purchased to solve is not the problem that actually exists."
+title: "Testing whether a tool changes the actual bottleneck"
+description: "Run a bounded trial with representative tasks, explicit success criteria, integration cost and an exit plan."
 date: 2028-06-19
 tags: ["Engineering Leadership", "Architecture"]
 format: article
@@ -31,4 +31,33 @@ The answer to the last question may be a tool. It may also be a process change, 
 
 ## The measurement that closes the loop
 
-After adopting a tool, measure the specific metric that motivated the adoption. If it does not improve, the tool solved a different problem than the one that matters. This is not a failure of the tool. It is a diagnostic failure that is worth learning from.
+After adopting a tool, measure the specific metric that motivated the adoption. If it does not improve, inspect adoption, workload changes and the proposed mechanism before deciding whether the tool addressed the right problem. This is not a failure of the tool. It is a diagnostic failure that is worth learning from.
+
+## Design a trial that can fail usefully
+
+Before a vendor demonstration, state the current workflow and the specific step the tool is expected to improve. Write down the strongest alternative explanation for the problem. If incident recovery is slow because responders cannot find the owner, a coordination tool might help. If they find the owner quickly but cannot reproduce the failure, the experiment should examine diagnostic evidence instead.
+
+Choose a representative set of cases rather than the product's easiest demonstration. Include a routine case, an exception and a failure of the tool itself. Ask the people who do the work to perform the task while an observer records active effort, waiting and errors. The trial should reveal integration and support costs as well as the attractive happy path.
+
+## A hypothetical incident-workflow decomposition
+
+A fictional recovery takes 60 minutes: ten minutes to establish coordination,35 to diagnose the failure and 15 to execute a mitigation. A tool reduces coordination to four minutes while the other stages remain unchanged. Total recovery becomes 54 minutes, a 10% reduction. The chart compares the ten- and four-minute coordination stages, but the method keeps the full 60-to 54-minute outcome visible.
+
+Calling this a 60% recovery improvement would confuse the changed component with the whole process. Calling it worthless because diagnosis remains dominant would also be premature. The tool may improve communication quality or reduce responder effort. Measure those benefits separately and decide whether they justify the recurring cost and operational dependency.
+
+## Include adoption and exit in the experiment
+
+Record how users learn the tool, obtain access and recover from a mistaken action. An administrator's guided demo may hide friction that ordinary users encounter. Test the export format and determine whether historical records remain readable if the subscription ends. A tool that solves today's problem but makes a future migration unusually costly should be evaluated with that consequence visible.
+
+Create a small decision sheet with the target outcome, minimum acceptable result, integration effort, recurring ownership and exit procedure. Define the stop condition before the trial starts. If the result misses the threshold, the decision can be to refine the workflow, test another approach or stop. A sunk implementation cost is not evidence that broader rollout will create value.
+
+## Interpret a disappointing result carefully
+
+An unchanged metric does not prove the tool solved the wrong problem. The rollout may be incomplete, the workload may have changed, or the metric may not capture the intended benefit. Check exposure, actual use and the measurement window before drawing a conclusion. Conversely, a favorable before-and-after chart does not establish causality when staffing or demand changed at the same time.
+
+Keep the final recommendation specific: which users and tasks benefit, under which conditions, at what ongoing cost, and with what unresolved limitations. This is more useful than a global verdict that a product is good or bad. The engineering decision is about the fit between a capability, a workflow and a constraint that the team can demonstrate.
+
+## Sources and further reading
+
+- [Google SRE Workbook · Incident Response](https://sre.google/workbook/incident-response/)
+- [DORA · Platform engineering](https://dora.dev/capabilities/platform-engineering/)

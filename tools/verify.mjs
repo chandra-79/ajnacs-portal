@@ -432,6 +432,7 @@ console.log("\nAssets");
     return out;
   };
   const pages = await walk(".");
+  const pageHtml = new Map(await Promise.all(pages.map(async file => [file, await readFile(file, "utf8")])));
   const resolve = async (p) => {
     const clean = decodeURIComponent(p.replace(/^\//, "").split("#")[0].split("?")[0]) || "index.html";
     for (const cand of [clean, path.join(clean, "index.html")]) {
@@ -442,7 +443,7 @@ console.log("\nAssets");
   const broken = [];
   let refs = 0;
   for (const f of pages) {
-    const h = await readFile(f, "utf8");
+    const h = pageHtml.get(f);
     for (const m of h.matchAll(/(?:href|src)="([^"]+)"/g)) {
       const u = m[1];
       if (/^(https?:|mailto:|tel:|data:|#|javascript:)/.test(u)) continue;
@@ -453,12 +454,42 @@ console.log("\nAssets");
   if (broken.length) fail(`${broken.length} broken local reference(s): ${broken.slice(0, 3).join("; ")}`);
   else ok(`${refs} local references all resolve`);
 
+  // Navigation must reach a real chapter, not merely an existing HTML file.
+  const idsByPage = new Map(), duplicateIds = [], missingFragments = [];
+  for (const [file, html] of pageHtml) {
+    const ids = new Set();
+    for (const match of html.matchAll(/<[a-z][^>]*\bid="([^"]+)"/gi)) {
+      if (ids.has(match[1])) duplicateIds.push(`${file}#${match[1]}`);
+      ids.add(match[1]);
+    }
+    idsByPage.set(path.normalize(file), ids);
+  }
+  let fragments = 0;
+  for (const [file, html] of pageHtml) {
+    for (const match of html.matchAll(/<a\b[^>]*\bhref="([^"]+)"/gi)) {
+      let target;
+      try { target = new URL(match[1].replaceAll("&amp;", "&"), `${SITE.url}/${file}`); } catch { continue; }
+      if (target.origin !== new URL(SITE.url).origin || !target.hash || target.hash.startsWith("#:~:text=")) continue;
+      let destination, fragment;
+      try { destination = decodeURIComponent(target.pathname).replace(/^\/+/, ""); fragment = decodeURIComponent(target.hash.slice(1)); }
+      catch { missingFragments.push(`${file} -> ${match[1]}`); continue; }
+      if (!path.extname(destination)) destination = path.join(destination, "index.html");
+      const ids = idsByPage.get(path.normalize(destination));
+      if (!ids) continue; // SVG fragments and external resources have separate checks.
+      fragments++;
+      if (!ids.has(fragment)) missingFragments.push(`${file} -> ${match[1]}`);
+    }
+  }
+  if (duplicateIds.length) fail(`${duplicateIds.length} duplicate element ids: ${duplicateIds.slice(0, 3).join("; ")}`);
+  if (missingFragments.length) fail(`${missingFragments.length} missing chapter targets: ${missingFragments.slice(0, 3).join("; ")}`);
+  if (!duplicateIds.length && !missingFragments.length) ok(`${fragments} chapter links resolve and all page ids are unique`);
+
   // og:image lives in a meta content attribute, so the href/src sweep above
   // never sees it. Every card a page points at has to exist, and it has to
   // be a raster format: no major platform renders SVG for a social preview.
   const cards = new Set();
   for (const f of pages) {
-    const h = await readFile(f, "utf8");
+    const h = pageHtml.get(f);
     for (const m of h.matchAll(/(?:og:image|twitter:image)" content="[^"]*?(\/assets\/(?:og|covers|services)\/[^"]+)"/g)) cards.add(m[1]);
   }
   const missingCards = [];

@@ -1,0 +1,28 @@
+{
+  "kind": "bar",
+  "title": "Synthetic audit storage before indexing and replication",
+  "unit": "decimal GB",
+  "points": [
+    {
+      "label": "1 day",
+      "value": 10.368
+    },
+    {
+      "label": "7 days",
+      "value": 72.576
+    },
+    {
+      "label": "30 days",
+      "value": 311.04
+    }
+  ],
+  "method": "Synthetic constant 200 records/second \u00d7600 bytes/record \u00d786,400 seconds/day \u00f71,000,000,000 =10.368 decimal GB/day. Excludes indexing, replication, compression, metadata, and bursts. Records are not necessarily events.",
+  "alt": "Raw audit storage grows from 10.368 GB for 1 day to 72.576 GB for 7 days and 311.04 GB for 30 days under a fixed synthetic record rate.",
+  "studyPaths": [
+    "reliability",
+    "platform"
+  ],
+  "slug": "os-audit-framework",
+  "dataOrigin": "synthetic",
+  "steps": []
+}

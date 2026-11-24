@@ -1,0 +1,24 @@
+{
+  "kind": "bar",
+  "title": "Integration suite timing: a synthetic comparison",
+  "unit": "seconds",
+  "points": [
+    {
+      "label": "Repeated setup",
+      "value": 360
+    },
+    {
+      "label": "Shared infrastructure",
+      "value": 160
+    }
+  ],
+  "method": "Synthetic serial totals: repeated setup 180 + execution 120 + cleanup 60 =360 seconds; shared setup 30 + execution 120 + cleanup 10 =160 seconds. Same test selection; excludes CI queueing and downloads. Isolation must be independently verified.",
+  "alt": "Synthetic suite totals decrease from 360 to 160 seconds when setup and cleanup costs are reduced, with assertion time unchanged.",
+  "studyPaths": [
+    "platform",
+    "reliability"
+  ],
+  "slug": "python-testing-strategy-pytest",
+  "dataOrigin": "synthetic",
+  "steps": []
+}
