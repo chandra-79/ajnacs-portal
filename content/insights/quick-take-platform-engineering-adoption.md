@@ -33,3 +33,33 @@ Voluntary adoption produces honest feedback: either teams adopt the platform bec
 The platform's success is measured by: what percentage of application teams voluntarily use it for new projects, and what percentage actively choose it over the alternative when they have a choice?
 
 If those numbers are not growing, the platform is not winning on developer experience. Everything else — architecture quality, security posture, observability — depends on the platform being used.
+
+## Measure onboarding as a funnel with a qualifying finish
+
+A first deployment is useful only if it meets the intended operating standard. Define a qualifying deployment: the application is reachable, authenticated where required, observable, owned and recoverable through the supported path. A hello-world container that bypasses those requirements can make onboarding look fast while postponing the real work.
+
+In a hypothetical pilot, 30 developers start the path, 24 reach a build, 18 deploy a service and 15 complete the qualifying checks. The end-to-end completion rate is 15/30 = 50%, while deployment alone would report 60%. The chart uses one cohort and nested stages; adding stage counts would double-count participants. Record abandonment and blocked attempts rather than timing only successful users.
+
+For the worksheet, capture start condition, required prior access, completion event, elapsed time, hands-on time and support interactions. Separate waiting for an account from editing configuration because they require different improvements. Segment by workload type and prior experience where the sample permits, but avoid presenting tiny subgroups as robust statistics.
+
+## Observe a new user without coaching them through every step
+
+Ask a pilot participant to deploy a representative harmless service using the published path. Record the point where they hesitate, the terminology they misunderstand and the evidence that tells them deployment succeeded. Intervene for safety, but mark assisted steps so the observed completion is not mistaken for self-service success.
+
+Next, change one friction point and repeat with comparable participants or tasks. A shorter median may come from selecting more experienced users, so preserve cohort context and the number of incomplete attempts. A one-hour target can be an internal goal for a defined workload; it is not an industry law for every regulated or data-intensive service.
+
+Voluntary adoption supplies useful feedback, while some controls legitimately require mandated platform use. In either case, measure whether the platform reduces work and preserves required capabilities. Maintain an exception path for unsupported workloads and use exceptions as product research rather than treating them automatically as disobedience. Publish the supported journey, current limitations and improvement backlog. The platform earns sustained use when developers can complete real work safely and the team responds to evidence about where they cannot.
+
+| Observation | Value (developers) |
+| --- | ---: |
+| Started | 30 |
+| Built | 24 |
+| Deployed | 18 |
+| Qualified | 15 |
+
+**Figure method.** Synthetic nested cohort: qualifying completion=15/30=50%; deployment-only=18/30=60%. Stages are not additive; include abandoned and assisted attempts.
+
+## Further reading
+
+- [Kubernetes production environment](https://kubernetes.io/docs/setup/production-environment/)
+- [Google SRE incident response](https://sre.google/workbook/incident-response/)

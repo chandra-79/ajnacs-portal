@@ -1,0 +1,31 @@
+{
+  "slug": "backup-strategies-that-restore",
+  "kind": "bar",
+  "title": "Recovery time components",
+  "unit": "minutes",
+  "points": [
+    {
+      "label": "Decision and access",
+      "value": 8
+    },
+    {
+      "label": "Restore data",
+      "value": 20
+    },
+    {
+      "label": "Replay logs",
+      "value": 12
+    },
+    {
+      "label": "Validate service",
+      "value": 10
+    }
+  ],
+  "method": "Synthetic sequential recovery stages. Restore time uses 180,000 MB divided by 150 MB/s and sixty seconds per minute. Sum all four stages for fifty minutes. Parallel work would require a critical-path calculation instead.",
+  "alt": "Recovery time components: Decision and access 8 minutes, Restore data 20 minutes, Replay logs 12 minutes, Validate service 10 minutes. Illustrative inputs.",
+  "dataOrigin": "synthetic",
+  "steps": [],
+  "studyPaths": [
+    "reliability"
+  ]
+}

@@ -26,10 +26,37 @@ The correct response is: staging is not doing its job, and we have become comfor
 
 Teams learn the specific ways staging diverges from production and adjust their process accordingly: "always do a canary deployment because staging might not catch it." "Monitor the first hour after a production deployment closely." "Don't fully trust staging for performance."
 
-These are adaptations to a broken environment, not solutions. They do not reduce the risk. They just make the team faster at responding after the risk manifests.
+These controls can reduce exposure and detection time, but they do not establish what staging validates. Keep them alongside an explicit account of environment differences and the tests appropriate to each boundary.
 
 ## What actually helps
 
 Production-like data (properly anonymized) in staging. Production-equivalent infrastructure configuration, including instance sizes. A process for detecting and alerting on staging-production configuration drift. The discipline to treat staging divergence from production as a bug, not a known limitation.
 
 The investment is not trivial. Neither is the cost of the bugs that only appear in production.
+
+## Decide which differences invalidate the test
+
+Perfect parity is rarely a useful binary goal. A payment provider's sandbox intentionally behaves differently, and copying production customer data introduces privacy and security obligations. Write the assertion first: whether the release preserves an authorization boundary, handles a timeout, or remains within an agreed latency objective. Then identify which environment properties can change that assertion's answer.
+
+For a hypothetical catalogue service, staging contains 100,000 products while production contains 10 million. That is a 100-fold cardinality difference, not proof of a 100-fold latency difference. Index selectivity, cache state and query shape determine the performance effect. Build synthetic rows with representative tenant-size skew and value distributions rather than merely repeating the same record. Compare query plans before increasing traffic.
+
+A small test run measures p95 latency at a fixed 100 requests per second: 90 ms with the tiny dataset, 260 ms with the representative distribution, and 150 ms after changing the query. These numbers are illustrative measurements chosen to explain the process. The apparent improvement is (260 − 150) / 260 = 42.3%, but it says nothing about peak traffic or a different tenant mix. Keep the arrival schedule, hardware, query set and warm-up period fixed for a fair comparison.
+
+## Run a divergence review before release
+
+Create three worksheet columns: the production property, the staging equivalent, and the evidence needed elsewhere. Put database distribution, connection limits, flags, integration error behavior and permissions on separate rows. Label deliberate differences with an owner and a compensating test. An undocumented difference is a gap to investigate, not automatic grounds to build an identical environment.
+
+Inject a slow dependency and an exhausted connection pool in an isolated environment. Confirm the application respects its deadline and releases resources. Do not point synthetic writes at a real payment service. Retain a bounded canary in production because some traffic interactions cannot be reproduced economically; canaries and monitoring are risk controls with their own limitations, not evidence that staging has failed. Define the stop condition before observing results, and confirm that rollback remains compatible with any schema changes.
+
+| Observation | Value (ms) |
+| --- | ---: |
+| Tiny dataset p95 | 90 |
+| Representative p95 | 260 |
+| Revised query p95 | 150 |
+
+**Figure method.** Synthetic p95 values at a fixed 100 requests/s. Relative reduction = (260−150)/260 = 42.3%. Dataset ratio = 10,000,000/100,000 = 100; no linear latency relationship is assumed.
+
+## Further reading
+
+- [AWS Well-Architected Framework](https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html)
+- [Google SRE incident response](https://sre.google/workbook/incident-response/)

@@ -71,3 +71,69 @@ You don't migrate to zero trust in a quarter. A realistic phased approach:
 The pragmatic starting point: fix identity first. Most organizations that claim to be implementing zero trust have not yet achieved strong MFA enforcement. That's where the highest risk reduction per unit of effort is.
 
 *Assessing your organization's zero trust maturity or working through a specific implementation? [Happy to compare where the effort is best spent.](/contact)*
+
+## Make the operating contract explicit
+
+Zero trust changes the basis of an access decision. A network location or device ownership should not by itself grant broad trust. The decision should concern a specific subject, resource and action, informed by the signals the organization can reliably maintain. That does not mean every request must make a slow remote call to every identity system. The architecture still needs bounded caching, availability and a clear freshness contract.
+
+Start with a narrow protected resource. Identify who should use it, how their identity is established, which device or workload attributes matter and where enforcement can occur. Then consider stolen sessions, stale group membership, compromised devices and service-to-service calls. A product that authenticates users at a proxy can improve one boundary while leaving application-level authorization unchanged.
+
+Operational recovery belongs in the design. If the policy service or identity provider is unavailable, the team needs a predefined response for existing sessions and new requests. Fail-open and fail-closed choices have different consequences and may vary by resource. Emergency access should be tightly scoped, attributable and tested. Otherwise, an incident can turn an architectural control into an improvised blanket bypass.
+
+## Choose an access boundary small enough to explain
+
+Select one application operation and write a decision table before choosing products. List the permitted subject classes, the resource, the required authentication or device context and the conditions that must deny access. Include a user whose access was recently removed, a workload with the wrong identity and a request that reaches the service through a direct path. These cases expose the enforcement requirement more clearly than a broad statement that the network should trust nothing.
+
+Evaluate signal quality. Device posture, group membership and risk indicators are useful only when their source, freshness and failure behavior are understood. A policy that requires a signal can make that signal provider a dependency for access. Decide how stale or unavailable values are handled for the selected resource. Do not silently interpret missing data as compliance simply to keep the login flow working.
+
+Keep application authorization in the picture. A proxy can establish that a person may connect to an application while the application still needs to determine which customer records they may read or modify. Similarly, workload identity can identify the calling service without proving the end user's permission. Place each decision where the necessary trusted context exists and ensure there is no route around the enforcement point.
+
+Review administrative authority over the policy system. Someone able to change trusted issuers, device conditions or access rules can change the effective security boundary. Protect that capability with appropriate review and audit evidence. Test emergency changes in a bounded setting and define how they expire or return to the normal policy. A permanent unrestricted fallback can undermine an otherwise careful design.
+
+The pilot result should report both unwanted allows and unwanted denials. Eliminating every false denial by broadening access defeats the purpose; blocking every request also fails the service. Use the predeclared decision table to find the specific rule or signal responsible and repair that boundary without weakening unrelated cases.
+
+Document the access-denial experience as well. A legitimate user should receive a safe explanation and support route without learning protected resource details or being encouraged to bypass the control.
+
+Record the reviewer, test date and remaining uncertainty alongside the decision.
+
+## Work through an illustrative scenario
+
+A fictional pilot evaluates forty access cases for one internal application. Thirty-two represent permitted users and compliant devices; eight represent revoked users, untrusted devices or cross-tenant attempts. The first policy correctly allows thirty-one of the thirty-two legitimate cases and denies all eight negative cases. The blocked legitimate case becomes a compatibility defect to repair without weakening the eight negative checks. These are acceptance fixtures, not a claim about attack prevention rates.
+
+| Observation | Value (test cases) |
+| --- | ---: |
+| Expected permitted | 32 |
+| Correctly permitted | 31 |
+| Expected denied | 8 |
+| Correctly denied | 8 |
+
+**Calculation and limits.** Synthetic forty-case fixture with expected decisions defined in advance. Report false denials and false allows separately. Fixture success does not establish that every production identity or threat has been covered.
+
+## Build the evidence worksheet
+
+**Protected resource.** Name the application operation or dataset rather than starting with an entire network segment.
+
+**Subject proof.** Identify the user or workload and the authority trusted to establish its identity.
+
+**Decision signals.** Use only attributes with known provenance, update behavior and operational ownership.
+
+**Enforcement point.** Locate the control that can actually prevent the action, including direct paths around a proxy.
+
+**Freshness contract.** Bound the time during which a revoked identity or changed device state can remain accepted.
+
+**Emergency behavior.** Document outage and break-glass paths with scoped access and an auditable approval route.
+
+## Rehearse the failure boundary
+
+1. **Revoke an active subject.** Measure when each protected operation stops accepting the prior authority.
+
+2. **Bypass the front door.** Verify direct service paths still enforce the relevant identity and resource rules.
+
+3. **Make an attribute stale.** Check whether the policy rejects, refreshes or uses the value under a documented bound.
+
+4. **Stop the policy service.** Exercise the approved outage behavior and confirm emergency access is visible and limited.
+
+## Sources for the mechanisms
+
+- [NIST Zero Trust Architecture](https://csrc.nist.gov/pubs/sp/800/207/final)
+- [OWASP authorization guidance](https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html)

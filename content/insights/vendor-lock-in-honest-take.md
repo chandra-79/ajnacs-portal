@@ -1,21 +1,35 @@
 ---
-title: "Vendor lock-in anxiety is usually worse than the lock-in itself."
-description: "Vendor lock-in anxiety is usually worse than the lock-in itself."
+title: "Vendor Lock-in: Test the Exit Path Before Pricing Portability"
+description: "A portable interface is only one part of an exit; verify data, semantics and operating requirements before committing to an abstraction."
 date: 2029-05-14
 tags: ["Cloud Architecture", "Engineering Leadership"]
 format: note
 derived: true
 ---
 
-Vendor lock-in anxiety is usually worse than the lock-in itself.
+Vendor dependence can create migration work, negotiating constraints and exposure to changed service terms. Portability also costs engineering time and can restrict useful capabilities. A defensible choice compares specific obligations and exit paths rather than assuming either lock-in or an abstraction layer is always the greater risk.
 
-I've worked on multi-cloud architectures built primarily to avoid lock-in. In most of them:
-- The portability layer added more complexity than the original lock-in would have
-- The teams never actually needed to migrate
-- The abstraction reduced access to the managed services that would have solved real problems
+## Test what the export actually preserves
 
-That said — there are real lock-in risks worth managing: proprietary data formats at scale, network egress costs, and non-portable governance configurations.
+For a hypothetical exit drill, export 1,000 synthetic customer records from a managed application. The target imports 960 with all required fields, thirty without important audit metadata and ten with unsupported field types. Full-fidelity transfer is 96%, but the remaining forty records may block the migration if their information is required. A high percentage is not permission to discard them.
 
-The question isn't "can we avoid lock-in?" It's "what are the specific risks, and are they worth the cost of the portability layer?"
+The chart partitions records by outcome. This exercise tests one dataset and a defined field contract; it does not establish the cost or feasibility of replacing the entire application. Authentication, workflows, reports, retention and support procedures may require separate work.
 
-Most of the time, a deliberate commercial strategy with a strong exit clause is better engineering than a portable-by-default architecture you'll never use.
+## Build an exit worksheet
+
+List the provider-specific behavior, export format, field mapping, identity dependencies, expected downtime and business acceptance checks. Use a representative synthetic dataset with unusual values and relationships, not only easy rows. Compare the restored records against the original using explicit invariants, and record manual transformations.
+
+Then estimate the work a proposed portability layer actually removes. A common SDK interface may simplify client replacement while leaving data conversion and operating changes untouched. A contractual exit clause can help secure access to data or assistance, but it does not prove that the technical migration meets a required deadline. Keep a planned exit and an urgent exit as separate scenarios, and review the decision when the capability, contract or workload changes.
+
+| Observation | Value (records) |
+| --- | ---: |
+| Full fidelity | 960 |
+| Metadata missing | 30 |
+| Unsupported fields | 10 |
+
+**Figure method.** Synthetic 1,000-record fixture: 960+30+10=1,000; full fidelity=96%; forty need remediation. Categories describe this export contract, not complete application portability.
+
+## Primary references
+
+- [NIST cloud definitions](https://www.nist.gov/publications/nist-definition-cloud-computing)
+- [AWS architectural trade-offs](https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html)

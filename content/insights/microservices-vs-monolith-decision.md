@@ -54,7 +54,7 @@ Every service boundary introduces distributed systems complexity that didn't exi
 
 This complexity is a real cost. It's worth paying when the independence benefit exceeds it. It's not worth paying for clean architecture reasons alone.
 
-The teams I've seen suffer most from microservices are those that decomposed early, before they had traffic to justify the operational complexity, and before they understood their domain well enough to draw service boundaries that didn't cut across natural seams.
+The teams A possible failure pattern is suffer most from microservices are those that decomposed early, before they had traffic to justify the operational complexity, and before they understood their domain well enough to draw service boundaries that didn't cut across natural seams.
 
 ## When Microservices Are Clearly Right
 
@@ -73,4 +73,68 @@ Extraction is surgical — you identify the service boundary, extract the code, 
 
 If you're making this decision for a new system: default to a well-structured monolith. Extract services when you can articulate a specific reason that justifies the operational cost. The system will be easier to build, easier to operate, and easier to evolve.
 
-*Working through a microservices architecture decision or a monolith migration? [I've been on both sides of this.](/contact)*
+*Working through a microservices architecture decision or a monolith migration? [Compare the design and operating trade-offs.](/contact)*
+
+## Make the operating contract explicit
+
+A service boundary is useful when it gives a team a coherent responsibility that can change and operate with manageable coordination. A codebase split across repositories does not create that independence if every release still requires synchronized database changes and deployment. Begin with the business capability, data ownership and failure boundary, then decide whether a process boundary improves the situation.
+
+Distributed calls add failure modes that local calls do not have. A request can time out after the remote side has committed a change. Two services can disagree about the current state. A deployment can leave incompatible versions running together. A design therefore needs deadlines, idempotency, compatibility and recovery behavior. These are engineering costs, not an argument that every system should remain a single process.
+
+A modular monolith can be a deliberate intermediate architecture. Separate modules and ownership inside one deployable unit, prevent uncontrolled cross-module data access and observe where change coordination actually becomes expensive. Extract a service when the operational or organizational gain is identifiable. Keep the ability to reverse an unsuccessful extraction by limiting the new service's scope and documenting how data and calls would be reintegrated.
+
+## Use an extraction experiment to test the boundary
+
+Choose a capability with a clear owner and a small enough interface to reverse. Record the changes that currently force coordination with other modules or teams. After extraction, measure whether those changes can actually be released independently. If every release still requires a shared database migration and synchronized deployment, the process boundary may have added network failure modes without delivering the intended autonomy.
+
+Keep a ledger of remote interactions introduced by the extraction. For each call, record timeout, retry, authentication, authorization and compatibility behavior. For each event, record ordering, duplication and recovery assumptions. A synchronous request that becomes an asynchronous workflow may improve availability while changing the user's completion semantics. Describe that product change explicitly rather than treating it as an implementation detail.
+
+Test the data transition with a bounded cohort. During migration, two components may temporarily need to read or write the same business fact. Decide which is authoritative and how divergence is detected. Avoid permanent dual writes without a reconciliation strategy. A successful happy-path test does not prove that the two copies remain consistent when one update fails.
+
+The decision record should include the cost of keeping the new service: its deployment pipeline, telemetry, on-call route, dependency upgrades and recovery procedure. Compare those costs with the coordination or scaling problem the extraction was intended to solve. The result can support further extraction, a narrower service boundary or reintegration. Each is a valid engineering outcome when it follows the observed behavior.
+
+Keep the extraction hypothesis explicit: identify the specific coordination, scaling or failure-isolation improvement that would justify maintaining the new service.
+
+Recheck the chosen boundary after the pilot exposes actual deployment and recovery dependencies.
+
+## Work through an illustrative scenario
+
+A hypothetical checkout request makes four sequential remote calls. Their budget allocations are 40, 60, 80 and 20 milliseconds, totaling 200 milliseconds before other work. These are configured allowances, not independently measured p95 values. Adding the four allowances is valid for this sequential budget; adding four p95 measurements would not establish the checkout p95. The chart helps the team discuss where the request budget is spent before extracting another service.
+
+| Observation | Value (milliseconds) |
+| --- | ---: |
+| Inventory allowance | 40 |
+| Pricing allowance | 60 |
+| Payment allowance | 80 |
+| Order-write allowance | 20 |
+
+**Calculation and limits.** Synthetic sequential timeout allocation totaling 200 milliseconds. Values are design allowances, not latency percentiles or benchmark observations. Network overhead and local work need their own budget, and parallel branches use critical-path analysis.
+
+## Build the evidence worksheet
+
+**Business boundary.** Name the capability, owner and data whose changes the service controls.
+
+**Coordination cost.** Record which releases currently require another team and whether a service boundary would reduce that dependency.
+
+**Call contract.** Specify deadline, idempotency and error behavior for each remote operation.
+
+**Data ownership.** State which service writes each business fact and how other services obtain a consistent enough view.
+
+**Compatibility window.** Support the intended overlap of old and new clients during rollout and rollback.
+
+**Operational ownership.** Confirm who monitors, supports, restores and pays for the independently deployed service.
+
+## Rehearse the failure boundary
+
+1. **Time out after a write.** Verify the caller can discover the outcome or retry without duplicating the business effect.
+
+2. **Deploy versions out of order.** Check the contract across the supported compatibility window.
+
+3. **Lose one dependency.** Measure which business capabilities remain available and which fail explicitly.
+
+4. **Reverse the extraction.** Sketch the data and routing steps needed to reintegrate the capability if its operating cost exceeds the benefit.
+
+## Sources for the mechanisms
+
+- [Google SRE handling overload](https://sre.google/sre-book/handling-overload/)
+- [AWS architectural trade-offs](https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html)

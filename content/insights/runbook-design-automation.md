@@ -23,3 +23,67 @@ A runbook is assertions about a live system — paths, dashboards, commands, thr
 The strategic arc: every runbook is *automation that hasn't happened yet*, and the ladder makes the progression deliberate. **Rung one — prose** (the well-designed document above: the floor, and where genuinely-rare procedures rightly stay). **Rung two — executable steps** (commands as tested scripts the runbook invokes rather than inline snippets the reader retypes — retyping under stress is an error generator, and a script is versionable, reviewable, and *testable* in a way prose never is; the WLST-library philosophy applied to operations generally). **Rung three — the semi-automated runbook** (the document becomes a checklist driving parameterized automation: the operator supplies judgment — which region, which tenant — and confirms gates; the machinery executes — the human-decides-machine-executes pattern from failover practice, which is the right resting point for consequential-but-rare operations, keeping human judgment exactly where irreversibility lives per the agentic-safety rules). **Rung four — auto-remediation** (the alert triggers the fix without a human: restart the wedged consumer, recycle the leaking pod, fail over the read replica — legitimate precisely where the diagnosis is mechanical, the action is idempotent and bounded, and the failure mode of *wrong* remediation is smaller than the incident it prevents; guarded by rate limits and circuit breakers on the remediation itself, because an auto-remediator in a loop is an outage amplifier — the automation gets the same safety engineering as any actor with production credentials). The promotion rule between rungs is frequency times mechanicalness: the procedure executed monthly by copy-paste is begging for rung two; the one executed weekly with no judgment calls is rung-four backlog — and the on-call review from pager practice is where those promotions get scheduled.
 
 The closing frame: runbooks are the interface between an organization's *knowledge* and its *worst moments*, and their quality is measurable exactly there — time-to-mitigation for incidents with runbooks versus without, runbook-failure findings per retro, rehearsal pass rates. Design them for the degraded reader, version them with the systems, rehearse the critical few, and climb the ladder deliberately — because the endgame of operational maturity isn't heroes who know everything; it's 3 AM procedures so well-engineered that the newest engineer on the rotation resolves the page, confirms the fix, and goes back to sleep.
+
+## Make the operating contract explicit
+
+A runbook is an interface for making a consequential change under pressure. Its reader may be unfamiliar with the system, tired, or working without the original author. Put the trigger, scope and prerequisites before the commands. State what success looks like and when the operator must stop. A command that is technically correct can still be unsafe if it runs against the wrong account, region or dataset.
+
+Distinguish diagnosis from action. A diagnostic query should ideally be read-only and bounded. A repair step should identify its side effects, expected duration and recovery route. When a procedure contains a branch, explain the observation that selects the branch; do not rely on phrases such as use judgment where the required judgment can be described. Link to deeper background without making the incident responder read a textbook before acting.
+
+Automation is appropriate when the inputs and recovery behavior are sufficiently well understood. A script that merely executes the same ambiguous instructions faster can increase the blast radius. Start with validation and a preview, then add bounded execution, idempotency where possible and a durable result record. Some actions need human approval because the trade-off is a business decision. Preserve that decision explicitly rather than concealing it inside a shell command.
+
+## Turn a command sequence into a recoverable operation
+
+Before automating a repair, classify its side effects. A read-only diagnostic, an idempotent configuration update and a payment replay need different controls. The procedure should say which category each step belongs to and what evidence establishes completion. A successful process exit only proves the command ended as expected; the business outcome may still be incomplete. For an asynchronous API, the script may need to follow a job identifier until the operation reaches a terminal state.
+
+Make the preview useful. Show the environment, affected resource identifiers, count of selected records and planned action. Reject an empty or unexpectedly large selection before execution. A preview that displays only the command text makes the operator reason about expansion and hidden defaults during an incident. Prefer validated parameters over an unrestricted shell fragment, and retain the exact resolved selection in the execution record.
+
+Separate resumability from blind retry. If a repair processes one hundred items and stops after forty, the next attempt needs to know which forty completed and whether their effects are safe to repeat. A checkpoint may record stable item identifiers and result states. When the downstream system cannot support exactly-once behavior, reconciliation is part of the procedure. Do not describe a retry loop as safe merely because it catches an exception.
+
+Use permissions that fit the operation. A general administrator credential may make a demonstration easy while hiding the access boundary the production procedure needs. Test the runbook with the intended on-call role and a deliberately unauthorized target. The tool should refuse the latter with an actionable explanation. If an emergency role is necessary, record its activation, scope and expiry. The procedure must also work when the author is unavailable.
+
+Treat maintenance as part of the automation cost. API changes, schema changes and new failure modes can invalidate a previously useful tool. Give the runbook an owner and a lightweight rehearsal that runs after relevant changes. Store the last successful exercise result beside the procedure. A timestamp showing that a page was edited is not the same as evidence that its commands still work.
+
+The final handover should explain when to use the tool, what it will change, how to tell that it succeeded and what to do when it stops halfway. Ask a colleague to execute the bounded exercise without coaching. Record their questions as defects in the interface. That test often reveals more useful improvement work than another layer of automatic execution.
+
+## Work through an illustrative scenario
+
+In a fictional replay procedure, a manual operator spends four minutes identifying the batch, six checking whether side effects already occurred, three executing the replay and five verifying the result. Total hands-on time is eighteen minutes. A guided tool reduces identification to one minute and execution to one, while the six-minute safety check and five-minute verification remain. Modeled hands-on time becomes thirteen minutes, a five-minute reduction. The example values are assumptions, and waiting time is recorded separately.
+
+| Observation | Value (hands-on minutes) |
+| --- | ---: |
+| Identify batch | 4 |
+| Check prior side effects | 6 |
+| Execute replay | 3 |
+| Verify result | 5 |
+
+**Calculation and limits.** Synthetic single execution with eighteen hands-on minutes. Guided-tool comparison changes identification from four to one and execution from three to one, producing thirteen minutes. Waiting time and tool upkeep are excluded and must be added for a business case.
+
+## Build the evidence worksheet
+
+**Trigger.** Define the observable condition that makes the procedure appropriate and the situations where it must not run.
+
+**Target proof.** Require the operator to confirm the account, environment, resource and batch identity before a mutation.
+
+**Safety condition.** Check prior side effects and the operation’s idempotency or reconciliation behavior.
+
+**Bounded action.** Limit the number of records, concurrency and execution time involved in the repair.
+
+**Verification.** Compare the intended business result with the actual outcome, including duplicate or missing effects.
+
+**Stop condition.** Name the observations that require escalation instead of another retry.
+
+## Rehearse the failure boundary
+
+1. **Use the wrong environment.** Ensure the preview and permissions stop the action before it modifies the target.
+
+2. **Interrupt execution halfway.** Record which work completed and exercise the documented resumption or reconciliation route.
+
+3. **Repeat the action.** Verify the claimed idempotency behavior or show the operator why a repeat is unsafe.
+
+4. **Hand the procedure to a colleague.** Observe questions and missing context without coaching them through undocumented steps.
+
+## Sources for the mechanisms
+
+- [Google SRE incident response](https://sre.google/workbook/incident-response/)
+- [Google SRE monitoring](https://sre.google/sre-book/monitoring-distributed-systems/)

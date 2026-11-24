@@ -30,3 +30,31 @@ A system that has only ever run in staging has only ever been tested on a simpli
 **Chaos engineering.** Deliberately introducing failures in production to verify that the system's resilience mechanisms work as designed. Netflix famously runs this in production. The rationale: a failure that you introduce intentionally in a controlled manner is better than discovering it during an uncontrolled incident.
 
 The staging environment that passes all tests and says nothing about production behavior is not safety. It is false confidence. Controlled production testing is the alternative.
+
+## Define an experiment that can stop before harm grows
+
+Production validation is a complement to pre-production testing, not permission to bypass it. Some workloads cannot tolerate experimental writes or deliberate disruption, and an organization may prohibit particular production exercises. Choose the smallest authorized observation that resolves the remaining uncertainty. A canary still serves real users, so its blast radius and reversal mechanism must be understood.
+
+Consider a hypothetical rollout with 10,000 eligible requests during a decision window. A 2% canary receives 200 requests; the baseline receives 9,800. If the canary records six failures and the baseline records 49, the observed rates are 3% and 0.5%. The difference is 2.5 percentage points, or sixfold in relative terms. With only 200 canary observations, uncertainty and cohort differences matter; this example is a stop signal for investigation rather than a formal significance test.
+
+Write the decision rule before launch: the eligible population, observation window, minimum sample, user-visible metric, stop threshold and person who can halt the rollout. Include latency and correctness where errors alone miss damage. Compare like-for-like requests because a canary assigned only internal users may not represent customer traffic. Preserve failed and timed-out requests in the denominator.
+
+## Check the side effects of shadow execution
+
+A shadow request must not send a second email, charge a card, publish an event or mutate authoritative data merely because its response is hidden. Use isolated destinations, read-only operations or explicit side-effect suppression, and verify that suppression with test cases. Protect copied production data using the same access and retention rules as the original.
+
+For an exercise, deploy a harmless endpoint that returns a deterministic result. Introduce a controlled error in the canary, confirm that the stop condition fires and verify that routing actually returns to the baseline. Then test an incompatible schema change in a disposable environment to demonstrate why binary rollback may not undo data changes. Record cleanup and residual state.
+
+Chaos experiments need an explicit hypothesis, a known steady state, abort controls and a scope appropriate to the system's criticality. Begin with a simulation or staging drill when the recovery path is unproven. The useful outcome is evidence about a named uncertainty, including what remains untested, rather than a general claim that all production experimentation is safer than avoiding it.
+
+| Observation | Value (percent) |
+| --- | ---: |
+| Canary failures | 3 |
+| Baseline failures | 0.5 |
+
+**Figure method.** Synthetic window: canary 6/200=3%; baseline 49/9,800=0.5%. Difference=2.5 percentage points; ratio=6. Small samples and cohort imbalance limit inference.
+
+## Further reading
+
+- [AWS Well-Architected Framework](https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html)
+- [Google SRE incident response](https://sre.google/workbook/incident-response/)

@@ -20,7 +20,7 @@ This is a legitimate choice. Cloud hosted gets you:
 - Snapshot-based backups
 - Easier geographic expansion if needed
 
-It does not get you elastic scale-out, pay-per-request pricing, zero-ops managed services, or the failure isolation patterns that cloud-native architectures enable.
+It does not get you elastic scale-out, pay-per-request pricing, managed services with a changed operating-responsibility boundary, or the failure isolation patterns that cloud-native architectures enable.
 
 ## Cloud native
 
@@ -35,3 +35,30 @@ The failure mode is treating cloud-hosted workloads as if they are cloud native 
 Expecting elastic scale from an application with long startup times and stateful session management. Expecting managed service cost efficiency from a workload that runs EC2 instances at constant load. Expecting cloud-native resilience from an application that has no retry logic, no circuit breakers, and assumes its dependencies are always available.
 
 The expectations and the architecture need to be aligned. If you have a cloud-hosted architecture, set cloud-hosted expectations. If you want cloud-native outcomes, that requires a cloud-native architecture.
+
+## Describe capabilities without using the label as evidence
+
+Cloud-native practices are not confined to public-cloud managed services, and a virtual machine can host an application with disciplined automation and failure isolation. Equally, a serverless function can contain unsafe retries or depend on a single fragile service. The architecture question is whether the system handles replacement, load variation and dependency failure under its actual contract.
+
+Build a capability matrix for a hypothetical image-processing service. Its original worker handles 12 jobs per minute. A replacement deployment runs four workers at the same tested per-worker rate, giving a theoretical 48 jobs per minute. A shared metadata database then caps the measured system at 36 jobs per minute. Scaling compute by four therefore yields a threefold system throughput increase, not fourfold. These illustrative values show why dependency limits belong in the model. They are not performance claims about a particular cloud product.
+
+The practical exercise uses a fixed set of harmless images with recorded sizes and processing parameters. Measure admitted jobs, successful outputs, retries and completion latency. First run one worker, then four, while keeping the database and storage configuration constant. Report incomplete work rather than dropping it from the denominator. Repeat after the caches are warm and preserve the distinction between startup behavior and steady throughput.
+
+## Exercise replacement, not just scaling
+
+Terminate one test worker after it has read a job but before it records completion. Determine whether the message becomes available again, whether the output can be written twice and whether the retry is safe. A container image does not answer these questions; acknowledgment and idempotency design do. Add a deadline so a stalled dependency cannot occupy every worker indefinitely.
+
+The decision worksheet should list each required capability, its implementation, its evidence and the remaining owner. For example, autoscaling needs a signal related to useful demand, a maximum bound, suitable quotas and a response time compatible with the backlog. Managed storage needs documented recovery and access controls. Prefer the smallest set of changes that meets the service objective, and report the achieved properties directly. A label such as cloud native is a summary of those decisions, not a substitute for proving them.
+
+| Observation | Value (jobs/minute) |
+| --- | ---: |
+| One worker | 12 |
+| Four-worker ideal | 48 |
+| Shared DB limit | 36 |
+
+**Figure method.** Synthetic throughput: 4×12=48 ideal jobs/minute, limited to 36 by a shared database; 36/12=3× observed capacity. Assumes identical jobs and no other bottleneck.
+
+## Further reading
+
+- [The Twelve-Factor App](https://12factor.net/)
+- [Kubernetes production considerations](https://kubernetes.io/docs/setup/production-environment/)
