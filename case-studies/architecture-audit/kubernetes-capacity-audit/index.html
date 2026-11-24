@@ -33,7 +33,7 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=821ac6ed">
+<link rel="stylesheet" href="/assets/css/site.css?v=2a696502">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
 <link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
@@ -99,6 +99,7 @@ d.setAttribute('data-theme',t);
 <p>A cluster has enough aggregate CPU utilisation headroom, yet new Pods queue for a node. Scope one deployment and one node pool. Success requires lower reserved CPU while maintaining the service&#39;s p95 under 260 ms and at least 98.5% of requests within the service objective.</p>
 <h2 id="plan-and-execution"><a class="h-anchor" href="#plan-and-execution" aria-hidden="true" tabindex="-1">#</a>Plan and execution</h2>
 <p>Compare requests, limits, actual CPU, throttling and memory under steady traffic, burst and a drain. Distinguish a scheduler fit problem from a runtime saturation problem. Test a lower CPU request with the application and autoscaling owners. Hold limits and traffic mix constant for the first comparison, and account for any horizontal autoscaler tied to utilisation as a proportion of requested CPU.</p>
+<p class="depth-reading"><a href="/deep-dives/performance/queue-saturation-model/">Level 3 · Calculate the cost of saturation with a queue model</a></p>
 <h2 id="rollout-and-handover"><a class="h-anchor" href="#rollout-and-handover" aria-hidden="true" tabindex="-1">#</a>Rollout and handover</h2>
 <p>Change one pool and keep the old deployment manifest available. Watch unschedulable events, restart reasons, replica churn and latency at peak. Roll back if the threshold is missed or if a planned node drain violates workload availability. Document whether the observed request reduction can actually remove a node or avoid a future purchase.</p>
 <h2 id="how-to-read-the-numbers"><a class="h-anchor" href="#how-to-read-the-numbers" aria-hidden="true" tabindex="-1">#</a>How to read the numbers</h2>
@@ -131,6 +132,10 @@ d.setAttribute('data-theme',t);
   </figure>
       <p class="case-download"><a href="/case-studies/architecture-audit/kubernetes-capacity-audit.csv" download>Download the simulated measurements (CSV)</a></p>
       <p class="case-download"><a href="https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/">Kubernetes · Resource Management for Pods and Containers</a></p>
+      <nav class="series-box" aria-label="Study paths">
+    <h2 class="h3">Study this in more depth</h2>
+    <ul class="series-list"><li><a href="/deep-dives/finops/">Cloud unit economics <span>· Levels 2–4</span></a></li><li><a href="/deep-dives/performance/">Latency and capacity <span>· Levels 2–4</span></a></li></ul>
+  </nav>
       <div class="row"><a class="btn btn-ghost" href="/case-studies/architecture-audit/">More architecture audit scenarios</a><a class="btn" href="/contact/">Discuss a similar engagement</a></div>
     </div>
     <aside class="writing-promos" aria-label="Promotions" data-ad-slot="case-study-rail">
@@ -183,6 +188,7 @@ d.setAttribute('data-theme',t);
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/deep-dives/">Deep dives</a></li>
           <li><a href="/follow/">Follow new writing</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
@@ -204,7 +210,7 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=821ac6ed" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=821ac6ed"></script>
+<script src="/assets/js/site.js?v=2a696502" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=2a696502"></script>
 </body>
 </html>

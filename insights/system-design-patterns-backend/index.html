@@ -33,7 +33,7 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=821ac6ed">
+<link rel="stylesheet" href="/assets/css/site.css?v=2a696502">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
 <link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
@@ -111,6 +111,7 @@ d.setAttribute('data-theme',t);
 <p>The patterns worth knowing deeply are the ones that solve problems you will actually encounter — data consistency across services, handling high write loads, maintaining audit history, coordinating distributed transactions. Here&#39;s how I think about the ones that come up most often.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
 <p><strong>Traffic, queue lag and user-visible outcomes.</strong> During a load ramp, track successful throughput and tail latency. If production runs at 800 messages/s and consumers process 700, backlog grows by 100 messages/s, or 6,000 per minute. Set a visible lag objective and test how the system drains after a burst.</p>
+<p class="depth-reading"><a href="/deep-dives/performance/mergeable-latency-percentiles/">Level 2 · Read tail latency from a mergeable distribution</a></p>
 <p><em>Illustrative measurement. Any numbers in this example are hypothetical.</em></p>
 <h2 id="cqrs-separate-your-read-model-from-your-write-model"><a class="h-anchor" href="#cqrs-separate-your-read-model-from-your-write-model" aria-hidden="true" tabindex="-1">#</a>CQRS: separate your read model from your write model</h2>
 <p>Command Query Responsibility Segregation separates the data model used to modify state (commands) from the data model used to read state (queries).</p>
@@ -145,7 +146,7 @@ INSERT INTO outbox (aggregate_id, event_type, payload)
 COMMIT;
 -- relay reads outbox, publishes to Kafka, marks as sent
 </code></pre>
-<p>This guarantees at-least-once delivery — the event will eventually be published. Consumers need to be idempotent (handling the same event twice is harmless) which is good practice regardless.</p>
+<p>The transaction commits both the business record and the outbox record. Delivery still depends on a functioning relay, broker availability, and retention. A relay can publish again after a crash between broker acknowledgement and marking the item sent. Use a stable event ID and idempotent consumer processing, and monitor undelivered records. See the <a href="https://docs.aws.amazon.com/prescriptive-guidance/latest/cloud-design-patterns/transactional-outbox.html" rel="noopener" target="_blank">transactional outbox guidance</a>.</p>
 <h2 id="cache-aside-reading-from-cache-falling-back-to-the-database"><a class="h-anchor" href="#cache-aside-reading-from-cache-falling-back-to-the-database" aria-hidden="true" tabindex="-1">#</a>Cache-aside: reading from cache, falling back to the database</h2>
 <p>The most common caching pattern: application checks cache, cache hit returns data, cache miss reads from database and writes to cache before returning.</p>
 <p>The failure modes that aren&#39;t always obvious:</p>
@@ -200,6 +201,10 @@ If the answer is &quot;our event publishing is unreliable&quot; — outbox.</p>
     <li><a href="https://redis.io/docs/latest/" rel="noopener" target="_blank">Redis documentation</a><span>Data types, persistence and eviction.</span></li>
   </ul>
 </aside>
+<nav class="series-box" aria-label="Study paths">
+    <h2 class="h3">Study this in more depth</h2>
+    <ul class="series-list"><li><a href="/deep-dives/performance/">Latency and capacity <span>· Levels 2–4</span></a></li></ul>
+  </nav>
 
 
 
@@ -339,6 +344,7 @@ If the answer is &quot;our event publishing is unreliable&quot; — outbox.</p>
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/deep-dives/">Deep dives</a></li>
           <li><a href="/follow/">Follow new writing</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
@@ -360,7 +366,7 @@ If the answer is &quot;our event publishing is unreliable&quot; — outbox.</p>
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=821ac6ed" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=821ac6ed"></script>
+<script src="/assets/js/site.js?v=2a696502" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=2a696502"></script>
 </body>
 </html>

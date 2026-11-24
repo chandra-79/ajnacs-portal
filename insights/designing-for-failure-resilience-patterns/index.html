@@ -33,7 +33,7 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=821ac6ed">
+<link rel="stylesheet" href="/assets/css/site.css?v=2a696502">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
 <link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
@@ -129,6 +129,7 @@ d.setAttribute('data-theme',t);
 <p>Retrying failed requests is reasonable. Retrying without care causes thundering herd problems that make outages worse.</p>
 <p>The pattern that causes problems: naive retries with fixed delays. A downstream service fails. All clients retry simultaneously after 1 second. The downstream — which was just recovering — gets hit with a spike of concurrent retries and fails again. Loop repeats.</p>
 <p><strong>Exponential backoff with jitter</strong> breaks the synchronisation. Each retry waits exponentially longer, plus a random component that spreads retries across time rather than synchronising them. This is the implementation AWS, Google, and Azure all recommend in their SDKs, and it&#39;s the implementation most internal code gets wrong.</p>
+<p class="depth-reading"><a href="/deep-dives/reliability/retry-load-budget/">Level 4 · Decide when a retry is worth the added load</a></p>
 <pre><code class="language-python">import random
 import time
 
@@ -207,6 +208,10 @@ def retry_with_backoff(func, max_retries=3, base_delay=1.0):
     <li><a href="https://prometheus.io/docs/" rel="noopener" target="_blank">Prometheus</a><span>Query language and operational guidance.</span></li>
   </ul>
 </aside>
+<nav class="series-box" aria-label="Study paths">
+    <h2 class="h3">Study this in more depth</h2>
+    <ul class="series-list"><li><a href="/deep-dives/reliability/">Service reliability <span>· Levels 2–4</span></a></li></ul>
+  </nav>
 
 
 
@@ -356,6 +361,7 @@ def retry_with_backoff(func, max_retries=3, base_delay=1.0):
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/deep-dives/">Deep dives</a></li>
           <li><a href="/follow/">Follow new writing</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
@@ -377,7 +383,7 @@ def retry_with_backoff(func, max_retries=3, base_delay=1.0):
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=821ac6ed" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=821ac6ed"></script>
+<script src="/assets/js/site.js?v=2a696502" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=2a696502"></script>
 </body>
 </html>

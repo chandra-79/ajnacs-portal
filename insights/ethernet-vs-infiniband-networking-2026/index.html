@@ -33,7 +33,7 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=821ac6ed">
+<link rel="stylesheet" href="/assets/css/site.css?v=2a696502">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
 <link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
@@ -112,6 +112,7 @@ d.setAttribute('data-theme',t);
 <p>Track application step time and a representative collective over the same nodes, ranks and buffers. Report port line rate in Gb/s, collective payload in GB/s, and whether a figure is one-way, bidirectional or aggregated. <strong>Illustrative measurement.</strong> For two fictional clusters the median collective step drops from 51 ms to 43 ms with the same job configuration. That comparison does not establish an advantage for every deployment of either fabric.</p>
 <h2 id="transport-and-topology"><a class="h-anchor" href="#transport-and-topology" aria-hidden="true" tabindex="-1">#</a>Transport and topology</h2>
 <p>Ethernet supports many workloads and network designs. RDMA deployments can use RoCE, whose observed congestion and loss behaviour depends on the transport, adapters and switch configuration. Provision, configure and observe the path that the workload actually uses. The existing office network is not a stand-in for a dedicated GPU fabric.</p>
+<p class="depth-reading"><a href="/deep-dives/networks/allreduce-bandwidth-budget/">Level 4 · Compare collective communication with the right bandwidth metric</a></p>
 <p>InfiniBand defines a fabric and native RDMA capabilities. Port speed depends on generation and lane count. For example, a four-lane NDR port is rated at 400 Gb/s, while four-lane XDR is rated at 800 Gb/s. Payload transfer, host injection and collective completion must be checked separately.</p>
 <p>Accelerator interconnects and cluster fabrics are distinct. An NVIDIA DGX H100 uses NVLink and NVSwitch within the system, and network interfaces for inter-node exchange. Read the cloud SKU: AWS EFA uses Scalable Reliable Datagram transport, while Azure ND H100 v5 documents dedicated InfiniBand per GPU. Compute configuration, topology and runtime determine whether a measured cross-cloud comparison is meaningful.</p>
 <h2 id="decide-on-evidence"><a class="h-anchor" href="#decide-on-evidence" aria-hidden="true" tabindex="-1">#</a>Decide on evidence</h2>
@@ -158,6 +159,10 @@ d.setAttribute('data-theme',t);
     <li><a href="https://github.com/NVIDIA/nccl-tests/blob/master/doc/PERFORMANCE.md" rel="noopener" target="_blank">NVIDIA NCCL Tests · Performance definitions</a><span>Collective workload, algorithm bandwidth and bus bandwidth.</span></li>
   </ul>
 </aside>
+<nav class="series-box" aria-label="Study paths">
+    <h2 class="h3">Study this in more depth</h2>
+    <ul class="series-list"><li><a href="/deep-dives/networks/">Networks and workload isolation <span>· Levels 2–4</span></a></li></ul>
+  </nav>
 
 
 
@@ -297,6 +302,7 @@ d.setAttribute('data-theme',t);
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/deep-dives/">Deep dives</a></li>
           <li><a href="/follow/">Follow new writing</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
@@ -318,7 +324,7 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=821ac6ed" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=821ac6ed"></script>
+<script src="/assets/js/site.js?v=2a696502" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=2a696502"></script>
 </body>
 </html>

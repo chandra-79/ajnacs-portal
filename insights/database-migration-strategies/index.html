@@ -33,7 +33,7 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=821ac6ed">
+<link rel="stylesheet" href="/assets/css/site.css?v=2a696502">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
 <link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
@@ -111,6 +111,7 @@ d.setAttribute('data-theme',t);
 <p>Zero-downtime database migrations are achievable, but they require treating schema changes and data movement as distinct operations with distinct risk profiles.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
 <p><strong>Reconciliation rate at a known replication lag.</strong> If 999,950 of 1,000,000 source records match a target snapshot at the same logical cut, the mismatch count is 50. Investigate by key and reason before switching writes. Track replication lag and rehearse what happens to new writes during rollback.</p>
+<p class="depth-reading"><a href="/deep-dives/migration/cutover-replay-window/">Level 2 · Calculate how much replay time a cutover needs</a></p>
 <p><em>Illustrative measurement. Any numbers in this example are hypothetical.</em></p>
 <h2 id="the-core-principle-schema-changes-must-be-backward-compatibl"><a class="h-anchor" href="#the-core-principle-schema-changes-must-be-backward-compatibl" aria-hidden="true" tabindex="-1">#</a>The core principle: schema changes must be backward compatible</h2>
 <p>The fundamental constraint: at any point during a deployment, both the old version of the application and the new version must be able to read and write the database correctly. This rules out a large category of apparently simple changes:</p>
@@ -245,6 +246,10 @@ FROM orders;
     <li><a href="https://www.postgresql.org/docs/current/" rel="noopener" target="_blank">PostgreSQL documentation</a><span>Configuration and planner behaviour.</span></li>
   </ul>
 </aside>
+<nav class="series-box" aria-label="Study paths">
+    <h2 class="h3">Study this in more depth</h2>
+    <ul class="series-list"><li><a href="/deep-dives/migration/">Database migration and recovery <span>· Levels 2–4</span></a></li></ul>
+  </nav>
 
 
 
@@ -384,6 +389,7 @@ FROM orders;
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/deep-dives/">Deep dives</a></li>
           <li><a href="/follow/">Follow new writing</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
@@ -405,7 +411,7 @@ FROM orders;
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=821ac6ed" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=821ac6ed"></script>
+<script src="/assets/js/site.js?v=2a696502" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=2a696502"></script>
 </body>
 </html>

@@ -33,7 +33,7 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=821ac6ed">
+<link rel="stylesheet" href="/assets/css/site.css?v=2a696502">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
 <link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
@@ -116,6 +116,7 @@ d.setAttribute('data-theme',t);
 <p>Increment selection is the next craft: strangle along <strong>business capability seams, not technical layers</strong> (&quot;customer address management,&quot; not &quot;the DAO tier&quot;), choosing early increments for <em>decoupling feasibility</em> (bounded data, few callers) and <em>learning value</em>, not executive visibility. Each increment should reach <em>full</em> retirement — traffic at 100%, legacy code path deleted, data ownership transferred — before declaring victory, because a fleet of 80%-migrated capabilities is precisely the both-systems-forever trap.</p>
 <h2 id="data-is-the-boss-fight-again"><a class="h-anchor" href="#data-is-the-boss-fight-again" aria-hidden="true" tabindex="-1">#</a>Data is the boss fight (again)</h2>
 <p>Routing requests is easy; the schism is the data. While a capability straddles systems, its state needs a coherence strategy, and the options are the familiar distributed-data toolkit applied with migration-specific sequencing: <strong>legacy-owns, new-reads</strong> (the new system reads via CDC-fed projections or APIs while writes stay legacy — the safe starting posture, and CDC&#39;s killer use case: the legacy publishes changes without being modified); then <strong>dual-write windows</strong> managed with the same care as any expand/contract migration (idempotent writes, drift detection via reconciliation jobs — the discipline that catches the divergence <em>before</em> the cutover instead of after); then <strong>ownership transfer</strong> per data domain — the moment the new system becomes the writer and the legacy becomes the reader (or is severed) — which is the <em>real</em> migration milestone, the one worth ceremony. The strangler estates that stall almost always stalled here: traffic moved, data ownership didn&#39;t, and now every schema decision requires two teams and a treaty. Sequence data ownership transfer <em>into</em> each increment&#39;s definition of done, not into a mythical &quot;phase 3.&quot;</p>
+<p class="depth-reading"><a href="/deep-dives/migration/partition-reconciliation/">Level 3 · Reconcile migrated tables at the same consistent cut</a></p>
 <p>Throughout: the reconciliation loop (compare, alarm, repair) runs continuously between the systems — treating divergence as a monitored SLO rather than an assumed impossibility — and shadow traffic (mirror to the new system, compare answers, serve from legacy) is the strangler&#39;s best verification tool, converting &quot;we think the new implementation matches&quot; into measured agreement rates before a single user depends on it.</p>
 <h2 id="the-organizational-mechanics-decide-the-outcome"><a class="h-anchor" href="#the-organizational-mechanics-decide-the-outcome" aria-hidden="true" tabindex="-1">#</a>The organizational mechanics decide the outcome</h2>
 <p>The pattern&#39;s failure modes are mostly funding and incentive failures wearing technical costumes:</p>
@@ -161,6 +162,10 @@ d.setAttribute('data-theme',t);
     <li><a href="https://martinfowler.com/bliki/StranglerFigApplication.html" rel="noopener" target="_blank">Martin Fowler · Strangler Fig Application</a><span>The original incremental migration pattern.</span></li>
   </ul>
 </aside>
+<nav class="series-box" aria-label="Study paths">
+    <h2 class="h3">Study this in more depth</h2>
+    <ul class="series-list"><li><a href="/deep-dives/migration/">Database migration and recovery <span>· Levels 2–4</span></a></li></ul>
+  </nav>
 
 
 
@@ -300,6 +305,7 @@ d.setAttribute('data-theme',t);
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/deep-dives/">Deep dives</a></li>
           <li><a href="/follow/">Follow new writing</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
@@ -321,7 +327,7 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=821ac6ed" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=821ac6ed"></script>
+<script src="/assets/js/site.js?v=2a696502" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=2a696502"></script>
 </body>
 </html>

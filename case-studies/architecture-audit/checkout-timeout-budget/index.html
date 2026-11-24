@@ -33,7 +33,7 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=821ac6ed">
+<link rel="stylesheet" href="/assets/css/site.css?v=2a696502">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
 <link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
@@ -99,6 +99,7 @@ d.setAttribute('data-theme',t);
 <p>A retailer&#39;s checkout times out occasionally while its payment provider dashboard looks healthy. The audit covers one checkout route, from request receipt to committed order or terminal error. A good pilot sustains an end-to-end p95 below 900 ms at the same offered load, preserves idempotency, and keeps an uncertain authorisation from being mistaken for failure.</p>
 <h2 id="plan-and-execution"><a class="h-anchor" href="#plan-and-execution" aria-hidden="true" tabindex="-1">#</a>Plan and execution</h2>
 <p>Join order and payment spans with an opaque request identifier. Group by authorisation response class and inspect the critical path, including queueing and retry backoff. Avoid adding percentiles from separate hops. Construct a laboratory replay with the same request mix, a provider stub, and an explicit long tail. Compare an inherited retry policy to a route where the total deadline propagates and discretionary work runs after the response.</p>
+<p class="depth-reading"><a href="/deep-dives/reliability/retry-load-budget/">Level 4 · Decide when a retry is worth the added load</a></p>
 <h2 id="rollout-and-handover"><a class="h-anchor" href="#rollout-and-handover" aria-hidden="true" tabindex="-1">#</a>Rollout and handover</h2>
 <p>Review payment semantics with the order owner. For a request with an uncertain result, query or reconcile by the stable idempotency key. Run the candidate route for a small, stable cohort and stop on rising terminal errors, failed reconciliation, or multiple authorisations. Deliver a latency breakdown, budget table, dashboard, and a runbook showing how to trace a failed checkout.</p>
 <h2 id="how-to-read-the-numbers"><a class="h-anchor" href="#how-to-read-the-numbers" aria-hidden="true" tabindex="-1">#</a>How to read the numbers</h2>
@@ -124,6 +125,10 @@ d.setAttribute('data-theme',t);
   </figure>
       <p class="case-download"><a href="/case-studies/architecture-audit/checkout-timeout-budget.csv" download>Download the simulated measurements (CSV)</a></p>
       <p class="case-download"><a href="https://sre.google/workbook/implementing-slos/">Google SRE · Implementing SLOs</a></p>
+      <nav class="series-box" aria-label="Study paths">
+    <h2 class="h3">Study this in more depth</h2>
+    <ul class="series-list"><li><a href="/deep-dives/reliability/">Service reliability <span>· Levels 2–4</span></a></li><li><a href="/deep-dives/performance/">Latency and capacity <span>· Levels 2–4</span></a></li></ul>
+  </nav>
       <div class="row"><a class="btn btn-ghost" href="/case-studies/architecture-audit/">More architecture audit scenarios</a><a class="btn" href="/contact/">Discuss a similar engagement</a></div>
     </div>
     <aside class="writing-promos" aria-label="Promotions" data-ad-slot="case-study-rail">
@@ -176,6 +181,7 @@ d.setAttribute('data-theme',t);
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/deep-dives/">Deep dives</a></li>
           <li><a href="/follow/">Follow new writing</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
@@ -197,7 +203,7 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=821ac6ed" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=821ac6ed"></script>
+<script src="/assets/js/site.js?v=2a696502" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=2a696502"></script>
 </body>
 </html>

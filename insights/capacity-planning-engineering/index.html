@@ -33,7 +33,7 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=821ac6ed">
+<link rel="stylesheet" href="/assets/css/site.css?v=2a696502">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
 <link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
@@ -119,6 +119,7 @@ d.setAttribute('data-theme',t);
 <p>For each constraint, the two numbers that constitute actual knowledge: <strong>current utilization at peak</strong> and <strong>validated maximum</strong> — where validated means load-tested, not spec-sheet-believed (the capacity-test discipline from load-testing practice; extrapolated maximums bend under real workloads). Headroom is the gap between them, and its erosion rate — this quarter&#39;s peak versus last quarter&#39;s against the same ceiling — is the single most valuable chart in the whole practice: it converts &quot;are we okay?&quot; into &quot;we cross the line in about seven months, and the fix has a four-month lead time.&quot;</p>
 <h2 id="the-trade-utilization-is-not-the-goal-survivable-headroom-is"><a class="h-anchor" href="#the-trade-utilization-is-not-the-goal-survivable-headroom-is" aria-hidden="true" tabindex="-1">#</a>The trade: utilization is not the goal, survivable headroom is</h2>
 <p>FinOps pressure pushes utilization up; reliability pushes it down; capacity planning is where the trade gets made <em>explicitly</em> instead of by whoever shouted last. The framework: required headroom per service = <strong>failure absorption</strong> (lose a zone: the survivors must carry the load — N+1 or better for the critical tier, which alone implies meaningful idle capacity in steady state) + <strong>burst absorption</strong> (the spike shape faster than scale-out reacts — autoscaler lag, node boot, cache warm: the minutes during which <em>provisioned</em> capacity is all you have) + <strong>growth buffer</strong> (headroom consumed between planning cycles). A stateless tier with fast autoscaling might justify running hot (60–70% at peak); the primary database, whose &quot;scale-up&quot; is a maintenance window and whose failure absorbs nothing, earns its conservative 40%. Publishing the <em>target and reasoning per tier</em> ends the generic &quot;our utilization is too low&quot; conversation permanently — some of that idle capacity is engineered survival margin, priced and chosen; the rest is waste, and now you can tell them apart.</p>
+<p class="depth-reading"><a href="/deep-dives/performance/queue-saturation-model/">Level 3 · Calculate the cost of saturation with a queue model</a></p>
 <p>Commitment economics layer onto the same numbers: the demand model&#39;s <em>floor</em> (the load you&#39;re confident of for 1–3 years) is what reserved/committed pricing should cover; the variable crest rides on-demand and spot. Buying commitments without a demand model is how estates end up committed to yesterday&#39;s architecture — the FinOps failure mode with a capacity-planning root cause.</p>
 <h2 id="the-loop-quarterly-rhythm-event-driven-exceptions"><a class="h-anchor" href="#the-loop-quarterly-rhythm-event-driven-exceptions" aria-hidden="true" tabindex="-1">#</a>The loop: quarterly rhythm, event-driven exceptions</h2>
 <p>The practice that works is neither the annual planning theater nor pure reactivity, but a light quarterly loop per critical system: refresh the demand model against actuals (was the forecast wrong? why?), re-measure constraint utilization and update the headroom-erosion chart, review upcoming step events with their business owners, and produce the one-page output — <em>constraints, time-to-wall at current trajectory, actions with owners and lead times</em>. Actions divide into buying capacity (quota increases, tier upgrades — cheap, fast, bounded) and <strong>building capacity</strong> (the read-replica strategy, the partition scheme, the cache layer — the architecture projects whose <em>lead time is the entire reason planning exists</em>: discovering in month eleven that you need the six-month sharding project is the failure the quarterly chart prevents). Event-driven exceptions (the surprise enterprise deal, the viral moment) get the same analysis compressed: which constraint does this hit, what&#39;s the fastest absorbing action, what breaks if we&#39;re wrong.</p>
@@ -159,6 +160,10 @@ d.setAttribute('data-theme',t);
     <li><a href="https://www.finops.org/" rel="noopener" target="_blank">FinOps Foundation</a><span>Framework, capabilities and terminology.</span></li>
   </ul>
 </aside>
+<nav class="series-box" aria-label="Study paths">
+    <h2 class="h3">Study this in more depth</h2>
+    <ul class="series-list"><li><a href="/deep-dives/finops/">Cloud unit economics <span>· Levels 2–4</span></a></li><li><a href="/deep-dives/performance/">Latency and capacity <span>· Levels 2–4</span></a></li></ul>
+  </nav>
 
 
 
@@ -298,6 +303,7 @@ d.setAttribute('data-theme',t);
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/deep-dives/">Deep dives</a></li>
           <li><a href="/follow/">Follow new writing</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
@@ -319,7 +325,7 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=821ac6ed" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=821ac6ed"></script>
+<script src="/assets/js/site.js?v=2a696502" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=2a696502"></script>
 </body>
 </html>

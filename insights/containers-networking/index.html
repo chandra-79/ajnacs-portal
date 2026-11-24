@@ -33,7 +33,7 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=821ac6ed">
+<link rel="stylesheet" href="/assets/css/site.css?v=2a696502">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
 <link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
@@ -113,6 +113,7 @@ d.setAttribute('data-theme',t);
 <p>Container networking is the source of a disproportionate fraction of production incidents. Containers cannot reach each other, external traffic cannot reach a container, DNS resolution fails inside the container, or a connection that works on localhost fails in a deployed environment. These failures are diagnosable once you understand how the network is actually constructed.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
 <p><strong>Latency and packet loss along the same path.</strong> Compare identical same-node and cross-node requests at a controlled payload and load. If p99 goes from 4 ms to 12 ms, isolate DNS, service routing, encapsulation and policy handling before blaming container networking in general.</p>
+<p class="depth-reading"><a href="/deep-dives/networks/mtu-payload-budget/">Level 2 · Turn an MTU into a payload budget</a></p>
 <p><em>Illustrative measurement. Any numbers in this example are hypothetical.</em></p>
 <h2 id="the-bridge-network-single-host-networking"><a class="h-anchor" href="#the-bridge-network-single-host-networking" aria-hidden="true" tabindex="-1">#</a>The Bridge Network: Single-Host Networking</h2>
 <p>When Docker starts, it creates a default bridge network (<code>docker0</code>). Every container attached to this bridge gets a private IP address and can communicate with other containers on the same bridge.</p>
@@ -249,6 +250,10 @@ sudo tcpdump -i docker0 -n host &lt;container-ip&gt;
     <li><a href="https://www.postgresql.org/docs/current/" rel="noopener" target="_blank">PostgreSQL documentation</a><span>Configuration and planner behaviour.</span></li>
   </ul>
 </aside>
+<nav class="series-box" aria-label="Study paths">
+    <h2 class="h3">Study this in more depth</h2>
+    <ul class="series-list"><li><a href="/deep-dives/networks/">Networks and workload isolation <span>· Levels 2–4</span></a></li></ul>
+  </nav>
 
 
 
@@ -398,6 +403,7 @@ sudo tcpdump -i docker0 -n host &lt;container-ip&gt;
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/deep-dives/">Deep dives</a></li>
           <li><a href="/follow/">Follow new writing</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
@@ -419,7 +425,7 @@ sudo tcpdump -i docker0 -n host &lt;container-ip&gt;
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=821ac6ed" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=821ac6ed"></script>
+<script src="/assets/js/site.js?v=2a696502" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=2a696502"></script>
 </body>
 </html>

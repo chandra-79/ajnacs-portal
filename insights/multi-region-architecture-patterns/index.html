@@ -33,7 +33,7 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=821ac6ed">
+<link rel="stylesheet" href="/assets/css/site.css?v=2a696502">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
 <link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
@@ -119,6 +119,7 @@ d.setAttribute('data-theme',t);
 <p><strong>Tier 0 — Backup and restore (RTO: hours-to-day, RPO: hours).</strong> Cross-region backup copies, infrastructure-as-code capable of rebuilding the stack in a second region, and a <em>tested</em> restore runbook. Cost: storage plus rehearsal time. This is the floor every workload should stand on, and — the perennially skipped part — the restore test is the product; an untested backup is a hope with a retention policy.</p>
 <p><strong>Tier 1 — Pilot light (RTO: tens of minutes-to-hours, RPO: minutes).</strong> Data replicates continuously to the standby region (database read replicas, object storage replication); compute exists as templates and minimal always-on cores, inflated on declaration of disaster. This tier is the workhorse of enterprise DR — most &quot;we need multi-region&quot; requirements are satisfied here at a fraction of active-active cost. The failure mode: config and secrets drift between regions, discovered at inflation time. The countermeasure: the standby region is deployed by the <em>same</em> pipeline as primary, always, and inflated quarterly as a drill.</p>
 <p><strong>Tier 2 — Warm standby (RTO: minutes, RPO: seconds-to-minutes).</strong> A scaled-down but fully running copy takes a trickle of traffic (or synthetic traffic) continuously — which is the point: a standby that serves <em>some</em> real requests all the time is a standby whose brokenness announces itself early. Failover is scale-up plus traffic shift.</p>
+<p class="depth-reading"><a href="/deep-dives/migration/recovery-cutover-gates/">Level 4 · Rehearse the point where rollback becomes recovery</a></p>
 <p><strong>Tier 3 — Active-active (RTO: ~zero, RPO: ~zero-ish).</strong> All regions serve simultaneously; failover is traffic reweighting. This is what everyone asks for and few need, because its cost is not primarily the duplicate infrastructure — it&#39;s the <em>engineering permanently added to every feature</em>: every service and every data write must be designed for multi-writer reality, forever. Which brings us to the actual boss fight.</p>
 <h2 id="the-data-layer-is-the-architecture"><a class="h-anchor" href="#the-data-layer-is-the-architecture" aria-hidden="true" tabindex="-1">#</a>The data layer is the architecture</h2>
 <p>Stateless compute is trivially multi-region; your architecture tier is decided by your data strategy, and physics votes: cross-region round trips run tens of milliseconds, so <strong>synchronous replication across distant regions taxes every single write with user-visible latency</strong>. The workable patterns:</p>
@@ -170,6 +171,10 @@ d.setAttribute('data-theme',t);
     <li><a href="https://docs.aws.amazon.com/whitepapers/latest/disaster-recovery-workloads-on-aws/disaster-recovery-options-in-the-cloud.html" rel="noopener" target="_blank">AWS · Disaster recovery options in the cloud</a><span>Recovery patterns, trade-offs and design boundaries.</span></li>
   </ul>
 </aside>
+<nav class="series-box" aria-label="Study paths">
+    <h2 class="h3">Study this in more depth</h2>
+    <ul class="series-list"><li><a href="/deep-dives/reliability/">Service reliability <span>· Levels 2–4</span></a></li><li><a href="/deep-dives/migration/">Database migration and recovery <span>· Levels 2–4</span></a></li></ul>
+  </nav>
 
 
 
@@ -319,6 +324,7 @@ d.setAttribute('data-theme',t);
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/deep-dives/">Deep dives</a></li>
           <li><a href="/follow/">Follow new writing</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
@@ -340,7 +346,7 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=821ac6ed" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=821ac6ed"></script>
+<script src="/assets/js/site.js?v=2a696502" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=2a696502"></script>
 </body>
 </html>

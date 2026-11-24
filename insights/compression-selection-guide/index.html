@@ -33,7 +33,7 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=821ac6ed">
+<link rel="stylesheet" href="/assets/css/site.css?v=2a696502">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
 <link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
@@ -113,7 +113,8 @@ d.setAttribute('data-theme',t);
 <p><em>Illustrative measurement. Any numbers in this example are hypothetical.</em></p>
 <h2 id="the-landscape-four-names-cover-almost-everything"><a class="h-anchor" href="#the-landscape-four-names-cover-almost-everything" aria-hidden="true" tabindex="-1">#</a>The landscape: four names cover almost everything</h2>
 <p>The modern shortlist collapsed nicely: <strong>gzip/zlib</strong> — the universal legacy: moderate ratio, moderate speed, supported by everything since the 90s; its remaining role is <em>compatibility floor</em>, because it wins on no other axis. <strong>zstd</strong> — the modern default, full stop: better ratios than gzip <em>and</em> several times faster at both ends, with a wide level dial (fast levels rivaling lz4, high levels approaching archival ratios) that makes it the one-algorithm answer for most storage, streaming, and internal-transfer jobs; its ecosystem support (Kafka, Parquet/ORC, HTTP via <code>Content-Encoding: zstd</code> in modern clients, package managers, filesystems) crossed the everywhere threshold years ago. <strong>lz4</strong> — the speed specialist: modest ratios at gigabytes-per-second per core, for the paths where compression must be nearly invisible — in-memory caches, RocksDB-class storage engine internals, real-time streams where microseconds count. <strong>Brotli</strong> — the web specialist: best-in-class ratios for text at slow compression speeds, which is exactly right for <em>precompressed static assets</em> (compress once at build time at maximum level, serve a million times — the asymmetry that defines the web tier) and wrong for dynamic responses at high levels (the classic misconfiguration: Brotli-11 on the fly, burning CPU to save bytes the user never notices; dynamic content wants Brotli-4-ish or zstd). Everything else — snappy (lz4&#39;s approximate peer, everywhere in older big-data defaults), xz/lzma (max ratio, painful speed — cold archives only) — is a variation on these four&#39;s trade-offs.</p>
-<p>The selection heuristic that covers 90% of cases: <strong>zstd unless</strong> you need extreme speed (lz4), maximum static-web ratio (Brotli at build time), or a legacy consumer (gzip).</p>
+<p>Start with zstd for a throughput-versus-size comparison, LZ4 for latency-sensitive decompression, Brotli for precompressed web assets, and gzip for older consumers. Benchmark on the actual corpus before setting a default.</p>
+<p class="depth-reading"><a href="/deep-dives/performance/open-loop-load-test/">Level 4 · Test capacity with a load generator that keeps time</a></p>
 <h2 id="placement-the-same-trade-five-different-answers"><a class="h-anchor" href="#placement-the-same-trade-five-different-answers" aria-hidden="true" tabindex="-1">#</a>Placement: the same trade, five different answers</h2>
 <p><strong>The web tier</strong> splits by asset lifecycle: static assets precompressed at build (Brotli max + gzip fallback, served by content negotiation — CPU cost paid once, per the build-vs-serve asymmetry), dynamic API responses compressed on the fly at moderate levels (with a size floor — compressing 200-byte payloads wastes CPU and can <em>grow</em> them — and the security footnote: compression plus attacker-controlled-content plus secrets in the same response enabled the BREACH-class attacks; secrets and reflected input shouldn&#39;t share compressed responses). The measurement lens is the web-vitals one: bytes saved matter in proportion to the user&#39;s bandwidth, which is why mobile-heavy audiences repay compression attention most.</p>
 <p><strong>Streaming and messaging</strong>: compression batches beautifully — Kafka compresses per record-batch, so producer batching configuration <em>is</em> compression configuration (bigger batches, better ratios — the throughput tuning and the compression tuning are one knob wearing two names). zstd as default, lz4 where producer CPU is precious; the payoff is tripled — network, broker disk, <em>and</em> replication traffic all shrink together, which in cloud terms means the compression setting is a cross-AZ-traffic line item.</p>
@@ -160,6 +161,10 @@ d.setAttribute('data-theme',t);
     <li><a href="https://kafka.apache.org/documentation/" rel="noopener" target="_blank">Apache Kafka documentation</a><span>Partitioning, consumer groups and delivery semantics.</span></li>
   </ul>
 </aside>
+<nav class="series-box" aria-label="Study paths">
+    <h2 class="h3">Study this in more depth</h2>
+    <ul class="series-list"><li><a href="/deep-dives/performance/">Latency and capacity <span>· Levels 2–4</span></a></li></ul>
+  </nav>
 
 
 
@@ -299,6 +304,7 @@ d.setAttribute('data-theme',t);
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/deep-dives/">Deep dives</a></li>
           <li><a href="/follow/">Follow new writing</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
@@ -320,7 +326,7 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=821ac6ed" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=821ac6ed"></script>
+<script src="/assets/js/site.js?v=2a696502" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=2a696502"></script>
 </body>
 </html>

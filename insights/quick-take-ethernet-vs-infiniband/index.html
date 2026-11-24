@@ -33,7 +33,7 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=821ac6ed">
+<link rel="stylesheet" href="/assets/css/site.css?v=2a696502">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
 <link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
@@ -108,6 +108,7 @@ d.setAttribute('data-theme',t);
       <div class="prose">
 <p class="article-opening">A fabric comparison should tell a training owner what happens to the job, not just what the ports are rated for.</p>
 <p>The question for a distributed training run is how long communication delays useful work. A fabric may have ample nominal bandwidth and still show slow job steps because of rank placement, collective configuration, congestion, or a slow host.</p>
+<p class="depth-reading"><a href="/deep-dives/networks/allreduce-bandwidth-budget/">Level 4 · Compare collective communication with the right bandwidth metric</a></p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
 <p>Measure the application&#39;s step time and a representative collective with the same ranks and message sizes. Record the type of collective, placement, topology, and whether communication overlaps compute. <strong>Illustrative measurement.</strong> A fictional p95 collective completion time of 39 ms versus 32 ms describes only the two configurations tested.</p>
 <h2 id="why-the-traffic-estimate-matters"><a class="h-anchor" href="#why-the-traffic-estimate-matters" aria-hidden="true" tabindex="-1">#</a>Why the traffic estimate matters</h2>
@@ -156,6 +157,10 @@ d.setAttribute('data-theme',t);
     <li><a href="https://github.com/NVIDIA/nccl-tests/blob/master/doc/PERFORMANCE.md" rel="noopener" target="_blank">NVIDIA NCCL Tests · Performance definitions</a><span>Collective workload, algorithm bandwidth and bus bandwidth.</span></li>
   </ul>
 </aside>
+<nav class="series-box" aria-label="Study paths">
+    <h2 class="h3">Study this in more depth</h2>
+    <ul class="series-list"><li><a href="/deep-dives/networks/">Networks and workload isolation <span>· Levels 2–4</span></a></li></ul>
+  </nav>
 
 
 
@@ -295,6 +300,7 @@ d.setAttribute('data-theme',t);
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/deep-dives/">Deep dives</a></li>
           <li><a href="/follow/">Follow new writing</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
@@ -316,7 +322,7 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=821ac6ed" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=821ac6ed"></script>
+<script src="/assets/js/site.js?v=2a696502" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=2a696502"></script>
 </body>
 </html>

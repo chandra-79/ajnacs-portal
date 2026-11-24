@@ -33,7 +33,7 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=821ac6ed">
+<link rel="stylesheet" href="/assets/css/site.css?v=2a696502">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
 <link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
@@ -125,6 +125,7 @@ d.setAttribute('data-theme',t);
 <h2 id="structured-concurrency-taskgroups-changed-the-idiom"><a class="h-anchor" href="#structured-concurrency-taskgroups-changed-the-idiom" aria-hidden="true" tabindex="-1">#</a>Structured concurrency: TaskGroups changed the idiom</h2>
 <p>Python 3.11’s <a href="https://docs.python.org/3.11/library/asyncio-task.html#task-groups" rel="noopener" target="_blank"><code>asyncio.TaskGroup</code></a> waits for its child tasks. The first child exception other than <code>CancelledError</code> cancels siblings and normally raises applicable failures in a group after they settle. <code>KeyboardInterrupt</code> and <code>SystemExit</code> are re-raised directly. Test how the actual work stops on cancellation, especially when a blocking operation runs in a worker thread.</p>
 <p>Adopt these as house style: TaskGroups (or the equivalent nurseries in AnyIO/Trio) over bare <code>create_task</code>; <strong><code>asyncio.timeout()</code></strong> context managers around anything with a deadline (per-call timeouts, not one prayer at the top); and <strong>explicit concurrency bounds</strong> — <code>asyncio.Semaphore</code> around outbound fan-out — because an async service can trivially open 10,000 simultaneous connections to a downstream sized for 200. Async removes your accidental concurrency governor (the thread pool) exactly like virtual threads do in Java; backpressure becomes your explicit job.</p>
+<p class="depth-reading"><a href="/deep-dives/performance/open-loop-load-test/">Level 4 · Test capacity with a load generator that keeps time</a></p>
 <p>Cancellation deserves one paragraph of respect: in asyncio, cancellation is delivered <em>at await points</em> as an exception. Code holding a resource across an <code>await</code> without <code>try/finally</code> (or <code>async with</code>) leaks it when cancelled — and TaskGroups cancel liberally by design. Every acquire/release pair in an async codebase belongs inside a context manager. This single review rule prevents the connection-pool-slowly-drains class of incident.</p>
 <h2 id="the-operational-layer"><a class="h-anchor" href="#the-operational-layer" aria-hidden="true" tabindex="-1">#</a>The operational layer</h2>
 <p><strong>Process model:</strong> one event loop uses one core. Production deployments run multiple worker processes (uvicorn/gunicorn workers, or one process per container replica scaled horizontally) — size workers ≈ cores and let the platform scale replicas.</p>
@@ -171,6 +172,10 @@ d.setAttribute('data-theme',t);
     <li><a href="https://redis.io/docs/latest/" rel="noopener" target="_blank">Redis documentation</a><span>Data types, persistence and eviction.</span></li>
   </ul>
 </aside>
+<nav class="series-box" aria-label="Study paths">
+    <h2 class="h3">Study this in more depth</h2>
+    <ul class="series-list"><li><a href="/deep-dives/performance/">Latency and capacity <span>· Levels 2–4</span></a></li></ul>
+  </nav>
 
 
 
@@ -310,6 +315,7 @@ d.setAttribute('data-theme',t);
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/deep-dives/">Deep dives</a></li>
           <li><a href="/follow/">Follow new writing</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
@@ -331,7 +337,7 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=821ac6ed" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=821ac6ed"></script>
+<script src="/assets/js/site.js?v=2a696502" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=2a696502"></script>
 </body>
 </html>

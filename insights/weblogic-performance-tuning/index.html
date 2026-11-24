@@ -33,7 +33,7 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=821ac6ed">
+<link rel="stylesheet" href="/assets/css/site.css?v=2a696502">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
 <link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
@@ -130,6 +130,7 @@ d.setAttribute('data-theme',t);
 <h2 id="jdbc-connection-pools-where-most-quotweblogicquot-problems-l"><a class="h-anchor" href="#jdbc-connection-pools-where-most-quotweblogicquot-problems-l" aria-hidden="true" tabindex="-1">#</a>JDBC connection pools: where most &quot;WebLogic&quot; problems live</h2>
 <p>A decade of WebLogic incident reviews compresses to: it was usually the connection pool, and the pool was usually the messenger, not the culprit.</p>
 <p><strong>Size pools deliberately, not generously.</strong> Little&#39;s Law is the guide: connections needed ≈ request rate × mean time holding a connection. A service doing 200 req/s holding connections 50 ms needs ~10 connections, not 200. Oversized pools push contention into the database, where it&#39;s more expensive. Set initial = min = max in steady-state production systems to avoid connection-storm dynamics during recovery — growing a pool under load is work the database does at the worst possible moment.</p>
+<p class="depth-reading"><a href="/deep-dives/performance/queue-saturation-model/">Level 3 · Calculate the cost of saturation with a queue model</a></p>
 <p><strong>Set these five, always:</strong></p>
 <ul>
 <li><code>Test Connections On Reserve</code> with a cheap test — the pool hands out validated connections after network blips instead of dead ones.</li>
@@ -187,6 +188,10 @@ d.setAttribute('data-theme',t);
     <li><a href="https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/" rel="noopener" target="_blank">Oracle WebLogic Server Documentation</a><span>Version-specific domain topology, JMS targeting and performance guides.</span></li>
   </ul>
 </aside>
+<nav class="series-box" aria-label="Study paths">
+    <h2 class="h3">Study this in more depth</h2>
+    <ul class="series-list"><li><a href="/deep-dives/performance/">Latency and capacity <span>· Levels 2–4</span></a></li></ul>
+  </nav>
 
 
 
@@ -336,6 +341,7 @@ d.setAttribute('data-theme',t);
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/deep-dives/">Deep dives</a></li>
           <li><a href="/follow/">Follow new writing</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
@@ -357,7 +363,7 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=821ac6ed" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=821ac6ed"></script>
+<script src="/assets/js/site.js?v=2a696502" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=2a696502"></script>
 </body>
 </html>

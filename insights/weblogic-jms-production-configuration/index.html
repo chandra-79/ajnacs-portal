@@ -33,7 +33,7 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=821ac6ed">
+<link rel="stylesheet" href="/assets/css/site.css?v=2a696502">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
 <link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
@@ -137,6 +137,7 @@ d.setAttribute('data-theme',t);
 <h2 id="persistent-stores-file-vs-jdbc"><a class="h-anchor" href="#persistent-stores-file-vs-jdbc" aria-hidden="true" tabindex="-1">#</a>Persistent stores: file vs JDBC</h2>
 <p><strong>File stores</strong> are faster — often dramatically so, since messages hit local or SAN disk without a database round trip. Use them when you have shared storage that all candidate servers can mount and your ops team is comfortable managing it.</p>
 <p><strong>JDBC stores</strong> put messages in a database table (one store per table). Slower per message, but migration and disaster recovery become database problems, which most enterprises already know how to solve — the store follows the database&#39;s backup, replication, and DR posture. In cloud deployments where shared file storage is awkward, JDBC stores are frequently the pragmatic pick.</p>
+<p class="depth-reading"><a href="/deep-dives/migration/recovery-cutover-gates/">Level 4 · Rehearse the point where rollback becomes recovery</a></p>
 <p>Whichever you choose: <strong>one store per JMS server</strong>, never shared, and monitor store size. An unconsumed queue grows without bound until quota or disk stops it, and you want quota to get there first.</p>
 <h2 id="quotas-paging-and-flow-control-surviving-the-flood"><a class="h-anchor" href="#quotas-paging-and-flow-control-surviving-the-flood" aria-hidden="true" tabindex="-1">#</a>Quotas, paging, and flow control: surviving the flood</h2>
 <p>The failure mode that takes down JVMs isn&#39;t message loss — it&#39;s message <em>pileup</em>. A downstream consumer stalls, messages accumulate, heap fills, and the managed server hosting the JMS server dies, taking every other application on it along.</p>
@@ -195,6 +196,10 @@ d.setAttribute('data-theme',t);
     <li><a href="https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/" rel="noopener" target="_blank">Oracle WebLogic Server Documentation</a><span>Version-specific domain topology, JMS targeting and performance guides.</span></li>
   </ul>
 </aside>
+<nav class="series-box" aria-label="Study paths">
+    <h2 class="h3">Study this in more depth</h2>
+    <ul class="series-list"><li><a href="/deep-dives/migration/">Database migration and recovery <span>· Levels 2–4</span></a></li></ul>
+  </nav>
 
 
 
@@ -344,6 +349,7 @@ d.setAttribute('data-theme',t);
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/deep-dives/">Deep dives</a></li>
           <li><a href="/follow/">Follow new writing</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
@@ -365,7 +371,7 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=821ac6ed" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=821ac6ed"></script>
+<script src="/assets/js/site.js?v=2a696502" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=2a696502"></script>
 </body>
 </html>
