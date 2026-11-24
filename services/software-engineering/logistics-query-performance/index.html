@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Improve a tracking query using a reproducible workload | Ajna CS</title>
+<meta name="description" content="Hypothetical industry scenario. A hypothetical performance workshop tests query shape, data skew and correctness before proposing an optimization.">
+<meta name="author" content="Chandra Lanka">
+<link rel="canonical" href="https://ajnacs.com/services/software-engineering/logistics-query-performance/">
+<meta name="robots" content="index, follow, max-image-preview:large">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Ajna Consulting Services">
+<meta property="og:title" content="Improve a tracking query using a reproducible workload">
+<meta property="og:description" content="Hypothetical industry scenario. A hypothetical performance workshop tests query shape, data skew and correctness before proposing an optimization.">
+<meta property="og:url" content="https://ajnacs.com/services/software-engineering/logistics-query-performance/">
+<meta property="og:image" content="https://ajnacs.com/assets/services/software-engineering/logistics-query-performance-social.png?v=b2652f72a441">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Hypothetical scenario. Statements for a synthetic tracking-history request. Per-row detail queries: 41 SQL statements; Compatible batched query: 2 SQL statements. Synthetic exercise data.">
+
+
+<meta property="og:image:type" content="image/png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Improve a tracking query using a reproducible workload">
+<meta name="twitter:description" content="Hypothetical industry scenario. A hypothetical performance workshop tests query shape, data skew and correctness before proposing an optimization.">
+<meta name="twitter:image" content="https://ajnacs.com/assets/services/software-engineering/logistics-query-performance-social.png?v=b2652f72a441">
+<meta name="twitter:image:alt" content="Hypothetical scenario. Statements for a synthetic tracking-history request. Per-row detail queries: 41 SQL statements; Compatible batched query: 2 SQL statements. Synthetic exercise data.">
+
+<link rel="icon" href="/favicon.ico?v=8affdbd5" sizes="any">
+<link rel="icon" href="/images/ajna-mark.svg?v=8affdbd5" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png?v=8affdbd5">
+<meta name="theme-color" content="#0a1020">
+
+<link rel="stylesheet" href="/assets/fonts/fonts.css">
+<link rel="stylesheet" href="/assets/css/site.css?v=d8c868c0">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
+<link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Personal notes" href="/notes/feed.xml">
+<script>
+/* Theme and reading preferences are applied before first paint, so the page
+   never flashes the wrong ground or resets someone's text size mid-read. */
+(function(){try{
+var d=document.documentElement,t=localStorage.getItem('acs-theme');
+if(t!=='dark'&&t!=='light'&&t!=='sepia')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+d.setAttribute('data-theme',t);
+['rsize','rwidth','rface'].forEach(function(k){
+  var v=localStorage.getItem('acs-'+k);
+  if(v&&/^[a-z]{1,5}$/.test(v))d.setAttribute('data-'+k,v);
+});
+
+}catch(e){}})();
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Improve a tracking query using a reproducible workload","description":"Hypothetical industry scenario. The organisation and engagement are invented. Any numbers are synthetic inputs, not customer results or industry benchmarks. A hypothetical performance workshop tests query shape, data skew and correctness before proposing an optimization.","genre":"Hypothetical industry scenario","author":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/services/software-engineering/logistics-query-performance/","image":"https://ajnacs.com/assets/services/software-engineering/logistics-query-performance-social.png?v=b2652f72a441","about":{"@id":"https://ajnacs.com/services/software-engineering/#service","@type":"Service","name":"Software Engineering","url":"https://ajnacs.com/services/software-engineering/","provider":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"}}}</script>
+</head>
+<body class="article-frame" data-topic="Engineering Leadership">
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header" id="siteHeader">
+  <div class="shell-inner header-inner">
+    <div class="brand">
+      <button class="brand-motion" type="button" data-ajna-motion data-arrival aria-label="Open Ajna logo" aria-pressed="false"><svg class="ajna-mark" viewBox="0 0 100 100" width="56" height="56" fill="none" aria-hidden="true" focusable="false"><defs><path id="t-hdr" d="M 50 4 L 96 50 L 50 50 Z"/><path id="e-hdr" d="M 50 4 L 96 50"/><path id="k-hdr" d="M 50 4 L 50 50 L 96 50"/><linearGradient id="bev-hdr" gradientUnits="userSpaceOnUse" x1="50" y1="50" x2="73" y2="27"><stop offset="0" stop-color="#000" stop-opacity=".13"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity=".2"/></linearGradient><radialGradient id="core-hdr" cx=".34" cy=".3" r=".85"><stop offset="0" stop-color="#fff" stop-opacity=".42"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".45"/></radialGradient><path id="ll-hdr" d="M 50 50 C 34 30.26, 40.08 9.579999999999998, 50 3 C 59.92 9.579999999999998, 66 30.26, 50 50 Z"/><path id="ls-hdr" d="M 50 50 C 36 33.620000000000005, 41.32 16.46, 50 11 C 58.68 16.46, 64 33.620000000000005, 50 50 Z"/><clipPath id="clip-ll-hdr"><use href="#ll-hdr"/></clipPath><clipPath id="clip-ls-hdr"><use href="#ls-hdr"/></clipPath></defs><g class="am-leaf" opacity="0" transform="translate(50 50) rotate(0) scale(.38 .02) translate(-50 -50)"><use href="#ll-hdr" fill="#D95547"/><path d="M50 0 H100 V100 H50Z" fill="#000" fill-opacity=".13" clip-path="url(#clip-ll-hdr)"/><path d="M50 50 L50 3" stroke="#fff" stroke-opacity=".2" stroke-width=".7"/></g><g class="am-leaf" opacity="0" transform="translate(50 50) rotate(45) scale(.38 .02) translate(-50 -50)"><use href="#ls-hdr" fill="#D95547"/><path d="M50 0 H100 V100 H50Z" fill="#000" fill-opacity=".13" clip-path="url(#clip-ls-hdr)"/><path d="M50 50 L50 11" stroke="#fff" stroke-opacity=".2" stroke-width=".7"/></g><g class="am-leaf" opacity="0" transform="translate(50 50) rotate(90) scale(.38 .02) translate(-50 -50)"><use href="#ll-hdr" fill="#E8A347"/><path d="M50 0 H100 V100 H50Z" fill="#000" fill-opacity=".13" clip-path="url(#clip-ll-hdr)"/><path d="M50 50 L50 3" stroke="#fff" stroke-opacity=".2" stroke-width=".7"/></g><g class="am-leaf" opacity="0" transform="translate(50 50) rotate(135) scale(.38 .02) translate(-50 -50)"><use href="#ls-hdr" fill="#E8A347"/><path d="M50 0 H100 V100 H50Z" fill="#000" fill-opacity=".13" clip-path="url(#clip-ls-hdr)"/><path d="M50 50 L50 11" stroke="#fff" stroke-opacity=".2" stroke-width=".7"/></g><g class="am-leaf" opacity="0" transform="translate(50 50) rotate(180) scale(.38 .02) translate(-50 -50)"><use href="#ll-hdr" fill="#348C72"/><path d="M50 0 H100 V100 H50Z" fill="#000" fill-opacity=".13" clip-path="url(#clip-ll-hdr)"/><path d="M50 50 L50 3" stroke="#fff" stroke-opacity=".2" stroke-width=".7"/></g><g class="am-leaf" opacity="0" transform="translate(50 50) rotate(225) scale(.38 .02) translate(-50 -50)"><use href="#ls-hdr" fill="#348C72"/><path d="M50 0 H100 V100 H50Z" fill="#000" fill-opacity=".13" clip-path="url(#clip-ls-hdr)"/><path d="M50 50 L50 11" stroke="#fff" stroke-opacity=".2" stroke-width=".7"/></g><g class="am-leaf" opacity="0" transform="translate(50 50) rotate(270) scale(.38 .02) translate(-50 -50)"><use href="#ll-hdr" fill="#3B69C4"/><path d="M50 0 H100 V100 H50Z" fill="#000" fill-opacity=".13" clip-path="url(#clip-ll-hdr)"/><path d="M50 50 L50 3" stroke="#fff" stroke-opacity=".2" stroke-width=".7"/></g><g class="am-leaf" opacity="0" transform="translate(50 50) rotate(315) scale(.38 .02) translate(-50 -50)"><use href="#ls-hdr" fill="#3B69C4"/><path d="M50 0 H100 V100 H50Z" fill="#000" fill-opacity=".13" clip-path="url(#clip-ls-hdr)"/><path d="M50 50 L50 11" stroke="#fff" stroke-opacity=".2" stroke-width=".7"/></g><g class="am-bud"><g class="am-petal" style="--a:0deg"><use href="#t-hdr" fill="#D95547"/><use href="#t-hdr" fill="url(#bev-hdr)"/><use href="#t-hdr" fill="#fff" opacity="0.07"/><use href="#e-hdr" stroke="#fff" stroke-opacity="0.27" stroke-width="1.6" stroke-linecap="round"/><use href="#k-hdr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g class="am-petal" style="--a:90deg"><use href="#t-hdr" fill="#E8A347"/><use href="#t-hdr" fill="url(#bev-hdr)"/><use href="#t-hdr" fill="#000" opacity="0.12"/><use href="#e-hdr" stroke="#000" stroke-opacity="0.16" stroke-width="1.6" stroke-linecap="round"/><use href="#k-hdr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g class="am-petal" style="--a:180deg"><use href="#t-hdr" fill="#348C72"/><use href="#t-hdr" fill="url(#bev-hdr)"/><use href="#t-hdr" fill="#000" opacity="0.05"/><use href="#e-hdr" stroke="#000" stroke-opacity="0.1" stroke-width="1.6" stroke-linecap="round"/><use href="#k-hdr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g class="am-petal" style="--a:270deg"><use href="#t-hdr" fill="#3B69C4"/><use href="#t-hdr" fill="url(#bev-hdr)"/><use href="#t-hdr" fill="#fff" opacity="0.30"/><use href="#e-hdr" stroke="#fff" stroke-opacity="0.37" stroke-width="1.6" stroke-linecap="round"/><use href="#k-hdr" stroke="#000" stroke-width=".9" opacity=".2"/></g></g><g class="am-core"><circle cx="50" cy="50" r="6" fill="currentColor"/><circle cx="50" cy="50" r="6" fill="url(#core-hdr)"/></g></svg></button>
+      <a class="brand-home" href="/" aria-label="Ajna Consulting Services — home"><span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span></a>
+    </div>
+    <nav class="nav" id="nav" aria-label="Primary">
+      <a href="/services/" aria-current="location">Services</a>
+      <a href="/insights/">Insights</a>
+      <a href="/series/">Series</a>
+      <a href="/notes/">Personal notes</a>
+      <a href="/case-studies/">Case studies</a>
+      <a href="/about/">About</a>
+      <a class="btn btn-sm" href="/contact/" style="margin-left:.4rem">Engage engineering</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn" id="themeBtn" type="button" aria-label="Switch to dark mode" aria-pressed="false"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg></button>
+      <button class="icon-btn nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+<article class="article service-detail service-scenario" data-service="software-engineering" data-scenario="logistics-query-performance">
+  <div class="reading-layout"><header class="article-head">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span>
+    <a href="/services/">Services</a><span aria-hidden="true">/</span>
+    <a href="/services/software-engineering/">Software Engineering</a><span aria-hidden="true">/</span><span aria-current="page">Logistics software</span>
+  </nav>
+    <p class="eyebrow">Hypothetical · Logistics software</p>
+    <h1 class="h1">Improve a tracking query using a reproducible workload</h1><p class="lede field-intro">A hypothetical performance workshop tests query shape, data skew and correctness before proposing an optimization.</p>
+    <p class="case-notice" data-scenario-disclosure="hypothetical">Hypothetical industry scenario. The organisation and engagement are invented. Any numbers are synthetic inputs, not customer results or industry benchmarks.</p>
+    <div class="article-meta"><span>2 min read</span><span class="dot" aria-hidden="true"></span><a href="/about/">Ajna Consulting Services</a><div class="copy-control">
+    <button class="btn btn-ghost btn-sm" id="copyLink" type="button">Copy link</button>
+    <span class="sr-only" id="copyStatus" role="status"></span>
+    <label class="copy-fallback" id="copyFallback" hidden>Page link
+      <input id="copyValue" type="text" readonly>
+      <span>Select and copy this link.</span>
+    </label>
+  </div></div>
+  </header>
+  <div class="article-hero depth-chart" data-topic="Engineering Leadership"><img src="/assets/services/software-engineering/logistics-query-performance.svg?v=a16c7be93ec7" alt="Hypothetical scenario. Statements for a synthetic tracking-history request. Per-row detail queries: 41 SQL statements; Compatible batched query: 2 SQL statements. Synthetic exercise data." width="1280" height="720" fetchpriority="high" decoding="async"></div>
+  <div class="reader-aside"><nav class="toc" aria-label="On this page">
+  <p class="toc-title">On this page</p>
+  <ol><li><a href="#hypothetical-context-and-baseline">Hypothetical context and baseline</a></li><li><a href="#technical-design-and-delivery">Technical design and delivery</a></li><li><a href="#synthetic-calculation-and-chart">Synthetic calculation and chart</a></li><li><a href="#acceptance-and-transfer">Acceptance and transfer</a></li><li><a href="#concept-method-title">Chart methodology and values</a></li><li><a href="#service-references-title">Primary references</a></li><li><a href="#service-read-next-title">Continue reading</a></li></ol>
+</nav></div>
+  <div class="article-copy"><div class="prose"><h2 id="hypothetical-context-and-baseline"><a class="h-anchor" href="#hypothetical-context-and-baseline" aria-hidden="true" tabindex="-1">#</a>Hypothetical context and baseline</h2>
+<p>A fictional logistics-software team sees a slow tracking-history screen and wants engineers to diagnose it rather than guess at indexes. The proposed lab uses generated shipments and events, not carrier records. It does not claim an actual latency reduction. Participants begin by tracing the screen&#39;s query path and distinguishing database waiting, result transfer, object creation and rendering.</p>
+<h2 id="technical-design-and-delivery"><a class="h-anchor" href="#technical-design-and-delivery" aria-hidden="true" tabindex="-1">#</a>Technical design and delivery</h2>
+<p>The fixture includes ordinary shipments and one shipment with a much larger history. The initial implementation loads a list and then performs one additional lookup for every row. Learners capture actual SQL, bound-parameter shapes, statement counts and output correctness. They compare a deliberate batching or projection strategy while preserving the same visible result.</p>
+<p>The <a href="https://www.postgresql.org/docs/16/using-explain.html" rel="noopener" target="_blank">PostgreSQL EXPLAIN guidance</a> informs plan inspection. Participants use an isolated database because execution-statistics commands can execute the statement. They record table size, indexes, data skew, cache state and configuration with the result. The instructor includes a candidate optimization that reduces statements but transfers substantially more data, preventing “fewer queries” from becoming the only criterion.</p>
+<h2 id="synthetic-calculation-and-chart"><a class="h-anchor" href="#synthetic-calculation-and-chart" aria-hidden="true" tabindex="-1">#</a>Synthetic calculation and chart</h2>
+<p>For a fixture of 40 tracking rows, the naive implementation issues one list query plus 40 detail queries, or 41 statements. A compatible batched implementation uses one list query and one detail query, or two statements. The chart compares 41 and two. These are designed query counts, not measured milliseconds or a 95% latency claim. Parameter limits, joins and larger data sets can change the batching behaviour.</p>
+<p>Learners measure successful response latency and resource use across repeated comparable runs. They verify that the large-history shipment does not lose events or change ordering. A result that becomes faster by silently truncating data is a correctness failure, not an optimization. The worksheet includes the workload seed and excluded setup work so another engineer can reproduce the test.</p>
+<h2 id="acceptance-and-transfer"><a class="h-anchor" href="#acceptance-and-transfer" aria-hidden="true" tabindex="-1">#</a>Acceptance and transfer</h2>
+<p>The capstone requires a reviewable query change, correct output for ordinary and skewed fixtures, a meaningful regression check and an explanation of the observed tradeoff. The learner must identify whether the change improves the declared workload and where it may not help. Keeping the original implementation is acceptable if the candidate does not meet the requirement.</p>
+<p>Permissions are limited to the lab database; no production query is run. Cleanup removes generated data and diagnostic exports. Handover includes the fixture generator, query plans, measurement protocol and rollback diff. A delayed assessment changes the requested sort order and filter distribution, testing whether the engineer revisits the plan rather than treating the first index or batch size as a universal fix.</p>
+</div>
+    <section class="concept-method" aria-labelledby="concept-method-title"><h2 id="concept-method-title">Chart methodology and values</h2><p class="case-notice">Synthetic worked example. These figures illustrate the calculation; they are not customer results or industry benchmarks.</p><p>Synthetic 40-row response: naive 1+40=41 statements; compatible batching 1+1=2. Assumes one detail batch. Statement reduction does not imply proportional latency improvement.</p><details><summary>Read the chart values</summary><ul><li>Per-row detail queries: <strong>41 SQL statements</strong></li><li>Compatible batched query: <strong>2 SQL statements</strong></li></ul></details><p><a href="/assets/services/software-engineering/logistics-query-performance.csv" download>Download these example values (CSV)</a></p></section><section class="prose service-references" aria-labelledby="service-references-title">
+    <h2 id="service-references-title">Primary references</h2>
+    <p>These sources support the engineering methods. They do not substantiate the hypothetical engagements or their invented numbers.</p>
+    <ul><li><a href="https://spec.openapis.org/oas/latest.html" rel="noopener" target="_blank">OpenAPI specification</a></li><li><a href="https://docs.pytest.org/en/stable/how-to/fixtures.html" rel="noopener" target="_blank">pytest fixture guidance</a></li><li><a href="https://www.postgresql.org/docs/16/transaction-iso.html" rel="noopener" target="_blank">PostgreSQL transaction isolation</a></li><li><a href="https://asvs.owasp.org/" rel="noopener" target="_blank">OWASP ASVS</a></li><li><a href="https://playwright.dev/docs/best-practices" rel="noopener" target="_blank">Playwright testing guidance</a></li><li><a href="https://docs.github.com/en/actions/reference/security/secure-use" rel="noopener" target="_blank">GitHub Actions secure use</a></li></ul>
+  </section><nav class="series-box depth-nav" aria-labelledby="service-read-next-title">
+    <h2 id="service-read-next-title" class="h3">Continue reading</h2><ul class="series-list">
+      <li><a href="/services/software-engineering/">Methodology · Software Engineering</a></li>
+      <li><a href="/services/software-engineering/education-accessible-workflow/">Previous scenario · Build an accessible course-enrolment workflow</a></li>
+      <li><a href="/services/software-engineering/professional-saas-tenant/">Next scenario · Protect tenant boundaries through a feature change</a></li>
+      <li><a href="/services/enterprise-middleware/">Related service · Enterprise Middleware</a></li>
+      <li><a href="/services/">All services and delivery methods</a></li>
+    </ul></nav>
+  </div><aside class="writing-promos" aria-label="Promotions" data-ad-slot="service-scenario-rail">
+  <p class="promo-label">From our projects</p>
+  <div class="promo-cards">
+    <section class="promo-card promo-techknowen" aria-label="TechKnowen">
+      <p class="promo-name">TechKnowen</p>
+      <p>Practical reading on software, architecture, and engineering.</p>
+      <a class="card-destination" href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+    </section>
+    <section class="promo-card promo-ziggle" aria-label="Ziggle">
+      <p class="promo-name">Ziggle</p>
+      <p>A new place to play brain teasers.</p>
+      <a class="card-destination" href="/projects/ziggle/">Ziggle preview</a> <span class="promo-status">Coming soon</span>
+    </section>
+  </div>
+</aside>
+  </div><section class="section"><div class="art-wrap"><div class="cta-panel">
+    <h2 class="h2">Plan your next engineering engagement</h2>
+    <p class="lede">Discuss your constraints, evidence and desired outcome. Define scope, acceptance criteria and responsibilities before work begins.</p>
+    <div class="row"><a class="btn" href="/contact/">Discuss your requirements</a><a class="btn btn-ghost" href="/services/">Explore all services</a></div>
+  </div></div></section><div class="read-bar" aria-hidden="true"><span id="readBar"></span></div>
+
+<div class="reader-tools">
+  <button class="icon-btn" id="readerBtn" type="button" aria-expanded="false" aria-controls="readerPanel" title="Reading settings" aria-label="Reading settings"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2.2"/><circle cx="10" cy="17" r="2.2"/></svg></button>
+  <button class="icon-btn" id="focusBtn" type="button" aria-pressed="false" title="Focus mode" aria-label="Enter focus mode"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg></button>
+</div>
+<div class="reader-panel" id="readerPanel" role="dialog" aria-label="Reading settings" hidden>
+  <fieldset><legend>Text size</legend>
+    <div class="seg" data-pref="rsize">
+      <button type="button" data-val="s" aria-pressed="false"><span class="sample s">Aa</span>Small</button><button type="button" data-val="m" aria-pressed="false"><span class="sample ">Aa</span>Default</button><button type="button" data-val="l" aria-pressed="false"><span class="sample l">Aa</span>Large</button><button type="button" data-val="xl" aria-pressed="false"><span class="sample l">Aa</span>Largest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Ground</legend>
+    <div class="seg" data-pref="theme">
+      <button type="button" data-val="light" aria-pressed="false"><span class="swatch light"></span>Light</button><button type="button" data-val="sepia" aria-pressed="false"><span class="swatch sepia"></span>Sepia</button><button type="button" data-val="dark" aria-pressed="false"><span class="swatch dark"></span>Dark</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Column width</legend>
+    <div class="seg" data-pref="rwidth">
+      <button type="button" data-val="s" aria-pressed="false">Narrow</button><button type="button" data-val="m" aria-pressed="false">Default</button><button type="button" data-val="l" aria-pressed="false">Wide</button><button type="button" data-val="xl" aria-pressed="false">Widest</button>
+    </div>
+  </fieldset>
+  <fieldset><legend>Typeface</legend>
+    <div class="seg" data-pref="rface">
+      <button type="button" data-val="sans" aria-pressed="false"><span class="sample">Aa</span>Sans</button>
+      <button type="button" data-val="serif" aria-pressed="false"><span class="sample serif">Aa</span>Serif</button>
+    </div>
+  </fieldset>
+  <button class="reader-close btn btn-ghost btn-sm" id="readerClose" type="button">Close settings</button>
+  <button class="reader-reset" id="readerReset" type="button">Reset reading layout</button>
+  <p class="reader-note">Reading preferences are saved in this browser.</p>
+</div>
+<button class="focus-exit" id="focusExit" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h6V3M21 9h-6V3M3 15h6v6M21 15h-6v6"/></svg> Exit focus</button>
+</article>
+</main>
+
+<footer class="site-footer">
+  <div class="shell-inner">
+    <div class="grid g-4" style="gap:2rem">
+      <div>
+        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem" aria-label="Ajna Consulting Services — home">
+          <svg class="ajna-mark is-still" viewBox="0 0 100 100" width="52" height="52" fill="none" aria-hidden="true" focusable="false"><defs><path id="t-ftr" d="M 50 4 L 96 50 L 50 50 Z"/><path id="e-ftr" d="M 50 4 L 96 50"/><path id="k-ftr" d="M 50 4 L 50 50 L 96 50"/><linearGradient id="bev-ftr" gradientUnits="userSpaceOnUse" x1="50" y1="50" x2="73" y2="27"><stop offset="0" stop-color="#000" stop-opacity=".13"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity=".2"/></linearGradient><radialGradient id="core-ftr" cx=".34" cy=".3" r=".85"><stop offset="0" stop-color="#fff" stop-opacity=".42"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".45"/></radialGradient></defs><g class="am-bud"><g transform="rotate(0 50 50)"><use href="#t-ftr" fill="#D95547"/><use href="#t-ftr" fill="url(#bev-ftr)"/><use href="#t-ftr" fill="#fff" opacity="0.07"/><use href="#e-ftr" stroke="#fff" stroke-opacity="0.27" stroke-width="1.6" stroke-linecap="round"/><use href="#k-ftr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g transform="rotate(90 50 50)"><use href="#t-ftr" fill="#E8A347"/><use href="#t-ftr" fill="url(#bev-ftr)"/><use href="#t-ftr" fill="#000" opacity="0.12"/><use href="#e-ftr" stroke="#000" stroke-opacity="0.16" stroke-width="1.6" stroke-linecap="round"/><use href="#k-ftr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g transform="rotate(180 50 50)"><use href="#t-ftr" fill="#348C72"/><use href="#t-ftr" fill="url(#bev-ftr)"/><use href="#t-ftr" fill="#000" opacity="0.05"/><use href="#e-ftr" stroke="#000" stroke-opacity="0.1" stroke-width="1.6" stroke-linecap="round"/><use href="#k-ftr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g transform="rotate(270 50 50)"><use href="#t-ftr" fill="#3B69C4"/><use href="#t-ftr" fill="url(#bev-ftr)"/><use href="#t-ftr" fill="#fff" opacity="0.30"/><use href="#e-ftr" stroke="#fff" stroke-opacity="0.37" stroke-width="1.6" stroke-linecap="round"/><use href="#k-ftr" stroke="#000" stroke-width=".9" opacity=".2"/></g></g><g class="am-core"><circle cx="50" cy="50" r="6" fill="currentColor"/><circle cx="50" cy="50" r="6" fill="url(#core-ftr)"/></g></svg>
+          <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
+        </a>
+        <p style="font-size:.88rem;line-height:1.65;color:#9fb0d0;max-width:30ch">
+          Specialised engineering partner for enterprise architecture, AI &amp; MLOps, and technical enablement.
+        </p>
+        <div class="social" style="margin-top:1.1rem">
+          <a href="https://www.youtube.com/@TechKnowen" rel="noopener" aria-label="YouTube"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 12s0-3.8-.5-5.6a2.9 2.9 0 0 0-2-2C18.7 4 12 4 12 4s-6.7 0-8.5.4a2.9 2.9 0 0 0-2 2C1 8.2 1 12 1 12s0 3.8.5 5.6a2.9 2.9 0 0 0 2 2C5.3 20 12 20 12 20s6.7 0 8.5-.4a2.9 2.9 0 0 0 2-2C23 15.8 23 12 23 12zM9.8 15.4V8.6l5.9 3.4z"/></svg></a>
+          <a href="https://techknowen.com" rel="noopener" aria-label="TechKnowen blog"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 3h16v3H4zm0 5h16v13l-8-4-8 4z"/></svg></a>
+          <a href="/feed.xml" aria-label="RSS feed"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="6.2" cy="17.8" r="2.2"/><path d="M4 10.2v3a6.6 6.6 0 0 1 6.6 6.6h3A9.6 9.6 0 0 0 4 10.2zM4 4v3c7.2 0 13 5.8 13 13h3C20 11.2 12.8 4 4 4z"/></svg></a>
+        </div>
+      </div>
+      <div>
+        <h2 class="foot-title">Services</h2>
+        <ul>
+          <li><a href="/services/#architecture">Enterprise architecture</a></li>
+          <li><a href="/services/#ai">AI &amp; MLOps</a></li>
+          <li><a href="/services/#training">Technical enablement</a></li>
+          <li><a href="/case-studies/">Case studies</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2 class="foot-title">Insights</h2>
+        <ul>
+          <li><a href="/insights/">All articles</a></li>
+          <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/deep-dives/">Deep dives</a></li>
+          <li><a href="/follow/">Follow new writing</a></li>
+          <li><a href="/series/">Series</a></li>
+          <li><a href="/topics/">Topics</a></li>
+          <li><a href="/notes/">Personal notes</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2 class="foot-title">Contact</h2>
+        <ul>
+          <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
+          <li><a href="/contact/">Start an engagement</a></li>
+          <li><a href="/about/">About</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span id="yr">2026</span> Ajna Consulting Services. All rights reserved.</span>
+      <span style="display:flex;gap:1.2rem"><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a></span>
+    </div>
+  </div>
+</footer>
+<script src="/assets/js/site.js?v=d8c868c0" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=d8c868c0"></script>
+</body>
+</html>
