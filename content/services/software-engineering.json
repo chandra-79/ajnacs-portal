@@ -1,0 +1,234 @@
+{
+  "id": "software-engineering",
+  "title": "Software Engineering",
+  "category": "training",
+  "description": "Strengthen practical design, implementation, testing, review and recovery skills through realistic repository work and independently assessed capstones.",
+  "methodology": "## Programme purpose and scope\n\nThis proposed software-engineering enablement programme develops the ability to change an existing service safely, explain the design and verify the resulting behaviour. The focus is delivery competence: understanding requirements, reading unfamiliar code, shaping interfaces, testing meaningful risks, reviewing changes and operating the result. It is adapted to the organisation's languages and framework versions rather than presenting one stack as a universal answer. All cases and numerical examples on this page are hypothetical teaching scenarios, not accounts of customer work.\n\nDiscovery starts with a small sample of actual engineering responsibilities, described without exposing confidential code or data. Identify whether learners mainly build APIs, maintain business rules, operate data workflows or support user interfaces. Record the expected level of independence and the constraints of the team's delivery process. A programme for experienced maintainers adopting a new framework should not duplicate a beginner course, while a new engineer should not be assessed on unstated infrastructure prerequisites.\n\n## Baseline through a realistic change\n\nThe baseline task uses a small synthetic repository with a readable specification and a seeded defect. Participants locate the relevant code, describe the existing behaviour, propose a bounded change and demonstrate it with evidence. The assessor records where help was needed: language syntax, domain reasoning, test design, tooling or diagnosis. This produces a learning-needs map that can guide preparation and pairing without turning the exercise into a public leaderboard.\n\nAssess explanation separately from completion speed. A fast change that bypasses authorization or ignores an error path is not equivalent to a correct change. Allow documentation and ordinary development tools during the assessment, because the goal is sound engineering rather than memorized APIs. If an assistant or code generator is used, record its role and require the participant to explain and verify the resulting code. Tool assistance does not transfer accountability for correctness.\n\n## Establish an inspectable reference application\n\nThe laboratory application contains a small API, a relational data model, one asynchronous operation and a minimal user-facing workflow. Its domain is deliberately understandable, such as equipment booking or order tracking. Fixtures are entirely invented and small enough to inspect manually. The repository includes versioned dependencies, setup instructions, a supported test command and a clear distinction between required configuration and optional integrations.\n\nKeep the architecture modest. A module boundary, interface or repository abstraction is introduced when it supports a real responsibility or test seam, not to demonstrate every design pattern. Participants trace one operation from request validation through business rules to persistence and response. They identify where an invariant belongs and which failure can cross each boundary. This makes later design discussions concrete instead of relying on diagrams disconnected from executable behaviour.\n\n## Requirements become examples and invariants\n\nTranslate a feature request into observable examples, boundary cases and rules that must always hold within the declared scope. For a booking service, two accepted reservations must not claim the same exclusive resource and interval. For an order operation, a retry must not create another business order when the contract promises idempotency. The team writes these rules before choosing a framework annotation or database query.\n\nSeparate missing information from implementation freedom. The instructor supplies business decisions that the exercise genuinely requires, while learners make routine technical choices and record their rationale. An acceptance worksheet contains the actor, precondition, action, expected result, failure result and evidence. Include accessibility and error recovery when a user interface is involved. A happy-path screenshot is not enough to establish that a person can recover from invalid input or an expired session.\n\n## Design interfaces with compatibility and authorization\n\nAPI exercises define request and response shapes, status semantics, pagination behaviour and error identifiers. OpenAPI can describe the interface, but runtime validation and executing consumer tests are still required. Participants distinguish a machine-readable contract from a promise that every generated client handles every edge case correctly. They test absent optional fields, unknown values and malformed input with deliberate examples.\n\nAuthorization is checked against the authenticated actor and the resource, including alternate lookup paths and list endpoints. A client-supplied tenant identifier is not trusted simply because it has the right type. The lab includes two fictional tenants and attempts to cross their boundary. Learners should be able to explain why validation, authentication and authorization solve different problems and where each is enforced in the application.\n\n## Make data correctness visible under concurrency\n\nA transaction is selected to protect a specific invariant, with the database isolation level and conflict behaviour understood. Participants run two controlled concurrent operations against the same synthetic resource. They observe whether constraints, version checks, locks or serializable execution provide the intended result. An ORM session or a framework transaction decorator is not accepted as proof that every race has been resolved.\n\nThe data module also covers schema evolution. Learners add a field through a staged change that supports the intended old and new application combinations. They identify which changes can be reversed safely and which require forward repair or restoration. Test fixtures include existing rows, empty values and a failed migration attempt. The handover must preserve the data assumptions; a rollback command without compatibility conditions is incomplete.\n\n## Test risks at the appropriate boundary\n\nUse fast unit tests for isolated business decisions, integration tests for database and adapter semantics, and a small number of end-to-end tests for critical user journeys. The exact distribution depends on the application. A high test count or coverage percentage is not the goal; the useful question is which important failure each test would detect. Participants deliberately introduce a defect and check that the relevant test fails for the intended reason.\n\nFixtures should reveal their scope and cleanup behaviour. Shared mutable fixtures can make tests pass only in a particular order, while excessive mocking can verify an imagined dependency rather than the real interface. The programme uses the selected framework's official fixture guidance and asks learners to run a test alone, in a suite and after a failed setup. Tests that require secrets or external paid services are isolated and explicitly controlled.\n\n## Teach debugging and performance as experiments\n\nDebugging starts with a reproducible symptom, a hypothesis and the smallest useful observation. Learners inspect the actual exception, query, request or state transition before changing code. They retain the failing fixture and add a regression check after the repair. The assessment rewards narrowing the cause and preserving evidence, not simply restarting the service until the symptom disappears.\n\nPerformance work uses a declared workload and correctness checks. A synthetic request might spend 120 milliseconds waiting for a database, 80 transforming data and 40 serializing a response, totalling 240 milliseconds in a simplified sequential model. Those inputs can guide a discussion, but actual profiling must account for concurrency, measurement overhead and overlapping work. Participants must distinguish fewer queries from faster response time and a faster successful subset from better overall completion.\n\n## Review changes as maintainable artifacts\n\nEach change is submitted as a small reviewable diff with a description of the problem, resulting behaviour, verification and known limits. Reviewers inspect naming, responsibility boundaries, error handling, data access and test meaning. They also check whether a clever abstraction is justified by current use cases. The exercise includes a tempting generic helper whose callers have different semantics, encouraging a reasoned choice between reuse and explicit duplication.\n\nPairs rotate author and reviewer roles. A review comment should explain the consequence of a problem and offer a testable direction, rather than enforce personal style without context. The author responds with evidence or a revised decision. Preserve one design record for a material tradeoff, including alternatives and conditions that would cause the team to revisit it. This teaches how to communicate technical judgement as part of delivery.\n\n## Build and release with controlled permissions\n\nThe pipeline installs declared dependencies, runs the relevant checks, creates an identifiable artifact and records the source revision. It separates untrusted contribution checks from jobs that can access deployment credentials. GitHub Actions or another platform's security model must be reviewed for the actual workflow; a green CI badge does not establish that secrets cannot leak or that third-party build steps are trustworthy.\n\nUse least-privilege tokens, reviewed dependencies and a clear artifact promotion path. Learners inspect a deliberately unsafe workflow that combines untrusted code with powerful credentials, then explain a safer boundary. Deployment exercises use only the lab environment. The release record identifies the artifact, configuration, migration state and verification result, making it possible to determine what actually ran rather than relying on a mutable branch name.\n\n## Operability and rollback belong in the feature\n\nThe application provides useful structured diagnostics without logging secrets or entire personal records. A business-operation identifier helps connect requests, background work and persistent outcomes. Health checks represent the application's actual readiness and failure behaviour. Participants create a support note that explains common failure states and the evidence needed to distinguish them.\n\nRollback is rehearsed for a compatible application change, then contrasted with an incompatible data change. The learner names the previous artifact, stop condition, data assumptions and verification steps. External effects such as messages or provider calls may require reconciliation or compensation rather than reversal. A correct answer can be that rollback is unsafe and a bounded forward repair is required, provided the reasoning and recovery plan are explicit.\n\n## Capstone design and assessment evidence\n\nThe capstone is a fresh feature with an unseen defect and a small operational complication. It requires a contract change, a data rule, meaningful tests, a reviewed implementation and a release or recovery demonstration. Instructors may answer business questions but record technical hints. The final assessment includes an explanation to another engineer who did not write the code, testing whether the solution is understandable and transferable.\n\nThe methodology figure shows a hypothetical 24-check acceptance design: nine correctness checks, six security checks, five operability checks and four migration checks. These are planned evidence items, not observed defect counts or a universal test allocation. Every required check has a defined expected result. A participant cannot compensate for a failed authorization requirement by passing more formatting checks. Critical acceptance conditions remain explicit rather than disappearing inside an average score.\n\n## Resource budget, cleanup and handover\n\nEstimate repository setup, environment runtime, database storage and any external test-service usage before delivery. Local execution may reduce cloud runtime but still requires sufficient participant hardware and support. A shared remote environment changes isolation and scheduling assumptions. Choose the option that supports the learning objective and accessibility needs, and keep an inventory of owner, purpose and expiry for provisioned resources.\n\nCleanup removes test credentials, deployments, temporary data and paid integrations after preserving non-sensitive assessment artifacts. The handover includes the repository, dependency manifest, fixture generators, test strategy, architecture notes, review examples, runbooks and capstone rubric. An internal maintainer rebuilds the project from a clean environment. Any missing undocumented setup step is corrected before the material is considered reusable.\n\n## Measure transfer without inventing a productivity claim\n\nA delayed exercise asks participants to change a related but unfamiliar part of the application. Measure independent completion, correctness, quality of diagnosis and the ability to explain tradeoffs. Compare tasks only when their difficulty and scoring are sufficiently similar, and report the small cohort's limitations. Attendance, confidence surveys and demonstrated competence are different outcomes and should remain separate.\n\nIf the organisation later measures delivery or incident metrics, preserve baseline definitions and competing explanations such as staffing, tooling and workload changes. This programme does not promise a percentage improvement from training alone. The proposed deliverable is a reproducible capability: engineers who can make a bounded change, test its important risks, communicate it clearly and hand over evidence that another maintainer can use.",
+  "figure": {
+    "slug": "service-software-engineering",
+    "kind": "bar",
+    "title": "Designed capstone evidence by responsibility",
+    "unit": "acceptance checks",
+    "points": [
+      {
+        "label": "Correctness",
+        "value": 9
+      },
+      {
+        "label": "Security",
+        "value": 6
+      },
+      {
+        "label": "Operability",
+        "value": 5
+      },
+      {
+        "label": "Migration",
+        "value": 4
+      }
+    ],
+    "method": "Hypothetical 24-check capstone design: 9 correctness + 6 security + 5 operability + 4 migration. Counts are planned evidence, not defect rates or a universal test allocation.",
+    "alt": "Designed capstone evidence by responsibility. Correctness: 9 acceptance checks; Security: 6 acceptance checks; Operability: 5 acceptance checks; Migration: 4 acceptance checks. Synthetic exercise data.",
+    "dataOrigin": "synthetic",
+    "steps": [],
+    "studyPaths": [
+      "learning",
+      "platform"
+    ]
+  },
+  "references": [
+    {
+      "label": "OpenAPI specification",
+      "url": "https://spec.openapis.org/oas/latest.html"
+    },
+    {
+      "label": "pytest fixture guidance",
+      "url": "https://docs.pytest.org/en/stable/how-to/fixtures.html"
+    },
+    {
+      "label": "PostgreSQL transaction isolation",
+      "url": "https://www.postgresql.org/docs/16/transaction-iso.html"
+    },
+    {
+      "label": "OWASP ASVS",
+      "url": "https://asvs.owasp.org/"
+    },
+    {
+      "label": "Playwright testing guidance",
+      "url": "https://playwright.dev/docs/best-practices"
+    },
+    {
+      "label": "GitHub Actions secure use",
+      "url": "https://docs.github.com/en/actions/reference/security/secure-use"
+    }
+  ],
+  "useCases": [
+    {
+      "id": "commerce-idempotent-orders",
+      "title": "Implement an order API that survives client retries",
+      "industry": "Retail technology",
+      "description": "A hypothetical engineering capstone joins API contracts, transactions, authorization and retry-safe business effects.",
+      "body": "## Hypothetical problem and learning baseline\n\nA fictional retail-software team needs to add an order-creation endpoint that clients may retry after a timeout. The proposed lab uses invented customers and products. It is a training design, not a customer delivery claim. Participants first identify the business operation's identity, explain request validation and describe why a timeout does not prove that the server failed before committing.\n\n## Design and delivery\n\nThe API accepts a documented idempotency key within an authenticated customer scope. The implementation stores the relevant request identity and resulting order under an appropriate transaction. Reusing a key with a conflicting payload has a defined error rather than silently returning an unrelated order. The interface is described with [OpenAPI](https://spec.openapis.org/oas/latest.html), and tests execute the actual service behaviour instead of checking the specification file alone.\n\nLearners build unit tests for order rules, integration tests for duplicate and concurrent requests, and one end-to-end creation journey. The instructor introduces a defect that commits the order before persisting the idempotency record. Pairs must reproduce the race with a controlled failure and repair the transactional boundary. A superficial in-memory cache is rejected because it does not survive restart or coordinate multiple instances.\n\n## Synthetic numerical example\n\nThe fixture contains 500 intended orders and 50 repeated request attempts. The expected transport count is 550 attempts, while the correct business result is 500 unique orders. The chart compares these quantities. The 10% extra-attempt ratio is an invented workload input, not a measured customer retry rate. Verification compares identities, quantities and ownership, because matching totals can conceal one missing order and one duplicate.\n\nA second fixture sends two genuinely different orders with identical product contents and different operation identities. Both must be accepted. This prevents learners from deduplicating by payload hash without understanding the contract. The worksheet records key scope, lifetime, conflict behaviour and the response returned after an ambiguous first attempt.\n\n## Acceptance and transfer\n\nThe capstone requires correct handling of replay, concurrent duplicate attempts, invalid input and cross-customer key use. The participant must explain the rollback limits after an order has been published to another system. A reviewed outbox or another explicit publication strategy can be discussed, but external effects are not assumed to share the local transaction.\n\nThe environment has synthetic identities, no real payment integration and a bounded database lifetime. Cleanup removes credentials and fixtures while retaining the reviewed diff and test evidence. Handover includes the API contract, transaction test, failure-injection procedure and support decision table. A delayed exercise applies the same reasoning to a cancellation endpoint, measuring whether participants can adapt the contract rather than copy an order-specific implementation.",
+      "figure": {
+        "slug": "service-software-engineering-commerce-idempotent-orders",
+        "kind": "bar",
+        "title": "Synthetic order requests and business effects",
+        "unit": "attempts or orders",
+        "points": [
+          {
+            "label": "Request attempts",
+            "value": 550
+          },
+          {
+            "label": "Intended unique orders",
+            "value": 500
+          }
+        ],
+        "method": "Invented 500 order intents plus 50 retries = 550 attempts. Correct fixture result is 500 unique order identities. Counts do not prove a production reliability rate.",
+        "alt": "Synthetic order requests and business effects. Request attempts: 550 attempts or orders; Intended unique orders: 500 attempts or orders. Synthetic exercise data.",
+        "dataOrigin": "synthetic",
+        "steps": [],
+        "studyPaths": [
+          "learning",
+          "platform"
+        ]
+      }
+    },
+    {
+      "id": "insurance-rule-refactor",
+      "title": "Refactor a pricing rule with explicit behavioural evidence",
+      "industry": "Insurance software",
+      "description": "A hypothetical maintenance workshop preserves declared rules while separating data access from calculation.",
+      "body": "## Hypothetical need and baseline\n\nA fictional insurance-software team maintains a large function combining input parsing, database reads and a simplified pricing calculation. The lab uses invented products and rates with no actuarial or commercial validity. It teaches refactoring and verification, not insurance advice or a real customer's pricing model. The baseline asks learners to trace one input through the function and identify which behaviours are specified, accidental or unknown.\n\n## Technical approach\n\nThe instructor supplies a small decision table and a set of historical-style synthetic fixtures. Participants first capture the agreed existing behaviour, including rounding and invalid inputs. They then separate pure calculation from data retrieval and response formatting without changing the declared result. An interface is introduced only where it clarifies responsibility or enables a meaningful test seam.\n\nThe exercise deliberately includes one surprising legacy behaviour. Learners must seek a domain decision rather than quietly “clean it up” during refactoring. The change record distinguishes preserved behaviour from an approved correction. Decimal arithmetic is used for the invented monetary calculation, with an explicit rounding stage; the [Python decimal documentation](https://docs.python.org/3.12/library/decimal.html) provides a reference implementation option rather than a mandated language.\n\n## Synthetic worksheet and chart\n\nThe constructed suite contains 30 rule examples: 18 ordinary cases, eight boundary cases and four invalid-input cases. The chart shows that distribution. These are designed examples, not measured production frequencies or evidence that 30 tests establish complete correctness. Each fixture includes the business explanation and expected result so the suite can be reviewed without reading the implementation line by line.\n\nParticipants add a controlled mutation, such as applying a discount before rather than after a specified threshold comparison, and verify that the relevant test fails. A suite that stays green after the seeded defect needs improvement. Coverage is reported only as supporting information; executing a line does not prove that the important decision was checked.\n\n## Acceptance, release and handover\n\nAcceptance requires unchanged results for all preserved behaviours, explicit evidence for any approved correction, no hidden database access in the pure calculation and a reviewable diff. The learner explains why the new boundary improves the actual maintenance task and what complexity it adds. A smaller function count is not a success criterion by itself.\n\nThe release exercise uses a compatible artifact and a synthetic comparison report before switching the lab's active version. Rollback restores the previous artifact because the exercise intentionally avoids persistent schema changes. Cleanup removes fixtures and temporary databases after exporting the evidence. Handover includes the decision table, labelled test corpus and rationale for the boundary. A delayed task adds a new rule with a different ordering constraint, testing whether the team can extend the model without assuming every future rule fits the same abstraction.",
+      "figure": {
+        "slug": "service-software-engineering-insurance-rule-refactor",
+        "kind": "bar",
+        "title": "Designed evidence for a fictional pricing refactor",
+        "unit": "test examples",
+        "points": [
+          {
+            "label": "Ordinary cases",
+            "value": 18
+          },
+          {
+            "label": "Boundary cases",
+            "value": 8
+          },
+          {
+            "label": "Invalid inputs",
+            "value": 4
+          }
+        ],
+        "method": "Synthetic 30-example corpus: 18 ordinary + 8 boundary + 4 invalid-input cases. Counts describe test design, not production distribution or complete coverage.",
+        "alt": "Designed evidence for a fictional pricing refactor. Ordinary cases: 18 test examples; Boundary cases: 8 test examples; Invalid inputs: 4 test examples. Synthetic exercise data.",
+        "dataOrigin": "synthetic",
+        "steps": [],
+        "studyPaths": [
+          "learning",
+          "platform"
+        ]
+      }
+    },
+    {
+      "id": "education-accessible-workflow",
+      "title": "Build an accessible course-enrolment workflow",
+      "industry": "Education technology",
+      "description": "A hypothetical full-stack exercise connects accessible forms, authorization, validation and end-to-end evidence.",
+      "body": "## Hypothetical learning need\n\nA fictional education platform wants engineers to implement a course-enrolment flow that works with keyboard navigation and meaningful validation. The proposed lab uses imaginary courses and students. It does not claim a real accessibility audit result or legal conformance. The baseline task asks learners to explain the form's accessible names, focus sequence, error recovery and server-side permission checks.\n\n## Design and delivery\n\nThe workflow contains a course selection, eligibility check and confirmation state. Native controls are preferred where they meet the interaction need. Labels, instructions and errors are connected programmatically, and entered values survive a validation failure. The server verifies the actor's authority and seat availability rather than trusting a disabled button or a client-side eligibility flag.\n\nParticipants consult [WCAG 2.2](https://www.w3.org/TR/WCAG22/) for the selected evaluation requirements and use the browser's accessibility tree plus a supported screen reader for the exercise. Automated checks are one layer, not a complete assessment. The test plan includes keyboard-only completion, zoom, an invalid field, an expired session and a full course. The instructor changes one fixture during the capstone so the learner must verify recovery rather than follow a memorized happy path.\n\n## Synthetic assessment design\n\nThe invented acceptance matrix has 16 checks: six interaction checks, four validation checks, four authorization checks and two concurrency checks. The chart shows these categories. They are designed evidence items, not a percentage of WCAG coverage or a claim that 16 checks establish universal accessibility. The concurrency checks address two users attempting to take the final seat; the correct business outcome must remain clear to both users.\n\nThe worksheet records the browser, assistive technology, fixture state, expected announcement or response and observed result. A screenshot of a visually correct form is insufficient. A test that passes only because the browser automatically focuses the first field must be understood and verified in the supported environment.\n\n## Acceptance and lifecycle\n\nThe capstone requires a completed enrolment journey, usable error recovery, denied cross-user access and one accepted booking for the last available seat under the controlled race. The participant explains which accessibility requirements were tested and which need further evaluation. The release note preserves known limitations rather than claiming that an automated scanner has certified the product.\n\nThe lab uses a disposable database and synthetic student identities, with no connection to an institution's student records. Cleanup removes accounts and recordings according to the training plan. Handover includes the journey matrix, fixtures, server invariant tests and accessible component notes. A delayed transfer exercise adds a waitlist state, measuring whether engineers preserve focus, meaning and authorization while extending the workflow.",
+      "figure": {
+        "slug": "service-software-engineering-education-accessible-workflow",
+        "kind": "bar",
+        "title": "Designed enrolment-workflow acceptance checks",
+        "unit": "checks",
+        "points": [
+          {
+            "label": "Interaction",
+            "value": 6
+          },
+          {
+            "label": "Validation",
+            "value": 4
+          },
+          {
+            "label": "Authorization",
+            "value": 4
+          },
+          {
+            "label": "Concurrency",
+            "value": 2
+          }
+        ],
+        "method": "Synthetic 16-check design: 6 interaction + 4 validation + 4 authorization + 2 concurrency. Not a WCAG coverage percentage or legal conformance claim.",
+        "alt": "Designed enrolment-workflow acceptance checks. Interaction: 6 checks; Validation: 4 checks; Authorization: 4 checks; Concurrency: 2 checks. Synthetic exercise data.",
+        "dataOrigin": "synthetic",
+        "steps": [],
+        "studyPaths": [
+          "learning",
+          "platform"
+        ]
+      }
+    },
+    {
+      "id": "logistics-query-performance",
+      "title": "Improve a tracking query using a reproducible workload",
+      "industry": "Logistics software",
+      "description": "A hypothetical performance workshop tests query shape, data skew and correctness before proposing an optimization.",
+      "body": "## Hypothetical context and baseline\n\nA fictional logistics-software team sees a slow tracking-history screen and wants engineers to diagnose it rather than guess at indexes. The proposed lab uses generated shipments and events, not carrier records. It does not claim an actual latency reduction. Participants begin by tracing the screen's query path and distinguishing database waiting, result transfer, object creation and rendering.\n\n## Technical design and delivery\n\nThe fixture includes ordinary shipments and one shipment with a much larger history. The initial implementation loads a list and then performs one additional lookup for every row. Learners capture actual SQL, bound-parameter shapes, statement counts and output correctness. They compare a deliberate batching or projection strategy while preserving the same visible result.\n\nThe [PostgreSQL EXPLAIN guidance](https://www.postgresql.org/docs/16/using-explain.html) informs plan inspection. Participants use an isolated database because execution-statistics commands can execute the statement. They record table size, indexes, data skew, cache state and configuration with the result. The instructor includes a candidate optimization that reduces statements but transfers substantially more data, preventing “fewer queries” from becoming the only criterion.\n\n## Synthetic calculation and chart\n\nFor a fixture of 40 tracking rows, the naive implementation issues one list query plus 40 detail queries, or 41 statements. A compatible batched implementation uses one list query and one detail query, or two statements. The chart compares 41 and two. These are designed query counts, not measured milliseconds or a 95% latency claim. Parameter limits, joins and larger data sets can change the batching behaviour.\n\nLearners measure successful response latency and resource use across repeated comparable runs. They verify that the large-history shipment does not lose events or change ordering. A result that becomes faster by silently truncating data is a correctness failure, not an optimization. The worksheet includes the workload seed and excluded setup work so another engineer can reproduce the test.\n\n## Acceptance and transfer\n\nThe capstone requires a reviewable query change, correct output for ordinary and skewed fixtures, a meaningful regression check and an explanation of the observed tradeoff. The learner must identify whether the change improves the declared workload and where it may not help. Keeping the original implementation is acceptable if the candidate does not meet the requirement.\n\nPermissions are limited to the lab database; no production query is run. Cleanup removes generated data and diagnostic exports. Handover includes the fixture generator, query plans, measurement protocol and rollback diff. A delayed assessment changes the requested sort order and filter distribution, testing whether the engineer revisits the plan rather than treating the first index or batch size as a universal fix.",
+      "figure": {
+        "slug": "service-software-engineering-logistics-query-performance",
+        "kind": "bar",
+        "title": "Statements for a synthetic tracking-history request",
+        "unit": "SQL statements",
+        "points": [
+          {
+            "label": "Per-row detail queries",
+            "value": 41
+          },
+          {
+            "label": "Compatible batched query",
+            "value": 2
+          }
+        ],
+        "method": "Synthetic 40-row response: naive 1+40=41 statements; compatible batching 1+1=2. Assumes one detail batch. Statement reduction does not imply proportional latency improvement.",
+        "alt": "Statements for a synthetic tracking-history request. Per-row detail queries: 41 SQL statements; Compatible batched query: 2 SQL statements. Synthetic exercise data.",
+        "dataOrigin": "synthetic",
+        "steps": [],
+        "studyPaths": [
+          "learning",
+          "platform"
+        ]
+      }
+    },
+    {
+      "id": "professional-saas-tenant",
+      "title": "Protect tenant boundaries through a feature change",
+      "industry": "Professional services software",
+      "description": "A hypothetical engineering exercise tests authorization across list, detail, export and asynchronous paths.",
+      "body": "## Hypothetical problem and baseline\n\nA fictional professional-services SaaS team is adding document exports and wants engineers to preserve tenant isolation across synchronous and background work. The lab contains two invented firms and synthetic documents. It does not claim a real security assessment. The baseline asks participants to identify the authenticated actor, trusted tenant context and every path through which an export can be requested or retrieved.\n\n## Design and delivery\n\nThe API checks authorization before creating an export job. The job stores a stable tenant and resource reference derived from trusted context, and the worker rechecks the relevant policy before producing the artifact. Download access is evaluated separately from job creation. A copied identifier or a changed query parameter must not grant access to another firm's document.\n\nParticipants use selected requirements from the [OWASP Application Security Verification Standard](https://asvs.owasp.org/) to structure review. The instructor seeds a defect in a status endpoint that filters by job ID but omits tenant scope. Another fixture removes a user's permission after the job is queued. Learners must explain the intended behaviour rather than assume authorization at submission lasts forever.\n\n## Synthetic evidence matrix\n\nThe invented matrix contains 20 boundary checks across four paths: five each for list, detail, export creation and artifact retrieval. In the deliberately vulnerable fixture, 17 checks produce the expected result and three expose cross-tenant access. The corrected capstone requires all 20 to match the defined policy. The chart compares 17 and 20 correct outcomes. These counts are teaching inputs, not a quantified real-world security risk.\n\nThe worksheet records actor, tenant, resource, route, expected decision and observed response. It includes negative checks and permitted operations so a fix that blocks every export cannot pass. Logs use synthetic identifiers and omit document contents. A passing test suite is evidence for the exercised boundaries, not proof that no undiscovered path exists.\n\n## Acceptance, rollback and handover\n\nAcceptance requires all declared boundary checks, correct delayed-permission handling, traceable job state and a clear explanation of the trust boundary. The participant adds a regression test around the real handler and data-access path. Mocking the authorization function to always allow access would invalidate the relevant security evidence.\n\nThe training environment cannot reach production storage and uses expiring credentials. Cleanup removes generated artifacts, queued jobs and test identities, including derivative files that a database deletion alone would leave behind. Handover includes the boundary matrix, fixtures, review notes and incident-style investigation steps. A delayed transfer exercise introduces a shared-document feature with explicit grants, requiring engineers to refine the policy rather than weaken tenant checks to make the new feature work.",
+      "figure": {
+        "slug": "service-software-engineering-professional-saas-tenant",
+        "kind": "bar",
+        "title": "Constructed tenant-boundary test outcomes",
+        "unit": "correct checks",
+        "points": [
+          {
+            "label": "Seeded vulnerable fixture",
+            "value": 17
+          },
+          {
+            "label": "Required corrected result",
+            "value": 20
+          }
+        ],
+        "method": "Synthetic 20-check matrix across four paths has 17 correct initial outcomes and requires 20 after repair. Not a security certification or customer incident statistic.",
+        "alt": "Constructed tenant-boundary test outcomes. Seeded vulnerable fixture: 17 correct checks; Required corrected result: 20 correct checks. Synthetic exercise data.",
+        "dataOrigin": "synthetic",
+        "steps": [],
+        "studyPaths": [
+          "learning",
+          "platform"
+        ]
+      }
+    }
+  ]
+}

@@ -11,6 +11,7 @@ import { artwork, colorFor } from "./visuals.mjs";
 import { makeRenderer, tableOfContents, headingAnchors } from "./render.mjs";
 import { staticPages } from "./pages.mjs";
 import { caseLibrary } from "./case-library.mjs";
+import { loadServiceLibrary, publishServiceLibrary } from "./service-library.mjs";
 import { loadDeepDives, depthLinks, depthAudit, publishDeepDives } from "./deep-dives.mjs";
 import { examplesCsv, readWorkedExamples, workedExample } from "./worked-examples.mjs";
 import { localInferenceNote } from "./local-inference-note.mjs";
@@ -35,6 +36,7 @@ const live = manifest
 const insights = live.filter(m => m.section === "insights");
 const notes = live.filter(m => m.section === "notes");
 const depthCatalog = await loadDeepDives();
+const services = await loadServiceLibrary();
 const examples = await readWorkedExamples();
 const researchLinks = await readResearchLinks();
 const localInference = await localInferenceNote();
@@ -517,11 +519,12 @@ for (const guide of publishedGuides) {
 }
 
 /* ---------- static pages ---------- */
-for (const [rel, html] of Object.entries(staticPages({ insights, notes, seriesMap, topicList, cardFor, topicChip }))) {
+for (const [rel, html] of Object.entries(staticPages({ insights, notes, seriesMap, topicList, cardFor, topicChip, services }))) {
   await out(rel, html);
 }
 
 const caseUrls = await caseLibrary(out, housePromotions, depthCatalog.caseSources);
+const serviceUrls = await publishServiceLibrary(out, services, { promotions: housePromotions });
 const depthUrls = await publishDeepDives(out, depthCatalog, new Map(live.map(article => [`${article.section}/${article.slug}`, article])));
 await out("docs/deep-dive-coverage.csv", await depthAudit(depthCatalog, live));
 
@@ -593,7 +596,7 @@ await out("notes/feed.xml", `<?xml version="1.0" encoding="UTF-8"?>
 </channel></rss>`);
 
 const urls = [
-  ...[...caseUrls, ...depthUrls].map(url => [url]),
+  ...[...caseUrls, ...depthUrls, ...serviceUrls].map(url => [url]),
   ["/follow/"], ["/field-guides/methods/"],
   ...['/', '/services/', '/insights/', '/series/', '/topics/', '/field-guides/', '/case-studies/', '/about/', '/contact/', '/notes/', '/privacy/', '/terms/', '/projects/ziggle/'].map(url => [url]),
   ...live.map(m => [`/${m.section}/${m.slug}/`, m.modified || m.date]),
@@ -617,4 +620,5 @@ await (async () => {
 console.log(`built ${built} article pages`);
 console.log(`  insights live: ${insights.length} | notes live: ${notes.length} | series: ${seriesMap.size}`);
 console.log(`  topics: ${topicList.length} | sitemap urls: ${urls.length}`);
+console.log(`  services: ${services.length} methodologies | ${serviceUrls.length - services.length} hypothetical industry scenarios`);
 console.log(`  queued (not emitted): ${manifest.filter(m => m.date > TODAY).length}`);

@@ -1,0 +1,221 @@
+{
+  "id": "predictive-analytics",
+  "title": "Predictive analytics",
+  "category": "ai",
+  "description": "Turn a defined operational decision into a validated forecast or risk estimate, with transparent denominators, uncertainty and measured decision value.",
+  "methodology": "## A decision-focused service\n\nThis is a proposed methodology for building predictive analytics, illustrated with hypothetical organizations and synthetic data. It does not claim completed customer work or guarantee a business improvement. The deliverable is an evaluated prediction process connected to a specific decision, together with a baseline, data contracts, operating limits and a reproducible measurement report.\n\nA prediction estimates an unknown outcome from available information. It does not automatically establish what action will improve that outcome. A customer likely to leave may be impossible to retain, and a machine likely to fail may already be scheduled for maintenance. Discovery therefore separates prediction quality from intervention value and identifies who has authority to act on the estimate.\n\n## Define the decision and the forecast horizon\n\nStart with the operational question: what decision will change, when must it be made and what information is available then? Specify the unit of prediction, such as store-day demand, shipment arrival or account-week risk. Define the horizon and outcome precisely. \"Predict demand\" is incomplete without the location, product, period and measurement rule.\n\nRecord the consequences of false alarms, missed events and uncertain estimates. A capacity planner may prefer a conservative upper demand estimate, while a limited review team may need a ranked list within a fixed workload budget. The evaluation metric should reflect that decision without hiding the underlying errors. A single accuracy percentage is rarely enough to choose a useful operating threshold.\n\nBuild a baseline from the current process and a simple statistical method. Seasonal repetition, moving averages or a transparent rule may be strong references. Measure their accepted decision outcomes and operating cost. A complex model is justified only when its improvement survives a fair comparison using the same information, horizon and acceptance rules.\n\n## Data access, labels and contracts\n\nMap source ownership, permissions, data classifications and retention. Confirm whether data collected for an operational purpose can be used for training and evaluation. Minimize unnecessary personal attributes and document the purpose of every sensitive field. Derived features and pseudonymous identifiers can still be sensitive; removing names does not automatically remove privacy obligations.\n\nDefine the label creation process and its delay. An outcome may be provisional, corrected later or observable only for a selected population. A fraud label can depend on investigation, while a churn label can require a future inactivity window. Record missing and disputed labels rather than treating them as ordinary negative outcomes. Label uncertainty is part of the model's evidence base.\n\nFor each feature, define entity, unit, event time, availability time, missingness and transformation version. Historical reconstruction must use information available at the decision cutoff. Future corrections, subsequent purchases and post-event maintenance records can leak the outcome into apparently legitimate features. The data contract should make those exclusions testable.\n\n## Architecture from evidence to decision\n\nThe architecture includes versioned source inputs, validated features, a training and evaluation path, a registered prediction configuration and a delivery interface. The interface may be a batch table, an API or an analyst dashboard. It should expose prediction time, horizon, version, uncertainty where justified and data-quality status, rather than presenting an unexplained number as a command.\n\nKeep the decision rule separate from the model score. A threshold, capacity limit or business exclusion can change independently of model training and needs its own version. Record the action actually taken and its timing so later outcome analysis can distinguish model behavior from operator choices. The model's highest score is not automatically the right operational priority.\n\nWhere human review is required, show the evidence needed to challenge the estimate. Avoid generating a fluent explanation that claims more causal understanding than the model supports. Feature attribution can be a diagnostic aid under its assumptions, but it is not proof that changing that feature would change the outcome. Explain this distinction in the user interface and handover materials.\n\n## Implement the evaluation before model selection\n\nCreate a dataset manifest and an evaluation script before extensive tuning. Choose temporal, grouped or other splits that reflect how the model will be used. Time-based validation can prevent training on future periods, but additional gaps or entity grouping may be necessary when labels overlap or repeated entities leak information. Document the exact split rather than merely naming a cross-validation class.\n\nFit preprocessing on training data only. Imputation, normalization, feature selection and dimensionality reduction can all leak information if fitted on the full dataset. A pipeline abstraction helps coordinate transformations but still needs appropriate split design. Keep a separate release set or later prospective cohort so repeated tuning does not turn the final evaluation into development feedback.\n\nCompare candidate models with the baseline on paired cases. Record errors by horizon, location, population and data-quality status where relevant. A better average can conceal a worse important segment. Retain uncertainty and sample counts in reports; zero errors in a tiny subgroup is not proof of reliability. The evaluation should make the limits of the available evidence visible.\n\n## A synthetic classification example\n\nImagine 1,000 hypothetical cases, of which 100 eventually have the event of interest. At a chosen threshold, the model identifies 80 of those events and raises 120 false alarms. It misses twenty events and correctly leaves 780 non-events unflagged. The chart shows true positives 80, false positives 120, false negatives 20 and true negatives 780, which sum to 1,000.\n\nPrecision is 80/(80 + 120) = 40%. Recall is 80/(80 + 20) = 80%. Accuracy is (80 + 780)/1,000 = 86%. A model that predicts no events would achieve 90% accuracy on this dataset while finding none of the events. This synthetic example demonstrates why accuracy alone can reward an unusable system in an imbalanced task.\n\nThe chosen threshold sends 200 cases to review. Whether that is useful depends on review capacity, event consequence and the value of an effective intervention. The calculation does not establish that acting on the eighty true positives prevents eighty events. That requires additional causal evidence or a justified operational model. Keep predicted risk, detected events and prevented outcomes as separate quantities.\n\n## Calibration, forecasting and uncertainty\n\nFor probabilistic classification, inspect whether predicted probabilities correspond to observed frequencies in an appropriate evaluation population. Calibration and discrimination answer different questions: a model can rank cases well while assigning poor probabilities. Calibration methods themselves need independent data or carefully designed cross-validation, and their behavior can change under distribution shift.\n\nFor forecasts, report error in meaningful units and by horizon. Mean absolute error, squared-error measures and quantile loss emphasize different costs. Percentage errors can become unstable around zero demand, so choose metrics deliberately. Compare against seasonal and recent-value baselines using identical cutoffs. Explain whether a prediction interval describes outcome uncertainty, parameter uncertainty or a specific empirical construction.\n\nDo not label an interval \"90%\" without checking its coverage under the intended conditions. Evaluate coverage and width together, because an extremely wide interval can cover most outcomes while providing little decision value. Small samples, nonstationarity and dependent observations limit what coverage estimates establish. The report should state these limitations rather than presenting uncertainty bands as guarantees.\n\n## Bounded testing and security\n\nTest data contracts, temporal joins, transformations and delivery schemas with small fixtures whose expected values are known. Add cases for missing inputs, new categories, extreme but plausible values and stale features. Verify that the system reports unsupported conditions and follows its fallback instead of quietly extrapolating beyond the evaluated scope.\n\nSecurity tests should cover source permissions, tenant isolation, artifact integrity and output access. A prediction can expose sensitive information even if the raw inputs are hidden. Restrict who can query or download results and avoid unnecessary individual-level retention. Separate production credentials from training and experimentation identities, with auditable access to sensitive datasets.\n\nPerformance testing should use realistic entity distributions and batch sizes. A uniform benchmark can hide hot keys, long histories or expensive feature lookups. Bound retries and timeouts, and verify that failed batches reconcile every expected output. Availability and prediction quality are separate requirements; both must be tested before a system becomes part of a decision process.\n\n## Acceptance and a limited operational pilot\n\nAgree on acceptance criteria before choosing the winning model. Specify eligible population, required quality relative to the baseline, segment constraints, freshness, latency, review workload and operating cost. Critical access failures should block release independently of average predictive quality. A small statistical improvement may not justify a large increase in operational complexity.\n\nA shadow period can validate data availability and output behavior without influencing decisions. A subsequent controlled pilot can measure how people use the estimates. Where appropriate and authorized, randomized assignment can support stronger conclusions about intervention value. If randomization is not feasible, document confounding and avoid claiming that an observed before-and-after difference proves causation.\n\nMeasure the complete decision workflow: preparation, review, action, corrections and outcomes. Record cases where staff ignore or override the prediction, with useful reasons rather than punitive monitoring. Overrides can reveal missing context, an unsuitable threshold or a model failure. They are evidence for improving the process, not automatically evidence that either the person or model is wrong.\n\n## Rollback and ongoing operation\n\nRollback restores the compatible feature definitions, model artifact and decision rule. Keep the previous baseline available where feasible. A model that performed well last quarter may still be inappropriate after a structural change, so rollback should be one option among narrowing scope, changing the threshold or returning to manual review.\n\nMonitor source quality, prediction distributions, label maturity, outcome performance and actual decision use. Drift signals should trigger diagnosis rather than automatic retraining. A source bug, policy change or altered labeling process can produce an apparent model regression. Retraining on corrupted evidence can make the problem harder to detect.\n\nVersion evaluation reports and preserve original predictions when labels arrive later. Do not recompute historical predictions with the new model and present them as the decisions users actually saw. Keep sample-selection rules visible, particularly when complaints or investigations generate labels more often for difficult cases. Monitoring should distinguish routine performance from diagnostic samples.\n\n## Handover and decision worksheet\n\nHandover includes a reproducible baseline, dataset and artifact manifests, evaluation code, threshold rationale, operating runbook and a limitation register. The receiving team should recreate a report, inspect a subgroup error and restore a previous release. A business owner should explain how a prediction changes a decision and when the system should be ignored or disabled.\n\nComplete a worksheet containing prediction unit, decision time, horizon, label definition, maturity window, feature availability, baseline, error costs, capacity limit, evaluation split, uncertainty method, access policy and accountable owner. Attach the evidence behind each field. Unknowns should remain explicit discovery work rather than being filled with optimistic assumptions.\n\n## Limits and tradeoffs\n\nPrediction cannot compensate for an undefined outcome, unavailable history or a decision nobody can change. A well-calibrated risk estimate may have little operational value if intervention is ineffective. A simple baseline may remain preferable when it is understandable, stable and sufficiently accurate. The proposed service includes reaching those conclusions when the evidence supports them.\n\nThe goal is a model whose usefulness can be examined and challenged, not a persuasive dashboard of precise-looking numbers. Transparent denominators, temporal correctness, fair baselines and controlled operation make that possible. Expansion to new populations or decisions should follow new evidence rather than treating an initial successful pilot as universal validation.",
+  "figure": {
+    "slug": "service-predictive-analytics",
+    "kind": "bar",
+    "title": "Synthetic classification confusion counts",
+    "unit": "cases",
+    "points": [
+      {
+        "label": "True positives",
+        "value": 80
+      },
+      {
+        "label": "False positives",
+        "value": 120
+      },
+      {
+        "label": "False negatives",
+        "value": 20
+      },
+      {
+        "label": "True negatives",
+        "value": 780
+      }
+    ],
+    "method": "Synthetic1000cases with100events. TP80,FP120,FN20,TN780. Precision80/200=40%;recall80/100=80%;accuracy860/1000=86%.No-event baseline90%accuracy but0%recall. Not measured model performance.",
+    "alt": "Synthetic classification confusion counts. True positives: 80 cases, False positives: 120 cases, False negatives: 20 cases, True negatives: 780 cases. Synthetic illustration.",
+    "dataOrigin": "synthetic",
+    "steps": [],
+    "studyPaths": [
+      "ai-evaluation"
+    ]
+  },
+  "references": [
+    {
+      "label": "scikit-learn, Common pitfalls and data leakage",
+      "url": "https://scikit-learn.org/stable/common_pitfalls.html"
+    },
+    {
+      "label": "scikit-learn, Probability calibration",
+      "url": "https://scikit-learn.org/stable/modules/calibration.html"
+    },
+    {
+      "label": "scikit-learn, TimeSeriesSplit",
+      "url": "https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.TimeSeriesSplit.html"
+    },
+    {
+      "label": "Breck et al., The ML Test Score",
+      "url": "https://research.google/pubs/the-ml-test-score-a-rubric-for-ml-production-readiness-and-technical-debt-reduction/"
+    },
+    {
+      "label": "NIST AI Risk Management Framework",
+      "url": "https://www.nist.gov/itl/ai-risk-management-framework"
+    }
+  ],
+  "useCases": [
+    {
+      "id": "retail-demand-forecast",
+      "title": "Compare demand forecasts against a seasonal baseline",
+      "industry": "Retail planning",
+      "description": "Hypothetical daily demand forecasting with matched horizons, explicit zero-demand handling and a bounded ordering pilot.",
+      "body": "## Proposed decision and discovery\n\nA hypothetical retailer wants to improve daily stock planning for a small product category. The proposed analysis would compare a candidate forecast with the existing seasonal baseline using the same information and decision cutoff. It would not automatically place orders or promise reduced stockouts. All demand values and outcomes in this case are synthetic.\n\nDiscovery would define the store-product-day unit, replenishment lead time, stock availability and treatment of returns. Observed sales are not always demand: a stockout can suppress sales even when customers wanted the product. The team would document that limitation and avoid training a demand model as though every low-sales day represented low interest.\n\n## Design and implementation\n\nA versioned feature pipeline would assemble historical sales, calendar information and only promotions known before the planning cutoff. Later campaign changes would not enter the historical prediction. The candidate and baseline would be evaluated on later periods, with related products and stores considered when designing splits. [TimeSeriesSplit](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.TimeSeriesSplit.html) illustrates temporal separation, although the actual planning horizon may require additional gaps and grouping.\n\nImplementation would start with a transparent baseline and a small synthetic fixture. Tests would cover a zero-sales day, a missing store upload, a cancelled promotion and a stockout flag. The output would show the forecast horizon, data status and model version, while the planner retains the ordering decision.\n\n## Synthetic error calculation\n\nFor four invented days, actual demand is 100, 120, 80 and 100 units. The seasonal baseline predicts 90, 100, 100 and 110, giving absolute errors of 10, 20, 20 and 10: mean absolute error 60/4 = 15 units. A candidate predicts 95, 115, 90 and 100, giving errors of 5, 5, 10 and 0: MAE 20/4 = 5 units.\n\nThe chart compares the two MAEs. The synthetic reduction is ten units, or 66.7% relative to the baseline error. Four days are far too few to establish general performance, and lower MAE does not directly establish lower inventory cost. A real evaluation would report longer periods, product segments and the asymmetric consequences of over- and under-ordering.\n\n## Acceptance and operation\n\nAcceptance would require temporal correctness, improvement on a representative holdout, acceptable performance on low-volume items and a tested missing-data fallback. A controlled pilot would measure stock decisions and waste separately from forecast error. It would not attribute every commercial change to the model without considering promotions, supply constraints and demand shifts.\n\nRollback would restore the baseline forecast and compatible input definitions. Handover would include the calculation notebook, cohort manifest, planner override process and a rehearsal of a late data feed. The limitation remains visible: sales history alone may not identify unconstrained demand, so the model's output is an estimate supporting a decision rather than a complete account of customer intent.",
+      "figure": {
+        "slug": "service-predictive-analytics-retail-demand-forecast",
+        "kind": "bar",
+        "title": "Synthetic four-day forecast MAE",
+        "unit": "units",
+        "points": [
+          {
+            "label": "Seasonal baseline",
+            "value": 15
+          },
+          {
+            "label": "Candidate forecast",
+            "value": 5
+          }
+        ],
+        "method": "Synthetic actuals100,120,80,100. Baseline90,100,100,110 has absolute-error sum60;candidate95,115,90,100 sum20. Divide each by4:MAE15vs5. Four days do not establish general performance.",
+        "alt": "Synthetic four-day forecast MAE. Seasonal baseline: 15 units, Candidate forecast: 5 units. Synthetic illustration.",
+        "dataOrigin": "synthetic",
+        "steps": [],
+        "studyPaths": [
+          "ai-evaluation"
+        ]
+      }
+    },
+    {
+      "id": "telecom-retention-priorities",
+      "title": "Separate churn prediction from retention impact",
+      "industry": "Telecommunications",
+      "description": "Hypothetical risk-ranking analysis that treats intervention effectiveness as a separate question from predictive accuracy.",
+      "body": "## Proposed problem and scope\n\nA hypothetical telecom team has capacity to review a limited number of accounts that may discontinue a service. The proposed model would prioritize review using a clearly defined future churn outcome. It would not automatically change prices, deny service or claim that identifying a likely departure prevents it. Every account and numerical result below is synthetic.\n\nDiscovery would define churn, observation period, eligibility and the information available before the decision. The team would distinguish voluntary departure from administrative account closure and identify delayed or disputed labels. Reviewers would also document which actions are actually available; a high-risk account is not necessarily one whose behavior can be changed by an offer.\n\n## Design and delivery\n\nFeatures would use approved account activity and service history with explicit temporal cutoffs. Sensitive attributes would require a justified purpose and appropriate review, rather than being included because they improve a score. The model would output a risk estimate and version, while a separate decision rule selects the review cohort within capacity.\n\nImplementation would compare a simple baseline with candidate ranking and probability calibration on held-out periods. Tests would include missing history, new accounts and a changed product policy. [Probability calibration guidance](https://scikit-learn.org/stable/modules/calibration.html) helps distinguish useful ranking from probabilities that correspond to observed frequencies. A score of 0.8 should not be presented as a trustworthy probability without evaluating that property.\n\n## Synthetic review-capacity arithmetic\n\nAssume 1,000 eligible accounts include 100 future departures. A proposed top-100 review list contains forty of those departures, while a comparison list of one hundred accounts contains twenty. The chart reports forty and twenty identified departures. Precision within the lists is 40/100 = 40% and 20/100 = 20%; recall over all departures is also 40% and 20% in this constructed example.\n\nThe difference is twenty additional future departures identified within the same review capacity. It is not twenty retained accounts. Intervention value would require a separately designed, authorized comparison of actions and outcomes, accounting for people who would have stayed without an offer and those who would leave despite one.\n\n## Acceptance and handover\n\nAcceptance would require stable eligibility rules, no future information leakage, transparent subgroup results and a documented review-capacity threshold. A limited pilot would track actual staff actions, customer outcomes and unintended effects. Before-and-after retention changes alone would not establish causality because pricing, competitors and seasonality may also change.\n\nRollback would return prioritization to the existing process and preserve the original predictions for later evaluation. Handover would include label maturity, calibration checks, threshold rationale and an exercise explaining a false positive. The principal limitation is causal: predictive risk identifies association with departure, while deciding who benefits from an intervention is a different analytical problem requiring different evidence.",
+      "figure": {
+        "slug": "service-predictive-analytics-telecom-retention-priorities",
+        "kind": "bar",
+        "title": "Synthetic departures found within review capacity",
+        "unit": "departures",
+        "points": [
+          {
+            "label": "Comparison top 100",
+            "value": 20
+          },
+          {
+            "label": "Candidate top 100",
+            "value": 40
+          }
+        ],
+        "method": "Synthetic1000accounts with100future departures. Each list contains100accounts;20vs40departures gives20%vs40%precision and recall in this example. Identification is not prevented churn or causal retention uplift.",
+        "alt": "Synthetic departures found within review capacity. Comparison top 100: 20 departures, Candidate top 100: 40 departures. Synthetic illustration.",
+        "dataOrigin": "synthetic",
+        "steps": [],
+        "studyPaths": [
+          "ai-evaluation"
+        ]
+      }
+    },
+    {
+      "id": "equipment-maintenance-ranking",
+      "title": "Evaluate maintenance alerts within technician capacity",
+      "industry": "Industrial maintenance",
+      "description": "Hypothetical equipment-risk scoring with explicit false-alarm cost, temporal labels and staff-controlled action.",
+      "body": "## Proposed maintenance decision\n\nA hypothetical industrial operator wants to prioritize equipment inspections. The proposed model would estimate a defined near-term failure event from approved operating signals and provide a review list to maintenance staff. It would not control machinery or override established safety procedures. All equipment records, failures and costs in this example are synthetic.\n\nDiscovery would specify the prediction horizon, failure definition and technician capacity. Maintenance interventions can change whether a failure occurs, so historical labels may reflect the previous inspection policy as well as underlying equipment condition. The team would record this limitation and avoid treating unobserved failures as proof that every inspected machine was a false alarm.\n\n## Proposed design and delivery\n\nThe data path would align sensor windows, operating context and maintenance records using information available at the prediction time. Features derived from a later repair would be excluded. A model score would remain separate from the inspection threshold and mandatory safety rules. Staff would see relevant evidence and data-quality status, with an explicit fallback for insufficient sensor coverage.\n\nImplementation would establish a baseline rule and evaluate candidate ranking on later periods with equipment grouping where appropriate. Tests would include device resets, missing sensors, a new equipment type and delayed labels. The [scikit-learn common-pitfalls guidance](https://scikit-learn.org/stable/common_pitfalls.html) provides a foundation for preventing preprocessing and temporal leakage, while domain review determines which failure labels are meaningful.\n\n## Synthetic threshold comparison\n\nSuppose an evaluation contains 500 equipment-periods with fifty observed failures. At a conservative alert threshold, the model flags sixty periods, including thirty failures and thirty non-failures. At a lower threshold, it flags one hundred periods, including forty failures and sixty non-failures. The chart shows true and false alert counts for both thresholds.\n\nRecall rises from 30/50 = 60% to 40/50 = 80%, while precision falls from 30/60 = 50% to 40/100 = 40%. The lower threshold requires forty additional inspections to identify ten additional observed failures. These synthetic counts make the capacity tradeoff visible; they do not prove that those inspections would prevent the failures or be economically worthwhile.\n\n## Acceptance and operation\n\nAcceptance would include temporally valid features, performance within the eligible equipment population, usable explanations and a threshold compatible with technician capacity. Critical safety procedures would remain independent of the model. A pilot would measure inspection findings, workload and missed events, while preserving uncertainty about interventions that change outcomes.\n\nRollback would restore the prior prioritization rule and keep mandatory inspection schedules intact. Handover would include threshold calculations, equipment-scope exclusions, label-review procedures and a rehearsal of an out-of-distribution sensor pattern. The limitation is clear: the model supports prioritization under a defined evidence base; it cannot certify equipment safety or replace qualified maintenance judgment.",
+      "figure": {
+        "slug": "service-predictive-analytics-equipment-maintenance-ranking",
+        "kind": "bar",
+        "title": "Synthetic maintenance-alert threshold tradeoff",
+        "unit": "alerts",
+        "points": [
+          {
+            "label": "High threshold true",
+            "value": 30
+          },
+          {
+            "label": "High threshold false",
+            "value": 30
+          },
+          {
+            "label": "Low threshold true",
+            "value": 40
+          },
+          {
+            "label": "Low threshold false",
+            "value": 60
+          }
+        ],
+        "method": "Synthetic500periods with50failures. High threshold60alerts:TP30,FP30,recall60%,precision50%.Low100alerts:TP40,FP60,recall80%,precision40%. Extra40inspections identify10more observed failures; no prevention claim.",
+        "alt": "Synthetic maintenance-alert threshold tradeoff. High threshold true: 30 alerts, High threshold false: 30 alerts, Low threshold true: 40 alerts, Low threshold false: 60 alerts. Synthetic illustration.",
+        "dataOrigin": "synthetic",
+        "steps": [],
+        "studyPaths": [
+          "ai-evaluation"
+        ]
+      }
+    },
+    {
+      "id": "learning-resource-demand",
+      "title": "Forecast demand for optional learning support",
+      "industry": "Education services",
+      "description": "Hypothetical aggregate resource forecasting for tutoring capacity, with no automated student eligibility decisions.",
+      "body": "## Proposed decision and boundaries\n\nA hypothetical education service wants to plan staffing for optional tutoring sessions. The proposed analytics would forecast aggregate session demand by subject and week. It would not score individual students for admission, funding or discipline, and would not decide who deserves support. All demand values and outcomes here are synthetic illustrations.\n\nDiscovery would define booked sessions, attended sessions, cancellations and unmet requests separately. Attendance can be constrained by available capacity, so it may understate demand when sessions are full. The team would identify that censoring and agree on the planning target before selecting a model. Data access would favor aggregate, purpose-appropriate records while checking whether small groups could still reveal individuals.\n\n## Design and implementation\n\nA versioned dataset would combine prior booking activity, known academic-calendar events and published session availability. Future examination changes or later attendance corrections would not enter historical forecasts before they were known. A simple seasonal baseline would be compared with a candidate model on later terms or weeks, with explicit handling of unusual closures.\n\nImplementation would include a synthetic fixture with a holiday, a cancelled session and a fully booked week. The output would show forecast horizon, interval where justified and data-quality status. Planners would retain the decision to add capacity. The [NIST AI RMF](https://www.nist.gov/itl/ai-risk-management-framework) is useful background for documenting intended use and avoiding expansion into a more consequential student-level decision without review.\n\n## Synthetic capacity calculation\n\nAssume a planning week has a point forecast of eighty sessions and a chosen upper planning estimate of one hundred sessions. Each tutor can provide ten sessions that week. Planning to the point estimate needs 80/10 = eight tutor allocations; planning to the upper estimate needs 100/10 = ten. The chart compares eight and ten allocations.\n\nThe two additional allocations provide twenty sessions of capacity, but the example does not establish that they are required or cost-effective. The upper estimate's coverage must be evaluated over representative periods, and the cost of unused capacity should be considered alongside unmet demand. Calling an estimate an upper bound does not make it a guarantee.\n\n## Acceptance and handover\n\nAcceptance would require clear distinction between attendance and demand, temporally valid inputs, useful comparison with the baseline and a tested manual planning fallback. A pilot would track actual requests, available slots, attendance and unmet demand separately. It would also assess whether forecasts shift resources away from small subjects whose needs are poorly represented in aggregate averages.\n\nRollback would restore the existing planning method and preserve forecasts for later analysis. Handover would include calendar assumptions, aggregation rules, interval interpretation and a rehearsal of an unexpected campus closure. The limitation is that aggregate forecasts cannot explain every student's circumstances; the service should support accessible optional resources without turning a capacity estimate into a judgment about an individual learner.",
+      "figure": {
+        "slug": "service-predictive-analytics-learning-resource-demand",
+        "kind": "bar",
+        "title": "Synthetic tutoring-capacity planning choices",
+        "unit": "tutor allocations",
+        "points": [
+          {
+            "label": "Point forecast plan",
+            "value": 8
+          },
+          {
+            "label": "Upper estimate plan",
+            "value": 10
+          }
+        ],
+        "method": "Synthetic80-session point forecast and100-session upper planning estimate,10sessions per tutor:8vs10allocations. Difference20sessions capacity. Upper estimate coverage and economic value require separate validation.",
+        "alt": "Synthetic tutoring-capacity planning choices. Point forecast plan: 8 tutor allocations, Upper estimate plan: 10 tutor allocations. Synthetic illustration.",
+        "dataOrigin": "synthetic",
+        "steps": [],
+        "studyPaths": [
+          "ai-evaluation",
+          "learning"
+        ]
+      }
+    },
+    {
+      "id": "shipment-arrival-intervals",
+      "title": "Evaluate arrival intervals before changing delivery commitments",
+      "industry": "Logistics planning",
+      "description": "Hypothetical ETA forecasting with interval coverage, width and operational review measured separately.",
+      "body": "## Proposed forecasting problem\n\nA hypothetical logistics team wants more informative arrival estimates for internal dispatch planning. The proposed model would estimate arrival time and an uncertainty interval for eligible shipments. It would not automatically change customer delivery promises or contractual commitments. All shipments, intervals and results in this case are synthetic.\n\nDiscovery would define the prediction checkpoint, actual-arrival event and treatment of cancelled or rerouted shipments. Carrier timestamps and time zones would be reconciled. The team would identify information available at the checkpoint, excluding later scans that reveal the eventual outcome. A forecast generated at departure should not be evaluated using features first observed near arrival.\n\n## Architecture and delivery\n\nA feature pipeline would combine approved route, schedule and tracking data with explicit availability times. The model output would carry issue time, horizon, version and data-quality status. A separate policy would determine how planners use the interval. Missing tracking updates would trigger a documented fallback rather than a narrow interval based on stale evidence.\n\nImplementation would compare a route-based baseline with candidate forecasts on later periods and unseen routes where appropriate. Tests would include time-zone transitions, delayed scans, rerouting and a new carrier. [TimeSeriesSplit](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.TimeSeriesSplit.html) provides background for time-aware evaluation, but route grouping and forecast horizons require additional design.\n\n## Synthetic interval evaluation\n\nSuppose a test contains 100 completed shipments. Configuration A's intervals contain the actual arrival for ninety shipments and have an average width of six hours. Configuration B covers ninety-five shipments with an average width of ten hours. The chart shows observed coverage counts of ninety and ninety-five; widths are reported separately because they use a different unit.\n\nCoverage is 90/100 = 90% and 95/100 = 95%. The five-percentage-point gain comes with four additional hours of average interval width. These invented figures do not establish that B is better: a wider interval may be too vague for dispatch, while A may miss too many important arrivals. A finite test's observed coverage is not a guarantee for future shipments.\n\n## Acceptance and operation\n\nAcceptance would consider coverage, width, point-error measures and performance by route, horizon and data freshness. The team would inspect the ten or five uncovered cases rather than hiding them behind an average. A limited pilot would measure whether planners make better scheduling decisions and whether the interface communicates uncertainty clearly.\n\nRollback would restore the baseline estimate and retain historical issued forecasts for later comparison. Handover would include timestamp semantics, interval methodology, eligible-route definitions and a rehearsal of a carrier-feed outage. The principal limitation is structural change: disruption, new routes or altered carrier behavior can invalidate historical patterns, so the operating design must make stale evidence and unsupported populations visible.",
+      "figure": {
+        "slug": "service-predictive-analytics-shipment-arrival-intervals",
+        "kind": "bar",
+        "title": "Synthetic arrival-interval coverage",
+        "unit": "shipments covered",
+        "points": [
+          {
+            "label": "Configuration A",
+            "value": 90
+          },
+          {
+            "label": "Configuration B",
+            "value": 95
+          }
+        ],
+        "method": "Synthetic100completed shipments. Coverage90%vs95%; respective mean widths6h and10h discussed separately. Wider intervals trade specificity for coverage; finite-sample results are not future guarantees.",
+        "alt": "Synthetic arrival-interval coverage. Configuration A: 90 shipments covered, Configuration B: 95 shipments covered. Synthetic illustration.",
+        "dataOrigin": "synthetic",
+        "steps": [],
+        "studyPaths": [
+          "ai-evaluation"
+        ]
+      }
+    }
+  ]
+}

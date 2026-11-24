@@ -1,0 +1,210 @@
+{
+  "id": "resilient-it-operations",
+  "title": "Resilient IT operations",
+  "category": "architecture",
+  "description": "Build tested detection, recovery, incident coordination, and bounded automation around critical user journeys.",
+  "methodology": "## Define resilience as an operating capability\n\nResilient operations means being able to detect meaningful degradation, limit its consequences, recover deliberately, and improve the system from evidence. It is not a promise that failures disappear. A proposed engagement starts with a small set of services and user journeys, their owners, and the decisions that operational evidence should support. The hypothetical cases below illustrate possible delivery work using synthetic measurements. They do not represent undisclosed customers, measured customer improvements, or contractual uptime commitments.\n\nThe charter distinguishes service restoration, data recovery, incident coordination, and reduction of repetitive work. These goals overlap but require different acceptance tests. A faster alert does not prove faster recovery. A successful restore does not prove that all dependencies are available. An automated runbook can reduce manual effort while introducing new failure modes. The delivery plan makes each claimed capability testable within an agreed scope.\n\n## Discover critical journeys and dependencies\n\nInterview service owners and responders, then inspect architecture, deployment history, incident records, support tickets, dashboards, and runbooks. Trace representative user journeys through application, database, identity, network, queue, and external-provider dependencies. Record which failures are visible to users and which are hidden until a later workflow. A background reconciliation job may be more important to business correctness than a heavily monitored web endpoint.\n\nClassify operational evidence by source and completeness. Incident records often omit near misses, manual work, and failures resolved without a formal declaration. Alert history may contain duplicates or gaps from tooling changes. Preserve those limitations in the baseline. Select an observation period that includes relevant business cycles, and avoid assuming that a quiet week represents peak demand, maintenance events, or month-end processing.\n\n## Establish access and evidence handling\n\nBegin with read-only access to the agreed telemetry and configuration. Separate permission to observe from permission to restart, fail over, change thresholds, or execute recovery. Name the incident authority and the person who can authorize a controlled test. Temporary elevated access should have an expiry, an audit trail, and a verified removal process. Operational convenience is not a reason to share unrestricted administrator credentials.\n\nDefine what logs and traces may contain, who may view them, and how long they are retained. Request identifiers can support correlation without copying full payloads into every system. A telemetry contract should state event timestamps, service identity, environment, outcome, and sampling behavior. Missing instrumentation must remain visible; treating missing data as success can make a failing service appear healthy.\n\n## Write service indicators before setting targets\n\nFor each important journey, define eligible events, good events, exclusions, and measurement location. A request-based success indicator might divide successful eligible requests by all eligible requests in a window. A latency indicator needs a threshold or a correctly calculated distribution. A batch workflow may instead measure completion before a business deadline or data freshness. Choose a signal that reflects the user's actual task.\n\nTargets should come from business need, user expectations, current capability, and cost. Record the window, owner, review schedule, and consequences of missing the objective. Request-based failure proportions are not minutes of downtime. Traffic varies, partial failures affect different users, and idle periods may contain no requests. Time-based availability, recovery duration, and request success must be reported as distinct measurements with their own definitions.\n\n## Connect error budgets to decisions\n\nAn error budget expresses the permitted shortfall under the chosen service objective. Define how the team responds when consumption is high: investigate, slow risky changes, improve a dependency, or revise an unsuitable objective through the approved process. The budget should inform decisions rather than punish responders for honest reporting. Excluding inconvenient failures after the event undermines the measurement contract.\n\nUse multiple views where one aggregate hides important harm. A high-volume successful route can mask a low-volume critical operation. Segment by meaningful journey, region, tenant class, or dependency when the data supports it. Small samples require caution: a single failure can move a percentage sharply. Preserve counts alongside ratios and document how maintenance, client errors, and dependency failures are classified.\n\n## Build actionable detection\n\nReview each alert against a specific failure mode and response. A page should identify an urgent condition, a responsible team, and an action or investigation that can help. Informational changes can go to dashboards or tickets. Deduplication and grouping can reduce repeated notifications, but they must not conceal distinct affected services or suppress an unresolved incident indefinitely.\n\nValidate detection with bounded synthetic events or controlled faults in an approved environment. Measure the interval from the defined failure start to detection, notification delivery, acknowledgement, mitigation, and restored service. These are separate stages. A monitoring system reporting that it sent a message does not prove a responder received it. Test routing, escalation, backup coverage, and the failure of the notification path itself.\n\n## Design recovery around failure boundaries\n\nMap which components share a failure domain: host, zone, region, identity provider, deployment pipeline, configuration store, and human approval path. Redundant application instances can still depend on one unavailable database or one broken credential. Architecture decisions should identify the failure being addressed and the new complexity introduced. Additional replicas do not automatically improve data consistency or recovery capability.\n\nFor stateful systems, distinguish replication from backup. Replication can propagate accidental deletion or logical corruption. A recovery design needs retained recoverable data, access to keys, a compatible environment, and a tested application validation path. Define the recovery-time objective and recovery-point objective separately. The first concerns how long restoration may take; the second concerns how much recent data loss may be tolerable under the agreed definition.\n\n## Engineer bounded remediation\n\nSelect repetitive operational tasks with clear prerequisites and observable outcomes. An automation candidate should have a known scope, an idempotent or otherwise safe retry strategy, a maximum action rate, and a stop condition. Restarting a service repeatedly may conceal an unresolved leak or worsen a dependency outage. Prefer a plan that explains why the action is appropriate and verifies whether it helped.\n\nImplement a dry-run or preview where practical, record the intended targets, and require appropriate authorization for destructive or wide-impact actions. Limit concurrency and provide a cancellation path. Store runbook versions alongside the implementation and capture results without leaking secrets. Automation is ready for wider use only when partial failure, duplicate execution, expired credentials, and an unavailable control plane have been considered.\n\n## Measure toil without counting all work as waste\n\nClassify repeated manual effort separately from engineering, investigation, and useful operational learning. Record the task, frequency, hands-on time, waiting time, variability, and consequence of error. A task that happens frequently may still require judgment and resist safe automation. Another task may be rare but risky enough to justify a rehearsed procedure. Prioritisation should combine cost, risk, and feasibility rather than rank only by frequency.\n\nA synthetic worksheet illustrates the arithmetic. Thirty weekly operations at twenty hands-on minutes each require 600 minutes. A proposed supervised workflow takes ten minutes per operation plus sixty minutes of weekly maintenance, totaling 360 minutes. The modeled reduction is 240 minutes, or 40%. If implementation costs twenty hours, simple effort payback is five weeks at four hours saved per week. The chart excludes implementation and does not prove that saved capacity becomes financial savings.\n\n## Rehearse incidents with controlled scope\n\nA rehearsal starts with a written hypothesis, allowed fault, affected environment, maximum duration, observation plan, and abort authority. Use a non-production or tightly bounded production scope according to the organisation's authorization and maturity. Do not introduce a fault simply because a tool makes it easy. The exercise should answer a practical question, such as whether responders can restore a queue consumer without duplicating completed work.\n\nSeparate participants' learning from the system's acceptance result. A failed rehearsal can reveal a useful gap, but the gap must be recorded and resolved before claiming readiness. Capture the timeline, decisions, unexpected dependencies, and evidence of restored business behavior. Check for residual effects after the exercise, including queued work, stale routing, temporary credentials, and resources left running.\n\n## Coordinate response and communication\n\nDefine incident roles proportionate to the service: coordination, technical investigation, communication, and decision authority. Small teams may combine roles, but the responsibilities should remain clear. Maintain a common incident record with timestamps, hypotheses, actions, and outcomes. Distinguish observed facts from assumptions so that a speculative cause does not become the basis for every later decision.\n\nCommunication should tell the intended audience what is affected, what is known, what is being done, and when the next update is expected. Avoid promising a recovery time without evidence. Recovery confirmation should include business checks and relevant backlog or data reconciliation, not merely green infrastructure. Afterward, review contributing conditions and select a small number of owned improvements with verification criteria.\n\n## Accept, roll back, and operate the changes\n\nAcceptance combines detection, response, recovery, correctness, and maintainability. Each criterion needs a test record and a named approver. Before changing alert rules or remediation, preserve the prior configuration and define how to restore it. Before changing a stateful recovery design, establish which data and application states remain compatible. A configuration rollback cannot undo external side effects or recover already discarded evidence.\n\nOperate new controls across the relevant business cycle. Monitor the monitoring pipeline, keep runbooks current, and assign ownership for certificate expiry, backup retention, dependency upgrades, and escalation changes. Review automation failures as operational evidence rather than silently adding retries. A control that worked in the pilot can become ineffective when traffic, schemas, staffing, or deployment topology changes.\n\n## Handover a usable operating system of work\n\nHandover should allow another responder to understand the service, identify a failure, choose a bounded action, and confirm recovery. Provide the service-indicator contract, dependency map, alert inventory, runbooks, recovery evidence, access process, and known limitations. Ask someone outside the implementation group to perform a controlled task using the documentation. Revise unclear steps rather than treating confusion as a training failure.\n\nThe final worksheet records the user journey, failure mode, indicator, target, evidence source, action owner, test result, rollback route, and review date. Publish synthetic examples as synthetic and observed results with their environment and sample. Resilience is an ongoing capability supported by maintained evidence. The engagement can establish specific tested improvements, but it cannot guarantee uninterrupted service or eliminate every future operational failure.\n\n## Check readiness across people and suppliers\n\nA recovery path may depend on a supplier support account, a person authorized to approve a failover, or a specialist who knows an undocumented configuration. Include those dependencies in the rehearsal. Confirm that contact details work outside ordinary office hours where the service requires that coverage, and that the backup responder can obtain the necessary context without waiting for the primary expert.\n\nReview on-call load as work with finite capacity. Record interruptions, sustained incident effort, and the time required to maintain operational controls. A lower notification count is useful only if important failures remain detectable and responsibility remains clear. Do not infer individual health or performance from a pager metric. Use the evidence to adjust staffing, scope, escalation, and engineering priorities with the people doing the work. The handover should make responsibility sustainable and explicit rather than leaving a single engineer as the hidden recovery mechanism.\n",
+  "figure": {
+    "slug": "service-resilient-it-operations",
+    "kind": "bar",
+    "title": "Synthetic weekly operational effort",
+    "unit": "hands-on minutes per week",
+    "points": [
+      {
+        "label": "Manual process",
+        "value": 600
+      },
+      {
+        "label": "Supervised workflow",
+        "value": 360
+      }
+    ],
+    "method": "Synthetic 30 weekly operations × 20 minutes = 600. Proposed 30 × 10 + 60 weekly maintenance = 360. Reduction 240 minutes = 40%; implementation effort and financial conversion are excluded.",
+    "alt": "A synthetic weekly workflow uses 600 manual minutes versus 360 including supervised execution and maintenance.",
+    "dataOrigin": "synthetic",
+    "steps": [],
+    "studyPaths": [
+      "reliability"
+    ]
+  },
+  "references": [
+    {
+      "label": "Google SRE Workbook: implementing SLOs",
+      "url": "https://sre.google/workbook/implementing-slos/"
+    },
+    {
+      "label": "Google SRE Workbook: incident response",
+      "url": "https://sre.google/workbook/incident-response/"
+    },
+    {
+      "label": "PostgreSQL: backup and restore",
+      "url": "https://www.postgresql.org/docs/current/backup.html"
+    },
+    {
+      "label": "Google SRE Workbook: canarying releases",
+      "url": "https://sre.google/workbook/canarying-releases/"
+    }
+  ],
+  "useCases": [
+    {
+      "id": "payments-request-reliability",
+      "title": "Measure payment API reliability without inventing downtime",
+      "industry": "Payments technology",
+      "description": "A proposed service-indicator and timeout review separates failed requests, ambiguous outcomes, and elapsed recovery.",
+      "body": "## Hypothetical problem and scope\n\nA fictional payment orchestration provider reports a single availability percentage, but its dashboard mixes HTTP health checks with payment-attempt outcomes. Customers sometimes retry after a timeout without knowing whether an operation committed. The proposed engagement would define a payment-request indicator and review timeout and recovery behavior for one API flow. It would not make financial decisions or claim that infrastructure metrics prove settlement correctness.\n\nDiscovery would trace request receipt, validation, provider submission, durable operation state, and response delivery. The team would obtain approved access to redacted traces and operation identifiers, not raw payment credentials. The data contract would distinguish a declined payment, an invalid request, a service failure, and an ambiguous outcome. Business owners would approve which categories belong in the indicator denominator.\n\n## Design and delivery\n\nThe proposed design would preserve a stable operation identity across retries and expose a way to retrieve authoritative status. Timeout budgets would be reviewed across callers and dependencies so a late provider response does not trigger uncontrolled retry amplification. Monitoring would connect user-visible outcomes with provider latency and internal queueing, while avoiding sensitive payload capture.\n\nA bounded test would simulate provider delay, a lost response after commit, duplicate client retries, and an unavailable status store. Acceptance would require that the system preserves one intended operation under the documented idempotency contract and that ambiguous outcomes remain visible for reconciliation. Alerting would focus on the agreed service indicator and actionable dependency symptoms, with a tested responder route.\n\n## Synthetic request calculation\n\nAssume a fixed test contains 200,000 eligible requests. In the first modeled configuration, 400 fail the agreed success definition, leaving 199,600 good requests. Success is `199,600 / 200,000 = 99.8%`. In the second, 100 fail and 199,900 succeed, giving 99.95%. The chart compares these synthetic request proportions. It does not imply a corresponding number of downtime minutes, because request timing and the distribution of affected users are not represented.\n\nThe comparison would also retain counts of ambiguous outcomes and duplicate side effects. A higher success percentage would not be accepted if the system hid unresolved payment states or processed an operation twice. The test's arrival schedule, provider behavior, and retry policy would remain fixed, and the report would state that laboratory behavior does not establish production performance.\n\n## Recovery and handover\n\nRollback would restore prior routing or application configuration only where operation-state compatibility is preserved. The team would reconcile in-flight operations before declaring recovery. Handover would include an ambiguous-outcome runbook, indicator definitions, provider escalation ownership, and a controlled replay procedure. [Google's SLO guidance](https://sre.google/workbook/implementing-slos/) supports explicit indicators and objectives; the scenario and all numbers here are hypothetical.",
+      "figure": {
+        "slug": "service-resilient-it-operations-payments-request-reliability",
+        "kind": "bar",
+        "title": "Synthetic payment-request success proportions",
+        "unit": "percent of eligible requests",
+        "points": [
+          {
+            "label": "Initial configuration",
+            "value": 99.8
+          },
+          {
+            "label": "Revised configuration",
+            "value": 99.95
+          }
+        ],
+        "method": "Synthetic fixed 200, 000 eligible requests:400 failures gives 99.8% success; 100 failures gives 99.95%. Classification is fixed; no conversion to downtime minutes.",
+        "alt": "Synthetic request success is 99.8% and 99.95% for two modeled configurations.",
+        "dataOrigin": "synthetic",
+        "steps": [],
+        "studyPaths": [
+          "reliability"
+        ]
+      }
+    },
+    {
+      "id": "logistics-backlog-recovery",
+      "title": "Recover a dispatch queue without overwhelming downstream systems",
+      "industry": "Logistics",
+      "description": "A proposed backlog runbook measures arrival and service rates while protecting delivery-state correctness.",
+      "body": "## Hypothetical problem and constraint\n\nA fictional logistics platform processes dispatch updates through a queue. After an external carrier outage, operators increase worker concurrency until the backlog falls, sometimes causing another rate-limit incident. The proposed engagement would develop a bounded backlog-recovery procedure for one carrier integration. Shipment decisions and physical dispatch operations would remain with the platform's existing authorized workflows.\n\nDiscovery would separate queued, started, completed, retried, and permanently rejected work. A queue-length metric alone cannot explain whether old items are progressing. The team would request redacted identifiers, timestamps, retry reasons, and carrier quota documentation. The event contract would define what counts as one completed dispatch update and how duplicate deliveries are recognized.\n\n## Proposed design and delivery\n\nThe design would cap concurrency and request rate for the carrier boundary, isolate retries from fresh work where appropriate, and preserve durable operation identity. Oldest-item age and completion rate would complement queue depth. A dead-letter or exception path would retain work that cannot safely progress, with an owner and a recovery policy. It would not become an unmonitored disposal bin.\n\nImplementation would begin with a replayable synthetic workload. Tests would include carrier timeouts, rate-limit responses, worker termination after an external success, and poison messages. The recovery runbook would state when to pause, when to reduce concurrency, and how to verify that completed shipments are not repeated. A second carrier or healthy queue would be observed to ensure recovery work does not monopolize shared resources.\n\n## Synthetic backlog model\n\nAssume a starting backlog of 3,000 updates, a constant arrival rate of 1,000 per minute, and a sustainable completion rate of 1,200 per minute. Net drain is 200 per minute, so the idealized drain time is `3,000 / 200 = 15 minutes`. The chart shows backlog snapshots of 3,000, 2,000, 1,000, and zero at zero, five, ten, and fifteen minutes. These are synthetic values under constant rates, not a forecast for a real carrier.\n\nIf completion falls to the arrival rate, the backlog does not drain. If retries consume capacity or new demand rises, the model no longer applies. Acceptance would therefore measure actual arrivals, successful completions, retry volume, and oldest-item age during a controlled rehearsal. Queue depth reaching zero would not suffice if items were discarded or marked complete before the external operation was verified.\n\n## Operational handover\n\nRollback would restore the previous concurrency configuration while preserving queued work and completion records. Handover would include carrier quota ownership, replay authorization, exception handling, and an escalation path for persistent rate limiting. Responders would rehearse the runbook with a fixed abort condition. [Google's incident-response guidance](https://sre.google/workbook/incident-response/) informs coordination; the queue model and proposed implementation are illustrative.",
+      "figure": {
+        "slug": "service-resilient-it-operations-logistics-backlog-recovery",
+        "kind": "bar",
+        "title": "Synthetic backlog drain under constant rates",
+        "unit": "queued updates",
+        "points": [
+          {
+            "label": "0 minutes",
+            "value": 3000
+          },
+          {
+            "label": "5 minutes",
+            "value": 2000
+          },
+          {
+            "label": "10 minutes",
+            "value": 1000
+          },
+          {
+            "label": "15 minutes",
+            "value": 0
+          }
+        ],
+        "method": "Synthetic starting backlog 3000; arrivals 1000/minute; completions 1200/minute; net drain 200/minute. Backlog = max(3000−200 t, 0). Excludes retries, bursts and changing quotas.",
+        "alt": "A synthetic 3000-update backlog drains in 15 minutes when completions exceed arrivals by 200 per minute.",
+        "dataOrigin": "synthetic",
+        "steps": [],
+        "studyPaths": [
+          "reliability",
+          "performance"
+        ]
+      }
+    },
+    {
+      "id": "healthcare-restore-rehearsal",
+      "title": "Prove an administrative service can be restored",
+      "industry": "Healthcare administration",
+      "description": "A proposed recovery exercise measures the full restoration path and checks the recoverable data point separately.",
+      "body": "## Hypothetical scope and constraint\n\nA fictional healthcare administration team has successful backup-job reports but no recent evidence that its referral-tracking application can use a restored database. The proposed engagement would rehearse recovery in an isolated environment using approved synthetic or controlled test data. It would cover administrative workflow restoration, not clinical decision-making or an assurance of regulatory compliance.\n\nDiscovery would identify the database, object references, encryption keys, application version, identity dependency, and network configuration required for recovery. The team would distinguish a backup completing from a recoverable application. Access to backup storage and keys would be narrowly scoped and time-bounded. The data-handling agreement would prevent test notifications or exports from reaching real patients or external partners.\n\n## Recovery design and implementation\n\nThe proposed runbook would provision an isolated target, restore the selected backup, apply required recovery logs where supported, deploy a compatible application version, and validate representative referral states. External integrations would be disabled or redirected to test endpoints. The procedure would record the chosen recovery point and the latest transaction that can be verified after restoration.\n\nTests would include unavailable credentials, a missing configuration input, and a restore that completes but fails application validation. The team would verify referential integrity, document links, role restrictions, and selected workflow transitions. A successful database startup would not be treated as acceptance. The application owner would approve the observable business checks before the rehearsal begins.\n\n## Synthetic timing and data-point calculation\n\nAssume the initial rehearsal takes 20 minutes to provision, 35 to restore, 15 to deploy and connect, and 10 to validate: 80 minutes in total. A revised modeled procedure takes 10, 25, 10, and 10 minutes respectively, totaling 55 minutes. The chart compares those synthetic end-to-end recovery durations. It does not establish that every future recovery will take 55 minutes.\n\nSeparately, suppose the failure reference time is 10:00 and the latest verified recoverable commit is 09:56. The data-point gap is four minutes under that scenario. This is not derived from the recovery duration. Acceptance would compare each measurement with its separately agreed objective and investigate whether the recovered state contains all required business relationships. The report would state the dataset size, backup method, environment, and excluded dependencies.\n\n## Handover and continued verification\n\nThe isolated environment would be removed through an approved cleanup process after evidence is retained. Production would remain unchanged during the exercise. Handover would include key-access ownership, a versioned runbook, restore evidence, and a schedule for repeating the test after material changes. [PostgreSQL recovery documentation](https://www.postgresql.org/docs/current/backup.html) provides technical context; the proposed timings and administrative scenario are entirely hypothetical.",
+      "figure": {
+        "slug": "service-resilient-it-operations-healthcare-restore-rehearsal",
+        "kind": "bar",
+        "title": "Synthetic end-to-end restore rehearsal duration",
+        "unit": "minutes",
+        "points": [
+          {
+            "label": "Initial rehearsal",
+            "value": 80
+          },
+          {
+            "label": "Revised rehearsal",
+            "value": 55
+          }
+        ],
+        "method": "Synthetic initial 20 + 35 + 15 + 10 = 80 minutes; revised 10 + 25 + 10 + 10 = 55. Stages are provisioning, restore, deployment, validation. Recovery-point gap is measured separately.",
+        "alt": "Modeled full recovery duration changes from 80 to 55 minutes; this is distinct from recoverable data age.",
+        "dataOrigin": "synthetic",
+        "steps": [],
+        "studyPaths": [
+          "reliability"
+        ]
+      }
+    },
+    {
+      "id": "media-alert-quality",
+      "title": "Reduce duplicate pages while preserving incident detection",
+      "industry": "Digital media",
+      "description": "A proposed alert review measures actionable notifications and validates coverage through controlled fault cases.",
+      "body": "## Hypothetical problem and constraint\n\nA fictional streaming publisher sends many alerts during a single origin failure: host alarms, cache errors, playback probes, and downstream timeout messages. Responders struggle to identify the first useful action. The proposed engagement would review alerting for one playback journey and its dependencies. It would not promise that fewer pages automatically mean a safer service or a healthier team.\n\nDiscovery would group notifications by incident and identify their timing, destination, acknowledgement, and resulting action. The team would inspect redacted traces and alert configurations under read-only access. A shared definition of actionable would require a specific response or investigation that could change the incident outcome. Notifications useful for later analysis could remain in a dashboard or event record without necessarily paging a person.\n\n## Proposed design and implementation\n\nThe design would connect user-visible playback failure to dependency evidence, group duplicate symptoms, and retain a route for distinct failures. Alert suppression would have explicit scope and expiry so one incident cannot hide another indefinitely. Runbooks would identify the affected journey, useful checks, mitigation options, and escalation owner. Notification delivery itself would be tested, including backup coverage when the primary responder does not acknowledge.\n\nA controlled fault suite would exercise an unavailable origin, expired test credentials, a regional network problem, and a broken monitoring exporter. Each test would have an expected detection path and maximum observation period. The team would compare old and proposed rules before removing coverage. A lower page count would be rejected if a required fault became undetected or materially harder to diagnose.\n\n## Synthetic notification calculation\n\nAssume a reviewed sample contains 60 notifications, of which 18 are actionable under the agreed rubric and 42 are redundant or informational. A proposed configuration produces 30 notifications for the same modeled incident set: 18 actionable and 12 redundant or informational. Total notifications fall by 50%, while the actionable share rises from `18 / 60 = 30%` to `18 / 30 = 60%`. The chart shows total counts, with the classification explained here.\n\nThese are synthetic labels and counts, not an observed improvement. The same 18 actionable notifications do not prove unchanged detection coverage outside the fixed fault set. Acceptance would retain the fault matrix, notification timing, and responder feedback. It would also inspect whether grouping delays the first useful page or makes the affected region unclear.\n\n## Rollback and handover\n\nThe previous alert configuration would remain versioned and recoverable during a monitored pilot. Responders would have a simple way to flag missing or confusing notifications. Handover would assign ownership for rule changes, notification integrations, and periodic fault-suite review. [Google's SLO guidance](https://sre.google/workbook/implementing-slos/) supports user-centered indicators; this notification exercise illustrates a proposed operational method rather than a customer claim.",
+      "figure": {
+        "slug": "service-resilient-it-operations-media-alert-quality",
+        "kind": "bar",
+        "title": "Synthetic notifications for a fixed incident set",
+        "unit": "notifications",
+        "points": [
+          {
+            "label": "Initial rules",
+            "value": 60
+          },
+          {
+            "label": "Proposed rules",
+            "value": 30
+          }
+        ],
+        "method": "Synthetic fixed incident set:initial 60 notifications = 18 actionable + 42 other; proposed 30 = 18 actionable + 12 other. Count reduction 50%; detection outside the tested fault set is not established.",
+        "alt": "Synthetic total notifications fall from 60 to 30 while 18 actionable notifications remain in the defined test set.",
+        "dataOrigin": "synthetic",
+        "steps": [],
+        "studyPaths": [
+          "reliability"
+        ]
+      }
+    },
+    {
+      "id": "utilities-telemetry-freshness",
+      "title": "Expose stale telemetry before operators trust it",
+      "industry": "Utilities reporting",
+      "description": "A proposed freshness indicator distinguishes delayed measurements, missing data, and healthy delivery in an advisory portal.",
+      "body": "## Hypothetical scope and constraint\n\nA fictional utility operates an advisory reporting portal showing equipment telemetry. The portal is separate from protective controls and real-time operational safety systems. Its problem is that delayed readings can look current after an upstream connection fails. The proposed engagement would improve freshness reporting and recovery for one telemetry path, without changing equipment control or making operational safety claims.\n\nDiscovery would document source clocks, event time, ingestion time, expected reporting frequency, and the meaning of a missing observation. The team would work with approved synthetic telemetry and read-only production metrics where authorized. A data contract would specify device identifiers, timestamp precision, late-arrival handling, and whether a correction replaces or supplements an earlier measurement. Clock uncertainty would remain visible in the assessment.\n\n## Design and delivery\n\nThe proposed indicator would measure whether expected observations arrive within a declared freshness threshold. The dashboard would visibly mark stale or unavailable data rather than carrying the last value forward without context. Collection health, transport delay, ingestion delay, and rendering delay would be separate diagnostic signals. A healthy dashboard process would not imply fresh source data.\n\nA bounded test would interrupt a simulated source, delay a batch, introduce a duplicate, and restart an ingestion worker. Recovery would preserve event identity and allow late data to be reconciled without rewriting the apparent historical arrival time. Alert routing would distinguish a single source problem from a shared ingestion failure. The team would agree who can replay data and how that action is recorded.\n\n## Synthetic freshness calculation\n\nAssume a defined test window expects 10,000 observations. The initial modeled path delivers 9,500 within two minutes of the agreed source event time, so freshness attainment is 95%. A revised path delivers 9,800 within that threshold, giving 98%. The chart compares these synthetic proportions. Missing and late observations remain in the denominator; removing them would make the indicator misleading.\n\nThe calculation assumes synchronized clocks within the stated tolerance and an accurate expected-observation schedule. It does not establish measurement accuracy, equipment health, or uninterrupted availability. Acceptance would verify visible stale-state behavior, correct late-arrival reconciliation, and detection of an intentionally stopped source. The report would include the count of expected, timely, late, and missing observations rather than only a percentage.\n\n## Recovery and handover\n\nRollback would preserve the previous ingestion configuration and ensure that buffered records can still be processed under compatible schemas. The dashboard would continue showing uncertainty during recovery. Handover would include source ownership, clock-monitoring assumptions, replay authorization, and a test for stale-state presentation after UI changes. [Google's service-indicator guidance](https://sre.google/workbook/implementing-slos/) informs the measurement design; the utility and numbers here are hypothetical.",
+      "figure": {
+        "slug": "service-resilient-it-operations-utilities-telemetry-freshness",
+        "kind": "bar",
+        "title": "Synthetic telemetry freshness attainment",
+        "unit": "percent of expected observations",
+        "points": [
+          {
+            "label": "Initial path",
+            "value": 95
+          },
+          {
+            "label": "Revised path",
+            "value": 98
+          }
+        ],
+        "method": "Synthetic 10, 000 expected observations:9500 and 9800 arrive within 2 minutes, giving 95% and 98%. Missing and late records stay in the denominator. Assumes stated clock tolerance.",
+        "alt": "Synthetic two-minute freshness attainment changes from 95% to 98% for expected observations.",
+        "dataOrigin": "synthetic",
+        "steps": [],
+        "studyPaths": [
+          "reliability",
+          "networks"
+        ]
+      }
+    }
+  ]
+}

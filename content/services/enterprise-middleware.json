@@ -1,0 +1,230 @@
+{
+  "id": "enterprise-middleware",
+  "title": "Enterprise Middleware",
+  "category": "training",
+  "description": "Build practical integration skills through contained broker, application-runtime and recovery labs, with independent assessment and reusable operating evidence.",
+  "methodology": "## Purpose and evidence standard\n\nThis proposed enablement programme teaches engineers to operate integration paths whose behaviour remains understandable under retries, partial failure, schema changes and recovery. It covers message brokers, application runtimes, synchronous APIs and the database boundaries connecting them. The programme is adapted to the organisation's supported products rather than prescribing a broker migration as a training outcome. Every scenario and number on this page is hypothetical; no customer engagement, production improvement or confidential result is being claimed.\n\nThe starting deliverable is an integration inventory with a named owner for each producer, transport, consumer and persistent side effect. For each path, record the business action, tolerated delay, ordering scope, authentication method, data classification and recovery obligation. A diagram should distinguish a transport acknowledgement from completion of the business action. This prevents a common misunderstanding: a broker accepting a message does not prove that a downstream order, invoice or shipment was committed.\n\n## Baseline the skills that the job actually requires\n\nBefore selecting modules, ask participants to explain one supported integration and diagnose a small disposable failure. The diagnostic includes reading an application log, identifying a message key, describing the commit and acknowledgement order, and checking a certificate or credential configuration without disclosing secrets. Assess reasoning and evidence, not recall of product menu names. Engineers who need Linux or database prerequisites receive a preparation path before an advanced recovery lab.\n\nUse an explicit rubric with separate dimensions for technical correctness, safe execution, diagnosis, recovery and explanation. Record whether a participant completed each task independently, with a hint, or with direct assistance. A completed workshop is an attendance fact; independent performance on a fresh task is stronger evidence of capability. Establish accommodations and alternative ways to demonstrate understanding so typing speed and familiarity with a particular keyboard layout do not dominate the assessment.\n\n## Select a representative architecture and its boundaries\n\nThe core laboratory contains a small order API, a relational store, an outbox relay, one broker and two consumers with different responsibilities. All records are invented. A notification consumer can tolerate a different delay from a stock-reservation consumer, allowing participants to reason about priorities and failure independently. The architecture is intentionally small enough that a learner can inspect every component and correlate an event through the complete path.\n\nChoose either queue-oriented or partitioned-log exercises according to the actual stack, then compare semantics explicitly. RabbitMQ publisher confirms and consumer acknowledgements cover different boundaries. Kafka ordering is scoped to a partition, and application completion order still depends on the consumer design. Do not describe either product as providing exactly-once effects for an arbitrary external payment or database service. The laboratory makes those external boundaries visible and tests them rather than hiding them behind a slogan.\n\n## Provision a contained, repeatable environment\n\nProvide version-pinned application artifacts, broker configuration, database schema and synthetic fixtures. Record the operating system, runtime, client library and transport protocol versions. A local container environment can teach message handling, while a dedicated VM or isolated cluster may be needed to practise operating-system services, storage failures or certificate lifecycle. State which production behaviours the chosen environment cannot reproduce, including managed-service control planes and multi-zone failure.\n\nEach participant or pair receives a separate identity and namespace, virtual host or equivalent supported boundary. Permissions allow the necessary lab operations and exclude production accounts. Secrets are short-lived where the platform supports them, injected through an approved mechanism and omitted from notebooks, screenshots and repositories. Restrict external destinations so a sample producer cannot accidentally send real notifications or invoke a customer API. Reset scripts must verify their target before deleting resources.\n\n## Teach delivery semantics with observable failures\n\nThe first exercise publishes a uniquely identified event and traces it to a durable business record. Learners then stop the consumer before its database commit, after the commit but before acknowledgement, and after acknowledgement. They predict the outcome before running each fault. The resulting evidence includes received identifiers, database rows, acknowledgement timing and redelivery behaviour. The aim is to make duplicate handling and loss windows concrete.\n\nA stable event identity and a transactional consumer record can make a repeated event converge on one intended database effect when implemented correctly. That does not automatically cover an external email provider. Where a provider supports idempotency, test its actual scope and retention; otherwise document ambiguous outcomes and a reconciliation path. Poison messages require a bounded retry and quarantine policy with ownership. Moving a message to a dead-letter queue is not proof that the business obligation has been fulfilled.\n\n## Include schema, security and runtime lifecycle\n\nSchema evolution exercises use an old producer with a new consumer and the reverse combination. Add an optional field, introduce an unknown enum value, and change a required business meaning in separate trials. The learner must distinguish wire compatibility from semantic compatibility. Keep a fixture corpus and the supported compatibility matrix with the release so a later upgrade can reproduce the same checks.\n\nSecurity work includes certificate rotation, least-privilege producer and consumer roles, management-interface exposure and audit review. Application health endpoints need deliberate access and exposure configuration; a detailed management endpoint should not become publicly reachable just to simplify monitoring. Teach readiness and liveness as different decisions. A shared database outage should not automatically trigger a restart storm across every application instance. Patch and runtime upgrades are rehearsed with recovery criteria and supported rollback limits.\n\n## Measure backlog, work and business completion\n\nParticipants instrument published events, accepted transport messages, consumer attempts, committed effects, retries, quarantine counts and event age. They compare counts at the relevant boundaries instead of assuming one dashboard's throughput describes the whole system. A trace identifier is useful for investigation, while a stable business-event identifier is needed for deduplication; they may be related but are not interchangeable.\n\nFor a synthetic capacity exercise, a producer emits 120 comparable messages per second while consumers complete 100 per second for 30 seconds. Starting empty and ignoring retries, backlog grows by 600 messages. Learners calculate the expected growth, then check observed queue or lag behaviour and explain differences. Kafka consumer lag is not itself a universal wall-clock delay metric; message age and partition behaviour need inspection. The exercise stops before resource pressure becomes uncontrolled.\n\n## Delivery structure and coached practice\n\nA delivery plan alternates short concept explanations, prediction worksheets, guided execution and independent diagnosis. Pairs rotate the operator and observer roles. The observer records the hypothesis, command, expected outcome and actual evidence, then challenges whether the conclusion follows. Instructors provide hints in stages so the assessment record can distinguish a conceptual gap from a small tooling obstacle.\n\nUse fault cards that vary between groups: expired credentials, a stopped relay, an incompatible payload, a slow database or a consumer acknowledging too early. Do not reuse the identical fault as the final assessment. A learner who memorises a restart command has not demonstrated diagnosis. Preserve the repair diff and require a regression check that would detect the same class of defect in the next release.\n\n## Capstone acceptance and a transparent scorecard\n\nThe capstone asks a pair to deliver a new synthetic business event through the entire path, demonstrate duplicate handling, rotate one credential and recover from an unseen injected failure. Acceptance requires correct final business state, bounded retries, an explained recovery procedure and clean environment teardown. A performance target is scoped to the lab's declared workload; it is not a production service-level promise.\n\nThe figure shows an invented cohort of 12 participants: five independently pass an initial task, nine pass a different capstone and eight pass a delayed transfer exercise. The chart counts independent passes, not productivity or customer outcomes. The tasks must have comparable difficulty and scoring criteria before any learning comparison is interpreted. With a small cohort, individual evidence and explanations matter more than a percentage presented without context.\n\n## Budget, permissions and safe rollback\n\nEstimate resource-hours before the lab starts. For example, 12 isolated environments running for six hours consume 72 environment-hours; this is a quantity, not a quoted cloud price. Add storage, telemetry retention and shared infrastructure separately. If pairs share environments, record the resulting change in isolation and assessment design rather than describing the lower instance count as a free improvement. Set expiry, budget notifications and an owner for exceptions.\n\nA rollback worksheet names the component, previous artifact, data compatibility condition, restoration source and stop signal. Rolling back code cannot necessarily undo an emitted event or schema migration. Prefer reversible configuration changes and compatible staged schema transitions for the teaching environment. When a reversal is impossible, the learner should describe compensation or forward recovery honestly. Protect the evidence needed for assessment before resetting the environment, while excluding credentials and private data.\n\n## Handover and measured transfer to work\n\nThe handover package contains the topology, version manifest, lab setup and reset instructions, scenario fixtures, assessment rubric, known limitations, runbooks and source references. Assign an internal maintainer and rehearse rebuilding the environment from a clean account or machine. A programme that depends on an instructor's undocumented laptop state is not ready for reuse. Include an upgrade review date and a procedure for retiring unsupported images.\n\nA delayed transfer exercise uses a new but related integration fault in a controlled environment. Record whether participants identify the failing boundary, choose a safe mitigation, reconcile business effects and improve the runbook without step-by-step help. Where the organisation later measures production outcomes, retain the baseline, workload changes and other interventions; training alone cannot be assumed to have caused an incident or toil reduction. The final report separates attendance, demonstrated lab competence and observed workplace transfer.\n\n## Reusable planning worksheet\n\nComplete one row per integration path with: business purpose, owning team, producer identity, transport identity, consumer identity, ordering key, durability boundary, duplicate policy, expiry, recovery source, assessment task and cleanup owner. Add a second row for each external side effect that cannot share the database transaction. The worksheet becomes both the teaching plan and a design-review artifact, making unclear responsibilities visible before the capstone.\n\nThe source references explain product semantics and implementation constraints. They do not substantiate the invented cohort results or capacity assumptions on this page. Before delivery, the instructor checks the selected product versions and adapts commands to their official documentation. The proposed outcome is a team that can explain, test and safely operate its integration contracts with evidence that another engineer can reproduce.\n\n## Review the evidence before making an adoption claim\n\nThe instructor and internal owner jointly review the capstone artifacts, including failed attempts and hints. A correct final state reached through unsafe credential sharing or uncontrolled production access does not pass. Conversely, a participant who stops safely and identifies an unresolved ambiguity can demonstrate sound judgement even before completing the repair. The rubric should reward truthful diagnosis rather than pressure learners to claim certainty.\n\nBefore an organisation adopts a laboratory pattern in a live integration, require its normal architecture, security and change reviews. The lab omits real traffic variability, external counterparties and some operational dependencies. Record those gaps in a transition worksheet with an owner and a proposed validation step. This keeps enablement connected to delivery work while preventing a successful training exercise from being presented as production readiness. The final handover meeting should resolve ownership of every remaining validation item.",
+  "figure": {
+    "slug": "service-enterprise-middleware",
+    "kind": "bar",
+    "title": "Illustrative independent skill-assessment passes",
+    "unit": "participants",
+    "points": [
+      {
+        "label": "Initial task",
+        "value": 5
+      },
+      {
+        "label": "Capstone task",
+        "value": 9
+      },
+      {
+        "label": "Delayed transfer",
+        "value": 8
+      }
+    ],
+    "method": "Invented cohort of 12 participants; independent passes on comparable but different tasks are 5, 9 and 8. Counts are illustrative, not customer outcomes or causal evidence of productivity improvement.",
+    "alt": "Illustrative independent skill-assessment passes. Initial task: 5 participants; Capstone task: 9 participants; Delayed transfer: 8 participants. Synthetic example.",
+    "dataOrigin": "synthetic",
+    "steps": [],
+    "studyPaths": [
+      "reliability",
+      "platform"
+    ]
+  },
+  "references": [
+    {
+      "label": "Apache Kafka design",
+      "url": "https://kafka.apache.org/41/design/design/"
+    },
+    {
+      "label": "RabbitMQ acknowledgements and confirms",
+      "url": "https://www.rabbitmq.com/docs/confirms"
+    },
+    {
+      "label": "Spring Boot management endpoints",
+      "url": "https://docs.spring.io/spring-boot/reference/actuator/endpoints.html"
+    },
+    {
+      "label": "PostgreSQL transaction isolation",
+      "url": "https://www.postgresql.org/docs/16/transaction-iso.html"
+    },
+    {
+      "label": "Transactional outbox pattern",
+      "url": "https://microservices.io/patterns/data/transactional-outbox.html"
+    }
+  ],
+  "useCases": [
+    {
+      "id": "retail-order-replay",
+      "title": "Recover an order pipeline without duplicate reservations",
+      "industry": "Retail and ecommerce",
+      "description": "A hypothetical integration workshop on transactional outboxes, duplicate delivery and stock-reservation reconciliation.",
+      "body": "## Hypothetical problem and learning baseline\n\nA fictional retailer's engineers can publish order events but cannot explain what happens when a stock consumer restarts after committing a reservation. The proposed workshop uses invented orders and an isolated broker; it does not describe a real customer result. The baseline assessment asks each participant to identify the database transaction, transport acknowledgement and externally visible reservation. A correct answer must distinguish those boundaries rather than claim that a durable queue makes duplicates impossible.\n\n## Technical design and delivery\n\nThe lab contains an order table, an outbox table, a relay and a stock-reservation consumer. The order and outbox entry share one local transaction. The consumer records the event identity and reservation under an appropriate database transaction so replay can converge on the intended state. The team reviews the [transactional outbox pattern](https://microservices.io/patterns/data/transactional-outbox.html) and verifies its actual implementation; the pattern name is not an acceptance test.\n\nPairs first run the happy path, then stop the relay and consumer at different commit boundaries. One learner operates while the other records hypotheses and evidence. A deliberately duplicated event uses the same stable business identity; a legitimate second order uses a different identity even when its item and quantity match. This prevents payload similarity from becoming an incorrect deduplication rule.\n\n## Synthetic calculation and chart\n\nThe fixture contains 1,000 unique orders and 80 duplicate delivery attempts. The broker-facing attempt count is therefore 1,080, while the expected accepted reservations remain 1,000. The chart shows those two counts. The 80 additional attempts are invented test inputs, not an observed duplicate rate. A result with 1,000 total rows is insufficient by itself: compare order identifiers and quantities so one missing reservation cannot cancel one duplicate numerically.\n\n## Acceptance, recovery and handover\n\nThe capstone introduces an unseen crash after reservation commit but before acknowledgement. Acceptance requires one reservation for each valid order, no reservation for a rejected fixture, an explained redelivery path and an alertable quarantine state for malformed input. Learners must reconcile source orders, outbox records and reservations, then explain any pending work rather than deleting the queue to make the dashboard green.\n\nPermissions are limited to the lab tenant, broker namespace and database schema. No real inventory or notification endpoint is reachable. The environment has a fixed expiry and a resource-hour budget; logs contain synthetic identifiers only. Cleanup removes the lab resources after exporting the non-sensitive evidence. The handover includes fixture generators, crash points, transaction tests and a runbook for distinguishing a delayed reservation from a duplicate. A later transfer assessment changes the event type and failure timing, testing whether the team understands the boundary rather than remembers this specific repair.",
+      "figure": {
+        "slug": "service-enterprise-middleware-retail-order-replay",
+        "kind": "bar",
+        "title": "Order attempts versus intended reservations",
+        "unit": "records",
+        "points": [
+          {
+            "label": "Delivery attempts",
+            "value": 1080
+          },
+          {
+            "label": "Unique reservations",
+            "value": 1000
+          }
+        ],
+        "method": "Synthetic 1,000 unique orders plus 80 duplicate attempts = 1,080 attempts. Expected reservation identities remain 1,000 after correct deduplication; not a customer result.",
+        "alt": "Order attempts versus intended reservations. Delivery attempts: 1080 records; Unique reservations: 1000 records. Synthetic example.",
+        "dataOrigin": "synthetic",
+        "steps": [],
+        "studyPaths": [
+          "reliability",
+          "platform"
+        ]
+      }
+    },
+    {
+      "id": "bank-payment-timeouts",
+      "title": "Diagnose ambiguous payment acknowledgements",
+      "industry": "Financial services",
+      "description": "A hypothetical payments training lab separates timeout, retry, idempotency and reconciliation.",
+      "body": "## Hypothetical problem and scope\n\nA fictional payments integration team treats a client timeout as proof that a transaction failed. That assumption can trigger a second payment even when the first request was accepted. The proposed learning engagement uses a fake payment provider and invented ledger entries. It makes no claim about a bank customer or production financial outcomes. Participants begin by drawing the request, provider acceptance and local acknowledgement boundaries and identifying which observations leave the result uncertain.\n\n## Lab architecture and delivery\n\nThe application stores a payment intent with a stable business identifier before contacting the fake provider. The provider adapter supports a documented idempotency key and a lookup operation. The instructor can delay responses independently of provider processing, allowing a request to succeed remotely while the caller times out. Learners compare retries with the original key against a deliberately broken implementation that creates a new key for every attempt.\n\nThe lesson uses [HTTP semantics](https://www.rfc-editor.org/rfc/rfc9110.html) to discuss method-level retry assumptions, then checks the provider-specific contract. HTTP method names alone do not establish exactly-once payment behaviour. A key's scope, payload matching and retention period must be explicit. The lab includes an expired key and an unavailable lookup endpoint so participants cannot solve every ambiguity by repeating one API call.\n\n## Synthetic worksheet and measurement\n\nThe invented workload contains 200 payment intents. Twenty responses are delayed beyond the caller's deadline, resulting in 220 attempts when each delayed operation is retried once. Correct provider-side idempotency yields 200 accepted payment identities in this fixture. The chart compares 200 intended payments, 220 attempts and 20 reconciliation cases. These counts describe the test design, not a measured failure probability or a promised payment-system guarantee.\n\nLearners reconcile identities and amounts, not only counts. They record the original intent time, attempt time, provider identifier and final disposition. An unresolved outcome remains visibly unresolved. A local status of “failed” is not allowed to conceal a remote acceptance that has not yet been checked.\n\n## Acceptance and transfer\n\nThe capstone combines a delayed acknowledgement with a worker restart. Acceptance requires no duplicate provider identity, a recoverable pending state, a bounded retry policy and a support explanation that distinguishes rejection from uncertainty. The team must demonstrate how a correction is recorded without silently rewriting the event history.\n\nOnly synthetic credentials and a loopback or isolated test provider are used. Outbound access to real payment networks is denied. Cleanup removes test accounts, keys and stored fixtures while preserving the assessment record. Handover includes the ambiguity decision table, provider-contract checklist and replay tests. A delayed exercise uses a different remote operation, such as a refund simulation, to assess whether the same reasoning transfers to a new side effect.",
+      "figure": {
+        "slug": "service-enterprise-middleware-bank-payment-timeouts",
+        "kind": "bar",
+        "title": "Synthetic payment intent and retry counts",
+        "unit": "operations or attempts",
+        "points": [
+          {
+            "label": "Payment intents",
+            "value": 200
+          },
+          {
+            "label": "Request attempts",
+            "value": 220
+          },
+          {
+            "label": "Ambiguous cases",
+            "value": 20
+          }
+        ],
+        "method": "Invented 200 intents with 20 delayed acknowledgements and one retry each: 220 attempts. Twenty cases require reconciliation; no real payment or reliability measurement.",
+        "alt": "Synthetic payment intent and retry counts. Payment intents: 200 operations or attempts; Request attempts: 220 operations or attempts; Ambiguous cases: 20 operations or attempts. Synthetic example.",
+        "dataOrigin": "synthetic",
+        "steps": [],
+        "studyPaths": [
+          "reliability",
+          "platform"
+        ]
+      }
+    },
+    {
+      "id": "manufacturing-event-order",
+      "title": "Preserve machine-event meaning across replay",
+      "industry": "Manufacturing",
+      "description": "A hypothetical telemetry integration lab examines partition keys, sequence gaps and late events.",
+      "body": "## Hypothetical problem and baseline\n\nA fictional manufacturer wants maintenance engineers and software developers to share a clear model of machine-event ordering. The proposed lab uses simulated equipment and no connection to plant controls. It addresses interpretation of telemetry, not safety certification or automated control of machinery. Participants first explain the difference between event time, ingestion time and processing completion, then identify which machine states depend on sequence.\n\n## Technical design\n\nThe fixture emits events for four synthetic machines. Each event carries a machine identifier, sequence number, event timestamp and schema version. A partitioned log uses a documented keying strategy so events for one machine follow the intended partition path. Learners inspect the [Kafka design documentation](https://kafka.apache.org/41/design/design/) and distinguish partition ordering from a global order across all machines.\n\nThe consumer maintains a machine-specific projection and records gaps rather than silently assuming every new event follows the previous one. The exercise includes a late event, a duplicate, a schema extension and a consumer restart. A replay rebuilds a separate projection for comparison before any pointer is switched. The instructor deliberately slows one partition to show why a fleet-wide throughput average can hide a stalled machine stream.\n\n## Synthetic calculation and chart\n\nFor the capacity worksheet, each of four machines emits 25 events per second, producing 100 events per second overall. During a simulated 30-second consumer pause, 3,000 events accumulate if production continues at that rate. The chart shows 750 accumulated events per machine. Inputs assume constant rates, no loss, no retries and an initially empty backlog. They do not represent factory measurements or establish a real recovery-time objective.\n\nThe learners estimate catch-up separately from arrival rate. If processing capacity only equals the continuing 100-event-per-second input, the backlog does not drain. They must measure available excess capacity and event age before claiming recovery. Sequence completeness is checked per machine, so an equal grand total cannot hide misattributed records.\n\n## Acceptance and lifecycle\n\nThe capstone requires a correct rebuilt projection, explicit treatment of gaps and late arrivals, and a documented explanation of what ordering the topology actually provides. Participants compare the original and rebuilt machine states using fixture-derived expectations. A gap must remain visible until resolved or accepted under a defined rule; skipping it to reduce lag is not success.\n\nLab permissions exclude production brokers and industrial networks. Resource limits bound the simulator and replay consumers, and retained synthetic logs expire after assessment. Cleanup verifies that no producer continues running. Handover includes key-selection rationale, sequence fixtures, replay commands and a runbook for a single stalled partition. A later transfer task introduces a fifth simulated machine and different partition distribution, testing whether participants can reassess ordering and capacity without copying the initial configuration blindly.",
+      "figure": {
+        "slug": "service-enterprise-middleware-manufacturing-event-order",
+        "kind": "bar",
+        "title": "Events accumulated during a 30-second pause",
+        "unit": "events",
+        "points": [
+          {
+            "label": "Machine A",
+            "value": 750
+          },
+          {
+            "label": "Machine B",
+            "value": 750
+          },
+          {
+            "label": "Machine C",
+            "value": 750
+          },
+          {
+            "label": "Machine D",
+            "value": 750
+          }
+        ],
+        "method": "Synthetic 4 machines × 25 events/s × 30 seconds = 3,000 events; 750 each. Constant rates, empty initial backlog and no loss or retry assumed.",
+        "alt": "Events accumulated during a 30-second pause. Machine A: 750 events; Machine B: 750 events; Machine C: 750 events; Machine D: 750 events. Synthetic example.",
+        "dataOrigin": "synthetic",
+        "steps": [],
+        "studyPaths": [
+          "reliability",
+          "platform"
+        ]
+      }
+    },
+    {
+      "id": "health-record-schema",
+      "title": "Evolve a record interface without losing meaning",
+      "industry": "Healthcare software",
+      "description": "A hypothetical training scenario uses entirely synthetic appointment records to test schema compatibility and data minimization.",
+      "body": "## Hypothetical learning need\n\nA fictional healthcare software team needs to evolve an appointment interface while supporting two client releases. The scenario contains invented appointments, names and identifiers; it uses no patient records and makes no claim of regulatory compliance. The baseline task asks learners to distinguish a syntactically valid message from a semantically correct appointment, including time zone, status and identifier meaning.\n\n## Design and delivery approach\n\nThe lab provides an old client, a new client, a versioned interface contract and a small application service. The proposed change adds an optional appointment reminder preference while preserving existing required fields. A separate deliberately incompatible change alters the meaning of a status value. Learners see why a schema validator may accept a message whose business interpretation has changed.\n\nA compatibility matrix tests old-client/new-service and new-client/old-service combinations that the product intends to support. Fixtures include an absent optional field, an unknown enum value and an appointment near a time-zone transition. The contract is documented with [OpenAPI](https://spec.openapis.org/oas/latest.html), but the team must verify runtime behaviour and consumer handling rather than assume documentation generates compatibility automatically.\n\nPairs review which fields are necessary for the exercise and remove unnecessary personal attributes from logs. Error responses use synthetic correlation identifiers and avoid reproducing complete record bodies. Management endpoints are available only to the lab operator role. The instructor introduces one configuration error that accidentally exposes diagnostic detail, and learners must detect and correct it.\n\n## Synthetic assessment worksheet\n\nThe capstone fixture contains 24 compatibility checks: eight for each of three supported client/service combinations. In an invented assessment state, 20 checks pass and four expose the status-meaning defect. The chart shows 20 passing and four failing checks. This is a constructed teaching result, not a quality score for a real healthcare system. The four failures must be explained and corrected before acceptance; an 83.33% pass rate is not sufficient for a required contract.\n\n## Acceptance, rollback and handover\n\nAcceptance requires all declared compatibility checks to pass, clear handling of unknown values, preserved appointment meaning and no sensitive fixture fields in diagnostic output. Learners must propose a staged migration for the incompatible change, including consumer communication and a rollback condition. Restoring an older binary is not accepted as a rollback plan if stored data has already acquired a meaning it cannot interpret.\n\nThe lab is isolated from clinical systems, with short-lived identities and fixed retention. Cleanup removes synthetic data and verifies that public diagnostic routes are closed. Handover includes the compatibility matrix, fixture generator, data-field justification worksheet and migration decision record. A later transfer assessment changes another business field and asks the team to identify semantic risks before editing the schema, measuring reasoning beyond the original example.",
+      "figure": {
+        "slug": "service-enterprise-middleware-health-record-schema",
+        "kind": "bar",
+        "title": "Constructed compatibility assessment before repair",
+        "unit": "checks",
+        "points": [
+          {
+            "label": "Passing checks",
+            "value": 20
+          },
+          {
+            "label": "Failing checks",
+            "value": 4
+          }
+        ],
+        "method": "Synthetic 24-check matrix has 20 passes and 4 deliberately seeded failures. 20/24 = 83.33%, but every required check must pass for acceptance. Not a customer quality metric.",
+        "alt": "Constructed compatibility assessment before repair. Passing checks: 20 checks; Failing checks: 4 checks. Synthetic example.",
+        "dataOrigin": "synthetic",
+        "steps": [],
+        "studyPaths": [
+          "reliability",
+          "platform"
+        ]
+      }
+    },
+    {
+      "id": "logistics-broker-recovery",
+      "title": "Reconcile shipment events after broker disruption",
+      "industry": "Transport and logistics",
+      "description": "A hypothetical operations capstone tests backlog recovery, quarantine and business-state reconciliation.",
+      "body": "## Hypothetical problem and assessment\n\nA fictional logistics operator wants application and operations engineers to recover a shipment-event pipeline together. The proposed engagement uses simulated tracking identifiers and a disposable broker. It does not represent a real carrier incident or imply a promised recovery time. The initial assessment asks participants to identify the difference between queue depth, oldest-message age and completed shipment updates.\n\n## Technical design and lab sequence\n\nThe lab contains a shipment simulator, broker, tracking consumer and a read-only status interface. A stable event identity supports duplicate detection, while a shipment identifier groups related state changes. The instructor introduces a consumer outage, a malformed event and a duplicate delivery. Learners must restore processing without deleting unresolved messages or presenting a quarantined shipment as successfully updated.\n\nThe team uses [RabbitMQ acknowledgements and confirms](https://www.rabbitmq.com/docs/confirms) to identify the actual transport boundaries. Publisher confirmation is tested separately from consumer completion. Prefetch and consumer concurrency are changed cautiously, with observation of database saturation and event age. A faster acknowledgement rate is not accepted as improvement if business writes remain pending or fail.\n\n## Synthetic capacity calculation\n\nThe invented disruption lasts 60 seconds while 40 events per second continue arriving, creating 2,400 queued events from an initially empty queue. After recovery, consumers process 100 events per second while arrivals remain 40 per second. Net drain is 60 events per second, so the simplified backlog clears in 40 seconds. The chart shows backlog at recovery start, after 20 seconds and after 40 seconds: 2,400, 1,200 and zero.\n\nThis arithmetic assumes constant comparable work, no retries, adequate downstream capacity and no additional failures. Actual clearance time must be measured with the oldest event and business-state reconciliation. The lab deliberately includes a quarantined item outside the normal successful stream so a zero queue depth cannot be mistaken for universal completion.\n\n## Acceptance and operational transfer\n\nThe capstone accepts only when valid shipment identities reconcile, duplicate attempts do not create duplicate transitions, the malformed event has an owner and reason, and the team can explain remaining uncertainty. Learners write a recovery timeline and identify which tuning change affected throughput. They must retain a rollback configuration and stop if database waits or error rates cross the lab's agreed limits.\n\nAccess is restricted to the training environment, with no live tracking or customer contact integrations. Cost planning covers broker runtime, database storage and telemetry retention, and every resource has a cleanup owner. The handover includes a backlog worksheet, tuning baseline, quarantine procedure and repeatable fault fixtures. A delayed transfer exercise changes the arrival mix and database service time, requiring participants to recalculate drain capacity rather than repeat the synthetic 40-second answer.",
+      "figure": {
+        "slug": "service-enterprise-middleware-logistics-broker-recovery",
+        "kind": "bar",
+        "title": "Simplified shipment backlog recovery",
+        "unit": "queued events",
+        "points": [
+          {
+            "label": "Recovery starts",
+            "value": 2400
+          },
+          {
+            "label": "After 20 seconds",
+            "value": 1200
+          },
+          {
+            "label": "After 40 seconds",
+            "value": 0
+          }
+        ],
+        "method": "Synthetic outage: 40/s × 60s = 2,400 backlog. Recovery completes 100/s while arrivals stay 40/s, net drain 60/s. Backlog 2,400 − 60t, bounded at zero. No retries or variable work.",
+        "alt": "Simplified shipment backlog recovery. Recovery starts: 2400 queued events; After 20 seconds: 1200 queued events; After 40 seconds: 0 queued events. Synthetic example.",
+        "dataOrigin": "synthetic",
+        "steps": [],
+        "studyPaths": [
+          "reliability",
+          "platform"
+        ]
+      }
+    }
+  ]
+}

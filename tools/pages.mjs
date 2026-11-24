@@ -1,46 +1,28 @@
-/* Static pages. Service copy is carried over from the existing site — it is
-   the client's own wording, and rewriting it would only add noise. */
+/* Static entry points. Detailed service copy lives in content/services. */
 import { SITE, esc, icon, fmtDate, readingTime, primaryTopic, seriesSlug } from "./lib.mjs";
 import { page } from "./shell.mjs";
 import { artwork } from "./visuals.mjs";
 import { coverFor } from "./covers.mjs";
 import { caseCoverArt } from "./case-covers.mjs";
 import { caseCategories } from "./case-library.mjs";
+import { SERVICE_IDS, serviceCard, servicePath } from "./service-library.mjs";
 const thumbnail=(title,tags,slug='')=>`<div class="content-thumbnail">${artwork(slug||'content-'+title.toLowerCase().replace(/[^a-z0-9]+/g,'-'),tags,{title})}</div>`;
 
 const SERVICES = [
   {
     id: "architecture", topic: "Architecture", eyebrow: "Enterprise Architecture",
     title: "Strategic IT execution and infrastructure modernisation",
-    lede: "Technical direction that reduces architectural debt, aligns capital expenditure with performance requirements, and improves application reliability.",
-    items: [
-      ["Cloud modernisation", "Multi-regional transformation. Decoupling monolithic legacy assets into scalable, event-driven microservices so release cycles shorten."],
-      ["Resilient IT operations", "Observability control planes on OpenTelemetry and Prometheus, with predictive incident detection behind strict uptime SLAs."],
-      ["FinOps and cost governance", "Unchecked cloud allocation is unnecessary expense. We institutionalise FinOps so engineering spend tracks business value."],
-      ["DevOps and automation", "The lifecycle from repository to production cluster, automated with infrastructure-as-code and full auditability."],
-    ],
+    lede: "Assess dependencies and operating constraints, agree measurable service objectives, and execute changes with recovery and ownership in view.",
   },
   {
     id: "ai", topic: "Enterprise AI", eyebrow: "AI & MLOps Architecture",
-    title: "Scalable enterprise AI integration",
-    lede: "Moving AI from experimentation to production deployment: resilient MLOps pipelines and data-driven agents integrated securely inside corporate networks.",
-    items: [
-      ["Agentic AI workflows", "Autonomous agents that handle decision-routing and secure task execution across internal APIs."],
-      ["MLOps data pipelines", "Version control, automated model testing and continuous deployment tracking across the model lifecycle."],
-      ["Predictive analytics", "Large datasets processed on Spark and modern data platforms to produce decisions people actually use."],
-      ["AI security and IAM", "Zero-trust policy and data classification applied to every AI interaction, protecting corporate IP."],
-    ],
+    title: "Enterprise AI with explicit evaluation and controls",
+    lede: "Define evaluation populations, permission boundaries and human review. Test model and workflow behavior before a staged production rollout.",
   },
   {
     id: "training", topic: "Engineering Leadership", eyebrow: "Corporate IT Enablement",
-    title: "Technical training built on delivery experience",
-    lede: "Customised, lab-intensive curriculum. Instruction rooted in real deployment work rather than slideware.",
-    items: [
-      ["Enterprise middleware", "Integration methodology, high-availability clustering and legacy Oracle stacks — WebLogic, SOA and OSB, Exalogic."],
-      ["Cloud native infrastructure", "Distributed networking, platform security and container orchestration across AWS, Azure and GCP; Kubernetes administration."],
-      ["Software engineering", "Application development principles, RESTful API design and resilient backend microservices."],
-      ["Hands-on lab environments", "Every module is exercised in a working environment, not demonstrated on a slide."],
-    ],
+    title: "Technical enablement through practical exercises",
+    lede: "Build role-specific learning paths with isolated labs, observable acceptance criteria and recovery exercises that participants can repeat unaided.",
   },
 ];
 
@@ -102,7 +84,10 @@ const contactForm = (id, compact = false) => `
   <p class="form-note">We use what you send only to reply. No lists, no resale — see our <a href="/privacy/">privacy notice</a>.</p>
 </form>`;
 
-export function staticPages({ insights, notes, seriesMap, topicList, cardFor, topicChip }) {
+export function staticPages({ insights, notes, seriesMap, topicList, cardFor, topicChip, services }) {
+  if (!Array.isArray(services) || services.length !== SERVICE_IDS.length || SERVICE_IDS.some(id => !services.some(service => service.id === id))) {
+    throw new Error("Static service entry points require the complete service library");
+  }
   const featured = insights.slice(0, 7);
   const pages = {};
 
@@ -152,8 +137,8 @@ export function staticPages({ insights, notes, seriesMap, topicList, cardFor, to
         <p class="eyebrow">${esc(s.eyebrow)}</p>
         <h3 class="h3" style="margin-top:.8rem">${esc(s.title)}</h3>
         <p class="muted" style="margin-top:.7rem;font-size:.95rem">${esc(s.lede)}</p>
-        <ul class="tick-list">${s.items.slice(0, 3).map(([t]) => `<li>${esc(t)}</li>`).join("")}</ul>
-        <a class="link-arrow card-destination" href="/services/#${s.id}" style="margin-top:1.2rem">Detail ${icon.arrow}</a>
+        <ul class="tick-list service-links">${services.filter(service => service.category === s.id).map(service => `<li><a href="${servicePath(service.id)}">${esc(service.title)}</a></li>`).join("")}</ul>
+        <a class="link-arrow card-destination" href="/services/#${s.id}" style="margin-top:1.2rem">Explore this service area ${icon.arrow}</a>
       </article>`).join("\n")}
     </div>
   </div>
@@ -247,36 +232,41 @@ ${seriesMap.size ? `<section class="section band band-warm">
   /* ---------------- services ---------------- */
   pages["services"] = page({
     title: "Services",
-    description: "Enterprise architecture, AI and MLOps, and corporate technical enablement — delivered alongside your engineering team.",
+    description: "Explore twelve delivery methodologies and sixty hypothetical industry scenarios across architecture, operations, AI and engineering enablement.",
     path: "/services/",
+    bodyClass: "services-frame",
     body: `
-<section class="section mesh"><div class="wrap">
+<section class="section mesh"><div class="publication-wrap service-intro">
+  <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><span aria-current="page">Services</span></nav>
   <p class="eyebrow">Services</p>
-  <h1 class="h-display" style="margin-top:.8rem;max-width:17ch">Engineering, not advice.</h1>
-  <p class="lede" style="margin-top:1.3rem;max-width:60ch">We engage directly alongside client engineering teams — executing deployments, configuring pipelines and establishing operational governance, rather than handing over a recommendation and leaving.</p>
+  <h1 class="h-display">From a clear scope to an operable outcome.</h1>
+  <p class="lede field-intro">Explore how we plan, execute, measure and hand over engineering work. Each service includes a detailed methodology, five industry scenarios, explanatory charts and primary references.</p>
+  <p class="case-notice">12 service methodologies · 60 hypothetical industry scenarios. Scenario organisations, delivery events and numbers are invented for explanation; they are not customer results.</p>
+  <nav class="service-category-nav" aria-label="Service areas">${SERVICES.map(s => `<a class="chip" href="#${s.id}">${esc(s.eyebrow)}</a>`).join("")}</nav>
 </div></section>
 
 ${SERVICES.map(s => `<section class="section ${s.id === "ai" ? "surface hair" : ""}" id="${s.id}" data-topic="${esc(s.topic)}">
-  <div class="wrap">
+  <div class="publication-wrap">
     <p class="eyebrow">${esc(s.eyebrow)}</p>
     <h2 class="h1" style="margin-top:.8rem;max-width:22ch">${esc(s.title)}</h2>
     <p class="lede" style="margin-top:1rem;max-width:60ch">${esc(s.lede)}</p>
-    <div class="grid g-2 capability-grid" style="margin-top:2.4rem">
-      ${s.items.map(([t, d]) => `<div class="feature">${thumbnail(t,[s.topic],'service-'+t.toLowerCase().replace(/[^a-z0-9]+/g,'-'))}<h3 class="h3">${esc(t)}</h3><p class="muted" style="margin-top:.5rem;font-size:.95rem">${esc(d)}</p></div>`).join("\n      ")}
+    <div class="grid g-2 capability-grid service-grid">
+      ${services.filter(service => service.category === s.id).map(service => serviceCard(service)).join("\n      ")}
     </div>
     <a class="btn" href="/contact/" style="margin-top:2rem">Discuss ${esc(s.eyebrow.toLowerCase())} ${icon.arrow}</a>
   </div>
 </section>`).join("\n")}
 
 <section class="section"><div class="wrap cta-panel cta-wide">
-  <div><h2 class="h1" style="max-width:20ch">Not sure which of these you need?</h2>
-  <p class="lede" style="margin-top:1rem;max-width:46ch">Most engagements start with an audit, because the stated problem and the actual constraint are often different.</p></div>
-  <a class="btn btn-lg" href="/contact/">Start with an audit ${icon.arrow}</a>
+  <div><h2 class="h1" style="max-width:20ch">Define the first useful step.</h2>
+  <p class="lede" style="margin-top:1rem;max-width:46ch">Share the system, the constraint and the outcome you need. Agree the evidence, scope and acceptance criteria before deciding the engagement.</p></div>
+  <a class="btn btn-lg" href="/contact/">Discuss your requirements ${icon.arrow}</a>
 </div></section>`,
-    jsonld: SERVICES.map(s => ({
+    jsonld: services.map(s => ({
       "@context": "https://schema.org", "@type": "Service",
-      name: s.title, serviceType: s.eyebrow, description: s.lede,
-      provider: { "@id": SITE.url + "/#org" }, areaServed: "Global",
+      "@id": SITE.url + servicePath(s.id) + "#service",
+      name: s.title, serviceType: s.title, description: s.description,
+      url: SITE.url + servicePath(s.id), provider: { "@id": SITE.url + "/#org" },
     })),
   });
 

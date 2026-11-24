@@ -1,0 +1,226 @@
+{
+  "id": "cloud-native-infrastructure",
+  "title": "Cloud-Native Infrastructure",
+  "category": "training",
+  "description": "Develop practical deployment, security, capacity and recovery skills through bounded cloud-native labs and independent operational assessments.",
+  "methodology": "## What this enablement programme is designed to change\n\nThis proposed programme develops the ability to deploy, diagnose and maintain cloud-native workloads using explicit reliability, security and resource constraints. Kubernetes can be part of the environment, but operating a cluster is not the learning objective by itself. Participants should be able to explain why a workload is ready to receive traffic, which identity can change it, how it behaves during disruption and what evidence supports a resource decision. All scenarios and calculations on this page are hypothetical teaching designs, not customer results.\n\nDiscovery begins with the organisation's actual delivery path: source, build, registry, deployment configuration, runtime, service exposure, data dependencies and observability. Identify which parts application teams own and which belong to a platform provider. A managed control plane does not remove application responsibilities for access, backups, request sizing or recovery. The programme's scope states which responsibilities can be exercised in the lab and which require a later review in the organisation's approved environment.\n\n## Establish prerequisites and a practical baseline\n\nThe baseline is a short independent task, not a multiple-choice certification rehearsal. A learner inspects a small application's configuration, explains its listening port and health behaviour, reads a failed deployment event and identifies the runtime identity. Record Linux, networking, container, version-control and application-debugging prerequisites separately. An engineer who lacks DNS fundamentals needs a different preparation path from someone who understands networking but has never read a Kubernetes event.\n\nAssess diagnosis, safe change, verification and explanation independently. A learner can deploy a supplied manifest without understanding its permissions, so deployment success alone is insufficient. Use synthetic fixtures and a known expected result. Provide accessible instructions, copyable commands and a supported remote option when local hardware is unsuitable. The baseline identifies teaching needs; it should not become a public ranking of colleagues or a proxy for job performance.\n\n## Design the laboratory around one complete service\n\nThe reference workload has a web API, background worker, small database and a controlled load generator. A read-only status page exposes business completion alongside infrastructure status. Participants can follow a request from ingress to persistent state without navigating dozens of unrelated services. The application has meaningful readiness, startup and liveness behaviour that can be changed deliberately during an exercise.\n\nSelect local containers, a local cluster or an isolated cloud environment according to the objective. A local cluster can teach deployment mechanics and policy inspection, but it does not reproduce every managed load balancer, storage driver, identity integration or failure domain. Document those gaps. Where node-drain or storage behaviour matters, use an environment that actually supports the required topology and explicitly verify the relevant provider and plugin behaviour.\n\n## Make access and isolation part of the first exercise\n\nIssue separate learner and instructor identities. Learners receive the minimum permissions needed for their tasks, and privileged exercises occur only in designated disposable environments. Namespace separation is useful but is not a complete security boundary against every hostile workload. Review API privileges, workload identity, secret access, node exposure and network reachability as separate concerns.\n\nUse the Kubernetes RBAC guidance to discuss privilege escalation paths such as creating workloads that can access powerful service accounts. Apply suitable Pod Security controls and verify the result with intentionally disallowed fixtures. Do not teach learners to solve a permission error by granting cluster-admin. The assessment asks them to identify the missing capability, justify its scope and confirm that unrelated actions remain denied.\n\n## Build an artifact and configuration chain that can be inspected\n\nA deployment starts from a versioned source revision and a traceable built artifact. Record the image digest, build configuration, runtime configuration and relevant dependency versions. Mutable tags can make two nominally identical deployments run different bytes. The lab therefore demonstrates the difference between a human-readable release label and an immutable artifact identifier.\n\nKeep secrets separate from ordinary configuration and avoid storing credentials in images or example repositories. A Kubernetes Secret object is not, by itself, a complete guarantee about encryption at rest, access restrictions or safe logging. Verify the chosen cluster's actual controls. Teach participants to inspect configuration without printing secret values into shared terminals, assessment recordings or support tickets. Rotation exercises should invalidate old access and test the new identity deliberately.\n\n## Understand probes before tuning them\n\nStartup, readiness and liveness answer different questions. A startup probe can accommodate initialization, readiness governs eligibility for service traffic, and liveness can trigger a restart when the configured condition fails. The lab asks learners to predict the consequence of each probe before changing it. A shared dependency failure should not automatically cause every instance to restart and increase pressure on that dependency.\n\nParticipants introduce slow initialization, a failed optional dependency and a process deadlock simulation as distinct faults. They inspect events, endpoint selection and business responses. Increasing every timeout until the deployment becomes green is not accepted without an explanation of the tradeoff. The resulting worksheet records the condition, threshold, expected action and failure mode for each probe, tied to the application's actual semantics.\n\n## Teach requests, limits and capacity as different quantities\n\nResource requests influence scheduling and resource allocation behaviour; limits constrain supported resource use according to resource type and runtime enforcement. CPU and memory do not fail in the same way. Participants inspect actual throttling, memory pressure and termination evidence in the lab rather than inferring an out-of-memory event from a restart count alone. The exercise includes application memory outside the obvious managed heap where relevant.\n\nA synthetic planning example uses six pods requesting 500 millicores each, for a total of three requested CPU cores. Changing each request to 250 millicores yields 1.5 requested cores, but this is not a measured 50% cost saving. The workload may still consume the same CPU, and node provisioning, limits and service objectives determine the practical effect. Learners must run a representative burst and disruption test before recommending a request change.\n\n## Network and storage behaviour require explicit tests\n\nThe network module traces name resolution, service selection, ingress and egress separately. A NetworkPolicy object only has the intended effect when the network implementation supports and enforces it. Participants test allowed and denied paths, including DNS and necessary dependency traffic. A default-deny policy that accidentally blocks required resolution is a diagnosable configuration error, not a reason to abandon isolation entirely.\n\nStorage exercises distinguish ephemeral container files from persistent volumes and database-level durability. Recreating a pod is not a backup strategy. The team restores a synthetic data set into a separate target and verifies record identity and application behaviour. Snapshot capabilities, consistency and recovery procedures depend on the storage system; the lab records those assumptions and avoids presenting one successful local-volume exercise as evidence for a production disaster-recovery objective.\n\n## Rehearse deployment and disruption\n\nA release exercise changes one observable behaviour and checks the old and new versions during rollout. Learners inspect readiness, available capacity, request failures and state compatibility. Deployment rollback can restore an earlier application artifact, but it cannot automatically reverse an incompatible database migration or an external side effect. Include a staged schema change and ask participants to identify the actual reversible boundary.\n\nA controlled node-drain exercise teaches voluntary disruption, eviction and replacement scheduling. PodDisruptionBudgets can constrain supported voluntary evictions; they do not prevent every involuntary failure or create spare capacity. Learners check the topology, replicas, budgets and remaining node resources before draining. They must stop and explain an unschedulable replacement rather than bypass the protection simply to complete the command sequence.\n\n## Use observable business outcomes during load exercises\n\nThe workload generator produces a declared synthetic request mix with correctness assertions. Capture offered arrivals, started requests, successful business operations, errors and latency with a defined starting timestamp. A dashboard showing healthy pods does not prove that users can complete their work. Pair infrastructure metrics with application outcomes and a few traceable sample operations.\n\nEach load experiment has a maximum duration, resource boundary and stop condition. The instructor verifies generator headroom so a client-side bottleneck is not mistaken for server capacity. Learners change one variable, such as concurrency or a resource request, and repeat a comparable run. Report sample counts and uncertainty; do not average per-pod percentiles and label the result a fleet percentile. Preserve configuration and fixture revisions with every chart.\n\n## Sequence teaching toward an independent capstone\n\nDelivery alternates short explanations, guided predictions, hands-on tasks and retrospective reasoning. Pairs rotate roles and record where hints were needed. Troubleshooting begins with the user-visible symptom, then narrows the boundary using events, logs, metrics and traces. The programme discourages broad restart-and-retry rituals that erase evidence without explaining the failure.\n\nThe capstone presents an unseen deployment containing a permission issue, an incorrect readiness condition and a resource-related constraint. Participants may use official documentation but do not receive the repair steps. Acceptance requires a working service, preserved least privilege, correct synthetic data, a justified configuration diff and a tested recovery path. A participant must also explain one limitation of the lab result before the assessment is complete.\n\n## Budget and environment lifecycle\n\nPlan runtime quantities before provisioning. In a hypothetical cohort, ten paired environments are needed for three sessions of three hours each. Scheduled session runtime totals 10 × 9 = 90 environment-hours. Leaving all ten running for the full 72-hour period would total 720 environment-hours. The figure compares those quantities; it excludes startup time, retained storage and shared infrastructure and does not quote a cloud price or guarantee a matching bill reduction.\n\nSet labels for owner, purpose and expiry, with an inventory that can find resources even if normal teardown fails. Resource quotas and limits can bound portions of consumption, but they are not a universal spending cap. Include load balancers, volumes, snapshots, public addresses, registries and telemetry retention in cleanup. Restrict region and instance choices where the training platform permits, and define who can approve an exception during delivery.\n\n## Handover, transfer and programme maintenance\n\nThe handover contains a version manifest, architecture, permission matrix, deployment and teardown instructions, scenario fixtures, assessment rubric and runbooks. An internal maintainer rebuilds the environment from a clean starting point while the instructor observes. This checks whether the material is reproducible without hidden credentials or manual setup. Unsupported images and changed APIs receive an explicit update or retirement process.\n\nA delayed transfer exercise changes the workload and one environmental assumption. Learners must explain whether the original resource sizing, network policy and rollout strategy remain appropriate. Record independent completion and quality of evidence rather than claiming that training alone reduced incidents. If the organisation later compares workplace metrics, account for changes in traffic, staffing and tooling before attributing the result to the programme.\n\n## The planning and acceptance worksheet\n\nFor each learning objective, record the target role, prerequisite, production responsibility, lab topology, allowed identity, synthetic input, observable output, failure injection, stop condition, acceptance test and cleanup owner. Add an explicit field for what the lab cannot establish. This connects technical depth to a reviewable delivery plan instead of a list of product features covered in slides.\n\nThe referenced Kubernetes documentation defines platform behaviour, while the numerical examples are invented teaching inputs. Commands and configuration must be checked against the selected cluster and plugin versions before delivery. The proposed outcome is an internal team that can make a bounded infrastructure change, explain its consequences and supply enough evidence for another engineer to review or reverse it safely.",
+  "figure": {
+    "slug": "service-cloud-native-infrastructure",
+    "kind": "bar",
+    "title": "Scheduled versus continuously running lab environments",
+    "unit": "environment-hours",
+    "points": [
+      {
+        "label": "Scheduled sessions",
+        "value": 90
+      },
+      {
+        "label": "Continuous three days",
+        "value": 720
+      }
+    ],
+    "method": "Synthetic 10 environments: 3 sessions × 3h × 10 = 90 environment-hours versus 72h × 10 = 720. Excludes startup, storage and shared resources; no cloud price or bill reduction asserted.",
+    "alt": "Scheduled versus continuously running lab environments. Scheduled sessions: 90 environment-hours; Continuous three days: 720 environment-hours. Synthetic planning data.",
+    "dataOrigin": "synthetic",
+    "steps": [],
+    "studyPaths": [
+      "platform",
+      "reliability"
+    ]
+  },
+  "references": [
+    {
+      "label": "Kubernetes RBAC practices",
+      "url": "https://kubernetes.io/docs/concepts/security/rbac-good-practices/"
+    },
+    {
+      "label": "Kubernetes probes",
+      "url": "https://kubernetes.io/docs/concepts/workloads/pods/probes/"
+    },
+    {
+      "label": "Kubernetes resource quotas",
+      "url": "https://kubernetes.io/docs/concepts/policy/resource-quotas/"
+    },
+    {
+      "label": "Kubernetes node drain",
+      "url": "https://kubernetes.io/docs/tasks/administer-cluster/safely-drain-node/"
+    },
+    {
+      "label": "Kubernetes network policies",
+      "url": "https://kubernetes.io/docs/concepts/services-networking/network-policies/"
+    },
+    {
+      "label": "Kubernetes Pod Security Standards",
+      "url": "https://kubernetes.io/docs/concepts/security/pod-security-standards/"
+    }
+  ],
+  "useCases": [
+    {
+      "id": "saas-onboarding-path",
+      "title": "Build a repeatable first deployment path",
+      "industry": "Business software",
+      "description": "A hypothetical SaaS platform workshop measures qualifying deployment completion, support effort and permission boundaries.",
+      "body": "## Hypothetical need and baseline\n\nA fictional SaaS company wants new service teams to deploy a small application through an approved platform path. The proposed engagement uses a synthetic service and isolated namespaces. It does not claim a real onboarding improvement. The baseline asks engineers to build an artifact, select a runtime identity, configure a health endpoint and explain how to find a failed rollout without receiving a checklist of repair commands.\n\n## Technical and learning design\n\nThe platform template includes an image digest, Deployment, Service, bounded resource configuration and a narrowly scoped service account. The application exposes meaningful readiness and a small synthetic business operation. The lab distinguishes “manifest accepted” from a qualifying deployment: the service must answer the operation correctly, expose diagnostic evidence, avoid prohibited privileges and support a tested rollback.\n\nPairs compare a deliberately incomplete template with the reviewed one, explaining each missing control. The [Kubernetes RBAC guidance](https://kubernetes.io/docs/concepts/security/rbac-good-practices/) informs the permission review. The instructor introduces a denied action and expects learners to request only the capability required, rather than grant a broad role. Documentation links to prerequisites and known errors so the path can support someone who did not attend the workshop.\n\n## Synthetic measurement and chart\n\nAn invented evaluation cohort contains ten participants. Six independently complete a baseline task, nine complete a different capstone and eight complete a delayed transfer task. The chart reports those counts. The tasks have a declared difficulty rubric, and a hint changes the result from independent to assisted completion. These are illustrative assessment values, not customer conversion rates or evidence of a causal productivity gain.\n\nAlongside completion, the worksheet records elapsed time, active support minutes, failed attempts and control violations. A faster deployment obtained by bypassing security or skipping the business check does not qualify. Non-completers remain in the denominator so an attractive median among successful participants cannot hide a difficult path.\n\n## Acceptance and handover\n\nThe capstone requires a clean deployment from a new repository revision, a deliberately failed rollout diagnosis and restoration of the previous compatible artifact. Learners must show that the runtime identity cannot read another namespace's secret and that the service remains observable after deployment. Database changes are excluded from this first capstone so the rollback claim has a clear scope.\n\nEvery namespace has an owner, quota and expiry. Cleanup removes workload objects and checks for retained storage and external resources. Handover includes the template, acceptance script, troubleshooting guide and assessment definitions. A later transfer exercise changes the application port and startup behaviour, testing whether participants understand the path rather than merely reuse a working manifest unchanged.",
+      "figure": {
+        "slug": "service-cloud-native-infrastructure-saas-onboarding-path",
+        "kind": "bar",
+        "title": "Illustrative qualifying deployment assessments",
+        "unit": "participants",
+        "points": [
+          {
+            "label": "Baseline independent",
+            "value": 6
+          },
+          {
+            "label": "Capstone independent",
+            "value": 9
+          },
+          {
+            "label": "Delayed independent",
+            "value": 8
+          }
+        ],
+        "method": "Invented cohort of 10 participants with 6, 9 and 8 independent passes on defined comparable tasks. Assisted attempts are tracked separately; no production outcome is claimed.",
+        "alt": "Illustrative qualifying deployment assessments. Baseline independent: 6 participants; Capstone independent: 9 participants; Delayed independent: 8 participants. Synthetic planning data.",
+        "dataOrigin": "synthetic",
+        "steps": [],
+        "studyPaths": [
+          "platform",
+          "reliability"
+        ]
+      }
+    },
+    {
+      "id": "public-service-drain",
+      "title": "Keep a public-service lab available during maintenance",
+      "industry": "Public services",
+      "description": "A hypothetical infrastructure exercise tests replica placement, voluntary disruption and recovery evidence.",
+      "body": "## Hypothetical problem and learning objective\n\nA fictional public-service technology team needs to understand whether routine node maintenance can interrupt an application. The proposed lab uses an invented appointment-status service and no citizen data. It teaches voluntary disruption and capacity planning, not a promise of uninterrupted production service. The baseline assessment asks participants to explain replicas, scheduling constraints and the difference between a ready pod and a completed user request.\n\n## Design and delivery\n\nThe lab uses a topology capable of placing application replicas on different worker nodes. Participants inspect placement, available resources and a PodDisruptionBudget before attempting a controlled drain. They review the [official drain guidance](https://kubernetes.io/docs/tasks/administer-cluster/safely-drain-node/) and identify which workload objects need special consideration. The exercise does not bypass eviction protections simply to make the maintenance command finish.\n\nA synthetic request generator records business success during the maintenance window. The instructor then reduces spare capacity so a replacement pod cannot schedule. Learners must explain why a budget can constrain voluntary disruption but cannot create capacity or prevent every involuntary failure. The proposed correction is evaluated against both application availability and the ability to complete maintenance.\n\n## Synthetic capacity worksheet\n\nThe fictional application normally runs three replicas, each requiring one unit of schedulable capacity. The lab has four such units available across its workers. Before maintenance, three units are occupied and one is spare. A topology variant with only three units has no spare unit for the same placement requirement. The chart compares total capacity of four, steady application demand of three and spare capacity of one in the first variant.\n\nThe units are deliberately abstract scheduling units, not CPU cores or a cloud price. The worksheet must map them to actual pod requests and node constraints before execution. It also records topology, system reservations and placement rules. A numeric total that fits can still be unschedulable because the free capacity is on the wrong node or lacks required storage access.\n\n## Acceptance, recovery and transfer\n\nThe capstone accepts when learners complete a supported drain without violating the declared application objective, or stop safely and identify the specific constraint preventing it. They must preserve the request outcomes, scheduler events and final replica placement. Restoring a node and reconciling workload state is part of the exercise; a completed drain command alone is not the result.\n\nPermissions for node operations are confined to a disposable cluster used only by the cohort. The resource budget includes replacement capacity and telemetry. Cleanup verifies that the cluster and associated disks or load balancers are removed. Handover includes a maintenance checklist, capacity worksheet and stop conditions. A delayed task changes replica count and affinity, requiring a new analysis rather than reuse of the original spare-capacity arithmetic.",
+      "figure": {
+        "slug": "service-cloud-native-infrastructure-public-service-drain",
+        "kind": "bar",
+        "title": "Synthetic capacity before a maintenance exercise",
+        "unit": "scheduling units",
+        "points": [
+          {
+            "label": "Total usable capacity",
+            "value": 4
+          },
+          {
+            "label": "Steady application demand",
+            "value": 3
+          },
+          {
+            "label": "Spare capacity",
+            "value": 1
+          }
+        ],
+        "method": "Invented abstract units: 4 usable − 3 requested = 1 spare. Real scheduling also depends on node placement, requests, storage and constraints. Not a production availability claim.",
+        "alt": "Synthetic capacity before a maintenance exercise. Total usable capacity: 4 scheduling units; Steady application demand: 3 scheduling units; Spare capacity: 1 scheduling units. Synthetic planning data.",
+        "dataOrigin": "synthetic",
+        "steps": [],
+        "studyPaths": [
+          "platform",
+          "reliability"
+        ]
+      }
+    },
+    {
+      "id": "health-platform-network",
+      "title": "Test permitted and denied paths in a clinical-software lab",
+      "industry": "Healthcare technology",
+      "description": "A hypothetical network-policy workshop checks necessary connectivity without using patient data or claiming compliance.",
+      "body": "## Hypothetical learning need\n\nA fictional clinical-software team wants to replace broad network reachability with an explicit dependency policy. The proposed training uses a synthetic scheduling application, fake records and an isolated cluster. It does not access clinical systems or certify regulatory compliance. Participants begin by identifying DNS, application, database and observability paths and explaining which component initiates each connection.\n\n## Technical design\n\nThe laboratory contains a frontend, API, database simulator and telemetry receiver. Learners write an allowed-path matrix before applying policy. They then introduce a default-deny posture and add only the required paths. The [Kubernetes NetworkPolicy documentation](https://kubernetes.io/docs/concepts/services-networking/network-policies/) is used to verify semantics and the selected network plugin's support. The existence of a policy object is not accepted as proof of enforcement.\n\nThe instructor includes a missing DNS allowance, an unintended namespace selector and a client trying to reach an unrelated service. Pairs predict the result, run a controlled connectivity check and inspect application behaviour. The exercise distinguishes transport reachability from application authorization: a permitted TCP connection does not mean the caller is entitled to every record.\n\n## Synthetic test matrix and chart\n\nThe invented matrix has 12 checks: five required paths that must succeed and seven prohibited paths that must fail. A deliberately flawed initial policy produces nine correct outcomes and three incorrect outcomes. The corrected capstone is expected to produce 12 correct outcomes. The chart compares nine and 12 verified outcomes out of the same defined matrix. These values are teaching fixtures, not a measured security posture of a healthcare organisation.\n\nThe evidence includes source identity, destination, protocol, expected result, observed result and the policy revision. Tests use controlled endpoints and do not scan external networks. A successful denial is reported as an expected result rather than an application outage. The team also checks the normal user journey so an over-restrictive policy cannot pass by blocking everything.\n\n## Acceptance and lifecycle\n\nAcceptance requires all required and prohibited path checks to match expectations, with a clear explanation of selectors and namespace boundaries. Learners must restore a known policy revision after an intentionally broken change and verify that the application recovers. They identify remaining controls outside NetworkPolicy, including API authorization, secret access and ingress configuration.\n\nLab identities cannot modify production networking. Synthetic records and diagnostic logs have fixed retention, and cleanup removes policy objects, namespaces and external resources. Handover includes the dependency matrix, test runner, rollback procedure and plugin-specific limitations. A later transfer task introduces a new telemetry destination and a namespace-label change, requiring participants to review policy meaning rather than copy a permissive rule to make traffic work.",
+      "figure": {
+        "slug": "service-cloud-native-infrastructure-health-platform-network",
+        "kind": "bar",
+        "title": "Constructed network-policy verification outcomes",
+        "unit": "correct checks",
+        "points": [
+          {
+            "label": "Deliberately flawed policy",
+            "value": 9
+          },
+          {
+            "label": "Required corrected result",
+            "value": 12
+          }
+        ],
+        "method": "Synthetic matrix has 5 required allowed paths and 7 required denied paths. Initial fixture gets 9/12 correct; capstone requires 12/12. These counts are not a security certification.",
+        "alt": "Constructed network-policy verification outcomes. Deliberately flawed policy: 9 correct checks; Required corrected result: 12 correct checks. Synthetic planning data.",
+        "dataOrigin": "synthetic",
+        "steps": [],
+        "studyPaths": [
+          "platform",
+          "reliability"
+        ]
+      }
+    },
+    {
+      "id": "energy-resource-budgets",
+      "title": "Investigate CPU requests under a telemetry burst",
+      "industry": "Energy analytics",
+      "description": "A hypothetical platform lab connects resource settings to measured workload behaviour and explicit limits.",
+      "body": "## Hypothetical context and baseline\n\nA fictional energy-analytics team runs a telemetry-processing application and wants engineers to understand resource requests before changing them. The proposed lab uses generated measurements from imaginary devices and has no connection to grid or control systems. The baseline asks learners to distinguish requested CPU, observed consumption, CPU limits and the business throughput of completed records.\n\n## Design and delivery\n\nThe application has six workers and a repeatable synthetic burst generator. Participants inspect the initial resource settings and collect queue age, completion rate, CPU usage and error evidence. They test a lower request configuration while keeping the workload and other settings fixed. The lab then adds a competing workload and a controlled disruption to expose assumptions that a quiet single-service test can miss.\n\nThe [Kubernetes resource-quota guidance](https://kubernetes.io/docs/concepts/policy/resource-quotas/) provides the platform reference for namespace constraints. The instructor makes clear that a quota is not a universal cost cap and that changing requests does not directly change application work. A resource decision must account for scheduling, contention and the declared completion objective.\n\n## Synthetic calculation and chart\n\nThe initial fixture requests 500 millicores for each of six workers, totalling 3,000 millicores. A candidate requests 250 millicores each, totalling 1,500 millicores. The chart compares these requested quantities. The arithmetic shows a 50% reduction in requested CPU, not a measured 50% reduction in consumption, nodes or cloud spend. No price or real customer saving is asserted.\n\nThe worksheet separately records observed CPU, backlog growth, throttling where relevant and successful processing. If the lower request changes placement or resource sharing, the team must explain the effect under the tested contention. A short run that completes eventually may still fail an age or deadline requirement. Retain non-completed and rejected work in the report.\n\n## Acceptance, rollback and transfer\n\nThe capstone requires a justified request recommendation supported by a repeatable workload, a burst test and a disruption check. Keeping the original request is a valid conclusion if the candidate fails. Learners must show the configuration diff, evidence and rollback condition, rather than select the smallest number because it appears efficient.\n\nOnly a disposable namespace or cluster is used, with bounded load generation and an automatic stop condition. The budget includes the competitor workload and telemetry retention. Cleanup verifies that no load generator or persistent volume remains. Handover includes the workload seed, resource worksheet and acceptance thresholds. A delayed exercise changes per-record processing cost, testing whether engineers revisit the sizing assumptions instead of treating the 250-millicore candidate as a universal recommendation.",
+      "figure": {
+        "slug": "service-cloud-native-infrastructure-energy-resource-budgets",
+        "kind": "bar",
+        "title": "Requested CPU for six synthetic workers",
+        "unit": "millicores requested",
+        "points": [
+          {
+            "label": "Six × 500m",
+            "value": 3000
+          },
+          {
+            "label": "Six × 250m",
+            "value": 1500
+          }
+        ],
+        "method": "Planning arithmetic for 6 workers: 6×500=3,000m and 6×250=1,500m. This is request allocation, not measured usage, node reduction or a cloud-cost saving.",
+        "alt": "Requested CPU for six synthetic workers. Six × 500m: 3000 millicores requested; Six × 250m: 1500 millicores requested. Synthetic planning data.",
+        "dataOrigin": "synthetic",
+        "steps": [],
+        "studyPaths": [
+          "platform",
+          "reliability"
+        ]
+      }
+    },
+    {
+      "id": "finance-release-probes",
+      "title": "Separate startup, readiness and liveness in a release lab",
+      "industry": "Financial software",
+      "description": "A hypothetical application-platform capstone tests probe semantics, rollout behaviour and compatible rollback.",
+      "body": "## Hypothetical problem and baseline\n\nA fictional financial-software team has copied the same health check into startup, readiness and liveness configuration. The proposed programme uses a fake account-summary service and no real accounts or transactions. It teaches how probe choices affect deployment behaviour without claiming a production availability improvement. The baseline asks participants to explain which condition should remove traffic, which should permit startup time and which can justify restarting a process.\n\n## Technical design and delivery\n\nThe lab application supports controlled slow initialization, an unavailable optional recommendation service and a simulated stuck request handler. Learners predict the consequence of each condition before changing probes. The [Kubernetes probe documentation](https://kubernetes.io/docs/concepts/workloads/pods/probes/) provides the reference, while the correct application condition is derived from the service's actual responsibility.\n\nA release introduces a longer initialization path. Participants compare a configuration that restarts too early with one that provides an explicit startup window. They then fail a shared dependency and verify that liveness does not trigger an unnecessary fleet-wide restart cycle. Readiness still needs an honest definition: removing every replica from service during a dependency outage may or may not improve the user outcome, so the decision must be explained.\n\n## Synthetic timing worksheet\n\nThe constructed startup takes 45 seconds. One candidate configuration allows only a 30-second nominal startup window, while another allows 60 seconds under the exercise's simplified timing assumptions. The chart compares 45, 30 and 60 seconds. These are lab inputs, not exact predictions of every probe scheduler; actual timing depends on configured periods, thresholds, delays and execution behaviour and must be observed.\n\nLearners record actual container start, probe attempts, readiness transition and first successful business response. They verify that a longer startup allowance does not hide a permanently broken process indefinitely. The worksheet includes a bounded failure deadline and operator-visible evidence for initialization that never completes.\n\n## Acceptance and handover\n\nThe capstone requires a successful compatible rollout, correct behaviour under all three faults and a documented rollback to the previous artifact. It also requires an explanation of why the selected probes do not expose sensitive diagnostics publicly. A green pod state without a correct account-summary fixture response does not pass.\n\nAccess is limited to a disposable training environment with synthetic secrets and denied connectivity to financial systems. Resource expiry and cleanup include diagnostic storage and load generators. Handover provides the probe decision table, timing evidence and regression tests. A later transfer task changes the service's critical dependency and initialization sequence, measuring whether engineers can redefine health semantics instead of reusing the original thresholds blindly.",
+      "figure": {
+        "slug": "service-cloud-native-infrastructure-finance-release-probes",
+        "kind": "bar",
+        "title": "Synthetic startup allowance comparison",
+        "unit": "seconds",
+        "points": [
+          {
+            "label": "Application initialization",
+            "value": 45
+          },
+          {
+            "label": "Insufficient allowance",
+            "value": 30
+          },
+          {
+            "label": "Candidate allowance",
+            "value": 60
+          }
+        ],
+        "method": "Invented initialization 45s versus nominal 30s and 60s startup allowances. Actual probe timing must be measured with configured periods, thresholds and delays. Not a production latency result.",
+        "alt": "Synthetic startup allowance comparison. Application initialization: 45 seconds; Insufficient allowance: 30 seconds; Candidate allowance: 60 seconds. Synthetic planning data.",
+        "dataOrigin": "synthetic",
+        "steps": [],
+        "studyPaths": [
+          "platform",
+          "reliability"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,209 @@
+{
+  "id": "finops-cost-governance",
+  "title": "FinOps and cost governance",
+  "category": "architecture",
+  "description": "Reconcile spend, assign ownership, measure cost per completed unit, and verify optimization decisions with service-quality guardrails.",
+  "methodology": "## Start with a decision, not a savings headline\n\nFinOps cost governance connects technology consumption with accountable business decisions. A proposed engagement should identify the decision it will improve: who owns shared spend, whether a workload's unit cost is changing, how to forecast demand, or whether a specific optimization is worth its engineering and reliability tradeoffs. Allocation, transparency, avoided future cost, and realized invoice reduction are different outcomes. The hypothetical examples below use synthetic numbers and do not claim customer savings, guaranteed returns, or an endorsed purchasing decision.\n\nDefine the initial scope as a set of accounts, subscriptions, products, environments, and billing periods. Name the finance owner, engineering owner, and business owner for the unit being measured. Record exclusions such as taxes, support, software licenses, or staff time. A narrow but reconciled scope is more useful than an impressive dashboard whose totals cannot be explained. Expansion should follow a working data contract and a repeatable review process.\n\n## Discover the estate and the questions behind the bill\n\nInventory billing sources, resource ownership, shared platforms, contractual commitments, credits, and organizational mappings. Interview teams about what their workloads do and how demand changes. A resource name rarely explains its business purpose reliably. Inspect deployment metadata and service catalogs alongside account structures and tags. Record unknown ownership explicitly rather than assigning it to the most convenient team.\n\nIdentify the decisions currently made without sufficient evidence. A team may need to compare two storage designs, understand a tenant's consumption, or forecast a launch. Those questions require different levels of detail. Do not collect every possible metric before deciding what the analysis must support. Begin with a bounded set of workloads and a reconciliation process that can survive corrections to invoices, resource mappings, and business events.\n\n## Establish a billing and business-data contract\n\nUse read-only billing exports and approved operational metrics initially. Restrict access because cost datasets can reveal customers, internal projects, commercial agreements, and deployment patterns. Define the billing period, currency, account hierarchy, usage time, charge type, resource identity, and cost basis. Preserve source records and version transformations so a result can be reproduced after a mapping changes.\n\nBusiness denominators need equally careful contracts. Completed orders, active subscribers, processed files, and successful API requests are not interchangeable with attempts or raw events. Define deduplication, cancellations, refunds, late arrivals, and period alignment. A job retried three times may consume cost three times while representing one completed business unit. That distinction is often central to finding waste without misrepresenting useful output.\n\n## Reconcile before allocating\n\nBuild a reconciliation view that starts with the provider's selected cost basis and explains every transformation. Separate usage charges, commitment-related charges, credits, refunds, support, tax, and currency conversion according to the agreed scope. Late adjustments should produce a visible revision rather than silently changing a previously published number. Retain both the current view and the version used for a prior decision where appropriate.\n\nA standardized schema such as FOCUS can improve consistency across cost datasets, but adopting a schema does not automatically resolve business ownership or provider-specific semantics. Validate the actual export version and field definitions. Check uniqueness, nulls, date boundaries, and duplicate ingestion. A pipeline that imports the same invoice twice can produce a convincing but entirely incorrect trend.\n\n## Allocate direct and shared costs transparently\n\nAssign directly attributable charges using the strongest available evidence: dedicated accounts, resource ownership, service metadata, or validated workload mapping. Tags help, but missing or incorrect tags need a remediation process and a residual category. Measure allocation coverage without pretending that every assigned dollar is causally precise. A coarse organizational mapping may be useful for showback while unsuitable for customer-level profitability.\n\nShared costs require a policy. Possible drivers include measured consumption, capacity reservation, equal shares, or a centrally funded platform pool. The selected driver should match the purpose of the decision and be explainable to affected owners. Publish the formula and treatment of unallocated residuals. Allocation changes redistribute reported responsibility; they do not, by themselves, reduce the provider bill.\n\n## Define cost per completed unit\n\nFor a given period and scope, unit cost is the selected cost numerator divided by the count of qualifying completed units. State both values, not only the ratio. A lower unit cost can coexist with higher total spend when volume grows. It can also arise from a change in workload mix, a one-time credit, or the exclusion of difficult work. Investigate the mechanism before claiming an engineering improvement.\n\nConsider a synthetic example. A service spends 100,000 currency units to complete two million qualifying requests, giving 0.05 per request. A later modeled period spends 120,000 to complete three million, giving 0.04. Total spend rises 20%, while unit cost falls 20%. The chart shows the unit-cost values. It does not show invoice savings or prove causation, and it assumes consistent scope, currency, completion rules, and cost basis.\n\n## Separate price, quantity, efficiency, and mix\n\nExplain a cost change through its drivers. Quantity may rise because more customers use the product. Effective price may change because of a contract or commitment. Efficiency may change because the same work uses fewer resources. Mix may change because larger files, more expensive regions, or different service tiers become more common. A single before-and-after percentage can conceal all four effects.\n\nWhere practical, compare like-for-like cohorts or normalize for a declared unit of work. Keep raw totals available so normalization does not hide business reality. Do not add savings estimates from overlapping changes, such as rightsizing and scheduling the same resource, without accounting for interaction. An optimization backlog should identify the affected cost lines and the assumptions that connect the technical change to the expected bill effect.\n\n## Implement ownership and guardrails\n\nCreate a small, enforceable metadata contract for new resources: owner, service or product, environment, and any required cost-allocation dimensions. Validate at the creation path where possible and provide an exception process for resources that cannot support the chosen tags. Avoid a taxonomy with many mandatory fields that nobody can maintain. The goal is dependable attribution, not decorative metadata completeness.\n\nBudget and anomaly workflows should route to accountable owners with enough context to act. A budget alert is not necessarily a hard spending cap, and automated shutdown may be inappropriate for production. Define which environments can be stopped, what state must be preserved, and who authorizes action. Test guardrails on a disposable scope before applying them broadly, including exceptions and failed notification delivery.\n\n## Evaluate optimization as an engineering change\n\nA candidate such as rightsizing, storage-tier changes, workload scheduling, or query improvement needs a technical hypothesis and acceptance criteria. Establish the baseline demand, resource behavior, latency, error rate, and cost scope. Test with representative load and a bounded exposure. A smaller instance that causes retries or missed deadlines may increase total cost while lowering one line item.\n\nRecord implementation effort, operational maintenance, and rollback cost. Distinguish estimated opportunity from approved action, completed implementation, and verified realized effect. Keep a register of rejected proposals and their reasons; a rejected change may be the correct outcome when reliability or engineering cost outweighs the modeled benefit. The process should reward sound decisions rather than the largest claimed savings total.\n\n## Treat commitments as risk-bearing decisions\n\nReserved capacity or spending commitments can reduce effective prices under specific terms, but they introduce utilization and flexibility risk. Before recommending a purchase, inspect stable eligible demand, existing coverage, planned migrations, regional constraints, and the consequences of lower usage. Compare scenarios rather than assuming the recent peak is a permanent baseline. Contract terms and current pricing require verification by the authorized commercial owner.\n\nDo not count a purchase as realized savings on the day it is made. Track amortized or otherwise agreed economic cost, actual utilization, unused commitment, and the counterfactual comparison. Avoid double counting discounts already reflected in the baseline. A commitment recommendation should include a decision date, assumptions, downside scenario, and an owner for ongoing monitoring.\n\n## Forecast with explicit assumptions\n\nSeparate fixed or relatively stable costs from demand-driven components. Build scenarios from business-volume assumptions and known architectural thresholds. A linear model may work within a limited range but fail when a workload requires another cluster, a different license tier, or a major storage transition. Include those discontinuities where they matter. The forecast should state what would invalidate it.\n\nCompare forecasts with actuals using a consistent cost basis and period. Explain variance through demand, price, mix, and implementation changes. Avoid treating every overspend as poor engineering: a successful launch can raise cost while improving unit economics. Likewise, a lower bill caused by a service outage is not a positive result. Pair financial measurements with delivery and service-quality indicators.\n\n## Verify benefits and preserve rollback\n\nFor an implemented change, retain the pre-change configuration, the eligible workload cohort, and the agreed measurement window. Compare the resulting cost and operational behavior after enough usage has occurred to make the comparison meaningful. Provider billing lag may prevent immediate verification. Mark provisional estimates clearly and revise them when final data arrives.\n\nRollback should restore service behavior before financial analysis becomes an obstacle to recovery. Document resource settings, schedules, retention policies, and data migrations that cannot be reversed trivially. A storage lifecycle change may require retrieval time and fees; a deleted resource may require restoration rather than recreation alone. Acceptance requires both the intended operational behavior and a defensible explanation of the measured cost effect.\n\n## Handover a recurring operating rhythm\n\nDeliver the data dictionary, reconciliation queries, allocation policy, ownership map, unit definitions, decision register, and optimization evidence. A finance reviewer should be able to trace a reported total to its source. An engineer should be able to identify which workload behavior drives a unit-cost change. A product owner should understand the denominator and its connection to useful output.\n\nEstablish a review cadence for unknown ownership, anomalies, forecast changes, and completed optimizations. Keep policy changes versioned and communicate their effect on comparisons. Train another analyst or engineer to reproduce a sample report from raw exports. The service is sustainable when the organization can maintain the measurement contract without relying on one person's undocumented spreadsheet.\n\n## Complete the measurement worksheet\n\nFor each chart, record the question, cost basis, currency, period, included accounts, excluded charges, allocation rule, denominator definition, raw counts, formula, and limitations. Add the data extraction time and the version of the transformation. For an optimization, include the baseline, change date, workload cohort, quality guardrails, implementation cost, and verification status. Publish synthetic illustrations with an explicit synthetic label.\n\nThe final decision should distinguish improved visibility, redistributed responsibility, reduced consumption, lower effective price, and actual cash effect. These outcomes can all be valuable, but they are not the same. A professional cost-governance process makes uncertainty and tradeoffs legible, supports repeatable decisions, and avoids presenting a model or an allocation change as proven financial savings.\n\nA zero-completion period requires explicit handling: the unit-cost ratio is undefined, not zero. Show the incurred cost and the missing useful output separately. Likewise, a credit can make a selected cost period negative without meaning that each operation generated economic value. Preserve those cases in the source data and explain their presentation rule so a dashboard does not silently discard the periods most in need of investigation.\n",
+  "figure": {
+    "slug": "service-finops-cost-governance",
+    "kind": "bar",
+    "title": "Synthetic cost per completed request",
+    "unit": "currency units per request",
+    "points": [
+      {
+        "label": "Period A",
+        "value": 0.05
+      },
+      {
+        "label": "Period B",
+        "value": 0.04
+      }
+    ],
+    "method": "Synthetic periodA 100000/2000000 = 0.05; periodB 120000/3000000 = 0.04. Spend rises 20% while unit cost falls 20%. Same cost scope and completion rules assumed; no causal savings claim.",
+    "alt": "Synthetic cost per completed request falls from 0.05 to 0.04 while total spend rises.",
+    "dataOrigin": "synthetic",
+    "steps": [],
+    "studyPaths": [
+      "finops"
+    ]
+  },
+  "references": [
+    {
+      "label": "FinOps Foundation: unit economics",
+      "url": "https://www.finops.org/framework/capabilities/unit-economics/"
+    },
+    {
+      "label": "FinOps Foundation: allocation",
+      "url": "https://www.finops.org/framework/capabilities/allocation/"
+    },
+    {
+      "label": "FinOps Open Cost and Usage Specification",
+      "url": "https://focus.finops.org/focus-specification/"
+    },
+    {
+      "label": "FinOps Foundation: forecasting",
+      "url": "https://www.finops.org/framework/capabilities/forecasting/"
+    }
+  ],
+  "useCases": [
+    {
+      "id": "saas-shared-platform",
+      "title": "Allocate a shared platform without inventing savings",
+      "industry": "B2B software",
+      "description": "A proposed tenant showback model separates direct charges, shared allocation, and unallocated residuals.",
+      "body": "## Hypothetical problem and scope\n\nA fictional B2B software company operates three product groups on a shared data platform. Its monthly report assigns the whole platform bill to the infrastructure team, making product-level comparisons difficult. The proposed engagement would create an explainable showback model for one shared cost pool. It would not claim that assigning costs to products reduces the provider invoice or establishes exact customer profitability.\n\nDiscovery would reconcile the selected billing period and identify direct versus shared resources. The team would request read-only billing exports, validated product ownership, and approved consumption metrics. The data contract would define currency, cost basis, period boundaries, late adjustments, and the meaning of the allocation driver. Sensitive customer identifiers would be replaced with controlled internal mappings where possible.\n\n## Proposed allocation design\n\nDirectly attributable charges would remain direct. For the shared pool, product owners would review whether measured compute consumption is a reasonable driver for the intended management decision. The policy would document excluded costs, missing measurements, and a residual category. A driver that is convenient but unrelated to consumption would be identified as a policy choice rather than a precise causal model.\n\nImplementation would produce a versioned transformation and a reconciliation report. The allocated amounts plus any residual must equal the selected shared pool. Tests would cover a product with no usage, a late correction, duplicate ingestion, and a missing ownership mapping. The team would preview the results with affected owners before using the figures in budgets or chargeback.\n\n## Synthetic calculation and chart\n\nAssume a reconciled shared pool of 6,000 currency units and validated driver shares of 60%, 30%, and 10% for products A, B, and C. Allocation gives 3,600, 1,800, and 600 respectively. The sum remains 6,000. The chart shows these synthetic allocations, not before-and-after savings. The example assumes the driver shares cover the whole selected pool and does not include taxes, support, or other excluded charges.\n\nAcceptance would require reproducible totals, owner-approved mappings, and a documented explanation of the driver. A sensitivity check could compare the result with an alternative policy, such as reserved capacity, to reveal whether management conclusions depend heavily on the choice. The organization would decide whether that uncertainty is acceptable for showback or whether stronger measurement is needed.\n\n## Handover and governance\n\nThe old report would remain available while the new policy is reviewed, and policy changes would be versioned rather than rewriting history silently. Handover would include reconciliation queries, exception ownership, and a monthly mapping review. [FinOps allocation guidance](https://www.finops.org/framework/capabilities/allocation/) informs the approach. The company, cost pool, and shares are hypothetical; no invoice reduction is implied.",
+      "figure": {
+        "slug": "service-finops-cost-governance-saas-shared-platform",
+        "kind": "bar",
+        "title": "Synthetic allocation of one shared cost pool",
+        "unit": "currency units",
+        "points": [
+          {
+            "label": "Product A",
+            "value": 3600
+          },
+          {
+            "label": "Product B",
+            "value": 1800
+          },
+          {
+            "label": "Product C",
+            "value": 600
+          }
+        ],
+        "method": "Synthetic shared pool 6000 allocated by 60%, 30%, 10% consumption shares:3600 + 1800 + 600 = 6000. Allocation redistributes responsibility; it is not savings.",
+        "alt": "A synthetic 6000-unit shared cost pool is allocated 3600, 1800, and 600 across three products.",
+        "dataOrigin": "synthetic",
+        "steps": [],
+        "studyPaths": [
+          "finops"
+        ]
+      }
+    },
+    {
+      "id": "retail-cost-per-order",
+      "title": "Explain cost per completed order during growth",
+      "industry": "Retail commerce",
+      "description": "A proposed unit-economics view keeps rising spend, order volume, and completion quality visible together.",
+      "body": "## Hypothetical problem and constraint\n\nA fictional retailer's cloud spend rises during a promotion, prompting a request to cut capacity. Order volume also rises, and engineers suspect the service is becoming more efficient per completed order. The proposed engagement would build a cost-per-order view for the checkout and order-processing scope before recommending infrastructure changes. It would not equate every lower ratio with better architecture or promise that a lower bill is desirable during successful growth.\n\nDiscovery would identify the cost lines attributable to checkout, order persistence, messaging, and required shared services. The business contract would define a qualifying completed order and the treatment of cancellations, test orders, retries, and delayed completion. Billing and order periods would be aligned, with late-arriving records handled through a visible revision policy. Payment amounts and customer details would not be required for the basic count.\n\n## Proposed measurement and delivery\n\nThe design would retain total cost, completed-order count, and unit cost side by side. It would separate direct charges from allocated shared costs and show the allocation method. The team would inspect whether promotion traffic changes basket size, region, payment-provider mix, or fraud-screening work, because those differences can change the cost of an order independently of technical efficiency.\n\nA pilot dashboard would reconcile one completed month and one modeled comparison period. Tests would verify that repeated events do not duplicate completed orders, that excluded test traffic is consistently removed, and that failed processing does not vanish from operational guardrails. Engineering changes would be proposed only after the measurement can identify a plausible driver and a bounded verification plan.\n\n## Synthetic unit-cost calculation\n\nAssume the first period contains 24,000 currency units of selected cost and 120,000 qualifying completed orders. Unit cost is `24,000 / 120,000 = 0.20`. A second synthetic period contains 28,000 cost units and 200,000 completed orders, giving 0.14 per order. Unit cost falls 30%, while total spend rises approximately 16.7%. The chart shows the two unit costs, not a realized invoice saving.\n\nThe comparison assumes the same cost scope, currency, completion definition, and allocation policy. Acceptance would include order correctness, latency, failure rate, and reconciliation coverage. A lower unit cost caused by omitting expensive orders or deferring essential work would fail the review. The report would distinguish observed volume growth from any separately tested engineering optimization.\n\n## Handover and next decisions\n\nHandover would include the denominator query, billing reconciliation, policy version, and a worksheet for changes in workload mix. Product and engineering owners could then evaluate capacity or query changes with explicit service-quality guardrails. [FinOps unit-economics guidance](https://www.finops.org/framework/capabilities/unit-economics/) supports this measurement approach. All periods, counts, and monetary values here are synthetic.",
+      "figure": {
+        "slug": "service-finops-cost-governance-retail-cost-per-order",
+        "kind": "bar",
+        "title": "Synthetic cost per qualifying completed order",
+        "unit": "currency units per order",
+        "points": [
+          {
+            "label": "Period A",
+            "value": 0.2
+          },
+          {
+            "label": "Period B",
+            "value": 0.14
+          }
+        ],
+        "method": "Synthetic periodA 24000/120000 = 0.20; periodB 28000/200000 = 0.14. Unit cost falls 30% while total spend rises 16.7%. Same scope and completion rules assumed.",
+        "alt": "Synthetic cost per completed order falls from 0.20 to 0.14 despite a higher total bill.",
+        "dataOrigin": "synthetic",
+        "steps": [],
+        "studyPaths": [
+          "finops"
+        ]
+      }
+    },
+    {
+      "id": "genomics-pipeline-economics",
+      "title": "Measure research pipeline cost with failed work included",
+      "industry": "Life-sciences research",
+      "description": "A proposed batch-cost model separates completed analyses, retries, dataset mix, and scientific quality checks.",
+      "body": "## Hypothetical problem and scope\n\nA fictional research organization runs computational genomics pipelines on cloud infrastructure. Its team can see total compute spend but cannot explain why cost per completed analysis varies. The proposed engagement would build a cost model for one approved research pipeline and evaluate a bounded scheduling or resource change. It would not assess clinical validity or suggest that lower compute cost justifies weaker scientific checks.\n\nDiscovery would map pipeline stages, input-size distributions, intermediate storage, retries, failed runs, and output acceptance. The unit contract would define a completed analysis as a run whose required outputs pass the research team's existing validation. Failed and retried work would remain in the cost numerator. Access would use synthetic job metadata or approved de-identified operational records, with genomic content excluded unless specifically authorized.\n\n## Proposed design and implementation\n\nThe model would attribute compute and selected storage charges to stable run identifiers, then aggregate by pipeline version and input cohort. Shared infrastructure would use a documented allocation rule. A standardized billing schema could simplify ingestion, but scientific completion semantics would remain a separate domain contract. The team would preserve raw cost records so mappings can be corrected without losing auditability.\n\nA pilot might compare resource requests or scheduling for a representative input cohort. Tests would include interrupted workers, checkpoint recovery, duplicate job submission, and a failed validation stage. Acceptance would require equivalent approved output checks, deadline performance, and complete cost attribution. A resource change that reduces one job's price but increases retries or misses the research deadline would not be accepted solely for its apparent savings.\n\n## Synthetic calculation\n\nAssume one synthetic period incurs 9,000 currency units across all attempts and yields 300 qualifying completed analyses. Cost per completion is 30. A second modeled period incurs 9,600 and yields 400 completions, giving 24. The chart shows those unit costs, a 20% reduction. Total spend rises approximately 6.7%, so the example does not represent a lower invoice.\n\nThe calculation excludes software licenses and data-transfer charges unless added to the declared scope. It also assumes comparable input complexity. If the later cohort contains smaller datasets, the ratio may improve without any technical change. The report would therefore retain input-size and pipeline-version context and avoid presenting a mixed-cohort average as causal evidence.\n\n## Handover and verification limits\n\nHandover would include run-to-cost mapping, completion criteria, retry accounting, and an exception report for unmatched charges. Any proposed scheduler change would have a documented reversal path and preserve recoverable work. [FinOps unit-economics guidance](https://www.finops.org/framework/capabilities/unit-economics/) informs the ratio, while [FOCUS](https://focus.finops.org/focus-specification/) provides billing-schema context. The organization and all values are hypothetical.",
+      "figure": {
+        "slug": "service-finops-cost-governance-genomics-pipeline-economics",
+        "kind": "bar",
+        "title": "Synthetic cost per completed research analysis",
+        "unit": "currency units per completion",
+        "points": [
+          {
+            "label": "Period A",
+            "value": 30
+          },
+          {
+            "label": "Period B",
+            "value": 24
+          }
+        ],
+        "method": "Synthetic all-attempt costs 9000/300 completions = 30; 9600/400 = 24. Cost scope excludes licenses and transfer unless specified; input complexity must be comparable.",
+        "alt": "Synthetic unit cost changes from 30 to 24 per qualifying analysis, with failed-attempt cost retained in the numerator.",
+        "dataOrigin": "synthetic",
+        "steps": [],
+        "studyPaths": [
+          "finops"
+        ]
+      }
+    },
+    {
+      "id": "media-transcode-cost",
+      "title": "Compare transcode cost without hiding output mix",
+      "industry": "Digital media",
+      "description": "A proposed cost-per-output-minute view separates resolution, codec, retries, and delivery deadlines.",
+      "body": "## Hypothetical problem and constraint\n\nA fictional media publisher processes uploaded videos into several playback formats. Its infrastructure team sees rising processing spend, while the content team publishes more minutes and a different mix of resolutions. The proposed engagement would measure cost per accepted output minute for a bounded transcode workflow. It would not assume that every output minute requires equivalent work or that reducing output quality is an acceptable optimization.\n\nDiscovery would map source duration, resolution, codec, output profiles, retry behavior, and acceptance checks. The unit contract would distinguish source minutes from output minutes: one source can generate multiple renditions. Billing scope would include the selected processing and intermediate-storage charges, with delivery bandwidth and licensing explicitly included or excluded. Operational metadata would be sufficient for the first analysis; private video content would not be copied into the cost pipeline.\n\n## Proposed measurement and delivery\n\nThe design would group results by output profile and pipeline version before showing an aggregate. Stable job identifiers would connect cost records, retries, and accepted outputs. Failed attempts would remain in the numerator, while outputs that fail required quality checks would not inflate useful completion counts. Shared-worker costs would use a declared allocation method and expose unmatched residuals.\n\nA pilot optimization might adjust concurrency or select a more suitable worker shape for one profile. Bounded tests would hold the input cohort and quality settings constant, compare completion time and accepted outputs, and exercise worker interruption. A lower price per worker-hour would not be sufficient if processing takes longer or creates more failed outputs. Deadline adherence and output correctness would remain acceptance conditions.\n\n## Synthetic calculation and chart\n\nAssume a synthetic period has 9,000 currency units of selected cost and 60,000 accepted output minutes, producing 0.15 per output minute. A second period has 10,400 cost units and 80,000 accepted minutes, producing 0.13. The unit ratio falls approximately 13.3%, while total spend rises approximately 15.6%. The chart displays unit cost and does not claim realized savings or a causal effect from a particular instance choice.\n\nThe comparison is meaningful only under the declared scope and a suitably comparable output mix. A shift toward simpler profiles can lower the aggregate ratio without improving any individual profile. Acceptance would therefore show profile-level ratios, aggregate totals, retry rates, and completion deadlines. Any normalization method would be documented alongside the unadjusted values.\n\n## Handover and ongoing governance\n\nHandover would include profile definitions, cost attribution, unmatched-job handling, and a review trigger when codecs or output settings change. Reversal would restore the prior worker configuration without discarding queued work. [FinOps unit-economics guidance](https://www.finops.org/framework/capabilities/unit-economics/) supports the explicit denominator; the publisher, periods, and figures here are a hypothetical exercise.",
+      "figure": {
+        "slug": "service-finops-cost-governance-media-transcode-cost",
+        "kind": "bar",
+        "title": "Synthetic cost per accepted output minute",
+        "unit": "currency units per output minute",
+        "points": [
+          {
+            "label": "Period A",
+            "value": 0.15
+          },
+          {
+            "label": "Period B",
+            "value": 0.13
+          }
+        ],
+        "method": "Synthetic 9000/60000 = 0.15 and 10400/80000 = 0.13. Aggregate unit reduction 13.3%; total spend rises 15.6%. Output-profile mix and scope must be comparable.",
+        "alt": "Synthetic cost per accepted output minute falls from 0.15 to 0.13; output mix remains an explicit limitation.",
+        "dataOrigin": "synthetic",
+        "steps": [],
+        "studyPaths": [
+          "finops",
+          "performance"
+        ]
+      }
+    },
+    {
+      "id": "financial-reporting-forecast",
+      "title": "Forecast reporting cost from volume scenarios",
+      "industry": "Financial-services technology",
+      "description": "A proposed forecast separates fixed platform cost, variable report cost, and architectural step changes.",
+      "body": "## Hypothetical problem and scope\n\nA fictional financial-services technology team runs scheduled reporting jobs for business customers. It needs a budget for an upcoming product expansion, but its current forecast extends last month's total spend as a flat line. The proposed engagement would build a scenario model for the reporting platform. It would support infrastructure planning rather than investment advice, financial reporting judgments, or a guarantee of future cloud prices.\n\nDiscovery would identify fixed platform components, per-report processing, storage retention, peak schedules, and customer-specific workload differences. Read-only billing exports would be reconciled with qualifying report completions. The unit contract would define whether reruns, corrections, and failed reports are included in costs and counts. Commercial rates and commitments would be verified by the authorized owner before any purchasing recommendation.\n\n## Proposed forecast design\n\nThe model would separate a stable base from a variable component within a declared operating range. Product owners would supply low, central, and high volume scenarios rather than a single unqualified number. Engineering would identify thresholds that invalidate linear assumptions, such as an additional database tier, license boundary, or recovery capacity requirement. Those thresholds would be recorded as explicit scenario branches.\n\nImplementation would produce a versioned worksheet and a repeatable actual-versus-forecast report. Tests would check period alignment, missing completed reports, duplicate cost ingestion, and treatment of credits. A review would explain variance through demand, effective price, workload mix, and known architectural changes. The model would not automatically classify higher spend as failure when more useful reports are delivered.\n\n## Synthetic scenario calculation\n\nAssume a fixed monthly base of 20,000 currency units and variable cost of 0.40 per qualifying report. At 50,000 reports, modeled cost is `20,000 + 0.40 × 50,000 = 40,000`. At 65,000 reports it is 46,000, and at 80,000 it is 52,000. The chart shows these synthetic scenarios. They are planning outputs, not quotes, commitments, or observed customer bills.\n\nThe model assumes the same report complexity and no capacity step change within the stated range. It excludes taxes and any separately scoped licensing or support charges. Acceptance would require that owners can reproduce the calculation, explain assumptions, and identify the trigger for revising it. A sensitivity review would vary both volume and variable cost rather than treating either input as certain.\n\n## Handover and decision control\n\nHandover would include the input sources, assumption owners, reconciliation method, and review calendar. A commitment purchase would remain a separate authorized decision with utilization and downside analysis. If demand changes, the forecast would be revised transparently rather than preserving a misleading target. [FinOps forecasting guidance](https://www.finops.org/framework/capabilities/forecasting/) informs the process; all organizations and values in this example are hypothetical.",
+      "figure": {
+        "slug": "service-finops-cost-governance-financial-reporting-forecast",
+        "kind": "bar",
+        "title": "Synthetic monthly reporting-cost scenarios",
+        "unit": "currency units per month",
+        "points": [
+          {
+            "label": "50000 reports",
+            "value": 40000
+          },
+          {
+            "label": "65000 reports",
+            "value": 46000
+          },
+          {
+            "label": "80000 reports",
+            "value": 52000
+          }
+        ],
+        "method": "Synthetic cost = 20000 fixed + 0.40 × completed reports. Volumes 50000, 65000, 80000 yield 40000, 46000, 52000. Excludes taxes and capacity step changes; not a quote.",
+        "alt": "Three synthetic reporting volumes produce modeled monthly costs of 40000, 46000, and 52000.",
+        "dataOrigin": "synthetic",
+        "steps": [],
+        "studyPaths": [
+          "finops"
+        ]
+      }
+    }
+  ]
+}
