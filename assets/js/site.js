@@ -62,6 +62,7 @@
     var emptyEl = $("postEmpty"), moreBtn = $("postMore"), clearBtn = $("postClear");
     var activeTopic = "", query = "", queryTerms = [];
     var PAGE = 24, shown = PAGE, searchTimer;
+    var itemName = listEl.dataset.kind || "article";
 
     function setQuery(value) {
       query = value.trim().replace(/\s+/g, " ");
@@ -101,7 +102,7 @@
         card.hidden = !match || n > shown;
         if (!card.hidden) visible++;
       });
-      if (countEl) countEl.textContent = "Showing " + visible + " of " + n + (n === 1 ? " article" : " articles");
+      if (countEl) countEl.textContent = "Showing " + visible + " of " + n + " " + itemName + (n === 1 ? "" : "s");
       if (emptyEl) emptyEl.hidden = n !== 0;
       if (moreBtn) {
         moreBtn.hidden = n <= visible;
@@ -168,7 +169,7 @@
       shown += PAGE;
       apply(false);
       saveSearch();
-      var link = firstNew && firstNew.querySelector(".card-title a");
+      var link = firstNew && (firstNew.querySelector(".card-title a") || firstNew.querySelector("a"));
       if (link) link.focus();
     });
     window.addEventListener("popstate", restoreSearch);

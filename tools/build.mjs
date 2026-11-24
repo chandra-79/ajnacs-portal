@@ -172,7 +172,7 @@ ${longForm ? `<div class="chapter-bar" id="chapterBar">
     <header class="article-head">
       <nav class="crumbs" aria-label="Breadcrumb">
         <a href="/">Home</a> <span aria-hidden="true">/</span>
-        <a href="${base}/">${m.section === "notes" ? "Notes" : "Insights"}</a> <span aria-hidden="true">/</span>
+        <a href="${base}/">${m.section === "notes" ? "Personal notes" : "Insights"}</a> <span aria-hidden="true">/</span>
         <a href="${topicHref}">${esc(topic)}</a>
       </nav>
       <h1 class="h1">${esc(m.title)}</h1>
@@ -268,7 +268,7 @@ ${readerChrome}`;
       "@context": "https://schema.org", "@type": "BreadcrumbList",
       itemListElement: [
         { "@type": "ListItem", position: 1, name: "Home", item: SITE.url + "/" },
-        { "@type": "ListItem", position: 2, name: m.section === "notes" ? "Notes" : "Insights", item: SITE.url + base + "/" },
+        { "@type": "ListItem", position: 2, name: m.section === "notes" ? "Personal notes" : "Insights", item: SITE.url + base + "/" },
         { "@type": "ListItem", position: 3, name: m.title },
       ],
     }],
@@ -335,27 +335,36 @@ await out("insights", page({
 
 /* ---------- notes index ---------- */
 await out("notes", page({
-  title: "Notes",
+  title: "Personal notes",
   description: "Personal writing — career, craft, and the parts of a long technical life that do not fit on a CV.",
   path: "/notes/",
   body: `
 <section class="section">
   <div class="publication-wrap">
-    <p class="eyebrow">Personal</p>
-    <h1 class="h1" style="margin-top:.8rem">Notes</h1>
-    <p class="lede" style="margin-top:1rem">Personal writing by Chandra Lanka — on craft, career and the things that do not belong in a service brochure. Separate from the engineering work on purpose.</p>
+    <p class="eyebrow">Learning, work and everyday judgment</p>
+    <h1 class="h1" style="margin-top:.8rem">Personal notes</h1>
+    <p class="lede" style="margin-top:1rem">Writing by Chandra Lanka on learning, craft, career and the questions that stay with us after the workday.</p>
+    <div class="notes-search row">
+      <label class="search-field">Search personal notes<input type="search" id="postSearch" aria-controls="postList" placeholder="Try learning, teaching or attention"></label>
+      <button class="btn btn-ghost btn-sm" id="postClear" type="button" hidden>Clear filters</button>
+      <p id="postCount" aria-live="polite" class="muted"></p>
+    </div>
   </div>
 </section>
 <section class="publication-wrap archive-layout">
-  <div class="notes-list">
-    ${notes.map(m => `<a class="note-row" href="/notes/${m.slug}/">
+  <div>
+  <div class="notes-list" id="postList" data-kind="note">
+    ${notes.map(m => `<article data-card data-topics="|${esc(m.tags.join("|"))}|" data-search="${esc([m.title,m.description,...m.tags].join(" ").toLowerCase())}"><a class="note-row" href="/notes/${m.slug}/">
       <div class="content-thumbnail">${coverFor(m)}</div>
       <div class="note-summary">
       <time datetime="${m.date}">${fmtDate(m.date)}</time>
       <h2>${esc(m.title)}</h2>
       <p>${esc(m.description)}</p>
       </div>
-    </a>`).join("\n")}
+    </a></article>`).join("\n")}
+  </div>
+  <p id="postEmpty" class="muted" hidden>No notes match that search. Try another phrase or clear the filters.</p>
+  <button class="btn btn-ghost" id="postMore" type="button" aria-controls="postList" hidden>Show more</button>
   </div>
   ${housePromotions("notes-rail")}
 </section>`,

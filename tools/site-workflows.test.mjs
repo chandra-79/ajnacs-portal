@@ -105,6 +105,17 @@ test('invalid archive parameters cannot hide the entire archive or select an unk
   assert.equal(b.ids.postTopic.value, '');
 });
 
+test('personal notes use the shared search and pagination without requiring article-card markup', async () => {
+  const links = Array.from({ length: 25 }, () => new Element());
+  const cards = links.map(link => new Element({ dataset: { search: 'learning judgment', topics: '|Learning|' }, queries: { a: [link] } }));
+  const ids = { postList: new Element({ dataset: { kind: 'note' }, queries: { '[data-card]': cards } }), postMore: new Element(), postCount: new Element() };
+  browser({ ids, url: 'https://ajnacs.com/notes/' });
+  assert.equal(ids.postCount.textContent, 'Showing 24 of 25 notes');
+  await ids.postMore.emit('click');
+  assert.equal(links[24].focused, true);
+  assert.equal(ids.postCount.textContent, 'Showing 25 of 25 notes');
+});
+
 function copyFixture(clipboard) {
   const ids = Object.fromEntries(['copyLink','copyStatus','copyFallback','copyValue'].map(id => [id, new Element()]));
   ids.copyLink.textContent = 'Copy link'; ids.copyFallback.hidden = true;
