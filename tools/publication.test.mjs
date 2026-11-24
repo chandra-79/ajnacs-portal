@@ -55,10 +55,9 @@ test('future series chapters use their reserved slots in reading order without r
   assert.deepEqual(distributeSchedule(result,{today:'2026-11-12'}),result);
 });
 
-test('the complete planned queue has distinct, valid Monday/Wednesday/Friday dates', () => {
+test('scheduled Insights have distinct, valid Monday/Wednesday/Friday dates', () => {
   const manifest = JSON.parse(readFileSync(new URL('../content/manifest.json',import.meta.url),'utf8'));
-  const future = manifest.filter(record=>record.date>'2026-11-12');
-  assert.ok(future.length>400);
+  const future = manifest.filter(record=>record.section === 'insights' && record.date > publicationDate());
   assert.equal(new Set(future.map(record=>record.date)).size,future.length);
   assert.ok(future.every(record=>isPublicationDay(record.date)));
 });

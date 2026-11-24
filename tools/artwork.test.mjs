@@ -7,6 +7,7 @@ import { artwork } from './visuals.mjs';
 import { publicationDate } from './publication.mjs';
 import { coverArt, photoFor } from './covers.mjs';
 import { noteCover } from './note-covers.mjs';
+import { conceptFor } from './concept-figures.mjs';
 
 const articles = JSON.parse(readFileSync(new URL('../content/manifest.json', import.meta.url), 'utf8'));
 
@@ -17,11 +18,15 @@ test('published and scheduled articles all have source-specific artwork and desc
     const key = `${article.section}/${article.slug}`;
     assert.ok(!keys.has(key), `duplicate publishing path: ${key}`);
     keys.add(key);
-    const direction = articleDirection(article.slug);
+    const concept = conceptFor(article.slug);
+    const direction = concept || articleDirection(article.slug);
     assert.ok(direction, `missing artwork: ${key}`);
-    assert.ok(direction.subject.trim().length >= 3, `empty subject: ${key}`);
-    assert.ok(direction.description.includes(direction.title));
-    const svg = artwork(article.slug, article.tags, { w: 1200, h: 380, title: article.title, calm: article.section === 'notes' });
+    if (concept) assert.ok(concept.alt.length >= 20 && concept.method.length >= 30, `missing explanation: ${key}`);
+    else {
+      assert.ok(direction.subject.trim().length >= 3, `empty subject: ${key}`);
+      assert.ok(direction.description.includes(direction.title));
+    }
+    const svg = concept ? coverArt(article.slug, 1200, 630) : artwork(article.slug, article.tags, { w: 1200, h: 380, title: article.title, calm: article.section === 'notes' });
     assert.ok(svg.includes(`data-article-art="${article.slug}"`));
     assert.ok(svg.includes('aria-label="'));
     assert.ok(!svg.includes('<image') && !svg.includes('<script'));
@@ -120,7 +125,7 @@ test('every published and planned article has a real 1200 by 630 social preview'
     assert.equal(bytes.readUInt32BE(16),1200);
     assert.equal(bytes.readUInt32BE(20),630);
     assert.ok(bytes.length>1000,`empty preview for ${article.slug}`);
-    const svg=article.date <= publicationDate() ? coverArt(article.slug, 1200, 630) : artwork(article.slug,article.tags,{w:1200,h:630,title:article.title,calm:article.section==='notes'})
+    const svg=article.date <= publicationDate() || conceptFor(article.slug) ? coverArt(article.slug, 1200, 630) : artwork(article.slug,article.tags,{w:1200,h:630,title:article.title,calm:article.section==='notes'})
       .replace(/var\(--[\w-]+,\s*(#[0-9a-fA-F]+)\)/g,'$1');
     assert.equal(sources[article.slug],createHash('sha256').update(svg).digest('hex'),`outdated preview for ${article.slug}`);
   }

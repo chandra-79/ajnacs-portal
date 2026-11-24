@@ -75,6 +75,7 @@ ${modified ? `<meta property="article:modified_time" content="${modified}">` : '
 <link rel="stylesheet" href="/assets/css/site.css?v=${SITE_V}">
 <link rel="alternate" type="application/rss+xml" title="${esc(SITE.name)} — New Insights" href="/feed.xml">
 <link rel="alternate" type="application/atom+xml" title="${esc(SITE.name)} — Engineering updates" href="/updates.xml">
+<link rel="alternate" type="application/rss+xml" title="${esc(SITE.name)} — Personal notes" href="/notes/feed.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
    never flashes the wrong ground or resets someone's text size mid-read. */
