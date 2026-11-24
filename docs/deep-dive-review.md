@@ -9,3 +9,13 @@ Each of the nine [study paths](https://ajnacs.com/deep-dives/) starts with an ex
 Specific corrections include the conditional nature of outbox delivery, the distinction between Amazon RDS Multi-AZ DB instance and cluster failover timings, the billing inputs in a serverless-versus-containers comparison, and unsupported percentage claims about compression choices and Python libraries.
 
 The scan covers every source in the snapshot. The source-linked corrections address selected high-impact claims. Broader fact verification and editorial judgment remain separate from automated line coverage.
+
+## Archive expansion
+
+The [per-article word counts](article-expansion-coverage.csv) compare each revised article body with the published snapshot. The same word-token rule was applied before and after. The count includes body headings, links and code examples. It excludes article front matter and the case study's title and structured metadata. The new Level 2–4 lessons are counted separately from the archive expansion.
+
+The new sections cover decisions, worked examples, verification, and follow-through. Technical pieces link to primary material where a standard or version matters. Case study figures are illustrative. Personal notes keep the original author's account and add practical reflection without adding autobiographical claims.
+
+Among the legacy claims corrected in this pass are PostgreSQL backfill transaction boundaries, HTTP shared cache freshness, Oracle diagnostics entitlements, Java feature availability by release, dependency lockfile checks, and the distinction between prompt formatting and application-side access control.
+
+Existing publication dates, article URLs and future publication slots stay intact. Editorial revisions are preserved if content is imported again from an upstream collection.

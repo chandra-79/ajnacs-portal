@@ -26,3 +26,19 @@ What I notice is that breadth without depth is pattern recognition without under
 I do not have a tidy conclusion. The observation is just that learning at 25 years in is not the same activity as learning at 2 years in, and the mental model of "accumulating knowledge" probably needs revision for the later career. It is less like filling a container and more like cultivating a garden — things grow in relation to other things, and the composition matters as much as the quantity.
 
 What that means practically, I am still working out.
+
+## Making room for the thing that doesn't fit
+
+Imagine reading a sound argument for an approach you have advised against for years. There are at least three things to do with it. You could change your mind, dismiss it, or find the boundary at which both positions make sense. The third takes longer because it requires spelling out the reason you held the earlier view. A rule about when to centralise a system might have been a response to an organisation with a handful of operators and dozens of incompatible tools. The same rule might serve a different organisation poorly. What carried forward was the memory of the remedy. What needed carrying forward was the problem it was a remedy for.
+
+The question I would put beside an unfamiliar idea is simple. What would have to be true for this to work? It is a more generous question than asking why an idea is wrong, and a more demanding one than deciding it sounds interesting. It asks for a model. It also asks for a fair hearing. An idea that fails under your usual assumptions may say something useful about those assumptions.
+
+Some of the best opportunities to test a familiar view happen when two people have different responsibilities in the same situation. A designer cares whether a design can handle the stated demand. A person on call cares whether the limits are visible at the moment something starts getting worse. Both may be right about the system and still be talking about different moments in its life. An experienced person can bring those perspectives together. Experience can also get in the way if it makes one person's vocabulary sound like the only serious one.
+
+## Looking for the joins
+
+A useful exercise is to take a belief you could explain in a few sentences and give yourself one page. First write down what you would predict in an ordinary case. Then construct a case in which the prediction should fail. Find someone who would identify a different failure case and ask them to say what they were looking at. The value is in the difference between the two explanations. You can revise a boundary without removing the entire idea.
+
+That exercise separates a stored answer from something you can work with. A stored answer gives you a familiar label for an unfamiliar problem. An explanation lets you say which observations would make you choose a different label. The useful part is being able to return to the decision later and see what mattered. Advice without its conditions can be hard to update, especially once it has been repeated enough to sound like a principle.
+
+There is a version of continuing to learn that looks impressive from a distance because the list of new things keeps getting longer. A quieter version involves finding one inherited assumption and learning exactly where it gives out. Both are forms of learning. The second can leave you with fewer rules and a better sense of when each one applies. It can also make the next unfamiliar thing a little easier to recognise before you decide where it belongs.

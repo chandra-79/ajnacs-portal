@@ -50,7 +50,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"HPC Network Topology Patterns: Fat-Tree, Torus, and Dragonfly Explained","description":"The network topology of an HPC or AI training cluster determines its bandwidth, latency, cost, and how well it scales. Here's how fat-tree, torus, and dragonfly topologies work, their trade-offs, and which workloads each suits best.","datePublished":"2026-10-30","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/hpc-network-topology-patterns/","image":"https://ajnacs.com/assets/og/articles/hpc-network-topology-patterns.png?v=1f12ff39e024","keywords":"Systems, HPC, AI & MLOps","articleSection":"AI & MLOps","wordCount":1027}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"HPC Network Topology Patterns: Fat-Tree, Torus, and Dragonfly Explained","description":"The network topology of an HPC or AI training cluster determines its bandwidth, latency, cost, and how well it scales. Here's how fat-tree, torus, and dragonfly topologies work, their trade-offs, and which workloads each suits best.","datePublished":"2026-10-30","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/hpc-network-topology-patterns/","image":"https://ajnacs.com/assets/og/articles/hpc-network-topology-patterns.png?v=1f12ff39e024","keywords":"Systems, HPC, AI & MLOps","articleSection":"AI & MLOps","wordCount":750}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"HPC Network Topology Patterns: Fat-Tree, Torus, and Dragonfly Explained"}]}</script>
 </head>
 <body class="article-frame" data-topic="AI &amp; MLOps">
@@ -94,7 +94,7 @@ d.setAttribute('data-theme',t);
         <a class="article-byline" href="/about/#chandra-lanka">Chandra Lanka</a>
         <span class="dot" aria-hidden="true"></span><time datetime="2026-10-30">30 Oct 2026</time>
         <span class="dot" aria-hidden="true"></span><span>Updated <time datetime="2026-11-23">23 Nov 2026</time></span>
-        <span class="dot"></span><span>5 min read</span>
+        <span class="dot"></span><span>3 min read</span>
         <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
       </div>
     </header>
@@ -102,7 +102,7 @@ d.setAttribute('data-theme',t);
     <div class="article-hero" data-topic="AI &amp; MLOps"><img data-article-art="hpc-network-topology-patterns" src="/assets/covers/hpc-network-topology-patterns.svg?v=cff49d20b2b8" width="1280" height="720" alt="Conceptual illustration for HPC Network Topology Patterns: Fat-Tree, Torus, and Dragonfly Explained: fabric, topology, What to measure." decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
-  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#fat-tree">Fat-tree</a></li><li><a href="#torus">Torus</a></li><li><a href="#dragonfly">Dragonfly</a></li><li><a href="#rails-and-placement">Rails and placement</a></li><li><a href="#sources">Sources</a></li></ol>
+  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#fat-tree">Fat-tree</a></li><li><a href="#torus">Torus</a></li><li><a href="#dragonfly">Dragonfly</a></li><li><a href="#rails-and-placement">Rails and placement</a></li><li><a href="#find-the-cut-that-the-job-actually-crosses">Find the cut that the job actually crosses</a></li><li><a href="#test-placement-with-a-fixed-communication-pattern">Test placement with a fixed communication pattern</a></li><li><a href="#document-the-consequence-of-losing-a-rail">Document the consequence of losing a rail</a></li><li><a href="#sources">Sources</a></li></ol>
 </nav></div>
     <div class="article-copy">
       <div class="prose">
@@ -119,6 +119,14 @@ d.setAttribute('data-theme',t);
 <p>A Dragonfly uses groups of routers with local connections and sparse global links between groups. Canonical minimal routes in the design can traverse at most three router-to-router links, with at most one global hop. Adaptive detours may travel farther to avoid congestion. Check per-group placement and global link usage under job mixes that the system will see.</p>
 <h2 id="rails-and-placement"><a class="h-anchor" href="#rails-and-placement" aria-hidden="true" tabindex="-1">#</a>Rails and placement</h2>
 <p>Multiple rails can increase aggregate line rate if the hosts and runtime can stripe useful traffic across them. Four identical rails give a four-times line-rate ceiling, not a four-times application guarantee. Check failure behaviour explicitly. Train a scheduler to respect the fabric&#39;s placement assumptions before relying on a benchmark from ideal placement.</p>
+<h2 id="find-the-cut-that-the-job-actually-crosses"><a class="h-anchor" href="#find-the-cut-that-the-job-actually-crosses" aria-hidden="true" tabindex="-1">#</a>Find the cut that the job actually crosses</h2>
+<p>Draw a boundary around the racks or groups that contain one part of the job. Count the links that cross it, note the supported direction and rate, and estimate how much of the phase’s traffic must cross. A datacenter-wide bisection rating may have little predictive value if the active ranks are packed into two groups and compete for the same links.</p>
+<p>For an illustrative upper bound, assume eight hosts on one side each have a 200 Gb/s interface and all eight send across the same cut. Four 200 Gb/s uplinks can carry at most 800 Gb/s in the outgoing direction. With equal shares and no other loss, each host receives at most 100 Gb/s of that capacity. A phase dominated by exchanges within the same rack may avoid those uplinks. Even on a better provisioned cut, path imbalance and congestion can lower observed throughput below the arithmetic bound.</p>
+<h2 id="test-placement-with-a-fixed-communication-pattern"><a class="h-anchor" href="#test-placement-with-a-fixed-communication-pattern" aria-hidden="true" tabindex="-1">#</a>Test placement with a fixed communication pattern</h2>
+<p>Create a placement map with host, accelerator, NIC, rack, and router group for each rank. Compare a compact allocation and a scattered allocation with the same job, software, and message sizes. Pick one workload that exchanges data with logical neighbours and one that exchanges data across groups. A compact placement can help a stencil on a torus. An all-to-all step with many destinations may put the stress on a different part of the topology. A scheduler needs to know which pattern matters for this workload.</p>
+<p>Set a fixture with repeated runs at the same offered load. Record useful application work per second and the most affected host or router group. Run the same comparison alongside another job if the planned cluster is shared. If both jobs choose the same paths, a quiet fabric test understates contention. Compare overlap with compute and investigate the phase where the slowest participant stalls, rather than inferring the cause from average link utilisation.</p>
+<h2 id="document-the-consequence-of-losing-a-rail"><a class="h-anchor" href="#document-the-consequence-of-losing-a-rail" aria-hidden="true" tabindex="-1">#</a>Document the consequence of losing a rail</h2>
+<p>Record which endpoints keep connectivity after a planned rail failure and whether the collective completes, retries, or aborts. The operating decision includes the time to restore useful throughput. The <a href="https://docs.nvidia.com/deeplearning/nccl/user-guide/docs/troubleshooting.html" rel="noopener" target="_blank">NVIDIA NCCL troubleshooting guide</a> gives examples of separating topology and intra-node issues from inter-node problems. Apply the same isolation procedure to the runtime you actually operate.</p>
 <h2 id="sources"><a class="h-anchor" href="#sources" aria-hidden="true" tabindex="-1">#</a>Sources</h2>
 <ul>
 <li><a href="https://doi.org/10.1145/1402958.1402967" rel="noopener" target="_blank">Al-Fares et al., A Scalable, Commodity Data Center Network Architecture, SIGCOMM</a></li>
@@ -204,7 +212,7 @@ d.setAttribute('data-theme',t);
     <a class="chip" href="/topics/ai-mlops/">AI &amp; MLOps</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/roce-vs-iwarp-networking/">RoCE vs iWARP: Choosing the Right RDMA Technology for Your Workload</a></h3>
     <p class="card-desc">Both RoCE and iWARP provide RDMA over Ethernet, but they have different network requirements, loss behavior, and operational characteristics. Here&#39;s how to choose between them for AI training, HPC, and storage workloads.</p>
-    <div class="card-meta"><time datetime="2026-11-02">2 Nov 2026</time><span class="dot"></span><span>4 min read</span></div>
+    <div class="card-meta"><time datetime="2026-11-02">2 Nov 2026</time><span class="dot"></span><span>3 min read</span></div>
   </div>
 </article>
 <article class="card" data-card data-topics="|Systems|AI &amp; MLOps|HPC|" data-search="ai training cluster networking: architecture for large-scale model training training large models at scale requires network architecture that most data centres aren&#39;t built for. here&#39;s how to think about the networking stack for ai training clusters — topology, bandwidth requirements, collective operations, and the trade-offs between infiniband and high-speed ethernet. systems ai &amp; mlops hpc" data-topic="AI &amp; MLOps">
@@ -213,7 +221,7 @@ d.setAttribute('data-theme',t);
     <a class="chip" href="/topics/ai-mlops/">AI &amp; MLOps</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/ai-training-cluster-networking/">AI Training Cluster Networking: Architecture for Large-Scale Model Training</a></h3>
     <p class="card-desc">Training large models at scale requires network architecture that most data centres aren&#39;t built for. Here&#39;s how to think about the networking stack for AI training clusters — topology, bandwidth requirements, collective operations, and the trade-offs between InfiniBand and high-speed Ethernet.</p>
-    <div class="card-meta"><time datetime="2025-04-08">8 Apr 2025</time><span class="dot"></span><span>4 min read</span></div>
+    <div class="card-meta"><time datetime="2025-04-08">8 Apr 2025</time><span class="dot"></span><span>3 min read</span></div>
   </div>
 </article>
 <article class="card" data-card data-topics="|Systems|Infrastructure|Enterprise AI|Cloud Architecture|HPC|" data-search="ethernet vs. infiniband: choosing the right network fabric in 2026 a practical breakdown of when to use ethernet and when infiniband makes sense — with key metrics, topology differences, and real-world guidance for cloud, hpc, and ai workloads. systems infrastructure enterprise ai cloud architecture hpc" data-topic="Infrastructure">
@@ -222,7 +230,7 @@ d.setAttribute('data-theme',t);
     <a class="chip" href="/topics/infrastructure/">Infrastructure</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/ethernet-vs-infiniband-networking-2026/">Ethernet vs. InfiniBand: Choosing the Right Network Fabric in 2026</a></h3>
     <p class="card-desc">A practical breakdown of when to use Ethernet and when InfiniBand makes sense — with key metrics, topology differences, and real-world guidance for cloud, HPC, and AI workloads.</p>
-    <div class="card-meta"><time datetime="2026-10-02">2 Oct 2026</time><span class="dot"></span><span>5 min read</span></div>
+    <div class="card-meta"><time datetime="2026-10-02">2 Oct 2026</time><span class="dot"></span><span>3 min read</span></div>
   </div>
 </article></div>
     </div>

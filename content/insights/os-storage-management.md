@@ -264,10 +264,9 @@ sudo apt install nfs-common
 sudo mount -t nfs server:/data /mnt/data
 
 ## In /etc/fstab (with retries and timeout options):
-server:/data  /mnt/data  nfs  defaults,_netdev,soft,timeo=30,retry=3  0  0
+server:/data  /mnt/data  nfs  defaults,_netdev,hard  0  0
 ## _netdev: wait for network before mounting
-## soft: return error after timeout (not hang forever)
-## timeo: timeout in tenths of a second
+## hard: wait for the server and retry NFS requests. Test application behavior during unavailability.
 
 ## Check NFS mounts
 showmount -e server               # what a server is exporting
@@ -275,3 +274,43 @@ nfsstat                           # NFS statistics
 ```
 
 Storage management decisions made under pressure — expanding a full volume, adding a new disk to a running system — go smoothly when you understand the stack from block device to mount point. LVM in particular is the tool that converts what would otherwise be a risky repartitioning operation into a straightforward online resize.
+
+## Trace the application path back to its actual volume
+
+Start from the path the application really opens, including the pathname as seen by the application process. A change made to the host mount table may be invisible inside a container or service with its own mount namespace. Record the filesystem type and source, then map its device and the lower layers to physical or cloud storage identifiers. Keep provider volume IDs, filesystem UUIDs, and LVM identities in the inventory so another engineer can identify the same disk after a reboot or instance replacement.
+
+Compare `findmnt --target /data` with what the application can write, and check that the result names the expected mount target. If a mount fails, an ordinary directory can remain at the mount path and receive writes on the root filesystem. The workload may look healthy until the root disk fills. Test restart with the intended mount absent on a disposable system. A service handling authoritative data should refuse to become ready when it sees the wrong source. Set service startup ordering so volume availability and permissions are verified before the application uses it.
+
+For clustered storage, record the expected writer role and naming scheme. Mapping two hosts to an ordinary local filesystem on a shared block device can corrupt data if both treat it as their own. Check the documented coordination model for that deployment. A filesystem UUID identifies a filesystem format instance, and a block-level clone can carry the same UUID. Choose stable identifiers with that possibility in mind and validate restored clones in an isolated environment.
+
+## Diagnose disagreement between filesystem and directory totals
+
+A capacity page can show that `df` reports 90 GiB used while `du` sees 59 GiB attributed to reachable files. The arithmetic is illustrative. These tools measure different things. Check whether the scan ran with enough permissions and remained inside the intended filesystem. Compare an allocation-based `du` scan with a separate apparent-size report when sparse files might explain a discrepancy. For a live system, save sample timestamps because a process can write substantial data while a recursive traversal is running.
+
+Next check for an open file whose directory entry has been deleted. A process can continue writing to it until the last reference closes, using blocks which no pathname walk can count. Identify the owning process and coordinate a safe reopen or restart under the service’s operating procedure. Verify the filesystem counters afterwards. Removing another file of similar size may provide immediate runway but leaves the underlying behavior intact. A test of log rotation should show that the writer switches to the intended new file and older allocations become reclaimable.
+
+Check inode availability and quotas alongside free bytes. Many small files can exhaust the available inode count long before capacity appears full. Per-user or project quotas may stop a workload despite plenty of filesystem-level free space. A report should record which counter explains the actual write failure and whether other tenants are affected. Build alerts with that same scope.
+
+## Expand from the lowest changed layer upwards
+
+Suppose a provider increases a block volume from 500 GiB to 700 GiB, with a partition containing the LVM physical volume and an XFS filesystem on a logical volume. This is an illustrative expansion. Before acting, confirm that the correct device now exposes approximately 700 GiB and that partition geometry permits growth. If there is a partition, the kernel must see its enlarged bounds before the physical volume can use them. Verify physical volume capacity and volume group free extents before extending the intended logical volume. Then grow the mounted filesystem with its own documented tool and confirm the size reported at the application’s mount path.
+
+Record capacities and identifiers at every step. If the lower device grew but the logical volume stayed at its prior size, use the upper-layer evidence to choose where to resume. Repeating the initial cloud request or rerunning partition commands without inspection can make the outcome harder to diagnose. If the logical volume already grew, check the filesystem before extending the volume again. Test a small representative write and verify ownership and access through the deployed service.
+
+Treat shrink as a separate procedure with a different failure boundary. File data can be lost if a lower layer shrinks before the filesystem. Use a supported, rehearsed procedure for the specific filesystem. For filesystems and versions where shrinking is unsupported, build a smaller replacement and migrate verified data under a controlled cutover. Red Hat’s [guide to managing logical volumes](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/10/pdf/configuring_and_managing_logical_volumes/Red_Hat_Enterprise_Linux-10-Configuring_and_managing_logical_volumes-en-US.pdf) covers resizing and volume types.
+
+## Check the thin pool and the snapshot separately
+
+In a thin-provisioned pool, virtual capacities do not establish available physical storage. Imagine a 600 GiB thin pool backing four 250 GiB logical volumes. If their combined allocations and snapshot history consume 570 GiB of pool data, only about 30 GiB remains at that layer. An individual filesystem can show 80 GiB free while its next write approaches pool exhaustion. These are illustrative values and exclude metadata or allocation overhead. Monitor pool data and metadata independently, along with remaining physical extents for expansion.
+
+Measure change rate during a snapshot’s expected lifetime. An illustrative snapshot reserve of 10 GiB exposed to roughly 4 GiB of unique changed blocks per hour only has about 2.5 hours of runway if the rate stays constant. Repeated writes to the same blocks, metadata, implementation details, and other activity change the real lifetime. Test under the backup window and record what happens if unexpectedly heavy write activity overlaps it. For thin snapshots, account for shared pool counters and snapshots that keep old blocks referenced.
+
+A point-in-time block snapshot of a running service generally provides a crash-consistency boundary unless the application or storage workflow coordinates writes and the documented consistency mechanism. If the application’s state spans multiple volumes, a tested database backup procedure or coordinated snapshots may be necessary. Restore away from the source, use the service’s consistency tooling, and confirm a known business object plus the latest expected recoverable record. Save whether redo or replay was required and time the restore through application readiness. Verify an independent copy that remains available when the original storage fails.
+
+## Give network storage an explicit failure policy
+
+For NFS, test how the workload experiences a server outage and how it behaves when the server recovers. On Linux, a hard mount generally keeps retrying an unanswered request. A soft mount can surface an error after retries are exhausted, and the Linux NFS manual warns of potential silent data corruption in some circumstances. Choose options against application correctness, storage documentation, and failure behavior. Check NFS version, permissions, and whether clients can recover after stale handles or network changes. Verify a representative operation after server recovery. See the [Linux NFS manual](https://man7.org/linux/man-pages/man5/nfs.5.html).
+
+Record whether the application can accept new work while remote reads or writes are delayed. Plan an operator-visible response for blocked requests, such as limiting admission while storage fails. In a staged outage, monitor client latency, error codes, and the observed service outcome in addition to mount presence. The same exercise can expose an application that silently writes to a local path when the expected share is missing. Validate the path after both reboot and recovery before declaring the service healthy.
+
+For a planned mount change, keep a record of exact source and target identities, the prior mount options, and the owner who can stop writers. Take a baseline of active service file handles and expected file counts. Compare them after the service starts on the intended volume. If consumers write during the migration, identify which data can be copied concurrently and which changes need a final sync under a write freeze. A rollback that immediately remounts the old filesystem may drop updates from the new location. Rehearse recovering both the mount and the data needed to reopen the application.

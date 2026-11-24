@@ -50,7 +50,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"AI Training Cluster Networking: Architecture for Large-Scale Model Training","description":"Training large models at scale requires network architecture that most data centres aren't built for. Here's how to think about the networking stack for AI training clusters — topology, bandwidth requirements, collective operations, and the trade-offs between InfiniBand and high-speed Ethernet.","datePublished":"2025-04-08","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/ai-training-cluster-networking/","image":"https://ajnacs.com/assets/og/articles/ai-training-cluster-networking.png?v=132a025a9132","keywords":"Systems, AI & MLOps, HPC","articleSection":"AI & MLOps","wordCount":954}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"AI Training Cluster Networking: Architecture for Large-Scale Model Training","description":"Training large models at scale requires network architecture that most data centres aren't built for. Here's how to think about the networking stack for AI training clusters — topology, bandwidth requirements, collective operations, and the trade-offs between InfiniBand and high-speed Ethernet.","datePublished":"2025-04-08","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/ai-training-cluster-networking/","image":"https://ajnacs.com/assets/og/articles/ai-training-cluster-networking.png?v=132a025a9132","keywords":"Systems, AI & MLOps, HPC","articleSection":"AI & MLOps","wordCount":786}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"AI Training Cluster Networking: Architecture for Large-Scale Model Training"}]}</script>
 </head>
 <body class="article-frame" data-topic="AI &amp; MLOps">
@@ -94,7 +94,7 @@ d.setAttribute('data-theme',t);
         <a class="article-byline" href="/about/#chandra-lanka">Chandra Lanka</a>
         <span class="dot" aria-hidden="true"></span><time datetime="2025-04-08">8 Apr 2025</time>
         <span class="dot" aria-hidden="true"></span><span>Updated <time datetime="2026-11-23">23 Nov 2026</time></span>
-        <span class="dot"></span><span>4 min read</span>
+        <span class="dot"></span><span>3 min read</span>
         <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
       </div>
     </header>
@@ -102,7 +102,7 @@ d.setAttribute('data-theme',t);
     <div class="article-hero" data-topic="AI &amp; MLOps"><img data-article-art="ai-training-cluster-networking" src="/assets/covers/ai-training-cluster-networking.svg?v=f43cfe5e7a5c" width="1280" height="720" alt="Conceptual illustration for AI Training Cluster Networking: Architecture for Large-Scale Model Training: Ethernet, InfiniBand, GPU." decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
-  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#estimate-communication-by-participant-and-boundary">Estimate communication by participant and boundary</a></li><li><a href="#evaluate-the-fit">Evaluate the fit</a></li><li><a href="#sources">Sources</a></li></ol>
+  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#estimate-communication-by-participant-and-boundary">Estimate communication by participant and boundary</a></li><li><a href="#evaluate-the-fit">Evaluate the fit</a></li><li><a href="#estimate-exposed-communication-before-sizing-links">Estimate exposed communication before sizing links</a></li><li><a href="#divide-the-experiment-into-local-inter-host-and-full-job-run">Divide the experiment into local, inter-host and full-job runs</a></li><li><a href="#set-an-acceptance-criterion-for-a-failed-path">Set an acceptance criterion for a failed path</a></li><li><a href="#sources">Sources</a></li></ol>
 </nav></div>
     <div class="article-copy">
       <div class="prose">
@@ -121,6 +121,15 @@ d.setAttribute('data-theme',t);
 <li>Watch checkpoint bursts, metadata operations and restart time. Confirm that storage and control paths are separated or provisioned for measured contention.</li>
 <li>Document what operators can see when a rail is unhealthy and how the runtime behaves. Never assume failover or full link-striping from hardware count alone.</li>
 </ol>
+<h2 id="estimate-exposed-communication-before-sizing-links"><a class="h-anchor" href="#estimate-exposed-communication-before-sizing-links" aria-hidden="true" tabindex="-1">#</a>Estimate exposed communication before sizing links</h2>
+<p>Start with a timeline for one training step after warm-up. Mark compute, collective calls and any time when useful GPU work waits for data. Total communication duration can include operations that overlap with differentiation or other work. For an illustrative step that takes 500 ms, assume the communication trace covers 180 ms but only 90 ms overlaps no useful work. If a fabric change halves that exposed 90 ms without altering anything else, the step falls to about 455 ms. The upper-bound throughput gain under those assumptions is 500 divided by 455, or roughly 10%, rather than the twofold communication speedup.</p>
+<p>Compare this estimate with the observed end-to-end step. Changes to bucket sizes, rank placement and parallelism can move the point where gradients become ready. Compute and network timings may then change together. Keep those settings fixed if the goal is to isolate a fabric change. <a href="https://docs.pytorch.org/docs/stable/notes/ddp" rel="noopener" target="_blank">PyTorch’s DDP design notes</a> describe gradient bucketing and launching reductions as gradients become ready.</p>
+<h2 id="divide-the-experiment-into-local-inter-host-and-full-job-run"><a class="h-anchor" href="#divide-the-experiment-into-local-inter-host-and-full-job-run" aria-hidden="true" tabindex="-1">#</a>Divide the experiment into local, inter-host and full-job runs</h2>
+<p>Use a single host to check peer transfers and device mapping. Run an inter-host collective on a fixed rank list without storage traffic, then repeat with a representative checkpoint or input stream. Finally run the training job with the same accelerator allocation, data shape and batch policy. Collect the collective size distribution from that job and select useful test sizes. A single large-message test may miss performance on many small latency-sensitive exchanges.</p>
+<p>Show a step-time distribution for the job and annotate checkpoint periods so slow steps have context. Compare each rank’s time to enter and leave a collective. A data loader that delays one rank can leave peers waiting even when the links are healthy.</p>
+<h2 id="set-an-acceptance-criterion-for-a-failed-path"><a class="h-anchor" href="#set-an-acceptance-criterion-for-a-failed-path" aria-hidden="true" tabindex="-1">#</a>Set an acceptance criterion for a failed path</h2>
+<p>Agree on a representative failure and the useful work expected afterward. Check whether the collective continues on remaining paths, the training run restarts from the latest checkpoint, or manual intervention is required. Document the application-visible error, recovered step number, and operator action. A fabric that runs one test faster can cost more useful accelerator time if it takes much longer to detect and recover from failures. The <a href="https://docs.nvidia.com/deeplearning/nccl/user-guide/docs/troubleshooting.html" rel="noopener" target="_blank">NCCL troubleshooting guide</a> provides supporting diagnostic categories for peer access, NICs and inter-node communication.</p>
+<p>Log the network test allocation and the training allocation separately so the next engineer can tell whether the baseline had access to the same set of links.</p>
 <h2 id="sources"><a class="h-anchor" href="#sources" aria-hidden="true" tabindex="-1">#</a>Sources</h2>
 <ul>
 <li><a href="https://docs.nvidia.com/deeplearning/nccl/user-guide/docs/usage/collectives.html" rel="noopener" target="_blank">NVIDIA NCCL collective reference</a></li>
@@ -207,7 +216,7 @@ d.setAttribute('data-theme',t);
     <a class="chip" href="/topics/ai-mlops/">AI &amp; MLOps</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/roce-vs-iwarp-networking/">RoCE vs iWARP: Choosing the Right RDMA Technology for Your Workload</a></h3>
     <p class="card-desc">Both RoCE and iWARP provide RDMA over Ethernet, but they have different network requirements, loss behavior, and operational characteristics. Here&#39;s how to choose between them for AI training, HPC, and storage workloads.</p>
-    <div class="card-meta"><time datetime="2026-11-02">2 Nov 2026</time><span class="dot"></span><span>4 min read</span></div>
+    <div class="card-meta"><time datetime="2026-11-02">2 Nov 2026</time><span class="dot"></span><span>3 min read</span></div>
   </div>
 </article>
 <article class="card" data-card data-topics="|Systems|HPC|AI &amp; MLOps|" data-search="hpc network topology patterns: fat-tree, torus, and dragonfly explained the network topology of an hpc or ai training cluster determines its bandwidth, latency, cost, and how well it scales. here&#39;s how fat-tree, torus, and dragonfly topologies work, their trade-offs, and which workloads each suits best. systems hpc ai &amp; mlops" data-topic="AI &amp; MLOps">
@@ -216,7 +225,7 @@ d.setAttribute('data-theme',t);
     <a class="chip" href="/topics/ai-mlops/">AI &amp; MLOps</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/hpc-network-topology-patterns/">HPC Network Topology Patterns: Fat-Tree, Torus, and Dragonfly Explained</a></h3>
     <p class="card-desc">The network topology of an HPC or AI training cluster determines its bandwidth, latency, cost, and how well it scales. Here&#39;s how fat-tree, torus, and dragonfly topologies work, their trade-offs, and which workloads each suits best.</p>
-    <div class="card-meta"><time datetime="2026-10-30">30 Oct 2026</time><span class="dot"></span><span>5 min read</span></div>
+    <div class="card-meta"><time datetime="2026-10-30">30 Oct 2026</time><span class="dot"></span><span>3 min read</span></div>
   </div>
 </article>
 <article class="card" data-card data-topics="|Systems|Infrastructure|Enterprise AI|Cloud Architecture|HPC|" data-search="ethernet vs. infiniband: choosing the right network fabric in 2026 a practical breakdown of when to use ethernet and when infiniband makes sense — with key metrics, topology differences, and real-world guidance for cloud, hpc, and ai workloads. systems infrastructure enterprise ai cloud architecture hpc" data-topic="Infrastructure">
@@ -225,7 +234,7 @@ d.setAttribute('data-theme',t);
     <a class="chip" href="/topics/infrastructure/">Infrastructure</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/ethernet-vs-infiniband-networking-2026/">Ethernet vs. InfiniBand: Choosing the Right Network Fabric in 2026</a></h3>
     <p class="card-desc">A practical breakdown of when to use Ethernet and when InfiniBand makes sense — with key metrics, topology differences, and real-world guidance for cloud, HPC, and AI workloads.</p>
-    <div class="card-meta"><time datetime="2026-10-02">2 Oct 2026</time><span class="dot"></span><span>5 min read</span></div>
+    <div class="card-meta"><time datetime="2026-10-02">2 Oct 2026</time><span class="dot"></span><span>3 min read</span></div>
   </div>
 </article></div>
     </div>

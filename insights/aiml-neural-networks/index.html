@@ -14,18 +14,18 @@
 <meta property="og:title" content="Neural Networks Explained: What They Are, How They Learn, and Why They Work">
 <meta property="og:description" content="Neurons, layers, weights, activation functions, backpropagation, and gradient descent — the actual mechanics of how a neural network learns from data, expl…">
 <meta property="og:url" content="https://ajnacs.com/insights/aiml-neural-networks/">
-<meta property="og:image" content="https://ajnacs.com/assets/og/articles/aiml-neural-networks.png?v=0971595465ac">
+<meta property="og:image" content="https://ajnacs.com/assets/og/articles/aiml-neural-networks.png?v=be65147de464">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Conceptual illustration for Neural Networks Explained: What They Are, How They Learn, and Why They Work: Data, Model, Training.">
+<meta property="og:image:alt" content="Conceptual illustration for Neural Networks Explained: What They Are, How They Learn, and Why They Work: Data, Model, Evaluation.">
 <meta property="article:published_time" content="2026-09-04">
 <meta property="article:modified_time" content="2026-11-23">
 <meta property="og:image:type" content="image/png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Neural Networks Explained: What They Are, How They Learn, and Why They Work">
 <meta name="twitter:description" content="Neurons, layers, weights, activation functions, backpropagation, and gradient descent — the actual mechanics of how a neural network learns from data, expl…">
-<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/aiml-neural-networks.png?v=0971595465ac">
-<meta name="twitter:image:alt" content="Conceptual illustration for Neural Networks Explained: What They Are, How They Learn, and Why They Work: Data, Model, Training.">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/aiml-neural-networks.png?v=be65147de464">
+<meta name="twitter:image:alt" content="Conceptual illustration for Neural Networks Explained: What They Are, How They Learn, and Why They Work: Data, Model, Evaluation.">
 
 <link rel="icon" href="/favicon.ico?v=8affdbd5" sizes="any">
 <link rel="icon" href="/images/ajna-mark.svg?v=8affdbd5" type="image/svg+xml">
@@ -50,7 +50,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Neural Networks Explained: What They Are, How They Learn, and Why They Work","description":"Neurons, layers, weights, activation functions, backpropagation, and gradient descent — the actual mechanics of how a neural network learns from data, explained without the mathematics becoming the obstacle.","datePublished":"2026-09-04","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/aiml-neural-networks/","image":"https://ajnacs.com/assets/og/articles/aiml-neural-networks.png?v=0971595465ac","keywords":"AI & MLOps, Fundamentals","articleSection":"AI & MLOps","wordCount":828}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Neural Networks Explained: What They Are, How They Learn, and Why They Work","description":"Neurons, layers, weights, activation functions, backpropagation, and gradient descent — the actual mechanics of how a neural network learns from data, explained without the mathematics becoming the obstacle.","datePublished":"2026-09-04","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/aiml-neural-networks/","image":"https://ajnacs.com/assets/og/articles/aiml-neural-networks.png?v=be65147de464","keywords":"AI & MLOps, Fundamentals","articleSection":"AI & MLOps","wordCount":1598}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Neural Networks Explained: What They Are, How They Learn, and Why They Work"}]}</script>
 </head>
 <body class="article-frame" data-topic="AI &amp; MLOps">
@@ -94,15 +94,15 @@ d.setAttribute('data-theme',t);
         <a class="article-byline" href="/about/#chandra-lanka">Chandra Lanka</a>
         <span class="dot" aria-hidden="true"></span><time datetime="2026-09-04">4 Sept 2026</time>
         <span class="dot" aria-hidden="true"></span><span>Updated <time datetime="2026-11-23">23 Nov 2026</time></span>
-        <span class="dot"></span><span>4 min read</span>
+        <span class="dot"></span><span>7 min read</span>
         <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
       </div>
     </header>
 
-    <div class="article-hero" data-topic="AI &amp; MLOps"><img data-article-art="aiml-neural-networks" src="/assets/covers/aiml-neural-networks.svg?v=66ce49bca579" width="1280" height="720" alt="Conceptual illustration for Neural Networks Explained: What They Are, How They Learn, and Why They Work: Data, Model, Training." decoding="async" fetchpriority="high"></div>
+    <div class="article-hero" data-topic="AI &amp; MLOps"><img data-article-art="aiml-neural-networks" src="/assets/covers/aiml-neural-networks.svg?v=9f839aedd752" width="1280" height="720" alt="Conceptual illustration for Neural Networks Explained: What They Are, How They Learn, and Why They Work: Data, Model, Evaluation." decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
-  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#the-basic-unit-the-artificial-neuron">The Basic Unit: The Artificial Neuron</a></li><li><a href="#why-activation-functions-matter">Why Activation Functions Matter</a></li><li><a href="#layers-organising-neurons-into-networks">Layers: Organising Neurons into Networks</a></li><li><a href="#how-learning-works-loss-gradient-descent-backpropagation">How Learning Works: Loss, Gradient Descent, Backpropagation</a></li><li><a href="#what-quottrainingquot-looks-like-operationally">What &quot;Training&quot; Looks Like Operationally</a></li><li><a href="#why-neural-networks-generalise">Why Neural Networks Generalise</a></li></ol>
+  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#the-basic-unit-the-artificial-neuron">The Basic Unit: The Artificial Neuron</a></li><li><a href="#why-activation-functions-matter">Why Activation Functions Matter</a></li><li><a href="#layers-organising-neurons-into-networks">Layers: Organising Neurons into Networks</a></li><li><a href="#how-learning-works-loss-gradient-descent-backpropagation">How Learning Works: Loss, Gradient Descent, Backpropagation</a></li><li><a href="#what-quottrainingquot-looks-like-operationally">What &quot;Training&quot; Looks Like Operationally</a></li><li><a href="#why-neural-networks-generalise">Why Neural Networks Generalise</a></li><li><a href="#follow-one-training-update-all-the-way-through">Follow one training update all the way through</a></li><li><a href="#match-the-output-head-to-the-target">Match the output head to the target</a></li><li><a href="#check-that-the-implementation-can-learn-before-tuning-it">Check that the implementation can learn before tuning it</a></li><li><a href="#use-error-inspection-to-decide-what-to-change">Use error inspection to decide what to change</a></li></ol>
 </nav><nav class="chapters" aria-label="Articles in this series">
       <p class="chapters-title">AI, ML, LLMs, and Neural Networks: A Practitioner&#39;s Introduction</p>
       <ol><li><a href="/insights/aiml-what-is-machine-learning/">What Machine Learning Actually Is — Before the Hype and After the Buzzwords</a></li><li aria-current="true"><a href="/insights/aiml-neural-networks/">Neural Networks Explained: What They Are, How They Learn, and Why They Work</a></li><li><a href="/insights/aiml-llms-explained/">Large Language Models: What They Are, How They Are Built, and What They Cannot Do</a></li><li><a href="/insights/aiml-rag-and-prompting/">RAG, Prompting, and Building Applications on LLMs: The Practitioner&#39;s Guide</a></li><li><a href="/insights/aiml-production-ai/">Putting AI in Production: What Enterprise AI Deployment Actually Requires</a></li></ol>
@@ -125,9 +125,9 @@ d.setAttribute('data-theme',t);
 <li><code>bias</code> is an offset term (also learned)</li>
 <li><code>activation_function</code> introduces non-linearity</li>
 </ul>
-<p>The weights and bias are the parameters that training adjusts. A single neuron can learn a linear decision boundary. Networks of neurons can learn arbitrarily complex functions.</p>
+<p>The weights and bias are parameters that training adjusts. A single neuron followed by a threshold can represent a linear decision boundary. A network with nonlinear activations can represent more complex boundaries, depending on its architecture and training.</p>
 <h2 id="why-activation-functions-matter"><a class="h-anchor" href="#why-activation-functions-matter" aria-hidden="true" tabindex="-1">#</a>Why Activation Functions Matter</h2>
-<p>Without activation functions, a stack of neurons computes a linear function, regardless of depth. Linear functions cannot capture the complex, non-linear patterns in real data.</p>
+<p>A stack composed only of affine layers, each with weights and a bias, still computes one affine transformation. Nonlinear activations allow layers to represent more complex relationships.</p>
 <p><strong>ReLU</strong> (Rectified Linear Unit): <code>f(x) = max(0, x)</code>. The most commonly used activation in hidden layers. Simple, computationally cheap, and empirically effective.</p>
 <p><strong>Sigmoid</strong>: <code>f(x) = 1 / (1 + e^(-x))</code>. Squashes output to (0, 1). Used in binary classification output layers.</p>
 <p><strong>Softmax</strong>: normalises a vector of values to probabilities that sum to 1. Used in multi-class classification output layers.</p>
@@ -197,6 +197,20 @@ for epoch in range(num_epochs):
 <p>The universal approximation theorem shows that a sufficiently large neural network can approximate any continuous function. But approximating the training data is easy — the interesting question is why neural networks often generalise well to new data.</p>
 <p>The empirical answer: neural networks, when trained correctly with regularisation (dropout, weight decay), tend to learn compressed, generalisable representations of patterns rather than memorising specific examples. The large parameter count is offset by the regularisation pressure and the gradient descent dynamics that favour smooth, generalisable solutions over sharp, overfit ones.</p>
 <p>Understanding this tension — between fitting the training data and generalising to new data — is the central challenge of every supervised learning project. The next lesson applies these foundations to the architecture that produced the current generation of AI systems: the transformer.</p>
+<h2 id="follow-one-training-update-all-the-way-through"><a class="h-anchor" href="#follow-one-training-update-all-the-way-through" aria-hidden="true" tabindex="-1">#</a>Follow one training update all the way through</h2>
+<p>Take a small binary classifier for whether a product return needs manual review. Suppose two input features have been transformed to values of 2 and 1. In an illustrative linear layer with weights 0.4 and −0.3 and bias 0.1, the logit is 0.6. A sigmoid maps that logit to a score of about 0.646. If the example is truly positive, the corresponding binary cross-entropy is about 0.437. The derivative with respect to the logit is the score minus the label, approximately −0.354. Multiplying by the first input value gives a gradient of about −0.708 for the first weight. A plain gradient descent step of 0.1 then adds about 0.071 to that weight.</p>
+<p>This path explains what the numbers in the training loop mean. A positive label that the network scores too low produces a gradient that pushes the logit upward for that example. The change also affects every other example that uses the same weight. A later batch can push in the other direction. Adaptive optimizers add state and change how individual updates are scaled, so do not expect an Adam trace to match this one-step gradient descent illustration.</p>
+<h2 id="match-the-output-head-to-the-target"><a class="h-anchor" href="#match-the-output-head-to-the-target" aria-hidden="true" tabindex="-1">#</a>Match the output head to the target</h2>
+<p>If one example belongs to exactly one class among several, return a vector of logits and use a multiclass loss. PyTorch’s <a href="https://docs.pytorch.org/docs/stable/generated/torch.nn.CrossEntropyLoss.html" rel="noopener" target="_blank">CrossEntropyLoss documentation</a> describes the expected logits and target formats. In the common class-index case an input with shape batch by class pairs with one class index per example. A softmax can be useful when reporting class scores at inference. Applying it before this loss changes what the loss sees and is unnecessary for this training contract.</p>
+<p>For multiple independent flags on the same example, use one logit and binary target per flag. A customer request might be marked both time-sensitive and related to billing. <a href="https://docs.pytorch.org/docs/stable/generated/torch.nn.modules.loss.BCEWithLogitsLoss.html" rel="noopener" target="_blank">BCEWithLogitsLoss</a> combines sigmoid with the binary loss. Establish a decision threshold for each flag on validation data. If a target value is missing, decide whether to mask the loss or collect the label. Treating unknown labels as negative can make a model learn the behavior of the labeling process rather than the work itself.</p>
+<h2 id="check-that-the-implementation-can-learn-before-tuning-it"><a class="h-anchor" href="#check-that-the-implementation-can-learn-before-tuning-it" aria-hidden="true" tabindex="-1">#</a>Check that the implementation can learn before tuning it</h2>
+<p>Start with a tiny deterministic batch and confirm that the inputs and labels line up. Try to fit that batch deliberately, with augmentations and dropout disabled when appropriate. If loss cannot fall, inspect data shapes, feature distributions, the target range, which parameters have gradients, and whether the optimizer saw the right model. This is a wiring check and the resulting model has no standing as a deployment candidate. Then restore normal training and compare behavior on held-out data.</p>
+<p>Measure training and validation loss by epoch. Average the relevant quantity across cases or tokens, rather than reporting the last batch as if it represented the full epoch. Move the model to evaluation mode when comparing checkpoints because normalization and dropout layers can behave differently during training and validation. Set aside a test set before making architecture decisions. Report how data was grouped and which split was used to choose the final checkpoint. Early stopping tuned on validation can reduce validation error, but it cannot make the same validation set equivalent to a fresh test.</p>
+<h2 id="use-error-inspection-to-decide-what-to-change"><a class="h-anchor" href="#use-error-inspection-to-decide-what-to-change" aria-hidden="true" tabindex="-1">#</a>Use error inspection to decide what to change</h2>
+<p>In an illustrative data split with 200 validation examples, suppose a network makes 24 errors and 16 involve low-light images. Check the share of low-light cases before treating that count as disproportionate. If they account for 40 of 200 inputs, their error rate is 40%, compared with 5% on the other 160. More width might make the model fit the training set better without addressing the lighting gap. Inspect whether those images were represented in training, how reviewers labeled them, and whether the prediction path normalizes them the same way.</p>
+<p>Try one repair at a time. Examples include gathering representative data, revising the split, and changing input augmentation to reflect the intended use. Repeat with the same evaluation and seeds when the earlier result depends on random initialization. Preserve calibration as a separate outcome if a downstream rule interprets scores as probabilities. A drop in cross-entropy with the same accuracy may change which examples lie above a threshold.</p>
+<p>Before deployment, verify input preprocessing on the original training examples and on a fixture passed through the serving interface. Record the selected checkpoint, normalization constants, label mapping and expected tensor shape. Compare outputs across both routes before addressing runtime speed. When prediction is fast but consistently wrong, mismatched features or class indices are often more actionable clues than the headline number of layers.</p>
+<p>When validation results improve only on one random split, inspect the split with the dataset owner. Duplicate images or several frames from one recording can make validation resemble training. Group related examples before partitioning and use the grouped split again when comparing a new checkpoint.</p>
 
       </div>
 <section class="field-worksheet worked-example" aria-labelledby="worked-example">
@@ -277,7 +291,7 @@ for epoch in range(num_epochs):
     <a class="chip" href="/topics/ai-mlops/">AI &amp; MLOps</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/aiml-llms-explained/">Large Language Models: What They Are, How They Are Built, and What They Cannot Do</a></h3>
     <p class="card-desc">Transformers, attention, pretraining, fine-tuning, RLHF — the architecture and training pipeline behind GPT, Claude, Llama, and every other modern LLM, explained for engineers who need to use and evaluate these systems.</p>
-    <div class="card-meta"><time datetime="2026-10-21">21 Oct 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
+    <div class="card-meta"><time datetime="2026-10-21">21 Oct 2026</time><span class="dot"></span><span>8 min read</span><span class="dot"></span><span>Series</span></div>
   </div>
 </article>
 <article class="card" data-card data-topics="|AI &amp; MLOps|Enterprise AI|Fundamentals|" data-search="rag, prompting, and building applications on llms: the practitioner&#39;s guide retrieval-augmented generation, system prompts, few-shot examples, chain-of-thought, structured output, and the engineering patterns that make llm applications reliable in production. ai &amp; mlops enterprise ai fundamentals" data-topic="AI &amp; MLOps">
@@ -286,7 +300,7 @@ for epoch in range(num_epochs):
     <a class="chip" href="/topics/ai-mlops/">AI &amp; MLOps</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/aiml-rag-and-prompting/">RAG, Prompting, and Building Applications on LLMs: The Practitioner&#39;s Guide</a></h3>
     <p class="card-desc">Retrieval-augmented generation, system prompts, few-shot examples, chain-of-thought, structured output, and the engineering patterns that make LLM applications reliable in production.</p>
-    <div class="card-meta"><time datetime="2026-08-25">25 Aug 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
+    <div class="card-meta"><time datetime="2026-08-25">25 Aug 2026</time><span class="dot"></span><span>8 min read</span><span class="dot"></span><span>Series</span></div>
   </div>
 </article>
 <article class="card" data-card data-topics="|AI &amp; MLOps|Enterprise AI|Fundamentals|" data-search="putting ai in production: what enterprise ai deployment actually requires model serving, latency, cost, monitoring, governance, and the operational discipline that separates a proof of concept from an ai system that runs reliably at enterprise scale. ai &amp; mlops enterprise ai fundamentals" data-topic="AI &amp; MLOps">
@@ -295,7 +309,7 @@ for epoch in range(num_epochs):
     <a class="chip" href="/topics/ai-mlops/">AI &amp; MLOps</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/aiml-production-ai/">Putting AI in Production: What Enterprise AI Deployment Actually Requires</a></h3>
     <p class="card-desc">Model serving, latency, cost, monitoring, governance, and the operational discipline that separates a proof of concept from an AI system that runs reliably at enterprise scale.</p>
-    <div class="card-meta"><time datetime="2026-08-11">11 Aug 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
+    <div class="card-meta"><time datetime="2026-08-11">11 Aug 2026</time><span class="dot"></span><span>8 min read</span><span class="dot"></span><span>Series</span></div>
   </div>
 </article></div>
     </div>

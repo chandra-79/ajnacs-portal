@@ -88,7 +88,7 @@ d.setAttribute('data-theme',t);
     <div class="article-hero" data-topic="Enterprise AI"><img src="/assets/cases/approval-before-record-change.png?v=26d7f49d2bb2" alt="An agent reaches a resource through a defined tool and permission boundary." width="960" height="540" fetchpriority="high" decoding="async"></div>
     <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
-  <ol><li><a href="#situation-and-scope">Situation and scope</a></li><li><a href="#plan-and-execution">Plan and execution</a></li><li><a href="#rollout-and-handover">Rollout and handover</a></li><li><a href="#how-to-read-the-numbers">How to read the numbers</a></li></ol>
+  <ol><li><a href="#situation-and-scope">Situation and scope</a></li><li><a href="#plan-and-execution">Plan and execution</a></li><li><a href="#rollout-and-handover">Rollout and handover</a></li><li><a href="#how-to-read-the-numbers">How to read the numbers</a></li><li><a href="#bind-approval-to-the-proposed-change">Bind approval to the proposed change</a></li><li><a href="#define-a-fixture-that-isolates-the-boundary">Define a fixture that isolates the boundary</a></li></ol>
 </nav></div>
     <div class="article-copy">
       <figure class="delivery-flow">
@@ -104,6 +104,12 @@ d.setAttribute('data-theme',t);
 <p>Start with suggestions only. Observe how reviewers handle uncertain recommendations and add a feedback reason for overrides. Use scoped authorisation and audit records when enabling writes for one team. Hand over a reversible queue transition procedure and approve rollback ownership in the support platform before widening use.</p>
 <h2 id="how-to-read-the-numbers"><a class="h-anchor" href="#how-to-read-the-numbers" aria-hidden="true" tabindex="-1">#</a>How to read the numbers</h2>
 <p>Use 200 paired synthetic tickets, with separate failure cases to test the write boundary. Correct suggestion rate measures usefulness. Zero unauthorised writes in the fixture confirms the expected boundary for the cases tested. It cannot replace access review and ongoing monitoring.</p>
+<h2 id="bind-approval-to-the-proposed-change"><a class="h-anchor" href="#bind-approval-to-the-proposed-change" aria-hidden="true" tabindex="-1">#</a>Bind approval to the proposed change</h2>
+<p>Store a pending proposal with the exact ticket identifier, observed record version, allowed destination, and expiration. Show those fields to the reviewer together with the current queue. When the reviewer confirms, the backend checks the reviewer’s present authority and applies the proposal only if the expected record version is still current. If another operator moved the ticket first, show the new state and require fresh approval. A sentence from the model or a note in the ticket has no effect on that decision.</p>
+<p>Use a proposal identifier in the write transaction. If the reviewer loses the response and presses confirm again, the same identifier should return the earlier outcome without a second transition. Give reversals their own audit event. An undo action should restore the earlier queue only if that reversal is still valid for the current ticket.</p>
+<h2 id="define-a-fixture-that-isolates-the-boundary"><a class="h-anchor" href="#define-a-fixture-that-isolates-the-boundary" aria-hidden="true" tabindex="-1">#</a>Define a fixture that isolates the boundary</h2>
+<p>A fictional review run uses five states for each transition. It tests an approved write, rejection, expiry, reviewer access removal, and version change. Score one outcome per proposal and inspect the stored ticket history, since an error message alone cannot tell whether the record was touched. Measure how often the model suggests the right queue separately from whether the application performs the right write. See the <a href="https://doi.org/10.6028/NIST.AI.600-1" rel="noopener" target="_blank">NIST Generative AI Profile</a> for ways to document human oversight and operational testing.</p>
+<p>Record the expected reviewer and authorisation scope beside each fixture outcome for audits.</p>
 </div>
       <figure class="field-chart case-chart">
     <figcaption>Worked comparison <span>Simulated figures</span></figcaption>

@@ -55,11 +55,11 @@ With PgBouncer:
 - PgBouncer `pool_size = 20` per database (connections to PostgreSQL)
 - Applications can have 1000+ connections to PgBouncer without overwhelming PostgreSQL
 
-Transaction-mode pooling (the most common PgBouncer mode) releases the PostgreSQL connection back to the pool after each transaction — efficient, but incompatible with session-level features (prepared statements with protocol-level binding, advisory locks, `SET LOCAL`).
+PgBouncer transaction pooling returns the server connection after each transaction. Transaction-scoped `SET LOCAL` stays within that transaction. Session-scoped advisory locks and SQL `PREPARE` require different handling. Protocol-level named prepared statements can work when supported by the pooler version and `max_prepared_statements` is nonzero. Test the exact driver, prepared statement behavior, and session settings before switching. See the [PgBouncer feature matrix](https://www.pgbouncer.org/features).
 
 ## Indexing: the most common performance problems
 
-**Missing indexes on foreign keys**: PostgreSQL doesn't automatically create indexes on foreign key columns (unlike some other databases). A query that JOINs on a foreign key column without an index causes a sequential scan of the referenced table. Check for this:
+**Missing indexes on foreign keys**: PostgreSQL doesn't automatically create indexes on foreign key columns (unlike some other databases). The referenced key has an appropriate uniqueness constraint or index. The referencing columns may need a supporting index, especially for parent updates or deletes that search child rows. Join plans also depend on selectivity, statistics, and cost. The query below is a first pass for candidate columns. Review composite index key order, predicates, and actual plans before making a change.
 
 ```sql
 SELECT conrelid::regclass AS table, conname AS fk_name, 
@@ -79,7 +79,7 @@ AND NOT EXISTS (
 CREATE INDEX idx_orders_pending ON orders(created_at) WHERE status = 'pending';
 ```
 
-**Index bloat**: indexes grow as rows are updated and deleted. `pg_stat_user_indexes` and tools like `pgstattuple` identify bloated indexes. `REINDEX CONCURRENTLY` rebuilds without locking.
+**Index bloat**: indexes grow as rows are updated and deleted. `pg_stat_user_indexes` shows index usage. Physical inspection with tools such as `pgstattuple` can help investigate bloat. `REINDEX CONCURRENTLY` generally permits normal writes, but it still acquires locks and requires time, storage, and additional work. Check [the command’s restrictions](https://www.postgresql.org/docs/current/sql-reindex.html) on the deployed version.
 
 **Index usage**: queries that appear to use an index but run slowly often have a type mismatch between the parameter and the indexed column (implicit cast prevents index use) or use a function on the indexed column (`WHERE LOWER(email) = ...` doesn't use an index on `email` — use a functional index: `CREATE INDEX ON users(LOWER(email))`).
 
@@ -95,9 +95,39 @@ SELECT * FROM orders WHERE customer_id = 123 AND status = 'pending';
 Key things to look for:
 - `Seq Scan` on a large table: missing index or planner chose sequential scan despite an index (check row estimates)
 - `Rows Removed by Filter`: rows scanned but not returned — index isn't selective enough
-- `Buffers hit vs read`: `hit` is from shared_buffers (fast), `read` is from disk (slow). High read count means the working set exceeds cache.
+- `Buffers hit vs read`: `hit` means the page was already in PostgreSQL shared buffers, while `read` means it had to be read into them. A read may be served by the operating system page cache. Use I/O timing and host statistics to distinguish a cache miss from physical storage delay.
 - `actual rows` vs `rows` (estimated): large discrepancies mean stale statistics — run `ANALYZE tablename`
 
 `pg_stat_statements` extension (enable in `shared_preload_libraries`) records query execution statistics across all connections. The query with the highest `total_exec_time` divided by `calls` is your first optimization target.
 
 *Working through a PostgreSQL performance problem or setting up a production database configuration? [Happy to look at specifics.](/contact/)*
+
+## Establish a reproducible baseline before changing a knob
+
+Write down database version, dataset shape, concurrency, hardware limits, and the exact workload that produces the complaint. Capture two periods under comparable load. Count successful operations per interval, application p95 and p99, time spent waiting for a connection, and database execution or wait activity. A query that improves in isolation can still make the whole workload worse if a new index raises write latency or a larger memory setting squeezes unrelated sessions. Preserve the original configuration and statistics snapshot so a colleague can reproduce the decision rather than inferring it from one chart.
+
+Rank statements by more than one question. Total execution time helps identify what consumes cumulative database work. Mean time can highlight an expensive individual statement. A rare ten-second query can matter for a privileged workflow, while a frequent query averaging 5 ms can be the largest load driver. In an illustrative 10-minute window, a statement executed 60,000 times at a mean of 5 ms contributes 300 execution seconds. Another executed 40 times at 2 seconds contributes 80 seconds. Cumulative seconds are accumulated across executions and can overlap in wall time. Use application traces and wait information to decide whether changing one will improve customer latency, sustained capacity, or both.
+
+## Read actual plans as execution evidence
+
+Use plain `EXPLAIN` to inspect PostgreSQL's estimates without executing the statement. `EXPLAIN ANALYZE` runs the command. Run it for writes and potentially expensive operations only in a safe environment with side effects and concurrency accounted for. A rollback can undo many transactional database effects, but it cannot generally be assumed to reverse external effects triggered by functions or resources outside the transaction. Capture bind values with sensitive fields removed, select the intended role and search path, and test multiple plausible values for a skewed predicate.
+
+Elapsed time in nested plan nodes should not be added blindly. Work at a parent typically includes work in children. When a node reports multiple loops, check how actual row and time information is averaged per loop in the rendered plan before comparing totals. Compare estimated and actual row counts near the first large divergence. A poor estimate can come from stale statistics, skew, correlated columns, or a parameterized plan that serves very different input populations. Running `ANALYZE` can refresh estimates. It does not automatically fix a selectivity assumption about two correlated columns. Verify statistics support and the plan after changing either schema or selectivity assumptions.
+
+Use `BUFFERS` to distinguish shared-buffer hits from reads and other activity. A shared read need not be a physical device read, since the operating system may already hold the page in its cache. Check actual I/O evidence and time spent waiting before attributing latency to disk. Compare runs warmed in the same way. If an index changes from many random scattered accesses to the next hundred qualifying entries in order, the improvement may be visible in pages touched and elapsed time even when both runs avoid physical disk. Preserve counts for returned rows and repeated loops so a reduction is not accidentally caused by selecting a smaller result.
+
+## Estimate connection and memory costs as a workload
+
+A memory budget depends on the number of operations executing together, not only sessions configured. Suppose 24 concurrent transactions each run two memory-consuming nodes at 16 MiB in an illustrative upper-bound calculation. This is 768 MiB for those operations before other query memory, parallel workers, maintenance, caches, and process overhead. Hash operations can have a different limit governed by their settings. The same settings can be benign for indexed point lookups and risky when a report joins large relations. Use a dedicated role, session scope, or a controlled workload queue for a larger analytical allocation. Measure spill and peak memory rather than copying a global setting from a machine with a different query mix.
+
+A pool should bound active database work and expose waiting at the application. If 80 database backends already sustain the tested safe work rate, permitting 400 simultaneous query executions does not create additional database I/O or lock throughput. Test the queue under a peak mixture of slow and fast operations. Compare active concurrency, queue time, failures, and tail latency. Transaction pooling releases session assignment between transactions, so application code that expects arbitrary session state to persist can break. PostgreSQL transaction-local state is a different scope from session settings. PgBouncer's current feature matrix also distinguishes SQL-level prepared statements from protocol-level prepared statements, with protocol support depending on configuration. Verify the actual driver and pooler mode rather than assuming every preparation mechanism behaves identically.
+
+## Verify that a local improvement survives a release
+
+Choose an index candidate based on one representative query and workload. Confirm that it supports the predicates, sort order, and access pattern. If the candidate adds write work, run sustained writes along with reads and quantify the added storage and maintenance. Check query plans for both selective and less selective parameters. A foreign-key index can help some joins or checks on operations against the referenced row, but the planner can still reasonably choose a sequential scan when most rows qualify. Concurrent index operations reduce some blocking relative to ordinary index operations. They still take locks, may wait, and consume resources. Use documented behavior for the version in use and a bounded rollout.
+
+Collect a new workload window after the change and compare successful requests, query work per success, wait time, and operating pressure at equivalent offered load. If p99 improves while connection rejects rise, inspect the missing work before calling it a win. Verify the original known query, at least one non-target query that competes for resources, and a burst or recovery run. Save the plan, the definition of “success,” the sampled population, and a safe path back. Re-test when data grows or skew changes, because the decision depends on the measured distribution and capacity.
+
+[PostgreSQL on using EXPLAIN](https://www.postgresql.org/docs/18/using-explain.html), [PostgreSQL routine vacuuming](https://www.postgresql.org/docs/18/routine-vacuuming.html), and [PgBouncer's feature matrix](https://www.pgbouncer.org/features)
+
+Keep maintenance and idle periods in the comparison set. A change tested only in a busy window can hide longer maintenance runtimes. Include an explain plan and workload summary from each condition in the evidence package used to approve the rollout.

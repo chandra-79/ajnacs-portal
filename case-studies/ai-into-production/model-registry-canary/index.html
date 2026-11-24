@@ -88,7 +88,7 @@ d.setAttribute('data-theme',t);
     <div class="article-hero" data-topic="Enterprise AI"><img src="/assets/cases/model-registry-canary.png?v=f38c8fe16498" alt="Model data, training, evaluation and deployment form a loop with feedback." width="960" height="540" fetchpriority="high" decoding="async"></div>
     <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
-  <ol><li><a href="#situation-and-scope">Situation and scope</a></li><li><a href="#plan-and-execution">Plan and execution</a></li><li><a href="#rollout-and-handover">Rollout and handover</a></li><li><a href="#how-to-read-the-numbers">How to read the numbers</a></li></ol>
+  <ol><li><a href="#situation-and-scope">Situation and scope</a></li><li><a href="#plan-and-execution">Plan and execution</a></li><li><a href="#rollout-and-handover">Rollout and handover</a></li><li><a href="#how-to-read-the-numbers">How to read the numbers</a></li><li><a href="#make-a-rollback-restore-the-whole-serving-contract">Make a rollback restore the whole serving contract</a></li><li><a href="#inspect-a-slice-big-enough-to-matter">Inspect a slice big enough to matter</a></li></ol>
 </nav></div>
     <div class="article-copy">
       <figure class="delivery-flow">
@@ -103,6 +103,11 @@ d.setAttribute('data-theme',t);
 <p>Review latency and errors immediately. Wait for labels when judging output quality. Keep the old model and schema-compatible features available through the observation period. Hand over the dashboard with per-slice views, a release record, and the action needed for upstream feature incompatibility.</p>
 <h2 id="how-to-read-the-numbers"><a class="h-anchor" href="#how-to-read-the-numbers" aria-hidden="true" tabindex="-1">#</a>How to read the numbers</h2>
 <p>Both models see the same 1,000 labelled synthetic requests. Aggregate acceptance rises by eight cases. That small change cannot establish a reliable improvement and can hide regressions in rare labels. Require evidence for the agreed slices before promotion.</p>
+<h2 id="make-a-rollback-restore-the-whole-serving-contract"><a class="h-anchor" href="#make-a-rollback-restore-the-whole-serving-contract" aria-hidden="true" tabindex="-1">#</a>Make a rollback restore the whole serving contract</h2>
+<p>A registry entry should point to a model artifact and a record of the feature order, transformations, and label dictionary it expects. Store the serving image digest and the revision of the endpoint configuration with the release. Before the canary, replay a small set of known requests through both deployments and log the transformation version beside the predicted class. A correct model running against differently encoded inputs can fail before traffic or latency gives an obvious clue.</p>
+<p>Keep the previous feature path readable while its model is still the fallback. Rehearse rollback with one request already in flight and a second arriving after the switch. Confirm which deployment answers each and verify that downstream systems interpret both outputs correctly. A rollback procedure that restores the image but leaves new preprocessing enabled is incomplete.</p>
+<h2 id="inspect-a-slice-big-enough-to-matter"><a class="h-anchor" href="#inspect-a-slice-big-enough-to-matter" aria-hidden="true" tabindex="-1">#</a>Inspect a slice big enough to matter</h2>
+<p>Suppose 50 of the illustrative replay cases belong to a rarely used category. A two-case decline in that slice equals four percentage points, enough to miss the stated two-point gate even if total acceptance improved. Preserve the slice denominator in the release record and classify repeated requests from the same account before drawing conclusions. The <a href="https://mlflow.org/docs/latest/ml/model-registry/workflow/" rel="noopener" target="_blank">MLflow registry workflow</a> explains model versions and aliases. Keep the exact version in the rollout record even when the serving system also uses an alias.</p>
 </div>
       <figure class="field-chart case-chart">
     <figcaption>Worked comparison <span>Simulated figures</span></figcaption>

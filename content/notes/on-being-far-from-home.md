@@ -26,3 +26,17 @@ I am more comfortable now with the idea that I am from multiple places, that bot
 When people ask where I am from, I give them the simple answer. It is not wrong. It is just incomplete.
 
 The complete answer would take considerably longer, and most conversations do not have room for it.
+
+## Make a little room for ordinary news
+
+A call can start to feel like a report when there has been a long gap. People tell you what happened, what is coming next, and how everyone is doing. It is useful and can be affectionate. The part that is harder to recover is the ordinary talk that would have happened if you had been in the room while the kettle was boiling. You might have heard how a neighbour reacted to something small or what someone was trying to remember about an old photograph. Those details are an account of a day rather than a summary of a month.
+
+There is no need to force that kind of conversation. You can make it easier to happen. An easy, unhurried time to call may leave more room than a long call someone has to arrange around the rest of their day. An ordinary picture or a voice note can offer a small detail without requiring both people to be available. It helps to find out which of these actually feels welcome. An arrangement that works with one person may be a burden to another. The point is to have some ordinary exchanges while everyone still has the option to make them ordinary.
+
+## Let the explanation depend on who is asking
+
+Where are you from can be a reasonable question about a place. It can also mean where did you grow up, which language do you speak with your family, or where would you go if you had a month to spare. A short answer can be adequate to the moment. It becomes difficult when you feel that you should be able to give the same answer under all of those meanings. The person asking may only need a place to begin. There is room to add another part of the story if you both have time.
+
+Going back can make this easier to see. In an imagined visit, a street looks familiar and the people around it have carried on changing in your absence. It can be tempting to check how closely the place resembles the one you remember. Asking what people have been doing while you were away is a way to meet the place as it is now. The version you remember still matters. The people in front of you have a version of it too, and that one deserves some room in the conversation.
+
+Being far from home leaves some things difficult even when you find ways to stay in touch. It is possible to care about the place you have made a life in and to miss the life that is going on elsewhere. The two facts can stay side by side. There is no requirement to decide, before the end of a conversation, which one tells the whole story.

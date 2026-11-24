@@ -88,7 +88,7 @@ d.setAttribute('data-theme',t);
     <div class="article-hero" data-topic="Architecture"><img src="/assets/cases/kubernetes-capacity-audit.png?v=ae1ec37af589" alt="A capacity illustration shows requests against constrained service headroom." width="960" height="540" fetchpriority="high" decoding="async"></div>
     <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
-  <ol><li><a href="#situation-and-scope">Situation and scope</a></li><li><a href="#plan-and-execution">Plan and execution</a></li><li><a href="#rollout-and-handover">Rollout and handover</a></li><li><a href="#how-to-read-the-numbers">How to read the numbers</a></li></ol>
+  <ol><li><a href="#situation-and-scope">Situation and scope</a></li><li><a href="#plan-and-execution">Plan and execution</a></li><li><a href="#rollout-and-handover">Rollout and handover</a></li><li><a href="#how-to-read-the-numbers">How to read the numbers</a></li><li><a href="#show-where-the-remaining-capacity-is-usable">Show where the remaining capacity is usable</a></li><li><a href="#name-the-event-that-would-release-spend">Name the event that would release spend</a></li></ol>
 </nav></div>
     <div class="article-copy">
       <figure class="delivery-flow">
@@ -104,6 +104,11 @@ d.setAttribute('data-theme',t);
 <p>Change one pool and keep the old deployment manifest available. Watch unschedulable events, restart reasons, replica churn and latency at peak. Roll back if the threshold is missed or if a planned node drain violates workload availability. Document whether the observed request reduction can actually remove a node or avoid a future purchase.</p>
 <h2 id="how-to-read-the-numbers"><a class="h-anchor" href="#how-to-read-the-numbers" aria-hidden="true" tabindex="-1">#</a>How to read the numbers</h2>
 <p>Both replay runs contain 20,000 requests. Headroom improves in the scheduling model while p95 worsens in the replay. The pilot still meets its illustrative gate. Actual capacity savings depend on bin packing, redundancy and billing.</p>
+<h2 id="show-where-the-remaining-capacity-is-usable"><a class="h-anchor" href="#show-where-the-remaining-capacity-is-usable" aria-hidden="true" tabindex="-1">#</a>Show where the remaining capacity is usable</h2>
+<p>Capture allocatable resources and requested capacity per node and zone. Overlay replica placement, reserved system resources and memory constraints. A pool may have enough aggregate CPU to survive a drain while each eligible node lacks room for a large replacement pod. In the drill, inspect how long evicted replicas remain unavailable and check whether new replicas start on an allowed node. Record what happens to readiness and in-flight tasks during replacement. Set the disruption budget and rollout controls before repeating the drain under burst load. <a href="https://kubernetes.io/docs/tasks/administer-cluster/safely-drain-node/" rel="noopener" target="_blank">Kubernetes on safely draining a node</a></p>
+<p>The candidate&#39;s 247 ms p95 leaves 13 ms below the 260 ms limit. Successful requests decrease from 99.20% to 98.96%, with 48 more failures across 20,000 arrivals. That still meets a 98.5% minimum in this specific fixture. The loss of margin matters if the production arrival mix is heavier on CPU or the load runs for longer than the replay.</p>
+<h2 id="name-the-event-that-would-release-spend"><a class="h-anchor" href="#name-the-event-that-would-release-spend" aria-hidden="true" tabindex="-1">#</a>Name the event that would release spend</h2>
+<p>Document whether the next action is to remove a node, defer a purchase, or move the headroom to another workload. Compare the candidate with the same committed spend and minimum fleet settings. Before changing any settings across the entire estate, deploy to one representative slice and observe both a normal peak and a planned drain. Keep the old requests and controller settings together for recovery.</p>
 </div>
       <figure class="field-chart case-chart">
     <figcaption>Worked comparison <span>Simulated figures</span></figcaption>

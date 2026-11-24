@@ -88,7 +88,7 @@ d.setAttribute('data-theme',t);
     <div class="article-hero" data-topic="Engineering Leadership"><img src="/assets/cases/incident-command-drill.png?v=d2f97a9cb6d8" alt="Distinct stages trace an incident from detection through response and recovery." width="960" height="540" fetchpriority="high" decoding="async"></div>
     <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
-  <ol><li><a href="#situation-and-scope">Situation and scope</a></li><li><a href="#plan-and-execution">Plan and execution</a></li><li><a href="#rollout-and-handover">Rollout and handover</a></li><li><a href="#how-to-read-the-numbers">How to read the numbers</a></li></ol>
+  <ol><li><a href="#situation-and-scope">Situation and scope</a></li><li><a href="#plan-and-execution">Plan and execution</a></li><li><a href="#rollout-and-handover">Rollout and handover</a></li><li><a href="#how-to-read-the-numbers">How to read the numbers</a></li><li><a href="#give-each-update-a-decision-to-support">Give each update a decision to support</a></li><li><a href="#rehearse-a-handoff-while-the-facts-are-moving">Rehearse a handoff while the facts are moving</a></li></ol>
 </nav></div>
     <div class="article-copy">
       <figure class="delivery-flow">
@@ -103,6 +103,11 @@ d.setAttribute('data-theme',t);
 <p>Debrief using the event log. Convert two missed handoffs into changes to the incident template. Leave scripts, a scoring rubric and a named exercise lead. Schedule a later drill with an unavailable incident lead to practice role transfer.</p>
 <h2 id="how-to-read-the-numbers"><a class="h-anchor" href="#how-to-read-the-numbers" aria-hidden="true" tabindex="-1">#</a>How to read the numbers</h2>
 <p>Four fictional teams each produce six expected updates per exercise round. The median is taken across the teams. The score supports better coordination in the simulation, while reader-facing recovery still depends on the fault and the engineering response.</p>
+<h2 id="give-each-update-a-decision-to-support"><a class="h-anchor" href="#give-each-update-a-decision-to-support" aria-hidden="true" tabindex="-1">#</a>Give each update a decision to support</h2>
+<p>In one simulated run, the first page shows increased read timeouts. A later note says that background requests are also slowing down. Give these observations to different responders at scheduled times, and preserve when each one arrived. The communications lead should be able to say which user action has been observed failing and what is still being tested. A narrowly worded update helps a partner team decide whether to pause a dependent change without promoting a tentative diagnosis to a fact. The role separation follows the <a href="https://sre.google/workbook/incident-response/" rel="noopener" target="_blank">Google SRE incident response workbook</a>.</p>
+<h2 id="rehearse-a-handoff-while-the-facts-are-moving"><a class="h-anchor" href="#rehearse-a-handoff-while-the-facts-are-moving" aria-hidden="true" tabindex="-1">#</a>Rehearse a handoff while the facts are moving</h2>
+<p>Ask the incident lead to hand command to a second responder partway through the exercise. Require the new lead to state the active mitigation, the person working on it, the next decision time, and the point at which they would reverse course. The observer scores the handoff at the moment it occurs. A retrospective note can explain omissions, but it cannot fill in what a different responder needed to know during the handoff.</p>
+<p>A scored update qualifies only if it reaches the nominated channel by its deadline and contains the observed impact and next check-in. Keep missing and late updates in the 24 expected opportunities. Score timing and content independently during debrief so teams can tell whether the message itself needed work or the communications owner was overloaded.</p>
 </div>
       <figure class="field-chart case-chart">
     <figcaption>Worked comparison <span>Simulated figures</span></figcaption>

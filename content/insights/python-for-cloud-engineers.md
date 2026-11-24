@@ -84,3 +84,29 @@ For sequential automation scripts, synchronous code is simpler and almost always
 The engineering investment pays off most clearly when you're writing tools you'll ship and maintain, not quick one-offs. Know the difference before you architect the solution.
 
 *Questions about building Python tooling for cloud automation? [Happy to share more.](/contact/)*
+
+## Separate inventory collection from decision-making
+
+Imagine a tool that identifies cloud instances missing ownership tags. Collect observations in one stage and make decisions in another. The reader should preserve account, region, instance identifier, and a normalized tag map. Sort the derived report by scope and identifier so the same facts produce a stable diff. Distinguish a missing tag from one that exists with an empty value. The policy owner can then decide whether both count as gaps. Avoid recording whole API responses when they contain fields the report does not use.
+
+Inject the SDK reader into the planning function so a test can supply example resources without credentials or network access. A typed record offers more help than a generic dictionary for the program’s internal data. It does not validate service responses at runtime. Check the fields the decision depends on at the boundary and report parsing failures separately from policy violations. Write a test for an empty result and another for a second page that contains the only noncompliant resource. AWS’s [Boto3 paginator guide](https://docs.aws.amazon.com/boto3/latest/guide/paginators.html) documents supported operation pagination.
+
+## Treat partial success as a result that requires action
+
+Suppose a run covers 20 expected account-and-region combinations and one fails authorization. Returning the list of findings from the other 19 as a complete report hides a gap precisely where credentials changed. Return a manifest of the combinations searched, any errors, and the date of each search. Emit a nonzero exit code when required scopes are missing and keep partial results available for diagnosis. A scheduled report can then distinguish zero findings from zero visibility.
+
+With illustrative rates, a serial inventory of 80 pages averaging 250 ms per API request spends about 20 seconds waiting for responses, excluding authentication and retries. Four independent scopes with evenly distributed pages could overlap some of that time. Actual results depend on limits, latency distribution, and where pagination remains sequential. Bound concurrency across independent scopes. Incrementally increase it only if reports need lower latency and the overall error and throttle rate remains acceptable. Boto3 sends blocking requests. Calling it directly inside a coroutine can block the event loop. File reports and scheduled scans often work well with a bounded thread pool or serial reading.
+
+## Make a planned change safe to repeat
+
+Have the default command emit a plan with an explicit target account, regions, policy revision, and proposed changes. An apply command should check current state before changing it. If another operator supplied a tag after the plan was generated, applying an old proposal can overwrite a legitimate update. Prefer APIs with conditional update semantics where available. Where an API does not support that condition, a fresh read leaves a residual race. Coordinate ownership of the field and record conflicts instead of claiming the read prevents every concurrent change.
+
+Configure finite connection and read timeouts, SDK retries, and an overall run budget. Verify retry behavior for each write operation. Some operations accept an idempotency token, and its scope and parameter constraints depend on the API. For a supported operation, generate and persist the token for the logical operation and keep it stable across retries with unchanged parameters. A timeout alone cannot establish whether the server took action. Consult the operation’s reconciliation behavior after ambiguous outcomes. AWS documents [Boto3 retry modes](https://docs.aws.amazon.com/boto3/latest/guide/retries.html) and [Amazon EC2 idempotency](https://docs.aws.amazon.com/ec2/latest/devguide/ec2-api-idempotency.html).
+
+## Prove the handoff to an on-call operator
+
+Run through a throttled inventory, a permission error, a missing tag, and a timed-out write in a disposable environment. Assert which operations the tool attempted and the exit status it produced. For a resumed run, reconcile previously approved resource identities against current observations and classify operations as applied, unchanged, skipped due to changed state, or unresolved. A checkpoint should let an operator pick up from a stable record after interruption. It should not include secrets.
+
+Record how to invoke the read-only plan and where to find structured logs. Include the version of the script and deployed SDK in a single summary so a previously successful run can be reproduced. Limit credentials to the scopes and actions required by each command. A person reviewing a proposed change should be able to understand its input and verify the outcome without learning the entire SDK.
+
+Treat planned changes that need manual review as explicit outputs of the tool, so they remain visible after the operator closes the terminal.

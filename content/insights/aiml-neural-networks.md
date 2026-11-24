@@ -30,11 +30,11 @@ Where:
 - `bias` is an offset term (also learned)
 - `activation_function` introduces non-linearity
 
-The weights and bias are the parameters that training adjusts. A single neuron can learn a linear decision boundary. Networks of neurons can learn arbitrarily complex functions.
+The weights and bias are parameters that training adjusts. A single neuron followed by a threshold can represent a linear decision boundary. A network with nonlinear activations can represent more complex boundaries, depending on its architecture and training.
 
 ## Why Activation Functions Matter
 
-Without activation functions, a stack of neurons computes a linear function, regardless of depth. Linear functions cannot capture the complex, non-linear patterns in real data.
+A stack composed only of affine layers, each with weights and a bias, still computes one affine transformation. Nonlinear activations allow layers to represent more complex relationships.
 
 **ReLU** (Rectified Linear Unit): `f(x) = max(0, x)`. The most commonly used activation in hidden layers. Simple, computationally cheap, and empirically effective.
 
@@ -126,3 +126,31 @@ The universal approximation theorem shows that a sufficiently large neural netwo
 The empirical answer: neural networks, when trained correctly with regularisation (dropout, weight decay), tend to learn compressed, generalisable representations of patterns rather than memorising specific examples. The large parameter count is offset by the regularisation pressure and the gradient descent dynamics that favour smooth, generalisable solutions over sharp, overfit ones.
 
 Understanding this tension — between fitting the training data and generalising to new data — is the central challenge of every supervised learning project. The next lesson applies these foundations to the architecture that produced the current generation of AI systems: the transformer.
+
+## Follow one training update all the way through
+
+Take a small binary classifier for whether a product return needs manual review. Suppose two input features have been transformed to values of 2 and 1. In an illustrative linear layer with weights 0.4 and −0.3 and bias 0.1, the logit is 0.6. A sigmoid maps that logit to a score of about 0.646. If the example is truly positive, the corresponding binary cross-entropy is about 0.437. The derivative with respect to the logit is the score minus the label, approximately −0.354. Multiplying by the first input value gives a gradient of about −0.708 for the first weight. A plain gradient descent step of 0.1 then adds about 0.071 to that weight.
+
+This path explains what the numbers in the training loop mean. A positive label that the network scores too low produces a gradient that pushes the logit upward for that example. The change also affects every other example that uses the same weight. A later batch can push in the other direction. Adaptive optimizers add state and change how individual updates are scaled, so do not expect an Adam trace to match this one-step gradient descent illustration.
+
+## Match the output head to the target
+
+If one example belongs to exactly one class among several, return a vector of logits and use a multiclass loss. PyTorch’s [CrossEntropyLoss documentation](https://docs.pytorch.org/docs/stable/generated/torch.nn.CrossEntropyLoss.html) describes the expected logits and target formats. In the common class-index case an input with shape batch by class pairs with one class index per example. A softmax can be useful when reporting class scores at inference. Applying it before this loss changes what the loss sees and is unnecessary for this training contract.
+
+For multiple independent flags on the same example, use one logit and binary target per flag. A customer request might be marked both time-sensitive and related to billing. [BCEWithLogitsLoss](https://docs.pytorch.org/docs/stable/generated/torch.nn.modules.loss.BCEWithLogitsLoss.html) combines sigmoid with the binary loss. Establish a decision threshold for each flag on validation data. If a target value is missing, decide whether to mask the loss or collect the label. Treating unknown labels as negative can make a model learn the behavior of the labeling process rather than the work itself.
+
+## Check that the implementation can learn before tuning it
+
+Start with a tiny deterministic batch and confirm that the inputs and labels line up. Try to fit that batch deliberately, with augmentations and dropout disabled when appropriate. If loss cannot fall, inspect data shapes, feature distributions, the target range, which parameters have gradients, and whether the optimizer saw the right model. This is a wiring check and the resulting model has no standing as a deployment candidate. Then restore normal training and compare behavior on held-out data.
+
+Measure training and validation loss by epoch. Average the relevant quantity across cases or tokens, rather than reporting the last batch as if it represented the full epoch. Move the model to evaluation mode when comparing checkpoints because normalization and dropout layers can behave differently during training and validation. Set aside a test set before making architecture decisions. Report how data was grouped and which split was used to choose the final checkpoint. Early stopping tuned on validation can reduce validation error, but it cannot make the same validation set equivalent to a fresh test.
+
+## Use error inspection to decide what to change
+
+In an illustrative data split with 200 validation examples, suppose a network makes 24 errors and 16 involve low-light images. Check the share of low-light cases before treating that count as disproportionate. If they account for 40 of 200 inputs, their error rate is 40%, compared with 5% on the other 160. More width might make the model fit the training set better without addressing the lighting gap. Inspect whether those images were represented in training, how reviewers labeled them, and whether the prediction path normalizes them the same way.
+
+Try one repair at a time. Examples include gathering representative data, revising the split, and changing input augmentation to reflect the intended use. Repeat with the same evaluation and seeds when the earlier result depends on random initialization. Preserve calibration as a separate outcome if a downstream rule interprets scores as probabilities. A drop in cross-entropy with the same accuracy may change which examples lie above a threshold.
+
+Before deployment, verify input preprocessing on the original training examples and on a fixture passed through the serving interface. Record the selected checkpoint, normalization constants, label mapping and expected tensor shape. Compare outputs across both routes before addressing runtime speed. When prediction is fast but consistently wrong, mismatched features or class indices are often more actionable clues than the headline number of layers.
+
+When validation results improve only on one random split, inspect the split with the dataset owner. Duplicate images or several frames from one recording can make validation resemble training. Group related examples before partitioning and use the grouped split again when comparing a new checkpoint.

@@ -79,3 +79,35 @@ Questions to answer before configuring replication:
 The answers map to a specific configuration. A workload requiring zero data loss and sub-minute failover needs synchronous replication with automated failover. A workload with heavy read traffic and tolerance for 1-2 second replication lag is a candidate for async read replicas.
 
 *Designing database replication for a new system or reviewing an existing configuration against availability requirements? [Happy to compare approaches.](/contact/)*
+
+## Follow a write through the replication pipeline
+
+Write down the guarantee for each read path before drawing the topology. A catalogue can show a price from a few seconds ago if the checkout rechecks it. An account screen reached directly after a password change has a different requirement. It may need to observe that specific transaction even when the usual replica is behind. A reporting query may allow ten minutes of staleness but must reconcile totals against a named cutoff. These are three different routing decisions even when the same database fleet supports them.
+
+For PostgreSQL physical replication, inspect how far a standby has acknowledged receipt, written WAL, flushed it and replayed it. `pg_stat_replication` reports write, flush and replay locations for the standbys connected to that server. Gaps between stages distinguish a slow network or receiver from slow application of already durable WAL. A byte gap measures WAL distance. Its conversion to seconds depends on recent WAL generation and the replica’s apply rate. The lag timing fields measure the delay of observed WAL activity and can become null on idle systems. They are a poor substitute for probing the freshness of actual data. [PostgreSQL replication statistics](https://www.postgresql.org/docs/18/monitoring-stats.html)
+
+Suppose the writer produces 80 MiB/s of WAL during a bulk import and the replica can replay 60 MiB/s. Over a hypothetical 90-second burst, the gap grows by 1,800 MiB. If the writer then returns to 20 MiB/s and replay stays at 60 MiB/s, the replica clears the extra gap at 40 MiB/s, in about 45 seconds. Both rates will vary with the workload. A queue measured in bytes gives you a capacity hypothesis to test even when the last replay timestamp alone gives a misleading picture.
+
+## Route a session that needs its own update
+
+The simplest read-after-write policy routes the immediate confirmation to the writer. It is appropriate when the number of affected requests is small and the confirmation must be correct. Make the routing decision explicit in the application’s database access layer. Expiring a general session affinity flag after a fixed interval can relieve writer load, but it can still fail when replication is slower than that interval. Measure writer headroom with the same confirmation traffic you expect after a promotion.
+
+A team that needs to retain more read traffic on replicas can track a replication position from the writer after commit and compare it with the candidate’s replay position. The token must come from the same database history as the replica and the read must take a fresh snapshot after the check. A pre-existing snapshot or a comparison across a timeline change can invalidate the contract. Use a small deadline. On expiry, route to the current writer if it can satisfy the guarantee or return a response that represents the state honestly. Test the path when the replica pauses, the connection pool changes its target and the writer changes during a request.
+
+Observe the percentage of requests that use the fallback and the increase in writer connections. An apparently responsive confirmation page can still hide a degraded replica if every request silently lands on the writer. Track fallback explicitly and bound the total fallback concurrency. When the standby catches up, send traffic back gradually and keep checking freshness while connections churn.
+
+## Match promotion to the acknowledgement policy
+
+With PostgreSQL synchronous replication configured, the selected commit mode determines what the client’s success means. `synchronous_commit = on` waits for an acknowledgement that the selected synchronous standby or standbys flushed the commit record. `remote_write` waits until the standby operating system receives the write, which does not promise survival of a standby OS crash. `remote_apply` additionally waits for replay so a new standby snapshot can see the committed work. Check the transaction’s effective setting and the selection policy in `synchronous_standby_names`. Waiting for one synchronous copy does not justify promoting a separate asynchronous copy. [PostgreSQL WAL settings](https://www.postgresql.org/docs/18/runtime-config-wal.html) · [Replication configuration](https://www.postgresql.org/docs/18/runtime-config-replication.html)
+
+Agree on what happens when the synchronous acknowledgement cannot arrive. A strict availability policy may leave writes waiting until quorum recovers. A controlled change to asynchronous acknowledgement can restore throughput, but changes the loss exposure and needs visible approval, timing and reconciliation. Use a test where the standby can still answer queries while it can no longer acknowledge WAL promptly. That separates a green instance check from the capability that the write contract actually needs.
+
+## Reconcile acknowledged work after a promotion
+
+Put numbered, idempotent operations through an isolated test environment. Keep a record outside the database under exercise of requests acknowledged, requests rejected and requests with unknown client outcomes. During promotion, fence the old writer and verify that previous connection pools can no longer issue accepted writes to it. At service restoration, compare acknowledged IDs with recovered records and retry unknown outcomes through the usual idempotency path. Count missing, repeated and conflicting records separately. A zero missing count in a light rehearsal supports that run only.
+
+Start the recovery clock when customers first lose the promised service. Stop it once fresh requests can complete through the normal application path, including DNS, authentication and connection pools. Publish the time spent fencing, promoting, reconnecting and reconciling so that the next experiment can focus on the longest stage. Record the WAL position and replica state at promotion and the tested traffic rate. Keep a separate restore rehearsal. A replica can faithfully replay an accidental delete, and a successful promotion tells you little about recovery to an earlier point.
+
+Keep charts from both sides of the switchover. The former writer's final observations may disappear just when they become essential. Capture which standby was eligible, why the control plane chose it and how quickly the application abandoned old connections. Repeat with the previously preferred standby unavailable.
+
+Include write throughput during recovery.

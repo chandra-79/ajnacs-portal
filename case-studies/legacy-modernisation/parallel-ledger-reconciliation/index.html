@@ -88,7 +88,7 @@ d.setAttribute('data-theme',t);
     <div class="article-hero" data-topic="Cloud Architecture"><img src="/assets/cases/parallel-ledger-reconciliation.png?v=865baa5c5b2e" alt="A row-version illustration makes different revisions of records visible for comparison." width="960" height="540" fetchpriority="high" decoding="async"></div>
     <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
-  <ol><li><a href="#situation-and-scope">Situation and scope</a></li><li><a href="#plan-and-execution">Plan and execution</a></li><li><a href="#rollout-and-handover">Rollout and handover</a></li><li><a href="#how-to-read-the-numbers">How to read the numbers</a></li></ol>
+  <ol><li><a href="#situation-and-scope">Situation and scope</a></li><li><a href="#plan-and-execution">Plan and execution</a></li><li><a href="#rollout-and-handover">Rollout and handover</a></li><li><a href="#how-to-read-the-numbers">How to read the numbers</a></li><li><a href="#prove-that-balanced-totals-contain-the-right-postings">Prove that balanced totals contain the right postings</a></li><li><a href="#make-the-sign-off-window-meaningful">Make the sign-off window meaningful</a></li></ol>
 </nav></div>
     <div class="article-copy">
       <figure class="delivery-flow">
@@ -104,6 +104,11 @@ d.setAttribute('data-theme',t);
 <p class="depth-reading"><a href="/deep-dives/migration/cutover-replay-window/">Level 2 · Calculate how much replay time a cutover needs</a></p>
 <h2 id="how-to-read-the-numbers"><a class="h-anchor" href="#how-to-read-the-numbers" aria-hidden="true" tabindex="-1">#</a>How to read the numbers</h2>
 <p>Both shadow runs use 25,000 synthetic postings, with one matched monthly workload bundle. Reconciliation time starts when both runs finish and stops at signed review. Zero unexplained differences in one bundle supports the next rehearsal. It cannot establish correctness for new transaction types.</p>
+<h2 id="prove-that-balanced-totals-contain-the-right-postings"><a class="h-anchor" href="#prove-that-balanced-totals-contain-the-right-postings" aria-hidden="true" tabindex="-1">#</a>Prove that balanced totals contain the right postings</h2>
+<p>For each fixture event, compare the posting account, sign, currency code, original amount, posting date and reversal link. Keep precision appropriate to the currency and approved calculation rule. A balanced ledger can still contain an entry on a wrong account. An incorrect debit and correcting credit can also leave an aggregate unchanged while producing an incorrect journal. Keep a breakdown per account and currency together with the line-level results. Agree on how identifiers from the older system map to the candidate before any comparison starts.</p>
+<p>Create one adversarial fixture for two reversals arriving on different business days, one for late adjustments after close, and one for a small rounding difference across multiple component charges. In each case, have a reviewer state whether any divergence is covered by an approved rule. Preserve the input, posting rules version, and exception decision. A new rule warrants rerunning earlier examples before signing off.</p>
+<h2 id="make-the-sign-off-window-meaningful"><a class="h-anchor" href="#make-the-sign-off-window-meaningful" aria-hidden="true" tabindex="-1">#</a>Make the sign-off window meaningful</h2>
+<p>The fixture&#39;s review time falls from 97 to 46 minutes, a reduction of 51 minutes. Capture how much time went into gathering evidence versus reviewing exceptions in the next run. A lengthy month-end review could still emerge if a different transaction class dominates. Rehearse a traffic freeze using a known sequence watermark and prove that a paused business event resumes exactly once in the authoritative ledger. Retain the relevant approvals and reconciliation results for the finance and engineering owners.</p>
 </div>
       <figure class="field-chart case-chart">
     <figcaption>Worked comparison <span>Simulated figures</span></figcaption>

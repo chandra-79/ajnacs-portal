@@ -88,7 +88,7 @@ d.setAttribute('data-theme',t);
     <div class="article-hero" data-topic="Architecture"><img src="/assets/cases/queue-age-investigation.png?v=b098d151dc2e" alt="Envelopes wait in a queue between admission and delivery." width="960" height="540" fetchpriority="high" decoding="async"></div>
     <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
-  <ol><li><a href="#situation-and-scope">Situation and scope</a></li><li><a href="#plan-and-execution">Plan and execution</a></li><li><a href="#rollout-and-handover">Rollout and handover</a></li><li><a href="#how-to-read-the-numbers">How to read the numbers</a></li></ol>
+  <ol><li><a href="#situation-and-scope">Situation and scope</a></li><li><a href="#plan-and-execution">Plan and execution</a></li><li><a href="#rollout-and-handover">Rollout and handover</a></li><li><a href="#how-to-read-the-numbers">How to read the numbers</a></li><li><a href="#make-the-lifecycle-visible-across-worker-attempts">Make the lifecycle visible across worker attempts</a></li><li><a href="#confirm-that-the-faster-queue-still-treats-job-classes-fairl">Confirm that the faster queue still treats job classes fairly</a></li></ol>
 </nav></div>
     <div class="article-copy">
       <figure class="delivery-flow">
@@ -103,6 +103,12 @@ d.setAttribute('data-theme',t);
 <p>Verify worker restart behaviour, lease expiration and redelivery. Start by segmenting a known queue with explicit routing ownership. Stop on delivery starvation or increased failed acknowledgements. Hand over the routing rule, queue-age dashboard and scale-out limit. Notify the team when unresolved jobs approach the user wait budget even if CPU remains low.</p>
 <h2 id="how-to-read-the-numbers"><a class="h-anchor" href="#how-to-read-the-numbers" aria-hidden="true" tabindex="-1">#</a>How to read the numbers</h2>
 <p>The p95 wait is calculated on jobs that reached a worker during each run. Completion counts retain all admitted jobs. The two populations answer different questions. Replay again with the long-job fraction doubled before adopting the same pool weights elsewhere.</p>
+<h2 id="make-the-lifecycle-visible-across-worker-attempts"><a class="h-anchor" href="#make-the-lifecycle-visible-across-worker-attempts" aria-hidden="true" tabindex="-1">#</a>Make the lifecycle visible across worker attempts</h2>
+<p>Emit immutable timestamps for admission, first claim and durable completion. Include an attempt ID, job class, and worker pool on claim and completion events. Measure both first-claim delay and user-visible end-to-end time. After a release, redelivery can raise queue delay and repeat processing inside a single job. Keep that distinction when grouping multiple attempts under one job identifier. Use a consistent clock source where possible, and flag observations where clock skew makes a duration impossible.</p>
+<p>Measure completion against the 30-minute target from the admission timestamp. With 1,000 jobs in each sample, the baseline&#39;s 850 qualifying jobs leave 150 misses and the candidate&#39;s 962 leave 38. The decrease is 112 misses. Examine the 38 remaining jobs by class, largest waits, number of attempts and dependency time. Compute end-to-end percentiles from joined job records. Separate queue and service percentiles may reflect different jobs at the tail.</p>
+<h2 id="confirm-that-the-faster-queue-still-treats-job-classes-fairl"><a class="h-anchor" href="#confirm-that-the-faster-queue-still-treats-job-classes-fairl" aria-hidden="true" tabindex="-1">#</a>Confirm that the faster queue still treats job classes fairly</h2>
+<p>Replay a burst of short jobs immediately before the slower class becomes eligible. Record admission and start counts for each class and the maximum age among still-open work. Check if particular accounts are regularly crowded out and whether jobs that are redelivered can keep ahead of jobs that have never started. Retain a way to return to the earlier scheduling rule and watch for lingering in-flight work from the candidate deployment. Compare both variants with the same initial backlog, capacity and cutoff.</p>
+<p>Record the worker software and queue policy versions with the run.</p>
 </div>
       <figure class="field-chart case-chart">
     <figcaption>Worked comparison <span>Simulated figures</span></figcaption>

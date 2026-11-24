@@ -34,3 +34,23 @@ Keep a small control cohort executing the same class of work without the assista
 ## Decide what can reach production
 
 Choose the tool based on accepted work and the controls your repositories need. For a regulated rollout, record who can enable integrations, where prompts and diffs may go, how access is revoked, and which actions require explicit human review.
+
+## Choose tasks that demand more than a convincing diff
+
+Use one frozen commit per task and construct acceptance checks before the trial starts. For a test repair, record which behavior failed, the expected result, and the minimum scope. Keep some checks outside the assistant’s view, including tests that would fail if a patch silently weakened a requirement. For a migration, require compatibility and a rollback plan in addition to passing tests. Let human reviewers assess whether the change matches the repository’s conventions and leaves an understandable maintenance path.
+
+An issue benchmark can be useful as a repeatable external exercise. Its scores depend on the harness, tool access, task set and test oracle. [SWE-bench Verified’s documentation](https://openai.com/index/introducing-swe-bench-verified/) describes the work required to check the suitability of tasks and their grading. A benchmark result can inform which tool runs in a pilot. It does not establish how much review a proposed change needs in your codebase.
+
+## Count the time the team actually spends
+
+Suppose two tools each handle 30 fictional tasks. Tool A produces 18 accepted changes after six developer hours and five review hours. Tool B produces 15 accepted changes after five developer hours and two review hours. On those inputs, A yields roughly 1.64 accepted changes per combined staff hour and B roughly 2.14. The smaller acceptance total still requires a staffing decision. A team with review as its bottleneck might weigh the review-time difference heavily, while another team may prefer the higher task coverage. Track unresolved items and later fixes so fast initial acceptance does not reward churn.
+
+Exclude neither setup failures nor time spent rescuing a patch. Record developer time, reviewer time and elapsed delivery time separately. Have a second reviewer score disagreements without seeing the tool label where that is practical. Rotate tools across matched tasks or independent branches so a developer who already knows the fix cannot transfer that advantage to a later run.
+
+## Inspect how the tool behaves when it needs authority
+
+Use separate repositories with representative fixtures and no production credentials. Give each integration only the access needed to complete those tasks. Record which permissions remain in effect after the session and verify the expected access removal. Separate what the assistant proposed from what the execution tool actually did. Keep the initial rollout in human-reviewed patches until the team has evidence for a narrower exception process.
+
+Include a task that should stop with an open question or a documented limitation. A tool may look more productive if it chooses a risky default rather than asking for evidence. Treat a correctly bounded stop as its own outcome instead of counting every incomplete request as the same kind of failure.
+
+When a vendor changes the underlying model during the evaluation period, save the version shown by the service for each run and rerun a sentinel subset. Report unknown versions as unknown so an observed product difference remains tied to the tested window.

@@ -14,18 +14,18 @@
 <meta property="og:title" content="Kubernetes Networking: CNI Plugins, Network Policies, and Why It Matters for Security">
 <meta property="og:description" content="Kubernetes networking is abstract by design, which means the security implications are often underappreciated. The CNI plugin, network policy implementatio…">
 <meta property="og:url" content="https://ajnacs.com/insights/k8s-networking-cni/">
-<meta property="og:image" content="https://ajnacs.com/assets/og/articles/k8s-networking-cni.png?v=14d76526f69d">
+<meta property="og:image" content="https://ajnacs.com/assets/og/articles/k8s-networking-cni.png?v=91414a693ca5">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Conceptual illustration for Kubernetes Networking: CNI Plugins, Network Policies, and Why It Matters for Security: Network, Service, DNS.">
+<meta property="og:image:alt" content="Conceptual illustration for Kubernetes Networking: CNI Plugins, Network Policies, and Why It Matters for Security: Client, Network, Service.">
 <meta property="article:published_time" content="2025-05-12">
 <meta property="article:modified_time" content="2026-11-23">
 <meta property="og:image:type" content="image/png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Kubernetes Networking: CNI Plugins, Network Policies, and Why It Matters for Security">
 <meta name="twitter:description" content="Kubernetes networking is abstract by design, which means the security implications are often underappreciated. The CNI plugin, network policy implementatio…">
-<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/k8s-networking-cni.png?v=14d76526f69d">
-<meta name="twitter:image:alt" content="Conceptual illustration for Kubernetes Networking: CNI Plugins, Network Policies, and Why It Matters for Security: Network, Service, DNS.">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/k8s-networking-cni.png?v=91414a693ca5">
+<meta name="twitter:image:alt" content="Conceptual illustration for Kubernetes Networking: CNI Plugins, Network Policies, and Why It Matters for Security: Client, Network, Service.">
 
 <link rel="icon" href="/favicon.ico?v=8affdbd5" sizes="any">
 <link rel="icon" href="/images/ajna-mark.svg?v=8affdbd5" type="image/svg+xml">
@@ -50,7 +50,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Kubernetes Networking: CNI Plugins, Network Policies, and Why It Matters for Security","description":"Kubernetes networking is abstract by design, which means the security implications are often underappreciated. The CNI plugin, network policy implementation, and pod-to-pod communication model together determine what your cluster's security posture actually is.","datePublished":"2025-05-12","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/k8s-networking-cni/","image":"https://ajnacs.com/assets/og/articles/k8s-networking-cni.png?v=14d76526f69d","keywords":"DevSecOps, Cloud Architecture","articleSection":"DevSecOps","wordCount":797}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Kubernetes Networking: CNI Plugins, Network Policies, and Why It Matters for Security","description":"Kubernetes networking is abstract by design, which means the security implications are often underappreciated. The CNI plugin, network policy implementation, and pod-to-pod communication model together determine what your cluster's security posture actually is.","datePublished":"2025-05-12","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/k8s-networking-cni/","image":"https://ajnacs.com/assets/og/articles/k8s-networking-cni.png?v=91414a693ca5","keywords":"DevSecOps, Cloud Architecture","articleSection":"DevSecOps","wordCount":1612}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Kubernetes Networking: CNI Plugins, Network Policies, and Why It Matters for Security"}]}</script>
 </head>
 <body class="article-frame" data-topic="DevSecOps">
@@ -94,15 +94,15 @@ d.setAttribute('data-theme',t);
         <a class="article-byline" href="/about/#chandra-lanka">Chandra Lanka</a>
         <span class="dot" aria-hidden="true"></span><time datetime="2025-05-12">12 May 2025</time>
         <span class="dot" aria-hidden="true"></span><span>Updated <time datetime="2026-11-23">23 Nov 2026</time></span>
-        <span class="dot"></span><span>4 min read</span>
+        <span class="dot"></span><span>7 min read</span>
         <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
       </div>
     </header>
 
-    <div class="article-hero" data-topic="DevSecOps"><img data-article-art="k8s-networking-cni" src="/assets/covers/k8s-networking-cni.svg?v=add34a2a59af" width="1280" height="720" alt="Conceptual illustration for Kubernetes Networking: CNI Plugins, Network Policies, and Why It Matters for Security: Network, Service, DNS." decoding="async" fetchpriority="high"></div>
+    <div class="article-hero" data-topic="DevSecOps"><img data-article-art="k8s-networking-cni" src="/assets/covers/k8s-networking-cni.svg?v=9d72aafcb416" width="1280" height="720" alt="Conceptual illustration for Kubernetes Networking: CNI Plugins, Network Policies, and Why It Matters for Security: Client, Network, Service." decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
-  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#the-default-no-isolation">The default: no isolation</a></li><li><a href="#network-policies">Network Policies</a></li><li><a href="#cni-plugin-selection">CNI plugin selection</a></li><li><a href="#the-east-west-traffic-concern">The east-west traffic concern</a></li><li><a href="#dns-based-communication-and-its-security-implications">DNS-based communication and its security implications</a></li></ol>
+  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#the-default-no-isolation">The default: no isolation</a></li><li><a href="#network-policies">Network Policies</a></li><li><a href="#cni-plugin-selection">CNI plugin selection</a></li><li><a href="#the-east-west-traffic-concern">The east-west traffic concern</a></li><li><a href="#dns-based-communication-and-its-security-implications">DNS-based communication and its security implications</a></li><li><a href="#start-with-a-flow-inventory-your-application-owner-recognize">Start with a flow inventory your application owner recognizes</a></li><li><a href="#validate-positive-and-negative-cases-from-controlled-workloa">Validate positive and negative cases from controlled workloads</a></li><li><a href="#locate-failure-before-changing-the-policy">Locate failure before changing the policy</a></li><li><a href="#verify-an-upgrade-as-a-change-to-the-runtime-contract">Verify an upgrade as a change to the runtime contract</a></li></ol>
 </nav></div>
     <div class="article-copy">
       <div class="prose">
@@ -155,7 +155,7 @@ spec:
 <p><strong>Flannel</strong>: simple, widely used, only provides basic pod networking. Does not enforce Network Policies. Appropriate for development clusters where network segmentation is not required.</p>
 <p><strong>Calico</strong> enforces Kubernetes NetworkPolicy and offers extended policy resources. Domain-based egress allow rules are a feature of Calico Enterprise and Cloud. Review the <a href="https://docs.tigera.io/calico-enterprise/latest/network-policy/domain-based-policy" rel="noopener" target="_blank">selected product’s policy documentation</a> and test the intended traffic matrix.</p>
 <p class="depth-reading"><a href="/deep-dives/networks/network-policy-verification/">Level 3 · Verify a workload isolation policy with a traffic matrix</a></p>
-<p><strong>Cilium</strong>: eBPF-based networking. Instead of modifying iptables rules (as most CNIs do), Cilium uses eBPF programs loaded into the Linux kernel. Benefits: significantly better performance at scale, L7 policy (allow specific HTTP paths and methods, not just ports), identity-based policy (using Kubernetes labels, not just IPs). Increasingly common in large-scale production deployments.</p>
+<p><strong>Cilium</strong>: eBPF-based networking. Instead of modifying iptables rules (as most CNIs do), Cilium uses eBPF programs loaded into the Linux kernel. Benefits: measure performance for the selected datapath, configuration, workload and cluster version, L7 policy (allow specific HTTP paths and methods, not just ports), identity-based policy (using Kubernetes labels, not just IPs). Increasingly common in large-scale production deployments.</p>
 <p><strong>AWS VPC CNI</strong> gives EKS Pods VPC addresses. Supported versions and configurations can enforce Kubernetes network policies natively. Confirm network policy is enabled for the nodes and workloads you are testing using the <a href="https://docs.aws.amazon.com/eks/latest/userguide/cni-network-policy.html" rel="noopener" target="_blank">EKS network policy guide</a>.</p>
 <p>For new clusters, Cilium is the forward-looking choice. For existing clusters with Calico, the upgrade is possible but non-trivial. The important thing is that whatever CNI you choose, verify it enforces Network Policies — this is not universally supported and is non-obvious from documentation.</p>
 <h2 id="the-east-west-traffic-concern"><a class="h-anchor" href="#the-east-west-traffic-concern" aria-hidden="true" tabindex="-1">#</a>The east-west traffic concern</h2>
@@ -175,8 +175,20 @@ egress:
   - protocol: UDP
     port: 53
 </code></pre>
-<p>This prevents pods from making arbitrary external DNS queries and limits DNS exposure to the cluster-internal resolver.</p>
+<p>This restricts direct egress to the matching resolver and allowed protocol when the implementation enforces the policy. The resolver may forward queries for external names. Match the actual resolver location and account for TCP DNS where the resolver and workload require it.</p>
 <p><em>Reviewing Kubernetes network security or selecting a CNI for a new cluster? The security requirements should drive the CNI selection. <a href="/contact/">Happy to compare options for your specific deployment environment.</a></em></p>
+<h2 id="start-with-a-flow-inventory-your-application-owner-recognize"><a class="h-anchor" href="#start-with-a-flow-inventory-your-application-owner-recognize" aria-hidden="true" tabindex="-1">#</a>Start with a flow inventory your application owner recognizes</h2>
+<p>Model actual requests instead of starting with pod addresses. For each caller and receiver, identify its workload labels, namespace, serving port, transport, and the user journey that needs the connection. Separate internal calls through a Service from incoming traffic through the gateway and outbound traffic to managed services. Include workload startup and background tasks. A service can answer a health probe while a queue worker remains unable to resolve its broker. Ask which parts of the workflow someone would notice if a connection stopped working and which team would restore it.</p>
+<p>Pod policy is directional. Test both the sending workload&#39;s egress and the receiver&#39;s ingress when both are isolated. Standard policy allow rules are additive within a direction. A more narrowly written policy does not subtract permission that a different selected policy already allows. In a peer, a namespace selector and a pod selector in the same list entry select their intersection. If expressed as separate entries, they allow the union. The API gateway example above uses only the pod selector, so it selects source Pods in the policy&#39;s namespace. Use both selectors together when allowing a specific gateway in a separate namespace. Verify the labels rather than assuming the namespace name is automatically a label with your preferred key. See the <a href="https://kubernetes.io/docs/concepts/services-networking/network-policies/" rel="noopener" target="_blank">Kubernetes Network Policies reference</a>.</p>
+<h2 id="validate-positive-and-negative-cases-from-controlled-workloa"><a class="h-anchor" href="#validate-positive-and-negative-cases-from-controlled-workloa" aria-hidden="true" tabindex="-1">#</a>Validate positive and negative cases from controlled workloads</h2>
+<p>Build a small test matrix in an environment your team owns. An illustrative order service might require one inbound gateway path, two outbound dependency paths, and two name resolution checks for different transports. Add a denied path from a separate approved test identity, a denied destination port, and a denied direct dependency that is unnecessary. Record expected and observed results. In a five-required and three-denied exercise, six or seven correct results out of eight is still a failed policy verification. If a denial coincides with an unavailable endpoint, repeat the test against a healthy fixture to distinguish lack of reachability from lack of service.</p>
+<p>Test name resolution through the resolver actually configured in the Pod. TCP can matter alongside UDP. An allow rule for UDP port 53 to any Pod in the system namespace neither identifies the resolver precisely nor limits which names that resolver answers. Some environments use a node-local resolver or other arrangements with distinct policy semantics. Inspect the runtime configuration before restricting DNS. If the requirement is to filter external domains, check for a supported control at the DNS layer or a provider-specific policy feature and test it independently. Standard NetworkPolicy selection by labels and addresses does not filter the DNS query content.</p>
+<h2 id="locate-failure-before-changing-the-policy"><a class="h-anchor" href="#locate-failure-before-changing-the-policy" aria-hidden="true" tabindex="-1">#</a>Locate failure before changing the policy</h2>
+<p>If a request breaks, compare four observations under the same workload and timing. Establish whether the source resolves the target name, whether the Service maps to ready endpoints, whether the correct identities communicate at the expected port, and whether the application accepts the request. Distinguish a gateway rejection, a policy denial, and an application authentication failure. When service address translation is involved, verify behavior on the installed implementation. The NetworkPolicy specification does not guarantee the same results for all combinations of source or destination rewriting. Changing several policy rules before finding the failed boundary makes the result difficult to explain.</p>
+<p>For latency tests, measure comparable same-node and cross-node calls across multiple node pairs. Preserve request size, concurrency, endpoint count, and whether encryption or a proxy added to the path. If a fictional test shows p95 of 2 ms inside a node and 5 ms across nodes, repeat the test while changing only the path feature you suspect. Compare throughput, packet loss, CPU, and connection setup. A three-millisecond difference measured at p95 across different request samples does not establish where the time was spent on any individual request.</p>
+<h2 id="verify-an-upgrade-as-a-change-to-the-runtime-contract"><a class="h-anchor" href="#verify-an-upgrade-as-a-change-to-the-runtime-contract" aria-hidden="true" tabindex="-1">#</a>Verify an upgrade as a change to the runtime contract</h2>
+<p>Version the permitted flow inventory and keep a repeatable test namespace created by the same automation as application namespaces. Exercise bootstrap, DNS, rolling replacement, node changes, and egress to a managed service under the candidate implementation. Keep expected enforcement as a release gate. A packet path can remain usable while a policy becomes ineffective, so a health check that covers only success paths is not enough. Document the cleanup and recovery path if an upgrade affects both application traffic and the platform that installs network rules.</p>
+<p>Confirm service-to-service encryption separately from the traffic allow matrix. Where a service mesh operates in permissive mode, some paths may still accept plaintext. Verify both the participating workloads and the listener policy using known test clients. If application TLS is in use, verify how callers authenticate peers and how the team rotates certificates. Apply the appropriate controls for names, reachability, and authentication, and capture separate evidence for each property.</p>
 
       </div>
 <section class="field-worksheet worked-example" aria-labelledby="worked-example">
@@ -256,7 +268,7 @@ egress:
     <a class="chip" href="/topics/devsecops/">DevSecOps</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/platform-engineering-idp-2026/">Platform Onboarding: Measure the Path to a First Deployment</a></h3>
     <p class="card-desc">Pilot a self-service path, measure time to a first qualifying deployment, and track completion, controls, and support effort.</p>
-    <div class="card-meta"><time datetime="2026-11-20">20 Nov 2026</time><span class="dot"></span><span>2 min read</span></div>
+    <div class="card-meta"><time datetime="2026-11-20">20 Nov 2026</time><span class="dot"></span><span>4 min read</span></div>
   </div>
 </article>
 <article class="card" data-card data-topics="|Cloud Architecture|DevSecOps|Infrastructure|" data-search="serverless vs containers: an honest comparison for 2026 neither is universally better. the answer depends on your workload profile, your team&#39;s operational maturity, and — honestly — your tolerance for cold starts. cloud architecture devsecops infrastructure" data-topic="Cloud Architecture">
@@ -265,7 +277,7 @@ egress:
     <a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/serverless-vs-containers-2026/">Serverless vs Containers: An Honest Comparison for 2026</a></h3>
     <p class="card-desc">Neither is universally better. The answer depends on your workload profile, your team&#39;s operational maturity, and — honestly — your tolerance for cold starts.</p>
-    <div class="card-meta"><time datetime="2026-11-13">13 Nov 2026</time><span class="dot"></span><span>4 min read</span></div>
+    <div class="card-meta"><time datetime="2026-11-13">13 Nov 2026</time><span class="dot"></span><span>9 min read</span></div>
   </div>
 </article>
 <article class="card" data-card data-topics="|Cloud Architecture|DevSecOps|" data-search="chaos engineering: testing reliability before production tests it for you chaos engineering injects controlled failures to validate that systems actually behave as designed under real-world failure conditions. the gap between the architecture diagram and production behavior is where reliability lives. cloud architecture devsecops" data-topic="Cloud Architecture">
@@ -274,7 +286,7 @@ egress:
     <a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/chaos-engineering-practices/">Chaos Engineering: Testing Reliability Before Production Tests It For You</a></h3>
     <p class="card-desc">Chaos engineering injects controlled failures to validate that systems actually behave as designed under real-world failure conditions. The gap between the architecture diagram and production behavior is where reliability lives.</p>
-    <div class="card-meta"><time datetime="2026-11-11">11 Nov 2026</time><span class="dot"></span><span>4 min read</span></div>
+    <div class="card-meta"><time datetime="2026-11-11">11 Nov 2026</time><span class="dot"></span><span>7 min read</span></div>
   </div>
 </article></div>
     </div>
@@ -322,7 +334,17 @@ egress:
   <p class="reader-note">Saved in this browser only — these settings do not follow you to another device.</p>
 </div>
 <button class="focus-exit" id="focusExit" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h6V3M21 9h-6V3M3 15h6v6M21 15h-6v6"/></svg> Exit focus</button>
-
+<div class="chapter-bar" id="chapterBar">
+  <div class="chapter-where">
+    <b>Kubernetes Networking: CNI Plugins, Network Policies, and Why It Matters for Security</b>
+    <span>DevSecOps</span>
+  </div>
+  <span class="chapter-left" id="chapterLeft"></span>
+  <nav class="chapter-step" aria-label="Article navigation">
+    <a href="/insights/os-disk-io-performance/" aria-label="Previous: Disk I/O Performance Analysis on Linux"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a>
+    <a href="/insights/aws-savings-plans/" aria-label="Next: AWS Savings Plans vs Reserved Instances: Making the Commitment Decision"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
+  </nav>
+</div>
 </main>
 
 <footer class="site-footer">

@@ -14,18 +14,18 @@
 <meta property="og:title" content="Disk I/O Performance Analysis on Linux">
 <meta property="og:description" content="Using iostat, iotop, and fio to measure disk throughput, latency, and queue depth — and diagnosing the I/O bottlenecks that silently degrade production dat…">
 <meta property="og:url" content="https://ajnacs.com/insights/os-disk-io-performance/">
-<meta property="og:image" content="https://ajnacs.com/assets/og/articles/os-disk-io-performance.png?v=4691538e97c5">
+<meta property="og:image" content="https://ajnacs.com/assets/og/articles/os-disk-io-performance.png?v=02bfa9828092">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Conceptual illustration for Disk I/O Performance Analysis on Linux: Metrics, Latency, What to measure.">
+<meta property="og:image:alt" content="Conceptual illustration for Disk I/O Performance Analysis on Linux: Metrics, Traces, Latency.">
 <meta property="article:published_time" content="2025-04-30">
 <meta property="article:modified_time" content="2026-11-23">
 <meta property="og:image:type" content="image/png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Disk I/O Performance Analysis on Linux">
 <meta name="twitter:description" content="Using iostat, iotop, and fio to measure disk throughput, latency, and queue depth — and diagnosing the I/O bottlenecks that silently degrade production dat…">
-<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/os-disk-io-performance.png?v=4691538e97c5">
-<meta name="twitter:image:alt" content="Conceptual illustration for Disk I/O Performance Analysis on Linux: Metrics, Latency, What to measure.">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/os-disk-io-performance.png?v=02bfa9828092">
+<meta name="twitter:image:alt" content="Conceptual illustration for Disk I/O Performance Analysis on Linux: Metrics, Traces, Latency.">
 
 <link rel="icon" href="/favicon.ico?v=8affdbd5" sizes="any">
 <link rel="icon" href="/images/ajna-mark.svg?v=8affdbd5" type="image/svg+xml">
@@ -50,7 +50,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Disk I/O Performance Analysis on Linux","description":"Using iostat, iotop, and fio to measure disk throughput, latency, and queue depth — and diagnosing the I/O bottlenecks that silently degrade production databases.","datePublished":"2025-04-30","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/os-disk-io-performance/","image":"https://ajnacs.com/assets/og/articles/os-disk-io-performance.png?v=4691538e97c5","keywords":"Programming, Fundamentals","articleSection":"Programming","wordCount":1172}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Disk I/O Performance Analysis on Linux","description":"Using iostat, iotop, and fio to measure disk throughput, latency, and queue depth — and diagnosing the I/O bottlenecks that silently degrade production databases.","datePublished":"2025-04-30","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/os-disk-io-performance/","image":"https://ajnacs.com/assets/og/articles/os-disk-io-performance.png?v=02bfa9828092","keywords":"Programming, Fundamentals","articleSection":"Programming","wordCount":2275}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Disk I/O Performance Analysis on Linux"}]}</script>
 </head>
 <body class="article-frame" data-topic="Programming">
@@ -94,15 +94,15 @@ d.setAttribute('data-theme',t);
         <a class="article-byline" href="/about/#chandra-lanka">Chandra Lanka</a>
         <span class="dot" aria-hidden="true"></span><time datetime="2025-04-30">30 Apr 2025</time>
         <span class="dot" aria-hidden="true"></span><span>Updated <time datetime="2026-11-23">23 Nov 2026</time></span>
-        <span class="dot"></span><span>5 min read</span>
+        <span class="dot"></span><span>10 min read</span>
         <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
       </div>
     </header>
 
-    <div class="article-hero" data-topic="Programming"><img data-article-art="os-disk-io-performance" src="/assets/covers/os-disk-io-performance.svg?v=b005237614e3" width="1280" height="720" alt="Conceptual illustration for Disk I/O Performance Analysis on Linux: Metrics, Latency, What to measure." decoding="async" fetchpriority="high"></div>
+    <div class="article-hero" data-topic="Programming"><img data-article-art="os-disk-io-performance" src="/assets/covers/os-disk-io-performance.svg?v=660c1d892360" width="1280" height="720" alt="Conceptual illustration for Disk I/O Performance Analysis on Linux: Metrics, Traces, Latency." decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
-  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#the-storage-stack">The Storage Stack</a></li><li><a href="#iostat-device-level-io-statistics">iostat — device-level I/O statistics</a></li><li><a href="#iotop-which-process-is-doing-the-io">iotop — which process is doing the I/O</a></li><li><a href="#fio-benchmarking-actual-storage-performance">fio — benchmarking actual storage performance</a></li><li><a href="#the-io-scheduler">The I/O Scheduler</a></li><li><a href="#diagnosing-slow-write-performance">Diagnosing Slow Write Performance</a></li><li><a href="#diagnosing-io-latency-spikes">Diagnosing I/O Latency Spikes</a></li></ol>
+  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#the-storage-stack">The Storage Stack</a></li><li><a href="#iostat-device-level-io-statistics">iostat — device-level I/O statistics</a></li><li><a href="#iotop-which-process-is-doing-the-io">iotop — which process is doing the I/O</a></li><li><a href="#fio-benchmarking-actual-storage-performance">fio — benchmarking actual storage performance</a></li><li><a href="#the-io-scheduler">The I/O Scheduler</a></li><li><a href="#diagnosing-slow-write-performance">Diagnosing Slow Write Performance</a></li><li><a href="#diagnosing-io-latency-spikes">Diagnosing I/O Latency Spikes</a></li><li><a href="#start-with-the-time-the-application-actually-waits">Start with the time the application actually waits</a></li><li><a href="#interpret-queue-depth-as-a-workload-measurement">Interpret queue depth as a workload measurement</a></li><li><a href="#use-pressure-data-to-confirm-impact-on-work">Use pressure data to confirm impact on work</a></li><li><a href="#design-a-storage-test-that-reproduces-the-production-constra">Design a storage test that reproduces the production constraint</a></li><li><a href="#require-a-falsifiable-explanation-for-a-change">Require a falsifiable explanation for a change</a></li></ol>
 </nav><nav class="chapters" aria-label="Articles in this series">
       <p class="chapters-title">Linux: A Complete Practical Course</p>
       <ol><li><a href="/insights/os-storage-management/">Linux Storage Management: Disks, Partitions, LVM, Filesystems, and Mounting</a></li><li aria-current="true"><a href="/insights/os-disk-io-performance/">Disk I/O Performance Analysis on Linux</a></li><li><a href="/insights/os-kernel-tuning-sysctl/">Kernel Tuning with sysctl: Memory, Networking, and I/O</a></li><li><a href="/insights/os-namespaces-cgroups/">Linux Namespaces and cgroups: The Foundation of Containers</a></li></ol>
@@ -146,7 +146,7 @@ iostat -xz 2
 <li><code>r/s</code>, <code>w/s</code> — reads and writes per second (IOPS)</li>
 <li><code>rMB/s</code>, <code>wMB/s</code> — throughput in MB/s</li>
 <li><code>r_await</code>, <code>w_await</code> — average time in milliseconds for a read/write request to complete (from I/O submission to completion). This includes queue wait time. For NVMe: sub-millisecond is normal. For SSD: 1–5ms. For HDD: 5–20ms. Higher means the device is overwhelmed.</li>
-<li><code>aqu-sz</code> — average queue depth. Values consistently above 1–2 indicate the device cannot keep up with the request rate.</li>
+<li><code>aqu-sz</code> — average queue depth. Read this alongside throughput and tail latency for the same request mix. Parallel devices can sustain multiple outstanding operations.</li>
 <li><code>%util</code> — percentage of time the device had at least one request in flight. For HDDs, 100% = saturated. For SSDs and NVMe, 100% is less meaningful because they can service multiple requests in parallel (check <code>aqu-sz</code> instead).</li>
 </ul>
 <pre><code class="language-bash">## Watch just the metrics that matter
@@ -237,16 +237,16 @@ cat /proc/meminfo | grep -E &quot;Dirty|Writeback&quot;
 
 ## Tuning page cache flush behaviour
 ## /etc/sysctl.conf
-vm.dirty_ratio = 10          # start background write at 10% of RAM
-vm.dirty_background_ratio = 5  # flush when dirty pages hit 5% of RAM
+vm.dirty_ratio = 10          # writing processes participate at 10% of eligible memory
+vm.dirty_background_ratio = 5  # background writeback threshold at 5% of eligible memory
 vm.dirty_expire_centisecs = 3000  # flush pages older than 30 seconds
 vm.dirty_writeback_centisecs = 500  # check for dirty pages every 5 seconds
 
 sysctl -p   # apply immediately
 
-## For databases, disable page cache entirely and use O_DIRECT
-## PostgreSQL: fsync = on, full_page_writes = on handles its own durability
-## The database bypasses the page cache with O_DIRECT
+## Measure the database’s actual cache and durability behavior.
+## PostgreSQL uses shared buffers and can benefit from the operating system page cache.
+## Keep durability settings enabled and measure the end-to-end commit latency.
 </code></pre>
 <h2 id="diagnosing-io-latency-spikes"><a class="h-anchor" href="#diagnosing-io-latency-spikes" aria-hidden="true" tabindex="-1">#</a>Diagnosing I/O Latency Spikes</h2>
 <p>Latency spikes (not sustained high latency) are usually caused by:</p>
@@ -272,6 +272,24 @@ sudo bpftrace -e &#39;
 </code></pre>
 <p>The output is a histogram of I/O completion times in microseconds, showing exactly where the latency distribution sits and whether there are outlier spikes.</p>
 <p class="depth-reading"><a href="/deep-dives/performance/mergeable-latency-percentiles/">Level 2 · Read tail latency from a mergeable distribution</a></p>
+<h2 id="start-with-the-time-the-application-actually-waits"><a class="h-anchor" href="#start-with-the-time-the-application-actually-waits" aria-hidden="true" tabindex="-1">#</a>Start with the time the application actually waits</h2>
+<p>Pick a user-visible operation such as a transaction commit and record its elapsed time. Break the timeline into application work, writes issued, durability calls, and acknowledgement. Align these with device-level reads, writes, and queue metrics. Use the process, container, and filesystem identities to correlate them. A single elevated device average cannot explain the path of a particular transaction. For remote storage, include client-side request time and the provider’s resource metrics because the issue can be outside the guest’s block layer.</p>
+<p>A buffered write can finish quickly while the kernel still holds dirty data. For a service that promises durable results, collect timing for the operation that actually forces the intended durability guarantee. Compare the storage benchmark’s completion semantics to the application’s. Direct I/O, synchronous open options, and explicit synchronization calls answer different questions. The Linux kernel’s <a href="https://docs.kernel.org/admin-guide/sysctl/vm.html" rel="noopener" target="_blank">virtual-memory documentation</a> distinguishes the thresholds for background writeback and for write-generating processes to participate. Verify database access and synchronization behavior for the installed database version. For example, PostgreSQL uses its own shared buffers and may use the operating-system page cache. Its <a href="https://www.postgresql.org/docs/current/runtime-config-resource.html" rel="noopener" target="_blank">resource configuration documentation</a> discusses their interaction.</p>
+<h2 id="interpret-queue-depth-as-a-workload-measurement"><a class="h-anchor" href="#interpret-queue-depth-as-a-workload-measurement" aria-hidden="true" tabindex="-1">#</a>Interpret queue depth as a workload measurement</h2>
+<p>At a stable rate, average in-flight work approximates average completion rate times average duration over matching boundaries. In an illustrative run, 8,000 completed operations/s averaging 2 ms implies about 16 outstanding requests on average. That can be an efficient operating point for a parallel device. For a single transactional thread waiting for one operation at a time, concurrency is limited and the same storage might feel slow even at a tiny fraction of its maximum throughput. Compare the actual workload against a measured latency-throughput curve before deciding a queue depth is too high.</p>
+<p>Averages also hide mixtures. A 4 KiB random read and a 1 MiB sequential write use storage differently. Separate reads from writes at minimum, and include operation size and whether they share the device. Observe how the same arrival rate behaves at different points in the volume’s operating range. If the service improves when writers stop while reads continue, investigate contention, upload bursts, or flushing. If the database still waits on one slow write at low volume, focus on its individual durable-write latency.</p>
+<p>Select the correct block layer. In a device-mapper setup, a logical volume and an underlying device can each report the same operation at different stages. Summing them double counts traffic. Locate the filesystem’s actual device and follow its parent chain. The kernel’s <a href="https://docs.kernel.org/admin-guide/iostats.html" rel="noopener" target="_blank">I/O statistics field descriptions</a> explain the underlying counters and what time in flight captures. Use device utilization, observed completions, and latency together when judging a multi-queue device.</p>
+<h2 id="use-pressure-data-to-confirm-impact-on-work"><a class="h-anchor" href="#use-pressure-data-to-confirm-impact-on-work" aria-hidden="true" tabindex="-1">#</a>Use pressure data to confirm impact on work</h2>
+<p>Check I/O pressure stall information with kernel support enabled. It measures time workloads spend stalled on I/O resources and adds a workload-oriented perspective to device counters. Compare available workload-level pressure with host pressure where the hierarchy exposes both. Read <code>/proc/pressure/io</code> for the host view. A background test can keep a device busy while business applications still meet their objectives. A workload with repeated delays and rising I/O stall time deserves investigation even if other tenants remain healthy.</p>
+<p>Record the measurement window when using pressure averages. Two dashboard samples at different rollup periods can disagree without either being wrong. Report the difference in total stall time across a known interval when comparing short experiments. Correlate with per-process I/O and application traces. Account for asynchronous writeback and journalling, whose device work can appear under a different task from the one that initiated the original write. Pressure is evidence of a stall, and the timing and attribution data help identify the responsible path. The Linux kernel provides a <a href="https://docs.kernel.org/accounting/psi.html" rel="noopener" target="_blank">pressure stall reference</a>.</p>
+<h2 id="design-a-storage-test-that-reproduces-the-production-constra"><a class="h-anchor" href="#design-a-storage-test-that-reproduces-the-production-constra" aria-hidden="true" tabindex="-1">#</a>Design a storage test that reproduces the production constraint</h2>
+<p>Use a disposable file on the intended mount, record the file size, and preserve enough free space for the test and existing services. Write-test only a nonproduction target prepared for the experiment. Choose an I/O engine and verify achieved queue depth rather than reading it only from the command line. A nominal queue depth can differ from actual concurrency depending on the engine, buffered operation, and workload shape. Review the I/O depth distribution together with completion latency and scheduling delays in the tool output. The <a href="https://fio.readthedocs.io/en/latest/fio_doc.html" rel="noopener" target="_blank">fio reference</a> documents these options and output.</p>
+<p>Build a load series with shallow concurrency to capture baseline latency and larger concurrency to find where throughput stops growing. Test the real read/write mix and include synchronization if the application actually synchronizes durable transactions. Use a documented warm-up, run long enough to detect temporary volume burst limits, and repeat the same schedule after a change. Save job files and volume settings including provisioned bandwidth or IOPS limits. Comparing runs on different volume types or burst states can be useful when those conditions are the variable being studied. Keep the baseline consistent when isolating another factor.</p>
+<p>A hypothetical device holds p99 read latency under 4 ms through 12,000 IOPS and reaches 15,000 IOPS at p99 14 ms. A service with a 5 ms storage budget would need to operate closer to the first measured point or change its workload. Those figures illustrate the comparison, rather than forecasting a specific class of device. Retain enough samples to interpret high percentiles, and compare only like latency definitions. A percentile from an I/O generator does not include the rest of the application’s request path.</p>
+<h2 id="require-a-falsifiable-explanation-for-a-change"><a class="h-anchor" href="#require-a-falsifiable-explanation-for-a-change" aria-hidden="true" tabindex="-1">#</a>Require a falsifiable explanation for a change</h2>
+<p>If you suspect periodic writeback, look for dirty-memory growth and a burst of writes aligned with the slow application interval. Record the current kernel settings and compare the expected behavior with a controlled change on a candidate host. Changing a scheduler may help if work is queued differently at the block layer. It cannot eliminate a provider bandwidth cap or a database lock. Verify an improvement at the business operation boundary and check that backgrounds such as exports or backups still finish within their objectives.</p>
+<p>If you use event tracing, document which timestamps are collected and what they represent. A dispatch timestamp paired with its matching completion can yield time after dispatch. One timestamp with no matched event does not yield a duration. Validate the probe names and arguments against the running kernel and account for events that are dropped, merged, or otherwise unavailable. Keep host overlays and test artifacts long enough for a teammate to reproduce the measurement. End with a record of the bottleneck isolated, the change evaluated, and what new evidence would make you revisit the conclusion.</p>
+<p>Include at least one test condition that leaves the original code and storage settings intact while varying only the suspected competing work. For example, shift an export window and compare the same commit workload between normal and export periods. When moving the export improves the transaction objective, measure where the export now competes and whether that new slot is acceptable for both services.</p>
 
       </div>
 <section class="field-worksheet worked-example" aria-labelledby="worked-example">
@@ -346,12 +364,12 @@ sudo bpftrace -e &#39;
     <div class="wrap">
       <p class="eyebrow">Related</p>
       <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|Programming|Fundamentals|" data-search="kernel tuning with sysctl: memory, networking, and i/o the sysctl parameters that actually matter in production — vm reclaim tuning, tcp stack optimisation, file descriptor limits, and the settings that separate a well-tuned server from a default install. programming fundamentals" data-topic="Programming">
-  <div class="card-art"><img data-article-art="os-kernel-tuning-sysctl" src="/assets/covers/os-kernel-tuning-sysctl.svg?v=a1a105ee70e4" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-art"><img data-article-art="os-kernel-tuning-sysctl" src="/assets/covers/os-kernel-tuning-sysctl.svg?v=dc0b16579115" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
     <a class="chip" href="/topics/programming/">Programming</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/os-kernel-tuning-sysctl/">Kernel Tuning with sysctl: Memory, Networking, and I/O</a></h3>
     <p class="card-desc">The sysctl parameters that actually matter in production — VM reclaim tuning, TCP stack optimisation, file descriptor limits, and the settings that separate a well-tuned server from a default install.</p>
-    <div class="card-meta"><time datetime="2026-09-30">30 Sept 2026</time><span class="dot"></span><span>5 min read</span><span class="dot"></span><span>Series</span></div>
+    <div class="card-meta"><time datetime="2026-09-30">30 Sept 2026</time><span class="dot"></span><span>9 min read</span><span class="dot"></span><span>Series</span></div>
   </div>
 </article>
 <article class="card" data-card data-topics="|Programming|Fundamentals|" data-search="linux namespaces and cgroups: the foundation of containers how linux namespaces isolate processes, filesystems, networks, and users — and how cgroups enforce resource limits. the primitives that docker, kubernetes, and every container runtime are built on. programming fundamentals" data-topic="Programming">
@@ -360,16 +378,16 @@ sudo bpftrace -e &#39;
     <a class="chip" href="/topics/programming/">Programming</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/os-namespaces-cgroups/">Linux Namespaces and cgroups: The Foundation of Containers</a></h3>
     <p class="card-desc">How Linux namespaces isolate processes, filesystems, networks, and users — and how cgroups enforce resource limits. The primitives that Docker, Kubernetes, and every container runtime are built on.</p>
-    <div class="card-meta"><time datetime="2026-06-02">2 Jun 2026</time><span class="dot"></span><span>5 min read</span><span class="dot"></span><span>Series</span></div>
+    <div class="card-meta"><time datetime="2026-06-02">2 Jun 2026</time><span class="dot"></span><span>10 min read</span><span class="dot"></span><span>Series</span></div>
   </div>
 </article>
 <article class="card" data-card data-topics="|Programming|Fundamentals|" data-search="linux storage management: disks, partitions, lvm, filesystems, and mounting how linux storage works from physical disk to mounted filesystem — block devices, partition tables, lvm for flexible volume management, filesystem creation and tuning, and nfs for network storage. programming fundamentals" data-topic="Programming">
-  <div class="card-art"><img data-article-art="os-storage-management" src="/assets/covers/os-storage-management.svg?v=d533e5f8f1f4" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-art"><img data-article-art="os-storage-management" src="/assets/covers/os-storage-management.svg?v=929badac6247" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
     <a class="chip" href="/topics/programming/">Programming</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/os-storage-management/">Linux Storage Management: Disks, Partitions, LVM, Filesystems, and Mounting</a></h3>
     <p class="card-desc">How Linux storage works from physical disk to mounted filesystem — block devices, partition tables, LVM for flexible volume management, filesystem creation and tuning, and NFS for network storage.</p>
-    <div class="card-meta"><time datetime="2024-10-08">8 Oct 2024</time><span class="dot"></span><span>6 min read</span><span class="dot"></span><span>Series</span></div>
+    <div class="card-meta"><time datetime="2024-10-08">8 Oct 2024</time><span class="dot"></span><span>11 min read</span><span class="dot"></span><span>Series</span></div>
   </div>
 </article></div>
     </div>

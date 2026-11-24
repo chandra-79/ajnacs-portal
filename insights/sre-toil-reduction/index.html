@@ -50,7 +50,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"SRE Toil: How to Measure It and Decide What to Automate","description":"Build a toil baseline, calculate automation payback, and check that the work actually went away.","datePublished":"2026-10-09","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/sre-toil-reduction/","image":"https://ajnacs.com/assets/covers/photos/sre-toil-reduction.jpg?v=4dcb59b184bd","keywords":"Engineering Leadership, DevSecOps, Cloud Architecture","articleSection":"Engineering Leadership","wordCount":459}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"SRE Toil: How to Measure It and Decide What to Automate","description":"Build a toil baseline, calculate automation payback, and check that the work actually went away.","datePublished":"2026-10-09","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/sre-toil-reduction/","image":"https://ajnacs.com/assets/covers/photos/sre-toil-reduction.jpg?v=4dcb59b184bd","keywords":"Engineering Leadership, DevSecOps, Cloud Architecture","articleSection":"Engineering Leadership","wordCount":950}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"SRE Toil: How to Measure It and Decide What to Automate"}]}</script>
 </head>
 <body class="article-frame" data-topic="Engineering Leadership">
@@ -94,7 +94,7 @@ d.setAttribute('data-theme',t);
         <a class="article-byline" href="/about/#chandra-lanka">Chandra Lanka</a>
         <span class="dot" aria-hidden="true"></span><time datetime="2026-10-09">9 Oct 2026</time>
         <span class="dot" aria-hidden="true"></span><span>Updated <time datetime="2026-11-23">23 Nov 2026</time></span>
-        <span class="dot"></span><span>2 min read</span>
+        <span class="dot"></span><span>4 min read</span>
         <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
       </div>
     </header>
@@ -102,7 +102,7 @@ d.setAttribute('data-theme',t);
     <div class="article-hero" data-topic="Engineering Leadership"><img data-article-art="sre-toil-reduction" src="/assets/covers/photos/sre-toil-reduction.jpg?v=4dcb59b184bd" srcset="/assets/covers/photos/sre-toil-reduction-640.jpg?v=4dcb59b184bd 640w, /assets/covers/photos/sre-toil-reduction.jpg?v=4dcb59b184bd 1280w" sizes="(min-width: 90rem) 1180px, (min-width: 74rem) 65vw, 100vw" width="1280" height="720" alt="Repetitive tickets pass a stopwatch and collect in an automation tray" decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
-  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#run-a-small-pilot">Run a small pilot</a></li><li><a href="#use-the-worksheet-to-decide">Use the worksheet to decide</a></li><li><a href="#references">References</a></li></ol>
+  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#run-a-small-pilot">Run a small pilot</a></li><li><a href="#use-the-worksheet-to-decide">Use the worksheet to decide</a></li><li><a href="#classify-the-work-before-timing-it">Classify the work before timing it</a></li><li><a href="#compare-removing-the-trigger-with-automating-the-response">Compare removing the trigger with automating the response</a></li><li><a href="#decide-whether-the-release-is-safe-and-durable">Decide whether the release is safe and durable</a></li><li><a href="#references">References</a></li></ol>
 </nav></div>
     <div class="article-copy">
       <div class="prose">
@@ -121,6 +121,15 @@ d.setAttribute('data-theme',t);
 <h2 id="use-the-worksheet-to-decide"><a class="h-anchor" href="#use-the-worksheet-to-decide" aria-hidden="true" tabindex="-1">#</a>Use the worksheet to decide</h2>
 <p>Enter equal windows and the one-time implementation effort. The calculator reports baseline and follow-up toil as a share of capacity, ongoing hours released and simple payback. Follow-up upkeep is included in the savings calculation and tracked separately from manual toil. A payback in weeks reflects team capacity and assumes the observed weekly release continues. Rate savings and service risk separately before making a larger investment.</p>
 <p><strong>Illustrative measurement.</strong> The worked data below is synthetic. Use your own windows and leave any field with missing evidence out of your decision until you can measure it. Review <a href="/insights/platform-engineering-idp-2026/">platform onboarding</a> if the work occurs when developers create a service.</p>
+<h2 id="classify-the-work-before-timing-it"><a class="h-anchor" href="#classify-the-work-before-timing-it" aria-hidden="true" tabindex="-1">#</a>Classify the work before timing it</h2>
+<p>Review ten recent tickets with the people who handled them. Ask two reviewers to classify each ticket independently, then compare judgments against a short definition. A repeated account unlock under a validated procedure is likely toil. The first investigation of a new authentication failure is diagnosis. Changing the service so the failure cannot recur is engineering. A single ticket can contain all three. Record time by activity when the distinction changes what you would automate.</p>
+<p>Use a lightweight capture method. For each selected task, record a trigger, a start and stop for hands-on work, the result, and whether the procedure diverged. Cross-check against a small sample of incident and deployment records without treating timestamp gaps as work. Interruptions and calendar waiting can matter greatly for incident recovery. Keep their duration separate so a bot that closes tickets faster does not appear to save operator time it never required.</p>
+<h2 id="compare-removing-the-trigger-with-automating-the-response"><a class="h-anchor" href="#compare-removing-the-trigger-with-automating-the-response" aria-hidden="true" tabindex="-1">#</a>Compare removing the trigger with automating the response</h2>
+<p>Consider a fictional batch replay. It occurs 18 times per week and takes 12 hands-on minutes each time. That is 216 minutes, or 3.6 hours weekly. A guided replay tool could reduce the common case to two minutes for 15 events, while three exceptions still take 12 minutes each. Add 24 minutes of weekly upkeep. Total follow-up effort is 90 minutes. The expected weekly release is 126 minutes, or 2.1 hours. A 14-hour implementation would recover that time in about 6.7 weeks, if the event mix and maintenance burden hold.</p>
+<p>Now compare a fix to the upstream timeout. Suppose the fix takes 20 hours and reduces the relevant trigger to three events a week at 12 minutes each. With 15 minutes of extra weekly checks, expected effort is 51 minutes, so about 2.75 hours are released per week. Payback is about 7.3 weeks. The fix may still be preferable because fewer batches fail in the first place. Record both operational effect and payback so the choice does not depend on one rounded number.</p>
+<h2 id="decide-whether-the-release-is-safe-and-durable"><a class="h-anchor" href="#decide-whether-the-release-is-safe-and-durable" aria-hidden="true" tabindex="-1">#</a>Decide whether the release is safe and durable</h2>
+<p>Start a trial with a bounded set of jobs and record the job identity, prior state, requested action, and resulting state. Reject work you cannot identify unambiguously. Check a duplicate trigger, a failure before the replay starts, a failure after a side effect, and a partial result. Keep the current procedure available to the on-call engineer until they can complete all of those cases without guessing which work ran.</p>
+<p>Compare operator effort per occurrence and occurrences per eligible batch in the follow-up. A quieter release week can lower hours even if the procedure is unchanged. Account for work shifted to another team, additional review minutes, and time spent supporting automation. Look again after the next rotation rather than reporting the first low week as permanent. Close the pilot when the new path has a named owner, a supported recovery route, and evidence that it released time without weakening service objectives. The <a href="https://sre.google/workbook/eliminating-toil/" rel="noopener" target="_blank">Google SRE Workbook</a> provides examples for finding and prioritizing operational work.</p>
 <h2 id="references"><a class="h-anchor" href="#references" aria-hidden="true" tabindex="-1">#</a>References</h2>
 <ul>
 <li><a href="https://sre.google/sre-book/eliminating-toil/" rel="noopener" target="_blank">Google SRE Book · Eliminating Toil</a></li>
@@ -204,7 +213,7 @@ d.setAttribute('data-theme',t);
     <a class="chip" href="/topics/devsecops/">DevSecOps</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/platform-engineering-idp-2026/">Platform Onboarding: Measure the Path to a First Deployment</a></h3>
     <p class="card-desc">Pilot a self-service path, measure time to a first qualifying deployment, and track completion, controls, and support effort.</p>
-    <div class="card-meta"><time datetime="2026-11-20">20 Nov 2026</time><span class="dot"></span><span>2 min read</span></div>
+    <div class="card-meta"><time datetime="2026-11-20">20 Nov 2026</time><span class="dot"></span><span>4 min read</span></div>
   </div>
 </article>
 <article class="card" data-card data-topics="|Cloud Architecture|DevSecOps|Infrastructure|" data-search="serverless vs containers: an honest comparison for 2026 neither is universally better. the answer depends on your workload profile, your team&#39;s operational maturity, and — honestly — your tolerance for cold starts. cloud architecture devsecops infrastructure" data-topic="Cloud Architecture">
@@ -213,7 +222,7 @@ d.setAttribute('data-theme',t);
     <a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/serverless-vs-containers-2026/">Serverless vs Containers: An Honest Comparison for 2026</a></h3>
     <p class="card-desc">Neither is universally better. The answer depends on your workload profile, your team&#39;s operational maturity, and — honestly — your tolerance for cold starts.</p>
-    <div class="card-meta"><time datetime="2026-11-13">13 Nov 2026</time><span class="dot"></span><span>4 min read</span></div>
+    <div class="card-meta"><time datetime="2026-11-13">13 Nov 2026</time><span class="dot"></span><span>9 min read</span></div>
   </div>
 </article>
 <article class="card" data-card data-topics="|Cloud Architecture|DevSecOps|" data-search="chaos engineering: testing reliability before production tests it for you chaos engineering injects controlled failures to validate that systems actually behave as designed under real-world failure conditions. the gap between the architecture diagram and production behavior is where reliability lives. cloud architecture devsecops" data-topic="Cloud Architecture">
@@ -222,7 +231,7 @@ d.setAttribute('data-theme',t);
     <a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/chaos-engineering-practices/">Chaos Engineering: Testing Reliability Before Production Tests It For You</a></h3>
     <p class="card-desc">Chaos engineering injects controlled failures to validate that systems actually behave as designed under real-world failure conditions. The gap between the architecture diagram and production behavior is where reliability lives.</p>
-    <div class="card-meta"><time datetime="2026-11-11">11 Nov 2026</time><span class="dot"></span><span>4 min read</span></div>
+    <div class="card-meta"><time datetime="2026-11-11">11 Nov 2026</time><span class="dot"></span><span>7 min read</span></div>
   </div>
 </article></div>
     </div>

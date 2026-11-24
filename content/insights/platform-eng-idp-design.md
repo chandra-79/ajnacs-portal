@@ -126,3 +126,40 @@ When a developer deploys a container configured to run as root, the deployment i
 The developer does not need to talk to a security team; the platform enforces the standard and explains how to comply. The security team focuses on defining policies, not enforcing them manually.
 
 The right platform design produces the opposite of bureaucracy: developers move faster because they do not have to think about infrastructure, and governance is stronger because it is automated rather than manual.
+
+## Define who owns the service after scaffolding
+
+Write the developer-facing contract for one supported journey. For the first version, a team submits an application name, owning group, runtime family, and target environment. It gets a durable receipt, a repository, a pipeline status link, and an evidence record for the first qualifying deployment. State what the platform will maintain on the team's behalf, including shared pipeline updates and documentation. State what the service owner will maintain, such as application dependencies, service availability objectives, and any required data classification.
+
+| Contract element | Platform team maintains | Application team maintains |
+| --- | --- | --- |
+| Delivery workflow | Supported runtime families, shared pipeline, rollout and policy checks | Code, tests, dependency upgrades outside the shared workflow |
+| Service identity | Naming validation and approved identity creation mechanism | Owning group and declared services the application calls |
+| Evidence | Deployment revision and policy outcome | Expected service-specific behavior and release approval where required |
+| Support | Request status, failure guidance and platform on-call route | Service on-call route and defect triage |
+
+Store this information where the team starts work. Catalog metadata can link an owning group, deployment and runbook. Backstage permits custom annotations, so publish which integrations consume their values and validate those values before presenting a completed entry. Store secret-bearing configuration in the appropriate secret store. A routine catalog review should compare a rotating sample against real pipeline records and ask a new engineer to reach the correct on-call route from an entry. [Backstage catalog descriptors](https://backstage.io/docs/features/software-catalog/descriptor-format/)
+
+## Decide whether each feature is generated or maintained
+
+A scaffold copies files into the new team's repository. Those copies then have separate histories. A reusable workflow or managed service can be updated centrally within its version contract, giving the platform an ongoing maintenance relationship. Design each part intentionally. A placeholder README may be a good copy because ownership transfers. A shared policy check is easier to maintain with a versioned, governed integration because its rules evolve across many teams.
+
+For a fictional pilot, suppose 14 teams have copies of a deployment workflow. Moving the next baseline revision takes 15 minutes to apply and 25 minutes to test each copy. That totals 560 team minutes, or 9 hours and 20 minutes. If ten teams migrate to a common release contract, the remaining four copies represent 160 minutes of individual update work on the next change. The difference is a theoretical opportunity of 400 team minutes. Record shared workflow engineering, compatibility tests, support, and any mandatory team validation separately before estimating net savings.
+
+An upgrade contract should identify supported versions, a changelog, an action deadline for security updates, and the rollback path for incompatible revisions. Test one representative repository per supported combination. Pin the old and new revisions in the test trace. Publish an example upgrade with a realistic service that confirms an application can still deploy, roll back, and exercise policy failure feedback.
+
+## Keep the escape path measurable and reversible
+
+Treat an escape hatch as an explicit capability boundary. Capture which supported parameter was insufficient, what the application needs, the requested scope and duration, and the owner's proposed verification. If request volume grows, group by missing capability before expanding the interface. Repeated requests for a different readiness endpoint are a different product signal from custom policy exceptions scattered across unrelated workloads.
+
+In a fictional quarter, 12 of 40 eligible service onboarding attempts request an exemption. Seven need one supported health-check behavior, four involve a regulated integration, and one is an error caused by unclear documentation. Try the bounded health-check feature in staging first. Retest deployment, rollback, and incident discovery. If the support path can then handle those seven cases, assess the next onboarding cohort against the same eligibility rule and follow-up window. Treat four policy exceptions as their own design question. A platform with fewer exceptions but rising abandoned journeys may be measuring difficult work out of its cohort.
+
+For a declared exception, include an expiry and how the service comes back to the supported path. Apply any break-glass procedure with its own authorization, logging, verification and follow-up. Version rule explanations alongside the proven policy examples, and tie each rejection to an actionable developer message.
+
+## Turn a path document into a release checklist
+
+Pilot one workload type and one test environment with teams that differ in their familiarity with the platform. Invite users who have not helped implement the templates. A platform engineer observing the exercise records where users pause, request missing permissions or abandon the guided path. Track intervention without silently fixing the underlying state so the team can reproduce the problem.
+
+In an illustrative cohort of 20 teams followed for 10 business days, 13 self-serve their first compliant deployment, four do so with a platform engineer, and three remain incomplete when follow-up ends. Self-service completion is 65%. Overall completion is 85%. Add elapsed time among the 17 completions plus counts and observed wait times for the three unfinished journeys. Compare equal follow-up windows and the same definition of a compliant deployment across cohorts.
+
+Exercise the failure side of the contract using safe fixtures. Test ambiguous owner input, a policy rejection, an unavailable deployment target, a known compatibility constraint, and retry after a transient failure. Keep request identifiers and status transitions in the checklist. Close a pilot by deciding which failure to fix, which to document as unsupported, and what will constitute a successful retest. Use the outcomes to prioritize the next increment, alongside the effort to maintain each abstraction. [CNCF Platforms White Paper](https://tag-app-delivery.cncf.io/whitepapers/platforms/) [DORA platform engineering guidance](https://dora.dev/capabilities/platform-engineering/)

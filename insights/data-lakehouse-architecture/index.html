@@ -50,7 +50,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"The Data Lakehouse: Why It Won, and How to Architect One That Works","description":"Data warehouses couldn't handle unstructured data at scale. Data lakes couldn't enforce schemas or serve BI queries efficiently. The lakehouse combines both — here's the architecture, the open table formats that make it work, and the practical design decisions.","datePublished":"2026-10-05","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/data-lakehouse-architecture/","image":"https://ajnacs.com/assets/og/articles/data-lakehouse-architecture.png?v=372bb8f6c9e1","keywords":"Data Engineering, Cloud Architecture, AI & MLOps","articleSection":"Data Engineering","wordCount":991}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"The Data Lakehouse: Why It Won, and How to Architect One That Works","description":"Data warehouses couldn't handle unstructured data at scale. Data lakes couldn't enforce schemas or serve BI queries efficiently. The lakehouse combines both — here's the architecture, the open table formats that make it work, and the practical design decisions.","datePublished":"2026-10-05","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/data-lakehouse-architecture/","image":"https://ajnacs.com/assets/og/articles/data-lakehouse-architecture.png?v=372bb8f6c9e1","keywords":"Data Engineering, Cloud Architecture, AI & MLOps","articleSection":"Data Engineering","wordCount":2027}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"The Data Lakehouse: Why It Won, and How to Architect One That Works"}]}</script>
 </head>
 <body class="article-frame" data-topic="Data Engineering">
@@ -94,7 +94,7 @@ d.setAttribute('data-theme',t);
         <a class="article-byline" href="/about/#chandra-lanka">Chandra Lanka</a>
         <span class="dot" aria-hidden="true"></span><time datetime="2026-10-05">5 Oct 2026</time>
         <span class="dot" aria-hidden="true"></span><span>Updated <time datetime="2026-11-23">23 Nov 2026</time></span>
-        <span class="dot"></span><span>4 min read</span>
+        <span class="dot"></span><span>9 min read</span>
         <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
       </div>
     </header>
@@ -102,7 +102,7 @@ d.setAttribute('data-theme',t);
     <div class="article-hero" data-topic="Data Engineering"><img data-article-art="data-lakehouse-architecture" src="/assets/covers/data-lakehouse-architecture.svg?v=72be652f9f4a" width="1280" height="720" alt="Conceptual illustration for The Data Lakehouse: Why It Won, and How to Architect One That Works: Source, Processing, Schema." decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
-  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#the-three-open-table-formats">The three open table formats</a></li><li><a href="#storage-layer-design">Storage layer design</a></li><li><a href="#compute-layer-separation">Compute layer separation</a></li><li><a href="#the-medallion-architecture">The medallion architecture</a></li><li><a href="#governance-and-cataloguing">Governance and cataloguing</a></li></ol>
+  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#the-three-open-table-formats">The three open table formats</a></li><li><a href="#storage-layer-design">Storage layer design</a></li><li><a href="#compute-layer-separation">Compute layer separation</a></li><li><a href="#the-medallion-architecture">The medallion architecture</a></li><li><a href="#governance-and-cataloguing">Governance and cataloguing</a></li><li><a href="#prove-compatibility-with-the-operations-you-actually-use">Prove compatibility with the operations you actually use</a></li><li><a href="#track-event-time-ingestion-time-and-publication-time">Track event time, ingestion time and publication time</a></li><li><a href="#size-file-maintenance-against-the-reader-workload">Size file maintenance against the reader workload</a></li><li><a href="#exercise-recovery-and-policy-at-the-data-boundary">Exercise recovery and policy at the data boundary</a></li><li><a href="#publish-evidence-a-reader-can-repeat">Publish evidence a reader can repeat</a></li></ol>
 </nav></div>
     <div class="article-copy">
       <div class="prose">
@@ -120,7 +120,7 @@ d.setAttribute('data-theme',t);
 <p class="depth-reading"><a href="/deep-dives/migration/cutover-replay-window/">Level 2 · Calculate how much replay time a cutover needs</a></p>
 <p>For new deployments: Delta Lake if your primary compute is Databricks; Iceberg if you need query engine flexibility or you&#39;re on AWS with Athena/Glue.</p>
 <h2 id="storage-layer-design"><a class="h-anchor" href="#storage-layer-design" aria-hidden="true" tabindex="-1">#</a>Storage layer design</h2>
-<p>Object storage is the foundation: S3, ADLS Gen2, or GCS. The cost advantage over traditional storage is significant — object storage at $0.02-0.023/GB/month vs block storage at $0.08-0.10/GB/month.</p>
+<p>Object storage is a common foundation for lakehouses. Estimate costs for the actual region, storage class, stored bytes, requests, retention, retrieval, data transfer and table-maintenance compute. Compare cost per completed query or published dataset at equivalent freshness and availability.</p>
 <p><strong>Partition design matters significantly for query performance.</strong> A table partitioned by <code>year/month/day</code> on event timestamp enables Iceberg/Delta to skip irrelevant partitions and read only the files needed for a date-range query. A table that isn&#39;t partitioned (or is partitioned on a high-cardinality column) reads all files for every query.</p>
 <p>The wrong partition granularity is a common problem:</p>
 <ul>
@@ -149,8 +149,25 @@ d.setAttribute('data-theme',t);
 <p><strong>Unity Catalog</strong> (Databricks): centralised governance for Delta tables — fine-grained access control, column masking, row filters, audit logging, and lineage tracking. The right choice if your compute is Databricks.</p>
 <p><strong>AWS Glue Data Catalog</strong>: metadata store for tables in S3, used by Athena, EMR, and Glue jobs. Supports Iceberg tables. Less feature-rich than Unity Catalog but native to the AWS ecosystem.</p>
 <p><strong>Apache Atlas</strong>: open-source data governance with lineage tracking, classification, and audit. More complex to operate than cloud-native options.</p>
-<p>Access control: row-level and column-level security should be enforced at the catalogue/governance layer, not in downstream query tools. A customer PII column masked at the governance layer is masked everywhere; a column masked by a BI tool setting is only masked in that tool.</p>
+<p>Enforce row filters and column masking on every approved query path that supports them. Restrict direct object-store access, exports and other engines separately. Test each route using the same restricted identity to confirm policy enforcement.</p>
 <p><em>Designing a lakehouse architecture or migrating from a traditional data warehouse? The table format and partition design choices compound — worth getting right early. <a href="/contact/">Happy to compare approaches.</a></em></p>
+<h2 id="prove-compatibility-with-the-operations-you-actually-use"><a class="h-anchor" href="#prove-compatibility-with-the-operations-you-actually-use" aria-hidden="true" tabindex="-1">#</a>Prove compatibility with the operations you actually use</h2>
+<p>List every writer and reader and the exact behaviours each needs. Include catalogue operations, table creation, appends, updates, deletes, schema evolution, snapshot reads and access policy. An engine that can read a current table may not be able to read it after a writer activates a new table feature. For Delta Lake, table features appear in the protocol. Engines need support for the relevant reader or writer features before those operations are available. Keep versions and credentials in the compatibility sheet, and retest after changing the runtime or catalogue. <a href="https://docs.delta.io/versioning/" rel="noopener" target="_blank">Delta Lake feature compatibility</a></p>
+<p>Create a small dataset with updates, a deletion and a schema change. Write with the intended ingestion engine and read using the actual production versions of the BI and batch engines. Reconcile row counts for each commit and compare selected records across readers. Check whether migration can fall back when only some readers support a feature. Hold the feature change until its rollout can be coordinated or isolate the newer tables behind a supported interface. A vocabulary match in two feature matrices has limited value until both engines use the same table semantics and policy.</p>
+<h2 id="track-event-time-ingestion-time-and-publication-time"><a class="h-anchor" href="#track-event-time-ingestion-time-and-publication-time" aria-hidden="true" tabindex="-1">#</a>Track event time, ingestion time and publication time</h2>
+<p>Give each timestamp a clear definition. Event time represents business ordering. Ingestion time identifies when data reached a recoverable source. Publication time tells when it was visible to a query against a committed table. Combining these timestamps into one measure can make a late source look like a slow lakehouse or hide a backlog in the transformation step. Record publication delay separately for arrivals during normal operation and replays.</p>
+<p>In a hypothetical order table, a source emits an update at 10:00, ingestion confirms it at 10:02 and the silver table exposes the change at 10:06. Event-to-query visibility is six minutes, including two minutes to ingest and four minutes to transform and publish. If an update dated 09:00 arrives at 10:05, its ingest-to-query budget can still pass even as the business snapshot changes for a past hour. Define a correction window, show whether dashboards use the latest snapshot or the original reporting cutoff, and alert on both delayed arrivals and slow publication.</p>
+<p>Where change streams can replay messages, reconcile source sequence or transaction position in addition to the business ID. An older retry may otherwise overwrite a newer value. Decide how to handle deletes and whether a full rebuild uses the latest state or reproduces a dated result. In tests, submit the same update twice, deliver two changes out of order and replay events around a deleted record. A successful job status does not establish the correctness of those outputs.</p>
+<h2 id="size-file-maintenance-against-the-reader-workload"><a class="h-anchor" href="#size-file-maintenance-against-the-reader-workload" aria-hidden="true" tabindex="-1">#</a>Size file maintenance against the reader workload</h2>
+<p>Measure file counts, partition sizes and scanned bytes separately. Suppose an illustrative streaming job writes six 12 MiB data files every ten minutes. That creates 864 files and about 10.1 GiB per day. If a rewrite achieved roughly 256 MiB per file while preserving the same partition boundaries and data layout, the average volume would fit in about 41 files before allowing for imperfect packing. This is a model of file count, not a prediction of read speed. The query engine may skip files through statistics and other metadata, and a rewrite can affect locality or vary by partition.</p>
+<p>Compare recurring dashboard filters, broad batch transformations and BI concurrency before and after a compaction. Record query latency, requests to storage, scan volume and compute charged for both reads and maintenance. Keep queueing and cache state comparable. If a query finishes faster but daily compaction becomes expensive, schedule compaction for partitions with measurable reader cost. Review writer behaviour first if the system continuously rebuilds the same active partition. Apache Iceberg documents data-file rewriting, snapshot expiration and orphan cleanup as separate operations, each with a different effect. <a href="https://iceberg.apache.org/docs/latest/maintenance/" rel="noopener" target="_blank">Apache Iceberg table maintenance</a></p>
+<h2 id="exercise-recovery-and-policy-at-the-data-boundary"><a class="h-anchor" href="#exercise-recovery-and-policy-at-the-data-boundary" aria-hidden="true" tabindex="-1">#</a>Exercise recovery and policy at the data boundary</h2>
+<p>A snapshot is useful for rollback only while the required metadata and files are retained. Write down the longest audit, ingestion and reader windows before expiring snapshots. Keep retention decisions consistent with downstream obligations and separate backups. Test a rebuild from raw inputs and a rollback to a known table state in isolation. Reconcile business totals for a sample period and verify publication age after the switch. Object lifecycle rules and orphan cleanup should respect active writers and preserved snapshots. Independently deleting objects based only on age can break valid references.</p>
+<p>Verify permissions in the table service and in the underlying storage. A catalogue policy protects a reader only when access goes through the enforcement path. In a representative test, use separate service identities for ingestion and analytics and verify that analysts cannot directly read restricted raw storage. Check what exported copies and materialised tables inherit. Repeat against every approved engine and the relevant backup or restore roles. Centralising grants can simplify administration, but these checks establish whether each actual path enforces them.</p>
+<h2 id="publish-evidence-a-reader-can-repeat"><a class="h-anchor" href="#publish-evidence-a-reader-can-repeat" aria-hidden="true" tabindex="-1">#</a>Publish evidence a reader can repeat</h2>
+<p>Record the table revision, dataset size, representative queries, concurrency, engine version, file and snapshot counts, cache conditions and cost units with the report. Keep maintenance cost and query cost on separate lines. Publish results for current data and a corrected historical window. Pair charts with a description of source events and stages so a freshness chart can be interpreted when a source is delayed. Add a sample reconciliation query and a dated results table. These artefacts let another team reproduce the comparison or explain why a different workload could produce a different result.</p>
+<p>Keep the cost ledger aligned with the data comparison. Storage tiers, request pricing, compute contracts and transfer can change independently of file volume. Show the observed units and price assumptions before publishing currency totals. If replay writes are a significant expense, track the share attributable to normal workload, reprocessing and compaction. A small platform may get more benefit from accepting a few larger ingestion batches than from optimising its query engine. Compare the change in publication delay alongside the avoided work so the recommendation carries a clear operating trade-off.</p>
+<p>An owner should be able to name the table and source revision behind every reported value. Run a restore after an application update as well as before deployment, because restore dependencies and access roles can evolve independently of the data path.</p>
 
       </div>
 <section class="field-worksheet worked-example" aria-labelledby="worked-example">
@@ -225,12 +242,12 @@ d.setAttribute('data-theme',t);
     <div class="wrap">
       <p class="eyebrow">Related</p>
       <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|Performance|Programming|Cloud Architecture|Data Engineering|FinOps|" data-search="compression in production: choosing between gzip, zstd, lz4, and brotli like it matters compression is a three-way trade — ratio, speed, and cpu — that most systems set once by default and never revisit. the algorithm landscape, placement decisions across web, storage, and streaming, dictionary compression&#39;s quiet superpower, and the measurement discipline. performance programming cloud architecture data engineering finops" data-topic="Performance">
-  <div class="card-art"><img data-article-art="compression-selection-guide" src="/assets/covers/compression-selection-guide.svg?v=841ffbacef2b" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-art"><img data-article-art="compression-selection-guide" src="/assets/covers/compression-selection-guide.svg?v=624c62a59726" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
     <a class="chip" href="/topics/performance/">Performance</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/compression-selection-guide/">Compression in Production: Choosing Between gzip, zstd, lz4, and Brotli Like It Matters</a></h3>
     <p class="card-desc">Compression is a three-way trade — ratio, speed, and CPU — that most systems set once by default and never revisit. The algorithm landscape, placement decisions across web, storage, and streaming, dictionary compression&#39;s quiet superpower, and the measurement discipline.</p>
-    <div class="card-meta"><time datetime="2026-10-12">12 Oct 2026</time><span class="dot"></span><span>5 min read</span></div>
+    <div class="card-meta"><time datetime="2026-10-12">12 Oct 2026</time><span class="dot"></span><span>10 min read</span></div>
   </div>
 </article>
 <article class="card" data-card data-topics="|Data Engineering|Programming|Cloud Architecture|" data-search="postgresql performance tuning: the settings and patterns that actually matter postgresql&#39;s default configuration is conservative, designed for small deployments. for production workloads, the settings that control memory, parallelism, wal behavior, and connection handling need explicit tuning. here&#39;s where to start. data engineering programming cloud architecture" data-topic="Data Engineering">
@@ -239,16 +256,16 @@ d.setAttribute('data-theme',t);
     <a class="chip" href="/topics/data-engineering/">Data Engineering</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/postgresql-performance-tuning/">PostgreSQL Performance Tuning: The Settings and Patterns That Actually Matter</a></h3>
     <p class="card-desc">PostgreSQL&#39;s default configuration is conservative, designed for small deployments. For production workloads, the settings that control memory, parallelism, WAL behavior, and connection handling need explicit tuning. Here&#39;s where to start.</p>
-    <div class="card-meta"><time datetime="2025-12-26">26 Dec 2025</time><span class="dot"></span><span>5 min read</span></div>
+    <div class="card-meta"><time datetime="2025-12-26">26 Dec 2025</time><span class="dot"></span><span>9 min read</span></div>
   </div>
 </article>
 <article class="card" data-card data-topics="|Data Engineering|Cloud Architecture|" data-search="database replication patterns: read replicas, multi-primary, and when each applies database replication serves two distinct goals — high availability (survive a primary failure) and read scaling (distribute read traffic). the configuration that optimizes for one is often wrong for the other. data engineering cloud architecture" data-topic="Data Engineering">
-  <div class="card-art"><img data-article-art="database-replication-patterns" src="/assets/covers/database-replication-patterns.svg?v=7cdb48e03ed5" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-art"><img data-article-art="database-replication-patterns" src="/assets/covers/database-replication-patterns.svg?v=78066ae84ac8" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
     <a class="chip" href="/topics/data-engineering/">Data Engineering</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/database-replication-patterns/">Database Replication Patterns: Read Replicas, Multi-Primary, and When Each Applies</a></h3>
     <p class="card-desc">Database replication serves two distinct goals — high availability (survive a primary failure) and read scaling (distribute read traffic). The configuration that optimizes for one is often wrong for the other.</p>
-    <div class="card-meta"><time datetime="2025-08-04">4 Aug 2025</time><span class="dot"></span><span>4 min read</span></div>
+    <div class="card-meta"><time datetime="2025-08-04">4 Aug 2025</time><span class="dot"></span><span>8 min read</span></div>
   </div>
 </article></div>
     </div>
@@ -296,7 +313,17 @@ d.setAttribute('data-theme',t);
   <p class="reader-note">Saved in this browser only — these settings do not follow you to another device.</p>
 </div>
 <button class="focus-exit" id="focusExit" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h6V3M21 9h-6V3M3 15h6v6M21 15h-6v6"/></svg> Exit focus</button>
-
+<div class="chapter-bar" id="chapterBar">
+  <div class="chapter-where">
+    <b>The Data Lakehouse: Why It Won, and How to Architect One That Works</b>
+    <span>Data Engineering</span>
+  </div>
+  <span class="chapter-left" id="chapterLeft"></span>
+  <nav class="chapter-step" aria-label="Article navigation">
+    <a href="/insights/ethernet-vs-infiniband-networking-2026/" aria-label="Previous: Ethernet vs. InfiniBand: Choosing the Right Network Fabric in 2026"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a>
+    <a href="/insights/python-async-production/" aria-label="Next: Async Python in Production: What asyncio Buys You, and What It Costs"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
+  </nav>
+</div>
 </main>
 
 <footer class="site-footer">

@@ -81,3 +81,38 @@ For engineers already certified on AWS or Azure:
 When reviewing practice questions, explain which architecture meets the constraints and why the other options fail. Verify question count and duration with Oracle for your specific booked exam.
 
 *Preparing for OCI certification alongside other cloud certs? [Happy to share what's worked.](/contact/)*
+
+## Start every practice design with identity, scope and evidence
+
+Set aside a disposable compartment in an authorized learning tenancy and document its owner, approved region and cleanup window. Write the expected permissions before creating anything. Give the human learner and the sample workload distinct identities. With a synthetic object in an approved bucket, ask the learner to explain which identity can read the object and which can modify the configuration. Verify the expected behavior using scoped permissions and a permitted test identity, then record the result, the resource location and the policy revision. Waiting for policy changes or confusing identities can obscure the first test, so capture both the attempted operation and the principal that made it.
+
+OCI IAM policy statements depend on subject, resource type and location, with optional conditions. Map a proposed statement to an intended action instead of memorizing the four verbs as an API method table. The action mapping varies with resource type. Read the policy reference for the specific service and compare one approved operation and one deliberately disallowed operation in the training compartment. This tests the boundaries of the statement without broad privileges or customer data. [Oracle IAM policies overview](https://docs.oracle.com/en-us/iaas/Content/Identity/policieshow/Policy_Basics.htm)
+
+## Trace routing and authorization as separate questions
+
+Use a single fictional workload that processes jobs on a private subnet and stores its finished outputs in Object Storage. The workload is reached only through an approved internal route. Write the path for each legitimate request, including where it leaves the subnet and which system admits it. Compare the route rules with the applied security list and network security groups. Then identify the IAM permission relevant to the destination service. Being able to send network traffic to a service endpoint does not give the caller permission to modify resources there.
+
+| Practice request | Path or control to verify | Observation to record |
+| --- | --- | --- |
+| Application to OCI Object Storage in the region | Private subnet route and service gateway configuration for the approved service | Request reaches the endpoint and IAM allows the intended object operation |
+| Client to private application | Approved connected subnet or network and application port | Application responds using its expected certificate and method |
+| Administrative change | Scoped human IAM group and audited configuration change | Intended permission grants the required resource action |
+| New subnet for recovery | Nonoverlapping CIDR and documented connectivity | Plan meets address needs and converges on its intended route |
+
+For an example CIDR exercise, 10.20.4.0/24 contains 256 total IPv4 addresses. Two /25 blocks split that range into 128 addresses each before provider reservations. Compare usable addresses under OCI's rules with planned VNICs and any needed headroom for load balancers, upgrades, and recovery. Demonstrate how you would adjust addressing when a connected network already uses one proposed block. Record route target, packet direction, application port, and permission check in each design decision. [Oracle OCI networking overview](https://docs.oracle.com/en-us/iaas/Content/Network/Concepts/overview.htm)
+
+## Practice one recovery scenario end to end
+
+Select a failure boundary before choosing resources. Fault domain placement can reduce correlated infrastructure failures within an availability domain. A design for an availability-domain loss needs service support for alternative placement and sufficient capacity outside that domain. A regional failure calls for a separate recovery design and a working second-region dependency inventory. Confirm that your intended resources are available in the regions and domains you choose. Draw the dependency separately for data, networking, identity, secrets and client failover. [Oracle OCI regions and availability domains](https://docs.oracle.com/en-us/iaas/Content/General/Concepts/regions.htm)
+
+In a fictional exercise, a job system sets a 45-minute recovery time objective and a 10-minute recovery point objective. A verified recovery at 10:38 after a 10:00 interruption takes 38 minutes and meets the time objective. If the latest recovered correct checkpoint predates the interruption by 12 minutes, the exercise misses its data loss objective by two minutes. Record the type of database backup or replication used and the evidence that the checkpoint represents recoverable application state. A successful database connection alone does not prove the app processed the right jobs after recovery.
+
+Use synthetic records with timestamps. Check one write before the chosen failure, one near the scenario boundary, and normal application progress after restoring. Document what is expected to be recovered, what gets replayed, and how a rerun avoids duplicate work. Compare the observed results against both objectives. Include the time needed to restore access, redirect the caller and confirm behavior rather than measuring only the creation of a new instance.
+
+## Turn study time into observable practice
+
+Create a worksheet with one row for each current blueprint area and links to the Oracle documentation for topics you practiced. For a design you completed with a walkthrough, schedule a fresh attempt in a temporary compartment, with the walkthrough closed. Require yourself to state the service, expected output, and reason an alternative would fail the scenario. Record a pass only when you can reproduce the setup, verify the intended behavior, and remove disposable resources at the end. A written diagram is sufficient for a topic whose service is unavailable in your approved environment. Mark that topic separately from hands-on completion.
+
+A useful rotation includes an IAM boundary, one private network path, object lifecycle and access, storage recovery, and a failover dependency inventory. At the end of the week review failed checks by domain and prioritize repeat trials that require understanding, such as explaining a routing decision or identifying the actual identity. Review costs and quotas before each lab. Some exercises can be done with configuration planning or service limits documentation without leaving billable compute running. Save only synthetic output, record when you verified the guidance, and return to Oracle University for the official exam content and booking details. [Oracle University OCI Architect Associate learning path](https://learn.oracle.com/ols/learning-path/become-an-oci-architect-associate/163512/162234)
+
+Build a small peer review into the rotation. Hand a colleague a single diagram and ask them to predict the outcome of one authorized storage read and one blocked configuration change. If they cannot identify the principal and destination from the diagram, revise those labels first. Capture any assumptions about regional availability and resource limits directly beside the verified practice result.

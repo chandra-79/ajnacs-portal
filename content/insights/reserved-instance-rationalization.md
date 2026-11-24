@@ -79,3 +79,35 @@ The cloud providers' own tools (AWS Cost Explorer's RI recommendations, Azure Ad
 If you have Reserved Instances you're not using, AWS's Reserved Instance Marketplace allows you to sell them to other AWS customers. The discount from the original purchase may be partially recovered. This is worth knowing about before you commit to a 3-year Reserved Instance for a workload you're not fully confident about — an exit exists, but it's not guaranteed (demand in the marketplace varies by instance type and region).
 
 *Building a commitment strategy for your cloud spend? The right cadence and analytical approach matter more than any individual tool. [Happy to think through your specific situation.](/contact/)*
+
+## Build a portfolio replay before buying another commitment
+
+Build the replay from an hourly usage window and dated purchase inventory. For each commitment, record scope, effective and expiry dates, eligible resource configuration, term, payment option, current rates, and any sharing policy. For each hour, price the same workload under the On-Demand reference, the current portfolio, and each proposed portfolio. Compare exactly the same usage with and without the purchase. The system must know when one benefit has already applied so another cannot be credited for covering it.
+
+Keep the purchase view separate from the usage quantity view. A resource commitment may need an eligible family, platform, scope, and normalized units. A spend commitment is consumed at the applicable discounted rate in an hour. Translate carefully and use the provider's current matching rules instead of assuming every product follows the same policy. AWS publishes [EC2 Reserved Instance application rules](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/apply_ri.html) and [Savings Plans coverage calculations](https://docs.aws.amazon.com/savingsplans/latest/userguide/ce-sp-cr-metrics.html). Operational flexibility, discount matching, and access to capacity deserve distinct columns.
+
+Test an expiry by running the same hour just before and after the end date. Test a sharing change, one missing account, an hour of zero usage, and a burst larger than your proposed commitment. Look for impossible outcomes such as negative uncovered usage, coverage above the eligible amount, or savings assigned to usage that was already covered. Reconcile a few past hours to realized discounts before trusting the forecast about future hours.
+
+## Run a demand loss scenario with actual arithmetic
+
+Take an illustrative estate with 100 eligible compute units each hour and a hypothetical On-Demand rate of $0.10 per unit-hour. A 75-unit resource commitment costs $0.065 per unit-hour and is paid for whether used or not. At 100 units, the committed portion costs $4.875, the uncovered portion costs $2.50, and the total is $7.375 instead of $10. Coverage is 75% by comparable On-Demand cost in this homogeneous example, and utilization is 100%.
+
+Now assume a migration takes away 40 units. The estate runs 60 each hour. All 60 find coverage, but fifteen committed units remain idle and utilization falls to 80%. The estate still pays $4.875 per hour, versus $6 On-Demand. The deal still saves money. As demand falls below about 49 units, the purchase costs more than On-Demand at these assumed prices. Keep that break-even alongside the utilization target so a change in utilization does not automatically get described as a loss of economic value.
+
+Repeat the same scenario for alternatives. A 50-unit commitment would pay $3.25 and leave ten On-Demand units in the 60-unit case, for $4.25 total. It gives up some savings if demand stays at 100, but protects against a larger migration. If new work is ineligible, include its On-Demand cost independently. Show the size of both the upside given up and the loss avoided rather than relying on a single coverage score.
+
+## Use the workload roadmap like another data source
+
+Ask service owners for dated plans that could change eligibility. The items that matter are architecture milestones, region moves, changes to operating system or tenancy, a platform migration, and major retirement dates. Record confidence and an owner for each assumption. A spreadsheet note saying that the estate is stable is hard to use after an acquisition or an engineering decision changes the plan.
+
+Hold out one past interval and see whether candidate portfolios still work. A low period that represents a genuine recurring pattern belongs in the model. An outage, closed account, or missing export also appears low, but represents something else. Label those intervals before deciding whether to include or exclude them. Test growth and contraction separately. A commitment that survives high growth through uncovered On-Demand charges can still lose if baseline demand vanishes.
+
+Use a small approval record with a decision deadline, unused-spend limit, latest buy date, and next checkpoint. Identify which future decision could reduce the unused commitment. If the answer is a resale or exchange, price the downside scenario as if no transaction happens. The [EC2 Reserved Instance Marketplace documentation](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ri-market-general.html) restricts resale to qualifying Standard EC2 reservations and specifies other conditions. A possible listing is not evidence of a buyer, a price, or a timely exit.
+
+## Compare cash, economic cost, and usage separately
+
+A prepaid commitment can make one invoice spike even though its consumption economics improve over its term. Track the payment on the cash timeline and attribute the recognized cost over the usage periods appropriate to the report. Keep the current reference rates in the forecast and write down their source. For scenario comparison, use the same quote dates and the same amount of service delivered. A discount percentage is not meaningful if two scenarios use different instance shapes and deliver different capacity.
+
+After a purchase, measure the portfolio against the model when the first close is ready. Review saved spend after unused commitments and compare the underlying service outcome to the baseline. Lower spend from a service that stopped running is a usage change, not evidence that the selected reservation was a good one. In a renewal review, keep the existing portfolio distinct from the next commitment. The fact that a contract expires next month says nothing about whether its original workload still qualifies.
+
+Set an explicit counterfactual for proposed reservations that also simplify disaster recovery planning. Test whether placement succeeds in the intended zone when the workload restarts, and price the capacity guarantee separately from the billing benefit. If the placement requirement disappears after a redesign, a technically successful purchase can still become the wrong choice at renewal. Keep those observations in the same approval record as the costs.

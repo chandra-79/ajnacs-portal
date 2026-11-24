@@ -24,6 +24,22 @@ Accelerator interconnects and cluster fabrics are distinct. An NVIDIA DGX H100 u
 
 Freeze the run configuration and record congestion, errors and buffer behaviour on the relevant network. Compare training-step distribution, fraction of step blocked on communication, cost for the completed job and recovery on a bad link. Repeat across a small and representative job size. Scale from the comparison without assuming a fixed GPU count at which one fabric becomes preferable.
 
+## Price the useful workload rather than the advertised port
+
+Write an acceptance sheet with the accelerator count, placement tolerance, required throughput and recovery behavior. Include network adapter and switch capacity, any separate storage fabric, observability, cabling and power. Treat vendor peak numbers as component specifications. A 400 Gb/s interface has a nominal one-direction conversion of 50 GB/s before implementation and protocol effects. A runtime report in GB/s may be using a collective normalization or counting payloads per rank, so it is unsafe to divide one value by the other as though they described the same link.
+
+Suppose 64 accelerators cost an illustrative $2 per accelerator-hour, and two matched jobs take 9.5 hours and 8.5 hours. The accelerator-time component is $1,216 and $1,088 respectively. This hypothetical $128 gap excludes fabric prices, storage and recovery. If the faster configuration needs special nodes that sit idle between runs, the effective cost of complete work can change. Price realistic reservations and availability, then check that both runs met the same correctness and output criteria.
+
+## Match the experiment to your operating environment
+
+Check the transport and topology in the selected product and planned deployment. Identify local accelerator paths, host-to-switch distance and who operates congestion and health monitoring. An assistant doing repeated inference calls may be more constrained by service deadlines and batch scheduling than by the collective behavior of a training run. Keep a separate comparison for each workload.
+
+For a credible pilot, preserve collective configuration, software versions, rank placement and identical job inputs. Collect per-rank results alongside job-level percentiles and acquisition-to-completion time. Use one dedicated run and one run alongside realistic background traffic. Rehearse link or endpoint loss when the production contract requires it. Compare what the application can complete and what the operator can explain before settling on the initial fabric choice.
+
+[NCCL’s performance notes](https://github.com/NVIDIA/nccl-tests/blob/master/doc/PERFORMANCE.md) distinguish algorithm bandwidth from bus bandwidth for collectives. The [NCCL troubleshooting guidance](https://docs.nvidia.com/deeplearning/nccl/user-guide/docs/troubleshooting.html) also helps structure the tests when the first comparison is slower than expected.
+
+Repeat the largest configuration more than once and publish the range of outcomes. A job that lands on an unexpectedly favorable host placement can distort a single headline. Record unavailable placements as part of the acquisition time when relying on on-demand resources. An experiment that silently skips failed allocations can understate the delay a training team will experience.
+
 ## Sources
 
 - [InfiniBand Trade Association specification update](https://infinibandta.org/wp-content/uploads/2026/08/Whats-New-in-Vol.-1-and-2-Release-2.1-2026-07-31.pdf)

@@ -82,7 +82,7 @@ These decisions have more impact than any workload-level optimization. The right
 
 ## What a 90-Day FinOps Programme for Kubernetes Looks Like
 
-From a recent engagement — AKS cluster running 300+ microservices, $180K/month cloud spend:
+Illustrative scenario. An AKS cluster runs 300 microservices with $180,000 in monthly spend. Use the following plan to investigate allocation and optimization. These numbers are inputs to the example.
 
 **Days 1–30**: Deploy Kubecost, establish namespace-level attribution, identify top 10 most expensive workloads and their actual vs. requested resource ratios.
 
@@ -90,8 +90,34 @@ From a recent engagement — AKS cluster running 300+ microservices, $180K/month
 
 **Days 60–90**: Apply approved rightsizing to production. Consolidate underutilised node pools. Implement automated scaling policies for time-based load patterns.
 
-Outcome: 31% reduction in cluster cost without a single service incident.
-
-The technology was straightforward. The time was spent on change management — convincing service owners that reducing their resource requests wouldn't cause instability.
+Define acceptance before rightsizing: compare allocation-adjusted cost and unit cost while monitoring eviction, throttling, saturation, and user-facing objectives. Record baseline and post-change windows using the same demand mix. Have owners reverse or revise changes when guardrails fail. Savings become a measured result only after that comparison.
 
 *Running Kubernetes at scale and struggling with cost visibility? [Worth a conversation.](/contact/)*
+
+## Tie allocations to the bill without hiding idle capacity
+
+Choose a reporting interval and classify the costs that support the cluster. Attribute persistent volumes and workload-specific network charges with clear owners where the export supports it. Build a node-hour pool for capacity. Separate infrastructure overhead, shared system workloads, and unused node capacity. If you redistribute the latter two to teams, publish that rule and show the undistributed amounts somewhere a reviewer can inspect.
+
+Use an illustrative $120 node pool for one interval. Workload A is assigned $44 of capacity, workload B $36, and platform components $10. The difference from $120 is $30 of idle asset cost, or 25% of the pool. Cluster cost did not decline when you allocated those dollars. If the two workloads must absorb idle proportionally to their already assigned capacity, A receives $16.50 and B receives $13.50. The original $30 should remain available as a separate dimension even after it is attributed for showback. The [OpenCost specification](https://opencost.io/docs/specification/) separates these ideas and describes several methods for distributing overhead.
+
+## Model the scheduling constraint behind a large node pool
+
+A workload's resource request helps the scheduler decide whether there is usable capacity on an individual node. Aggregate unused CPU can look plentiful while the shape a pod actually needs is unavailable on any single node. Memory, affinity, topology, and taints can bind placement independently of CPU. A cost review that combines all requested CPU into one cluster total hides those placement restrictions.
+
+Suppose four nodes each have three allocatable CPU cores left across two separate zones. A pending pod requests four cores. Twelve cores exist in aggregate but the pod fits nowhere. Reducing unrelated memory requests is unlikely to help that pod. Check scheduler events, the effective CPU and memory requests, and where the pod is eligible to run. Compare a reshaped node pool against a validated smaller request. Do not reduce a request so aggressively that the pod only meets its latency objective when no other workload competes with it. Use the [Kubernetes resource management documentation](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/) to interpret placement and limits.
+
+## Test interaction with the autoscaler
+
+A CPU utilization target can be defined relative to requests. Changing the request therefore changes the percentage at the same actual usage. In an illustrative service, each of four replicas uses 200 millicores on average. At a 400-millicore request, utilization is 50%. At a 250-millicore request, it becomes 80%. A controller targeting 60% may add replicas even though total traffic is unchanged. That calculation is a signal to test the deployment and the controller together, including stabilization and missing metrics. See the [Kubernetes horizontal autoscaler algorithm](https://kubernetes.io/docs/concepts/workloads/autoscaling/horizontal-pod-autoscale/).
+
+Compare new replica counts, queue time, memory working set, restarts, throttling, placement, and node count. Measure accepted jobs or successful operations so a less reliable workload does not appear cheaper simply because it did less. Rehearse one eviction during peak traffic when evaluating interruptible nodes. Report retries, timeouts, or additional checkpoint writes as part of the test.
+
+## Confirm that the trial actually releases spend
+
+Run a limited trial and assign it a decision owner. Keep a frozen copy of previous requests, rollout configuration, and autoscaler settings. Cut over one representative deployment, wait through a normal peak, and exercise rollback. Inspect whether another pod can fill the capacity or whether an actual node can be removed. A reduction in an allocated workload total does not necessarily eliminate a fixed node, managed pool minimum, or existing commitment.
+
+A trial is successful when it keeps the same reliability target and either reduces the effective bill, delays a planned capacity purchase, or frees clearly measured headroom for another workload. Avoid combining those outcomes into a single savings claim. Record the unit, timing, and evidence for each. A decision to retain safe idle capacity can be appropriate if the estate is about to hit a demand peak or if autoscaling cannot react within the service's latency budget.
+
+For the next close, use unchanged ownership keys even if pods were replaced. Match costs to deployment or service identities and use dated rules when labels change. Publish both the result at the cluster boundary and the result per successful unit. Ask the owner to reproduce the figures from the invoice scope, the node inventory, and the workload outcomes. Investigate any difference before recommending the same request change across other namespaces.
+
+Keep one counterfactual for finance. If the existing fleet would have grown next month, record what triggered the expected purchase and which period it covered. Delayed growth is useful capacity planning evidence. The scope and resource price still need to match when validating the next forecast.

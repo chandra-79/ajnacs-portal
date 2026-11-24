@@ -79,3 +79,33 @@ Honesty requires balance. Local models lag hosted frontier models on:
 The right framing is not "local vs. cloud" but "which tasks warrant local and which warrant cloud." Routine, high-volume, latency-sensitive tasks with data sensitivity concerns → local. Novel, complex reasoning tasks where quality is the primary constraint → cloud. Most organizations need both.
 
 *Running local inference in production or evaluating it for an enterprise use case? I'm interested in comparing notes — [get in touch](/contact/).*
+
+## Describe what fills memory while the model is running
+
+Start with the weight file and measure what happens when the runtime loads it. A hypothetical 8-billion-parameter model at exactly four bits per parameter would need about 4 GB for the raw packed parameter values. A real quantized file may store metadata, scales, and some weights at higher precision. The runtime can create additional buffers and may keep different portions in CPU and accelerator memory. A 4 GB file therefore cannot establish that a system with 4 GB free will run the workload.
+
+The attention key-value cache is another part of the budget. For a standard cache that holds both key and value tensors for each layer and active position, a rough per-sequence estimate is two times the layer count, key-value head count, head dimension, bytes per element, and cached token count. In an illustrative model with 32 layers, eight key-value heads of dimension 128 and two-byte elements, the estimate is 128 KiB per token. At 8,192 tokens that becomes 1 GiB. Four independent such sequences would need about 4 GiB just for those uncompressed caches. That example omits pad and block overhead, model weights and temporary allocations. Multimodal inputs, sliding-window attention, cache sharing, and cache quantization can change the result.
+
+Cap maximum prompt length and concurrency based on observed peak memory rather than a successful short chat. Test a full-length prompt with two other independent sessions open, and notice whether the machine swaps or pauses. Some runtime metrics track accelerator allocations and omit host memory. On a shared-memory machine, compare system pressure as well as process figures. The [Hugging Face cache guide](https://huggingface.co/docs/transformers/en/kv_cache) explains several ways runtimes can trade memory, flexibility and speed when retaining attention state.
+
+## Measure an interactive request in stages
+
+Use representative task fixtures, such as a short question over one paragraph and an extraction over a full design note. Record the actual prompt and output token counts. Record model and quantization revisions, chat template, runtime version, device selection, threads, and any prefix caching. If the same prefix is reused during repeated tests, keep a separate cold result for a first-time user. Report warm results only when the workload actually has warm sessions.
+
+Split elapsed time into queueing, tokenization and prefill, first displayed token, and generation after that token. Reserve a separate category for tool use and any review or retry. A faster reported decode rate can still make for a slower interaction when a model spends longer on the prompt. Use a monotonic clock on the client for perceived latency and save runtime metrics to explain it. Capture medians and tails with the sample size and concurrency level. In a small trial include per-run times, since a percentile based on a handful of samples adds little confidence.
+
+For illustration, compare a runtime that spends one second until its first visible token then emits the remaining 119 tokens at 20 per second, with another that spends 3.5 seconds then emits them at 35 per second. Their simplified end-to-end times are roughly 6.95 and 6.9 seconds. The first looks more responsive from the start. Long outputs can favor the second on these assumptions. Keep a fixed evaluation cap, because a verbose answer can make an otherwise fast runtime look slower when both tasks produced equally useful work.
+
+## Run the privacy test across the whole path
+
+List which process reads prompts, where they are written and how the outputs are delivered. A local application can still send data to a search or telemetry service, and logs and crash reports can retain excerpts on the machine. Review shell history, snapshots, model and cache directories and any tools enabled by the assistant. Where you need an offline workflow, run representative tasks with egress disabled in the environment you control, and note which features fail without network access. Confirm model files and dependencies are available through the approved provisioning path before blocking updates.
+
+Check the listener address and who can reach the model API. An API intended for one workstation should not be accessible from a broad network by accident. If another user needs access, arrange authentication, rate limits and memory isolation as part of operating the service. Keep privileges scoped for any retrieval or code tools. The model’s local location does not confer authority to access every directory on the machine. Record data provenance and license terms for model weights, adapters and relevant datasets as part of a deployable configuration.
+
+## Benchmark the result your team needs
+
+For an illustrative ten-minute trial, run ten short extractions and ten complex decisions. Review the exact factual fields and required evidence. Count missing values, unsupported values and results that needed a second call. Compute elapsed and reviewer costs for accepted outcomes with rejected work still in the total cost. The local model that completes more tokens can lose if its extractions need more manual correction. The larger model can lose when it queues long prompts and slows a shared machine for other work.
+
+Pick the smallest configuration that clears the task rubric and keeps enough headroom for realistic concurrency. Test what you will do when it cannot finish, whether that means scheduling batch work later, reducing context while retaining critical evidence, or sending the request through an approved separate workflow. A practical evaluation ends with a stable run configuration and a documented fallback that serves the team on the busiest day.
+
+Record load time from a cold process separately from the warm runs and include any model eviction. A machine used for editing and inference can have the same average tokens per second in two setups while one causes long pauses whenever the model must be loaded again.

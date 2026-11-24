@@ -55,12 +55,11 @@ Use the [kernel virtual memory sysctl reference](https://docs.kernel.org/admin-g
 ## ── vm.dirty_ratio and vm.dirty_background_ratio ──
 ## dirty_ratio: total dirty page threshold — kernel blocks writes at this point
 ## dirty_background_ratio: start background flushing at this point
-## Default: 20% and 10% of RAM
+## The percentage base is the memory eligible for dirty pages. Check current values.
 ## For write-heavy databases (they handle their own fsync): lower to reduce spikes
 vm.dirty_ratio = 10
 vm.dirty_background_ratio = 3
-## For NFS or network storage where write-back is unreliable: lower further
-## For SSDs with high write throughput: can raise to 20/10
+## Measure stalls and writeback behavior before changing either threshold.
 
 ## ── vm.vfs_cache_pressure ──
 ## How aggressively kernel reclaims inode/dentry cache vs page cache
@@ -237,3 +236,39 @@ numactl --cpunodebind=0 --membind=0 myapp
 ```
 
 NUMA tuning makes the most difference for in-memory databases (Redis, Elasticsearch, large PostgreSQL shared_buffers) and any workload with large working sets. The numastat numbers tell you whether it is worth investigating.
+
+## Capture both the active value and its source
+
+Before touching a kernel parameter, capture the kernel release, distribution, service runtime, namespace where the symptom occurs, and current value. Read individual live keys from the same scope as the affected process. In a container, a networking parameter may belong to the container’s network namespace, and other settings may be host-wide or controlled by the platform. Note any boot-time or provisioning policy that reasserts the value. Keep read-only inspection separate from commands which load settings, including `sysctl --system`.
+
+For systemd-based systems, `sysctl.d` files are sorted by filename, and a later assignment can override an earlier one. Files with the same name have directory precedence. Use the documentation matching the system’s implementation and compare the final change against the effective value after reboot, replacement, and relevant runtime restarts. Some devices or modules only expose their settings after initialization. Capture where the desired setting is defined so an operator can tell which layer owns it. See [systemd’s sysctl.d manual](https://www.freedesktop.org/software/systemd/man/latest/sysctl.d.html).
+
+Test one change at a time with bounded traffic and check comparable tail latency, errors, throughput, and resource cost. State the change’s predicted impact before starting. If the rollback requires a restart or reapplies a group of settings, exercise that procedure separately. When testing a `vm.dirty_*` value, remember that switching between the byte and ratio forms resets the counterpart. Restore the previous effective mode as well as the desired threshold.
+
+## Separate reclaim stalls from writeback bursts
+
+Look for changes in I/O and memory pressure alongside application latency. High dirty bytes can be acceptable with a stable writeback rate and healthy latency. A growing dirty backlog followed by saturated storage and occasional stalls suggests a different problem. Compare application writes, durable completion rate, and the device’s recorded load under a representative schedule. Distinguish a secondary effect caused by an existing storage limit from a writeback policy that changes how work reaches the device.
+
+Suppose an illustrative workload dirties data steadily at 220 MiB/s while its target flushes about 160 MiB/s for part of a test. The gap is 60 MiB/s. Even an additional 1 GiB of usable buffering only conceals the gap for roughly 17 seconds before pressure increases, assuming no other reclaim or throttling and steady rates. A higher threshold can shift the delay into a more disruptive burst. Retest with a control that reduces the write rate or moves the competing workload, then see which change improves durable throughput.
+
+The kernel defines dirty ratios against memory eligible for the calculation, rather than total installed RAM. The background threshold starts flusher work, and the higher threshold makes the write-generating process participate. Dirty page expiry and periodic wakeup are different controls. Report observed thresholds and trace timing before mapping a configured ratio to an exact number of bytes or seconds. See the [Linux virtual-memory sysctl reference](https://docs.kernel.org/admin-guide/sysctl/vm.html).
+
+## Identify the TCP queue where the symptom occurs
+
+Trace a connection from the client across the load balancer to the application listener. A slow `accept()` path can fill the completed connection queue while the application CPU is paused. Half-open handshakes use a separate queue and can be affected by packet loss or client retries. The listener uses its configured backlog within the kernel limit. Raising `somaxconn` alone leaves a smaller application backlog unchanged until the listener asks for more capacity. Compare listener observations, connection setup latency, application accept rate, and host activity in the same time frame.
+
+On the outbound side, distinguish failures to allocate a local source port from timeouts establishing the connection to its destination. A rising TIME_WAIT count can be expected when connection churn rises. It does not quantify available tuples on a specific source and destination path. Consider connection reuse and measure local and NAT-side symptoms before expanding the configured range. `tcp_fin_timeout` concerns orphaned FIN_WAIT_2 sockets, and is a separate setting from TIME_WAIT behavior. Consult the [kernel’s IP sysctl documentation](https://docs.kernel.org/networking/ip-sysctl.html) for scope and version-sensitive behavior.
+
+Set a target for the connection outcome, such as the fraction of intended connections accepted by a specific deadline. A larger queue can make the headline drop counter improve while clients spend longer waiting. Preserve both measures in the results. If rejected connections disappear but request timeouts rise, the same workload may have moved its waiting time up the stack.
+
+## Locate limits before granting more headroom
+
+Suppose an illustrative service fails to open sockets near 4,096 local descriptors while system-wide allocations are only 25% of their maximum. Read the running process’s file descriptor limit and count its current descriptors by type. Compare growth against traffic and check cleanup after requests finish. A per-process limit could be binding here. A process leaking sockets will eventually reach a higher limit too. An allocation failure observed at the system-wide boundary has a different diagnosis and affects workloads beyond the one reported.
+
+For excessive task counts, inspect the service manager’s limit and cgroup task counters alongside process-level limits. A process can run within a service or parent slice that rejects new tasks despite a generous system-wide PID ceiling. Test a controlled service start at intended concurrency after modifying one limit. Record the effective values and whether the owning process was recreated under them. Also note that a parent setting may still constrain the service. Kernel-wide changes can shift resource consumption to other workloads sharing the same host.
+
+Keep a record of the expected symptom, the diagnostic boundary, the smallest setting change tested, and the times of the control and candidate runs. Include the uncertainty remaining in the comparison. If the kernel version or deployment layout changes, rerun the original workload before carrying the old override forward. That gives the next team evidence to decide whether the setting still addresses a live constraint.
+
+## Check huge-page policy on the running system
+
+Transparent huge-page defaults and available sizes depend on the kernel and distribution. The top-level policy and the settings for individual sizes can both matter on kernels that offer multiple sizes. Inspect the effective configuration and count how often the workload actually uses huge pages before changing compaction policy. Change the candidate service and observe repeated allocation, warm-up, and steady-state runs. A service may trade lower translation overhead for deploy-time or periodic latency. Record both results along with the working set and memory-pressure observations. The [kernel’s transparent huge-page guide](https://docs.kernel.org/admin-guide/mm/transhuge.html) explains the settings and their scope.

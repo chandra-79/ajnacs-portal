@@ -50,7 +50,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Ethernet vs. InfiniBand for AI Training: Why the Network Fabric Matters More Than You Think","description":"Most AI infrastructure decisions focus on GPUs and storage. Network fabric is the variable that determines whether your training cluster runs at 90% efficiency or 40%.","datePublished":"2025-03-25","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/quick-take-ethernet-vs-infiniband/","image":"https://ajnacs.com/assets/og/articles/quick-take-ethernet-vs-infiniband.png?v=a02b100e2bde","keywords":"Systems, Enterprise AI, Infrastructure","articleSection":"Enterprise AI","wordCount":496}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Ethernet vs. InfiniBand for AI Training: Why the Network Fabric Matters More Than You Think","description":"Most AI infrastructure decisions focus on GPUs and storage. Network fabric is the variable that determines whether your training cluster runs at 90% efficiency or 40%.","datePublished":"2025-03-25","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/quick-take-ethernet-vs-infiniband/","image":"https://ajnacs.com/assets/og/articles/quick-take-ethernet-vs-infiniband.png?v=a02b100e2bde","keywords":"Systems, Enterprise AI, Infrastructure","articleSection":"Enterprise AI","wordCount":617}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Ethernet vs. InfiniBand for AI Training: Why the Network Fabric Matters More Than You Think"}]}</script>
 </head>
 <body class="article-frame" data-topic="Enterprise AI">
@@ -94,7 +94,7 @@ d.setAttribute('data-theme',t);
         <a class="article-byline" href="/about/#chandra-lanka">Chandra Lanka</a>
         <span class="dot" aria-hidden="true"></span><time datetime="2025-03-25">25 Mar 2025</time>
         <span class="dot" aria-hidden="true"></span><span>Updated <time datetime="2026-11-23">23 Nov 2026</time></span>
-        <span class="dot"></span><span>2 min read</span>
+        <span class="dot"></span><span>3 min read</span>
         <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
       </div>
     </header>
@@ -102,7 +102,7 @@ d.setAttribute('data-theme',t);
     <div class="article-hero" data-topic="Enterprise AI"><img data-article-art="quick-take-ethernet-vs-infiniband" src="/assets/covers/quick-take-ethernet-vs-infiniband.svg?v=32963fb6718c" width="1280" height="720" alt="Conceptual illustration for Ethernet vs. InfiniBand for AI Training: Why the Network Fabric Matters More Than You Think: Ethernet, InfiniBand, RDMA." decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
-  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#why-the-traffic-estimate-matters">Why the traffic estimate matters</a></li><li><a href="#select-a-system-to-test">Select a system to test</a></li><li><a href="#sources">Sources</a></li></ol>
+  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#why-the-traffic-estimate-matters">Why the traffic estimate matters</a></li><li><a href="#select-a-system-to-test">Select a system to test</a></li><li><a href="#put-message-size-results-beside-step-time">Put message-size results beside step time</a></li><li><a href="#keep-cloud-product-comparisons-reproducible">Keep cloud product comparisons reproducible</a></li><li><a href="#sources">Sources</a></li></ol>
 </nav></div>
     <div class="article-copy">
       <div class="prose">
@@ -116,6 +116,13 @@ d.setAttribute('data-theme',t);
 <p>At 128 ranks, a hypothetical 400 GB full buffer on each rank gives about 794 GB sent per rank per collective. Dividing the full buffer by 128 would describe a different assumption about data ownership. Specify the placement and the collective before estimating traffic on a host link.</p>
 <h2 id="select-a-system-to-test"><a class="h-anchor" href="#select-a-system-to-test" aria-hidden="true" tabindex="-1">#</a>Select a system to test</h2>
 <p>InfiniBand and RDMA-capable Ethernet deployments each have transport, NIC and software requirements. Cloud providers expose different implementations and topologies. AWS EFA uses its own transport, and Azure ND H100 v5 documents dedicated InfiniBand networking. For a cloud selection, get the exact instance configuration and run a matched collective and training-step replay before comparing cost per useful step.</p>
+<h2 id="put-message-size-results-beside-step-time"><a class="h-anchor" href="#put-message-size-results-beside-step-time" aria-hidden="true" tabindex="-1">#</a>Put message-size results beside step time</h2>
+<p>Measure a range of message sizes that appears in the real job. A small collective can be dominated by launch, synchronization and transport latency. Larger messages often make sustained bandwidth more visible. The distributions matter more than the fastest time for a single transfer. Submit an isolated collective on the same hosts and ranks, then repeat the training iteration with the same placement and observe when the collective overlaps compute.</p>
+<p>In a fictional replay, fabric A finishes the one selected collective in 32 ms while fabric B takes 39 ms. Yet the difference in end-to-end step time can be smaller than 7 ms if the collective overlaps useful work. Inspect the last rank to arrive as well. An input-reading delay can create waiting time for every other participant, so a trace labeled “collective” may include synchronization with a late rank.</p>
+<h2 id="keep-cloud-product-comparisons-reproducible"><a class="h-anchor" href="#keep-cloud-product-comparisons-reproducible" aria-hidden="true" tabindex="-1">#</a>Keep cloud product comparisons reproducible</h2>
+<p>Capture instance types, host count, accelerators per host, network interfaces, placement policy, operation settings and supported transport. Confirm which fabric the runtime selected. If one configuration falls back to a different data path, record that explicitly and test the intended mode before comparing designs. The <a href="https://docs.nvidia.com/deeplearning/nccl/user-guide/docs/troubleshooting.html" rel="noopener" target="_blank">NCCL troubleshooting guide</a> provides diagnostic categories for device mapping, local peer access and inter-host transport.</p>
+<p>For a purchasing decision, divide the total cost of the experiment by training steps that meet the same correctness checks, with a separately reported startup and recovery allowance. Repeat with expected contention and a documented failure rehearsal. Keep cost and time in separate rows so a faster but more expensive run does not read like an automatic saving. Publish the command configuration and raw timing summary beside the comparison so a later driver or collective release can be checked against the same workload.</p>
+<p>Record firmware and host driver versions along with switch configuration because a later software change can affect which path the benchmark actually uses.</p>
 <h2 id="sources"><a class="h-anchor" href="#sources" aria-hidden="true" tabindex="-1">#</a>Sources</h2>
 <ul>
 <li><a href="https://github.com/NVIDIA/nccl-tests/blob/master/doc/PERFORMANCE.md" rel="noopener" target="_blank">NVIDIA NCCL Tests performance methodology</a></li>
@@ -200,7 +207,7 @@ d.setAttribute('data-theme',t);
     <a class="chip" href="/topics/infrastructure/">Infrastructure</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/ethernet-vs-infiniband-networking-2026/">Ethernet vs. InfiniBand: Choosing the Right Network Fabric in 2026</a></h3>
     <p class="card-desc">A practical breakdown of when to use Ethernet and when InfiniBand makes sense — with key metrics, topology differences, and real-world guidance for cloud, HPC, and AI workloads.</p>
-    <div class="card-meta"><time datetime="2026-10-02">2 Oct 2026</time><span class="dot"></span><span>5 min read</span></div>
+    <div class="card-meta"><time datetime="2026-10-02">2 Oct 2026</time><span class="dot"></span><span>3 min read</span></div>
   </div>
 </article>
 <article class="card" data-card data-topics="|Quantum Computing|Enterprise AI|Emerging Technology|" data-search="quantum computing milestones, 2019–2025: what the evidence shows distinguish demonstrations in random circuit sampling, quantum error correction, annealing, and experimental qubit architectures. quantum computing enterprise ai emerging technology" data-topic="Enterprise AI">
@@ -209,7 +216,7 @@ d.setAttribute('data-theme',t);
     <a class="chip" href="/topics/enterprise-ai/">Enterprise AI</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/quantum-computing-race-2025/">Quantum Computing Milestones, 2019–2025: What the Evidence Shows</a></h3>
     <p class="card-desc">Distinguish demonstrations in random circuit sampling, quantum error correction, annealing, and experimental qubit architectures.</p>
-    <div class="card-meta"><time datetime="2026-11-18">18 Nov 2026</time><span class="dot"></span><span>2 min read</span></div>
+    <div class="card-meta"><time datetime="2026-11-18">18 Nov 2026</time><span class="dot"></span><span>6 min read</span></div>
   </div>
 </article>
 <article class="card" data-card data-topics="|Programming|Enterprise AI|Developer Tools|" data-search="ai coding assistants in 2026: a practical comparison compare ai coding assistants by workflow, review time, patch acceptance and access controls. includes a practical scoring method for an engineering-team pilot. programming enterprise ai developer tools" data-topic="Programming">
@@ -218,7 +225,7 @@ d.setAttribute('data-theme',t);
     <a class="chip" href="/topics/programming/">Programming</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/ai-coding-assistants-comparison-2026/">AI Coding Assistants in 2026: A Practical Comparison</a></h3>
     <p class="card-desc">Compare AI coding assistants by workflow, review time, patch acceptance and access controls. Includes a practical scoring method for an engineering-team pilot.</p>
-    <div class="card-meta"><time datetime="2026-11-16">16 Nov 2026</time><span class="dot"></span><span>2 min read</span></div>
+    <div class="card-meta"><time datetime="2026-11-16">16 Nov 2026</time><span class="dot"></span><span>4 min read</span></div>
   </div>
 </article></div>
     </div>

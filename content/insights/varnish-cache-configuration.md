@@ -118,10 +118,10 @@ sub vcl_backend_response {
 Your backend includes ESI tags in the HTML:
 ```html
 <esi:include src="/api/user-header" />
-<esi:include src="/content/article-body" ttl="3600" />
+<esi:include src="/content/article-body" />
 ```
 
-Varnish assembles the final response by fetching and caching each included fragment independently. The article body is cached for an hour; the user header fragment is not cached (or cached briefly). The result: most of the page comes from cache; only the personalised fragment hits the backend.
+Set each fragment’s freshness using its origin response headers and VCL. A personalised fragment must bypass shared caching. Treat the assembled response as personalised as well and verify it cannot be reused by a shared cache downstream. Start with two synthetic identities and test both request orders. See [Varnish ESI](https://www.varnish.org/docs/users-guide/esi/).
 
 ## Purging cached content
 
@@ -133,37 +133,42 @@ When content changes, you need to invalidate the cached version. Varnish provide
 varnishadm ban req.url ~ ^/blog/new-post
 ```
 
-**Surrogate keys / cache tags**: a more precise purging mechanism. Your backend sends a header like `Xkey: product-123 category-electronics` with the response. Varnish stores this and supports purging all objects tagged with a specific key:
-
-```vcl
-sub vcl_backend_response {
-    if (beresp.http.Xkey) {
-        set beresp.http.Xkey = beresp.http.Xkey;
-    }
-}
-
-// Purge by tag (requires the xkey VMOD)
-sub vcl_recv {
-    if (req.method == "PURGE") {
-        if (req.http.Xkey-Purge) {
-            ban("obj.http.Xkey ~ " + req.http.Xkey-Purge);
-        }
-    }
-}
-```
-
-**Instant purge**: send a `PURGE` request for a specific URL:
-
-```bash
-curl -X PURGE http://varnish-host/blog/specific-post
-```
-
-In production, restrict purge requests to trusted internal IPs.
+**Surrogate keys or cache tags** let an authenticated publishing service invalidate all objects associated with a known key. Use a supported module or provider feature, validate keys against the publishing event, and keep invalidation endpoints off the public listener. Exercise tag and URL invalidation in an isolated Varnish instance and verify that unrelated content remains cached. See [Varnish purging](https://www.varnish.org/docs/users-guide/purging/).
 
 ## Monitoring what Varnish is doing
 
-`varnishstat` shows real-time statistics: cache hit ratio, request rate, backend health. The metric to watch first: `cache_hit / (cache_hit + cache_miss)`. A well-configured Varnish instance handling content workloads should have a hit ratio above 90%.
+`varnishstat` shows real-time statistics: cache hit ratio, request rate, backend health. The metric to watch first: `cache_hit / (cache_hit + cache_miss)`. Break the ratio down by cacheability and route. Compare it to origin request volume and user-visible latency so a change in traffic mix is visible.
 
 `varnishlog` shows request-level logs with the cache decision for each request. Essential for debugging why specific requests aren't being cached.
 
 *Tuning a Varnish configuration or designing a caching strategy for a high-traffic site? [Happy to work through the specifics.](/contact/)*
+
+## Put the origin and VCL under the same cache contract
+
+Define policy by route family before writing a regular expression. For each family, document the owner, allowed methods, visibility, representation variants, tolerated age and the event that should invalidate stored content. Put cookie stripping behind a narrow allowlist of public representations that are demonstrably identical across sessions. A suffix alone says little about the meaning of a URL. Make the application return appropriate cache headers as well, so a route promoted out of the allowlist behaves predictably.
+
+The built-in VCL still matters when a custom subroutine falls through without an explicit return. A response can remain uncacheable because of its own directives or cookies even if the request entered the cache flow. Preserve those safeguards when layering policy. In a test fixture, compare a public route for two independent clients and ensure the test is capable of detecting a difference by using a separate private route with deliberately distinct responses. Confirm both the observed body and whether the origin handled the request. [Varnish built-in VCL](https://www.varnish.org/docs/users-guide/vcl-built-in-code/)
+
+Prefer a URL parser or well-scoped VMOD for normalization that needs to understand parameter structure. Test multiple values for the same parameter, URL encoding, case differences, sorting and the absence of optional parameters. Query parameters can be order-sensitive for some backends. Even a query-cleaning rule intended only to remove analytics data needs contract tests, including cases where the analytics parameter appears before, after or between representation parameters. Apply a different rule to URLs whose original form is part of an origin signature.
+
+## Test expiry with representative timing
+
+Grace specifies how long a stored response can remain available beyond its freshness lifetime, subject to the selected VCL and circumstances. Keep gives the cache additional opportunity to retain an expired object for a conditional backend request when a validator is available. An expired object that was evicted for storage pressure may be unavailable for either. Document the desired behaviour separately for healthy origin, busy origin and failed origin, then assert it in a harness that can control backend timing. [Varnish grace and keep](https://www.varnish.org/docs/users-guide/vcl-grace/)
+
+Consider a public article with a 60-second fresh lifetime and 120 seconds of permitted grace. A test introduced after 75 seconds can check a request against an expired object within the configured window. Another introduced after 190 seconds tests a period beyond both allowances. Use a body with a revision marker, begin with a known warm object and record whether and when a backend fetch occurs. Repeat from cold storage and under concurrent requests. In Varnish, tests written for `varnishtest` can simulate clients, backends and response timing in a repeatable run. [Varnish test-file reference](https://www.varnish.org/docs/reference/vtc/)
+
+Include negative responses in the policy. A public missing asset can justify a very brief stored 404, while a new product page undergoing publication may need a faster transition to the real response. Decide how to validate the transition from missing to present. Purges and bans may apply at a specific layer or point in a request path. Rehearse a control-plane action with two cache instances and check that both eventually serve the expected revision. Prefer self-contained versioned URLs for immutable assets, such as an image whose filename changes with its bytes.
+
+## Keep fragment freshness independently testable
+
+An assembled page can couple the public shell to several backend resources. Enumerate the independently fetched fragments and give each a cache policy at the fragment endpoint or in explicit VCL. An HTML attribute on an ESI include alone does not set the response freshness lifetime in Varnish. For a personalized fragment, use an explicit bypass and test controlled sessions with distinct expected output. When composition would require delicate propagation of user context, a separately fetched account panel can preserve the public shell and simplify verification. [Varnish Edge Side Includes](https://www.varnish.org/docs/users-guide/esi/)
+
+Test missing and slow fragments against the publisher’s intended experience. A catalogue page might continue to work with recommendations omitted. An error on the asset that holds the main content could be required to show a controlled error instead. Measure first byte, completed transfers and correct visible output together. A header can already have been sent when a streamed include fails, so monitoring just the original HTTP status misses some of the customer-facing result. Limit and observe the number of backend fetches that one assembly can trigger.
+
+## Count the requests that actually reach the origin
+
+Suppose that 10,000 incoming requests reach a test cache over five minutes. Of those, 7,500 serve a fresh object without origin work, 800 serve stale content, 1,200 pass through and 500 are direct misses. During the window, suppose stale handling starts 160 additional refresh fetches. The hypothetical origin count is then 1,860, so 8,140 fetches were avoided relative to a one-origin-request-per-client baseline. This simplification assumes a workload without ESI, redirects or extra retries. A real deployment’s origin-side count, correlated by route and backend, handles those cases more reliably.
+
+Keep the same labels at the edge and origin for a limited rollout. Compare origin rate and latency with response correctness, hit categories, evictions and memory pressure. Record concentrations by route and by newly invalidated content. The important decision may be to alter freshness for one high-cost response family instead of moving an instance-wide hit ratio. Keep the VCL version with the test runs so a later incident can be replayed against its exact policy.
+
+Treat invalidation as a publishing permission. Restrict it to the service that changes the content, capture which revision triggered it and log what scope was affected. Define a completion check that requests the expected representation through the normal customer path. Broad invalidation can turn a quiet correctness change into a wave of origin traffic, so measure the recovery window in a limited environment. [Varnish purges and bans](https://www.varnish.org/docs/users-guide/purging/)

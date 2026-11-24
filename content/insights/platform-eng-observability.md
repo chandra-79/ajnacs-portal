@@ -38,6 +38,9 @@ spec:
     matchLabels:
       app: fluent-bit
   template:
+    metadata:
+      labels:
+        app: fluent-bit
     spec:
       containers:
       - name: fluent-bit
@@ -61,10 +64,10 @@ The developer requirement: emit structured JSON logs to stdout. The platform han
 
 **Metrics**: the platform installs a Prometheus instance (or uses a managed equivalent) and scrapes metrics from all services automatically using Kubernetes service discovery.
 
-Auto-instrumented metrics using OpenTelemetry operators: install the OpenTelemetry Operator in the cluster, annotate workloads for auto-instrumentation, and the operator injects the OpenTelemetry agent as a sidecar — collecting HTTP request metrics, runtime metrics, and infrastructure metrics without application code changes.
+Configure an OpenTelemetry Instrumentation resource and annotate the intended workloads. The Operator's injection behavior and the application signals available depend on the language and enabled instrumentation. Configure the Collector and infrastructure metrics separately.
 
 ```yaml
-## Namespace annotation enables auto-instrumentation for all pods
+## Illustrative namespace preference for compatible Python workloads with an Instrumentation resource configured
 apiVersion: v1
 kind: Namespace
 metadata:
@@ -162,3 +165,34 @@ A platform observability implementation is complete when:
 5. A new engineer joining a team can find their service's logs, metrics, and traces in under 10 minutes without assistance
 
 If any of these are not true, the observability coverage has gaps. Measure them explicitly and close them.
+
+## Specify the first request you expect to find
+
+Take a service's initial smoke request as the acceptance test for platform observability. Give the synthetic caller a fresh request ID and note the deployment revision, service identity, environment, timestamp, route and expected status. Use an innocuous endpoint and synthetic values. After making the request, verify that an engineer can find the expected counter movement, a structured log from the expected revision and, if the request was sampled, a trace with the dependencies the test exercised.
+
+| Layer | Evidence to record |
+| --- | --- |
+| Application | Received request and expected response, log and emitted signal inventory |
+| Collector or scraper | Signal accepted and forwarded, or reason it was dropped |
+| Backend | Searchable resource identity and reported delay |
+| Developer view | Correct service and time window, authorized access, ownership link |
+
+Before declaring a missing trace, check correlation and sampling. A trace may exist but use a different service name or time window. A sampled-out trace and failed export call for different responses. Keep one synthetic trace with a known sampling decision as a pipeline check. Also create a failed fixture, such as a missing test exporter route, and verify that telemetry health diagnostics reveal where collection stopped. Publish the join keys the platform supports and avoid placing request IDs or end-user identifiers in metric labels. [OpenTelemetry resource semantic conventions](https://opentelemetry.io/docs/specs/semconv/resource/) [Prometheus instrumentation practices](https://prometheus.io/docs/practices/instrumentation/)
+
+## Measure collection delay separately from signal coverage
+
+Keep two measures for each supported stack. Coverage asks whether the expected signal appeared. Delay asks when it became queryable after the actual event. For a synthetic deployment check across 24 service revisions, suppose 22 produce an expected metric within 90 seconds, one produces it after 140 seconds, and one never appears during a 10-minute cutoff. Report 91.7% within target and 95.8% eventual visibility within the test window. Include the cutoff, evaluation timestamp and late results in the evidence. Disable caching in the health query or record its refresh interval because it can shift observed visibility.
+
+Check whether any failing services share a language, instrumentation mode or pipeline configuration. Java and Python auto-instrumentation, for example, use language-specific configuration and dependencies. OpenTelemetry's Operator activation path also depends on a configured Instrumentation resource and on how the workload is annotated. Some collectors, sidecars and application instrumentation are distinct parts of a deployment. Record the exact operator and runtime versions alongside the test. Add application-owned business metrics and custom spans where generic libraries have no way to infer the important event. [OpenTelemetry Operator instrumentation](https://opentelemetry.io/docs/platforms/kubernetes/operator/automatic/)
+
+## Calculate a series budget before opening new labels
+
+A common service name and bounded route template can support useful aggregation. A label containing raw URL paths, orders, users or request IDs can create more active series as traffic and customer counts grow. Estimate a ceiling for the combinations a change would introduce, then confirm what the backend actually sees. For an illustrative metric, eight routes, three methods, five response classes and twelve replicas give up to 1,440 combinations before a histogram's associated bucket series and other labels. Multiplying by ten bucket series and two summary series can give up to 17,280 series for a classic histogram under those inputs. Real combinations are usually sparse and histogram implementation details matter. Use the estimate to guide a representative staging test and inspect cardinality over a full deployment cycle. [Prometheus instrumentation practices](https://prometheus.io/docs/practices/instrumentation/)
+
+Set an explicit owner for cardinality review, a per-signal retention expectation, and access policies for production data. Dropping labels can break dashboards and alerts. Before changing the shape of a series, query recent rules and views for label usage, run old and proposed configurations on test traffic, and compare signal counts and queries. Ensure redaction and payload handling preserve the troubleshooting information teams actually use. Reassess the budget when traffic, tenants, routes or replicas change materially.
+
+## Verify that an alert gets a decision
+
+Send each platform alert to a named owner and attach a procedure that starts from the observed condition. Separate receiver tests from alert condition tests. A known synthetic failure can establish whether the rule transitions, whether routing and escalation operate as configured, and how long acknowledgement actually takes. Test a small traffic window and input with absent data. An error ratio from one request is weak paging evidence for a busy on-call team even if it is arithmetically large.
+
+Pair each important alert with a live service objective, a reasonable threshold, an urgent or routine interpretation, and a way to see whether users are affected. After a drill, review both the traffic symptom and receiver timing. Check for a scenario where telemetry delivery fails while the service remains healthy. Its platform owner needs evidence of missing telemetry, and its application owner needs an honest summary of the available signals. Repeat the journey after changing the default templates so a dashboard's existence is backed by a usable start-to-finish workflow. [Google SRE Workbook on alerting on SLOs](https://sre.google/workbook/alerting-on-slos/)

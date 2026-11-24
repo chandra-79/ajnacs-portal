@@ -50,7 +50,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Observability with OpenTelemetry: Getting the Three Pillars Working Together","description":"Metrics, logs, and traces are only useful when they're correlated. OpenTelemetry provides the standard for instrumenting your services — here's how to implement it, connect the signals, and build the observability that actually reduces diagnosis time.","datePublished":"2024-12-31","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/observability-opentelemetry-2026/","image":"https://ajnacs.com/assets/og/articles/observability-opentelemetry-2026.png?v=bf8c0d99fcc3","keywords":"Observability, Cloud Architecture, DevSecOps","articleSection":"Observability","wordCount":1128}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Observability with OpenTelemetry: Getting the Three Pillars Working Together","description":"Metrics, logs, and traces are only useful when they're correlated. OpenTelemetry provides the standard for instrumenting your services — here's how to implement it, connect the signals, and build the observability that actually reduces diagnosis time.","datePublished":"2024-12-31","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/observability-opentelemetry-2026/","image":"https://ajnacs.com/assets/og/articles/observability-opentelemetry-2026.png?v=bf8c0d99fcc3","keywords":"Observability, Cloud Architecture, DevSecOps","articleSection":"Observability","wordCount":2301}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Observability with OpenTelemetry: Getting the Three Pillars Working Together"}]}</script>
 </head>
 <body class="article-frame" data-topic="Observability">
@@ -94,7 +94,7 @@ d.setAttribute('data-theme',t);
         <a class="article-byline" href="/about/#chandra-lanka">Chandra Lanka</a>
         <span class="dot" aria-hidden="true"></span><time datetime="2024-12-31">31 Dec 2024</time>
         <span class="dot" aria-hidden="true"></span><span>Updated <time datetime="2026-11-23">23 Nov 2026</time></span>
-        <span class="dot"></span><span>5 min read</span>
+        <span class="dot"></span><span>10 min read</span>
         <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
       </div>
     </header>
@@ -102,7 +102,7 @@ d.setAttribute('data-theme',t);
     <div class="article-hero" data-topic="Observability"><img data-article-art="observability-opentelemetry-2026" src="/assets/covers/observability-opentelemetry-2026.svg?v=fc9ed92eedfa" width="1280" height="720" alt="Conceptual illustration for Observability with OpenTelemetry: Getting the Three Pillars Working Together: Signals, Context, Diagnosis." decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
-  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#opentelemetry-what-it-is-and-what-it-isn39t">OpenTelemetry: what it is and what it isn&#39;t</a></li><li><a href="#traces-the-most-valuable-signal-for-distributed-systems">Traces: the most valuable signal for distributed systems</a></li><li><a href="#metrics-the-right-signals-to-alert-on">Metrics: the right signals to alert on</a></li><li><a href="#logs-structured-correlated-with-trace-ids">Logs: structured, correlated with trace IDs</a></li><li><a href="#the-otel-collector-centralise-your-pipeline">The OTel Collector: centralise your pipeline</a></li><li><a href="#the-grafana-stack-as-a-starting-point">The Grafana stack as a starting point</a></li></ol>
+  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#opentelemetry-what-it-is-and-what-it-isn39t">OpenTelemetry: what it is and what it isn&#39;t</a></li><li><a href="#traces-the-most-valuable-signal-for-distributed-systems">Traces: the most valuable signal for distributed systems</a></li><li><a href="#metrics-the-right-signals-to-alert-on">Metrics: the right signals to alert on</a></li><li><a href="#logs-structured-correlated-with-trace-ids">Logs: structured, correlated with trace IDs</a></li><li><a href="#the-otel-collector-centralise-your-pipeline">The OTel Collector: centralise your pipeline</a></li><li><a href="#the-grafana-stack-as-a-starting-point">The Grafana stack as a starting point</a></li><li><a href="#follow-one-known-request-across-all-three-signals">Follow one known request across all three signals</a></li><li><a href="#check-units-cardinality-and-sampling-before-dashboards">Check units, cardinality and sampling before dashboards</a></li><li><a href="#measure-buffering-and-loss-at-each-boundary">Measure buffering and loss at each boundary</a></li><li><a href="#treat-configuration-as-a-versioned-operating-artifact">Treat configuration as a versioned operating artifact</a></li><li><a href="#run-a-diagnosis-exercise-before-declaring-success">Run a diagnosis exercise before declaring success</a></li></ol>
 </nav></div>
     <div class="article-copy">
       <div class="prose">
@@ -165,9 +165,9 @@ LongCounter requestCounter = meter.counterBuilder(&quot;http.server.requests&quo
     .setDescription(&quot;Total HTTP requests&quot;)
     .build();
 
-DoubleHistogram latencyHistogram = meter.histogramBuilder(&quot;http.server.duration&quot;)
+DoubleHistogram latencyHistogram = meter.histogramBuilder(&quot;http.server.request.duration&quot;)
     .setDescription(&quot;HTTP request duration&quot;)
-    .setUnit(&quot;ms&quot;)
+    .setUnit(&quot;s&quot;)
     .build();
 </code></pre>
 <h2 id="logs-structured-correlated-with-trace-ids"><a class="h-anchor" href="#logs-structured-correlated-with-trace-ids" aria-hidden="true" tabindex="-1">#</a>Logs: structured, correlated with trace IDs</h2>
@@ -178,7 +178,7 @@ DoubleHistogram latencyHistogram = meter.histogramBuilder(&quot;http.server.dura
   &quot;timestamp&quot;: &quot;2026-06-07T14:23:01Z&quot;,
   &quot;level&quot;: &quot;ERROR&quot;,
   &quot;service&quot;: &quot;order-service&quot;,
-  &quot;trace_id&quot;: &quot;a3b4c5d6e7f8a9b0&quot;,
+  &quot;trace_id&quot;: &quot;a3b4c5d6e7f8a9b0b1c2d3e4f5a6b7c8&quot;,
   &quot;span_id&quot;: &quot;1234567890abcdef&quot;,
   &quot;message&quot;: &quot;Payment processing failed&quot;,
   &quot;error.type&quot;: &quot;PaymentDeclinedException&quot;,
@@ -195,32 +195,32 @@ DoubleHistogram latencyHistogram = meter.histogramBuilder(&quot;http.server.dura
 <li>Add sampling, filtering, and enrichment in one place</li>
 <li>Reduce the number of connections each service needs to maintain</li>
 </ul>
-<p>Collector configuration:</p>
+<p>For an isolated development environment, this Collector runs on the same host as the demo clients. Use only the intended network interface and authenticated, encrypted connections when traffic crosses a trust boundary. Use a Collector distribution that includes each selected receiver and exporter. Record the histogram in seconds and carry the HTTP attributes required for your analysis.</p>
 <pre><code class="language-yaml">receivers:
   otlp:
     protocols:
       grpc:
-        endpoint: 0.0.0.0:4317
+        endpoint: 127.0.0.1:4317
       http:
-        endpoint: 0.0.0.0:4318
+        endpoint: 127.0.0.1:4318
 
 processors:
   batch:
   resource:
     attributes:
-      - key: deployment.environment
-        value: production
+      - key: deployment.environment.name
+        value: development
         action: upsert
 
 exporters:
   prometheus:
-    endpoint: &quot;0.0.0.0:8889&quot;
+    endpoint: &quot;127.0.0.1:8889&quot;
   otlp/tempo:
     endpoint: tempo:4317
     tls:
       insecure: true
-  loki:
-    endpoint: http://loki:3100/loki/api/v1/push
+  otlphttp/loki:
+    endpoint: http://loki:3100/otlp
 
 service:
   pipelines:
@@ -235,13 +235,31 @@ service:
     logs:
       receivers: [otlp]
       processors: [batch, resource]
-      exporters: [loki]
+      exporters: [otlphttp/loki]
 </code></pre>
 <h2 id="the-grafana-stack-as-a-starting-point"><a class="h-anchor" href="#the-grafana-stack-as-a-starting-point" aria-hidden="true" tabindex="-1">#</a>The Grafana stack as a starting point</h2>
 <p>For teams starting from scratch: Prometheus (metrics) + Tempo (traces) + Loki (logs) + Grafana (dashboards and querying) is a cohesive, open-source observability stack that receives OTel signals natively.</p>
 <p>Grafana&#39;s Explore view allows correlating all three signals: start with a metric anomaly, link to logs, link to a trace. This is the workflow that compresses diagnosis time.</p>
 <p>For teams at scale or with managed service requirements: Datadog, Honeycomb, and Grafana Cloud all support OTel natively — instrument once, use managed infrastructure.</p>
 <p><em>Building observability for a new system or migrating from a vendor-specific instrumentation library? <a href="/contact/">Happy to compare approaches.</a></em></p>
+<h2 id="follow-one-known-request-across-all-three-signals"><a class="h-anchor" href="#follow-one-known-request-across-all-three-signals" aria-hidden="true" tabindex="-1">#</a>Follow one known request across all three signals</h2>
+<p>Pick a route with a controlled slow or failed request in a test environment. Mark each run with a synthetic identifier and use a known sampling policy. Begin with a service metric grouped by the low-cardinality route template and outcome. From that dashboard, open a trace for the same interval and identify the expensive span. Open log records for that trace and verify that their service identity, timestamps and span identifiers match. Repeat across an asynchronous worker so the exercise includes context propagation across a queue. A clean chart gives little assurance when it cannot be connected to an actual operation.</p>
+<p>Keep the stable resource attributes consistent across SDKs and collectors. Set a service identity that distinguishes the owning service and deployment environment. Keep raw resource identifiers and full request paths out of metric dimensions. If a route template can represent the request, use the template. OpenTelemetry’s HTTP metric conventions specify <code>http.server.request.duration</code> in seconds. Track the SDK and instrumentation version when changing conventions so older and newer names or units cannot silently change an alert. <a href="https://opentelemetry.io/docs/specs/semconv/http/http-metrics/" rel="noopener" target="_blank">OpenTelemetry HTTP metric conventions</a></p>
+<p>Exemplars can associate selected metric observations with trace context while keeping trace identifiers outside the series key. Test that the backend displays exemplars and that their referenced traces survive the selected sampler and retention period. A usable link requires compatible configuration in the metric producer, storage and tracing backend. Record the fallback query if an exemplar is absent. Logs and traces should use the agreed retention and redaction policies even during test runs. <a href="https://opentelemetry.io/docs/specs/otel/metrics/data-model/" rel="noopener" target="_blank">OpenTelemetry metrics data model</a></p>
+<h2 id="check-units-cardinality-and-sampling-before-dashboards"><a class="h-anchor" href="#check-units-cardinality-and-sampling-before-dashboards" aria-hidden="true" tabindex="-1">#</a>Check units, cardinality and sampling before dashboards</h2>
+<p>Choose histogram buckets around the service objective. If the objective is 300 ms, include or derive a boundary appropriate to the metric system and make sure every instance exports a compatible unit and histogram scheme. Compare aggregate population latency from the histogram. Averaging pod-level p99 values does not produce the fleet’s p99, and leaving slow failed requests out can flatter the result. Keep success and error populations visible and attach the number of observations when reviewing a low-traffic route.</p>
+<p>Estimate series growth before deploying a new attribute combination. In an illustrative upper-bound sketch, 40 routes, six outcomes and 12 instances can create up to 2,880 combinations for one instrument when all combinations are observed and the backend retains instance identity. Adding 500 customer identifiers would multiply that bound to 1.44 million even before histogram bucket representation. Actual cardinality depends on which combinations occur and how the backend stores them. Remove customer IDs from the metric key and use approved trace or log attributes for individual investigations.</p>
+<p>If tail sampling keeps all errors and a small fraction of normal traces, a trace-store error percentage measures the retained sample. Build the service error-rate objective from a representative metric population instead. Set separate controls for fidelity and cost. For example, keep enough normal traffic to observe route diversity, and verify that latency or errors still get captured when cardinality is high. A published sampling policy should identify what is systematically underrepresented, including events where the route was never recognised.</p>
+<h2 id="measure-buffering-and-loss-at-each-boundary"><a class="h-anchor" href="#measure-buffering-and-loss-at-each-boundary" aria-hidden="true" tabindex="-1">#</a>Measure buffering and loss at each boundary</h2>
+<p>Write down the expected failure behaviour for the SDK, collector, exporter and backend. At ingress, count data accepted and refused. Between processors, check whether filters and samplers remove data intentionally. At egress, check queue pressure, retryable exporter failures and records ultimately sent or lost. Choose per-signal units such as spans, metric points or log records. OTLP requests can contain batches, so a request count does not necessarily describe the volume affected. <a href="https://opentelemetry.io/docs/collector/internal-telemetry/" rel="noopener" target="_blank">Collector internal telemetry</a></p>
+<p>Consider an illustrative exporter receiving 4,000 kept spans per second. A 90-second backend pause creates 360,000 spans waiting to export when no traffic drains. At 700 encoded bytes per span, that is around 252 MB of payload in decimal units. This leaves out batch headers, compression, queue indexes and in-memory representation. Once the backend can accept 6,000 spans per second and arrivals continue at 4,000, clearing the illustrative backlog takes about three minutes. Verify actual disk or memory use, exporter limits and queue units with the specific build and workload. <a href="https://opentelemetry.io/docs/collector/resiliency/" rel="noopener" target="_blank">Collector resiliency</a></p>
+<p>Persistent queue storage can help a collector survive a restart, depending on configuration and data already accepted. Test the cases it leaves open, including filled storage, lost volumes, export retries that expire and a collector that never receives the span. Plot delay and loss separately. Alerting based on the eventual historical arrival of telemetry cannot restore an incident page that should have appeared minutes earlier. Where response time matters, report the service outcome during collector disconnection and ensure exports cannot dominate the application’s critical path.</p>
+<h2 id="treat-configuration-as-a-versioned-operating-artifact"><a class="h-anchor" href="#treat-configuration-as-a-versioned-operating-artifact" aria-hidden="true" tabindex="-1">#</a>Treat configuration as a versioned operating artifact</h2>
+<p>Pin the collector build and distributions used by the test and production environments. Validate that configured components exist in that build and that the rendered configuration uses intended settings for transport and resource attributes. Keep an integration test that submits a synthetic metric, log and span via the normal SDK path, then queries the actual backend. For Loki, current guidance uses its OTLP ingestion path and an OTLP HTTP exporter. Check the receiving system’s documentation while replacing older exporter examples and validate attribute handling in the storage query. <a href="https://grafana.com/docs/loki/latest/send-data/otel/" rel="noopener" target="_blank">Loki OTLP ingestion</a></p>
+<p>Use separate credentials and restricted endpoints for ingestion and queries, and verify that redaction happens before export to a shared backend. Test with invented payment and identity markers, then query storage to confirm the approved attributes survived and the markers did not. Record the reason for each filter. An overly broad rule can make a critical outage appear healthy because all failed requests were removed at collection.</p>
+<h2 id="run-a-diagnosis-exercise-before-declaring-success"><a class="h-anchor" href="#run-a-diagnosis-exercise-before-declaring-success" aria-hidden="true" tabindex="-1">#</a>Run a diagnosis exercise before declaring success</h2>
+<p>Invite someone who did not build the instrumentation to diagnose a simulated slow dependency. Give them the customer-visible symptom, approximate time and environment. Measure how long they take to identify the affected group, locate a representative trace, confirm the dependency and find a person who can act. Keep short notes on broken links and decisions requiring code access. Repeat after a collector change, deploy and mitigation drill. A working telemetry pipeline should help the next person answer the next question without relying on the authors’ memory of the configuration.</p>
+<p>Compare time to diagnosis with the previous instrumentation under the same exercise. Record which actions depended on logs, whether the trace crossed the complete application flow and which links were available from the alert itself. Keep high-volume maintenance traffic and synthetic traffic visibly distinguishable. When exporting to a second backend during a migration, compare signal units and route groupings, delivery totals, log-field masking and a handful of selected trace IDs. Dual export can raise collector load, so record resource use and repeat the failure exercise at anticipated volume before removing the original backend.</p>
 
       </div>
 <section class="field-worksheet worked-example" aria-labelledby="worked-example">
@@ -322,7 +340,7 @@ service:
     <a class="chip" href="/topics/devsecops/">DevSecOps</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/platform-engineering-idp-2026/">Platform Onboarding: Measure the Path to a First Deployment</a></h3>
     <p class="card-desc">Pilot a self-service path, measure time to a first qualifying deployment, and track completion, controls, and support effort.</p>
-    <div class="card-meta"><time datetime="2026-11-20">20 Nov 2026</time><span class="dot"></span><span>2 min read</span></div>
+    <div class="card-meta"><time datetime="2026-11-20">20 Nov 2026</time><span class="dot"></span><span>4 min read</span></div>
   </div>
 </article>
 <article class="card" data-card data-topics="|Cloud Architecture|DevSecOps|Infrastructure|" data-search="serverless vs containers: an honest comparison for 2026 neither is universally better. the answer depends on your workload profile, your team&#39;s operational maturity, and — honestly — your tolerance for cold starts. cloud architecture devsecops infrastructure" data-topic="Cloud Architecture">
@@ -331,7 +349,7 @@ service:
     <a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/serverless-vs-containers-2026/">Serverless vs Containers: An Honest Comparison for 2026</a></h3>
     <p class="card-desc">Neither is universally better. The answer depends on your workload profile, your team&#39;s operational maturity, and — honestly — your tolerance for cold starts.</p>
-    <div class="card-meta"><time datetime="2026-11-13">13 Nov 2026</time><span class="dot"></span><span>4 min read</span></div>
+    <div class="card-meta"><time datetime="2026-11-13">13 Nov 2026</time><span class="dot"></span><span>9 min read</span></div>
   </div>
 </article>
 <article class="card" data-card data-topics="|Cloud Architecture|DevSecOps|" data-search="chaos engineering: testing reliability before production tests it for you chaos engineering injects controlled failures to validate that systems actually behave as designed under real-world failure conditions. the gap between the architecture diagram and production behavior is where reliability lives. cloud architecture devsecops" data-topic="Cloud Architecture">
@@ -340,7 +358,7 @@ service:
     <a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/chaos-engineering-practices/">Chaos Engineering: Testing Reliability Before Production Tests It For You</a></h3>
     <p class="card-desc">Chaos engineering injects controlled failures to validate that systems actually behave as designed under real-world failure conditions. The gap between the architecture diagram and production behavior is where reliability lives.</p>
-    <div class="card-meta"><time datetime="2026-11-11">11 Nov 2026</time><span class="dot"></span><span>4 min read</span></div>
+    <div class="card-meta"><time datetime="2026-11-11">11 Nov 2026</time><span class="dot"></span><span>7 min read</span></div>
   </div>
 </article></div>
     </div>
@@ -388,7 +406,17 @@ service:
   <p class="reader-note">Saved in this browser only — these settings do not follow you to another device.</p>
 </div>
 <button class="focus-exit" id="focusExit" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h6V3M21 9h-6V3M3 15h6v6M21 15h-6v6"/></svg> Exit focus</button>
-
+<div class="chapter-bar" id="chapterBar">
+  <div class="chapter-where">
+    <b>Observability with OpenTelemetry: Getting the Three Pillars Working Together</b>
+    <span>Observability</span>
+  </div>
+  <span class="chapter-left" id="chapterLeft"></span>
+  <nav class="chapter-step" aria-label="Article navigation">
+    <a href="/insights/mlops-pipelines-azure-sagemaker/" aria-label="Previous: MLOps Pipelines That Actually Work: Lessons from Azure ML and SageMaker"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a>
+    <a href="/insights/service-mesh-istio-linkerd/" aria-label="Next: Service Mesh in Practice: When Istio or Linkerd Is Worth the Complexity"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
+  </nav>
+</div>
 </main>
 
 <footer class="site-footer">

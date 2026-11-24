@@ -14,18 +14,18 @@
 <meta property="og:title" content="Service Mesh in Practice: When Istio or Linkerd Is Worth the Complexity">
 <meta property="og:description" content="Service meshes promise mTLS, traffic management, and observability without code changes. They deliver, but the operational overhead is real. Here&#39;s how to…">
 <meta property="og:url" content="https://ajnacs.com/insights/service-mesh-istio-linkerd/">
-<meta property="og:image" content="https://ajnacs.com/assets/og/articles/service-mesh-istio-linkerd.png?v=29ee2bb741e2">
+<meta property="og:image" content="https://ajnacs.com/assets/og/articles/service-mesh-istio-linkerd.png?v=6f2cba9c0218">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Conceptual illustration for Service Mesh in Practice: When Istio or Linkerd Is Worth the Complexity: Network, Service, Routing.">
+<meta property="og:image:alt" content="Conceptual illustration for Service Mesh in Practice: When Istio or Linkerd Is Worth the Complexity: Client, Network, Service.">
 <meta property="article:published_time" content="2025-01-14">
 <meta property="article:modified_time" content="2026-11-23">
 <meta property="og:image:type" content="image/png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Service Mesh in Practice: When Istio or Linkerd Is Worth the Complexity">
 <meta name="twitter:description" content="Service meshes promise mTLS, traffic management, and observability without code changes. They deliver, but the operational overhead is real. Here&#39;s how to…">
-<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/service-mesh-istio-linkerd.png?v=29ee2bb741e2">
-<meta name="twitter:image:alt" content="Conceptual illustration for Service Mesh in Practice: When Istio or Linkerd Is Worth the Complexity: Network, Service, Routing.">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/service-mesh-istio-linkerd.png?v=6f2cba9c0218">
+<meta name="twitter:image:alt" content="Conceptual illustration for Service Mesh in Practice: When Istio or Linkerd Is Worth the Complexity: Client, Network, Service.">
 
 <link rel="icon" href="/favicon.ico?v=8affdbd5" sizes="any">
 <link rel="icon" href="/images/ajna-mark.svg?v=8affdbd5" type="image/svg+xml">
@@ -50,7 +50,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Service Mesh in Practice: When Istio or Linkerd Is Worth the Complexity","description":"Service meshes promise mTLS, traffic management, and observability without code changes. They deliver, but the operational overhead is real. Here's how to decide if a service mesh belongs in your architecture — and which one if so.","datePublished":"2025-01-14","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/service-mesh-istio-linkerd/","image":"https://ajnacs.com/assets/og/articles/service-mesh-istio-linkerd.png?v=29ee2bb741e2","keywords":"Cloud Architecture, Containers, Systems","articleSection":"Cloud Architecture","wordCount":926}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Service Mesh in Practice: When Istio or Linkerd Is Worth the Complexity","description":"Service meshes promise mTLS, traffic management, and observability without code changes. They deliver, but the operational overhead is real. Here's how to decide if a service mesh belongs in your architecture — and which one if so.","datePublished":"2025-01-14","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/service-mesh-istio-linkerd/","image":"https://ajnacs.com/assets/og/articles/service-mesh-istio-linkerd.png?v=6f2cba9c0218","keywords":"Cloud Architecture, Containers, Systems","articleSection":"Cloud Architecture","wordCount":1845}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Service Mesh in Practice: When Istio or Linkerd Is Worth the Complexity"}]}</script>
 </head>
 <body class="article-frame" data-topic="Cloud Architecture">
@@ -94,20 +94,20 @@ d.setAttribute('data-theme',t);
         <a class="article-byline" href="/about/#chandra-lanka">Chandra Lanka</a>
         <span class="dot" aria-hidden="true"></span><time datetime="2025-01-14">14 Jan 2025</time>
         <span class="dot" aria-hidden="true"></span><span>Updated <time datetime="2026-11-23">23 Nov 2026</time></span>
-        <span class="dot"></span><span>4 min read</span>
+        <span class="dot"></span><span>8 min read</span>
         <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
       </div>
     </header>
 
-    <div class="article-hero" data-topic="Cloud Architecture"><img data-article-art="service-mesh-istio-linkerd" src="/assets/covers/service-mesh-istio-linkerd.svg?v=45720b6b7d3a" width="1280" height="720" alt="Conceptual illustration for Service Mesh in Practice: When Istio or Linkerd Is Worth the Complexity: Network, Service, Routing." decoding="async" fetchpriority="high"></div>
+    <div class="article-hero" data-topic="Cloud Architecture"><img data-article-art="service-mesh-istio-linkerd" src="/assets/covers/service-mesh-istio-linkerd.svg?v=68645f256f34" width="1280" height="720" alt="Conceptual illustration for Service Mesh in Practice: When Istio or Linkerd Is Worth the Complexity: Client, Network, Service." decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
-  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#what-a-service-mesh-actually-provides">What a service mesh actually provides</a></li><li><a href="#when-a-service-mesh-is-worth-it">When a service mesh is worth it</a></li><li><a href="#when-a-service-mesh-is-probably-not-worth-it">When a service mesh is probably not worth it</a></li><li><a href="#istio-vs-linkerd">Istio vs Linkerd</a></li><li><a href="#the-migration-path-if-you-decide-to-adopt">The migration path if you decide to adopt</a></li></ol>
+  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#what-a-service-mesh-actually-provides">What a service mesh actually provides</a></li><li><a href="#when-a-service-mesh-is-worth-it">When a service mesh is worth it</a></li><li><a href="#when-a-service-mesh-is-probably-not-worth-it">When a service mesh is probably not worth it</a></li><li><a href="#istio-vs-linkerd">Istio vs Linkerd</a></li><li><a href="#the-migration-path-if-you-decide-to-adopt">The migration path if you decide to adopt</a></li><li><a href="#inventory-the-traffic-you-intend-to-protect">Inventory the traffic you intend to protect</a></li><li><a href="#choose-the-proxy-placement-by-traffic-requirements">Choose the proxy placement by traffic requirements</a></li><li><a href="#measure-the-cost-of-equivalent-behaviour">Measure the cost of equivalent behaviour</a></li><li><a href="#rehearse-policy-and-certificate-changes">Rehearse policy and certificate changes</a></li><li><a href="#keep-the-evidence-next-to-the-operating-instructions">Keep the evidence next to the operating instructions</a></li></ol>
 </nav></div>
     <div class="article-copy">
       <div class="prose">
 <p class="article-opening">A service mesh earns its operational cost only when its capabilities solve a problem the workload actually has.</p>
-<p>A service mesh intercepts all traffic between services in a cluster via sidecar proxies (or, in newer implementations, node-level proxies), giving you mTLS encryption, fine-grained traffic management, and automatic observability on every service-to-service call — without any changes to the services themselves.</p>
+<p>A service mesh can bring encryption, policy and telemetry to traffic it captures for enrolled workloads. Coverage depends on deployment mode, protocols, exclusions and routing configuration. Verify which paths actually traverse the data plane before making a security or reliability claim.</p>
 <p>The proposition is genuinely powerful. The operational reality is that service meshes add significant complexity, and that complexity has a cost that&#39;s easy to underestimate before you&#39;re running one in production.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
 <p><strong>Proxy overhead at equivalent protection.</strong> With the same traffic, mTLS and retry policy, measure p99 and proxy CPU per 1,000 requests/s. If p99 rises from 40 ms to 46 ms, that is 6 ms added for the test. Repeat across retries and failure cases before selecting a mesh.</p>
@@ -115,7 +115,7 @@ d.setAttribute('data-theme',t);
 <h2 id="what-a-service-mesh-actually-provides"><a class="h-anchor" href="#what-a-service-mesh-actually-provides" aria-hidden="true" tabindex="-1">#</a>What a service mesh actually provides</h2>
 <p><strong>Mutual TLS (mTLS) between services</strong>: every service-to-service connection is encrypted and both sides authenticate. Without a mesh, services in a Kubernetes cluster communicate over plaintext unless the application implements TLS. With a mesh, mTLS is automatic.</p>
 <p><strong>Traffic management</strong>: weighted traffic splitting (send 5% of traffic to the new version of a service), circuit breaking, retry policies, timeout configuration, fault injection for testing. All configured in the mesh&#39;s control plane rather than in application code.</p>
-<p><strong>Observability without instrumentation</strong>: because the sidecar proxies intercept all traffic, they can generate metrics (request rate, error rate, latency per service pair) and traces (spans for every service-to-service call) without any code changes. This is the feature that often sells the mesh to teams that haven&#39;t yet invested in application instrumentation.</p>
+<p><strong>Proxy telemetry</strong> can give you request rates, error rates and latency for supported traffic. A complete distributed trace also needs context propagation across service boundaries. Add application spans where proxy data cannot show what happened inside the service. See the <a href="https://istio.io/latest/about/faq/distributed-tracing/" rel="noopener" target="_blank">Istio tracing FAQ</a>.</p>
 <p><strong>Policy enforcement</strong>: AuthorizationPolicy resources (in Istio&#39;s model) define which services can communicate with which. A payments service can be locked down to only accept traffic from the API gateway and the order service.</p>
 <h2 id="when-a-service-mesh-is-worth-it"><a class="h-anchor" href="#when-a-service-mesh-is-worth-it" aria-hidden="true" tabindex="-1">#</a>When a service mesh is worth it</h2>
 <p><strong>You have a security requirement for service-to-service encryption</strong>: in regulated environments where all traffic must be encrypted (PCI DSS, HIPAA), mTLS across the cluster is a requirement. A service mesh is the most operationally feasible way to achieve this at scale.</p>
@@ -125,7 +125,7 @@ d.setAttribute('data-theme',t);
 <h2 id="when-a-service-mesh-is-probably-not-worth-it"><a class="h-anchor" href="#when-a-service-mesh-is-probably-not-worth-it" aria-hidden="true" tabindex="-1">#</a>When a service mesh is probably not worth it</h2>
 <p><strong>Small number of services</strong>: for 5-10 services, the operational overhead of running a mesh control plane, debugging proxy misconfigurations, and understanding how the mesh interacts with your networking is not justified. Handle mTLS at the application level or with cert-manager.</p>
 <p><strong>Teams not yet comfortable with Kubernetes internals</strong>: a service mesh adds a layer of abstraction that makes debugging harder when things go wrong. If the team doesn&#39;t have strong Kubernetes fundamentals, a mesh adds cognitive load without the maturity to benefit from it.</p>
-<p><strong>Performance-sensitive workloads with strict latency budgets</strong>: every request through a sidecar proxy adds latency — typically 1-5ms per hop. For services with P99 SLOs under 10ms, this matters. Measure before deploying.</p>
+<p><strong>Performance-sensitive workloads with strict latency budgets</strong>: compare CPU saturation, p95 and p99 request latency, and error rates with and without the data plane under comparable traffic. Count retries and keep the same connection settings for each run.</p>
 <p><strong>You primarily want observability</strong>: if observability is the main driver, OpenTelemetry auto-instrumentation provides comparable signal with less overhead than running a full mesh.</p>
 <h2 id="istio-vs-linkerd"><a class="h-anchor" href="#istio-vs-linkerd" aria-hidden="true" tabindex="-1">#</a>Istio vs Linkerd</h2>
 <p><strong>Istio</strong>: the more feature-rich option. Built on Envoy proxy (a mature, high-performance proxy also used by Cloudflare, AWS App Mesh, and many others). Comprehensive traffic management, extensive extensibility via EnvoyFilter and WASM plugins, strong RBAC and policy model, multicluster support.</p>
@@ -143,6 +143,22 @@ d.setAttribute('data-theme',t);
 </ol>
 <p>The incremental path prevents a big-bang mesh deployment from becoming a simultaneous debugging exercise across 50 services.</p>
 <p><em>Evaluating a service mesh for your cluster or trying to debug a mesh configuration? <a href="/contact/">Happy to compare notes on what&#39;s worked.</a></em></p>
+<h2 id="inventory-the-traffic-you-intend-to-protect"><a class="h-anchor" href="#inventory-the-traffic-you-intend-to-protect" aria-hidden="true" tabindex="-1">#</a>Inventory the traffic you intend to protect</h2>
+<p>Make a matrix of clients, servers, protocols and identity requirements before installing a proxy. Include a job starting outside business hours, a webhook, a gateway, and a service whose backend is outside the cluster. For every path, record whether the chosen deployment captures it and what identity the policy sees. Default mTLS features only apply within their documented scope. Linkerd, for example, documents automatic mTLS for TCP traffic between meshed pods. A client without a proxy or a path outside that boundary needs an explicit plan if the service expects authentication. <a href="https://linkerd.io/docs/features/" rel="noopener" target="_blank">Linkerd automatic mTLS</a></p>
+<p>Separate encryption, authentication and authorisation in the acceptance checklist. An encrypted path might still allow a caller with a valid workload identity that should have no access to that service. In a test environment, use narrowly defined service accounts and verify that approved identities succeed and other fixture identities are denied. Run both checks under the same path the application uses, including gateways, and store the results beside the policy change. An authentication success metric alone cannot establish which access decisions were correct.</p>
+<h2 id="choose-the-proxy-placement-by-traffic-requirements"><a class="h-anchor" href="#choose-the-proxy-placement-by-traffic-requirements" aria-hidden="true" tabindex="-1">#</a>Choose the proxy placement by traffic requirements</h2>
+<p>For Istio ambient deployments, the node-local ztunnel provides layer 4 capabilities. An optional waypoint applies layer 7 policies for enrolled destinations. An application may only need identity and encryption for one path and HTTP routing or request-level authorisation for another. Document which controls belong at each tier. Evaluate the consequences if a shared waypoint fails or a node fills up. Treat workloads using an existing sidecar mode as a separate migration group with their own compatibility test. <a href="https://istio.io/latest/docs/ambient/architecture/data-plane/" rel="noopener" target="_blank">Istio ambient data plane</a> · <a href="https://istio.io/latest/docs/ambient/usage/waypoint/" rel="noopener" target="_blank">Waypoint configuration</a></p>
+<p>Proxy telemetry can show that a request crossed a service boundary, what protocol was observed and how long the proxy waited. It generally cannot identify slow internal execution or create a causally connected trace across application hops without context propagation. Check that application and proxy spans have consistent parent relationships and that dashboards clearly distinguish retries and health checks. Keep application spans for materially different code paths such as cache misses and downstream processing. <a href="https://istio.io/latest/docs/tasks/observability/distributed-tracing/overview/" rel="noopener" target="_blank">Istio distributed tracing overview</a></p>
+<h2 id="measure-the-cost-of-equivalent-behaviour"><a class="h-anchor" href="#measure-the-cost-of-equivalent-behaviour" aria-hidden="true" tabindex="-1">#</a>Measure the cost of equivalent behaviour</h2>
+<p>Keep protections, routing and retry policies equivalent between the comparison paths. Measure the service endpoint as seen by the client as well as the resource footprint of individual proxies, the total data plane and supporting control-plane services. For a test with the same completed workload, suppose total proxy CPU is 0.9 cores in one design and 1.2 cores in another at 2,000 successful requests per second. That is 0.45 and 0.60 cores per 1,000 successful requests per second. The result only applies to that illustrative traffic mix and excludes other infrastructure unless explicitly included. Repeat with long-lived streams and short requests, because their connection and handshake profile differs.</p>
+<p>If mesh metrics and application retries disagree, trace a representative request. Consider a client allowed one retry and a proxy also allowed one retry per incoming attempt. At worst, two client attempts can each trigger two proxy attempts, making four upstream attempts for one operation under those assumptions. A request that was safe to retry in one layer may be unsafe to retry at all if the endpoint changes durable state without a deduplication contract. Choose one accountable layer for the retry budget and verify attempt pressure with an isolated, controlled dependency response.</p>
+<h2 id="rehearse-policy-and-certificate-changes"><a class="h-anchor" href="#rehearse-policy-and-certificate-changes" aria-hidden="true" tabindex="-1">#</a>Rehearse policy and certificate changes</h2>
+<p>Keep a known-good policy revision, a recovery identity for the change owner and a controlled rollback route. Test how the system behaves on a new pod start while the control plane is unavailable, how existing long-lived sessions behave when certs rotate, and how newly created identities become trusted. Watch connection success and policy distribution with timestamps. These are separate questions. A successful test on existing connections gives little information about startup and expiry.</p>
+<p>Start with a limited group and verify actual traffic classification before moving a namespace into enforcement. Track new rejects, timeouts, endpoint latency, service resource utilisation and any change in application retry rate. Have workload owners confirm their background paths and automatic health checks. Roll back in the test when policy blocks a previously agreed caller. Record whether opening the policy, restarting workloads or restoring an earlier configuration was necessary and check restored access for the required identity.</p>
+<h2 id="keep-the-evidence-next-to-the-operating-instructions"><a class="h-anchor" href="#keep-the-evidence-next-to-the-operating-instructions" aria-hidden="true" tabindex="-1">#</a>Keep the evidence next to the operating instructions</h2>
+<p>Record the mesh version, deployment mode, workload inventory, supported protocols and number of independent repetitions for each result. Publish distributions alongside request counts and errors, with the endpoint, traffic volume and route marked. Include both request latency and the recovery outcome from a proxy or control-plane disruption in a controlled environment. A mesh adoption decision should survive a team handover. Give the next operator enough information to confirm identity, follow an actual request across the data plane and undo a policy or routing change that violates the agreed behaviour.</p>
+<p>Include engineering effort in the same evaluation. In a hypothetical trial, three teams spend 40 engineer-hours onboarding eight services and another team spends six hours diagnosing a policy rollout. Record setup effort once, then separately record recurring certificate, workload and upgrade work. That accounting lets you compare reduced per-service certificate management against the new on-call responsibilities without hiding an overhead in one-time migration cost. Reassess after one normal deployment and one maintenance cycle. If the primary outcome was clearer ownership, measure which team can triage a denied request and how long it takes. A proxy benchmark cannot establish that operational benefit on its own.</p>
+<p>Record the remaining work each team owns.</p>
 
       </div>
 <section class="field-worksheet worked-example" aria-labelledby="worked-example">
@@ -224,16 +240,16 @@ d.setAttribute('data-theme',t);
     <a class="chip" href="/topics/infrastructure/">Infrastructure</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/ethernet-vs-infiniband-networking-2026/">Ethernet vs. InfiniBand: Choosing the Right Network Fabric in 2026</a></h3>
     <p class="card-desc">A practical breakdown of when to use Ethernet and when InfiniBand makes sense — with key metrics, topology differences, and real-world guidance for cloud, HPC, and AI workloads.</p>
-    <div class="card-meta"><time datetime="2026-10-02">2 Oct 2026</time><span class="dot"></span><span>5 min read</span></div>
+    <div class="card-meta"><time datetime="2026-10-02">2 Oct 2026</time><span class="dot"></span><span>3 min read</span></div>
   </div>
 </article>
 <article class="card" data-card data-topics="|FinOps|Containers|Cloud Architecture|" data-search="kubernetes cost visibility — the gap that kills finops programs kubernetes is one of the hardest places to apply finops discipline. here&#39;s what actual cost visibility requires and where most teams fall short. finops containers cloud architecture" data-topic="FinOps">
-  <div class="card-art"><img data-article-art="kubernetes-cost-optimization" src="/assets/covers/kubernetes-cost-optimization.svg?v=28f22d48b868" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-art"><img data-article-art="kubernetes-cost-optimization" src="/assets/covers/kubernetes-cost-optimization.svg?v=eee3cf0286a3" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
     <a class="chip" href="/topics/finops/">FinOps</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/kubernetes-cost-optimization/">Kubernetes Cost Visibility — The Gap That Kills FinOps Programs</a></h3>
     <p class="card-desc">Kubernetes is one of the hardest places to apply FinOps discipline. Here&#39;s what actual cost visibility requires and where most teams fall short.</p>
-    <div class="card-meta"><time datetime="2025-02-17">17 Feb 2025</time><span class="dot"></span><span>3 min read</span></div>
+    <div class="card-meta"><time datetime="2025-02-17">17 Feb 2025</time><span class="dot"></span><span>7 min read</span></div>
   </div>
 </article>
 <article class="card" data-card data-topics="|Cloud Architecture|Containers|Programming|" data-search="kubernetes operators: when to build one and when to stop at crds operators extend kubernetes with custom domain logic. but writing an operator is a significant commitment — the control loop, the reconciliation logic, the rbac, the upgrade path. here&#39;s when operators solve real problems and when simpler alternatives are enough. cloud architecture containers programming" data-topic="Cloud Architecture">
@@ -242,7 +258,7 @@ d.setAttribute('data-theme',t);
     <a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/kubernetes-operators-custom-resources/">Kubernetes Operators: When to Build One and When to Stop at CRDs</a></h3>
     <p class="card-desc">Operators extend Kubernetes with custom domain logic. But writing an operator is a significant commitment — the control loop, the reconciliation logic, the RBAC, the upgrade path. Here&#39;s when operators solve real problems and when simpler alternatives are enough.</p>
-    <div class="card-meta"><time datetime="2025-02-05">5 Feb 2025</time><span class="dot"></span><span>4 min read</span></div>
+    <div class="card-meta"><time datetime="2025-02-05">5 Feb 2025</time><span class="dot"></span><span>9 min read</span></div>
   </div>
 </article></div>
     </div>
@@ -290,7 +306,17 @@ d.setAttribute('data-theme',t);
   <p class="reader-note">Saved in this browser only — these settings do not follow you to another device.</p>
 </div>
 <button class="focus-exit" id="focusExit" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h6V3M21 9h-6V3M3 15h6v6M21 15h-6v6"/></svg> Exit focus</button>
-
+<div class="chapter-bar" id="chapterBar">
+  <div class="chapter-where">
+    <b>Service Mesh in Practice: When Istio or Linkerd Is Worth the Complexity</b>
+    <span>Cloud Architecture</span>
+  </div>
+  <span class="chapter-left" id="chapterLeft"></span>
+  <nav class="chapter-step" aria-label="Article navigation">
+    <a href="/insights/observability-opentelemetry-2026/" aria-label="Previous: Observability with OpenTelemetry: Getting the Three Pillars Working Together"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a>
+    <a href="/insights/oci-architect-associate-guide/" aria-label="Next: OCI Architect Associate Study Guide: What the Exam Actually Tests"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
+  </nav>
+</div>
 </main>
 
 <footer class="site-footer">
