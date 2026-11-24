@@ -36,11 +36,14 @@ export function photoFor(slug) {
   return { path: `${path}?v=${hash}`, small: `${small}?v=${hash}`, alt, width: 1280, height: 720 };
 }
 
+export function coverDescription(slug) {
+  return noteCover(slug, 1280, 720)?.alt || leadCover(slug, 1280, 720)?.alt || articleDirection(slug)?.description || "";
+}
+
 export function coverFor(article, { hero = false, sizes = '(min-width: 800px) 420px, 100vw' } = {}) {
   const photo = photoFor(article.slug);
-  const note = noteCover(article.slug, 1280, 720);
   const version = createHash('sha256').update(coverArt(article.slug)).digest('hex').slice(0, 12);
   const path = photo?.path || `/assets/covers/${article.slug}.svg?v=${version}`;
   const source = photo && ` srcset="${photo.small} 640w, ${photo.path} 1280w" sizes="${sizes}"`;
-  return `<img data-article-art="${esc(article.slug)}" src="${path}"${source || ''} width="1280" height="720" alt="${hero ? esc(photo?.alt || note?.alt || '') : ''}" decoding="async" ${hero ? 'fetchpriority="high"' : 'loading="lazy"'}>`;
+  return `<img data-article-art="${esc(article.slug)}" src="${path}"${source || ''} width="1280" height="720" alt="${hero ? esc(photo?.alt || coverDescription(article.slug)) : ''}" decoding="async" ${hero ? 'fetchpriority="high"' : 'loading="lazy"'}>`;
 }

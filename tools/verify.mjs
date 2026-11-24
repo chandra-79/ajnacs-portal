@@ -127,6 +127,7 @@ console.log("\nCase studies and article discovery");
   const revised = live.filter(article => article.date <= "2026-11-23");
   for (const article of revised) {
     const html = await readFile(`${article.section}/${article.slug}/index.html`, "utf8");
+    if (!/<div class="article-hero"[^>]*><img[^>]* alt="[^"]+"/.test(html)) fail(`Cover description missing: ${article.slug}`);
     if (!fieldSlugs.has(article.slug) && !html.includes('id="worked-example"')) fail(`Worked example missing: ${article.slug}`);
     if (article.section === "insights" && !html.includes('class="refs-title"')) fail(`References missing: ${article.slug}`);
     if (article.tags.some(tag => !html.includes(`href="${topicPath(tag, tags)}"`))) fail(`Topic links missing: ${article.slug}`);
