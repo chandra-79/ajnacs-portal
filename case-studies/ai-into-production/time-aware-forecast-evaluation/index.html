@@ -88,7 +88,7 @@ d.setAttribute('data-theme',t);
     <div class="article-hero" data-topic="Enterprise AI"><img src="/assets/cases/time-aware-forecast-evaluation.png?v=df8400816d44" alt="Historical inputs feed a model that generates a prediction." width="960" height="540" fetchpriority="high" decoding="async"></div>
     <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
-  <ol><li><a href="#situation-and-scope">Situation and scope</a></li><li><a href="#plan-and-execution">Plan and execution</a></li><li><a href="#rollout-and-handover">Rollout and handover</a></li><li><a href="#how-to-read-the-numbers">How to read the numbers</a></li></ol>
+  <ol><li><a href="#situation-and-scope">Situation and scope</a></li><li><a href="#plan-and-execution">Plan and execution</a></li><li><a href="#rollout-and-handover">Rollout and handover</a></li><li><a href="#how-to-read-the-numbers">How to read the numbers</a></li><li><a href="#reconstruct-the-forecast-as-it-would-have-appeared">Reconstruct the forecast as it would have appeared</a></li><li><a href="#interpret-stockouts-and-error-by-horizon">Interpret stockouts and error by horizon</a></li></ol>
 </nav></div>
     <div class="article-copy">
       <figure class="delivery-flow">
@@ -103,6 +103,11 @@ d.setAttribute('data-theme',t);
 <p>Run in shadow for at least one restocking cycle and compare forecast snapshots issued on time. Publish fallback rules for missing features or a stale model. Hand over the dataset snapshots, scoring job and threshold for manual review when inventory circumstances depart from training.</p>
 <h2 id="how-to-read-the-numbers"><a class="h-anchor" href="#how-to-read-the-numbers" aria-hidden="true" tabindex="-1">#</a>How to read the numbers</h2>
 <p>The example compares the seasonal baseline and candidate over 2,000 synthetic item-days using the same folds. MAE is about 17.2% lower. Both models have identical stockout-marked exposure, but those observations require a distinct error interpretation.</p>
+<h2 id="reconstruct-the-forecast-as-it-would-have-appeared"><a class="h-anchor" href="#reconstruct-the-forecast-as-it-would-have-appeared" aria-hidden="true" tabindex="-1">#</a>Reconstruct the forecast as it would have appeared</h2>
+<p>For each historical origin, select feature versions by the timestamp at which the forecasting system could consume them. A promotion plan changed on Tuesday does not belong in a forecast issued on Monday even if both rows refer to the same week. Store the feature snapshot, forecast creation time, target horizon, and arrival time of the observed outcome together. Freeze the seasonal baseline using the same availability rules.</p>
+<p>An illustrative timing test uses sales for two weeks and a promotion confirmed after the first origin. Run both folds, then deliberately add the late promotion to the first fold. The test should flag the input as unavailable even if that change improves the reported score. Keep restored or corrected stock records separate from what operators could see at the origin.</p>
+<h2 id="interpret-stockouts-and-error-by-horizon"><a class="h-anchor" href="#interpret-stockouts-and-error-by-horizon" aria-hidden="true" tabindex="-1">#</a>Interpret stockouts and error by horizon</h2>
+<p>Report absolute error at each horizon so an improvement on tomorrow’s forecast cannot hide a decline on day seven. Flag cases where a stockout prevents sales from recording full demand. A forecast above observed sales in that slice may represent excess inventory or censored demand. Where possible, check backorders or alternative availability signals before deciding. The <a href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.TimeSeriesSplit.html" rel="noopener" target="_blank">time-series split documentation</a> describes ordered train and test indices. The application still needs to reconstruct when each feature and label became available.</p>
 </div>
       <figure class="field-chart case-chart">
     <figcaption>Worked comparison <span>Simulated figures</span></figcaption>

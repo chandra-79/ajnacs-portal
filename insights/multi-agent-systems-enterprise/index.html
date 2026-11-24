@@ -50,7 +50,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Multi-Agent AI Systems: When They Add Value and When They Add Complexity","description":"Multi-agent architectures are generating significant interest. Before adopting one, it helps to be clear about what problem they solve, what they cost in complexity and reliability, and what simpler alternatives look like.","datePublished":"2024-10-22","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/multi-agent-systems-enterprise/","image":"https://ajnacs.com/assets/og/articles/multi-agent-systems-enterprise.png?v=3b796f27d40d","keywords":"AI & MLOps, Enterprise AI, Architecture","articleSection":"AI & MLOps","wordCount":984}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Multi-Agent AI Systems: When They Add Value and When They Add Complexity","description":"Multi-agent architectures are generating significant interest. Before adopting one, it helps to be clear about what problem they solve, what they cost in complexity and reliability, and what simpler alternatives look like.","datePublished":"2024-10-22","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/multi-agent-systems-enterprise/","image":"https://ajnacs.com/assets/og/articles/multi-agent-systems-enterprise.png?v=3b796f27d40d","keywords":"AI & MLOps, Enterprise AI, Architecture","articleSection":"AI & MLOps","wordCount":2032}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Multi-Agent AI Systems: When They Add Value and When They Add Complexity"}]}</script>
 </head>
 <body class="article-frame" data-topic="AI &amp; MLOps">
@@ -94,7 +94,7 @@ d.setAttribute('data-theme',t);
         <a class="article-byline" href="/about/#chandra-lanka">Chandra Lanka</a>
         <span class="dot" aria-hidden="true"></span><time datetime="2024-10-22">22 Oct 2024</time>
         <span class="dot" aria-hidden="true"></span><span>Updated <time datetime="2026-11-23">23 Nov 2026</time></span>
-        <span class="dot"></span><span>4 min read</span>
+        <span class="dot"></span><span>9 min read</span>
         <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
       </div>
     </header>
@@ -102,7 +102,7 @@ d.setAttribute('data-theme',t);
     <div class="article-hero" data-topic="AI &amp; MLOps"><img data-article-art="multi-agent-systems-enterprise" src="/assets/covers/multi-agent-systems-enterprise.svg?v=c98a55e3520d" width="1280" height="720" alt="Conceptual illustration for Multi-Agent AI Systems: When They Add Value and When They Add Complexity: Data, Model, Context." decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
-  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#what-multi-agent-architectures-actually-solve">What multi-agent architectures actually solve</a></li><li><a href="#the-costs">The costs</a></li><li><a href="#the-simpler-alternative-worth-trying-first">The simpler alternative worth trying first</a></li><li><a href="#when-to-actually-build-multi-agent">When to actually build multi-agent</a></li><li><a href="#practical-orchestration-patterns">Practical orchestration patterns</a></li></ol>
+  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#what-multi-agent-architectures-actually-solve">What multi-agent architectures actually solve</a></li><li><a href="#the-costs">The costs</a></li><li><a href="#the-simpler-alternative-worth-trying-first">The simpler alternative worth trying first</a></li><li><a href="#when-to-actually-build-multi-agent">When to actually build multi-agent</a></li><li><a href="#practical-orchestration-patterns">Practical orchestration patterns</a></li><li><a href="#compare-three-designs-on-the-same-review-task">Compare three designs on the same review task</a></li><li><a href="#bound-the-critical-path-and-the-bill">Bound the critical path and the bill</a></li><li><a href="#make-each-handoff-recoverable">Make each handoff recoverable</a></li><li><a href="#test-recovery-as-deliberately-as-the-happy-path">Test recovery as deliberately as the happy path</a></li></ol>
 </nav></div>
     <div class="article-copy">
       <div class="prose">
@@ -123,7 +123,7 @@ d.setAttribute('data-theme',t);
 <p><strong>Reliability compounds downward.</strong> If all three stages must pass and each has a 90% conditional probability of passing after every earlier stage passed, the overall pass probability is 72.9%. Separate marginal pass rates are insufficient if failures are correlated. Fallbacks or review also change the outcome. Compare paired task results, latency, cost and handoff failures.</p>
 <p><strong>Failure modes are harder to debug.</strong> When a single LLM call fails or produces a bad output, the failure is localized and inspectable. When a multi-agent system produces a wrong answer, tracing why requires understanding which agent&#39;s output was wrong, whether it was a tool call, a hallucination, a bad decision in the orchestration logic, or a context window issue in the coordinator. This is significantly harder to debug than a monolithic pipeline.</p>
 <p><strong>Latency accumulates.</strong> Sequential agent calls add latency. An agentic loop that makes 5 sequential LLM calls at 2-3 seconds each takes 10-15 seconds before it reaches an answer. For user-facing applications, this is often unacceptable.</p>
-<p><strong>Cost scales with calls.</strong> Each agent invocation is a billable API call. A workflow that makes 10 LLM calls to accomplish something that one careful prompt could achieve is 10x the API cost (plus orchestration overhead).</p>
+<p><strong>Extra calls can raise cost.</strong> For a metered service, usage depends on input and output size, model, caching and billing terms. Ten equally priced calls would cost ten times a single call before orchestration. Measure total workflow cost and divide by accepted outcomes.</p>
 <h2 id="the-simpler-alternative-worth-trying-first"><a class="h-anchor" href="#the-simpler-alternative-worth-trying-first" aria-hidden="true" tabindex="-1">#</a>The simpler alternative worth trying first</h2>
 <p>Before building a multi-agent system, try:</p>
 <p><strong>Structured prompting</strong>: a single prompt with explicit step-by-step instructions, chain-of-thought guidance, and output format specifications. For many &quot;complex&quot; tasks, a well-structured prompt with a capable model outperforms a multi-agent system at a fraction of the complexity.</p>
@@ -139,8 +139,8 @@ d.setAttribute('data-theme',t);
 <h2 id="practical-orchestration-patterns"><a class="h-anchor" href="#practical-orchestration-patterns" aria-hidden="true" tabindex="-1">#</a>Practical orchestration patterns</h2>
 <p>If you do build multi-agent, the patterns that hold up:</p>
 <p><strong>Explicit message passing</strong>: agents communicate through defined message types with schemas, not freeform text. This makes the contract between agents auditable and testable.</p>
-<p><strong>Idempotent agents</strong>: design agents so that re-running them with the same input produces the same output. This makes retry logic safe and simplifies debugging.</p>
-<p><strong>Observability at every hop</strong>: trace every agent invocation, tool call, and state transition. You cannot debug a multi-agent system that is a black box. Use OpenTelemetry spans for each agent call; store intermediate states.</p>
+<p><strong>Idempotent operations</strong> use a stable identifier so repeating an accepted action has the same effect on the destination as performing it once. A model can produce a different proposal on a retry. Keep proposals versioned and enforce the side-effect guarantee outside the model.</p>
+<p><strong>Observability at every hop</strong>: trace every agent invocation, tool call, and state transition. You cannot debug a multi-agent system that is a black box. Use OpenTelemetry spans for each agent call and persist the intermediate state required to resume the workflow.</p>
 <p><strong>Bounded iteration</strong>: orchestration loops must have explicit termination conditions and maximum iteration counts. An agent that can loop indefinitely will, eventually, loop indefinitely.</p>
 <pre><code class="language-python">MAX_ITERATIONS = 10
 
@@ -154,6 +154,20 @@ else:
 </code></pre>
 <p><strong>Graceful degradation</strong>: define the behavior when an agent fails. Does the coordinator retry? Fall back to a simpler approach? Return a partial result? &quot;Raise an exception and fail the entire workflow&quot; is usually the wrong answer for user-facing applications.</p>
 <p><em>Building a production AI pipeline and evaluating whether multi-agent architecture fits your use case? The design decision has significant operational implications downstream. <a href="/contact/">Happy to think through the specific requirements.</a></em></p>
+<h2 id="compare-three-designs-on-the-same-review-task"><a class="h-anchor" href="#compare-three-designs-on-the-same-review-task" aria-hidden="true" tabindex="-1">#</a>Compare three designs on the same review task</h2>
+<p>Take an internal procurement review that checks a purchase packet for missing documents and evidence of applicable policy. A single call could read the packet and propose a checklist. A fixed workflow could extract fields, run deterministic checks for presence and validity, and pass the excerpts to one model for a written summary. A coordinator could instead discover which policy specialties apply, give each worker access to the relevant authorised excerpts, then merge the evidence. Use an identical set of packets, approved sources and rubric for all designs. Include packets that are both incomplete and ambiguous, and check whether each design refers them to the right owner. If adding a worker helps only a narrow category, routing that category into a specialist lane may preserve the gains with fewer handoffs. <a href="https://www.anthropic.com/research/building-effective-agents" rel="noopener" target="_blank">Anthropic’s workflow and agent patterns</a>.</p>
+<p>Record a typed finding for each issue with its criterion, source version, passage locator and outcome. Accept an approved evidence reference only if it points to the packet and policy version designated for that case. A specialist returned too late can submit an incomplete result rather than a guessed finding. The coordinator can report which criteria are pending and record disagreements for human review. Include automated invalid citations, missed required checks and false escalation in the score. Give reviewers the same presentation across arms so a polished output does not earn a higher score by appearance alone.</p>
+<p>Use paired results to study which work improved. In an illustrative batch of 100 packets, imagine both designs pass 74, only the agent workflow passes 12, only the simpler workflow passes six, and neither passes eight. The agent workflow gains six passes, from 80% to 86%, on this collection. Inspect the six new failures for severity and the twelve new successes for a common capability. Report analyst time including recovery work. A design with a better completion rate might produce incomplete outputs that require longer or more specialised review.</p>
+<h2 id="bound-the-critical-path-and-the-bill"><a class="h-anchor" href="#bound-the-critical-path-and-the-bill" aria-hidden="true" tabindex="-1">#</a>Bound the critical path and the bill</h2>
+<p>Consider illustrative timings of 0.6 seconds for routing, parallel worker times of 1.1, 2.4 and 1.6 seconds, 1.2 seconds for merging, and 0.3 seconds for final validation. With capacity and immediate dispatch, the critical path is 4.5 seconds. The same worker times serialised would take 7.2 seconds including the other steps. Treat this as an accounting model for one trace. End-to-end p95 needs measured timings under shared rate limits, the actual arrival mix and occasional slow branches. A system that accepts five workflows at once can launch fifteen worker requests before retried calls or summarizers. Bound concurrency across cases as well as within each case.</p>
+<p>Sum metered token usage per call at the rate for that model and mode, plus any tool, compute, logging and review costs included in the comparison. A larger call reusing all source material and several smaller calls receiving only relevant excerpts can have very different input and output profiles. A chain that repeats a large prefix can have the reverse pattern. Illustratively, $4.80 in measured charges with 80 accepted results costs 6 cents per result, whereas $5.59 with 86 accepted results costs 6.5 cents. Add reviewer cost using observed minutes for accepted cases, escalations and recoveries. Report a total per accepted result over a fixed packet set, with useful but partial results shown separately.</p>
+<h2 id="make-each-handoff-recoverable"><a class="h-anchor" href="#make-each-handoff-recoverable" aria-hidden="true" tabindex="-1">#</a>Make each handoff recoverable</h2>
+<p>Keep durable case state with the workflow identifier, stage, input version, evidence scope, and deadline. Generate a stable operation identifier for a write and commit the accepted effect once, using the receiving system’s idempotency or uniqueness mechanism where available. A repeated model call can return different text. An idempotent operation keeps the observable effect unchanged when submitted again under the same key. When a downstream write has an uncertain outcome, inspect its state using the stable identifier before retrying. Keep generated proposals as separate, versioned records so a retrospective can tell which one the approver saw.</p>
+<p>Treat each worker result as untrusted input to its coordinator and give workers access only to the data required for their scope. Any action authorisation remains with the application. Verify the approver’s current permission and the approved version of the request before committing, and require a new approval if the operation changes. When a review pauses overnight, persist what was complete and resume from the approved checkpoint while checking for expired evidence. Make cancellation propagate to workers where supported, and discard late responses from superseded executions. Use configurable limits for depth, calls, elapsed time and cost, with predictable results when any limit is reached.</p>
+<p>Instrument a parent trace for the workflow and spans for decisions, work submissions, tool reads, retries and validation. Keep fan-out visible even when a worker’s call completes asynchronously elsewhere. Useful attributes include stage, model version, attempt, duration, outcome, counts and controlled identifiers. Keep document content out of traces by default and define any protected evidence store separately. Alert on an accumulation of stalled or repeatedly retried jobs, and correlate those cases with service limits and operator recovery time. These observations help determine whether simplifying a branch will improve the user outcome more than changing the model. <a href="https://github.com/open-telemetry/semantic-conventions-genai/blob/main/docs/gen-ai/README.md" rel="noopener" target="_blank">OpenTelemetry generative AI semantic conventions</a>.</p>
+<h2 id="test-recovery-as-deliberately-as-the-happy-path"><a class="h-anchor" href="#test-recovery-as-deliberately-as-the-happy-path" aria-hidden="true" tabindex="-1">#</a>Test recovery as deliberately as the happy path</h2>
+<p>Use an isolated queue to exercise the cases a sequence diagram depends on. Deliver the same worker completion twice and check that only one accepted finding appears. Suspend the coordinator after an approval has been recorded and before the next step returns, then restart with the same workflow ID. Verify whether the effect was applied exactly once by querying the destination. Schedule two conflicting versions of the same finding and verify that the final packet exposes the conflict with its source versions. Set a deadline that one worker misses and check that the user can still understand which checks are pending. Record recovery time and how many workflows need operators to intervene. Run the same tests whenever the workflow’s state format or delivery mechanism changes.</p>
+<p>Keep a short log of fallback reasons visible to workflow owners. If one branch repeatedly times out after waiting for admission, change its service budget or scheduling policy and replay the comparison before investing in a more capable model.</p>
 
       </div>
 <section class="field-worksheet worked-example" aria-labelledby="worked-example">
@@ -234,7 +248,7 @@ else:
     <a class="chip" href="/topics/ai-mlops/">AI &amp; MLOps</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/prompt-engineering-production/">Prompt Engineering for Production Systems: Beyond the Demo</a></h3>
     <p class="card-desc">Prompt engineering for a demo is different from prompt engineering for a system that runs reliably at scale. Here&#39;s how to design prompts for consistency, build evaluation frameworks, and manage the failure modes that appear in production but not in testing.</p>
-    <div class="card-meta"><time datetime="2026-11-04">4 Nov 2026</time><span class="dot"></span><span>4 min read</span></div>
+    <div class="card-meta"><time datetime="2026-11-04">4 Nov 2026</time><span class="dot"></span><span>9 min read</span></div>
   </div>
 </article>
 <article class="card" data-card data-topics="|AI &amp; MLOps|Enterprise AI|Fundamentals|" data-search="large language models: what they are, how they are built, and what they cannot do transformers, attention, pretraining, fine-tuning, rlhf — the architecture and training pipeline behind gpt, claude, llama, and every other modern llm, explained for engineers who need to use and evaluate these systems. ai &amp; mlops enterprise ai fundamentals" data-topic="AI &amp; MLOps">
@@ -243,7 +257,7 @@ else:
     <a class="chip" href="/topics/ai-mlops/">AI &amp; MLOps</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/aiml-llms-explained/">Large Language Models: What They Are, How They Are Built, and What They Cannot Do</a></h3>
     <p class="card-desc">Transformers, attention, pretraining, fine-tuning, RLHF — the architecture and training pipeline behind GPT, Claude, Llama, and every other modern LLM, explained for engineers who need to use and evaluate these systems.</p>
-    <div class="card-meta"><time datetime="2026-10-21">21 Oct 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
+    <div class="card-meta"><time datetime="2026-10-21">21 Oct 2026</time><span class="dot"></span><span>8 min read</span><span class="dot"></span><span>Series</span></div>
   </div>
 </article>
 <article class="card" data-card data-topics="|AI &amp; MLOps|Enterprise AI|Fundamentals|" data-search="rag, prompting, and building applications on llms: the practitioner&#39;s guide retrieval-augmented generation, system prompts, few-shot examples, chain-of-thought, structured output, and the engineering patterns that make llm applications reliable in production. ai &amp; mlops enterprise ai fundamentals" data-topic="AI &amp; MLOps">
@@ -252,7 +266,7 @@ else:
     <a class="chip" href="/topics/ai-mlops/">AI &amp; MLOps</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/aiml-rag-and-prompting/">RAG, Prompting, and Building Applications on LLMs: The Practitioner&#39;s Guide</a></h3>
     <p class="card-desc">Retrieval-augmented generation, system prompts, few-shot examples, chain-of-thought, structured output, and the engineering patterns that make LLM applications reliable in production.</p>
-    <div class="card-meta"><time datetime="2026-08-25">25 Aug 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
+    <div class="card-meta"><time datetime="2026-08-25">25 Aug 2026</time><span class="dot"></span><span>8 min read</span><span class="dot"></span><span>Series</span></div>
   </div>
 </article></div>
     </div>
@@ -300,7 +314,17 @@ else:
   <p class="reader-note">Saved in this browser only — these settings do not follow you to another device.</p>
 </div>
 <button class="focus-exit" id="focusExit" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h6V3M21 9h-6V3M3 15h6v6M21 15h-6v6"/></svg> Exit focus</button>
-
+<div class="chapter-bar" id="chapterBar">
+  <div class="chapter-where">
+    <b>Multi-Agent AI Systems: When They Add Value and When They Add Complexity</b>
+    <span>AI &amp; MLOps</span>
+  </div>
+  <span class="chapter-left" id="chapterLeft"></span>
+  <nav class="chapter-step" aria-label="Article navigation">
+    <a href="/insights/os-storage-management/" aria-label="Previous: Linux Storage Management: Disks, Partitions, LVM, Filesystems, and Mounting"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a>
+    <a href="/insights/enterprise-caching-architecture/" aria-label="Next: Speed at Scale: Enterprise Caching for OLTP and OLAP Workloads"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
+  </nav>
+</div>
 </main>
 
 <footer class="site-footer">

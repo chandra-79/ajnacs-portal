@@ -14,18 +14,18 @@
 <meta property="og:title" content="Container Security: The Specific Misconfigurations That Open Production Systems to Attack">
 <meta property="og:description" content="Running containers as root, privileged mode, unrestricted capabilities, exposed Docker sockets — the container security mistakes that appear in breach repo…">
 <meta property="og:url" content="https://ajnacs.com/insights/containers-security/">
-<meta property="og:image" content="https://ajnacs.com/assets/og/articles/containers-security.png?v=72b967784e46">
+<meta property="og:image" content="https://ajnacs.com/assets/og/articles/containers-security.png?v=a24581263820">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Conceptual illustration for Container Security: The Specific Misconfigurations That Open Production Systems to Attack: Boundary, Controls, Secrets.">
+<meta property="og:image:alt" content="Conceptual illustration for Container Security: The Specific Misconfigurations That Open Production Systems to Attack: Boundary, Controls, Verification.">
 <meta property="article:published_time" content="2026-09-28">
 <meta property="article:modified_time" content="2026-11-23">
 <meta property="og:image:type" content="image/png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Container Security: The Specific Misconfigurations That Open Production Systems to Attack">
 <meta name="twitter:description" content="Running containers as root, privileged mode, unrestricted capabilities, exposed Docker sockets — the container security mistakes that appear in breach repo…">
-<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/containers-security.png?v=72b967784e46">
-<meta name="twitter:image:alt" content="Conceptual illustration for Container Security: The Specific Misconfigurations That Open Production Systems to Attack: Boundary, Controls, Secrets.">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/containers-security.png?v=a24581263820">
+<meta name="twitter:image:alt" content="Conceptual illustration for Container Security: The Specific Misconfigurations That Open Production Systems to Attack: Boundary, Controls, Verification.">
 
 <link rel="icon" href="/favicon.ico?v=8affdbd5" sizes="any">
 <link rel="icon" href="/images/ajna-mark.svg?v=8affdbd5" type="image/svg+xml">
@@ -50,7 +50,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Container Security: The Specific Misconfigurations That Open Production Systems to Attack","description":"Running containers as root, privileged mode, unrestricted capabilities, exposed Docker sockets — the container security mistakes that appear in breach reports and how to prevent them systematically.","datePublished":"2026-09-28","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/containers-security/","image":"https://ajnacs.com/assets/og/articles/containers-security.png?v=72b967784e46","keywords":"DevSecOps, Fundamentals","articleSection":"DevSecOps","wordCount":874}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Container Security: The Specific Misconfigurations That Open Production Systems to Attack","description":"Running containers as root, privileged mode, unrestricted capabilities, exposed Docker sockets — the container security mistakes that appear in breach reports and how to prevent them systematically.","datePublished":"2026-09-28","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/containers-security/","image":"https://ajnacs.com/assets/og/articles/containers-security.png?v=a24581263820","keywords":"DevSecOps, Fundamentals","articleSection":"DevSecOps","wordCount":1684}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Container Security: The Specific Misconfigurations That Open Production Systems to Attack"}]}</script>
 </head>
 <body class="article-frame" data-topic="DevSecOps">
@@ -94,15 +94,15 @@ d.setAttribute('data-theme',t);
         <a class="article-byline" href="/about/#chandra-lanka">Chandra Lanka</a>
         <span class="dot" aria-hidden="true"></span><time datetime="2026-09-28">28 Sept 2026</time>
         <span class="dot" aria-hidden="true"></span><span>Updated <time datetime="2026-11-23">23 Nov 2026</time></span>
-        <span class="dot"></span><span>4 min read</span>
+        <span class="dot"></span><span>7 min read</span>
         <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
       </div>
     </header>
 
-    <div class="article-hero" data-topic="DevSecOps"><img data-article-art="containers-security" src="/assets/covers/containers-security.svg?v=8f7989b6d4dd" width="1280" height="720" alt="Conceptual illustration for Container Security: The Specific Misconfigurations That Open Production Systems to Attack: Boundary, Controls, Secrets." decoding="async" fetchpriority="high"></div>
+    <div class="article-hero" data-topic="DevSecOps"><img data-article-art="containers-security" src="/assets/covers/containers-security.svg?v=02d172d1e7a1" width="1280" height="720" alt="Conceptual illustration for Container Security: The Specific Misconfigurations That Open Production Systems to Attack: Boundary, Controls, Verification." decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
-  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#the-threat-model">The Threat Model</a></li><li><a href="#never-run-containers-as-root">Never Run Containers as Root</a></li><li><a href="#drop-all-capabilities-by-default">Drop All Capabilities by Default</a></li><li><a href="#read-only-root-filesystem">Read-Only Root Filesystem</a></li><li><a href="#never-mount-the-docker-socket">Never Mount the Docker Socket</a></li><li><a href="#image-scanning-in-ci">Image Scanning in CI</a></li><li><a href="#network-policies-in-kubernetes">Network Policies in Kubernetes</a></li><li><a href="#the-security-checklist">The Security Checklist</a></li></ol>
+  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#the-threat-model">The Threat Model</a></li><li><a href="#never-run-containers-as-root">Never Run Containers as Root</a></li><li><a href="#drop-all-capabilities-by-default">Drop All Capabilities by Default</a></li><li><a href="#read-only-root-filesystem">Read-Only Root Filesystem</a></li><li><a href="#never-mount-the-docker-socket">Never Mount the Docker Socket</a></li><li><a href="#image-scanning-in-ci">Image Scanning in CI</a></li><li><a href="#network-policies-in-kubernetes">Network Policies in Kubernetes</a></li><li><a href="#the-security-checklist">The Security Checklist</a></li><li><a href="#separate-the-controls-you-can-verify">Separate the controls you can verify</a></li><li><a href="#rehearse-policy-changes-with-controlled-fixtures">Rehearse policy changes with controlled fixtures</a></li><li><a href="#quantify-what-the-baseline-covers">Quantify what the baseline covers</a></li><li><a href="#match-runtime-isolation-to-the-workload">Match runtime isolation to the workload</a></li></ol>
 </nav><nav class="chapters" aria-label="Articles in this series">
       <p class="chapters-title">Containerization from the Ground Up</p>
       <ol><li><a href="/insights/containers-what-they-actually-are/">What Containers Actually Are — Not the Marketing Version</a></li><li><a href="/insights/containers-production-dockerfiles/">Writing Production-Grade Dockerfiles: The Decisions That Actually Matter</a></li><li><a href="/insights/containers-networking/">Container Networking: How Containers Talk to Each Other and to the Outside World</a></li><li><a href="/insights/containers-kubernetes-fundamentals/">Kubernetes Fundamentals: What It Is, What It Does, and When You Actually Need It</a></li><li aria-current="true"><a href="/insights/containers-security/">Container Security: The Specific Misconfigurations That Open Production Systems to Attack</a></li></ol>
@@ -110,7 +110,7 @@ d.setAttribute('data-theme',t);
     <div class="article-copy">
       <div class="prose">
 <p class="article-opening">A hardened container should be tested against approved service behaviour and rejected capabilities in a controlled environment.</p>
-<p>Container security is not a single control — it is a set of decisions made at image build time, container runtime configuration, and orchestration platform level. Most container security incidents are not novel attacks against the container runtime. They are predictable misconfigurations that expose the host OS or enable lateral movement within the cluster. This lesson covers the specific misconfigurations and the systematic controls that prevent them.</p>
+<p>Container security is not a single control — it is a set of decisions made at image build time, container runtime configuration, and orchestration platform level. Review configuration and runtime vulnerabilities as separate risks. Privilege, host integration and workload network access determine the consequences of a compromise. This lesson covers the specific misconfigurations and the systematic controls that prevent them.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
 <p><strong>Signed image coverage at deployment.</strong> If 180 of 200 newly admitted workloads use a verified image digest, coverage is 90%. Count audit-only and denied admissions separately. Check exemptions and scan age before presenting a policy-enabled cluster as fully covered.</p>
 <p><em>Illustrative measurement. Any numbers in this example are hypothetical.</em></p>
@@ -124,7 +124,7 @@ d.setAttribute('data-theme',t);
 </ol>
 <p>The container security controls address each stage of this attack path.</p>
 <h2 id="never-run-containers-as-root"><a class="h-anchor" href="#never-run-containers-as-root" aria-hidden="true" tabindex="-1">#</a>Never Run Containers as Root</h2>
-<p>The single most impactful configuration change. A process running as root inside a container that escapes to the host is root on the host.</p>
+<p>The single most impactful configuration change. A container&#39;s root UID and the corresponding host identity depend on runtime configuration and user namespace mapping. Minimize privileges and assess host exposure separately.</p>
 <pre><code class="language-dockerfile">## In the Dockerfile:
 RUN addgroup --system --gid 1001 appgroup &amp;&amp; \
     adduser --system --uid 1001 --ingroup appgroup appuser
@@ -246,6 +246,21 @@ spec:
 <li>Resource limits set (CPU and memory) — an attacker with code execution who can consume unlimited CPU affects all other pods on the node</li>
 </ul>
 <p>Container security is not a security team&#39;s responsibility after deployment. It is an engineering discipline from the Dockerfile outward.</p>
+<h2 id="separate-the-controls-you-can-verify"><a class="h-anchor" href="#separate-the-controls-you-can-verify" aria-hidden="true" tabindex="-1">#</a>Separate the controls you can verify</h2>
+<p>Ask which layer makes each promise and what evidence proves it for the running Pod. A developer&#39;s Dockerfile can set a non-root user. Admission can validate the settings the team asks Kubernetes to run, and workload status can show which image the Pod actually started. Preserve evidence for all three because an image can change under a mutable tag and a deployer can override a Dockerfile default through workload configuration. <a href="https://kubernetes.io/docs/tasks/configure-pod-container/security-context/" rel="noopener" target="_blank">Kubernetes security context</a></p>
+<div class="table-wrap"><table><thead><tr><th>Question</th><th>Where to verify</th><th>Expected record</th></tr></thead><tbody><tr><td>Which artifact ran?</td><td>Workload status and release record</td><td>Runtime image identifier and digest resolved for the platform</td></tr><tr><td>Which operating-system rights were granted?</td><td>Admitted workload configuration and approved runtime checks</td><td>Expected UID, capability settings and write locations</td></tr><tr><td>What can the workload identity access?</td><td>Service account, API authorization and cloud identity</td><td>Approved policy, documented scope and positive and negative checks</td></tr><tr><td>Which network calls are intended?</td><td>Deployed network policy and test client in the intended context</td><td>Required endpoints work and selected disallowed paths fail</td></tr></tbody></table></div>
+<p>Keep the deployment evidence linked to a revision and timestamp. A controlled fixture can inspect its own effective runtime settings and attempt an ordinary safe write only where the app genuinely needs one. Inspect health under the same resource constraints used in the deployment. Send logs to their intended destination while writes to the application root stay unavailable. A read-only root filesystem protects that mount. Explicit writable volumes and network or API permissions remain separate surfaces.</p>
+<h2 id="rehearse-policy-changes-with-controlled-fixtures"><a class="h-anchor" href="#rehearse-policy-changes-with-controlled-fixtures" aria-hidden="true" tabindex="-1">#</a>Rehearse policy changes with controlled fixtures</h2>
+<p>Roll out a baseline in a disposable namespace with the intended admission and network implementations enabled. First apply a known-good workload and collect its successful admission and startup. Next use fixture variants with one deliberately unsupported setting each, such as requesting a root UID or omitting a security control that the policy explicitly checks. Inspect the returned policy reason. Use server-side validation before attempting execution and count an unexpected admission as a failed test. Kubernetes&#39; Restricted Pod Security Standard defines specific rules. A team that requires read-only root filesystems must configure a separate policy for that requirement. <a href="https://kubernetes.io/docs/concepts/security/pod-security-standards/" rel="noopener" target="_blank">Kubernetes Pod Security Standards</a></p>
+<p>Run ordinary authorized requests to the services the workload needs, with dedicated test identities and synthetic records. For each selected policy denial, verify that the test used the expected namespace and labels and compare a known-allowed path from the same test environment. A failed connection might be a broken service, transport, name, or certificate. Admission evidence plus a controlled path comparison helps isolate the enforcement behavior. <a href="https://kubernetes.io/docs/concepts/services-networking/network-policies/" rel="noopener" target="_blank">Kubernetes Network Policies</a></p>
+<p>Run these fixtures after updating a cluster version, runtime or policy controller. Include any approved exemptions and age them out on a named date. A temporary exception should carry its own operating owner, reason, scoped workload, compensating controls, evidence of expiry, and plan to return to the common baseline.</p>
+<h2 id="quantify-what-the-baseline-covers"><a class="h-anchor" href="#quantify-what-the-baseline-covers" aria-hidden="true" tabindex="-1">#</a>Quantify what the baseline covers</h2>
+<p>An illustrative weekly audit has 80 unique production workload revisions in scope. Of those, 70 meet every selected control, five have approved exceptions to at least one control, and five have incomplete evidence. Report 87.5% fully evidenced coverage, 6.25% approved exception share, and 6.25% evidence gap. Use stable workload and revision identifiers to deduplicate rollout events. Preserve the categories separately when comparing weeks. Moving an unknown to an exception can improve auditability while leaving compliant coverage unchanged.</p>
+<p>Report policy effectiveness for individual controls separately. If 76 of the 80 admitted workload revisions use a verified digest, the image verification coverage is 95%. That figure has a different numerator from the composite baseline. Count denied requests as attempted policy violations under a distinct denominator. A useful release view includes verification source, age of the evidence, expected digest, and whether each active exception can be retired.</p>
+<p>Plan the next engineering action from the evidence. If all five unknowns come from workloads whose deploy system publishes no revision metadata, instrument that deployment path. If exceptions cluster around legacy port and filesystem assumptions, assign an owner to update the shared base image and test it against actual application smoke tests. Publish only aggregate coverage externally.</p>
+<h2 id="match-runtime-isolation-to-the-workload"><a class="h-anchor" href="#match-runtime-isolation-to-the-workload" aria-hidden="true" tabindex="-1">#</a>Match runtime isolation to the workload</h2>
+<p>An application&#39;s UID inside a container, the host identity mapping, and the daemon&#39;s privilege differ. Docker&#39;s rootless mode runs the daemon and containers as a non-root user using a user namespace. Inspect the host and runtime configuration before assigning the same consequences to every non-root or root workload. A real evaluation should also inventory access to writable mounts, host features and trust relationships around build services. Use an isolated build service with artifacts uploaded by authorized identity when normal CI builds do not need direct access to a worker&#39;s daemon. <a href="https://docs.docker.com/engine/security/rootless/" rel="noopener" target="_blank">Docker rootless mode</a></p>
+<p>Separate workloads with demonstrably different trust or compliance requirements where shared scheduling would make the boundary difficult to verify. Before selecting a stricter runtime or node model, record the compatibility needs, time-to-start and resource budget. Check expected system behavior through regular integration tests and check access controls with safe fixtures. When a workload requires a new permission to pass, repeat the test after adding only that permission and document its owner. That record lets the next reviewer retire obsolete grants and identify which application behavior depended on them.</p>
 
       </div>
 <section class="field-worksheet worked-example" aria-labelledby="worked-example">
@@ -321,12 +336,12 @@ spec:
     <div class="wrap">
       <p class="eyebrow">Related</p>
       <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|DevSecOps|Fundamentals|" data-search="what containers actually are — not the marketing version containers are not lightweight vms. they are processes with resource constraints and namespace isolation. understanding the actual mechanism makes you a better user of docker, kubernetes, and every container runtime. devsecops fundamentals" data-topic="DevSecOps">
-  <div class="card-art"><img data-article-art="containers-what-they-actually-are" src="/assets/covers/containers-what-they-actually-are.svg?v=ab1bf2998d29" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-art"><img data-article-art="containers-what-they-actually-are" src="/assets/covers/containers-what-they-actually-are.svg?v=f9d398e0421b" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
     <a class="chip" href="/topics/devsecops/">DevSecOps</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/containers-what-they-actually-are/">What Containers Actually Are — Not the Marketing Version</a></h3>
     <p class="card-desc">Containers are not lightweight VMs. They are processes with resource constraints and namespace isolation. Understanding the actual mechanism makes you a better user of Docker, Kubernetes, and every container runtime.</p>
-    <div class="card-meta"><time datetime="2026-07-30">30 Jul 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
+    <div class="card-meta"><time datetime="2026-07-30">30 Jul 2026</time><span class="dot"></span><span>8 min read</span><span class="dot"></span><span>Series</span></div>
   </div>
 </article>
 <article class="card" data-card data-topics="|DevSecOps|Fundamentals|" data-search="writing production-grade dockerfiles: the decisions that actually matter multi-stage builds, minimal base images, layer caching, non-root users, build arguments, and the specific dockerfile patterns that separate a working image from a secure, efficient, maintainable one. devsecops fundamentals" data-topic="DevSecOps">
@@ -335,16 +350,16 @@ spec:
     <a class="chip" href="/topics/devsecops/">DevSecOps</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/containers-production-dockerfiles/">Writing Production-Grade Dockerfiles: The Decisions That Actually Matter</a></h3>
     <p class="card-desc">Multi-stage builds, minimal base images, layer caching, non-root users, build arguments, and the specific Dockerfile patterns that separate a working image from a secure, efficient, maintainable one.</p>
-    <div class="card-meta"><time datetime="2026-06-24">24 Jun 2026</time><span class="dot"></span><span>3 min read</span><span class="dot"></span><span>Series</span></div>
+    <div class="card-meta"><time datetime="2026-06-24">24 Jun 2026</time><span class="dot"></span><span>7 min read</span><span class="dot"></span><span>Series</span></div>
   </div>
 </article>
 <article class="card" data-card data-topics="|DevSecOps|Fundamentals|" data-search="container networking: how containers talk to each other and to the outside world bridge networks, overlay networks, dns-based service discovery, port publishing, and the iptables rules that make container networking work — and fail. devsecops fundamentals" data-topic="DevSecOps">
-  <div class="card-art"><img data-article-art="containers-networking" src="/assets/covers/containers-networking.svg?v=23bf133e7b15" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-art"><img data-article-art="containers-networking" src="/assets/covers/containers-networking.svg?v=cd52ebab1883" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
     <a class="chip" href="/topics/devsecops/">DevSecOps</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/containers-networking/">Container Networking: How Containers Talk to Each Other and to the Outside World</a></h3>
     <p class="card-desc">Bridge networks, overlay networks, DNS-based service discovery, port publishing, and the iptables rules that make container networking work — and fail.</p>
-    <div class="card-meta"><time datetime="2026-04-28">28 Apr 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
+    <div class="card-meta"><time datetime="2026-04-28">28 Apr 2026</time><span class="dot"></span><span>8 min read</span><span class="dot"></span><span>Series</span></div>
   </div>
 </article></div>
     </div>

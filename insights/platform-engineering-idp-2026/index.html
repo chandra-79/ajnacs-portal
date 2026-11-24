@@ -50,7 +50,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Platform Onboarding: Measure the Path to a First Deployment","description":"Pilot a self-service path, measure time to a first qualifying deployment, and track completion, controls, and support effort.","datePublished":"2026-11-20","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/platform-engineering-idp-2026/","image":"https://ajnacs.com/assets/covers/photos/platform-engineering-idp-2026.jpg?v=e89682005513","keywords":"DevSecOps, Cloud Architecture, Engineering Leadership","articleSection":"DevSecOps","wordCount":456}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Platform Onboarding: Measure the Path to a First Deployment","description":"Pilot a self-service path, measure time to a first qualifying deployment, and track completion, controls, and support effort.","datePublished":"2026-11-20","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/platform-engineering-idp-2026/","image":"https://ajnacs.com/assets/covers/photos/platform-engineering-idp-2026.jpg?v=e89682005513","keywords":"DevSecOps, Cloud Architecture, Engineering Leadership","articleSection":"DevSecOps","wordCount":917}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Platform Onboarding: Measure the Path to a First Deployment"}]}</script>
 </head>
 <body class="article-frame" data-topic="DevSecOps">
@@ -94,7 +94,7 @@ d.setAttribute('data-theme',t);
         <a class="article-byline" href="/about/#chandra-lanka">Chandra Lanka</a>
         <span class="dot" aria-hidden="true"></span><time datetime="2026-11-20">20 Nov 2026</time>
         <span class="dot" aria-hidden="true"></span><span>Updated <time datetime="2026-11-23">23 Nov 2026</time></span>
-        <span class="dot"></span><span>2 min read</span>
+        <span class="dot"></span><span>4 min read</span>
         <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
       </div>
     </header>
@@ -102,7 +102,7 @@ d.setAttribute('data-theme',t);
     <div class="article-hero" data-topic="DevSecOps"><img data-article-art="platform-engineering-idp-2026" src="/assets/covers/photos/platform-engineering-idp-2026.jpg?v=e89682005513" srcset="/assets/covers/photos/platform-engineering-idp-2026-640.jpg?v=e89682005513 640w, /assets/covers/photos/platform-engineering-idp-2026.jpg?v=e89682005513 1280w" sizes="(min-width: 90rem) 1180px, (min-width: 74rem) 65vw, 100vw" width="1280" height="720" alt="A sheltered deployment route crosses a ravine with guardrails and self-service stations" decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
-  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#build-and-pilot-a-supported-path">Build and pilot a supported path</a></li><li><a href="#use-the-worksheet-to-compare-two-cohorts">Use the worksheet to compare two cohorts</a></li><li><a href="#references">References</a></li></ol>
+  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#build-and-pilot-a-supported-path">Build and pilot a supported path</a></li><li><a href="#use-the-worksheet-to-compare-two-cohorts">Use the worksheet to compare two cohorts</a></li><li><a href="#define-what-the-pilot-considers-complete">Define what the pilot considers complete</a></li><li><a href="#read-the-timing-and-completion-results-together">Read the timing and completion results together</a></li><li><a href="#exercise-failure-before-opening-the-path-to-more-teams">Exercise failure before opening the path to more teams</a></li><li><a href="#references">References</a></li></ol>
 </nav></div>
     <div class="article-copy">
       <div class="prose">
@@ -122,6 +122,15 @@ d.setAttribute('data-theme',t);
 <p>Enter one item per eligible service. Use elapsed hours for completions and <code>open</code> for attempts without a qualifying deployment by the cutoff. Wait until every attempt in the cohort has reached the cutoff or completed before estimating the rate. Review the count and median together. With enough observations add a tail measure and report the sample size. Compare like workloads or report the cohorts separately.</p>
 <p class="depth-reading"><a href="/deep-dives/platform/golden-path-rollout-gates/">Level 4 · Evaluate a golden path without hiding blocked teams</a></p>
 <p><strong>Illustrative measurement.</strong> The worked data below is synthetic. It deliberately shows faster successful deployments alongside fewer completions. Track follow-on delivery performance separately with measures such as DORA’s change fail rate and failed deployment recovery time. Use the <a href="/insights/sre-toil-reduction/">toil guide</a> to account for recurring support work that moves between teams.</p>
+<h2 id="define-what-the-pilot-considers-complete"><a class="h-anchor" href="#define-what-the-pilot-considers-complete" aria-hidden="true" tabindex="-1">#</a>Define what the pilot considers complete</h2>
+<p>Write one completion rule the teams can apply without interpretation. For an illustrative staging pilot, the declared team owns the repository, a pinned build artifact has passed the mandatory checks, a runtime revision serves an expected health response, and the service record has an owner and working runbook link. Capture the start and completion timestamps from the systems that accepted the request and deployed the artifact. Validate clock and time zone handling before comparing durations. Keep unsuccessful requests in the cohort, including cases where instrumentation recorded a submission but the application failed to deploy.</p>
+<div class="table-wrap"><table><thead><tr><th>Journey stage</th><th>Evidence to collect</th></tr></thead><tbody><tr><td>Request accepted</td><td>Eligible request and start time</td></tr><tr><td>Artifact built</td><td>Immutable artifact identifier and pipeline result</td></tr><tr><td>Policy evaluated</td><td>Required checks and recorded decisions</td></tr><tr><td>Deployment verified</td><td>Target, deployed revision and synthetic response</td></tr><tr><td>Service handed off</td><td>Owner, support contact and recovery instructions</td></tr></tbody></table></div>
+<h2 id="read-the-timing-and-completion-results-together"><a class="h-anchor" href="#read-the-timing-and-completion-results-together" aria-hidden="true" tabindex="-1">#</a>Read the timing and completion results together</h2>
+<p>In a fictional follow-up, six of eight ticket requests complete within the window, with a median of 18 hours among completions. Five of eight self-service requests complete, with a median of 10 hours among completions. Completion falls from 75% to 62.5% despite the faster completed path. If two incomplete self-service requests waited on unresolved permissions and one never provided an owning team, prioritize testing an early permission check and an actionable request-validation message. Keep the same required controls. Review the next cohort on the same follow-up interval and publish explicit counts alongside median durations.</p>
+<p>Log platform effort in minutes per eligible request. If the ticket path consumed 240 support minutes and the pilot 160, the observed averages were 30 and 20 minutes per request. Report this comparison alongside the completed and incomplete counts. Record maintenance time separately so an initially manual pilot can distinguish support from investments in the next version. <a href="https://tag-app-delivery.cncf.io/whitepapers/platforms/" rel="noopener" target="_blank">CNCF Platforms White Paper</a></p>
+<h2 id="exercise-failure-before-opening-the-path-to-more-teams"><a class="h-anchor" href="#exercise-failure-before-opening-the-path-to-more-teams" aria-hidden="true" tabindex="-1">#</a>Exercise failure before opening the path to more teams</h2>
+<p>In a safe environment, test a missing declaration, a permission rejection, an unavailable dependency and a retry after the runner stops. This exposes whether developers receive next steps and whether the platform repeats work it already completed. Record events under a stable request ID so that retry attempts do not inflate adoption. Verify which stage an observer can reach from the ID, how application owners can see and report a failure, and who restores the path when the platform is the failing dependency.</p>
+<p>Close the pilot by deciding which workloads are eligible for the next version. Product teams at a different readiness level may need separate coverage. Compare delivery performance at service level once teams have a production deployment history. Keep these measures separate from initial time to a qualifying deployment so repeat delivery and learning the initial workflow are both visible. <a href="https://dora.dev/guides/dora-metrics/" rel="noopener" target="_blank">DORA delivery performance measures</a></p>
 <h2 id="references"><a class="h-anchor" href="#references" aria-hidden="true" tabindex="-1">#</a>References</h2>
 <ul>
 <li><a href="https://tag-app-delivery.cncf.io/whitepapers/platforms/" rel="noopener" target="_blank">CNCF · Platforms White Paper</a></li>
@@ -207,7 +216,7 @@ d.setAttribute('data-theme',t);
     <a class="chip" href="/topics/engineering-leadership/">Engineering Leadership</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/sre-toil-reduction/">SRE Toil: How to Measure It and Decide What to Automate</a></h3>
     <p class="card-desc">Build a toil baseline, calculate automation payback, and check that the work actually went away.</p>
-    <div class="card-meta"><time datetime="2026-10-09">9 Oct 2026</time><span class="dot"></span><span>2 min read</span></div>
+    <div class="card-meta"><time datetime="2026-10-09">9 Oct 2026</time><span class="dot"></span><span>4 min read</span></div>
   </div>
 </article>
 <article class="card" data-card data-topics="|Cloud Architecture|DevSecOps|Infrastructure|" data-search="serverless vs containers: an honest comparison for 2026 neither is universally better. the answer depends on your workload profile, your team&#39;s operational maturity, and — honestly — your tolerance for cold starts. cloud architecture devsecops infrastructure" data-topic="Cloud Architecture">
@@ -216,7 +225,7 @@ d.setAttribute('data-theme',t);
     <a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/serverless-vs-containers-2026/">Serverless vs Containers: An Honest Comparison for 2026</a></h3>
     <p class="card-desc">Neither is universally better. The answer depends on your workload profile, your team&#39;s operational maturity, and — honestly — your tolerance for cold starts.</p>
-    <div class="card-meta"><time datetime="2026-11-13">13 Nov 2026</time><span class="dot"></span><span>4 min read</span></div>
+    <div class="card-meta"><time datetime="2026-11-13">13 Nov 2026</time><span class="dot"></span><span>9 min read</span></div>
   </div>
 </article>
 <article class="card" data-card data-topics="|Cloud Architecture|DevSecOps|" data-search="chaos engineering: testing reliability before production tests it for you chaos engineering injects controlled failures to validate that systems actually behave as designed under real-world failure conditions. the gap between the architecture diagram and production behavior is where reliability lives. cloud architecture devsecops" data-topic="Cloud Architecture">
@@ -225,7 +234,7 @@ d.setAttribute('data-theme',t);
     <a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/chaos-engineering-practices/">Chaos Engineering: Testing Reliability Before Production Tests It For You</a></h3>
     <p class="card-desc">Chaos engineering injects controlled failures to validate that systems actually behave as designed under real-world failure conditions. The gap between the architecture diagram and production behavior is where reliability lives.</p>
-    <div class="card-meta"><time datetime="2026-11-11">11 Nov 2026</time><span class="dot"></span><span>4 min read</span></div>
+    <div class="card-meta"><time datetime="2026-11-11">11 Nov 2026</time><span class="dot"></span><span>7 min read</span></div>
   </div>
 </article></div>
     </div>

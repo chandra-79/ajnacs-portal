@@ -14,18 +14,18 @@
 <meta property="og:title" content="Database Replication Patterns: Read Replicas, Multi-Primary, and When Each Applies">
 <meta property="og:description" content="Database replication serves two distinct goals — high availability (survive a primary failure) and read scaling (distribute read traffic). The configuratio…">
 <meta property="og:url" content="https://ajnacs.com/insights/database-replication-patterns/">
-<meta property="og:image" content="https://ajnacs.com/assets/og/articles/database-replication-patterns.png?v=0b2e2aef0ccc">
+<meta property="og:image" content="https://ajnacs.com/assets/og/articles/database-replication-patterns.png?v=05ea7760ffe9">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Conceptual illustration for Database Replication Patterns: Read Replicas, Multi-Primary, and When Each Applies: Replica, Replication, What to measure.">
+<meta property="og:image:alt" content="Conceptual illustration for Database Replication Patterns: Read Replicas, Multi-Primary, and When Each Applies: Replica, Quorum, Replication.">
 <meta property="article:published_time" content="2025-08-04">
 <meta property="article:modified_time" content="2026-11-23">
 <meta property="og:image:type" content="image/png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Database Replication Patterns: Read Replicas, Multi-Primary, and When Each Applies">
 <meta name="twitter:description" content="Database replication serves two distinct goals — high availability (survive a primary failure) and read scaling (distribute read traffic). The configuratio…">
-<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/database-replication-patterns.png?v=0b2e2aef0ccc">
-<meta name="twitter:image:alt" content="Conceptual illustration for Database Replication Patterns: Read Replicas, Multi-Primary, and When Each Applies: Replica, Replication, What to measure.">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/database-replication-patterns.png?v=05ea7760ffe9">
+<meta name="twitter:image:alt" content="Conceptual illustration for Database Replication Patterns: Read Replicas, Multi-Primary, and When Each Applies: Replica, Quorum, Replication.">
 
 <link rel="icon" href="/favicon.ico?v=8affdbd5" sizes="any">
 <link rel="icon" href="/images/ajna-mark.svg?v=8affdbd5" type="image/svg+xml">
@@ -50,7 +50,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Database Replication Patterns: Read Replicas, Multi-Primary, and When Each Applies","description":"Database replication serves two distinct goals — high availability (survive a primary failure) and read scaling (distribute read traffic). The configuration that optimizes for one is often wrong for the other.","datePublished":"2025-08-04","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/database-replication-patterns/","image":"https://ajnacs.com/assets/og/articles/database-replication-patterns.png?v=0b2e2aef0ccc","keywords":"Data Engineering, Cloud Architecture","articleSection":"Data Engineering","wordCount":897}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Database Replication Patterns: Read Replicas, Multi-Primary, and When Each Applies","description":"Database replication serves two distinct goals — high availability (survive a primary failure) and read scaling (distribute read traffic). The configuration that optimizes for one is often wrong for the other.","datePublished":"2025-08-04","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/database-replication-patterns/","image":"https://ajnacs.com/assets/og/articles/database-replication-patterns.png?v=05ea7760ffe9","keywords":"Data Engineering, Cloud Architecture","articleSection":"Data Engineering","wordCount":1877}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Database Replication Patterns: Read Replicas, Multi-Primary, and When Each Applies"}]}</script>
 </head>
 <body class="article-frame" data-topic="Data Engineering">
@@ -94,15 +94,15 @@ d.setAttribute('data-theme',t);
         <a class="article-byline" href="/about/#chandra-lanka">Chandra Lanka</a>
         <span class="dot" aria-hidden="true"></span><time datetime="2025-08-04">4 Aug 2025</time>
         <span class="dot" aria-hidden="true"></span><span>Updated <time datetime="2026-11-23">23 Nov 2026</time></span>
-        <span class="dot"></span><span>4 min read</span>
+        <span class="dot"></span><span>8 min read</span>
         <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
       </div>
     </header>
 
-    <div class="article-hero" data-topic="Data Engineering"><img data-article-art="database-replication-patterns" src="/assets/covers/database-replication-patterns.svg?v=7cdb48e03ed5" width="1280" height="720" alt="Conceptual illustration for Database Replication Patterns: Read Replicas, Multi-Primary, and When Each Applies: Replica, Replication, What to measure." decoding="async" fetchpriority="high"></div>
+    <div class="article-hero" data-topic="Data Engineering"><img data-article-art="database-replication-patterns" src="/assets/covers/database-replication-patterns.svg?v=78066ae84ac8" width="1280" height="720" alt="Conceptual illustration for Database Replication Patterns: Read Replicas, Multi-Primary, and When Each Applies: Replica, Quorum, Replication." decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
-  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#read-replicas-for-read-scaling">Read replicas for read scaling</a></li><li><a href="#synchronous-vs-asynchronous-replication">Synchronous vs. asynchronous replication</a></li><li><a href="#multi-primary-or-active-active-replication">Multi-primary (or active-active) replication</a></li><li><a href="#managed-database-replication-in-cloud">Managed database replication in cloud</a></li><li><a href="#choosing-the-right-configuration">Choosing the right configuration</a></li></ol>
+  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#read-replicas-for-read-scaling">Read replicas for read scaling</a></li><li><a href="#synchronous-vs-asynchronous-replication">Synchronous vs. asynchronous replication</a></li><li><a href="#multi-primary-or-active-active-replication">Multi-primary (or active-active) replication</a></li><li><a href="#managed-database-replication-in-cloud">Managed database replication in cloud</a></li><li><a href="#choosing-the-right-configuration">Choosing the right configuration</a></li><li><a href="#follow-a-write-through-the-replication-pipeline">Follow a write through the replication pipeline</a></li><li><a href="#route-a-session-that-needs-its-own-update">Route a session that needs its own update</a></li><li><a href="#match-promotion-to-the-acknowledgement-policy">Match promotion to the acknowledgement policy</a></li><li><a href="#reconcile-acknowledged-work-after-a-promotion">Reconcile acknowledged work after a promotion</a></li></ol>
 </nav></div>
     <div class="article-copy">
       <div class="prose">
@@ -154,6 +154,22 @@ SELECT pg_reload_conf();
 </ul>
 <p>The answers map to a specific configuration. A workload requiring zero data loss and sub-minute failover needs synchronous replication with automated failover. A workload with heavy read traffic and tolerance for 1-2 second replication lag is a candidate for async read replicas.</p>
 <p><em>Designing database replication for a new system or reviewing an existing configuration against availability requirements? <a href="/contact/">Happy to compare approaches.</a></em></p>
+<h2 id="follow-a-write-through-the-replication-pipeline"><a class="h-anchor" href="#follow-a-write-through-the-replication-pipeline" aria-hidden="true" tabindex="-1">#</a>Follow a write through the replication pipeline</h2>
+<p>Write down the guarantee for each read path before drawing the topology. A catalogue can show a price from a few seconds ago if the checkout rechecks it. An account screen reached directly after a password change has a different requirement. It may need to observe that specific transaction even when the usual replica is behind. A reporting query may allow ten minutes of staleness but must reconcile totals against a named cutoff. These are three different routing decisions even when the same database fleet supports them.</p>
+<p>For PostgreSQL physical replication, inspect how far a standby has acknowledged receipt, written WAL, flushed it and replayed it. <code>pg_stat_replication</code> reports write, flush and replay locations for the standbys connected to that server. Gaps between stages distinguish a slow network or receiver from slow application of already durable WAL. A byte gap measures WAL distance. Its conversion to seconds depends on recent WAL generation and the replica’s apply rate. The lag timing fields measure the delay of observed WAL activity and can become null on idle systems. They are a poor substitute for probing the freshness of actual data. <a href="https://www.postgresql.org/docs/18/monitoring-stats.html" rel="noopener" target="_blank">PostgreSQL replication statistics</a></p>
+<p>Suppose the writer produces 80 MiB/s of WAL during a bulk import and the replica can replay 60 MiB/s. Over a hypothetical 90-second burst, the gap grows by 1,800 MiB. If the writer then returns to 20 MiB/s and replay stays at 60 MiB/s, the replica clears the extra gap at 40 MiB/s, in about 45 seconds. Both rates will vary with the workload. A queue measured in bytes gives you a capacity hypothesis to test even when the last replay timestamp alone gives a misleading picture.</p>
+<h2 id="route-a-session-that-needs-its-own-update"><a class="h-anchor" href="#route-a-session-that-needs-its-own-update" aria-hidden="true" tabindex="-1">#</a>Route a session that needs its own update</h2>
+<p>The simplest read-after-write policy routes the immediate confirmation to the writer. It is appropriate when the number of affected requests is small and the confirmation must be correct. Make the routing decision explicit in the application’s database access layer. Expiring a general session affinity flag after a fixed interval can relieve writer load, but it can still fail when replication is slower than that interval. Measure writer headroom with the same confirmation traffic you expect after a promotion.</p>
+<p>A team that needs to retain more read traffic on replicas can track a replication position from the writer after commit and compare it with the candidate’s replay position. The token must come from the same database history as the replica and the read must take a fresh snapshot after the check. A pre-existing snapshot or a comparison across a timeline change can invalidate the contract. Use a small deadline. On expiry, route to the current writer if it can satisfy the guarantee or return a response that represents the state honestly. Test the path when the replica pauses, the connection pool changes its target and the writer changes during a request.</p>
+<p>Observe the percentage of requests that use the fallback and the increase in writer connections. An apparently responsive confirmation page can still hide a degraded replica if every request silently lands on the writer. Track fallback explicitly and bound the total fallback concurrency. When the standby catches up, send traffic back gradually and keep checking freshness while connections churn.</p>
+<h2 id="match-promotion-to-the-acknowledgement-policy"><a class="h-anchor" href="#match-promotion-to-the-acknowledgement-policy" aria-hidden="true" tabindex="-1">#</a>Match promotion to the acknowledgement policy</h2>
+<p>With PostgreSQL synchronous replication configured, the selected commit mode determines what the client’s success means. <code>synchronous_commit = on</code> waits for an acknowledgement that the selected synchronous standby or standbys flushed the commit record. <code>remote_write</code> waits until the standby operating system receives the write, which does not promise survival of a standby OS crash. <code>remote_apply</code> additionally waits for replay so a new standby snapshot can see the committed work. Check the transaction’s effective setting and the selection policy in <code>synchronous_standby_names</code>. Waiting for one synchronous copy does not justify promoting a separate asynchronous copy. <a href="https://www.postgresql.org/docs/18/runtime-config-wal.html" rel="noopener" target="_blank">PostgreSQL WAL settings</a> · <a href="https://www.postgresql.org/docs/18/runtime-config-replication.html" rel="noopener" target="_blank">Replication configuration</a></p>
+<p>Agree on what happens when the synchronous acknowledgement cannot arrive. A strict availability policy may leave writes waiting until quorum recovers. A controlled change to asynchronous acknowledgement can restore throughput, but changes the loss exposure and needs visible approval, timing and reconciliation. Use a test where the standby can still answer queries while it can no longer acknowledge WAL promptly. That separates a green instance check from the capability that the write contract actually needs.</p>
+<h2 id="reconcile-acknowledged-work-after-a-promotion"><a class="h-anchor" href="#reconcile-acknowledged-work-after-a-promotion" aria-hidden="true" tabindex="-1">#</a>Reconcile acknowledged work after a promotion</h2>
+<p>Put numbered, idempotent operations through an isolated test environment. Keep a record outside the database under exercise of requests acknowledged, requests rejected and requests with unknown client outcomes. During promotion, fence the old writer and verify that previous connection pools can no longer issue accepted writes to it. At service restoration, compare acknowledged IDs with recovered records and retry unknown outcomes through the usual idempotency path. Count missing, repeated and conflicting records separately. A zero missing count in a light rehearsal supports that run only.</p>
+<p>Start the recovery clock when customers first lose the promised service. Stop it once fresh requests can complete through the normal application path, including DNS, authentication and connection pools. Publish the time spent fencing, promoting, reconnecting and reconciling so that the next experiment can focus on the longest stage. Record the WAL position and replica state at promotion and the tested traffic rate. Keep a separate restore rehearsal. A replica can faithfully replay an accidental delete, and a successful promotion tells you little about recovery to an earlier point.</p>
+<p>Keep charts from both sides of the switchover. The former writer&#39;s final observations may disappear just when they become essential. Capture which standby was eligible, why the control plane chose it and how quickly the application abandoned old connections. Repeat with the previously preferred standby unavailable.</p>
+<p>Include write throughput during recovery.</p>
 
       </div>
 <section class="field-worksheet worked-example" aria-labelledby="worked-example">
@@ -229,12 +245,12 @@ SELECT pg_reload_conf();
     <div class="wrap">
       <p class="eyebrow">Related</p>
       <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|Performance|Programming|Cloud Architecture|Data Engineering|FinOps|" data-search="compression in production: choosing between gzip, zstd, lz4, and brotli like it matters compression is a three-way trade — ratio, speed, and cpu — that most systems set once by default and never revisit. the algorithm landscape, placement decisions across web, storage, and streaming, dictionary compression&#39;s quiet superpower, and the measurement discipline. performance programming cloud architecture data engineering finops" data-topic="Performance">
-  <div class="card-art"><img data-article-art="compression-selection-guide" src="/assets/covers/compression-selection-guide.svg?v=841ffbacef2b" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-art"><img data-article-art="compression-selection-guide" src="/assets/covers/compression-selection-guide.svg?v=624c62a59726" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
     <a class="chip" href="/topics/performance/">Performance</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/compression-selection-guide/">Compression in Production: Choosing Between gzip, zstd, lz4, and Brotli Like It Matters</a></h3>
     <p class="card-desc">Compression is a three-way trade — ratio, speed, and CPU — that most systems set once by default and never revisit. The algorithm landscape, placement decisions across web, storage, and streaming, dictionary compression&#39;s quiet superpower, and the measurement discipline.</p>
-    <div class="card-meta"><time datetime="2026-10-12">12 Oct 2026</time><span class="dot"></span><span>5 min read</span></div>
+    <div class="card-meta"><time datetime="2026-10-12">12 Oct 2026</time><span class="dot"></span><span>10 min read</span></div>
   </div>
 </article>
 <article class="card" data-card data-topics="|Data Engineering|Cloud Architecture|AI &amp; MLOps|" data-search="the data lakehouse: why it won, and how to architect one that works data warehouses couldn&#39;t handle unstructured data at scale. data lakes couldn&#39;t enforce schemas or serve bi queries efficiently. the lakehouse combines both — here&#39;s the architecture, the open table formats that make it work, and the practical design decisions. data engineering cloud architecture ai &amp; mlops" data-topic="Data Engineering">
@@ -243,7 +259,7 @@ SELECT pg_reload_conf();
     <a class="chip" href="/topics/data-engineering/">Data Engineering</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/data-lakehouse-architecture/">The Data Lakehouse: Why It Won, and How to Architect One That Works</a></h3>
     <p class="card-desc">Data warehouses couldn&#39;t handle unstructured data at scale. Data lakes couldn&#39;t enforce schemas or serve BI queries efficiently. The lakehouse combines both — here&#39;s the architecture, the open table formats that make it work, and the practical design decisions.</p>
-    <div class="card-meta"><time datetime="2026-10-05">5 Oct 2026</time><span class="dot"></span><span>4 min read</span></div>
+    <div class="card-meta"><time datetime="2026-10-05">5 Oct 2026</time><span class="dot"></span><span>9 min read</span></div>
   </div>
 </article>
 <article class="card" data-card data-topics="|Data Engineering|Programming|Cloud Architecture|" data-search="postgresql performance tuning: the settings and patterns that actually matter postgresql&#39;s default configuration is conservative, designed for small deployments. for production workloads, the settings that control memory, parallelism, wal behavior, and connection handling need explicit tuning. here&#39;s where to start. data engineering programming cloud architecture" data-topic="Data Engineering">
@@ -252,7 +268,7 @@ SELECT pg_reload_conf();
     <a class="chip" href="/topics/data-engineering/">Data Engineering</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/postgresql-performance-tuning/">PostgreSQL Performance Tuning: The Settings and Patterns That Actually Matter</a></h3>
     <p class="card-desc">PostgreSQL&#39;s default configuration is conservative, designed for small deployments. For production workloads, the settings that control memory, parallelism, WAL behavior, and connection handling need explicit tuning. Here&#39;s where to start.</p>
-    <div class="card-meta"><time datetime="2025-12-26">26 Dec 2025</time><span class="dot"></span><span>5 min read</span></div>
+    <div class="card-meta"><time datetime="2025-12-26">26 Dec 2025</time><span class="dot"></span><span>9 min read</span></div>
   </div>
 </article></div>
     </div>
@@ -300,7 +316,17 @@ SELECT pg_reload_conf();
   <p class="reader-note">Saved in this browser only — these settings do not follow you to another device.</p>
 </div>
 <button class="focus-exit" id="focusExit" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h6V3M21 9h-6V3M3 15h6v6M21 15h-6v6"/></svg> Exit focus</button>
-
+<div class="chapter-bar" id="chapterBar">
+  <div class="chapter-where">
+    <b>Database Replication Patterns: Read Replicas, Multi-Primary, and When Each Applies</b>
+    <span>Data Engineering</span>
+  </div>
+  <span class="chapter-left" id="chapterLeft"></span>
+  <nav class="chapter-step" aria-label="Article navigation">
+    <a href="/insights/aiml-what-is-machine-learning/" aria-label="Previous: What Machine Learning Actually Is — Before the Hype and After the Buzzwords"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a>
+    <a href="/insights/weblogic-performance-tuning/" aria-label="Next: WebLogic Performance Tuning: Work Managers, Connection Pools, and the Knobs That Actually Matter"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
+  </nav>
+</div>
 </main>
 
 <footer class="site-footer">

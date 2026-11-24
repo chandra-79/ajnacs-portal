@@ -50,7 +50,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Writing Production-Grade Dockerfiles: The Decisions That Actually Matter","description":"Multi-stage builds, minimal base images, layer caching, non-root users, build arguments, and the specific Dockerfile patterns that separate a working image from a secure, efficient, maintainable one.","datePublished":"2026-06-24","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/containers-production-dockerfiles/","image":"https://ajnacs.com/assets/og/articles/containers-production-dockerfiles.png?v=4eee07db3839","keywords":"DevSecOps, Fundamentals","articleSection":"DevSecOps","wordCount":785}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Writing Production-Grade Dockerfiles: The Decisions That Actually Matter","description":"Multi-stage builds, minimal base images, layer caching, non-root users, build arguments, and the specific Dockerfile patterns that separate a working image from a secure, efficient, maintainable one.","datePublished":"2026-06-24","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/containers-production-dockerfiles/","image":"https://ajnacs.com/assets/og/articles/containers-production-dockerfiles.png?v=4eee07db3839","keywords":"DevSecOps, Fundamentals","articleSection":"DevSecOps","wordCount":1533}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Writing Production-Grade Dockerfiles: The Decisions That Actually Matter"}]}</script>
 </head>
 <body class="article-frame" data-topic="DevSecOps">
@@ -94,7 +94,7 @@ d.setAttribute('data-theme',t);
         <a class="article-byline" href="/about/#chandra-lanka">Chandra Lanka</a>
         <span class="dot" aria-hidden="true"></span><time datetime="2026-06-24">24 Jun 2026</time>
         <span class="dot" aria-hidden="true"></span><span>Updated <time datetime="2026-11-23">23 Nov 2026</time></span>
-        <span class="dot"></span><span>3 min read</span>
+        <span class="dot"></span><span>7 min read</span>
         <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
       </div>
     </header>
@@ -102,7 +102,7 @@ d.setAttribute('data-theme',t);
     <div class="article-hero" data-topic="DevSecOps"><img data-article-art="containers-production-dockerfiles" src="/assets/covers/containers-production-dockerfiles.svg?v=d3341ad17a87" width="1280" height="720" alt="Conceptual illustration for Writing Production-Grade Dockerfiles: The Decisions That Actually Matter: Runtime, Container, Pod." decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
-  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#start-with-the-right-base-image">Start with the Right Base Image</a></li><li><a href="#multi-stage-builds-separate-build-from-runtime">Multi-Stage Builds: Separate Build from Runtime</a></li><li><a href="#layer-caching-order-instructions-by-change-frequency">Layer Caching: Order Instructions by Change Frequency</a></li><li><a href="#run-as-non-root">Run as Non-Root</a></li><li><a href="#use-dockerignore">Use .dockerignore</a></li><li><a href="#useful-image-analysis">Useful Image Analysis</a></li></ol>
+  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#start-with-the-right-base-image">Start with the Right Base Image</a></li><li><a href="#multi-stage-builds-separate-build-from-runtime">Multi-Stage Builds: Separate Build from Runtime</a></li><li><a href="#layer-caching-order-instructions-by-change-frequency">Layer Caching: Order Instructions by Change Frequency</a></li><li><a href="#run-as-non-root">Run as Non-Root</a></li><li><a href="#use-dockerignore">Use .dockerignore</a></li><li><a href="#useful-image-analysis">Useful Image Analysis</a></li><li><a href="#start-with-the-runtime-contract">Start with the runtime contract</a></li><li><a href="#validate-reproducibility-rather-than-assuming-it">Validate reproducibility rather than assuming it</a></li><li><a href="#measure-cold-and-warm-behavior-independently">Measure cold and warm behavior independently</a></li><li><a href="#review-the-release-artifact-and-recovery-path">Review the release artifact and recovery path</a></li></ol>
 </nav><nav class="chapters" aria-label="Articles in this series">
       <p class="chapters-title">Containerization from the Ground Up</p>
       <ol><li><a href="/insights/containers-what-they-actually-are/">What Containers Actually Are — Not the Marketing Version</a></li><li aria-current="true"><a href="/insights/containers-production-dockerfiles/">Writing Production-Grade Dockerfiles: The Decisions That Actually Matter</a></li><li><a href="/insights/containers-networking/">Container Networking: How Containers Talk to Each Other and to the Outside World</a></li><li><a href="/insights/containers-kubernetes-fundamentals/">Kubernetes Fundamentals: What It Is, What It Does, and When You Actually Need It</a></li><li><a href="/insights/containers-security/">Container Security: The Specific Misconfigurations That Open Production Systems to Attack</a></li></ol>
@@ -135,16 +135,22 @@ CMD [&quot;/my-binary&quot;]
 <h2 id="multi-stage-builds-separate-build-from-runtime"><a class="h-anchor" href="#multi-stage-builds-separate-build-from-runtime" aria-hidden="true" tabindex="-1">#</a>Multi-Stage Builds: Separate Build from Runtime</h2>
 <p>The build environment needs compilers, package managers, and build tools. The runtime environment does not. Multi-stage builds keep the build dependencies out of the production image.</p>
 <pre><code class="language-dockerfile">## Stage 1: Build
-FROM node:20-slim AS builder
+FROM node:24-slim AS builder
 WORKDIR /app
 COPY package*.json ./
-RUN npm ci --only=production
+RUN npm ci
 
 COPY . .
 RUN npm run build
 
-## Stage 2: Runtime (only production artifacts, no build tools)
-FROM node:20-slim AS runtime
+## Stage 2: Install production dependencies from the same lockfile
+FROM node:24-slim AS production-deps
+WORKDIR /app
+COPY package.json package-lock.json ./
+RUN npm ci --omit=dev
+
+## Stage 3: Runtime
+FROM node:24-slim AS runtime
 WORKDIR /app
 
 ## Create non-root user
@@ -153,7 +159,7 @@ RUN addgroup --system --gid 1001 appgroup &amp;&amp; \
 
 ## Copy only what runtime needs
 COPY --from=builder --chown=appuser:appgroup /app/dist ./dist
-COPY --from=builder --chown=appuser:appgroup /app/node_modules ./node_modules
+COPY --from=production-deps --chown=appuser:appgroup /app/node_modules ./node_modules
 COPY --from=builder --chown=appuser:appgroup /app/package.json ./
 
 USER appuser
@@ -162,7 +168,7 @@ CMD [&quot;node&quot;, &quot;dist/main.js&quot;]
 </code></pre>
 <p>Final image contains: Node.js runtime, production node_modules, compiled dist. No TypeScript compiler, no dev dependencies, no source files.</p>
 <h2 id="layer-caching-order-instructions-by-change-frequency"><a class="h-anchor" href="#layer-caching-order-instructions-by-change-frequency" aria-hidden="true" tabindex="-1">#</a>Layer Caching: Order Instructions by Change Frequency</h2>
-<p>Docker caches each layer. When a layer changes, all subsequent layers are invalidated. Order instructions from least-likely-to-change to most-likely-to-change:</p>
+<p>A cache miss invalidates later instructions that depend on that result in the build stage. Independent stages follow their own dependencies. Order instructions from least-likely-to-change to most-likely-to-change:</p>
 <pre><code class="language-dockerfile">## Bad: changes to requirements invalidate package install cache
 FROM python:3.12-slim
 COPY . /app          # &lt;-- changes every code edit
@@ -234,6 +240,18 @@ docker run --rm -it \
 <li>Image scanned for CVEs before registry push</li>
 <li>Image size is reasonable (&lt; 200MB for most web applications; &lt; 50MB for Go binaries)</li>
 </ul>
+<h2 id="start-with-the-runtime-contract"><a class="h-anchor" href="#start-with-the-runtime-contract" aria-hidden="true" tabindex="-1">#</a>Start with the runtime contract</h2>
+<p>Define the exact command, required files, user identifier, writable paths, signal behavior, and dependencies before reducing image size. Run a representative request in Linux with the same architecture and constraints as production. In a container that writes temporary files, include expected writable mounts in the test. Check that data written during verification does not silently depend on the container&#39;s default writable layer when production requires a separate volume or a read-only root filesystem. Ensure that the process behaves when it cannot write to its application directory. A build that produces the expected digest but fails under the production runtime contract is not ready for deployment.</p>
+<p>For compiled applications, separate build tooling from runtime dependency installation. A TypeScript or bundle build can need packages in development dependencies even though the final process does not. Verify that the build stage installs the compiler and build tools, and that the runtime stage receives a separately prepared production dependency set or a verified self-contained artifact. Native modules may need architecture and library compatibility between stages. Test them by starting the final container and reaching the actual functionality rather than seeing whether a base image&#39;s package list looks complete.</p>
+<h2 id="validate-reproducibility-rather-than-assuming-it"><a class="h-anchor" href="#validate-reproducibility-rather-than-assuming-it" aria-hidden="true" tabindex="-1">#</a>Validate reproducibility rather than assuming it</h2>
+<p>Pinning a base digest establishes which base the builder used. Use the application&#39;s lockfile and a repeatable install process, then record the source revision, base digests, architecture, and builder configuration for a release. If you intentionally update base digests, send the change through automated verification rather than silently switching the runtime environment. A narrow base reduces the packages you have to maintain. Its security value also depends on how promptly you can obtain and roll out a usable replacement.</p>
+<p>Ensure the policies apply to every stage that can influence the output. If a build reads a private test fixture or an access token, keep it out of the build context and use the builder&#39;s scoped secret mechanism when a credential is required during a step. Do not put sensitive values in Dockerfile arguments or environment metadata. A value omitted from the final application filesystem may still appear in histories, caches, or logs. Confirm what the builder exports and who can read it. <a href="https://docs.docker.com/build/building/secrets/" rel="noopener" target="_blank">Docker&#39;s build secrets guide</a> explains why secret mounts are preferred over build arguments for this purpose.</p>
+<h2 id="measure-cold-and-warm-behavior-independently"><a class="h-anchor" href="#measure-cold-and-warm-behavior-independently" aria-hidden="true" tabindex="-1">#</a>Measure cold and warm behavior independently</h2>
+<p>Consider a fictional rollout of 20 nodes. A runtime image has 150 decimal MB of transferable layers missing on each node during a cold rollout. The nominal transfer for those layers is 3,000 MB, or three decimal GB, if each node pulls them once. After a routine code update, only a 35 MB application layer changes and all shared layers remain present. The nominal transfer is about 700 MB across all nodes under those assumptions. These figures leave out protocol overhead, retries, compression differences, and caching elsewhere. They explain why a cold-pull test and a routine release test are different and why total image size alone does not predict either one.</p>
+<p>Time the path from creating a container to an eligible user request. Separate scheduling, downloading layers, starting the process, warming caches, and reaching the first successful response. If download accounts for a small share of the total and application startup dominates, prioritize where time actually goes. Also capture rebuild time for a small source edit, a dependency update, and a base refresh. Build caches are beneficial only when the right step is reused. Compare results on the same architecture and test a clean build with no local cache before declaring inputs complete.</p>
+<h2 id="review-the-release-artifact-and-recovery-path"><a class="h-anchor" href="#review-the-release-artifact-and-recovery-path" aria-hidden="true" tabindex="-1">#</a>Review the release artifact and recovery path</h2>
+<p>Test the resulting image with explicit access boundaries, using only the capabilities and mounts the application needs. Exercise shutdown with an in-flight request and verify the exit behavior of the actual entrypoint. Some lightweight images omit a shell, so choose an approved debugging mechanism ahead of the incident. It could be a purpose-built test image, runtime diagnostics, or an observability signal that eliminates the need to inspect a running task interactively. Keep the debug workflow authorized and distinct from the image approved for routine production.</p>
+<p>Write a short acceptance record containing the image and test digests, relevant compatibility checks, inventory results, and downgrade or rollback plan. Inspect the size increase of a new release in context. An intentional addition to support a critical compatibility requirement differs from an unnecessary compiler accidentally bundled into the runtime image. <a href="https://docs.docker.com/build/building/best-practices/" rel="noopener" target="_blank">Docker&#39;s build best practices</a> describes how build context, stages, and base-image choices affect the artifact. Verify the decisions against what the image actually does when the service is deployed.</p>
 
       </div>
 <section class="field-worksheet worked-example" aria-labelledby="worked-example">
@@ -309,30 +327,30 @@ docker run --rm -it \
     <div class="wrap">
       <p class="eyebrow">Related</p>
       <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|DevSecOps|Fundamentals|" data-search="container security: the specific misconfigurations that open production systems to attack running containers as root, privileged mode, unrestricted capabilities, exposed docker sockets — the container security mistakes that appear in breach reports and how to prevent them systematically. devsecops fundamentals" data-topic="DevSecOps">
-  <div class="card-art"><img data-article-art="containers-security" src="/assets/covers/containers-security.svg?v=8f7989b6d4dd" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-art"><img data-article-art="containers-security" src="/assets/covers/containers-security.svg?v=02d172d1e7a1" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
     <a class="chip" href="/topics/devsecops/">DevSecOps</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/containers-security/">Container Security: The Specific Misconfigurations That Open Production Systems to Attack</a></h3>
     <p class="card-desc">Running containers as root, privileged mode, unrestricted capabilities, exposed Docker sockets — the container security mistakes that appear in breach reports and how to prevent them systematically.</p>
-    <div class="card-meta"><time datetime="2026-09-28">28 Sept 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
+    <div class="card-meta"><time datetime="2026-09-28">28 Sept 2026</time><span class="dot"></span><span>7 min read</span><span class="dot"></span><span>Series</span></div>
   </div>
 </article>
 <article class="card" data-card data-topics="|DevSecOps|Fundamentals|" data-search="what containers actually are — not the marketing version containers are not lightweight vms. they are processes with resource constraints and namespace isolation. understanding the actual mechanism makes you a better user of docker, kubernetes, and every container runtime. devsecops fundamentals" data-topic="DevSecOps">
-  <div class="card-art"><img data-article-art="containers-what-they-actually-are" src="/assets/covers/containers-what-they-actually-are.svg?v=ab1bf2998d29" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-art"><img data-article-art="containers-what-they-actually-are" src="/assets/covers/containers-what-they-actually-are.svg?v=f9d398e0421b" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
     <a class="chip" href="/topics/devsecops/">DevSecOps</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/containers-what-they-actually-are/">What Containers Actually Are — Not the Marketing Version</a></h3>
     <p class="card-desc">Containers are not lightweight VMs. They are processes with resource constraints and namespace isolation. Understanding the actual mechanism makes you a better user of Docker, Kubernetes, and every container runtime.</p>
-    <div class="card-meta"><time datetime="2026-07-30">30 Jul 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
+    <div class="card-meta"><time datetime="2026-07-30">30 Jul 2026</time><span class="dot"></span><span>8 min read</span><span class="dot"></span><span>Series</span></div>
   </div>
 </article>
 <article class="card" data-card data-topics="|DevSecOps|Fundamentals|" data-search="container networking: how containers talk to each other and to the outside world bridge networks, overlay networks, dns-based service discovery, port publishing, and the iptables rules that make container networking work — and fail. devsecops fundamentals" data-topic="DevSecOps">
-  <div class="card-art"><img data-article-art="containers-networking" src="/assets/covers/containers-networking.svg?v=23bf133e7b15" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-art"><img data-article-art="containers-networking" src="/assets/covers/containers-networking.svg?v=cd52ebab1883" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
     <a class="chip" href="/topics/devsecops/">DevSecOps</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/containers-networking/">Container Networking: How Containers Talk to Each Other and to the Outside World</a></h3>
     <p class="card-desc">Bridge networks, overlay networks, DNS-based service discovery, port publishing, and the iptables rules that make container networking work — and fail.</p>
-    <div class="card-meta"><time datetime="2026-04-28">28 Apr 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
+    <div class="card-meta"><time datetime="2026-04-28">28 Apr 2026</time><span class="dot"></span><span>8 min read</span><span class="dot"></span><span>Series</span></div>
   </div>
 </article></div>
     </div>

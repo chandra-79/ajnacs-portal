@@ -14,18 +14,18 @@
 <meta property="og:title" content="Database Migration Strategies: Moving Production Data Without Downtime">
 <meta property="og:description" content="Zero-downtime database migrations are possible but require discipline — dual-write patterns, schema compatibility phases, and a rollback plan that you&#39;ve a…">
 <meta property="og:url" content="https://ajnacs.com/insights/database-migration-strategies/">
-<meta property="og:image" content="https://ajnacs.com/assets/og/articles/database-migration-strategies.png?v=164b742fbc2f">
+<meta property="og:image" content="https://ajnacs.com/assets/og/articles/database-migration-strategies.png?v=3def89a936da">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Conceptual illustration for Database Migration Strategies: Moving Production Data Without Downtime: Current, Target, Migration.">
+<meta property="og:image:alt" content="Conceptual illustration for Database Migration Strategies: Moving Production Data Without Downtime: Current, Transition, Target.">
 <meta property="article:published_time" content="2025-07-01">
 <meta property="article:modified_time" content="2026-11-23">
 <meta property="og:image:type" content="image/png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Database Migration Strategies: Moving Production Data Without Downtime">
 <meta name="twitter:description" content="Zero-downtime database migrations are possible but require discipline — dual-write patterns, schema compatibility phases, and a rollback plan that you&#39;ve a…">
-<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/database-migration-strategies.png?v=164b742fbc2f">
-<meta name="twitter:image:alt" content="Conceptual illustration for Database Migration Strategies: Moving Production Data Without Downtime: Current, Target, Migration.">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/database-migration-strategies.png?v=3def89a936da">
+<meta name="twitter:image:alt" content="Conceptual illustration for Database Migration Strategies: Moving Production Data Without Downtime: Current, Transition, Target.">
 
 <link rel="icon" href="/favicon.ico?v=8affdbd5" sizes="any">
 <link rel="icon" href="/images/ajna-mark.svg?v=8affdbd5" type="image/svg+xml">
@@ -50,7 +50,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Database Migration Strategies: Moving Production Data Without Downtime","description":"Zero-downtime database migrations are possible but require discipline — dual-write patterns, schema compatibility phases, and a rollback plan that you've actually tested. Here's what works at production scale.","datePublished":"2025-07-01","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/database-migration-strategies/","image":"https://ajnacs.com/assets/og/articles/database-migration-strategies.png?v=164b742fbc2f","keywords":"Data Engineering, Cloud Architecture, Engineering Leadership","articleSection":"Data Engineering","wordCount":1075}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Database Migration Strategies: Moving Production Data Without Downtime","description":"Zero-downtime database migrations are possible but require discipline — dual-write patterns, schema compatibility phases, and a rollback plan that you've actually tested. Here's what works at production scale.","datePublished":"2025-07-01","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/database-migration-strategies/","image":"https://ajnacs.com/assets/og/articles/database-migration-strategies.png?v=3def89a936da","keywords":"Data Engineering, Cloud Architecture, Engineering Leadership","articleSection":"Data Engineering","wordCount":2202}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Database Migration Strategies: Moving Production Data Without Downtime"}]}</script>
 </head>
 <body class="article-frame" data-topic="Data Engineering">
@@ -94,15 +94,15 @@ d.setAttribute('data-theme',t);
         <a class="article-byline" href="/about/#chandra-lanka">Chandra Lanka</a>
         <span class="dot" aria-hidden="true"></span><time datetime="2025-07-01">1 Jul 2025</time>
         <span class="dot" aria-hidden="true"></span><span>Updated <time datetime="2026-11-23">23 Nov 2026</time></span>
-        <span class="dot"></span><span>5 min read</span>
+        <span class="dot"></span><span>10 min read</span>
         <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
       </div>
     </header>
 
-    <div class="article-hero" data-topic="Data Engineering"><img data-article-art="database-migration-strategies" src="/assets/covers/database-migration-strategies.svg?v=9aa621c81a16" width="1280" height="720" alt="Conceptual illustration for Database Migration Strategies: Moving Production Data Without Downtime: Current, Target, Migration." decoding="async" fetchpriority="high"></div>
+    <div class="article-hero" data-topic="Data Engineering"><img data-article-art="database-migration-strategies" src="/assets/covers/database-migration-strategies.svg?v=d18cfe3cae5f" width="1280" height="720" alt="Conceptual illustration for Database Migration Strategies: Moving Production Data Without Downtime: Current, Transition, Target." decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
-  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#the-core-principle-schema-changes-must-be-backward-compatibl">The core principle: schema changes must be backward compatible</a></li><li><a href="#the-expandcontract-pattern">The expand/contract pattern</a></li><li><a href="#backfill-strategy-for-large-tables">Backfill strategy for large tables</a></li><li><a href="#online-schema-change-tools">Online schema change tools</a></li><li><a href="#cross-database-migrations">Cross-database migrations</a></li><li><a href="#testing-the-rollback">Testing the rollback</a></li></ol>
+  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#the-core-principle-schema-changes-must-be-backward-compatibl">The core principle: schema changes must be backward compatible</a></li><li><a href="#the-expandcontract-pattern">The expand/contract pattern</a></li><li><a href="#backfill-strategy-for-large-tables">Backfill strategy for large tables</a></li><li><a href="#online-schema-change-tools">Online schema change tools</a></li><li><a href="#cross-database-migrations">Cross-database migrations</a></li><li><a href="#testing-the-rollback">Testing the rollback</a></li><li><a href="#define-a-migration-unit-that-can-be-reconciled">Define a migration unit that can be reconciled</a></li><li><a href="#commit-each-batch-and-establish-a-stop-rule">Commit each batch and establish a stop rule</a></li><li><a href="#treat-the-write-switch-as-a-sequence-of-durable-milestones">Treat the write switch as a sequence of durable milestones</a></li><li><a href="#separate-reversing-traffic-from-reversing-storage-effects">Separate reversing traffic from reversing storage effects</a></li></ol>
 </nav></div>
     <div class="article-copy">
       <div class="prose">
@@ -111,7 +111,6 @@ d.setAttribute('data-theme',t);
 <p>Zero-downtime database migrations are achievable, but they require treating schema changes and data movement as distinct operations with distinct risk profiles.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
 <p><strong>Reconciliation rate at a known replication lag.</strong> If 999,950 of 1,000,000 source records match a target snapshot at the same logical cut, the mismatch count is 50. Investigate by key and reason before switching writes. Track replication lag and rehearse what happens to new writes during rollback.</p>
-<p class="depth-reading"><a href="/deep-dives/migration/cutover-replay-window/">Level 2 · Calculate how much replay time a cutover needs</a></p>
 <p><em>Illustrative measurement. Any numbers in this example are hypothetical.</em></p>
 <h2 id="the-core-principle-schema-changes-must-be-backward-compatibl"><a class="h-anchor" href="#the-core-principle-schema-changes-must-be-backward-compatibl" aria-hidden="true" tabindex="-1">#</a>The core principle: schema changes must be backward compatible</h2>
 <p>The fundamental constraint: at any point during a deployment, both the old version of the application and the new version must be able to read and write the database correctly. This rules out a large category of apparently simple changes:</p>
@@ -131,7 +130,7 @@ d.setAttribute('data-theme',t);
 <li>Deploy code that only uses the new column</li>
 <li>Drop the old column (now unreferenced)</li>
 </ol>
-<p>This takes longer. It requires multiple deployments. It&#39;s the only approach that doesn&#39;t carry downtime risk.</p>
+<p>This takes multiple deployments because two representations coexist while readers and writers migrate. The approach reduces avoidable incompatibility. Rehearse lock acquisition, resource headroom, and recovery before promising uninterrupted operation.</p>
 <h2 id="the-expandcontract-pattern"><a class="h-anchor" href="#the-expandcontract-pattern" aria-hidden="true" tabindex="-1">#</a>The expand/contract pattern</h2>
 <p>The formalization of this approach is called expand/contract (also called parallel change):</p>
 <p><strong>Expand phase</strong>: add new structure alongside old structure. New columns, new tables, new relationships. Old code continues to work. New code can optionally use the new structure.</p>
@@ -146,31 +145,22 @@ d.setAttribute('data-theme',t);
 <li>Potentially cause replication lag</li>
 <li>Potentially trigger autovacuum contention on PostgreSQL</li>
 </ul>
-<p>The correct approach is batched backfill:</p>
-<pre><code class="language-sql">-- PostgreSQL batch backfill with row-level targeting
-DO $$
-DECLARE
-  batch_size INT := 10000;
-  last_id BIGINT := 0;
-  max_id BIGINT;
-BEGIN
-  SELECT MAX(id) INTO max_id FROM orders;
-  WHILE last_id &lt; max_id LOOP
-    UPDATE orders
-    SET new_column = derive_value(old_column)
-    WHERE id &gt; last_id AND id &lt;= last_id + batch_size
-      AND new_column IS NULL;
-    last_id := last_id + batch_size;
-    PERFORM pg_sleep(0.1); -- brief pause to reduce contention
-  END LOOP;
-END $$;
+<p>Use a runner that commits one bounded keyset batch at a time. A plain loop without a commit holds one transaction, even if it sleeps between updates. Start with a recorded high-water key. The example assumes an immutable positive integer key and a derived value that cannot be NULL. Bind the cursor, high-water key, and batch size from the client rather than interpolating text.</p>
+<pre><code class="language-sql">WITH batch AS (
+    SELECT id FROM orders
+    WHERE id &gt; $1 AND id &lt;= $2
+    ORDER BY id LIMIT $3
+), applied AS (
+    UPDATE orders AS o
+    SET new_column = derive_value(o.old_column)
+    FROM batch
+    WHERE o.id = batch.id AND o.new_column IS NULL
+    RETURNING o.id
+)
+SELECT (SELECT MAX(id) FROM batch) AS through_id,
+       (SELECT COUNT(*) FROM applied) AS updated;
 </code></pre>
-<p>Key parameters to tune:</p>
-<ul>
-<li><strong>Batch size</strong>: 1,000–50,000 rows depending on row width and index contention</li>
-<li><strong>Sleep interval</strong>: 50–200ms to let replication catch up and reduce lock contention</li>
-<li><strong>Idempotency</strong>: the <code>AND new_column IS NULL</code> guard means the script can be rerun safely if interrupted</li>
-</ul>
+<p>Commit before advancing a durable checkpoint, and stop when the batch has no keys. A replay after a missed checkpoint is safe only if the update guard and writer contract still hold. Sleep between committed transactions. Test with production-like concurrent writes and monitor lock time, replica lag, and batch duration. Reconcile the backfill with rows touched after the high-water key and handle nullable target values with an explicit progress marker.</p>
 <p>Track progress with a dedicated monitoring query:</p>
 <pre><code class="language-sql">SELECT
   COUNT(*) FILTER (WHERE new_column IS NOT NULL) AS migrated,
@@ -179,14 +169,7 @@ END $$;
 FROM orders;
 </code></pre>
 <h2 id="online-schema-change-tools"><a class="h-anchor" href="#online-schema-change-tools" aria-hidden="true" tabindex="-1">#</a>Online schema change tools</h2>
-<p>For MySQL, Percona&#39;s <code>pt-online-schema-change</code> or GitHub&#39;s <code>gh-ost</code> handle the shadow table pattern automatically:</p>
-<ul>
-<li>Create a shadow table with the new schema</li>
-<li>Set up triggers to replicate ongoing changes</li>
-<li>Copy existing rows in batches</li>
-<li>Perform a near-instant table swap when caught up</li>
-</ul>
-<p><code>gh-ost</code> is generally preferred for production use because it uses binary log streaming rather than triggers, which avoids the write amplification problem with trigger-based approaches on high-write tables.</p>
+<p>MySQL tools can copy to a shadow table while the primary table remains live. <a href="https://docs.percona.com/percona-toolkit/pt-online-schema-change.html" rel="noopener" target="_blank">Percona’s pt-online-schema-change</a> uses triggers to capture concurrent changes. <a href="https://github.com/github/gh-ost" rel="noopener" target="_blank">GitHub’s gh-ost</a> streams changes from the binary log. Both copy existing data in bounded batches before cutover. A final table swap must acquire locks. Test lock acquisition, foreign keys, triggers, replication topology, throttling, and restart behavior before choosing either tool.</p>
 <p>For PostgreSQL, <code>pglogical</code> replication or manual expand/contract is the standard approach. The <code>pg_repack</code> extension handles CLUSTER and VACUUM FULL equivalents online, but schema changes still require the manual pattern.</p>
 <h2 id="cross-database-migrations"><a class="h-anchor" href="#cross-database-migrations" aria-hidden="true" tabindex="-1">#</a>Cross-database migrations</h2>
 <p>Moving data between database engines (Oracle to PostgreSQL, SQL Server to Aurora) adds complexity:</p>
@@ -200,7 +183,7 @@ FROM orders;
 <li><strong>CDC (Change Data Capture)</strong>: ongoing replication of changes during cutover preparation. AWS DMS, Debezium, or Striim are common options.</li>
 <li><strong>Cutover</strong>: stop writes to source, verify CDC has caught up, redirect application connections to target, verify, open writes to target.</li>
 </ol>
-<p>The cutover window is the exposure period. For most production systems, a 15–30 minute cutover window (stop writes, verify, redirect, verify again) is achievable with proper preparation.</p>
+<p>The cutover window is the exposure period from stopping source writes to verifying healthy writes on the target. Treat the duration as a workload-specific estimate. Include lag drain, lock acquisition, connection recycling, application verification, and timed abort points in a rehearsal at representative scale.</p>
 <h2 id="testing-the-rollback"><a class="h-anchor" href="#testing-the-rollback" aria-hidden="true" tabindex="-1">#</a>Testing the rollback</h2>
 <p>The rollback plan that hasn&#39;t been tested is not a rollback plan. Before any significant migration, verify:</p>
 <ul>
@@ -210,6 +193,22 @@ FROM orders;
 </ul>
 <p>The most common rollback failure mode: the rollback assumes the old schema still exists, but the contract phase already removed it.</p>
 <p><em>Working through a database migration with a tight cutover constraint? The sequencing of expand/contract phases is where most of the risk sits. <a href="/contact/">Happy to think through the specific trade-offs.</a></em></p>
+<h2 id="define-a-migration-unit-that-can-be-reconciled"><a class="h-anchor" href="#define-a-migration-unit-that-can-be-reconciled" aria-hidden="true" tabindex="-1">#</a>Define a migration unit that can be reconciled</h2>
+<p>Start with a bounded table, key range, or tenant cohort and document who can write to it during each step. For example, an order migration could leave payment state, customer records, and fulfillment in their established systems while moving only the order representation. Use immutable order identifiers to compare outcomes. State which fields permit a deliberate transformation, which fields must be equal, and which non-row outcomes must also agree. A notification or inventory reservation is an effect that row equality alone cannot prove. Include updates, deletions, changes arriving out of order, and records with no matching source object in the reconciliation design.</p>
+<p>Define a consistent cut before comparing databases. A live scan of the source against a later scan of a target can report legitimate transactions as errors, or miss transactions that were skipped by both scans. Use a documented snapshot and a replay checkpoint supported by the mechanism in use. Compare counts and grouped aggregates first. Match values for keys that differ, using canonical type, units, timestamp precision, and handling of null. Retain a small immutable report rather than a bulk copy of customer data. Use checks that detect extra target rows as well as missing rows. A global checksum may help narrow a mismatch but cannot explain a transformed decimal or an out-of-order delete.</p>
+<h2 id="commit-each-batch-and-establish-a-stop-rule"><a class="h-anchor" href="#commit-each-batch-and-establish-a-stop-rule" aria-hidden="true" tabindex="-1">#</a>Commit each batch and establish a stop rule</h2>
+<p>A loop inside one transaction still holds the transaction open even when it updates small ID ranges and sleeps between them. In PostgreSQL, the example loop above has no commit between ranges. It therefore does not provide committed batching. Run one transaction per batch from an orchestrator or design a routine with transaction control supported by the deployment context. Persist a progress checkpoint after successful commit, or in the same database transaction where appropriate. An interruption may cause the runner to repeat work, so the update should be safe on replay. Use keyset progress instead of assuming identifiers are densely packed.</p>
+<p>A null condition is safe as a replay guard only when null unambiguously means incomplete and a concurrent writer cannot make the derived value stale. Some transformations intentionally produce null. Those need a separate marker or derivation version. For rows concurrently changed or deleted, pick an explicit policy, such as a version-aware update or ongoing synchronization by the authoritative writer. Test repeated runs in staging with inserts, updates, and deletions between batches. Verify that rows whose material fields changed during the copy are updated exactly as the business requires. Test an interrupted transaction, an interruption after commit but before checkpoint persistence, and a replay of a batch that already committed.</p>
+<p>Use observed pressure to raise or lower batch size. In an illustrative trial, 10,000 rows complete every four seconds, implying 2,500 rows a second and 100 minutes to process 15 million rows if the rate holds. Suppose foreground traffic leaves 40 MB per second of spare replay capacity and the batch job emits 55 MB per second of transferable changes. The resulting backlog grows about 15 MB per second at constant rates. The nominal finish time then fails to include catch-up. Reduce the copy rate, pause the job during peaks, or provision verified spare capacity. Add a stop rule for query latency, blocked transactions, replica lag, and retention volume. Verify what the stop actually cancels and check for background work that continues after the runner exits.</p>
+<h2 id="treat-the-write-switch-as-a-sequence-of-durable-milestones"><a class="h-anchor" href="#treat-the-write-switch-as-a-sequence-of-durable-milestones" aria-hidden="true" tabindex="-1">#</a>Treat the write switch as a sequence of durable milestones</h2>
+<p>Make the decision conditions visible to operators. Stop or drain the old writers, persist their final durable position, wait until the target can prove it applied the required changes, run approved reconciliation, and transfer write authority. Verify a new transaction with a traceable test key through the real consumer path before opening the whole cohort. Confirm behavior of lingering connection pools, asynchronous jobs, and scheduled exporters. A connection string change does not revoke old permissions or terminate every existing session. Give one person control of the transition and make each stage report its actual result instead of returning unchecked success when a request to change state is accepted.</p>
+<p>Native PostgreSQL logical replication has version-specific restrictions. For PostgreSQL 18, schema changes and sequence state need separate handling. Record which schema definition and publication filters were used, and verify the affected sequence values before new inserts use them. In a cross-engine migration, test the exact comparison and sorting rules the application relies on, especially decimals, padded text, datetime precision, and collation. A successful sample import does not demonstrate equivalence for dates during a timezone transition or a historical identifier format. Keep examples of known differences and decide which transformations are acceptable before the cutover window opens.</p>
+<p class="depth-reading"><a href="/deep-dives/migration/cutover-replay-window/">Level 2 · Calculate how much replay time a cutover needs</a></p>
+<h2 id="separate-reversing-traffic-from-reversing-storage-effects"><a class="h-anchor" href="#separate-reversing-traffic-from-reversing-storage-effects" aria-hidden="true" tabindex="-1">#</a>Separate reversing traffic from reversing storage effects</h2>
+<p>Before the target accepts new writes, returning consumers to the existing authoritative source can be straightforward. After the first target-only commit, rollback may require preserving or replaying new results. A design does not get that property from a route flag. Decide how those new records, downstream effects, and idempotency keys would be returned to the old system or otherwise retained. A repair process that handles new rows but omits deletes or notifications can produce inconsistent outcomes even if all keys exist in both systems. Exercise a controlled revert after creating a small authorized set of representative operations and prove what customers would observe.</p>
+<p>Record the last point where traffic can be routed back without reconciliation. Also record a separate point after which a restore or forward repair is the approved response. If the plan depends on a reverse replication stream, prove it can preserve order, catch up, and operate under failure with both writers fenced as needed. Run the entire rehearsal with a cold connection pool and an on-call responder who was not involved in implementation. Save durations, test scope, outstanding risks, and exact conditions that would abort. Treat illustrative switch windows as capacity planning inputs. Actual time includes the traffic pause, latest replay, correctness checks, operational authorization, and restoration of the representative user path.</p>
+<p><a href="https://www.postgresql.org/docs/18/plpgsql-transactions.html" rel="noopener" target="_blank">PostgreSQL transaction management in PL/pgSQL</a> and <a href="https://www.postgresql.org/docs/18/logical-replication-restrictions.html" rel="noopener" target="_blank">PostgreSQL 18 logical replication restrictions</a></p>
+<p>For follow-up, order the verification queries by cost. A lightweight count can run every minute during replay. A full comparison that competes with replication can wait until the expected source and target cut is stable. Write the schedule into the runbook and set realistic time limits on the verification steps themselves.</p>
 
       </div>
 <section class="field-worksheet worked-example" aria-labelledby="worked-example">
@@ -289,25 +288,25 @@ FROM orders;
     <a class="chip" href="/topics/devsecops/">DevSecOps</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/platform-engineering-idp-2026/">Platform Onboarding: Measure the Path to a First Deployment</a></h3>
     <p class="card-desc">Pilot a self-service path, measure time to a first qualifying deployment, and track completion, controls, and support effort.</p>
-    <div class="card-meta"><time datetime="2026-11-20">20 Nov 2026</time><span class="dot"></span><span>2 min read</span></div>
+    <div class="card-meta"><time datetime="2026-11-20">20 Nov 2026</time><span class="dot"></span><span>4 min read</span></div>
   </div>
 </article>
 <article class="card" data-card data-topics="|Cloud Architecture|Reliability|FinOps|Engineering Leadership|" data-search="capacity planning in the cloud era: headroom as an engineered property elastic infrastructure didn&#39;t kill capacity planning — it changed what gets planned. demand modeling, the utilization-vs-headroom trade, quota and constraint archaeology, and the quarterly loop that replaces both waste and 3 am scrambles. cloud architecture reliability finops engineering leadership" data-topic="Cloud Architecture">
-  <div class="card-art"><img data-article-art="capacity-planning-engineering" src="/assets/covers/capacity-planning-engineering.svg?v=2ff332e2bf38" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-art"><img data-article-art="capacity-planning-engineering" src="/assets/covers/capacity-planning-engineering.svg?v=c216c9efb30d" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
     <a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/capacity-planning-engineering/">Capacity Planning in the Cloud Era: Headroom as an Engineered Property</a></h3>
     <p class="card-desc">Elastic infrastructure didn&#39;t kill capacity planning — it changed what gets planned. Demand modeling, the utilization-vs-headroom trade, quota and constraint archaeology, and the quarterly loop that replaces both waste and 3 AM scrambles.</p>
-    <div class="card-meta"><time datetime="2026-11-09">9 Nov 2026</time><span class="dot"></span><span>5 min read</span></div>
+    <div class="card-meta"><time datetime="2026-11-09">9 Nov 2026</time><span class="dot"></span><span>10 min read</span></div>
   </div>
 </article>
 <article class="card" data-card data-topics="|Performance|Programming|Cloud Architecture|Data Engineering|FinOps|" data-search="compression in production: choosing between gzip, zstd, lz4, and brotli like it matters compression is a three-way trade — ratio, speed, and cpu — that most systems set once by default and never revisit. the algorithm landscape, placement decisions across web, storage, and streaming, dictionary compression&#39;s quiet superpower, and the measurement discipline. performance programming cloud architecture data engineering finops" data-topic="Performance">
-  <div class="card-art"><img data-article-art="compression-selection-guide" src="/assets/covers/compression-selection-guide.svg?v=841ffbacef2b" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-art"><img data-article-art="compression-selection-guide" src="/assets/covers/compression-selection-guide.svg?v=624c62a59726" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
     <a class="chip" href="/topics/performance/">Performance</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/compression-selection-guide/">Compression in Production: Choosing Between gzip, zstd, lz4, and Brotli Like It Matters</a></h3>
     <p class="card-desc">Compression is a three-way trade — ratio, speed, and CPU — that most systems set once by default and never revisit. The algorithm landscape, placement decisions across web, storage, and streaming, dictionary compression&#39;s quiet superpower, and the measurement discipline.</p>
-    <div class="card-meta"><time datetime="2026-10-12">12 Oct 2026</time><span class="dot"></span><span>5 min read</span></div>
+    <div class="card-meta"><time datetime="2026-10-12">12 Oct 2026</time><span class="dot"></span><span>10 min read</span></div>
   </div>
 </article></div>
     </div>
@@ -355,7 +354,17 @@ FROM orders;
   <p class="reader-note">Saved in this browser only — these settings do not follow you to another device.</p>
 </div>
 <button class="focus-exit" id="focusExit" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h6V3M21 9h-6V3M3 15h6v6M21 15h-6v6"/></svg> Exit focus</button>
-
+<div class="chapter-bar" id="chapterBar">
+  <div class="chapter-where">
+    <b>Database Migration Strategies: Moving Production Data Without Downtime</b>
+    <span>Data Engineering</span>
+  </div>
+  <span class="chapter-left" id="chapterLeft"></span>
+  <nav class="chapter-step" aria-label="Article navigation">
+    <a href="/insights/mttr-reduction-playbook/" aria-label="Previous: The MTTR Reduction Playbook: Investments That Actually Move the Needle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a>
+    <a href="/insights/cloud-migration-common-failures/" aria-label="Next: Why Cloud Migrations Fail: The Pattern Behind the Common Failures"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
+  </nav>
+</div>
 </main>
 
 <footer class="site-footer">

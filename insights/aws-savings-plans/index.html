@@ -14,18 +14,18 @@
 <meta property="og:title" content="AWS Savings Plans vs Reserved Instances: Making the Commitment Decision">
 <meta property="og:description" content="Savings Plans replaced most Reserved Instance use cases but not all of them. Understanding the difference determines whether you leave money on the table o…">
 <meta property="og:url" content="https://ajnacs.com/insights/aws-savings-plans/">
-<meta property="og:image" content="https://ajnacs.com/assets/og/articles/aws-savings-plans.png?v=ba48b4fec0e0">
+<meta property="og:image" content="https://ajnacs.com/assets/og/articles/aws-savings-plans.png?v=ddad714db8ae">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Conceptual illustration for AWS Savings Plans vs Reserved Instances: Making the Commitment Decision: Usage, Cost, Commitment.">
+<meta property="og:image:alt" content="Conceptual illustration for AWS Savings Plans vs Reserved Instances: Making the Commitment Decision: Usage, Allocation, Cost.">
 <meta property="article:published_time" content="2025-05-27">
 <meta property="article:modified_time" content="2026-11-23">
 <meta property="og:image:type" content="image/png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="AWS Savings Plans vs Reserved Instances: Making the Commitment Decision">
 <meta name="twitter:description" content="Savings Plans replaced most Reserved Instance use cases but not all of them. Understanding the difference determines whether you leave money on the table o…">
-<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/aws-savings-plans.png?v=ba48b4fec0e0">
-<meta name="twitter:image:alt" content="Conceptual illustration for AWS Savings Plans vs Reserved Instances: Making the Commitment Decision: Usage, Cost, Commitment.">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/aws-savings-plans.png?v=ddad714db8ae">
+<meta name="twitter:image:alt" content="Conceptual illustration for AWS Savings Plans vs Reserved Instances: Making the Commitment Decision: Usage, Allocation, Cost.">
 
 <link rel="icon" href="/favicon.ico?v=8affdbd5" sizes="any">
 <link rel="icon" href="/images/ajna-mark.svg?v=8affdbd5" type="image/svg+xml">
@@ -50,7 +50,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"AWS Savings Plans vs Reserved Instances: Making the Commitment Decision","description":"Savings Plans replaced most Reserved Instance use cases but not all of them. Understanding the difference determines whether you leave money on the table or over-commit to an inflexible discount structure.","datePublished":"2025-05-27","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/aws-savings-plans/","image":"https://ajnacs.com/assets/og/articles/aws-savings-plans.png?v=ba48b4fec0e0","keywords":"FinOps, Cloud Architecture","articleSection":"FinOps","wordCount":773}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"AWS Savings Plans vs Reserved Instances: Making the Commitment Decision","description":"Savings Plans replaced most Reserved Instance use cases but not all of them. Understanding the difference determines whether you leave money on the table or over-commit to an inflexible discount structure.","datePublished":"2025-05-27","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/aws-savings-plans/","image":"https://ajnacs.com/assets/og/articles/aws-savings-plans.png?v=ddad714db8ae","keywords":"FinOps, Cloud Architecture","articleSection":"FinOps","wordCount":1480}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"AWS Savings Plans vs Reserved Instances: Making the Commitment Decision"}]}</script>
 </head>
 <body class="article-frame" data-topic="FinOps">
@@ -94,15 +94,15 @@ d.setAttribute('data-theme',t);
         <a class="article-byline" href="/about/#chandra-lanka">Chandra Lanka</a>
         <span class="dot" aria-hidden="true"></span><time datetime="2025-05-27">27 May 2025</time>
         <span class="dot" aria-hidden="true"></span><span>Updated <time datetime="2026-11-23">23 Nov 2026</time></span>
-        <span class="dot"></span><span>3 min read</span>
+        <span class="dot"></span><span>7 min read</span>
         <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
       </div>
     </header>
 
-    <div class="article-hero" data-topic="FinOps"><img data-article-art="aws-savings-plans" src="/assets/covers/aws-savings-plans.svg?v=5da0bcf3f8f3" width="1280" height="720" alt="Conceptual illustration for AWS Savings Plans vs Reserved Instances: Making the Commitment Decision: Usage, Cost, Commitment." decoding="async" fetchpriority="high"></div>
+    <div class="article-hero" data-topic="FinOps"><img data-article-art="aws-savings-plans" src="/assets/covers/aws-savings-plans.svg?v=98790a4e986f" width="1280" height="720" alt="Conceptual illustration for AWS Savings Plans vs Reserved Instances: Making the Commitment Decision: Usage, Allocation, Cost." decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
-  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#how-savings-plans-work">How Savings Plans work</a></li><li><a href="#how-reserved-instances-work">How Reserved Instances work</a></li><li><a href="#the-analysis-workflow">The analysis workflow</a></li><li><a href="#term-length-1-year-vs-3-year">Term length: 1-year vs. 3-year</a></li><li><a href="#payment-options">Payment options</a></li></ol>
+  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#how-savings-plans-work">How Savings Plans work</a></li><li><a href="#how-reserved-instances-work">How Reserved Instances work</a></li><li><a href="#the-analysis-workflow">The analysis workflow</a></li><li><a href="#term-length-1-year-vs-3-year">Term length: 1-year vs. 3-year</a></li><li><a href="#payment-options">Payment options</a></li><li><a href="#replay-the-plan-one-hour-at-a-time">Replay the plan one hour at a time</a></li><li><a href="#price-a-low-hour-and-a-busy-hour-separately">Price a low hour and a busy hour separately</a></li><li><a href="#put-flexibility-and-capacity-in-separate-decisions">Put flexibility and capacity in separate decisions</a></li><li><a href="#make-a-purchase-decision-the-next-reviewer-can-redo">Make a purchase decision the next reviewer can redo</a></li></ol>
 </nav></div>
     <div class="article-copy">
       <div class="prose">
@@ -113,7 +113,6 @@ d.setAttribute('data-theme',t);
 <p><em>Illustrative measurement. Any numbers in this example are hypothetical.</em></p>
 <h2 id="how-savings-plans-work"><a class="h-anchor" href="#how-savings-plans-work" aria-hidden="true" tabindex="-1">#</a>How Savings Plans work</h2>
 <p>Savings Plans commit to a consistent hourly spend (e.g., $10/hour) in exchange for a discount on eligible charges. The discount applies automatically to matching usage as it occurs — you don&#39;t allocate a Savings Plan to a specific instance type.</p>
-<p class="depth-reading"><a href="/deep-dives/finops/effective-cost-reconciliation/">Level 3 · Reconcile BilledCost and EffectiveCost by period</a></p>
 <p>Three types:</p>
 <p><strong>Compute Savings Plans</strong>: apply to EC2, Fargate, and Lambda. No restrictions on instance family, size, region, OS, or tenancy. The most flexible type. Discount: up to 66% vs. on-demand.</p>
 <p><strong>EC2 Instance Savings Plans</strong>: apply to EC2 in a specific instance family within a specific region (e.g., M5 in us-east-1). Higher discount than Compute Savings Plans (up to 72%) in exchange for the commitment to a specific instance family and region.</p>
@@ -150,6 +149,20 @@ d.setAttribute('data-theme',t);
 </ul>
 <p>Most organizations use no-upfront or partial-upfront Savings Plans. The all-upfront discount rarely justifies the cash commitment for a 1-year term; it is more compelling for a 3-year term at scale.</p>
 <p><em>Modeling Savings Plans or RI purchases for a significant AWS spend? The commitment analysis requires a solid understanding of your usage patterns over time. <a href="/contact/">Happy to walk through the approach.</a></em></p>
+<h2 id="replay-the-plan-one-hour-at-a-time"><a class="h-anchor" href="#replay-the-plan-one-hour-at-a-time" aria-hidden="true" tabindex="-1">#</a>Replay the plan one hour at a time</h2>
+<p>Build a small simulation from an hourly cost export for the accounts and usage families the purchase could cover. Keep eligible demand at its On-Demand equivalent and convert each applicable line to plan-rate dollars before consuming the commitment. That conversion matters because a dollar of hourly commitment can cover more than a dollar of On-Demand spend. Keep the rest of the bill out of the simulation, then add it back unchanged when comparing whole-account totals.</p>
+<p>Put benefits you already own into the replay once. If an instance is still covered by a Reserved Instance for the simulated period, do not count that usage as demand for a new commitment. Model the covered line when its RI expires as well. Use the payer&#39;s current sharing settings. Different account sharing can change which usage receives the benefit. Reserve a test month at the end of the export so your assumptions face an interval you did not use to pick the purchase size.</p>
+<p class="depth-reading"><a href="/deep-dives/finops/effective-cost-reconciliation/">Level 3 · Reconcile BilledCost and EffectiveCost by period</a></p>
+<h2 id="price-a-low-hour-and-a-busy-hour-separately"><a class="h-anchor" href="#price-a-low-hour-and-a-busy-hour-separately" aria-hidden="true" tabindex="-1">#</a>Price a low hour and a busy hour separately</h2>
+<p>Use fictional rates to see what the simulation should calculate. Suppose comparable compute would cost $0.10 per unit-hour On-Demand. The plan rate for this example is $0.07. Set an hourly commitment of $3.50, which covers up to 50 eligible units an hour at that rate. During an hour with 65 units, the first 50 use the full $3.50 and the extra 15 cost $1.50. The total is $5.00 instead of $6.50. The commitment is fully used and roughly 77% of the eligible On-Demand-equivalent usage is covered.</p>
+<p>Now replay a quiet hour with 25 units. Only $1.75 of the commitment finds eligible usage. The hour still costs $3.50, versus $2.50 On-Demand. That hour looks fully covered because every eligible unit receives a benefit. It only uses half the commitment and loses $1 against On-Demand. Combined across the two illustrative hours, the commitment costs $8.50 and On-Demand costs $9.00. A dashboard that shows only coverage would hide the loss in the quiet period. Consult the <a href="https://docs.aws.amazon.com/savingsplans/latest/userguide/ce-sp-cr-metrics.html" rel="noopener" target="_blank">Cost Explorer coverage metric definitions</a> when comparing the simulation with AWS reports.</p>
+<h2 id="put-flexibility-and-capacity-in-separate-decisions"><a class="h-anchor" href="#put-flexibility-and-capacity-in-separate-decisions" aria-hidden="true" tabindex="-1">#</a>Put flexibility and capacity in separate decisions</h2>
+<p>A service may need both a billing discount and the ability to launch in a particular Availability Zone when another part of the system fails. Write those as separate requirements. A flexible billing plan can meet one without reserving the capacity required by the other. A zonal purchase, or an appropriately configured capacity reservation, must match the tenancy, platform, instance shape, and location that the recovery procedure actually uses. Run the recovery exercise using the architecture that will use the reservation.</p>
+<p>For billing flexibility, test a workload mix change. Keep the same overall usage in a scenario that moves eligible compute from one EC2 family to another. Compare a family-and-region plan with a broader compute commitment under that scenario and under the existing estate. A deeper listed discount can lose in the migration case if too few eligible hours remain. Capture enough detail to show whether that loss comes from underuse or from paying On-Demand for newly ineligible work.</p>
+<h2 id="make-a-purchase-decision-the-next-reviewer-can-redo"><a class="h-anchor" href="#make-a-purchase-decision-the-next-reviewer-can-redo" aria-hidden="true" tabindex="-1">#</a>Make a purchase decision the next reviewer can redo</h2>
+<p>Give the approver a short record with the export window, eligibility assumptions, existing commitments, sharing configuration, candidate purchases, and the On-Demand comparison. Include one low-demand forecast and one planned architecture change. Show the worst period of unused commitment alongside the median. A low monthly average can hide repeat waste every night or weekend.</p>
+<p>Separate the payment schedule from expected economic cost. An all-upfront quote includes an immediate cash outlay. Show that event and the per-period cost in different columns. Compare it with the no-upfront and partial-upfront alternatives using the same dates and term. End with a renewal owner, notice date, and a condition that would stop renewal. After purchase, use the observed benefit allocation in <a href="https://docs.aws.amazon.com/savingsplans/latest/userguide/ce-sp-usingSP.html" rel="noopener" target="_blank">Cost Explorer Savings Plans reporting</a> to check whether it follows the simulation. A mismatch is a reason to inspect eligibility, sharing and rate assumptions before increasing the commitment. Compare unblended cash charges and unused commitments as separate rows so the explanation stays reproducible even if the finance report uses different amortisation dates.</p>
+<p>Review one hourly record where the model predicts both unused commitment and uncovered spend. That combination can be legitimate if the uncovered service or rate is ineligible. A simultaneous surplus and shortfall on genuinely matching usage usually indicates that a rate, account boundary, or sharing preference was applied incorrectly. Trace the record from the underlying usage to the commitment and invoice, then turn that example into a reusable check for each future purchase.</p>
 
       </div>
 <section class="field-worksheet worked-example" aria-labelledby="worked-example">
@@ -224,21 +237,21 @@ d.setAttribute('data-theme',t);
     <div class="wrap">
       <p class="eyebrow">Related</p>
       <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|Cloud Architecture|Reliability|FinOps|Engineering Leadership|" data-search="capacity planning in the cloud era: headroom as an engineered property elastic infrastructure didn&#39;t kill capacity planning — it changed what gets planned. demand modeling, the utilization-vs-headroom trade, quota and constraint archaeology, and the quarterly loop that replaces both waste and 3 am scrambles. cloud architecture reliability finops engineering leadership" data-topic="Cloud Architecture">
-  <div class="card-art"><img data-article-art="capacity-planning-engineering" src="/assets/covers/capacity-planning-engineering.svg?v=2ff332e2bf38" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-art"><img data-article-art="capacity-planning-engineering" src="/assets/covers/capacity-planning-engineering.svg?v=c216c9efb30d" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
     <a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/capacity-planning-engineering/">Capacity Planning in the Cloud Era: Headroom as an Engineered Property</a></h3>
     <p class="card-desc">Elastic infrastructure didn&#39;t kill capacity planning — it changed what gets planned. Demand modeling, the utilization-vs-headroom trade, quota and constraint archaeology, and the quarterly loop that replaces both waste and 3 AM scrambles.</p>
-    <div class="card-meta"><time datetime="2026-11-09">9 Nov 2026</time><span class="dot"></span><span>5 min read</span></div>
+    <div class="card-meta"><time datetime="2026-11-09">9 Nov 2026</time><span class="dot"></span><span>10 min read</span></div>
   </div>
 </article>
 <article class="card" data-card data-topics="|Performance|Programming|Cloud Architecture|Data Engineering|FinOps|" data-search="compression in production: choosing between gzip, zstd, lz4, and brotli like it matters compression is a three-way trade — ratio, speed, and cpu — that most systems set once by default and never revisit. the algorithm landscape, placement decisions across web, storage, and streaming, dictionary compression&#39;s quiet superpower, and the measurement discipline. performance programming cloud architecture data engineering finops" data-topic="Performance">
-  <div class="card-art"><img data-article-art="compression-selection-guide" src="/assets/covers/compression-selection-guide.svg?v=841ffbacef2b" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-art"><img data-article-art="compression-selection-guide" src="/assets/covers/compression-selection-guide.svg?v=624c62a59726" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
     <a class="chip" href="/topics/performance/">Performance</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/compression-selection-guide/">Compression in Production: Choosing Between gzip, zstd, lz4, and Brotli Like It Matters</a></h3>
     <p class="card-desc">Compression is a three-way trade — ratio, speed, and CPU — that most systems set once by default and never revisit. The algorithm landscape, placement decisions across web, storage, and streaming, dictionary compression&#39;s quiet superpower, and the measurement discipline.</p>
-    <div class="card-meta"><time datetime="2026-10-12">12 Oct 2026</time><span class="dot"></span><span>5 min read</span></div>
+    <div class="card-meta"><time datetime="2026-10-12">12 Oct 2026</time><span class="dot"></span><span>10 min read</span></div>
   </div>
 </article>
 <article class="card" data-card data-topics="|FinOps|Cost Optimisation|Cloud Architecture|" data-search="cloud cost anomaly detection: catching runaway spend before it becomes a bill cloud cost overruns that show up in the monthly invoice are already weeks old. here&#39;s how to set up anomaly detection that catches cost spikes in hours, with enough context to diagnose the cause quickly. finops cost optimisation cloud architecture" data-topic="FinOps">
@@ -247,7 +260,7 @@ d.setAttribute('data-theme',t);
     <a class="chip" href="/topics/finops/">FinOps</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/finops-anomaly-detection/">Cloud Cost Anomaly Detection: Catching Runaway Spend Before It Becomes a Bill</a></h3>
     <p class="card-desc">Cloud cost overruns that show up in the monthly invoice are already weeks old. Here&#39;s how to set up anomaly detection that catches cost spikes in hours, with enough context to diagnose the cause quickly.</p>
-    <div class="card-meta"><time datetime="2026-07-06">6 Jul 2026</time><span class="dot"></span><span>5 min read</span><span class="dot"></span><span>Series</span></div>
+    <div class="card-meta"><time datetime="2026-07-06">6 Jul 2026</time><span class="dot"></span><span>9 min read</span><span class="dot"></span><span>Series</span></div>
   </div>
 </article></div>
     </div>
@@ -295,7 +308,17 @@ d.setAttribute('data-theme',t);
   <p class="reader-note">Saved in this browser only — these settings do not follow you to another device.</p>
 </div>
 <button class="focus-exit" id="focusExit" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h6V3M21 9h-6V3M3 15h6v6M21 15h-6v6"/></svg> Exit focus</button>
-
+<div class="chapter-bar" id="chapterBar">
+  <div class="chapter-where">
+    <b>AWS Savings Plans vs Reserved Instances: Making the Commitment Decision</b>
+    <span>FinOps</span>
+  </div>
+  <span class="chapter-left" id="chapterLeft"></span>
+  <nav class="chapter-step" aria-label="Article navigation">
+    <a href="/insights/k8s-networking-cni/" aria-label="Previous: Kubernetes Networking: CNI Plugins, Network Policies, and Why It Matters for Security"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a>
+    <a href="/insights/running-local-llm-lessons/" aria-label="Next: Running LLMs Locally: What Six Months of Daily Use Actually Taught Me"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
+  </nav>
+</div>
 </main>
 
 <footer class="site-footer">

@@ -14,18 +14,18 @@
 <meta property="og:title" content="Container Networking: How Containers Talk to Each Other and to the Outside World">
 <meta property="og:description" content="Bridge networks, overlay networks, DNS-based service discovery, port publishing, and the iptables rules that make container networking work — and fail.">
 <meta property="og:url" content="https://ajnacs.com/insights/containers-networking/">
-<meta property="og:image" content="https://ajnacs.com/assets/og/articles/containers-networking.png?v=a4fa0bab2d36">
+<meta property="og:image" content="https://ajnacs.com/assets/og/articles/containers-networking.png?v=4ccc7d648bd7">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Conceptual illustration for Container Networking: How Containers Talk to Each Other and to the Outside World: Host, Container, Pod.">
+<meta property="og:image:alt" content="Conceptual illustration for Container Networking: How Containers Talk to Each Other and to the Outside World: Workload, Host, Container.">
 <meta property="article:published_time" content="2026-04-28">
 <meta property="article:modified_time" content="2026-11-23">
 <meta property="og:image:type" content="image/png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Container Networking: How Containers Talk to Each Other and to the Outside World">
 <meta name="twitter:description" content="Bridge networks, overlay networks, DNS-based service discovery, port publishing, and the iptables rules that make container networking work — and fail.">
-<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/containers-networking.png?v=a4fa0bab2d36">
-<meta name="twitter:image:alt" content="Conceptual illustration for Container Networking: How Containers Talk to Each Other and to the Outside World: Host, Container, Pod.">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/containers-networking.png?v=4ccc7d648bd7">
+<meta name="twitter:image:alt" content="Conceptual illustration for Container Networking: How Containers Talk to Each Other and to the Outside World: Workload, Host, Container.">
 
 <link rel="icon" href="/favicon.ico?v=8affdbd5" sizes="any">
 <link rel="icon" href="/images/ajna-mark.svg?v=8affdbd5" type="image/svg+xml">
@@ -50,7 +50,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Container Networking: How Containers Talk to Each Other and to the Outside World","description":"Bridge networks, overlay networks, DNS-based service discovery, port publishing, and the iptables rules that make container networking work — and fail.","datePublished":"2026-04-28","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/containers-networking/","image":"https://ajnacs.com/assets/og/articles/containers-networking.png?v=a4fa0bab2d36","keywords":"DevSecOps, Fundamentals","articleSection":"DevSecOps","wordCount":896}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Container Networking: How Containers Talk to Each Other and to the Outside World","description":"Bridge networks, overlay networks, DNS-based service discovery, port publishing, and the iptables rules that make container networking work — and fail.","datePublished":"2026-04-28","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/containers-networking/","image":"https://ajnacs.com/assets/og/articles/containers-networking.png?v=4ccc7d648bd7","keywords":"DevSecOps, Fundamentals","articleSection":"DevSecOps","wordCount":1782}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Container Networking: How Containers Talk to Each Other and to the Outside World"}]}</script>
 </head>
 <body class="article-frame" data-topic="DevSecOps">
@@ -94,15 +94,15 @@ d.setAttribute('data-theme',t);
         <a class="article-byline" href="/about/#chandra-lanka">Chandra Lanka</a>
         <span class="dot" aria-hidden="true"></span><time datetime="2026-04-28">28 Apr 2026</time>
         <span class="dot" aria-hidden="true"></span><span>Updated <time datetime="2026-11-23">23 Nov 2026</time></span>
-        <span class="dot"></span><span>4 min read</span>
+        <span class="dot"></span><span>8 min read</span>
         <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
       </div>
     </header>
 
-    <div class="article-hero" data-topic="DevSecOps"><img data-article-art="containers-networking" src="/assets/covers/containers-networking.svg?v=23bf133e7b15" width="1280" height="720" alt="Conceptual illustration for Container Networking: How Containers Talk to Each Other and to the Outside World: Host, Container, Pod." decoding="async" fetchpriority="high"></div>
+    <div class="article-hero" data-topic="DevSecOps"><img data-article-art="containers-networking" src="/assets/covers/containers-networking.svg?v=cd52ebab1883" width="1280" height="720" alt="Conceptual illustration for Container Networking: How Containers Talk to Each Other and to the Outside World: Workload, Host, Container." decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
-  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#the-bridge-network-single-host-networking">The Bridge Network: Single-Host Networking</a></li><li><a href="#port-publishing-letting-traffic-in">Port Publishing: Letting Traffic In</a></li><li><a href="#dns-resolution-inside-containers">DNS Resolution Inside Containers</a></li><li><a href="#overlay-networks-multi-host-networking">Overlay Networks: Multi-Host Networking</a></li><li><a href="#diagnosing-container-network-issues">Diagnosing Container Network Issues</a></li></ol>
+  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#the-bridge-network-single-host-networking">The Bridge Network: Single-Host Networking</a></li><li><a href="#port-publishing-letting-traffic-in">Port Publishing: Letting Traffic In</a></li><li><a href="#dns-resolution-inside-containers">DNS Resolution Inside Containers</a></li><li><a href="#overlay-networks-multi-host-networking">Overlay Networks: Multi-Host Networking</a></li><li><a href="#diagnosing-container-network-issues">Diagnosing Container Network Issues</a></li><li><a href="#draw-the-path-from-the-caller39s-point-of-view">Draw the path from the caller&#39;s point of view</a></li><li><a href="#distinguish-a-successful-connection-from-a-healthy-request">Distinguish a successful connection from a healthy request</a></li><li><a href="#collect-a-small-matrix-before-changing-the-network">Collect a small matrix before changing the network</a></li><li><a href="#record-where-naming-ends-and-routing-starts">Record where naming ends and routing starts</a></li></ol>
 </nav><nav class="chapters" aria-label="Articles in this series">
       <p class="chapters-title">Containerization from the Ground Up</p>
       <ol><li><a href="/insights/containers-what-they-actually-are/">What Containers Actually Are — Not the Marketing Version</a></li><li><a href="/insights/containers-production-dockerfiles/">Writing Production-Grade Dockerfiles: The Decisions That Actually Matter</a></li><li aria-current="true"><a href="/insights/containers-networking/">Container Networking: How Containers Talk to Each Other and to the Outside World</a></li><li><a href="/insights/containers-kubernetes-fundamentals/">Kubernetes Fundamentals: What It Is, What It Does, and When You Actually Need It</a></li><li><a href="/insights/containers-security/">Container Security: The Specific Misconfigurations That Open Production Systems to Attack</a></li></ol>
@@ -113,7 +113,6 @@ d.setAttribute('data-theme',t);
 <p>Container networking is the source of a disproportionate fraction of production incidents. Containers cannot reach each other, external traffic cannot reach a container, DNS resolution fails inside the container, or a connection that works on localhost fails in a deployed environment. These failures are diagnosable once you understand how the network is actually constructed.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
 <p><strong>Latency and packet loss along the same path.</strong> Compare identical same-node and cross-node requests at a controlled payload and load. If p99 goes from 4 ms to 12 ms, isolate DNS, service routing, encapsulation and policy handling before blaming container networking in general.</p>
-<p class="depth-reading"><a href="/deep-dives/networks/mtu-payload-budget/">Level 2 · Turn an MTU into a payload budget</a></p>
 <p><em>Illustrative measurement. Any numbers in this example are hypothetical.</em></p>
 <h2 id="the-bridge-network-single-host-networking"><a class="h-anchor" href="#the-bridge-network-single-host-networking" aria-hidden="true" tabindex="-1">#</a>The Bridge Network: Single-Host Networking</h2>
 <p>When Docker starts, it creates a default bridge network (<code>docker0</code>). Every container attached to this bridge gets a private IP address and can communicate with other containers on the same bridge.</p>
@@ -138,7 +137,7 @@ docker exec -it api nslookup postgres
 <h2 id="port-publishing-letting-traffic-in"><a class="h-anchor" href="#port-publishing-letting-traffic-in" aria-hidden="true" tabindex="-1">#</a>Port Publishing: Letting Traffic In</h2>
 <p>Containers are isolated in their own network namespace. To receive traffic from the host or the outside world, ports must be published:</p>
 <pre><code class="language-bash">docker run -d \
-  -p 8080:3000 \    # host_port:container_port
+  -p 8080:3000 \
   --name api \
   my-api:latest
 
@@ -150,7 +149,7 @@ docker run -d \
 
 ## Bind to specific host interface only
 docker run -d \
-  -p 127.0.0.1:5432:5432 \   # only localhost, not external interfaces
+  -p 127.0.0.1:5432:5432 \
   postgres:16
 </code></pre>
 <p>Under the hood, Docker uses iptables rules to implement port publishing. When a packet arrives at the host on port 8080, iptables rewrites the destination IP and port to the container&#39;s internal address and port 3000.</p>
@@ -158,7 +157,7 @@ docker run -d \
 sudo iptables -t nat -L -n -v | grep DOCKER
 </code></pre>
 <h2 id="dns-resolution-inside-containers"><a class="h-anchor" href="#dns-resolution-inside-containers" aria-hidden="true" tabindex="-1">#</a>DNS Resolution Inside Containers</h2>
-<p>By default, containers use the host&#39;s DNS configuration (<code>/etc/resolv.conf</code>). In production environments, this creates a common failure mode: the host is configured to use an internal DNS server that resolves private hostnames, but containers cannot reach that DNS server because of network namespace isolation or security group rules.</p>
+<p>Containers attached to Docker&#39;s default bridge receive a copy of the host&#39;s resolver configuration. Containers on custom networks use Docker&#39;s embedded DNS resolver, which forwards external lookups to the host&#39;s configured DNS servers. (<code>/etc/resolv.conf</code>). In production environments, this creates a common failure mode: the host is configured to use an internal DNS server that resolves private hostnames, but containers cannot reach that DNS server because of network namespace isolation or security group rules.</p>
 <pre><code class="language-bash">## Inspect DNS configuration inside a container
 docker exec -it my-container cat /etc/resolv.conf
 
@@ -170,7 +169,7 @@ docker run --dns-search internal.company.com my-image:latest
 </code></pre>
 <p>In Kubernetes, the kube-dns or CoreDNS service handles DNS for all pods. Pods are configured with <code>nameserver &lt;kube-dns-cluster-ip&gt;</code> in <code>/etc/resolv.conf</code>. The DNS service resolves Kubernetes service names (<code>my-service.my-namespace.svc.cluster.local</code>) to cluster IP addresses.</p>
 <h2 id="overlay-networks-multi-host-networking"><a class="h-anchor" href="#overlay-networks-multi-host-networking" aria-hidden="true" tabindex="-1">#</a>Overlay Networks: Multi-Host Networking</h2>
-<p>A bridge network works on one host. Containers on different hosts need an overlay network — a virtual network that spans multiple hosts.</p>
+<p>A bridge network works on one host. Containers on different hosts need a routable path between those hosts. Overlay encapsulation and direct routing are different ways to provide it.</p>
 <p>Docker Swarm uses overlay networks natively. Kubernetes uses a CNI (Container Network Interface) plugin — Flannel, Calico, Cilium, or WeaveNet — to implement overlay networking across nodes.</p>
 <p>All overlay implementations face the same challenge: they must route traffic between containers on different hosts, which have different physical network addresses. The approaches differ:</p>
 <ul>
@@ -197,7 +196,7 @@ docker exec -it my-container ss -tulnp
 docker exec -it my-container netstat -tulnp
 
 ## Can one container reach another?
-docker exec -it api curl -v http://postgres:5432
+docker exec -it api pg_isready -h postgres -p 5432
 
 ## Port publishing working? From the host:
 curl -v http://localhost:8080/health
@@ -213,6 +212,23 @@ sudo tcpdump -i docker0 -n host &lt;container-ip&gt;
 <li><strong>DNS not resolving</strong>: container using a DNS server it cannot reach</li>
 <li><strong>iptables rules</strong>: security software on the host modified iptables rules Docker depends on</li>
 </ol>
+<h2 id="draw-the-path-from-the-caller39s-point-of-view"><a class="h-anchor" href="#draw-the-path-from-the-caller39s-point-of-view" aria-hidden="true" tabindex="-1">#</a>Draw the path from the caller&#39;s point of view</h2>
+<p>Start with which process is making the request. A developer&#39;s browser, a reverse proxy container, and an application container each see a different loopback address. Write down the name the caller passes to its resolver and the socket address the server actually listens on. Record any address or port translation in between. This makes a request from the same context as the failing application more useful than a successful request from a host terminal. <a href="https://docs.docker.com/engine/network/" rel="noopener" target="_blank">Docker Engine networking overview</a></p>
+<p>In an illustrative single-host setup, the API listens on TCP 3000, joins an isolated bridge with a worker, and publishes its HTTP service as host port 8080 for local testing. The readme can document three separately testable paths.</p>
+<div class="table-wrap"><table><thead><tr><th>Caller</th><th>Address it should use</th><th>Evidence of success</th></tr></thead><tbody><tr><td>Host-side development test</td><td>Host loopback and port 8080</td><td>HTTP status and version from the API</td></tr><tr><td>Worker on the same user-defined bridge</td><td>API container name and port 3000</td><td>HTTP status from the worker&#39;s network context</td></tr><tr><td>API readiness check inside the API container</td><td>Loopback and port 3000, if the server listens there</td><td>Expected readiness response and payload</td></tr></tbody></table></div>
+<p>If the first two fail and the third succeeds, check that the server listens on the container interface as well as loopback. If the worker works and the host fails, compare the actual published binding against the recorded host port. Record Docker Engine versus Docker Desktop and the platform version before comparing two machines. The Docker port publishing documentation describes reachability restrictions and version-dependent localhost publishing behavior. <a href="https://docs.docker.com/engine/network/port-publishing/" rel="noopener" target="_blank">Docker Engine port publishing</a></p>
+<h2 id="distinguish-a-successful-connection-from-a-healthy-request"><a class="h-anchor" href="#distinguish-a-successful-connection-from-a-healthy-request" aria-hidden="true" tabindex="-1">#</a>Distinguish a successful connection from a healthy request</h2>
+<p>Use a client that speaks the destination protocol. A TCP connection to PostgreSQL can establish while certificate checks, authentication, or a SQL transaction fail. An HTTP client against the database port does not test its protocol. A read-only synthetic query using a dedicated account provides a clearer result when the service owner authorizes it. Likewise, an ICMP reply establishes only that a path supports that ICMP exchange. It says little about what happens at a different protocol or port.</p>
+<p>For HTTP, record resolution, connect, TLS, time to first byte, end-to-end time, response code, and the request sample count. Reuse the application hostname on paths where TLS and host routing depend on it. Record whether a client reused its connection. A sample with mixed fresh and reused connections includes different amounts of work. Correlate a short diagnostic run through a request ID that the service already emits. The server&#39;s application timing and edge timing can then refer to the same request.</p>
+<p>Suppose 19 of 20 fresh connections return the expected body in 80 ms and one times out after 3 seconds. Report both 95% success and the timeout. Reporting only the successful latency turns the missing request into an invisible data point. A slow first byte with stable DNS and connect timings warrants checking the server or an intervening upstream first. An absent name or failed TLS check calls for a different owner and a different next test.</p>
+<h2 id="collect-a-small-matrix-before-changing-the-network"><a class="h-anchor" href="#collect-a-small-matrix-before-changing-the-network" aria-hidden="true" tabindex="-1">#</a>Collect a small matrix before changing the network</h2>
+<p>For a test environment with one API and a controlled payload generator, use a known successful small response and a larger response with the same application behavior. Keep the image digest, client timeout, connection reuse, and request concurrency fixed across cells. Test from the same host, then from a second host on a documented permitted path. If a proxy is part of the route, record the proxy path as its own cell. Start with serial requests and repeat at the concurrency that actually produces the symptom.</p>
+<p>A larger response failing only on the cross-host path suggests checking encapsulation and path MTU alongside application response limits and proxy timeouts. A slower request across all cells as concurrency rises suggests a shared bottleneck worth checking separately. Compare the full response body size and status at each hop before interpreting packet retransmission as the root cause. Use aggregates or debug logs cleared for collection. Raw captures can expose payloads and identifiers, so record only the minimum approved diagnostic evidence.</p>
+<p class="depth-reading"><a href="/deep-dives/networks/mtu-payload-budget/">Level 2 · Turn an MTU into a payload budget</a></p>
+<p>For an illustrative result, record 40 identical requests per cell, exact success counts, median successful request time, the configured timeout, and the measurement window. If 38 cross-host large requests complete and two time out, repeat the cell before accepting a fix. Then repeat all four cells after one change. Forty attempts exercise the symptom under the documented load. They provide little basis for a production tail-latency promise.</p>
+<h2 id="record-where-naming-ends-and-routing-starts"><a class="h-anchor" href="#record-where-naming-ends-and-routing-starts" aria-hidden="true" tabindex="-1">#</a>Record where naming ends and routing starts</h2>
+<p>Treat DNS output as an observed input to the connection, especially when multiple addresses are returned. Take a read of the resolved addresses from the caller&#39;s network context and note whether failures prefer one address family. An application can use cached answers after a manual resolution succeeds. Compare logs at a common timestamp and verify the resolver path the workload actually uses. On a user-defined Docker network the embedded resolver handles container naming and forwards external lookups. <a href="https://docs.docker.com/engine/network/" rel="noopener" target="_blank">Docker Engine networking overview</a></p>
+<p>For an operational handoff, include the caller, expected and actual destination, protocol, deployed versions, last known working change, and first unsuccessful test. Do not reset every networking rule during diagnosis. A narrow, documented rollback of the last relevant configuration change gives a better comparison and preserves evidence about unrelated paths. Attach an example of one failed and one successful request with sensitive fields removed. An engineer taking over should be able to reproduce the two paths from that record and know what result would invalidate the current diagnosis.</p>
 
       </div>
 <section class="field-worksheet worked-example" aria-labelledby="worked-example">
@@ -288,21 +304,21 @@ sudo tcpdump -i docker0 -n host &lt;container-ip&gt;
     <div class="wrap">
       <p class="eyebrow">Related</p>
       <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|DevSecOps|Fundamentals|" data-search="container security: the specific misconfigurations that open production systems to attack running containers as root, privileged mode, unrestricted capabilities, exposed docker sockets — the container security mistakes that appear in breach reports and how to prevent them systematically. devsecops fundamentals" data-topic="DevSecOps">
-  <div class="card-art"><img data-article-art="containers-security" src="/assets/covers/containers-security.svg?v=8f7989b6d4dd" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-art"><img data-article-art="containers-security" src="/assets/covers/containers-security.svg?v=02d172d1e7a1" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
     <a class="chip" href="/topics/devsecops/">DevSecOps</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/containers-security/">Container Security: The Specific Misconfigurations That Open Production Systems to Attack</a></h3>
     <p class="card-desc">Running containers as root, privileged mode, unrestricted capabilities, exposed Docker sockets — the container security mistakes that appear in breach reports and how to prevent them systematically.</p>
-    <div class="card-meta"><time datetime="2026-09-28">28 Sept 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
+    <div class="card-meta"><time datetime="2026-09-28">28 Sept 2026</time><span class="dot"></span><span>7 min read</span><span class="dot"></span><span>Series</span></div>
   </div>
 </article>
 <article class="card" data-card data-topics="|DevSecOps|Fundamentals|" data-search="what containers actually are — not the marketing version containers are not lightweight vms. they are processes with resource constraints and namespace isolation. understanding the actual mechanism makes you a better user of docker, kubernetes, and every container runtime. devsecops fundamentals" data-topic="DevSecOps">
-  <div class="card-art"><img data-article-art="containers-what-they-actually-are" src="/assets/covers/containers-what-they-actually-are.svg?v=ab1bf2998d29" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-art"><img data-article-art="containers-what-they-actually-are" src="/assets/covers/containers-what-they-actually-are.svg?v=f9d398e0421b" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
     <a class="chip" href="/topics/devsecops/">DevSecOps</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/containers-what-they-actually-are/">What Containers Actually Are — Not the Marketing Version</a></h3>
     <p class="card-desc">Containers are not lightweight VMs. They are processes with resource constraints and namespace isolation. Understanding the actual mechanism makes you a better user of Docker, Kubernetes, and every container runtime.</p>
-    <div class="card-meta"><time datetime="2026-07-30">30 Jul 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
+    <div class="card-meta"><time datetime="2026-07-30">30 Jul 2026</time><span class="dot"></span><span>8 min read</span><span class="dot"></span><span>Series</span></div>
   </div>
 </article>
 <article class="card" data-card data-topics="|DevSecOps|Fundamentals|" data-search="writing production-grade dockerfiles: the decisions that actually matter multi-stage builds, minimal base images, layer caching, non-root users, build arguments, and the specific dockerfile patterns that separate a working image from a secure, efficient, maintainable one. devsecops fundamentals" data-topic="DevSecOps">
@@ -311,7 +327,7 @@ sudo tcpdump -i docker0 -n host &lt;container-ip&gt;
     <a class="chip" href="/topics/devsecops/">DevSecOps</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/containers-production-dockerfiles/">Writing Production-Grade Dockerfiles: The Decisions That Actually Matter</a></h3>
     <p class="card-desc">Multi-stage builds, minimal base images, layer caching, non-root users, build arguments, and the specific Dockerfile patterns that separate a working image from a secure, efficient, maintainable one.</p>
-    <div class="card-meta"><time datetime="2026-06-24">24 Jun 2026</time><span class="dot"></span><span>3 min read</span><span class="dot"></span><span>Series</span></div>
+    <div class="card-meta"><time datetime="2026-06-24">24 Jun 2026</time><span class="dot"></span><span>7 min read</span><span class="dot"></span><span>Series</span></div>
   </div>
 </article></div>
     </div>

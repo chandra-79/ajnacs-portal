@@ -14,18 +14,18 @@
 <meta property="og:title" content="Kernel Tuning with sysctl: Memory, Networking, and I/O">
 <meta property="og:description" content="The sysctl parameters that actually matter in production — VM reclaim tuning, TCP stack optimisation, file descriptor limits, and the settings that separat…">
 <meta property="og:url" content="https://ajnacs.com/insights/os-kernel-tuning-sysctl/">
-<meta property="og:image" content="https://ajnacs.com/assets/og/articles/os-kernel-tuning-sysctl.png?v=ecad861b21f8">
+<meta property="og:image" content="https://ajnacs.com/assets/og/articles/os-kernel-tuning-sysctl.png?v=e5f4bb39abb6">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Conceptual illustration for Kernel Tuning with sysctl: Memory, Networking, and I/O: Application, System, Memory.">
+<meta property="og:image:alt" content="Conceptual illustration for Kernel Tuning with sysctl: Memory, Networking, and I/O: Application, Runtime, System.">
 <meta property="article:published_time" content="2026-09-30">
 <meta property="article:modified_time" content="2026-11-23">
 <meta property="og:image:type" content="image/png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Kernel Tuning with sysctl: Memory, Networking, and I/O">
 <meta name="twitter:description" content="The sysctl parameters that actually matter in production — VM reclaim tuning, TCP stack optimisation, file descriptor limits, and the settings that separat…">
-<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/os-kernel-tuning-sysctl.png?v=ecad861b21f8">
-<meta name="twitter:image:alt" content="Conceptual illustration for Kernel Tuning with sysctl: Memory, Networking, and I/O: Application, System, Memory.">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/os-kernel-tuning-sysctl.png?v=e5f4bb39abb6">
+<meta name="twitter:image:alt" content="Conceptual illustration for Kernel Tuning with sysctl: Memory, Networking, and I/O: Application, Runtime, System.">
 
 <link rel="icon" href="/favicon.ico?v=8affdbd5" sizes="any">
 <link rel="icon" href="/images/ajna-mark.svg?v=8affdbd5" type="image/svg+xml">
@@ -50,7 +50,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Kernel Tuning with sysctl: Memory, Networking, and I/O","description":"The sysctl parameters that actually matter in production — VM reclaim tuning, TCP stack optimisation, file descriptor limits, and the settings that separate a well-tuned server from a default install.","datePublished":"2026-09-30","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/os-kernel-tuning-sysctl/","image":"https://ajnacs.com/assets/og/articles/os-kernel-tuning-sysctl.png?v=ecad861b21f8","keywords":"Programming, Fundamentals","articleSection":"Programming","wordCount":1204}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Kernel Tuning with sysctl: Memory, Networking, and I/O","description":"The sysctl parameters that actually matter in production — VM reclaim tuning, TCP stack optimisation, file descriptor limits, and the settings that separate a well-tuned server from a default install.","datePublished":"2026-09-30","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/os-kernel-tuning-sysctl/","image":"https://ajnacs.com/assets/og/articles/os-kernel-tuning-sysctl.png?v=e5f4bb39abb6","keywords":"Programming, Fundamentals","articleSection":"Programming","wordCount":2076}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Kernel Tuning with sysctl: Memory, Networking, and I/O"}]}</script>
 </head>
 <body class="article-frame" data-topic="Programming">
@@ -94,15 +94,15 @@ d.setAttribute('data-theme',t);
         <a class="article-byline" href="/about/#chandra-lanka">Chandra Lanka</a>
         <span class="dot" aria-hidden="true"></span><time datetime="2026-09-30">30 Sept 2026</time>
         <span class="dot" aria-hidden="true"></span><span>Updated <time datetime="2026-11-23">23 Nov 2026</time></span>
-        <span class="dot"></span><span>5 min read</span>
+        <span class="dot"></span><span>9 min read</span>
         <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
       </div>
     </header>
 
-    <div class="article-hero" data-topic="Programming"><img data-article-art="os-kernel-tuning-sysctl" src="/assets/covers/os-kernel-tuning-sysctl.svg?v=a1a105ee70e4" width="1280" height="720" alt="Conceptual illustration for Kernel Tuning with sysctl: Memory, Networking, and I/O: Application, System, Memory." decoding="async" fetchpriority="high"></div>
+    <div class="article-hero" data-topic="Programming"><img data-article-art="os-kernel-tuning-sysctl" src="/assets/covers/os-kernel-tuning-sysctl.svg?v=dc0b16579115" width="1280" height="720" alt="Conceptual illustration for Kernel Tuning with sysctl: Memory, Networking, and I/O: Application, Runtime, System." decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
-  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#sysctl-basics">sysctl Basics</a></li><li><a href="#virtual-memory-tuning">Virtual Memory Tuning</a></li><li><a href="#transparent-huge-pages">Transparent Huge Pages</a></li><li><a href="#file-descriptor-and-process-limits">File Descriptor and Process Limits</a></li><li><a href="#network-stack-tuning">Network Stack Tuning</a></li><li><a href="#kernel-profiling-for-tuning-validation">Kernel Profiling for Tuning Validation</a></li><li><a href="#numa-awareness">NUMA Awareness</a></li></ol>
+  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#sysctl-basics">sysctl Basics</a></li><li><a href="#virtual-memory-tuning">Virtual Memory Tuning</a></li><li><a href="#transparent-huge-pages">Transparent Huge Pages</a></li><li><a href="#file-descriptor-and-process-limits">File Descriptor and Process Limits</a></li><li><a href="#network-stack-tuning">Network Stack Tuning</a></li><li><a href="#kernel-profiling-for-tuning-validation">Kernel Profiling for Tuning Validation</a></li><li><a href="#numa-awareness">NUMA Awareness</a></li><li><a href="#capture-both-the-active-value-and-its-source">Capture both the active value and its source</a></li><li><a href="#separate-reclaim-stalls-from-writeback-bursts">Separate reclaim stalls from writeback bursts</a></li><li><a href="#identify-the-tcp-queue-where-the-symptom-occurs">Identify the TCP queue where the symptom occurs</a></li><li><a href="#locate-limits-before-granting-more-headroom">Locate limits before granting more headroom</a></li><li><a href="#check-huge-page-policy-on-the-running-system">Check huge-page policy on the running system</a></li></ol>
 </nav><nav class="chapters" aria-label="Articles in this series">
       <p class="chapters-title">Linux: A Complete Practical Course</p>
       <ol><li><a href="/insights/os-storage-management/">Linux Storage Management: Disks, Partitions, LVM, Filesystems, and Mounting</a></li><li><a href="/insights/os-disk-io-performance/">Disk I/O Performance Analysis on Linux</a></li><li aria-current="true"><a href="/insights/os-kernel-tuning-sysctl/">Kernel Tuning with sysctl: Memory, Networking, and I/O</a></li><li><a href="/insights/os-namespaces-cgroups/">Linux Namespaces and cgroups: The Foundation of Containers</a></li></ol>
@@ -147,12 +147,11 @@ sysctl --system -a --deprecate 2&gt;&amp;1 | grep vm.swappiness
 ## ── vm.dirty_ratio and vm.dirty_background_ratio ──
 ## dirty_ratio: total dirty page threshold — kernel blocks writes at this point
 ## dirty_background_ratio: start background flushing at this point
-## Default: 20% and 10% of RAM
+## The percentage base is the memory eligible for dirty pages. Check current values.
 ## For write-heavy databases (they handle their own fsync): lower to reduce spikes
 vm.dirty_ratio = 10
 vm.dirty_background_ratio = 3
-## For NFS or network storage where write-back is unreliable: lower further
-## For SSDs with high write throughput: can raise to 20/10
+## Measure stalls and writeback behavior before changing either threshold.
 
 ## ── vm.vfs_cache_pressure ──
 ## How aggressively kernel reclaims inode/dentry cache vs page cache
@@ -310,6 +309,25 @@ numactl --cpunodebind=0 --membind=0 myapp
 ## -XX:+UseNUMA JVM flag enables automatic NUMA-aware memory allocation
 </code></pre>
 <p>NUMA tuning makes the most difference for in-memory databases (Redis, Elasticsearch, large PostgreSQL shared_buffers) and any workload with large working sets. The numastat numbers tell you whether it is worth investigating.</p>
+<h2 id="capture-both-the-active-value-and-its-source"><a class="h-anchor" href="#capture-both-the-active-value-and-its-source" aria-hidden="true" tabindex="-1">#</a>Capture both the active value and its source</h2>
+<p>Before touching a kernel parameter, capture the kernel release, distribution, service runtime, namespace where the symptom occurs, and current value. Read individual live keys from the same scope as the affected process. In a container, a networking parameter may belong to the container’s network namespace, and other settings may be host-wide or controlled by the platform. Note any boot-time or provisioning policy that reasserts the value. Keep read-only inspection separate from commands which load settings, including <code>sysctl --system</code>.</p>
+<p>For systemd-based systems, <code>sysctl.d</code> files are sorted by filename, and a later assignment can override an earlier one. Files with the same name have directory precedence. Use the documentation matching the system’s implementation and compare the final change against the effective value after reboot, replacement, and relevant runtime restarts. Some devices or modules only expose their settings after initialization. Capture where the desired setting is defined so an operator can tell which layer owns it. See <a href="https://www.freedesktop.org/software/systemd/man/latest/sysctl.d.html" rel="noopener" target="_blank">systemd’s sysctl.d manual</a>.</p>
+<p>Test one change at a time with bounded traffic and check comparable tail latency, errors, throughput, and resource cost. State the change’s predicted impact before starting. If the rollback requires a restart or reapplies a group of settings, exercise that procedure separately. When testing a <code>vm.dirty_*</code> value, remember that switching between the byte and ratio forms resets the counterpart. Restore the previous effective mode as well as the desired threshold.</p>
+<p class="depth-reading"><a href="/deep-dives/performance/mergeable-latency-percentiles/">Level 2 · Read tail latency from a mergeable distribution</a></p>
+<h2 id="separate-reclaim-stalls-from-writeback-bursts"><a class="h-anchor" href="#separate-reclaim-stalls-from-writeback-bursts" aria-hidden="true" tabindex="-1">#</a>Separate reclaim stalls from writeback bursts</h2>
+<p>Look for changes in I/O and memory pressure alongside application latency. High dirty bytes can be acceptable with a stable writeback rate and healthy latency. A growing dirty backlog followed by saturated storage and occasional stalls suggests a different problem. Compare application writes, durable completion rate, and the device’s recorded load under a representative schedule. Distinguish a secondary effect caused by an existing storage limit from a writeback policy that changes how work reaches the device.</p>
+<p>Suppose an illustrative workload dirties data steadily at 220 MiB/s while its target flushes about 160 MiB/s for part of a test. The gap is 60 MiB/s. Even an additional 1 GiB of usable buffering only conceals the gap for roughly 17 seconds before pressure increases, assuming no other reclaim or throttling and steady rates. A higher threshold can shift the delay into a more disruptive burst. Retest with a control that reduces the write rate or moves the competing workload, then see which change improves durable throughput.</p>
+<p>The kernel defines dirty ratios against memory eligible for the calculation, rather than total installed RAM. The background threshold starts flusher work, and the higher threshold makes the write-generating process participate. Dirty page expiry and periodic wakeup are different controls. Report observed thresholds and trace timing before mapping a configured ratio to an exact number of bytes or seconds. See the <a href="https://docs.kernel.org/admin-guide/sysctl/vm.html" rel="noopener" target="_blank">Linux virtual-memory sysctl reference</a>.</p>
+<h2 id="identify-the-tcp-queue-where-the-symptom-occurs"><a class="h-anchor" href="#identify-the-tcp-queue-where-the-symptom-occurs" aria-hidden="true" tabindex="-1">#</a>Identify the TCP queue where the symptom occurs</h2>
+<p>Trace a connection from the client across the load balancer to the application listener. A slow <code>accept()</code> path can fill the completed connection queue while the application CPU is paused. Half-open handshakes use a separate queue and can be affected by packet loss or client retries. The listener uses its configured backlog within the kernel limit. Raising <code>somaxconn</code> alone leaves a smaller application backlog unchanged until the listener asks for more capacity. Compare listener observations, connection setup latency, application accept rate, and host activity in the same time frame.</p>
+<p>On the outbound side, distinguish failures to allocate a local source port from timeouts establishing the connection to its destination. A rising TIME_WAIT count can be expected when connection churn rises. It does not quantify available tuples on a specific source and destination path. Consider connection reuse and measure local and NAT-side symptoms before expanding the configured range. <code>tcp_fin_timeout</code> concerns orphaned FIN_WAIT_2 sockets, and is a separate setting from TIME_WAIT behavior. Consult the <a href="https://docs.kernel.org/networking/ip-sysctl.html" rel="noopener" target="_blank">kernel’s IP sysctl documentation</a> for scope and version-sensitive behavior.</p>
+<p>Set a target for the connection outcome, such as the fraction of intended connections accepted by a specific deadline. A larger queue can make the headline drop counter improve while clients spend longer waiting. Preserve both measures in the results. If rejected connections disappear but request timeouts rise, the same workload may have moved its waiting time up the stack.</p>
+<h2 id="locate-limits-before-granting-more-headroom"><a class="h-anchor" href="#locate-limits-before-granting-more-headroom" aria-hidden="true" tabindex="-1">#</a>Locate limits before granting more headroom</h2>
+<p>Suppose an illustrative service fails to open sockets near 4,096 local descriptors while system-wide allocations are only 25% of their maximum. Read the running process’s file descriptor limit and count its current descriptors by type. Compare growth against traffic and check cleanup after requests finish. A per-process limit could be binding here. A process leaking sockets will eventually reach a higher limit too. An allocation failure observed at the system-wide boundary has a different diagnosis and affects workloads beyond the one reported.</p>
+<p>For excessive task counts, inspect the service manager’s limit and cgroup task counters alongside process-level limits. A process can run within a service or parent slice that rejects new tasks despite a generous system-wide PID ceiling. Test a controlled service start at intended concurrency after modifying one limit. Record the effective values and whether the owning process was recreated under them. Also note that a parent setting may still constrain the service. Kernel-wide changes can shift resource consumption to other workloads sharing the same host.</p>
+<p>Keep a record of the expected symptom, the diagnostic boundary, the smallest setting change tested, and the times of the control and candidate runs. Include the uncertainty remaining in the comparison. If the kernel version or deployment layout changes, rerun the original workload before carrying the old override forward. That gives the next team evidence to decide whether the setting still addresses a live constraint.</p>
+<h2 id="check-huge-page-policy-on-the-running-system"><a class="h-anchor" href="#check-huge-page-policy-on-the-running-system" aria-hidden="true" tabindex="-1">#</a>Check huge-page policy on the running system</h2>
+<p>Transparent huge-page defaults and available sizes depend on the kernel and distribution. The top-level policy and the settings for individual sizes can both matter on kernels that offer multiple sizes. Inspect the effective configuration and count how often the workload actually uses huge pages before changing compaction policy. Change the candidate service and observe repeated allocation, warm-up, and steady-state runs. A service may trade lower translation overhead for deploy-time or periodic latency. Record both results along with the working set and memory-pressure observations. The <a href="https://docs.kernel.org/admin-guide/mm/transhuge.html" rel="noopener" target="_blank">kernel’s transparent huge-page guide</a> explains the settings and their scope.</p>
 
       </div>
 <section class="field-worksheet worked-example" aria-labelledby="worked-example">
@@ -392,25 +410,25 @@ numactl --cpunodebind=0 --membind=0 myapp
     <a class="chip" href="/topics/programming/">Programming</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/os-namespaces-cgroups/">Linux Namespaces and cgroups: The Foundation of Containers</a></h3>
     <p class="card-desc">How Linux namespaces isolate processes, filesystems, networks, and users — and how cgroups enforce resource limits. The primitives that Docker, Kubernetes, and every container runtime are built on.</p>
-    <div class="card-meta"><time datetime="2026-06-02">2 Jun 2026</time><span class="dot"></span><span>5 min read</span><span class="dot"></span><span>Series</span></div>
+    <div class="card-meta"><time datetime="2026-06-02">2 Jun 2026</time><span class="dot"></span><span>10 min read</span><span class="dot"></span><span>Series</span></div>
   </div>
 </article>
 <article class="card" data-card data-topics="|Programming|Fundamentals|" data-search="disk i/o performance analysis on linux using iostat, iotop, and fio to measure disk throughput, latency, and queue depth — and diagnosing the i/o bottlenecks that silently degrade production databases. programming fundamentals" data-topic="Programming">
-  <div class="card-art"><img data-article-art="os-disk-io-performance" src="/assets/covers/os-disk-io-performance.svg?v=b005237614e3" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-art"><img data-article-art="os-disk-io-performance" src="/assets/covers/os-disk-io-performance.svg?v=660c1d892360" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
     <a class="chip" href="/topics/programming/">Programming</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/os-disk-io-performance/">Disk I/O Performance Analysis on Linux</a></h3>
     <p class="card-desc">Using iostat, iotop, and fio to measure disk throughput, latency, and queue depth — and diagnosing the I/O bottlenecks that silently degrade production databases.</p>
-    <div class="card-meta"><time datetime="2025-04-30">30 Apr 2025</time><span class="dot"></span><span>5 min read</span><span class="dot"></span><span>Series</span></div>
+    <div class="card-meta"><time datetime="2025-04-30">30 Apr 2025</time><span class="dot"></span><span>10 min read</span><span class="dot"></span><span>Series</span></div>
   </div>
 </article>
 <article class="card" data-card data-topics="|Programming|Fundamentals|" data-search="linux storage management: disks, partitions, lvm, filesystems, and mounting how linux storage works from physical disk to mounted filesystem — block devices, partition tables, lvm for flexible volume management, filesystem creation and tuning, and nfs for network storage. programming fundamentals" data-topic="Programming">
-  <div class="card-art"><img data-article-art="os-storage-management" src="/assets/covers/os-storage-management.svg?v=d533e5f8f1f4" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-art"><img data-article-art="os-storage-management" src="/assets/covers/os-storage-management.svg?v=929badac6247" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
     <a class="chip" href="/topics/programming/">Programming</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/os-storage-management/">Linux Storage Management: Disks, Partitions, LVM, Filesystems, and Mounting</a></h3>
     <p class="card-desc">How Linux storage works from physical disk to mounted filesystem — block devices, partition tables, LVM for flexible volume management, filesystem creation and tuning, and NFS for network storage.</p>
-    <div class="card-meta"><time datetime="2024-10-08">8 Oct 2024</time><span class="dot"></span><span>6 min read</span><span class="dot"></span><span>Series</span></div>
+    <div class="card-meta"><time datetime="2024-10-08">8 Oct 2024</time><span class="dot"></span><span>11 min read</span><span class="dot"></span><span>Series</span></div>
   </div>
 </article></div>
     </div>

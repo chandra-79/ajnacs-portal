@@ -50,7 +50,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Varnish Cache Configuration: A Practical Guide to VCL and Caching Strategy","description":"Varnish is a powerful HTTP accelerator, but the configuration language (VCL) has a steep learning curve. Here's how to configure Varnish for real workloads — including cache key design, TTL strategy, authentication handling, and ESI for partial caching.","datePublished":"2025-03-04","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/varnish-cache-configuration/","image":"https://ajnacs.com/assets/og/articles/varnish-cache-configuration.png?v=5795269faaaa","keywords":"CDN & Caching, Infrastructure, Architecture","articleSection":"Infrastructure","wordCount":996}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Varnish Cache Configuration: A Practical Guide to VCL and Caching Strategy","description":"Varnish is a powerful HTTP accelerator, but the configuration language (VCL) has a steep learning curve. Here's how to configure Varnish for real workloads — including cache key design, TTL strategy, authentication handling, and ESI for partial caching.","datePublished":"2025-03-04","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/varnish-cache-configuration/","image":"https://ajnacs.com/assets/og/articles/varnish-cache-configuration.png?v=5795269faaaa","keywords":"CDN & Caching, Infrastructure, Architecture","articleSection":"Infrastructure","wordCount":1875}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Varnish Cache Configuration: A Practical Guide to VCL and Caching Strategy"}]}</script>
 </head>
 <body class="article-frame" data-topic="Infrastructure">
@@ -94,7 +94,7 @@ d.setAttribute('data-theme',t);
         <a class="article-byline" href="/about/#chandra-lanka">Chandra Lanka</a>
         <span class="dot" aria-hidden="true"></span><time datetime="2025-03-04">4 Mar 2025</time>
         <span class="dot" aria-hidden="true"></span><span>Updated <time datetime="2026-11-23">23 Nov 2026</time></span>
-        <span class="dot"></span><span>4 min read</span>
+        <span class="dot"></span><span>8 min read</span>
         <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
       </div>
     </header>
@@ -102,7 +102,7 @@ d.setAttribute('data-theme',t);
     <div class="article-hero" data-topic="Infrastructure"><img data-article-art="varnish-cache-configuration" src="/assets/covers/varnish-cache-configuration.svg?v=0149e08cfcec" width="1280" height="720" alt="Conceptual illustration for Varnish Cache Configuration: A Practical Guide to VCL and Caching Strategy: Cache, Origin, TTL." decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
-  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#the-vcl-request-lifecycle">The VCL request lifecycle</a></li><li><a href="#the-minimum-config-that-makes-varnish-useful">The minimum config that makes Varnish useful</a></li><li><a href="#cache-key-design">Cache key design</a></li><li><a href="#ttl-strategy">TTL strategy</a></li><li><a href="#handling-authenticated-content">Handling authenticated content</a></li><li><a href="#purging-cached-content">Purging cached content</a></li><li><a href="#monitoring-what-varnish-is-doing">Monitoring what Varnish is doing</a></li></ol>
+  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#the-vcl-request-lifecycle">The VCL request lifecycle</a></li><li><a href="#the-minimum-config-that-makes-varnish-useful">The minimum config that makes Varnish useful</a></li><li><a href="#cache-key-design">Cache key design</a></li><li><a href="#ttl-strategy">TTL strategy</a></li><li><a href="#handling-authenticated-content">Handling authenticated content</a></li><li><a href="#purging-cached-content">Purging cached content</a></li><li><a href="#monitoring-what-varnish-is-doing">Monitoring what Varnish is doing</a></li><li><a href="#put-the-origin-and-vcl-under-the-same-cache-contract">Put the origin and VCL under the same cache contract</a></li><li><a href="#test-expiry-with-representative-timing">Test expiry with representative timing</a></li><li><a href="#keep-fragment-freshness-independently-testable">Keep fragment freshness independently testable</a></li><li><a href="#count-the-requests-that-actually-reach-the-origin">Count the requests that actually reach the origin</a></li></ol>
 </nav></div>
     <div class="article-copy">
       <div class="prose">
@@ -187,38 +187,34 @@ d.setAttribute('data-theme',t);
 </code></pre>
 <p>Your backend includes ESI tags in the HTML:</p>
 <pre><code class="language-html">&lt;esi:include src=&quot;/api/user-header&quot; /&gt;
-&lt;esi:include src=&quot;/content/article-body&quot; ttl=&quot;3600&quot; /&gt;
+&lt;esi:include src=&quot;/content/article-body&quot; /&gt;
 </code></pre>
-<p>Varnish assembles the final response by fetching and caching each included fragment independently. The article body is cached for an hour; the user header fragment is not cached (or cached briefly). The result: most of the page comes from cache; only the personalised fragment hits the backend.</p>
+<p>Set each fragment’s freshness using its origin response headers and VCL. A personalised fragment must bypass shared caching. Treat the assembled response as personalised as well and verify it cannot be reused by a shared cache downstream. Start with two synthetic identities and test both request orders. See <a href="https://www.varnish.org/docs/users-guide/esi/" rel="noopener" target="_blank">Varnish ESI</a>.</p>
 <h2 id="purging-cached-content"><a class="h-anchor" href="#purging-cached-content" aria-hidden="true" tabindex="-1">#</a>Purging cached content</h2>
 <p>When content changes, you need to invalidate the cached version. Varnish provides several mechanisms:</p>
 <p><strong>BAN</strong>: mark all cached objects matching an expression as invalid</p>
 <pre><code class="language-bash">varnishadm ban req.url ~ ^/blog/new-post
 </code></pre>
-<p><strong>Surrogate keys / cache tags</strong>: a more precise purging mechanism. Your backend sends a header like <code>Xkey: product-123 category-electronics</code> with the response. Varnish stores this and supports purging all objects tagged with a specific key:</p>
-<pre><code class="language-vcl">sub vcl_backend_response {
-    if (beresp.http.Xkey) {
-        set beresp.http.Xkey = beresp.http.Xkey;
-    }
-}
-
-// Purge by tag (requires the xkey VMOD)
-sub vcl_recv {
-    if (req.method == &quot;PURGE&quot;) {
-        if (req.http.Xkey-Purge) {
-            ban(&quot;obj.http.Xkey ~ &quot; + req.http.Xkey-Purge);
-        }
-    }
-}
-</code></pre>
-<p><strong>Instant purge</strong>: send a <code>PURGE</code> request for a specific URL:</p>
-<pre><code class="language-bash">curl -X PURGE http://varnish-host/blog/specific-post
-</code></pre>
-<p>In production, restrict purge requests to trusted internal IPs.</p>
+<p><strong>Surrogate keys or cache tags</strong> let an authenticated publishing service invalidate all objects associated with a known key. Use a supported module or provider feature, validate keys against the publishing event, and keep invalidation endpoints off the public listener. Exercise tag and URL invalidation in an isolated Varnish instance and verify that unrelated content remains cached. See <a href="https://www.varnish.org/docs/users-guide/purging/" rel="noopener" target="_blank">Varnish purging</a>.</p>
 <h2 id="monitoring-what-varnish-is-doing"><a class="h-anchor" href="#monitoring-what-varnish-is-doing" aria-hidden="true" tabindex="-1">#</a>Monitoring what Varnish is doing</h2>
-<p><code>varnishstat</code> shows real-time statistics: cache hit ratio, request rate, backend health. The metric to watch first: <code>cache_hit / (cache_hit + cache_miss)</code>. A well-configured Varnish instance handling content workloads should have a hit ratio above 90%.</p>
+<p><code>varnishstat</code> shows real-time statistics: cache hit ratio, request rate, backend health. The metric to watch first: <code>cache_hit / (cache_hit + cache_miss)</code>. Break the ratio down by cacheability and route. Compare it to origin request volume and user-visible latency so a change in traffic mix is visible.</p>
 <p><code>varnishlog</code> shows request-level logs with the cache decision for each request. Essential for debugging why specific requests aren&#39;t being cached.</p>
 <p><em>Tuning a Varnish configuration or designing a caching strategy for a high-traffic site? <a href="/contact/">Happy to work through the specifics.</a></em></p>
+<h2 id="put-the-origin-and-vcl-under-the-same-cache-contract"><a class="h-anchor" href="#put-the-origin-and-vcl-under-the-same-cache-contract" aria-hidden="true" tabindex="-1">#</a>Put the origin and VCL under the same cache contract</h2>
+<p>Define policy by route family before writing a regular expression. For each family, document the owner, allowed methods, visibility, representation variants, tolerated age and the event that should invalidate stored content. Put cookie stripping behind a narrow allowlist of public representations that are demonstrably identical across sessions. A suffix alone says little about the meaning of a URL. Make the application return appropriate cache headers as well, so a route promoted out of the allowlist behaves predictably.</p>
+<p>The built-in VCL still matters when a custom subroutine falls through without an explicit return. A response can remain uncacheable because of its own directives or cookies even if the request entered the cache flow. Preserve those safeguards when layering policy. In a test fixture, compare a public route for two independent clients and ensure the test is capable of detecting a difference by using a separate private route with deliberately distinct responses. Confirm both the observed body and whether the origin handled the request. <a href="https://www.varnish.org/docs/users-guide/vcl-built-in-code/" rel="noopener" target="_blank">Varnish built-in VCL</a></p>
+<p>Prefer a URL parser or well-scoped VMOD for normalization that needs to understand parameter structure. Test multiple values for the same parameter, URL encoding, case differences, sorting and the absence of optional parameters. Query parameters can be order-sensitive for some backends. Even a query-cleaning rule intended only to remove analytics data needs contract tests, including cases where the analytics parameter appears before, after or between representation parameters. Apply a different rule to URLs whose original form is part of an origin signature.</p>
+<h2 id="test-expiry-with-representative-timing"><a class="h-anchor" href="#test-expiry-with-representative-timing" aria-hidden="true" tabindex="-1">#</a>Test expiry with representative timing</h2>
+<p>Grace specifies how long a stored response can remain available beyond its freshness lifetime, subject to the selected VCL and circumstances. Keep gives the cache additional opportunity to retain an expired object for a conditional backend request when a validator is available. An expired object that was evicted for storage pressure may be unavailable for either. Document the desired behaviour separately for healthy origin, busy origin and failed origin, then assert it in a harness that can control backend timing. <a href="https://www.varnish.org/docs/users-guide/vcl-grace/" rel="noopener" target="_blank">Varnish grace and keep</a></p>
+<p>Consider a public article with a 60-second fresh lifetime and 120 seconds of permitted grace. A test introduced after 75 seconds can check a request against an expired object within the configured window. Another introduced after 190 seconds tests a period beyond both allowances. Use a body with a revision marker, begin with a known warm object and record whether and when a backend fetch occurs. Repeat from cold storage and under concurrent requests. In Varnish, tests written for <code>varnishtest</code> can simulate clients, backends and response timing in a repeatable run. <a href="https://www.varnish.org/docs/reference/vtc/" rel="noopener" target="_blank">Varnish test-file reference</a></p>
+<p>Include negative responses in the policy. A public missing asset can justify a very brief stored 404, while a new product page undergoing publication may need a faster transition to the real response. Decide how to validate the transition from missing to present. Purges and bans may apply at a specific layer or point in a request path. Rehearse a control-plane action with two cache instances and check that both eventually serve the expected revision. Prefer self-contained versioned URLs for immutable assets, such as an image whose filename changes with its bytes.</p>
+<h2 id="keep-fragment-freshness-independently-testable"><a class="h-anchor" href="#keep-fragment-freshness-independently-testable" aria-hidden="true" tabindex="-1">#</a>Keep fragment freshness independently testable</h2>
+<p>An assembled page can couple the public shell to several backend resources. Enumerate the independently fetched fragments and give each a cache policy at the fragment endpoint or in explicit VCL. An HTML attribute on an ESI include alone does not set the response freshness lifetime in Varnish. For a personalized fragment, use an explicit bypass and test controlled sessions with distinct expected output. When composition would require delicate propagation of user context, a separately fetched account panel can preserve the public shell and simplify verification. <a href="https://www.varnish.org/docs/users-guide/esi/" rel="noopener" target="_blank">Varnish Edge Side Includes</a></p>
+<p>Test missing and slow fragments against the publisher’s intended experience. A catalogue page might continue to work with recommendations omitted. An error on the asset that holds the main content could be required to show a controlled error instead. Measure first byte, completed transfers and correct visible output together. A header can already have been sent when a streamed include fails, so monitoring just the original HTTP status misses some of the customer-facing result. Limit and observe the number of backend fetches that one assembly can trigger.</p>
+<h2 id="count-the-requests-that-actually-reach-the-origin"><a class="h-anchor" href="#count-the-requests-that-actually-reach-the-origin" aria-hidden="true" tabindex="-1">#</a>Count the requests that actually reach the origin</h2>
+<p>Suppose that 10,000 incoming requests reach a test cache over five minutes. Of those, 7,500 serve a fresh object without origin work, 800 serve stale content, 1,200 pass through and 500 are direct misses. During the window, suppose stale handling starts 160 additional refresh fetches. The hypothetical origin count is then 1,860, so 8,140 fetches were avoided relative to a one-origin-request-per-client baseline. This simplification assumes a workload without ESI, redirects or extra retries. A real deployment’s origin-side count, correlated by route and backend, handles those cases more reliably.</p>
+<p>Keep the same labels at the edge and origin for a limited rollout. Compare origin rate and latency with response correctness, hit categories, evictions and memory pressure. Record concentrations by route and by newly invalidated content. The important decision may be to alter freshness for one high-cost response family instead of moving an instance-wide hit ratio. Keep the VCL version with the test runs so a later incident can be replayed against its exact policy.</p>
+<p>Treat invalidation as a publishing permission. Restrict it to the service that changes the content, capture which revision triggered it and log what scope was affected. Define a completion check that requests the expected representation through the normal customer path. Broad invalidation can turn a quiet correctness change into a wave of origin traffic, so measure the recovery window in a limited environment. <a href="https://www.varnish.org/docs/users-guide/purging/" rel="noopener" target="_blank">Varnish purges and bans</a></p>
 
       </div>
 <section class="field-worksheet worked-example" aria-labelledby="worked-example">
@@ -298,7 +294,7 @@ sub vcl_recv {
     <a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/cdn-strategy-decision-guide/">CDN Strategy: Choosing the Right Approach for Your Architecture</a></h3>
     <p class="card-desc">CDN selection is more than picking the fastest network. Origin configuration, cache invalidation, edge compute capabilities, and the overlap between your CDN and your cloud provider&#39;s services all affect the right choice. Here&#39;s how to think through it.</p>
-    <div class="card-meta"><time datetime="2025-03-13">13 Mar 2025</time><span class="dot"></span><span>4 min read</span></div>
+    <div class="card-meta"><time datetime="2025-03-13">13 Mar 2025</time><span class="dot"></span><span>9 min read</span></div>
   </div>
 </article>
 <article class="card" data-card data-topics="|Data Engineering|Architecture|Performance|Infrastructure|" data-search="speed at scale: enterprise caching for oltp and olap workloads a practical guide to multi-tier caching architecture — how to design caching layers that absorb the majority of read load, handle traffic spikes without crashing, and maintain the cache hit ratios that separate resilient systems from fragile ones. data engineering architecture performance infrastructure" data-topic="Data Engineering">
@@ -307,7 +303,7 @@ sub vcl_recv {
     <a class="chip" href="/topics/data-engineering/">Data Engineering</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/enterprise-caching-architecture/">Speed at Scale: Enterprise Caching for OLTP and OLAP Workloads</a></h3>
     <p class="card-desc">A practical guide to multi-tier caching architecture — how to design caching layers that absorb the majority of read load, handle traffic spikes without crashing, and maintain the cache hit ratios that separate resilient systems from fragile ones.</p>
-    <div class="card-meta"><time datetime="2024-11-01">1 Nov 2024</time><span class="dot"></span><span>5 min read</span></div>
+    <div class="card-meta"><time datetime="2024-11-01">1 Nov 2024</time><span class="dot"></span><span>9 min read</span></div>
   </div>
 </article>
 <article class="card" data-card data-topics="|Cloud Architecture|DevSecOps|Infrastructure|" data-search="serverless vs containers: an honest comparison for 2026 neither is universally better. the answer depends on your workload profile, your team&#39;s operational maturity, and — honestly — your tolerance for cold starts. cloud architecture devsecops infrastructure" data-topic="Cloud Architecture">
@@ -316,7 +312,7 @@ sub vcl_recv {
     <a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/serverless-vs-containers-2026/">Serverless vs Containers: An Honest Comparison for 2026</a></h3>
     <p class="card-desc">Neither is universally better. The answer depends on your workload profile, your team&#39;s operational maturity, and — honestly — your tolerance for cold starts.</p>
-    <div class="card-meta"><time datetime="2026-11-13">13 Nov 2026</time><span class="dot"></span><span>4 min read</span></div>
+    <div class="card-meta"><time datetime="2026-11-13">13 Nov 2026</time><span class="dot"></span><span>9 min read</span></div>
   </div>
 </article></div>
     </div>
@@ -364,7 +360,17 @@ sub vcl_recv {
   <p class="reader-note">Saved in this browser only — these settings do not follow you to another device.</p>
 </div>
 <button class="focus-exit" id="focusExit" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h6V3M21 9h-6V3M3 15h6v6M21 15h-6v6"/></svg> Exit focus</button>
-
+<div class="chapter-bar" id="chapterBar">
+  <div class="chapter-where">
+    <b>Varnish Cache Configuration: A Practical Guide to VCL and Caching Strategy</b>
+    <span>Infrastructure</span>
+  </div>
+  <span class="chapter-left" id="chapterLeft"></span>
+  <nav class="chapter-step" aria-label="Article navigation">
+    <a href="/insights/kubernetes-cost-optimization/" aria-label="Previous: Kubernetes Cost Visibility — The Gap That Kills FinOps Programs"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a>
+    <a href="/insights/cdn-strategy-decision-guide/" aria-label="Next: CDN Strategy: Choosing the Right Approach for Your Architecture"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
+  </nav>
+</div>
 </main>
 
 <footer class="site-footer">

@@ -50,7 +50,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Queueing Theory for Engineers: How Utilisation and Variability Shape Waits","description":"Little's Law, the utilization-latency curve, and variability's tax — the three results that explain most capacity mysteries, from connection pools to on-call load. No calculus required, just the intuitions that make systems behavior predictable.","datePublished":"2026-02-03","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/queueing-theory-for-engineers/","image":"https://ajnacs.com/assets/og/articles/queueing-theory-for-engineers.png?v=80cd251dc770","keywords":"Performance, Capacity Planning, Reliability, Distributed Systems, Architecture","articleSection":"Performance","wordCount":1018}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Queueing Theory for Engineers: How Utilisation and Variability Shape Waits","description":"Little's Law, the utilization-latency curve, and variability's tax — the three results that explain most capacity mysteries, from connection pools to on-call load. No calculus required, just the intuitions that make systems behavior predictable.","datePublished":"2026-02-03","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/queueing-theory-for-engineers/","image":"https://ajnacs.com/assets/og/articles/queueing-theory-for-engineers.png?v=80cd251dc770","keywords":"Performance, Capacity Planning, Reliability, Distributed Systems, Architecture","articleSection":"Performance","wordCount":1298}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Queueing Theory for Engineers: How Utilisation and Variability Shape Waits"}]}</script>
 </head>
 <body class="article-frame" data-topic="Performance">
@@ -94,7 +94,7 @@ d.setAttribute('data-theme',t);
         <a class="article-byline" href="/about/#chandra-lanka">Chandra Lanka</a>
         <span class="dot" aria-hidden="true"></span><time datetime="2026-02-03">3 Feb 2026</time>
         <span class="dot" aria-hidden="true"></span><span>Updated <time datetime="2026-11-23">23 Nov 2026</time></span>
-        <span class="dot"></span><span>5 min read</span>
+        <span class="dot"></span><span>6 min read</span>
         <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
       </div>
     </header>
@@ -102,7 +102,7 @@ d.setAttribute('data-theme',t);
     <div class="article-hero" data-topic="Performance"><img data-article-art="queueing-theory-for-engineers" src="/assets/covers/queueing-theory-for-engineers.svg?v=d84fb687ef65" width="1280" height="720" alt="Conceptual illustration for Queueing Theory for Engineers: How Utilisation and Variability Shape Waits: Requests, Queue, Capacity." decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
-  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#little39s-law-the-conservation-law-of-systems">Little&#39;s Law: the conservation law of systems</a></li><li><a href="#how-utilisation-changes-waiting-time">How utilisation changes waiting time</a></li><li><a href="#variability-the-tax-nobody-budgets">Variability: the tax nobody budgets</a></li><li><a href="#the-composite-intuitions">The composite intuitions</a></li></ol>
+  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#little39s-law-the-conservation-law-of-systems">Little&#39;s Law: the conservation law of systems</a></li><li><a href="#how-utilisation-changes-waiting-time">How utilisation changes waiting time</a></li><li><a href="#variability-the-tax-nobody-budgets">Variability: the tax nobody budgets</a></li><li><a href="#the-composite-intuitions">The composite intuitions</a></li><li><a href="#measure-each-wait-with-its-own-clock">Measure each wait with its own clock</a></li><li><a href="#calculate-the-effect-of-waiting-for-every-branch">Calculate the effect of waiting for every branch</a></li><li><a href="#test-a-scheduling-policy-against-both-queues">Test a scheduling policy against both queues</a></li><li><a href="#replay-the-arrival-schedule-before-applying-a-limit">Replay the arrival schedule before applying a limit</a></li></ol>
 </nav></div>
     <div class="article-copy">
       <div class="prose">
@@ -121,6 +121,18 @@ d.setAttribute('data-theme',t);
 <h2 id="the-composite-intuitions"><a class="h-anchor" href="#the-composite-intuitions" aria-hidden="true" tabindex="-1">#</a>The composite intuitions</h2>
 <p>A few compound readings that pay in design reviews: <strong>queues hide everywhere unlabeled</strong> — connection pools, thread pools, load-balancer accept queues, disk I/O schedulers, Kafka consumer lag, the on-call ticket backlog, the code-review queue — and each obeys the same three laws; the systems (and teams) that feel mysteriously slow at &quot;reasonable&quot; load are usually running an invisible queue at 92% utilization with high variance (this is why review latency and WIP limits are engineering-managed quantities, not vibes — human workflows are queueing systems with worse variance and no autoscaler). <strong>Backpressure is queue-length control</strong> — the bounded-queue-plus-shed disciplines from reliability practice are the recognition that unbounded queues convert overload into unbounded <em>latency</em>, which fails everyone slowly instead of failing some requests fast (the load-shedding math: past saturation, every admitted request makes all requests later; rejection is the kindness). <strong>And scaling has two levers, not one</strong> — more servers cuts ρ (the utilization lever), but cutting <em>variance</em> (smoothing, separating, capping) often buys more latency for less money, and it&#39;s the lever capacity plans forget because it doesn&#39;t appear on the instance-pricing page.</p>
 <p>The pitch for the hour of study: these three results — L=λW, the 1/(1−ρ) explosion, variance&#39;s multiplicative tax — turn a class of production mysteries into predictions, a class of capacity debates into arithmetic, and a class of architectural patterns (bulkheads, jitter, timeouts, WIP limits, small batches) from folklore into consequences. Most of engineering&#39;s hard-won operational wisdom, it turns out, is queueing theory rediscovered one incident at a time; learning it directly is just cheaper.</p>
+<h2 id="measure-each-wait-with-its-own-clock"><a class="h-anchor" href="#measure-each-wait-with-its-own-clock" aria-hidden="true" tabindex="-1">#</a>Measure each wait with its own clock</h2>
+<p>Start at a queue with a clear owner, such as jobs waiting for an image renderer. Record when work becomes eligible, when a worker begins, and when the result becomes durable. The difference between eligibility and start is queue wait. The difference between start and durability includes execution plus any dependency waits inside the worker. Keep enqueue rejection, cancellation, and expiry as terminal outcomes with their own counts. A histogram built only from successful completions can improve while more customers give up.</p>
+<p>Break latency down by job class and report when one class hogs a shared resource. A renderer can separate preview and export workers and still send both through the same object-store connection pool. Measure that pool’s acquisition time too. Give all timestamps comparable boundaries and use a monotonic clock for elapsed time within a process. Cross-service timestamp subtraction needs enough clock accuracy for the interval under study.</p>
+<h2 id="calculate-the-effect-of-waiting-for-every-branch"><a class="h-anchor" href="#calculate-the-effect-of-waiting-for-every-branch" aria-hidden="true" tabindex="-1">#</a>Calculate the effect of waiting for every branch</h2>
+<p>Suppose a request calls eight independent replicas serving distinct shards in parallel and needs every result. An individual shard finishes within 60 ms on 99% of calls. Under the simplifying independence assumption, the chance all eight finish within 60 ms is 0.99⁸, or about 92.3%. That means around 7.7% of requests miss the branch deadline before counting any coordination time. This is illustrative arithmetic. A real system should measure the full request distribution and preserve the paired timings in each trace.</p>
+<p>Shared saturation, synchronized refreshes, and common network paths can make branch times dependent. Also distinguish obligatory work from optional work. If the product allows a partial result, set a branch deadline and test the handling of partial success. Multiple attempts might reduce latency in some workloads, but a duplicate request consumes capacity and could amplify the saturation causing the stragglers. Record both logical requests and physical attempts when comparing a policy. Dean and Barroso discuss these tradeoffs in <a href="https://research.google/pubs/the-tail-at-scale/" rel="noopener" target="_blank">The Tail at Scale</a>.</p>
+<h2 id="test-a-scheduling-policy-against-both-queues"><a class="h-anchor" href="#test-a-scheduling-policy-against-both-queues" aria-hidden="true" tabindex="-1">#</a>Test a scheduling policy against both queues</h2>
+<p>Consider a hypothetical single worker with 30 ms previews and 600 ms exports. With first-in-first-out service, a preview behind two exports can wait roughly 1.2 seconds. Giving previews absolute priority reduces this delay when exports are queued, though a preview still cannot preempt an export already running. And if previews arrive fast enough to consume the worker, exports can wait indefinitely. Define a delivery objective for each class before picking its scheduling policy.</p>
+<p>A simple alternative reserves a second worker for exports and schedules previews on the first. Compare how often either worker sits idle while its peer accumulates work. A shared pool with a per-class concurrency cap may preserve more capacity at the cost of a more involved scheduler. In either design, check queue age as well as depth. Twenty previews and twenty exports represent different work even when their queue counts match.</p>
+<h2 id="replay-the-arrival-schedule-before-applying-a-limit"><a class="h-anchor" href="#replay-the-arrival-schedule-before-applying-a-limit" aria-hidden="true" tabindex="-1">#</a>Replay the arrival schedule before applying a limit</h2>
+<p>Use a representative fixed arrival trace, including particular periods that created long waits. Measure what happened to every scheduled request. If your generator waits for the system to answer before scheduling another arrival, stalls reduce offered load and hide how much the queue would have accumulated. Contrast an arrival-driven run with a fixed-concurrency run when both reflect real clients. Record whichever model you used and include generator-side missed starts as a separate outcome. The <a href="https://grafana.com/docs/k6/latest/using-k6/scenarios/concepts/open-vs-closed/" rel="noopener" target="_blank">k6 documentation on open and closed models</a> describes the distinction.</p>
+<p>Hold arrival rate, work mix, and retry behaviour constant while comparing policies. Watch completion rate, age of the oldest eligible work, deadlines exceeded, and queue delay by class. Set the queue limit so an accepted item has a realistic chance of finishing before its deadline. A queue sized exclusively by available memory can hold orders of magnitude more work than the latency objective permits. For a first deployment, alert before the oldest item consumes its time budget and document who can pause producers or redirect an isolated class of work.</p>
 
       </div>
 <section class="field-worksheet worked-example" aria-labelledby="worked-example">
@@ -195,30 +207,30 @@ d.setAttribute('data-theme',t);
     <div class="wrap">
       <p class="eyebrow">Related</p>
       <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|Architecture|Performance|Engineering Leadership|Capacity Planning|" data-search="back-of-envelope engineering: the estimation skill that filters bad architectures in minutes before the design review argues about frameworks, arithmetic should have eliminated half the options. the latency numbers worth memorizing, the estimation moves — traffic, storage, bandwidth, cost — and worked habits that turn guesses into engineering. architecture performance engineering leadership capacity planning" data-topic="Architecture">
-  <div class="card-art"><img data-article-art="back-of-envelope-system-design" src="/assets/covers/back-of-envelope-system-design.svg?v=969af28dcfef" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-art"><img data-article-art="back-of-envelope-system-design" src="/assets/covers/back-of-envelope-system-design.svg?v=1b70ad034846" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
     <a class="chip" href="/topics/architecture/">Architecture</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/back-of-envelope-system-design/">Back-of-Envelope Engineering: The Estimation Skill That Filters Bad Architectures in Minutes</a></h3>
     <p class="card-desc">Before the design review argues about frameworks, arithmetic should have eliminated half the options. The latency numbers worth memorizing, the estimation moves — traffic, storage, bandwidth, cost — and worked habits that turn guesses into engineering.</p>
-    <div class="card-meta"><time datetime="2026-04-01">1 Apr 2026</time><span class="dot"></span><span>4 min read</span></div>
+    <div class="card-meta"><time datetime="2026-04-01">1 Apr 2026</time><span class="dot"></span><span>8 min read</span></div>
   </div>
 </article>
 <article class="card" data-card data-topics="|Cloud Architecture|Architecture|Reliability|Disaster Recovery|Distributed Systems|" data-search="multi-region architecture patterns: what you&#39;re actually buying at each tier active-passive, pilot light, active-active, and the data problem underneath them all. a tiered framework for multi-region design that matches architecture to actual availability requirements — and prices the tiers honestly. cloud architecture architecture reliability disaster recovery distributed systems" data-topic="Cloud Architecture">
-  <div class="card-art"><img data-article-art="multi-region-architecture-patterns" src="/assets/covers/multi-region-architecture-patterns.svg?v=2d4e43cac29c" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-art"><img data-article-art="multi-region-architecture-patterns" src="/assets/covers/multi-region-architecture-patterns.svg?v=4304af60d84e" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
     <a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/multi-region-architecture-patterns/">Multi-Region Architecture Patterns: What You&#39;re Actually Buying at Each Tier</a></h3>
     <p class="card-desc">Active-passive, pilot light, active-active, and the data problem underneath them all. A tiered framework for multi-region design that matches architecture to actual availability requirements — and prices the tiers honestly.</p>
-    <div class="card-meta"><time datetime="2026-02-12">12 Feb 2026</time><span class="dot"></span><span>5 min read</span></div>
+    <div class="card-meta"><time datetime="2026-02-12">12 Feb 2026</time><span class="dot"></span><span>11 min read</span></div>
   </div>
 </article>
 <article class="card" data-card data-topics="|Observability|Distributed Systems|Reliability|Performance|Cloud Architecture|" data-search="trace sampling: keeping the traces that matter when you can&#39;t keep them all distributed tracing at production volume is a sampling problem wearing an instrumentation costume — head vs tail sampling, the consistency rules that keep traces whole, error-and-latency-biased retention, and the cost architecture of an honest tracing pipeline. observability distributed systems reliability performance cloud architecture" data-topic="Observability">
-  <div class="card-art"><img data-article-art="trace-sampling-strategies" src="/assets/covers/trace-sampling-strategies.svg?v=664c8573561c" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-art"><img data-article-art="trace-sampling-strategies" src="/assets/covers/trace-sampling-strategies.svg?v=0997c5621ae0" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
     <a class="chip" href="/topics/observability/">Observability</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/trace-sampling-strategies/">Trace Sampling: Keeping the Traces That Matter When You Can&#39;t Keep Them All</a></h3>
     <p class="card-desc">Distributed tracing at production volume is a sampling problem wearing an instrumentation costume — head vs tail sampling, the consistency rules that keep traces whole, error-and-latency-biased retention, and the cost architecture of an honest tracing pipeline.</p>
-    <div class="card-meta"><time datetime="2025-09-23">23 Sept 2025</time><span class="dot"></span><span>4 min read</span></div>
+    <div class="card-meta"><time datetime="2025-09-23">23 Sept 2025</time><span class="dot"></span><span>9 min read</span></div>
   </div>
 </article></div>
     </div>
@@ -266,7 +278,17 @@ d.setAttribute('data-theme',t);
   <p class="reader-note">Saved in this browser only — these settings do not follow you to another device.</p>
 </div>
 <button class="focus-exit" id="focusExit" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h6V3M21 9h-6V3M3 15h6v6M21 15h-6v6"/></svg> Exit focus</button>
-
+<div class="chapter-bar" id="chapterBar">
+  <div class="chapter-where">
+    <b>Queueing Theory for Engineers: How Utilisation and Variability Shape Waits</b>
+    <span>Performance</span>
+  </div>
+  <span class="chapter-left" id="chapterLeft"></span>
+  <nav class="chapter-step" aria-label="Article navigation">
+    <a href="/insights/strangler-fig-legacy-migration/" aria-label="Previous: The Strangler Fig in Practice: Incremental Legacy Replacement That Actually Finishes"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a>
+    <a href="/insights/multi-region-architecture-patterns/" aria-label="Next: Multi-Region Architecture Patterns: What You&#39;re Actually Buying at Each Tier"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
+  </nav>
+</div>
 </main>
 
 <footer class="site-footer">

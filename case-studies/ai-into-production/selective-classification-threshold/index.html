@@ -88,7 +88,7 @@ d.setAttribute('data-theme',t);
     <div class="article-hero" data-topic="Enterprise AI"><img src="/assets/cases/selective-classification-threshold.png?v=01586a8ba232" alt="Three panels show a task, an output and a review step." width="960" height="540" fetchpriority="high" decoding="async"></div>
     <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
-  <ol><li><a href="#situation-and-scope">Situation and scope</a></li><li><a href="#plan-and-execution">Plan and execution</a></li><li><a href="#rollout-and-handover">Rollout and handover</a></li><li><a href="#how-to-read-the-numbers">How to read the numbers</a></li></ol>
+  <ol><li><a href="#situation-and-scope">Situation and scope</a></li><li><a href="#plan-and-execution">Plan and execution</a></li><li><a href="#rollout-and-handover">Rollout and handover</a></li><li><a href="#how-to-read-the-numbers">How to read the numbers</a></li><li><a href="#translate-the-decision-into-reviewer-capacity">Translate the decision into reviewer capacity</a></li><li><a href="#recheck-calibration-when-the-mix-changes">Recheck calibration when the mix changes</a></li></ol>
 </nav></div>
     <div class="article-copy">
       <figure class="delivery-flow">
@@ -103,6 +103,11 @@ d.setAttribute('data-theme',t);
 <p>Enable automation for agreed classes and cap volume. Watch the review queue, time to resolve, recent input mix and customer-facing errors. Pause automatic actions when quality or staffing drops below the agreed floor. Hand over the threshold rationale, current calibration data and the cadence for reevaluation.</p>
 <h2 id="how-to-read-the-numbers"><a class="h-anchor" href="#how-to-read-the-numbers" aria-hidden="true" tabindex="-1">#</a>How to read the numbers</h2>
 <p>Both policies see 500 synthetic requests. The new policy routes 135 to review, within the example capacity. Of the 365 accepted suggestions, 22 are incorrect, an error rate of about 6.0% among accepted items. Among all requests, the error share is 4.4%. Keep those two denominators visible.</p>
+<h2 id="translate-the-decision-into-reviewer-capacity"><a class="h-anchor" href="#translate-the-decision-into-reviewer-capacity" aria-hidden="true" tabindex="-1">#</a>Translate the decision into reviewer capacity</h2>
+<p>The example’s 135 routed requests leave room for 15 more cases under the limit of 150 per 500 arrivals. At an illustrative three minutes per review, that is 405 minutes of work for the pilot block. If arrivals bunch at peak time, seven reviewer hours spread across a week may not meet the queue’s deadline. Estimate the peak arrival rate and work that reviewers can clear in that interval. Record escalations and reassignments so the capacity forecast includes the work that falls outside a normal first pass.</p>
+<p>A higher acceptance threshold can send more cases to review. Estimate the resulting workload for each relevant queue. If staffing is limited, defer eligible traffic or keep a queue on manual processing rather than dropping a guardrail for higher-risk tickets. The decision belongs with the owner of that queue.</p>
+<h2 id="recheck-calibration-when-the-mix-changes"><a class="h-anchor" href="#recheck-calibration-when-the-mix-changes" aria-hidden="true" tabindex="-1">#</a>Recheck calibration when the mix changes</h2>
+<p>Split a calibration plot into score bands and show the number of cases and percentage correct in each. Sparse bands give little evidence about how a new threshold will behave. Keep the locked validation fixture for regression checks and gather a fresh, representative labelled sample after rollout. Record the share of arriving cases that are reviewed and the error share of automatic decisions. The <a href="https://scikit-learn.org/stable/modules/calibration.html" rel="noopener" target="_blank">scikit-learn calibration guide</a> explains why the reliability of a model’s reported probability requires separate evaluation.</p>
 </div>
       <figure class="field-chart case-chart">
     <figcaption>Worked comparison <span>Simulated figures</span></figcaption>

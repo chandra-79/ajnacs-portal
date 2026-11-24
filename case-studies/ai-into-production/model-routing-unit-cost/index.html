@@ -88,7 +88,7 @@ d.setAttribute('data-theme',t);
     <div class="article-hero" data-topic="Enterprise AI"><img src="/assets/cases/model-routing-unit-cost.png?v=0d7bb4ab6988" alt="Alternative configurations are compared on measures of the work they produce." width="960" height="540" fetchpriority="high" decoding="async"></div>
     <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
-  <ol><li><a href="#situation-and-scope">Situation and scope</a></li><li><a href="#plan-and-execution">Plan and execution</a></li><li><a href="#rollout-and-handover">Rollout and handover</a></li><li><a href="#how-to-read-the-numbers">How to read the numbers</a></li></ol>
+  <ol><li><a href="#situation-and-scope">Situation and scope</a></li><li><a href="#plan-and-execution">Plan and execution</a></li><li><a href="#rollout-and-handover">Rollout and handover</a></li><li><a href="#how-to-read-the-numbers">How to read the numbers</a></li><li><a href="#look-for-the-break-even-point-in-the-cost-ledger">Look for the break-even point in the cost ledger</a></li><li><a href="#preserve-a-reviewable-fallback">Preserve a reviewable fallback</a></li></ol>
 </nav></div>
     <div class="article-copy">
       <figure class="delivery-flow">
@@ -104,6 +104,11 @@ d.setAttribute('data-theme',t);
 <p class="depth-reading"><a href="/deep-dives/finops/cost-per-successful-order/">Level 2 · Build a unit-cost denominator that survives an audit</a></p>
 <h2 id="how-to-read-the-numbers"><a class="h-anchor" href="#how-to-read-the-numbers" aria-hidden="true" tabindex="-1">#</a>How to read the numbers</h2>
 <p>The 500 synthetic cases yield 430 and 422 approved answers. Cost per accepted answer falls from roughly 12.56¢ to 8.53¢. The candidate meets the example&#39;s aggregate 84% gate with 84.4%. Review pass rates on high-impact slices before promotion.</p>
+<h2 id="look-for-the-break-even-point-in-the-cost-ledger"><a class="h-anchor" href="#look-for-the-break-even-point-in-the-cost-ledger" aria-hidden="true" tabindex="-1">#</a>Look for the break-even point in the cost ledger</h2>
+<p>Write a separate line for the first model call, routing overhead, any escalation, and human review. If a fictional small call costs one cent, a larger call costs eight cents, and routing costs one cent per request, the expected inference expense is two cents plus eight cents times the escalation share. At 25% escalation that is four cents. At 75% it reaches eight cents, equal to calling the larger model directly under these illustrative rates. Include costs such as output processing and idle capacity if they differ between routes.</p>
+<p>The pilot’s per-accepted-answer comparison also depends on answer quality. Count every submitted eligible question in the original sample. A system that drops difficult questions can appear cheaper among completed answers while serving fewer users. Show first-pass acceptance, eventual acceptance, and time to a useful answer alongside retry and escalation volume.</p>
+<h2 id="preserve-a-reviewable-fallback"><a class="h-anchor" href="#preserve-a-reviewable-fallback" aria-hidden="true" tabindex="-1">#</a>Preserve a reviewable fallback</h2>
+<p>Version the policy that identifies ordinary questions, limit repeated calls per question, and specify who can disable the route. Separate cached repeat queries from new queries during the replay. A burst of repeated questions could otherwise make a model change look better than its expected performance on new work. The <a href="https://www.finops.org/framework/capabilities/unit-economics/" rel="noopener" target="_blank">FinOps Unit Economics guidance</a> covers the choice of cost and business output measures.</p>
 </div>
       <figure class="field-chart case-chart">
     <figcaption>Worked comparison <span>Simulated figures</span></figcaption>

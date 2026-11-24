@@ -50,7 +50,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"PostgreSQL Performance Tuning: The Settings and Patterns That Actually Matter","description":"PostgreSQL's default configuration is conservative, designed for small deployments. For production workloads, the settings that control memory, parallelism, WAL behavior, and connection handling need explicit tuning. Here's where to start.","datePublished":"2025-12-26","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/postgresql-performance-tuning/","image":"https://ajnacs.com/assets/og/articles/postgresql-performance-tuning.png?v=f878c842b7e0","keywords":"Data Engineering, Programming, Cloud Architecture","articleSection":"Data Engineering","wordCount":1040}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"PostgreSQL Performance Tuning: The Settings and Patterns That Actually Matter","description":"PostgreSQL's default configuration is conservative, designed for small deployments. For production workloads, the settings that control memory, parallelism, WAL behavior, and connection handling need explicit tuning. Here's where to start.","datePublished":"2025-12-26","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/postgresql-performance-tuning/","image":"https://ajnacs.com/assets/og/articles/postgresql-performance-tuning.png?v=f878c842b7e0","keywords":"Data Engineering, Programming, Cloud Architecture","articleSection":"Data Engineering","wordCount":2135}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"PostgreSQL Performance Tuning: The Settings and Patterns That Actually Matter"}]}</script>
 </head>
 <body class="article-frame" data-topic="Data Engineering">
@@ -94,7 +94,7 @@ d.setAttribute('data-theme',t);
         <a class="article-byline" href="/about/#chandra-lanka">Chandra Lanka</a>
         <span class="dot" aria-hidden="true"></span><time datetime="2025-12-26">26 Dec 2025</time>
         <span class="dot" aria-hidden="true"></span><span>Updated <time datetime="2026-11-23">23 Nov 2026</time></span>
-        <span class="dot"></span><span>5 min read</span>
+        <span class="dot"></span><span>9 min read</span>
         <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
       </div>
     </header>
@@ -102,7 +102,7 @@ d.setAttribute('data-theme',t);
     <div class="article-hero" data-topic="Data Engineering"><img data-article-art="postgresql-performance-tuning" src="/assets/covers/postgresql-performance-tuning.svg?v=0513939531f9" width="1280" height="720" alt="Conceptual illustration for PostgreSQL Performance Tuning: The Settings and Patterns That Actually Matter: Query, Index, Planner." decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
-  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#memory-settings-the-biggest-wins">Memory settings: the biggest wins</a></li><li><a href="#wal-and-checkpoint-tuning">WAL and checkpoint tuning</a></li><li><a href="#connection-management-don39t-skip-pgbouncer">Connection management: don&#39;t skip PgBouncer</a></li><li><a href="#indexing-the-most-common-performance-problems">Indexing: the most common performance problems</a></li><li><a href="#query-analysis-with-explain-analyze">Query analysis with EXPLAIN ANALYZE</a></li></ol>
+  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#memory-settings-the-biggest-wins">Memory settings: the biggest wins</a></li><li><a href="#wal-and-checkpoint-tuning">WAL and checkpoint tuning</a></li><li><a href="#connection-management-don39t-skip-pgbouncer">Connection management: don&#39;t skip PgBouncer</a></li><li><a href="#indexing-the-most-common-performance-problems">Indexing: the most common performance problems</a></li><li><a href="#query-analysis-with-explain-analyze">Query analysis with EXPLAIN ANALYZE</a></li><li><a href="#establish-a-reproducible-baseline-before-changing-a-knob">Establish a reproducible baseline before changing a knob</a></li><li><a href="#read-actual-plans-as-execution-evidence">Read actual plans as execution evidence</a></li><li><a href="#estimate-connection-and-memory-costs-as-a-workload">Estimate connection and memory costs as a workload</a></li><li><a href="#verify-that-a-local-improvement-survives-a-release">Verify that a local improvement survives a release</a></li></ol>
 </nav></div>
     <div class="article-copy">
       <div class="prose">
@@ -135,9 +135,9 @@ d.setAttribute('data-theme',t);
 <li>PgBouncer <code>pool_size = 20</code> per database (connections to PostgreSQL)</li>
 <li>Applications can have 1000+ connections to PgBouncer without overwhelming PostgreSQL</li>
 </ul>
-<p>Transaction-mode pooling (the most common PgBouncer mode) releases the PostgreSQL connection back to the pool after each transaction — efficient, but incompatible with session-level features (prepared statements with protocol-level binding, advisory locks, <code>SET LOCAL</code>).</p>
+<p>PgBouncer transaction pooling returns the server connection after each transaction. Transaction-scoped <code>SET LOCAL</code> stays within that transaction. Session-scoped advisory locks and SQL <code>PREPARE</code> require different handling. Protocol-level named prepared statements can work when supported by the pooler version and <code>max_prepared_statements</code> is nonzero. Test the exact driver, prepared statement behavior, and session settings before switching. See the <a href="https://www.pgbouncer.org/features" rel="noopener" target="_blank">PgBouncer feature matrix</a>.</p>
 <h2 id="indexing-the-most-common-performance-problems"><a class="h-anchor" href="#indexing-the-most-common-performance-problems" aria-hidden="true" tabindex="-1">#</a>Indexing: the most common performance problems</h2>
-<p><strong>Missing indexes on foreign keys</strong>: PostgreSQL doesn&#39;t automatically create indexes on foreign key columns (unlike some other databases). A query that JOINs on a foreign key column without an index causes a sequential scan of the referenced table. Check for this:</p>
+<p><strong>Missing indexes on foreign keys</strong>: PostgreSQL doesn&#39;t automatically create indexes on foreign key columns (unlike some other databases). The referenced key has an appropriate uniqueness constraint or index. The referencing columns may need a supporting index, especially for parent updates or deletes that search child rows. Join plans also depend on selectivity, statistics, and cost. The query below is a first pass for candidate columns. Review composite index key order, predicates, and actual plans before making a change.</p>
 <pre><code class="language-sql">SELECT conrelid::regclass AS table, conname AS fk_name, 
        a.attname AS column
 FROM pg_constraint c
@@ -151,7 +151,7 @@ AND NOT EXISTS (
 <p><strong>Partial indexes</strong>: for queries that always include a WHERE clause on a status field (e.g., <code>WHERE status = &#39;pending&#39;</code>), a partial index is smaller and faster than a full index:</p>
 <pre><code class="language-sql">CREATE INDEX idx_orders_pending ON orders(created_at) WHERE status = &#39;pending&#39;;
 </code></pre>
-<p><strong>Index bloat</strong>: indexes grow as rows are updated and deleted. <code>pg_stat_user_indexes</code> and tools like <code>pgstattuple</code> identify bloated indexes. <code>REINDEX CONCURRENTLY</code> rebuilds without locking.</p>
+<p><strong>Index bloat</strong>: indexes grow as rows are updated and deleted. <code>pg_stat_user_indexes</code> shows index usage. Physical inspection with tools such as <code>pgstattuple</code> can help investigate bloat. <code>REINDEX CONCURRENTLY</code> generally permits normal writes, but it still acquires locks and requires time, storage, and additional work. Check <a href="https://www.postgresql.org/docs/current/sql-reindex.html" rel="noopener" target="_blank">the command’s restrictions</a> on the deployed version.</p>
 <p><strong>Index usage</strong>: queries that appear to use an index but run slowly often have a type mismatch between the parameter and the indexed column (implicit cast prevents index use) or use a function on the indexed column (<code>WHERE LOWER(email) = ...</code> doesn&#39;t use an index on <code>email</code> — use a functional index: <code>CREATE INDEX ON users(LOWER(email))</code>).</p>
 <h2 id="query-analysis-with-explain-analyze"><a class="h-anchor" href="#query-analysis-with-explain-analyze" aria-hidden="true" tabindex="-1">#</a>Query analysis with EXPLAIN ANALYZE</h2>
 <p><code>EXPLAIN ANALYZE</code> is the primary tool for understanding why a query is slow:</p>
@@ -162,11 +162,27 @@ SELECT * FROM orders WHERE customer_id = 123 AND status = &#39;pending&#39;;
 <ul>
 <li><code>Seq Scan</code> on a large table: missing index or planner chose sequential scan despite an index (check row estimates)</li>
 <li><code>Rows Removed by Filter</code>: rows scanned but not returned — index isn&#39;t selective enough</li>
-<li><code>Buffers hit vs read</code>: <code>hit</code> is from shared_buffers (fast), <code>read</code> is from disk (slow). High read count means the working set exceeds cache.</li>
+<li><code>Buffers hit vs read</code>: <code>hit</code> means the page was already in PostgreSQL shared buffers, while <code>read</code> means it had to be read into them. A read may be served by the operating system page cache. Use I/O timing and host statistics to distinguish a cache miss from physical storage delay.</li>
 <li><code>actual rows</code> vs <code>rows</code> (estimated): large discrepancies mean stale statistics — run <code>ANALYZE tablename</code></li>
 </ul>
 <p><code>pg_stat_statements</code> extension (enable in <code>shared_preload_libraries</code>) records query execution statistics across all connections. The query with the highest <code>total_exec_time</code> divided by <code>calls</code> is your first optimization target.</p>
 <p><em>Working through a PostgreSQL performance problem or setting up a production database configuration? <a href="/contact/">Happy to look at specifics.</a></em></p>
+<h2 id="establish-a-reproducible-baseline-before-changing-a-knob"><a class="h-anchor" href="#establish-a-reproducible-baseline-before-changing-a-knob" aria-hidden="true" tabindex="-1">#</a>Establish a reproducible baseline before changing a knob</h2>
+<p>Write down database version, dataset shape, concurrency, hardware limits, and the exact workload that produces the complaint. Capture two periods under comparable load. Count successful operations per interval, application p95 and p99, time spent waiting for a connection, and database execution or wait activity. A query that improves in isolation can still make the whole workload worse if a new index raises write latency or a larger memory setting squeezes unrelated sessions. Preserve the original configuration and statistics snapshot so a colleague can reproduce the decision rather than inferring it from one chart.</p>
+<p class="depth-reading"><a href="/deep-dives/performance/mergeable-latency-percentiles/">Level 2 · Read tail latency from a mergeable distribution</a></p>
+<p>Rank statements by more than one question. Total execution time helps identify what consumes cumulative database work. Mean time can highlight an expensive individual statement. A rare ten-second query can matter for a privileged workflow, while a frequent query averaging 5 ms can be the largest load driver. In an illustrative 10-minute window, a statement executed 60,000 times at a mean of 5 ms contributes 300 execution seconds. Another executed 40 times at 2 seconds contributes 80 seconds. Cumulative seconds are accumulated across executions and can overlap in wall time. Use application traces and wait information to decide whether changing one will improve customer latency, sustained capacity, or both.</p>
+<h2 id="read-actual-plans-as-execution-evidence"><a class="h-anchor" href="#read-actual-plans-as-execution-evidence" aria-hidden="true" tabindex="-1">#</a>Read actual plans as execution evidence</h2>
+<p>Use plain <code>EXPLAIN</code> to inspect PostgreSQL&#39;s estimates without executing the statement. <code>EXPLAIN ANALYZE</code> runs the command. Run it for writes and potentially expensive operations only in a safe environment with side effects and concurrency accounted for. A rollback can undo many transactional database effects, but it cannot generally be assumed to reverse external effects triggered by functions or resources outside the transaction. Capture bind values with sensitive fields removed, select the intended role and search path, and test multiple plausible values for a skewed predicate.</p>
+<p>Elapsed time in nested plan nodes should not be added blindly. Work at a parent typically includes work in children. When a node reports multiple loops, check how actual row and time information is averaged per loop in the rendered plan before comparing totals. Compare estimated and actual row counts near the first large divergence. A poor estimate can come from stale statistics, skew, correlated columns, or a parameterized plan that serves very different input populations. Running <code>ANALYZE</code> can refresh estimates. It does not automatically fix a selectivity assumption about two correlated columns. Verify statistics support and the plan after changing either schema or selectivity assumptions.</p>
+<p>Use <code>BUFFERS</code> to distinguish shared-buffer hits from reads and other activity. A shared read need not be a physical device read, since the operating system may already hold the page in its cache. Check actual I/O evidence and time spent waiting before attributing latency to disk. Compare runs warmed in the same way. If an index changes from many random scattered accesses to the next hundred qualifying entries in order, the improvement may be visible in pages touched and elapsed time even when both runs avoid physical disk. Preserve counts for returned rows and repeated loops so a reduction is not accidentally caused by selecting a smaller result.</p>
+<h2 id="estimate-connection-and-memory-costs-as-a-workload"><a class="h-anchor" href="#estimate-connection-and-memory-costs-as-a-workload" aria-hidden="true" tabindex="-1">#</a>Estimate connection and memory costs as a workload</h2>
+<p>A memory budget depends on the number of operations executing together, not only sessions configured. Suppose 24 concurrent transactions each run two memory-consuming nodes at 16 MiB in an illustrative upper-bound calculation. This is 768 MiB for those operations before other query memory, parallel workers, maintenance, caches, and process overhead. Hash operations can have a different limit governed by their settings. The same settings can be benign for indexed point lookups and risky when a report joins large relations. Use a dedicated role, session scope, or a controlled workload queue for a larger analytical allocation. Measure spill and peak memory rather than copying a global setting from a machine with a different query mix.</p>
+<p>A pool should bound active database work and expose waiting at the application. If 80 database backends already sustain the tested safe work rate, permitting 400 simultaneous query executions does not create additional database I/O or lock throughput. Test the queue under a peak mixture of slow and fast operations. Compare active concurrency, queue time, failures, and tail latency. Transaction pooling releases session assignment between transactions, so application code that expects arbitrary session state to persist can break. PostgreSQL transaction-local state is a different scope from session settings. PgBouncer&#39;s current feature matrix also distinguishes SQL-level prepared statements from protocol-level prepared statements, with protocol support depending on configuration. Verify the actual driver and pooler mode rather than assuming every preparation mechanism behaves identically.</p>
+<h2 id="verify-that-a-local-improvement-survives-a-release"><a class="h-anchor" href="#verify-that-a-local-improvement-survives-a-release" aria-hidden="true" tabindex="-1">#</a>Verify that a local improvement survives a release</h2>
+<p>Choose an index candidate based on one representative query and workload. Confirm that it supports the predicates, sort order, and access pattern. If the candidate adds write work, run sustained writes along with reads and quantify the added storage and maintenance. Check query plans for both selective and less selective parameters. A foreign-key index can help some joins or checks on operations against the referenced row, but the planner can still reasonably choose a sequential scan when most rows qualify. Concurrent index operations reduce some blocking relative to ordinary index operations. They still take locks, may wait, and consume resources. Use documented behavior for the version in use and a bounded rollout.</p>
+<p>Collect a new workload window after the change and compare successful requests, query work per success, wait time, and operating pressure at equivalent offered load. If p99 improves while connection rejects rise, inspect the missing work before calling it a win. Verify the original known query, at least one non-target query that competes for resources, and a burst or recovery run. Save the plan, the definition of “success,” the sampled population, and a safe path back. Re-test when data grows or skew changes, because the decision depends on the measured distribution and capacity.</p>
+<p><a href="https://www.postgresql.org/docs/18/using-explain.html" rel="noopener" target="_blank">PostgreSQL on using EXPLAIN</a>, <a href="https://www.postgresql.org/docs/18/routine-vacuuming.html" rel="noopener" target="_blank">PostgreSQL routine vacuuming</a>, and <a href="https://www.pgbouncer.org/features" rel="noopener" target="_blank">PgBouncer&#39;s feature matrix</a></p>
+<p>Keep maintenance and idle periods in the comparison set. A change tested only in a busy window can hide longer maintenance runtimes. Include an explain plan and workload summary from each condition in the evidence package used to approve the rollout.</p>
 
       </div>
 <section class="field-worksheet worked-example" aria-labelledby="worked-example">
@@ -241,12 +257,12 @@ SELECT * FROM orders WHERE customer_id = 123 AND status = &#39;pending&#39;;
     <div class="wrap">
       <p class="eyebrow">Related</p>
       <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|Performance|Programming|Cloud Architecture|Data Engineering|FinOps|" data-search="compression in production: choosing between gzip, zstd, lz4, and brotli like it matters compression is a three-way trade — ratio, speed, and cpu — that most systems set once by default and never revisit. the algorithm landscape, placement decisions across web, storage, and streaming, dictionary compression&#39;s quiet superpower, and the measurement discipline. performance programming cloud architecture data engineering finops" data-topic="Performance">
-  <div class="card-art"><img data-article-art="compression-selection-guide" src="/assets/covers/compression-selection-guide.svg?v=841ffbacef2b" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-art"><img data-article-art="compression-selection-guide" src="/assets/covers/compression-selection-guide.svg?v=624c62a59726" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
     <a class="chip" href="/topics/performance/">Performance</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/compression-selection-guide/">Compression in Production: Choosing Between gzip, zstd, lz4, and Brotli Like It Matters</a></h3>
     <p class="card-desc">Compression is a three-way trade — ratio, speed, and CPU — that most systems set once by default and never revisit. The algorithm landscape, placement decisions across web, storage, and streaming, dictionary compression&#39;s quiet superpower, and the measurement discipline.</p>
-    <div class="card-meta"><time datetime="2026-10-12">12 Oct 2026</time><span class="dot"></span><span>5 min read</span></div>
+    <div class="card-meta"><time datetime="2026-10-12">12 Oct 2026</time><span class="dot"></span><span>10 min read</span></div>
   </div>
 </article>
 <article class="card" data-card data-topics="|Programming|Architecture|Cloud Architecture|" data-search="api design for enterprise systems: the decisions that age well an api that&#39;s easy to build against is easy to build wrong. the decisions around versioning, error models, pagination, idempotency, and authentication compound over time — here&#39;s how to make the ones that don&#39;t cause regret. programming architecture cloud architecture" data-topic="Programming">
@@ -255,16 +271,16 @@ SELECT * FROM orders WHERE customer_id = 123 AND status = &#39;pending&#39;;
     <a class="chip" href="/topics/programming/">Programming</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/api-design-enterprise/">API Design for Enterprise Systems: The Decisions That Age Well</a></h3>
     <p class="card-desc">An API that&#39;s easy to build against is easy to build wrong. The decisions around versioning, error models, pagination, idempotency, and authentication compound over time — here&#39;s how to make the ones that don&#39;t cause regret.</p>
-    <div class="card-meta"><time datetime="2026-11-06">6 Nov 2026</time><span class="dot"></span><span>5 min read</span></div>
+    <div class="card-meta"><time datetime="2026-11-06">6 Nov 2026</time><span class="dot"></span><span>10 min read</span></div>
   </div>
 </article>
 <article class="card" data-card data-topics="|Programming|Architecture|Cloud Architecture|" data-search="system design patterns every backend engineer should know cqrs, event sourcing, saga pattern, outbox pattern — the patterns that solve specific distributed systems problems, what trade-offs they introduce, and when the simpler option is actually the right one. programming architecture cloud architecture" data-topic="Programming">
-  <div class="card-art"><img data-article-art="system-design-patterns-backend" src="/assets/covers/system-design-patterns-backend.svg?v=1cc422a8deab" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-art"><img data-article-art="system-design-patterns-backend" src="/assets/covers/system-design-patterns-backend.svg?v=c1a6c6b38b2b" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
     <a class="chip" href="/topics/programming/">Programming</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/system-design-patterns-backend/">System Design Patterns Every Backend Engineer Should Know</a></h3>
     <p class="card-desc">CQRS, event sourcing, saga pattern, outbox pattern — the patterns that solve specific distributed systems problems, what trade-offs they introduce, and when the simpler option is actually the right one.</p>
-    <div class="card-meta"><time datetime="2026-10-28">28 Oct 2026</time><span class="dot"></span><span>5 min read</span></div>
+    <div class="card-meta"><time datetime="2026-10-28">28 Oct 2026</time><span class="dot"></span><span>10 min read</span></div>
   </div>
 </article></div>
     </div>
@@ -312,7 +328,17 @@ SELECT * FROM orders WHERE customer_id = 123 AND status = &#39;pending&#39;;
   <p class="reader-note">Saved in this browser only — these settings do not follow you to another device.</p>
 </div>
 <button class="focus-exit" id="focusExit" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h6V3M21 9h-6V3M3 15h6v6M21 15h-6v6"/></svg> Exit focus</button>
-
+<div class="chapter-bar" id="chapterBar">
+  <div class="chapter-where">
+    <b>PostgreSQL Performance Tuning: The Settings and Patterns That Actually Matter</b>
+    <span>Data Engineering</span>
+  </div>
+  <span class="chapter-left" id="chapterLeft"></span>
+  <nav class="chapter-step" aria-label="Article navigation">
+    <a href="/insights/ai-cost-management-production/" aria-label="Previous: AI Cost Management in Production: Controlling Token Spend Without Degrading Quality"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a>
+    <a href="/insights/designing-for-failure-resilience-patterns/" aria-label="Next: Designing for Failure: Resilience Patterns That Actually Hold in Production"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
+  </nav>
+</div>
 </main>
 
 <footer class="site-footer">

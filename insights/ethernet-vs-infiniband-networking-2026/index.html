@@ -50,7 +50,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Ethernet vs. InfiniBand: Choosing the Right Network Fabric in 2026","description":"A practical breakdown of when to use Ethernet and when InfiniBand makes sense — with key metrics, topology differences, and real-world guidance for cloud, HPC, and AI workloads.","datePublished":"2026-10-02","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/ethernet-vs-infiniband-networking-2026/","image":"https://ajnacs.com/assets/og/articles/ethernet-vs-infiniband-networking-2026.png?v=8f04971dda5b","keywords":"Systems, Infrastructure, Enterprise AI, Cloud Architecture, HPC","articleSection":"Infrastructure","wordCount":1038}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Ethernet vs. InfiniBand: Choosing the Right Network Fabric in 2026","description":"A practical breakdown of when to use Ethernet and when InfiniBand makes sense — with key metrics, topology differences, and real-world guidance for cloud, HPC, and AI workloads.","datePublished":"2026-10-02","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/ethernet-vs-infiniband-networking-2026/","image":"https://ajnacs.com/assets/og/articles/ethernet-vs-infiniband-networking-2026.png?v=8f04971dda5b","keywords":"Systems, Infrastructure, Enterprise AI, Cloud Architecture, HPC","articleSection":"Infrastructure","wordCount":763}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Ethernet vs. InfiniBand: Choosing the Right Network Fabric in 2026"}]}</script>
 </head>
 <body class="article-frame" data-topic="Infrastructure">
@@ -94,7 +94,7 @@ d.setAttribute('data-theme',t);
         <a class="article-byline" href="/about/#chandra-lanka">Chandra Lanka</a>
         <span class="dot" aria-hidden="true"></span><time datetime="2026-10-02">2 Oct 2026</time>
         <span class="dot" aria-hidden="true"></span><span>Updated <time datetime="2026-11-23">23 Nov 2026</time></span>
-        <span class="dot"></span><span>5 min read</span>
+        <span class="dot"></span><span>3 min read</span>
         <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
       </div>
     </header>
@@ -102,7 +102,7 @@ d.setAttribute('data-theme',t);
     <div class="article-hero" data-topic="Infrastructure"><img data-article-art="ethernet-vs-infiniband-networking-2026" src="/assets/covers/ethernet-vs-infiniband-networking-2026.svg?v=99c68a23a181" width="1280" height="720" alt="Conceptual illustration for Ethernet vs. InfiniBand: Choosing the Right Network Fabric in 2026: Ethernet, InfiniBand, RDMA." decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
-  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#transport-and-topology">Transport and topology</a></li><li><a href="#decide-on-evidence">Decide on evidence</a></li><li><a href="#sources">Sources</a></li></ol>
+  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#transport-and-topology">Transport and topology</a></li><li><a href="#decide-on-evidence">Decide on evidence</a></li><li><a href="#price-the-useful-workload-rather-than-the-advertised-port">Price the useful workload rather than the advertised port</a></li><li><a href="#match-the-experiment-to-your-operating-environment">Match the experiment to your operating environment</a></li><li><a href="#sources">Sources</a></li></ol>
 </nav></div>
     <div class="article-copy">
       <div class="prose">
@@ -117,6 +117,14 @@ d.setAttribute('data-theme',t);
 <p>Accelerator interconnects and cluster fabrics are distinct. An NVIDIA DGX H100 uses NVLink and NVSwitch within the system, and network interfaces for inter-node exchange. Read the cloud SKU: AWS EFA uses Scalable Reliable Datagram transport, while Azure ND H100 v5 documents dedicated InfiniBand per GPU. Compute configuration, topology and runtime determine whether a measured cross-cloud comparison is meaningful.</p>
 <h2 id="decide-on-evidence"><a class="h-anchor" href="#decide-on-evidence" aria-hidden="true" tabindex="-1">#</a>Decide on evidence</h2>
 <p>Freeze the run configuration and record congestion, errors and buffer behaviour on the relevant network. Compare training-step distribution, fraction of step blocked on communication, cost for the completed job and recovery on a bad link. Repeat across a small and representative job size. Scale from the comparison without assuming a fixed GPU count at which one fabric becomes preferable.</p>
+<h2 id="price-the-useful-workload-rather-than-the-advertised-port"><a class="h-anchor" href="#price-the-useful-workload-rather-than-the-advertised-port" aria-hidden="true" tabindex="-1">#</a>Price the useful workload rather than the advertised port</h2>
+<p>Write an acceptance sheet with the accelerator count, placement tolerance, required throughput and recovery behavior. Include network adapter and switch capacity, any separate storage fabric, observability, cabling and power. Treat vendor peak numbers as component specifications. A 400 Gb/s interface has a nominal one-direction conversion of 50 GB/s before implementation and protocol effects. A runtime report in GB/s may be using a collective normalization or counting payloads per rank, so it is unsafe to divide one value by the other as though they described the same link.</p>
+<p>Suppose 64 accelerators cost an illustrative $2 per accelerator-hour, and two matched jobs take 9.5 hours and 8.5 hours. The accelerator-time component is $1,216 and $1,088 respectively. This hypothetical $128 gap excludes fabric prices, storage and recovery. If the faster configuration needs special nodes that sit idle between runs, the effective cost of complete work can change. Price realistic reservations and availability, then check that both runs met the same correctness and output criteria.</p>
+<h2 id="match-the-experiment-to-your-operating-environment"><a class="h-anchor" href="#match-the-experiment-to-your-operating-environment" aria-hidden="true" tabindex="-1">#</a>Match the experiment to your operating environment</h2>
+<p>Check the transport and topology in the selected product and planned deployment. Identify local accelerator paths, host-to-switch distance and who operates congestion and health monitoring. An assistant doing repeated inference calls may be more constrained by service deadlines and batch scheduling than by the collective behavior of a training run. Keep a separate comparison for each workload.</p>
+<p>For a credible pilot, preserve collective configuration, software versions, rank placement and identical job inputs. Collect per-rank results alongside job-level percentiles and acquisition-to-completion time. Use one dedicated run and one run alongside realistic background traffic. Rehearse link or endpoint loss when the production contract requires it. Compare what the application can complete and what the operator can explain before settling on the initial fabric choice.</p>
+<p><a href="https://github.com/NVIDIA/nccl-tests/blob/master/doc/PERFORMANCE.md" rel="noopener" target="_blank">NCCL’s performance notes</a> distinguish algorithm bandwidth from bus bandwidth for collectives. The <a href="https://docs.nvidia.com/deeplearning/nccl/user-guide/docs/troubleshooting.html" rel="noopener" target="_blank">NCCL troubleshooting guidance</a> also helps structure the tests when the first comparison is slower than expected.</p>
+<p>Repeat the largest configuration more than once and publish the range of outcomes. A job that lands on an unexpectedly favorable host placement can distort a single headline. Record unavailable placements as part of the acquisition time when relying on on-demand resources. An experiment that silently skips failed allocations can understate the delay a training team will experience.</p>
 <h2 id="sources"><a class="h-anchor" href="#sources" aria-hidden="true" tabindex="-1">#</a>Sources</h2>
 <ul>
 <li><a href="https://infinibandta.org/wp-content/uploads/2026/08/Whats-New-in-Vol.-1-and-2-Release-2.1-2026-07-31.pdf" rel="noopener" target="_blank">InfiniBand Trade Association specification update</a></li>
@@ -202,7 +210,7 @@ d.setAttribute('data-theme',t);
     <a class="chip" href="/topics/enterprise-ai/">Enterprise AI</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/quick-take-ethernet-vs-infiniband/">Ethernet vs. InfiniBand for AI Training: Why the Network Fabric Matters More Than You Think</a></h3>
     <p class="card-desc">Most AI infrastructure decisions focus on GPUs and storage. Network fabric is the variable that determines whether your training cluster runs at 90% efficiency or 40%.</p>
-    <div class="card-meta"><time datetime="2025-03-25">25 Mar 2025</time><span class="dot"></span><span>2 min read</span></div>
+    <div class="card-meta"><time datetime="2025-03-25">25 Mar 2025</time><span class="dot"></span><span>3 min read</span></div>
   </div>
 </article>
 <article class="card" data-card data-topics="|Cloud Architecture|DevSecOps|Infrastructure|" data-search="serverless vs containers: an honest comparison for 2026 neither is universally better. the answer depends on your workload profile, your team&#39;s operational maturity, and — honestly — your tolerance for cold starts. cloud architecture devsecops infrastructure" data-topic="Cloud Architecture">
@@ -211,7 +219,7 @@ d.setAttribute('data-theme',t);
     <a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/serverless-vs-containers-2026/">Serverless vs Containers: An Honest Comparison for 2026</a></h3>
     <p class="card-desc">Neither is universally better. The answer depends on your workload profile, your team&#39;s operational maturity, and — honestly — your tolerance for cold starts.</p>
-    <div class="card-meta"><time datetime="2026-11-13">13 Nov 2026</time><span class="dot"></span><span>4 min read</span></div>
+    <div class="card-meta"><time datetime="2026-11-13">13 Nov 2026</time><span class="dot"></span><span>9 min read</span></div>
   </div>
 </article>
 <article class="card" data-card data-topics="|Systems|HPC|AI &amp; MLOps|" data-search="roce vs iwarp: choosing the right rdma technology for your workload both roce and iwarp provide rdma over ethernet, but they have different network requirements, loss behavior, and operational characteristics. here&#39;s how to choose between them for ai training, hpc, and storage workloads. systems hpc ai &amp; mlops" data-topic="AI &amp; MLOps">
@@ -220,7 +228,7 @@ d.setAttribute('data-theme',t);
     <a class="chip" href="/topics/ai-mlops/">AI &amp; MLOps</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/roce-vs-iwarp-networking/">RoCE vs iWARP: Choosing the Right RDMA Technology for Your Workload</a></h3>
     <p class="card-desc">Both RoCE and iWARP provide RDMA over Ethernet, but they have different network requirements, loss behavior, and operational characteristics. Here&#39;s how to choose between them for AI training, HPC, and storage workloads.</p>
-    <div class="card-meta"><time datetime="2026-11-02">2 Nov 2026</time><span class="dot"></span><span>4 min read</span></div>
+    <div class="card-meta"><time datetime="2026-11-02">2 Nov 2026</time><span class="dot"></span><span>3 min read</span></div>
   </div>
 </article></div>
     </div>
