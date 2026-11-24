@@ -1,0 +1,32 @@
+{
+  "slug": "data-pipeline-patterns",
+  "kind": "bar",
+  "title": "Reconcile deliveries with unique pipeline output",
+  "unit": "records",
+  "points": [
+    {
+      "label": "Delivery attempts",
+      "value": 10200
+    },
+    {
+      "label": "Unique source events",
+      "value": 10000
+    },
+    {
+      "label": "Accepted events",
+      "value": 9850
+    },
+    {
+      "label": "Quarantined events",
+      "value": 150
+    }
+  ],
+  "method": "Synthetic interval has 10,000 unique source events plus 200 duplicate deliveries. Deduplication leaves 10,000;150 fail validation and 9,850 are accepted. Delivery attempts and unique outcomes are different denominators, so chart bars are not additive.",
+  "alt": "Reconcile deliveries with unique pipeline output. Delivery attempts: 10200 records; Unique source events: 10000 records; Accepted events: 9850 records; Quarantined events: 150 records. Illustrative values.",
+  "dataOrigin": "synthetic",
+  "steps": [],
+  "studyPaths": [
+    "reliability",
+    "migration"
+  ]
+}

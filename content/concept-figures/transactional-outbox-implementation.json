@@ -1,0 +1,27 @@
+{
+  "slug": "transactional-outbox-implementation",
+  "kind": "bar",
+  "title": "Outbox event identity survives repeated delivery attempts",
+  "unit": "count",
+  "points": [
+    {
+      "label": "Committed outbox events",
+      "value": 100
+    },
+    {
+      "label": "Delivery attempts",
+      "value": 110
+    },
+    {
+      "label": "Unique applied effects",
+      "value": 100
+    }
+  ],
+  "method": "Synthetic batch: 100 committed transactions each create one outbox event. Ten broker-accepted events are republished after a relay crash, so attempts = 100 + 10 = 110. Atomic consumer deduplication yields 100 unique local effects. External side effects and expired deduplication records are excluded.",
+  "alt": "Outbox event identity survives repeated delivery attempts. Committed outbox events: 100 count; Delivery attempts: 110 count; Unique applied effects: 100 count. Illustrative values.",
+  "dataOrigin": "synthetic",
+  "steps": [],
+  "studyPaths": [
+    "reliability"
+  ]
+}

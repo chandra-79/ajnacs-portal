@@ -1,0 +1,28 @@
+{
+  "slug": "zero-downtime-database-migrations",
+  "kind": "bar",
+  "title": "Modeled progress of a throttled backfill",
+  "unit": "rows completed",
+  "points": [
+    {
+      "label": "250 seconds",
+      "value": 250000
+    },
+    {
+      "label": "500 seconds",
+      "value": 500000
+    },
+    {
+      "label": "1,000 seconds",
+      "value": 1000000
+    }
+  ],
+  "method": "Synthetic 1,000,000-row backfill uses 1,000-row batches taking 0.2 s plus 0.8 s pause, giving 1,000 rows/s. Progress at 250,500 and 1,000 s is 250,000,500,000 and 1,000,000. Excludes contention, retries and final reconciliation.",
+  "alt": "Modeled progress of a throttled backfill. 250 seconds: 250000 rows completed; 500 seconds: 500000 rows completed; 1,000 seconds: 1e+06 rows completed. Illustrative values.",
+  "dataOrigin": "synthetic",
+  "steps": [],
+  "studyPaths": [
+    "migration",
+    "reliability"
+  ]
+}

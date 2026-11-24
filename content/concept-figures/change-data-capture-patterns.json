@@ -1,0 +1,28 @@
+{
+  "slug": "change-data-capture-patterns",
+  "kind": "bar",
+  "title": "Modeled CDC backlog during recovery",
+  "unit": "changes",
+  "points": [
+    {
+      "label": "Restart",
+      "value": 1200000
+    },
+    {
+      "label": "After 10 minutes",
+      "value": 600000
+    },
+    {
+      "label": "After 20 minutes",
+      "value": 0
+    }
+  ],
+  "method": "Synthetic source rate 2,000 changes/s, outage 600 s→1,200,000 backlog. Apply rate 3,000/s leaves net drain 1,000/s. Backlog after 600 recovery seconds is 600,000; after 1,200 seconds it is 0. Assumes constant rates and retained history.",
+  "alt": "Modeled CDC backlog during recovery. Restart: 1.2e+06 changes; After 10 minutes: 600000 changes; After 20 minutes: 0 changes. Illustrative values.",
+  "dataOrigin": "synthetic",
+  "steps": [],
+  "studyPaths": [
+    "reliability",
+    "migration"
+  ]
+}

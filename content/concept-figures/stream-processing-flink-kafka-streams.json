@@ -1,0 +1,28 @@
+{
+  "slug": "stream-processing-flink-kafka-streams",
+  "kind": "bar",
+  "title": "A window count under an explicit late-event policy",
+  "unit": "events",
+  "points": [
+    {
+      "label": "Initial publication",
+      "value": 90
+    },
+    {
+      "label": "Live correction",
+      "value": 98
+    },
+    {
+      "label": "Full reconciliation",
+      "value": 100
+    }
+  ],
+  "method": "Synthetic one-minute window has 100 eventual events:90 before initial publication,8 within the correction interval,2 after the cutoff. Live counts become 90 then 98; offline full-fixture reconciliation yields 100. No observed completeness claim; cutoff policy controls treatment.",
+  "alt": "A window count under an explicit late-event policy. Initial publication: 90 events; Live correction: 98 events; Full reconciliation: 100 events. Illustrative values.",
+  "dataOrigin": "synthetic",
+  "steps": [],
+  "studyPaths": [
+    "reliability",
+    "performance"
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "slug": "database-migration-nobody-tested",
+  "kind": "bar",
+  "title": "Backfill duration at two throttles",
+  "unit": "minutes",
+  "points": [
+    {
+      "label": "250 batches/minute",
+      "value": 96
+    },
+    {
+      "label": "125 batches/minute",
+      "value": 192
+    }
+  ],
+  "method": "Synthetic 12-million-row backfill with 500 rows per batch. Duration = rows/(batch size × batches per minute). Excludes pauses, validation, retries and replica catch-up; use measured rehearsal distributions for scheduling.",
+  "alt": "Backfill duration at two throttles. 250 batches/minute: 96 minutes; 125 batches/minute: 192 minutes. Illustrative values.",
+  "dataOrigin": "synthetic",
+  "steps": [],
+  "studyPaths": [
+    "migration",
+    "reliability"
+  ]
+}

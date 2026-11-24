@@ -1,0 +1,28 @@
+{
+  "slug": "postgres-jsonb-hybrid-modeling",
+  "kind": "bar",
+  "title": "Candidate rows in a catalog lookup",
+  "unit": "candidate rows",
+  "points": [
+    {
+      "label": "Whole catalog",
+      "value": 100000
+    },
+    {
+      "label": "Selected tenant",
+      "value": 1000
+    },
+    {
+      "label": "Tenant and brand",
+      "value": 100
+    }
+  ],
+  "method": "Synthetic catalog: 100,000 rows, 1,000 in one tenant, 100 matching that tenant and brand. Counts describe logical candidates, not observed execution time, index visits or universal planner behavior.",
+  "alt": "Candidate rows in a catalog lookup. Whole catalog: 100000 candidate rows; Selected tenant: 1000 candidate rows; Tenant and brand: 100 candidate rows. Illustrative values.",
+  "dataOrigin": "synthetic",
+  "steps": [],
+  "studyPaths": [
+    "performance",
+    "migration"
+  ]
+}

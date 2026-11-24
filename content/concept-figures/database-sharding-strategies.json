@@ -1,0 +1,28 @@
+{
+  "slug": "database-sharding-strategies",
+  "kind": "bar",
+  "title": "Modeled reduction in the busiest shard load",
+  "unit": "requests per second",
+  "points": [
+    {
+      "label": "Original mean",
+      "value": 1000
+    },
+    {
+      "label": "Original busiest",
+      "value": 2500
+    },
+    {
+      "label": "New busiest",
+      "value": 1500
+    }
+  ],
+  "method": "Synthetic initial loads are 500,500,500 and 2,500 requests/s. Moving an independent 1,500-request/s tenant to a fifth shard leaves 500,500,500,1,000,1,500. Maximum drops 40%; no latency or uniform-capacity claim is implied.",
+  "alt": "Modeled reduction in the busiest shard load. Original mean: 1000 requests per second; Original busiest: 2500 requests per second; New busiest: 1500 requests per second. Illustrative values.",
+  "dataOrigin": "synthetic",
+  "steps": [],
+  "studyPaths": [
+    "performance",
+    "migration"
+  ]
+}

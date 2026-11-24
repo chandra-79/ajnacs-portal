@@ -1,6 +1,6 @@
 ---
 title: "Your Data Pipeline Has Schema Assumptions Nobody Documented"
-description: "Every data pipeline has implicit contracts about field names, types, nullability, and value ranges. When upstream systems change and those contracts break, the failure is silent and the debugging is painful."
+description: "Make field types, nullability, units and compatibility assumptions explicit, then test a schema change against consumer fixtures."
 date: 2028-10-16
 tags: ["Data Engineering", "Infrastructure"]
 format: article
@@ -39,3 +39,39 @@ An implicit dependency breaks silently. An explicit dependency fails loudly.
 **Consumer notification in the change process.** When a team changes a shared data source, they should know who depends on it and notify them. This requires a data catalog that records lineage — which datasets read from which sources, which pipelines depend on which tables.
 
 The debugging session that traces a wrong dashboard number upstream through three transformations to a new status value in a source system that changed six weeks ago is preventable. The prevention is not hard. It requires making the implicit explicit.
+
+## A compatible type can hide an incompatible meaning
+
+Suppose a field named total remains a decimal in a new producer version. The old version represented the amount before tax; the new one includes tax. A schema compatibility check can accept the type while a revenue report changes meaning. Contracts need business semantics as well as syntactic compatibility.
+
+Use a fictional fixture of 100 orders at a pretax amount of $50 each, with $5 tax per order. The pretax total is $5,000 and the tax-inclusive total is $5,500. A consumer expecting pretax revenue would report a 10% increase if it silently accepted the new meaning. Nothing about that increase demonstrates business growth. The figure shows the two valid totals under different definitions rather than labelling one dataset corrupt.
+
+## Specify the boundary in a reviewable contract
+
+Record the dataset grain, identity key, amount representation, currency, tax treatment, timestamp timezone and correction policy. State whether a record is an event, a latest-state snapshot or an aggregate. Consumers handle those shapes differently: adding snapshots as if they were independent events can multiply a total without any schema error.
+
+List the known consumers and their critical assumptions. One consumer may ignore new fields while another fails on them. A new enum value may be a valid business state yet be unrecognized by an old consumer. Compatibility should therefore be tested against representative consumer fixtures, not inferred solely from a general registry setting.
+
+For the amount change, prefer a new explicitly named field or a versioned contract over silently changing total. Publish a period in which the intended representations are both available if the rollout requires it. Define their relationship and test that both derive from the same underlying order. Keep the migration window bounded so the platform does not maintain ambiguous fields indefinitely.
+
+## Exercise an old consumer against a new producer
+
+Build a fixture containing a new enum, an absent optional field, a missing required field, a corrected order and a late event. Run the previous consumer implementation against it. Record which cases are accepted, rejected, quarantined or misinterpreted. A test that merely deserializes successfully is incomplete when the business result is wrong.
+
+Then test the rollback. If the producer reverts, can the new consumer still read the prior shape? If not, the deployment order has a hidden one-way dependency. Record the compatible version pairs and the point after which rollback requires a data repair. This is particularly important for stored events that remain available for replay after both services have moved on.
+
+A completed contract change includes the producer implementation, consumer adoption evidence, historical replay behavior and a clear effective date. The schema file is one component of that change, not the whole definition of compatibility.
+
+### Figure methodology
+
+Synthetic 100-order fixture with $50 pretax amount and $5 tax per order. Totals are 100×50 and 100×55. A 10% difference reflects semantics, not business growth. Currency and order population are held constant.
+
+| Worked observation | USD |
+| --- | ---: |
+| Pretax amount | 5000 |
+| Tax-inclusive amount | 5500 |
+
+## Primary references and further study
+
+- [Schema compatibility and evolution](https://docs.confluent.io/platform/current/schema-registry/fundamentals/schema-evolution.html)
+- [Transactional outbox and event boundaries](https://docs.aws.amazon.com/prescriptive-guidance/latest/cloud-design-patterns/transactional-outbox.html)

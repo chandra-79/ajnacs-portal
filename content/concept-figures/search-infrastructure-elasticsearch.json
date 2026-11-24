@@ -1,0 +1,28 @@
+{
+  "slug": "search-infrastructure-elasticsearch",
+  "kind": "bar",
+  "title": "Shard copies for one synthetic retained dataset",
+  "unit": "shard copies",
+  "points": [
+    {
+      "label": "50 GiB primaries",
+      "value": 24
+    },
+    {
+      "label": "30 GiB primaries",
+      "value": 40
+    },
+    {
+      "label": "10 GiB primaries",
+      "value": 120
+    }
+  ],
+  "method": "Synthetic 600 GiB primary dataset divided by 50,30 or 10 GiB yields 12,20 or 60 primaries. One replica doubles copies to 24,40,120. Excludes merge/translog overhead, skew and headroom; not a performance recommendation.",
+  "alt": "Shard copies for one synthetic retained dataset. 50 GiB primaries: 24 shard copies; 30 GiB primaries: 40 shard copies; 10 GiB primaries: 120 shard copies. Illustrative values.",
+  "dataOrigin": "synthetic",
+  "steps": [],
+  "studyPaths": [
+    "performance",
+    "ai-evaluation"
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "slug": "distributed-locking-leader-election",
+  "kind": "bar",
+  "title": "A paused worker resumes after ownership changes",
+  "unit": "seconds since acquisition",
+  "points": [
+    {
+      "label": "Lease expiry",
+      "value": 30
+    },
+    {
+      "label": "New owner acquired",
+      "value": 31
+    },
+    {
+      "label": "New owner writes",
+      "value": 35
+    },
+    {
+      "label": "Old owner resumes",
+      "value": 45
+    }
+  ],
+  "method": "Synthetic timeline: a 30-second lease begins at t=0; a successor acquires at t=31 and writes at t=35; the paused old worker resumes at t=45. Bars show event timestamps, not durations or benchmark results. Storage-side fencing must reject the old generation.",
+  "alt": "A paused worker resumes after ownership changes. Lease expiry: 30 seconds since acquisition; New owner acquired: 31 seconds since acquisition; New owner writes: 35 seconds since acquisition; Old owner resumes: 45 seconds since acquisition. Illustrative values.",
+  "dataOrigin": "synthetic",
+  "steps": [],
+  "studyPaths": [
+    "reliability"
+  ]
+}

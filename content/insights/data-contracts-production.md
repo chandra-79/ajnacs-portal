@@ -1,6 +1,6 @@
 ---
 title: "Data Contracts: Preventing the Silent Breaking Changes That Wreck Data Pipelines"
-description: "Data pipelines break silently when upstream data changes without warning. Data contracts make the agreement between producers and consumers explicit, versioned, and enforceable — before it reaches production."
+description: "Define producer-consumer contracts for schema and meaning, run validation fixtures, and plan compatible changes and ownership."
 date: 2027-11-26
 tags: ["Data Engineering", "Engineering Leadership"]
 format: article
@@ -8,7 +8,7 @@ format: article
 
 The most frustrating class of data pipeline failures is the silent one. A source system adds a column, renames a field, changes a data type, or starts emitting nulls in a previously non-nullable field. The pipeline continues running. No error is raised. But the downstream dashboard is now wrong, and nobody notices for a week.
 
-Data contracts make the agreement between the data producer (the system emitting the data) and the data consumer (the pipeline, report, or ML model relying on it) explicit. When that agreement is violated, the failure is immediate and visible rather than delayed and silent.
+Data contracts make the agreement between the data producer (the system emitting the data) and the data consumer (the pipeline, report, or ML model relying on it) explicit. Implemented checks can make covered violations visible at the chosen boundary; untested semantic changes can still escape.
 
 ## What a data contract specifies
 
@@ -24,29 +24,11 @@ The contract is a document that both the producer and consumer agree to and can 
 
 ## Implementing contracts in practice
 
-**Schema in a registry**: define schemas in a schema registry (Apache Kafka's Confluent Schema Registry, AWS Glue Schema Registry, or a custom system). The registry enforces compatibility at write time — a producer cannot change the schema in a way that breaks registered consumers.
+**Schema in a registry**: define schemas in a schema registry (Confluent Schema Registry used with Kafka, AWS Glue Schema Registry, or a custom system). A registry checks the configured schema compatibility rules; producers and consumers must use and enforce the intended registration and serialization path.
 
 For batch/file-based data, tools like Great Expectations or Soda allow defining validation rules as code:
 
-```python
-import great_expectations as gx
-
-context = gx.get_context()
-
-## Define expectations for the orders dataset
-suite = context.add_expectation_suite("orders_suite")
-validator = context.get_validator(...)
-
-validator.expect_column_to_exist("order_id")
-validator.expect_column_values_to_not_be_null("order_id")
-validator.expect_column_values_to_be_between("amount", 0, 1_000_000)
-validator.expect_column_values_to_be_in_set(
-    "status", {"pending", "confirmed", "shipped", "cancelled"}
-)
-validator.expect_column_pair_values_A_to_be_greater_than_B(
-    "delivered_at", "created_at"
-)
-```
+The executable fixture below demonstrates contract checks without relying on an unpinned validation-library API.
 
 Run these validations at the point of ingestion. Fail loudly when expectations are violated rather than passing bad data downstream.
 
@@ -54,7 +36,7 @@ Run these validations at the point of ingestion. Fail loudly when expectations a
 
 Semantic versioning for data contracts:
 - **Patch**: documentation fixes, no structural changes
-- **Minor**: backward-compatible additions (new optional field, new allowed value in an enum)
+- **Minor**: backward-compatible additions (an addition proven compatible with the supported consumers)
 - **Major**: breaking changes (renamed field, changed type, removed field, changed semantics)
 
 Major version changes require advance notice to consumers and a migration period where both old and new formats are supported.
@@ -75,4 +57,75 @@ Beyond enforcement at ingestion, contracts enable proactive monitoring:
 
 **Contract compliance reporting**: across all data products, what percentage are in compliance with their contracts right now? This is a useful operational metric that makes data platform health visible.
 
-*Introducing data contracts in a platform with many existing pipelines? The organizational change is usually harder than the technical implementation. [Happy to compare approaches.](/contact)*
+*Introducing data contracts in a platform with many existing pipelines? The organizational change is usually harder than the technical implementation. [Happy to compare approaches.](/contact/)*
+
+## Make the contract executable without tying it to one library
+
+Validation libraries change their APIs. A contract should preserve the business rule independently of a particular tool's configuration syntax. Record the required field, accepted type, unit, allowed states and failure action before encoding those rules in a framework. Pin and test the framework version in the implementation repository.
+
+For a fictional shipment event, define order_id as a nonempty string, amount_minor as a nonnegative integer in the stated currency, and status as one of the agreed business states. The use of integer minor units is a design choice for this exercise; real currencies and monetary calculations need an explicit precision policy. A valid shape does not prove that the amount is commercially correct, so reconcile it with an authoritative transaction record where that matters.
+
+A minimal local fixture can express the rule directly:
+
+```python
+ALLOWED = {"pending", "confirmed", "shipped", "cancelled"}
+
+def errors(row):
+    found = []
+    if not isinstance(row.get("order_id"), str) or not row["order_id"].strip():
+        found.append("order_id must be a nonempty string")
+    value = row.get("amount_minor")
+    if type(value) is not int or value < 0:
+        found.append("amount_minor must be a nonnegative integer")
+    status = row.get("status")
+    if not isinstance(status, str) or status not in ALLOWED:
+        found.append("unrecognized status")
+    return found
+
+assert not errors({"order_id": "o-1", "amount_minor": 1250, "status": "confirmed"})
+assert errors({"order_id": "o-2", "amount_minor": True, "status": "confirmed"})
+assert errors({"order_id": "", "amount_minor": 100, "status": "review"})
+```
+
+The strict integer check intentionally rejects a boolean, which Python otherwise treats as an integer subtype. The fixture demonstrates three local shape rules, not a complete financial or event contract. Add tests for currency, event identity, timestamps and correction semantics according to the actual service.
+
+## Work through the rejected population
+
+Suppose a synthetic batch contains 2,000 events. Thirty fail the required-identifier rule, twenty fail the amount rule and ten use an unrecognized status. For this example the sets are disjoint, so sixty events are quarantined and 1,940 pass those checks. Pass rate is 97%. If a record can fail more than one rule in a real implementation, do not add per-rule counts to derive the number of rejected records; calculate the distinct rejected population separately.
+
+Preserve a reason code, the contract version and an appropriate reference to the original event. Avoid storing unnecessary sensitive values in an error queue. Give the quarantine an owner, age metric and repair process. A validation failure that is visible only to an abandoned queue is still an operational failure.
+
+## Treat compatibility as a consumer relationship
+
+A schema registry checks the compatibility rules configured for its supported format and registration path. It does not automatically prove that every consumer's business logic will handle a change. A producer can also bypass a registry if the deployment does not enforce use of the registered serialization path. Test and document that enforcement boundary.
+
+Adding a new enum value is not universally backward compatible. An old consumer may reject it, map it to a default or silently drop it. A new optional field may be safe for an extensible parser and unsafe for a strict one. Define compatibility against representative consumers and stored history rather than assigning a minor version by intuition.
+
+For a proposed status change, run the previous consumer against fixtures containing old and new values. Check the business output, not only parsing success. Then run the new consumer against stored events in the old shape. Record the supported version pairs, rollout order, compatibility window and rollback behavior. The contract review should include someone who understands the downstream decision the field supports.
+
+## Monitor meaning after validation passes
+
+A dataset can satisfy every type rule and still be wrong. A join can duplicate orders; a currency conversion can use the wrong date; an event timestamp can be interpreted in the wrong timezone. Add reconciliations at transformation and publication boundaries. Compare business totals, distinct identities and freshness against a defined expectation.
+
+Choose thresholds based on consequences and the population. A null-rate threshold appropriate for an optional enrichment field may be unacceptable for an identity key. A small dataset can move sharply because of one record. Show counts alongside percentages and distinguish missing input from an intentionally absent value.
+
+## Use an incident to improve the contract
+
+When a consumer reports a wrong result, trace representative records to the first stage where meaning changed. Record whether the contract omitted a rule, the implementation violated it or the consumer assumed something stronger. Repair the appropriate boundary and add the smallest fixture that reproduces the failure.
+
+Communicate how existing data is corrected. A producer fix affects future events but may leave historical reports wrong. A replay can repair those reports only if the transformation and sink handle duplicate processing correctly. Close the incident after the consumer can identify the corrected version and reconcile the affected population. This is how contracts become operating agreements rather than documents that only describe the happy path.
+
+### Figure methodology
+
+Synthetic 2,000-event batch with disjoint failure sets.60 events are quarantined and 1,940 pass:97% pass rate for these checks. Real per-rule failures may overlap; count distinct rejected identities before summing.
+
+| Worked observation | events |
+| --- | ---: |
+| Identifier failure | 30 |
+| Amount failure | 20 |
+| Unknown status | 10 |
+
+## Primary references and further study
+
+- [Schema evolution and configured compatibility](https://docs.confluent.io/platform/current/schema-registry/fundamentals/schema-evolution.html)
+- [Transactional outbox and event identity](https://docs.aws.amazon.com/prescriptive-guidance/latest/cloud-design-patterns/transactional-outbox.html)

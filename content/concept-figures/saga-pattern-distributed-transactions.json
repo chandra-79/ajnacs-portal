@@ -1,0 +1,31 @@
+{
+  "slug": "saga-pattern-distributed-transactions",
+  "kind": "bar",
+  "title": "A refund request does not yet reverse a captured amount",
+  "unit": "currency units net captured",
+  "points": [
+    {
+      "label": "Inventory reserved",
+      "value": 0
+    },
+    {
+      "label": "Payment captured",
+      "value": 120
+    },
+    {
+      "label": "Refund pending",
+      "value": 120
+    },
+    {
+      "label": "Refund confirmed",
+      "value": 0
+    }
+  ],
+  "method": "Synthetic order value is 120 currency units. Net captured amount = confirmed captures minus confirmed refunds. A pending refund is not subtracted until confirmed. Fees, settlement timing, partial refunds and exchange rates are excluded; this is not customer evidence.",
+  "alt": "A refund request does not yet reverse a captured amount. Inventory reserved: 0 currency units net captured; Payment captured: 120 currency units net captured; Refund pending: 120 currency units net captured; Refund confirmed: 0 currency units net captured. Illustrative values.",
+  "dataOrigin": "synthetic",
+  "steps": [],
+  "studyPaths": [
+    "reliability"
+  ]
+}
