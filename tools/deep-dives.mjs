@@ -144,7 +144,7 @@ export async function publishDeepDives(out, catalog, existing) {
         body: `<article class="article"><div class="reading-layout"><header class="article-head">
           <nav class="crumbs" aria-label="Breadcrumb"><a href="${base}">Deep dives</a><span aria-hidden="true">/</span><a href="${track.path}">${esc(track.title)}</a></nav>
           <p class="eyebrow">Level ${lesson.level} · ${levelNames[index]}</p><h1 class="h1">${esc(lesson.title)}</h1><p class="lede field-intro">${esc(lesson.description)}</p>
-          </header><div class="article-hero"><img src="/${asset}?v=${plot.version}" width="${plot.width}" height="${plot.height}" alt="${esc(alt)}" fetchpriority="high" decoding="async"></div>
+          </header><div class="article-hero depth-chart"><img src="/${asset}?v=${plot.version}" width="${plot.width}" height="${plot.height}" alt="${esc(alt)}" fetchpriority="high" decoding="async"></div>
           <div class="reader-aside">${tableOfContents(headings)}</div>
           <div class="article-copy"><p class="case-notice">The chart uses illustrative inputs. It is a worked example.</p>
           <details class="depth-chart-data"><summary>Chart values and units</summary><ul>${lesson.points.map(point => `<li>${esc(point.label)} · ${number(point.number)} ${esc(lesson.unit)}</li>`).join("")}</ul>
