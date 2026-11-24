@@ -1,4 +1,5 @@
 import { test } from 'node:test';
+import { Resvg } from '@resvg/resvg-js';
 import assert from 'node:assert/strict';
 import { conceptSvg, conceptCsv, conceptDetails, validateConcept } from './concept-figures.mjs';
 import { renderEditorialPng } from './raster-art.mjs';
@@ -51,4 +52,13 @@ test('authored labels are escaped as text in SVG and HTML', () => {
   const amended = { ...figure, title: 'A < B & C', points: [{ label: '<script>alert(1)</script>', value: 1 }, figure.points[1]] };
   assert.doesNotMatch(conceptSvg(amended), /<script>/);
   assert.match(conceptDetails(amended), /&lt;script&gt;/);
+});
+
+
+test('social chart backgrounds fill the viewport without transparent letterboxing', () => {
+  const bitmap = new Resvg(conceptSvg(figure, 1200, 630), { font: { loadSystemFonts: false } }).render();
+  for (const [x, y] of [[0, 0], [1199, 0], [0, 629], [1199, 629]]) {
+    const offset = (y * 1200 + x) * 4;
+    assert.deepEqual([...bitmap.pixels.subarray(offset, offset + 4)], [243, 246, 250, 255]);
+  }
 });

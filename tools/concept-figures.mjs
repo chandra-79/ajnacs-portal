@@ -98,7 +98,7 @@ export function conceptSvg(figure, width = 1280, height = 720) {
       drawing += textBlock(step.detail, x + 20, detailY, { size: 21, limit: Math.floor((boxWidth - 40) / 11) });
     });
   }
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 1280 720" data-article-art="${figure.slug}" role="img" aria-label="${esc(figure.alt)}"><rect width="1280" height="720" fill="#f3f6fa"/><g font-family="Inter, sans-serif">${title}${textBlock(intro, 62, 159, { size: 23, fill: '#64748b', limit: 85 })}${drawing}${textBlock('AJNA  /  Method, assumptions and values accompany the article.', 62, 682, { size: 19, fill: '#64748b', limit: 110 })}</g></svg>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 1280 720" data-article-art="${figure.slug}" role="img" aria-label="${esc(figure.alt)}"><rect x="-1280" y="-720" width="3840" height="2160" fill="#f3f6fa"/><g font-family="Inter, sans-serif">${title}${textBlock(intro, 62, 159, { size: 23, fill: '#64748b', limit: 85 })}${drawing}${textBlock('AJNA  /  Method, assumptions and values accompany the article.', 62, 682, { size: 19, fill: '#64748b', limit: 110 })}</g></svg>`;
 }
 
 export function conceptDetails(figure) {
