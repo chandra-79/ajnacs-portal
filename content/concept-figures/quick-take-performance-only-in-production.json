@@ -1,0 +1,23 @@
+{
+  "slug": "quick-take-performance-only-in-production",
+  "kind": "bar",
+  "title": "Rows per tenant in a synthetic dataset",
+  "unit": "orders",
+  "points": [
+    {
+      "label": "Small tenant",
+      "value": 100
+    },
+    {
+      "label": "Large tenant",
+      "value": 100000
+    }
+  ],
+  "method": "Generate 100 small tenants × 100 rows and 1 large tenant × 100,000 rows: 110,000 total. The large tenant holds 100,000/110,000 ≈ 90.9%. Row counts illustrate skew and do not predict query latency.",
+  "alt": "Rows per tenant in a synthetic dataset. Small tenant: 100 orders; Large tenant: 100000 orders. Illustrative inputs.",
+  "dataOrigin": "synthetic",
+  "steps": [],
+  "studyPaths": [
+    "performance"
+  ]
+}

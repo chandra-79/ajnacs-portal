@@ -12,9 +12,9 @@ The versioning strategy you choose on day one shapes your ability to evolve the 
 
 ## The three common approaches
 
-**URL versioning** (`/v1/users`, `/v2/users`) is the most visible and the most pragmatic. It is explicit — the version is right there in the URL. It is cache-friendly. It is easy for clients to understand. The cost is that it forces a URL change on every breaking change, and managing multiple active versions means running multiple codebases or routing layers.
+**URL versioning** (`/v1/users`, `/v2/users`) is the most visible and the most pragmatic. It is explicit — the version is right there in the URL. It is cache-friendly. It is easy for clients to understand. The cost is that it forces a URL change on every breaking change, and managing multiple active versions means maintaining compatibility logic and routing, which can live in one codebase.
 
-**Header versioning** (`Accept: application/vnd.myapi.v2+json`) keeps URLs clean. It is technically more RESTful. The practical cost is that it is invisible in browser address bars, harder to test with curl, harder for less technical API consumers to understand, and requires more careful content negotiation logic.
+**Header versioning** (`Accept: application/vnd.myapi.v2+json`) keeps URLs clean. It separates the resource URL from representation negotiation. The practical cost is that it is invisible in browser address bars, harder to test with curl, harder for less technical API consumers to understand, and requires more careful content negotiation logic.
 
 **Date-based versioning** (`/2024-01-01/users`, or `API-Version: 2024-01-01` header) — used by Stripe, Cloudflare, and others — versions by date rather than integer. This is elegant for long-lived APIs because the client is pinned to a specific contract date, and you know exactly which clients are on which version of the behavior. It requires discipline in your changelog and careful sunset communication.
 
@@ -26,6 +26,33 @@ The versioning strategy you choose on day one shapes your ability to evolve the 
 
 **Not defining what constitutes a breaking change.** Adding a required field is breaking. Renaming a field is breaking. Changing an enum is breaking. Changing error code semantics is breaking. If your team has not defined this in writing, you will discover disagreements about it in a release post-mortem.
 
-**Not committing to a sunset timeline.** If you say v1 will be supported for 12 months, support it for 12 months and then remove it. If you never remove old versions, you support them forever, and the complexity of maintaining four active API versions eventually becomes more expensive than the breaking change would have been.
+**Not committing to a sunset timeline.** If you promise a support window, communicate and execute a retirement plan that accounts for the agreed contract and verified consumer migration. Retaining old versions indefinitely creates an ongoing support obligation. Compare that measured cost with migration effort, contractual duties and disruption risk; retirement is not automatically the cheaper or safer choice for every API.
 
 The best API versioning strategy is the one your team will actually follow consistently. Pick one. Document what a breaking change is. Commit to a support window. Then ship.
+
+## Define compatibility by observable behaviour
+
+An API version identifies a contract, but its location does not determine whether the contract is safe to evolve. A version in a path, header, or media type still needs explicit defaults, negotiation behaviour, and a support policy. Header-based versioning is not automatically more RESTful, and path-based versioning does not require a separate application codebase for every version.
+
+Write a compatibility matrix using real consumer behaviours. A response field added to an object may be harmless for a tolerant parser and break a generated client that rejects unknown fields. Adding an enum value can break an exhaustive switch even if the transport schema accepts it. Changing sort order can break pagination without altering the response shape at all. The relevant question is what supported consumers are promised and tested to handle.
+
+For a fictional migration, twelve registered integrations use version one. Eight have passed compatibility tests for version two, three are still migrating, and one lacks an owner. Verified readiness is 8/12, or about 66.7%. The chart deliberately keeps unresolved consumers visible. The number is not a reason to switch off the other four; it is evidence for planning the remaining work.
+
+## Exercise mixed versions before retirement
+
+Create a test matrix with the old client against the new server, the new client against the old server where that combination is supported, and stored messages produced by each version. Include a request without a version selector. The server should apply a documented stable default or reject ambiguity deliberately; it should not silently change its default contract whenever a new release arrives.
+
+If caches can hold negotiated representations, verify that their keys distinguish the version selector. A header that changes the representation may require appropriate `Vary` behaviour and configuration in intermediary caches. Test the deployed path through the gateway and CDN, not just a direct request to the application server.
+
+Version the event and webhook contract as well as the request API. An integration can successfully call a new endpoint and still fail when processing an older event or a retried delivery. Record which event shape applies and how consumers can identify it.
+
+## Turn sunset policy into an operational plan
+
+A published support window is a commitment that needs ownership, communication, telemetry, and exception handling. Before removal, verify consumer migration evidence across the relevant business cycle. A monthly batch integration can be quiet for weeks. Contact unresolved owners through the agreed channel and document the retirement decision.
+
+Do not remove a version mechanically because a date arrives while the migration state is unknown. Decide explicitly whether to extend support, constrain access, or complete the announced retirement, consistent with the applicable agreement. Predictability comes from keeping the contract and its communication honest, not from a particular version-number format.
+
+## Further reading and source boundaries
+
+- [Stripe API versioning](https://docs.stripe.com/api/versioning)
+- [RFC 9110: HTTP Semantics](https://www.rfc-editor.org/rfc/rfc9110.html)

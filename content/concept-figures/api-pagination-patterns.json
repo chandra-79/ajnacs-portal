@@ -1,0 +1,24 @@
+{
+  "slug": "api-pagination-patterns",
+  "kind": "bar",
+  "title": "Illustrative offset traversal work",
+  "unit": "result positions",
+  "points": [
+    {
+      "label": "First page",
+      "value": 50
+    },
+    {
+      "label": "After offset 9000",
+      "value": 9050
+    }
+  ],
+  "method": "Synthetic page size 50. Offset zero produces 50 positions; offset 9,000 produces/skips 9,000 then returns 50 = 9,050. Counts are conceptual query work, not physical reads or latency; plan and filtering costs are excluded.",
+  "alt": "Illustrative offset traversal work. First page: 50 result positions; After offset 9000: 9050 result positions. Illustrative inputs.",
+  "dataOrigin": "synthetic",
+  "steps": [],
+  "studyPaths": [
+    "performance",
+    "platform"
+  ]
+}

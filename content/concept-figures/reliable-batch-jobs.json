@@ -1,0 +1,24 @@
+{
+  "slug": "reliable-batch-jobs",
+  "kind": "bar",
+  "title": "Records examined after a fictional batch failure",
+  "unit": "records after restart",
+  "points": [
+    {
+      "label": "Restart from beginning",
+      "value": 1000
+    },
+    {
+      "label": "Resume six committed chunks",
+      "value": 400
+    }
+  ],
+  "method": "Synthetic 1,000-record job with ten 100-record chunks. Failure follows six atomically committed chunks. Full replay examines 1,000; valid checkpoint resumes 1,000 − 600 = 400. Assumes stable input and no partial seventh chunk; not a runtime benchmark.",
+  "alt": "Records examined after a fictional batch failure. Restart from beginning: 1000 records after restart; Resume six committed chunks: 400 records after restart. Illustrative inputs.",
+  "dataOrigin": "synthetic",
+  "steps": [],
+  "studyPaths": [
+    "reliability",
+    "platform"
+  ]
+}

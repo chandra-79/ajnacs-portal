@@ -1,0 +1,28 @@
+{
+  "slug": "graphql-enterprise-adoption",
+  "kind": "bar",
+  "title": "Database calls for 40 orders and 10 customers",
+  "unit": "database calls",
+  "points": [
+    {
+      "label": "Naive field resolution",
+      "value": 41
+    },
+    {
+      "label": "Request cache only",
+      "value": 11
+    },
+    {
+      "label": "Compatible batch lookup",
+      "value": 2
+    }
+  ],
+  "method": "Synthetic query: 40 orders reference 10 distinct customers. Naive 1 + 40 = 41; cache 1 + 10 = 11; batch 1 + 1 = 2. Assumes one authorization context and compatible batching. Call counts do not imply proportional latency gains.",
+  "alt": "Database calls for 40 orders and 10 customers. Naive field resolution: 41 database calls; Request cache only: 11 database calls; Compatible batch lookup: 2 database calls. Illustrative inputs.",
+  "dataOrigin": "synthetic",
+  "steps": [],
+  "studyPaths": [
+    "performance",
+    "platform"
+  ]
+}

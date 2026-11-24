@@ -1,0 +1,24 @@
+{
+  "slug": "http-caching-conditional-requests",
+  "kind": "bar",
+  "title": "Body bytes for repeated unchanged content",
+  "unit": "KiB",
+  "points": [
+    {
+      "label": "100 full responses",
+      "value": 20000
+    },
+    {
+      "label": "One body plus validation",
+      "value": 200
+    }
+  ],
+  "method": "Synthetic 200 KiB body requested 100 times. Full bodies: 100 × 200 = 20,000 KiB. First body plus 99 unchanged 304 responses: 200 KiB body bytes. Headers, transport overhead and origin work excluded.",
+  "alt": "Body bytes for repeated unchanged content. 100 full responses: 20000 KiB; One body plus validation: 200 KiB. Illustrative inputs.",
+  "dataOrigin": "synthetic",
+  "steps": [],
+  "studyPaths": [
+    "performance",
+    "networks"
+  ]
+}
