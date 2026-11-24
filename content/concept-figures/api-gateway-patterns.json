@@ -1,0 +1,35 @@
+{
+  "slug": "api-gateway-patterns",
+  "kind": "bar",
+  "title": "Fit retries inside one request deadline",
+  "unit": "ms",
+  "points": [
+    {
+      "label": "Gateway reserve",
+      "value": 100
+    },
+    {
+      "label": "Attempt one",
+      "value": 350
+    },
+    {
+      "label": "Backoff",
+      "value": 50
+    },
+    {
+      "label": "Attempt two",
+      "value": 350
+    },
+    {
+      "label": "Remaining margin",
+      "value": 150
+    }
+  ],
+  "method": "Synthetic 1,000 ms budget: 100+350+50+350+150=1,000. Backend allowance=900; attempt sequence=750. Queueing and connection setup must be assigned to explicit components.",
+  "alt": "Fit retries inside one request deadline: Gateway reserve 100 ms, Attempt one 350 ms, Backoff 50 ms, Attempt two 350 ms, Remaining margin 150 ms. Illustrative inputs.",
+  "dataOrigin": "synthetic",
+  "steps": [],
+  "studyPaths": [
+    "networks"
+  ]
+}

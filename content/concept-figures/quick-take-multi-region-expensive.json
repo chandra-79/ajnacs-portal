@@ -1,0 +1,31 @@
+{
+  "slug": "quick-take-multi-region-expensive",
+  "kind": "bar",
+  "title": "A failover time budget has several owners",
+  "unit": "minutes",
+  "points": [
+    {
+      "label": "Detection",
+      "value": 3
+    },
+    {
+      "label": "Decision",
+      "value": 4
+    },
+    {
+      "label": "Redirect",
+      "value": 2
+    },
+    {
+      "label": "Validation",
+      "value": 6
+    }
+  ],
+  "method": "Synthetic sequential recovery path: 3+4+2+6=15 minutes. Parallel tasks require critical-path analysis instead of this sum; customer-visible recovery must be verified.",
+  "alt": "A failover time budget has several owners: Detection 3 minutes, Decision 4 minutes, Redirect 2 minutes, Validation 6 minutes. Illustrative inputs.",
+  "dataOrigin": "synthetic",
+  "steps": [],
+  "studyPaths": [
+    "migration"
+  ]
+}

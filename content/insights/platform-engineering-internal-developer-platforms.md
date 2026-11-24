@@ -8,7 +8,7 @@ format: article
 
 Platform engineering is having a moment. The term is everywhere, and like most things that go through a hype cycle, what it means varies wildly depending on who you ask.
 
-Here's what I've observed works, what doesn't, and what the conversation is really about underneath.
+The useful evaluation is how the platform changes developer work, operating responsibilities and the evidence of safe delivery.
 
 ## What platform engineering actually is
 
@@ -34,7 +34,7 @@ The platforms that work share a few consistent characteristics:
 
 **Building a platform team that becomes a bottleneck.** The whole point is self-service. If your platform team is still the one who runs Terraform for every new environment, or who has to approve every CI/CD change, you've just created a different queue. The test: can a new engineer provision a complete service environment without talking to the platform team?
 
-**Building the platform before understanding the users.** I've seen platform teams spend six months building an opinionated Kubernetes deployment system and then discover that most of the developers wanted better local development environments and didn't care about Kubernetes at all. Talk to your developer users. Prioritise based on where they're actually losing time.
+**Building the platform before understanding the users.** A hypothetical platform team could build a deployment system before discovering that developers most need better local environments. Validate that assumption with users before committing the roadmap. Talk to your developer users. Prioritise based on where they're actually losing time.
 
 **Over-engineering the abstraction.** There's a temptation to build a perfect, unified abstraction across every cloud provider, every runtime, every deployment pattern. The result is usually a lowest-common-denominator system that's good at nothing. Start narrower. Build excellent abstractions for the most common 80% of cases and let the 20% edge cases use lower-level tools directly.
 
@@ -60,3 +60,57 @@ Pick the biggest pain point and fix it properly. Not with a ticket, not with a C
 The teams that build successful internal platforms are almost always the ones that started small and credible, not the ones that started with a grand unified vision.
 
 *Building an internal developer platform or evaluating where to start? [Happy to think through the approach.](/about)*
+
+## Define the platform's product boundary
+
+An internal platform should make a useful class of work easier while preserving required controls. Start with the developer journey and the operational result, not a portal feature list. A team may need a reliable local test environment, a repeatable database restore or a supported deployment path before it needs a new service catalogue interface.
+
+Choose one workload class and define what the platform promises. For a small HTTP service, that might include a reproducible build, appropriate runtime identity, health signals, a deployment route and a documented rollback. State what remains the application team's responsibility, including business authorization, data correctness and workload-specific performance. Secure defaults reduce repeated work but do not automatically establish compliance for every application.
+
+Keep the abstraction's escape route deliberate. Some workloads need lower-level configuration, and exposing it through a reviewed extension can be safer than forcing teams to fork the platform. The supported common path should be clear, while deviations retain ownership, observability and a route for upgrades. Do not hide every implementation detail if developers need that detail to debug or choose resources responsibly.
+
+## Work through a support-effort model
+
+Consider a hypothetical cohort of twenty service teams. Before a new path, each team needs three platform-support hours to create an environment, totaling sixty hours. In the pilot, twelve teams complete without assistance, six need one hour each and two need three hours each. Support effort is 6 × 1 + 2 × 3 = 12 hours, a reduction of 48 hours for that cohort. The self-service rate is 12/20 = 60%.
+
+These are synthetic inputs explaining measurement, not delivery claims. The twelve-hour support figure excludes building and maintaining the platform, and zero assistance does not prove that a deployment meets its operating requirements. Count qualified completion separately. Track teams that abandon the path, because removing them from the denominator can make a difficult platform look successful.
+
+The chart partitions the twenty teams by support needed. Keep elapsed onboarding time, hands-on user work and platform-support time as separate measures. A path that reduces tickets may still shift excessive effort to developers or make failures harder to diagnose.
+
+## Observe the journey and preserve incomplete attempts
+
+Build a worksheet with the starting condition, user experience, workload type, access prerequisites, milestones, completion evidence and support interactions. Ask a participant to use the published instructions without continuous coaching. Record confusing terms, missing permissions and the moment they know the service is ready. Intervene where necessary for safety, marking the assistance explicitly.
+
+A qualifying finish should include the properties needed to operate the service, not merely a successful container start. Test a rollback, verify logs and metrics, confirm ownership and check the intended access boundary. For a database-backed path, include data migration and restore behavior appropriate to the workload.
+
+Run a second cohort after one targeted improvement. Compare like-for-like tasks where possible and report sample size and differences in participant experience. A faster median among successful attempts can coexist with more abandonments. Use the full funnel and qualitative observations to interpret the timing.
+
+## Make platform changes safe for consumers
+
+A template is a dependency that generates future services. Version it, record which services use which version and provide an upgrade mechanism. Otherwise every generated repository becomes a separate maintenance problem. Test a template update against representative consumers before encouraging broad adoption.
+
+Rehearse a broken template or unavailable control plane in an isolated environment. Determine whether existing applications continue running, whether deployments can be paused safely and how the team communicates the incident. Separate the platform's build-time and runtime dependencies so its outage scope is understood.
+
+Keep documentation close to the tested path. A working example with a known version and cleanup steps can be more useful than a broad conceptual page that omits prerequisites. Provide troubleshooting that maps symptoms to evidence and names the boundary where platform support becomes responsible.
+
+## Evaluate sustained usefulness
+
+Voluntary adoption is useful feedback, but mandated controls can be legitimate. In either case, track developer effort, completion, support load, reliability of the path and unresolved exceptions. Adoption alone can rise because of policy, while satisfaction alone can rise because a platform omits necessary controls. Interpret measures together.
+
+Review the roadmap with representative users and operations stakeholders. Prioritize repeated friction with meaningful impact, and compare building a feature with improving documentation, integrating an existing tool or removing an unnecessary approval. A platform earns trust through a dependable supported journey and a responsive operating team, not through the breadth of its interface.
+
+Keep the pilot’s support evidence with the roadmap decision.
+
+| Observation | Value (teams) |
+| --- | ---: |
+| No assistance | 12 |
+| One hour | 6 |
+| Three hours | 2 |
+
+**Figure method.** Synthetic twenty-team cohort: support=6×1+2×3=12 hours versus prior 20×3=60; difference=48 hours. Self-service=12/20=60%. Build/maintenance cost and qualification checks remain separate.
+
+## Further reading
+
+- [The Twelve-Factor App](https://12factor.net/)
+- [Kubernetes production considerations](https://kubernetes.io/docs/setup/production-environment/)
+- [Google SRE incident response](https://sre.google/workbook/incident-response/)

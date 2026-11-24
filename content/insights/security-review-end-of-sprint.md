@@ -1,19 +1,41 @@
 ---
-title: "Security review at the end of the sprint is too late to be useful"
-description: "When a security review happens at the end of a sprint, the findings that require architectural changes are almost guaranteed to get deferred."
+title: "Security Review: Ask Design Questions Before the Release Gate"
+description: "Move threat and trust-boundary decisions earlier while retaining implementation tests and final validation."
 date: 2029-07-02
 tags: ["DevSecOps", "Security"]
 format: note
 derived: true
 ---
 
-When a security review happens at the end of a sprint, the findings that require architectural changes are almost guaranteed to get deferred. The code is written. The tests pass. The team is ready to ship. A finding that says "the authentication design needs to change" means rework measured in days — and rework at ship time is rework that gets pushed to the next sprint, which means it doesn't happen before the next sprint's pressure arrives.
+A late security review can still find an important defect and prevent a harmful release. Its limitation is that a design correction may now require substantial rework. Ask trust-boundary questions while the design is changeable, then retain implementation and runtime checks for properties that cannot be established from a diagram.
 
-This isn't a security culture problem. It's a sequencing problem. Security review is happening after decisions that are expensive to reverse.
+## Follow a password-reset feature through its decisions
 
-The practices that actually change the outcome:
-- **Threat modelling during design**, before implementation starts. When you're still whiteboarding the architecture, changing the authentication design is a discussion. When you're reviewing completed code, it's a rewrite.
-- **Security requirements in acceptance criteria**. If the story card includes the security requirements alongside the functional requirements, they get addressed during development, not after.
-- **Automated checks in CI**. SAST, dependency vulnerability scanning, and secrets detection catch whole classes of issues before any human review happens. These are not substitutes for thoughtful security review, but they remove the routine findings that consume review bandwidth.
+Before implementation, identify the legitimate actor, the recovery channel, the reset-token lifecycle and the response shown for an unknown account. Decide how the feature avoids exposing account existence, prevents arbitrary redirection and handles repeated use of a reset token. These are application requirements, not merely scanner configuration.
 
-Shift-left means security engineers reading design documents and reviewing pull requests early — not performing archaeology on completed features.
+Use a hypothetical acceptance set with twelve cases. Nine pass, two fail because an expired token is accepted and a previously used token can be replayed, and one remains unclear because the team has not defined its policy for existing sessions after a password reset. The pass fraction is 75%, but the two failures and the undefined policy block acceptance under this example. They are not made harmless by nine successful happy paths.
+
+## Build a testable security worksheet
+
+For each case, record the expected actor, token state, action, expected result and evidence. Use disposable accounts and synthetic recovery messages. Test an unused valid token, an expired token, a second use of the same token and a request attempting to change the target account. Keep tokens out of logs and screenshots shared outside the test boundary.
+
+For the unresolved session policy, involve the appropriate product and security owners. Determine whether the user can revoke other sessions and what additional action is required after suspected compromise. Then implement and test the agreed behavior. A test cannot establish correctness when the intended rule is undefined.
+
+## Connect review stages instead of replacing them
+
+Design review identifies the required properties. Code review checks how those properties are implemented. Automated tests preserve regression evidence, and a controlled end-to-end test confirms that the deployed recovery flow uses the intended settings and dependencies. Static analysis can detect selected unsafe patterns but cannot infer every business requirement.
+
+Record a finding with its violated requirement, affected path, remediation owner and retest result. If a serious issue is found at the release gate, address the immediate risk and improve the earlier review question. Do not treat earlier involvement as a reason to remove final validation. The useful outcome is a chain of evidence from the security requirement to the running behavior, with clear responsibility when that chain has a gap.
+
+| Observation | Value (cases) |
+| --- | ---: |
+| Passed | 9 |
+| Failed token checks | 2 |
+| Policy unresolved | 1 |
+
+**Figure method.** Synthetic twelve-case reset-flow suite: 9/12=75% pass, two failed token cases and one undefined session-policy case. Counts do not establish overall application security.
+
+## Primary references
+
+- [OWASP password recovery](https://cheatsheetseries.owasp.org/cheatsheets/Forgot_Password_Cheat_Sheet.html)
+- [NIST SSDF](https://csrc.nist.gov/pubs/sp/800/218/final)

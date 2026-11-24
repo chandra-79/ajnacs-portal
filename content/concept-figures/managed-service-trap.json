@@ -1,0 +1,28 @@
+{
+  "slug": "managed-service-trap",
+  "kind": "bar",
+  "title": "Check pool demand against the connection allocation",
+  "unit": "connections",
+  "points": [
+    {
+      "label": "Database limit",
+      "value": 180
+    },
+    {
+      "label": "Application allocation",
+      "value": 160
+    },
+    {
+      "label": "Original pool demand",
+      "value": 200
+    }
+  ],
+  "method": "Synthetic limit 180\u221220 reserved=160 application connections. Eight replicas\u00d725=200 demand, exceeding allocation by 40. At pool 20, eight replicas use 160; twelve permit 240. Not a tuning recommendation.",
+  "alt": "Check pool demand against the connection allocation: Database limit 180 connections, Application allocation 160 connections, Original pool demand 200 connections. Synthetic example.",
+  "dataOrigin": "synthetic",
+  "steps": [],
+  "studyPaths": [
+    "reliability",
+    "performance"
+  ]
+}

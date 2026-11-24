@@ -29,3 +29,33 @@ This is not shifting security left. It is removing security review while hoping 
 The team that shifts security left by adding linting and then stops getting security reviews is getting less security, not more. The tools catch some classes of problems. They do not catch logical access control errors, authentication design flaws, or business logic vulnerabilities that require understanding the application's behavior.
 
 Shift left. Keep the security function. Change how it engages. In that order.
+
+## Give developers a usable security decision, not only a finding
+
+Earlier feedback helps when it includes the affected requirement and an actionable correction. A scanner that emits hundreds of undifferentiated findings can move noise earlier without moving risk reduction earlier. Assign a policy owner who can distinguish an exploitable path, a false positive, an accepted exception and an unsupported component requiring investigation.
+
+In a hypothetical dependency review, a pipeline produces 60 findings. Triage marks 20 as duplicate reports of the same issues, 15 as not applicable to the deployed configuration, 18 as actionable fixes and seven as requiring further analysis. The remaining engineering queue is 25 distinct unresolved items under this classification, not automatically all 60 findings. “Not applicable” needs recorded evidence and reassessment when configuration changes; it is not a permanent dismissal of a vulnerability.
+
+For the exercise, select a small service with a documented dependency lockfile. Introduce a known test finding in a disposable branch and trace it from detection to an issue, an owner, a fix and a verified build. Do not publish or deploy the deliberately weakened artifact. Measure elapsed response separately from hands-on correction time and record whether the fix changes behavior or performance.
+
+## Pair a guardrail with a supported path
+
+Create a worksheet mapping each security requirement to a reusable implementation: tenant authorization middleware, secret retrieval, safe query construction or restricted workload identity. Include the property the pattern establishes and the cases it does not cover. A template can make the intended route easier, but application-specific business logic still needs review.
+
+Rehearse an exception request with a clear expiry and compensating control. If the scanner cannot understand a valid design, the team should be able to explain and approve that exception without disabling the entire gate. If an exception recurs, improve the underlying pattern or policy rather than asking every service team to repeat the same argument.
+
+Retain runtime checks and specialist attention for high-impact changes. Early static analysis cannot prove a live identity provider, tenant mapping or third-party dependency behaves as expected. The operating goal is a chain of evidence from requirement through implementation and deployment, with ownership at every handoff. Judge the program by corrected, verified risks and usable engineering guidance, not by the number of tools added to CI.
+
+| Observation | Value (findings) |
+| --- | ---: |
+| Duplicates | 20 |
+| Not applicable | 15 |
+| Actionable | 18 |
+| Needs analysis | 7 |
+
+**Figure method.** Synthetic 60-finding batch: 20+15+18+7=60; unresolved queue=18+7=25. Applicability decisions require evidence and may change with configuration.
+
+## Further reading
+
+- [NIST Secure Software Development Framework](https://csrc.nist.gov/pubs/sp/800/218/final)
+- [OWASP authorization guidance](https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html)

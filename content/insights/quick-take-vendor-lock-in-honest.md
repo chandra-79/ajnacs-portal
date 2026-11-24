@@ -33,3 +33,32 @@ Build abstraction layers when the switching trigger probability is high (uncerta
 Most lock-in anxiety is calibrated against a hypothetical future switch. The actual future switch happens less often than the anxiety suggests, and the migration effort is often less than feared.
 
 Make the decision based on the numbers. Not the anxiety.
+
+## Make the migration estimate include semantic differences
+
+A portable API surface can hide incompatible behavior. Two queues may both offer send and receive operations while differing in ordering, redelivery, acknowledgment deadlines and transaction boundaries. An abstraction that preserves method names but loses those semantics has not established safe portability. Define the properties that application code relies on before estimating an exit.
+
+For a hypothetical messaging service, estimate migration effort as 12 engineer-days for client integration, 18 for data and replay tooling, 20 for behavioral tests and ten for cutover rehearsal. The total is 60 days. A proposed compatibility wrapper costs 15 days to build and six days each year to maintain. Across three years its direct effort is 33 days, before any remaining migration work. The comparison is not 33 versus zero: test which portions of the 60-day exit the wrapper actually removes.
+
+If the wrapper saves only the 12 integration days, its direct three-year effort exceeds that saving by 21 days. It may still provide a benefit such as simpler local tests or a mandated interface, but that benefit should be named separately. These illustrative effort inputs are not estimates of a specific provider's migration difficulty.
+
+## Run a semantic portability drill
+
+Create a small synthetic event stream containing duplicate messages, an out-of-order pair and a delayed acknowledgment. Run it through the current service and one candidate target. Compare final business state rather than merely checking that both APIs return success. Record differences in retries, ordering and dead-letter handling and decide whether the application can tolerate them.
+
+The worksheet should list provider-specific capabilities, alternatives, data export format, required downtime, exit authority and obligations such as residency or deletion. Include dependencies on identity, monitoring and support procedures because replacing the data service does not replace the operating model automatically.
+
+Review the decision when a material trigger changes, such as a new contractual requirement or an unsupported feature. Do not assign an apparently precise probability to a forced switch without a defensible basis. Scenario analysis can be more honest: one no-exit case, one planned exit and one urgent exit with a deadline. Use the comparison to select the portability investment that removes a demonstrated constraint rather than buying an unspecified sense of optionality.
+
+| Observation | Value (engineer-days) |
+| --- | ---: |
+| Full exit estimate | 60 |
+| Three-year wrapper | 33 |
+| Integration saved | 12 |
+
+**Figure method.** Synthetic exit effort=12+18+20+10=60; wrapper=15+3×6=33. If only 12 integration days are avoided, direct excess is 21 days; other benefits and residual exit work need separate treatment.
+
+## Further reading
+
+- [NIST cloud definition](https://www.nist.gov/publications/nist-definition-cloud-computing)
+- [AWS architectural trade-offs](https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html)

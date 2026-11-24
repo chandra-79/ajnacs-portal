@@ -1,0 +1,31 @@
+{
+  "slug": "twelve-factor-app-modernized",
+  "kind": "bar",
+  "title": "A bounded worker shutdown budget",
+  "unit": "seconds",
+  "points": [
+    {
+      "label": "Stop admission",
+      "value": 5
+    },
+    {
+      "label": "Finish in-flight work",
+      "value": 18
+    },
+    {
+      "label": "Flush required state",
+      "value": 4
+    },
+    {
+      "label": "Remaining margin",
+      "value": 3
+    }
+  ],
+  "method": "Synthetic sequential shutdown under a thirty-second grace period. Five plus eighteen plus four equals twenty-seven seconds; three remain. This assumes one bounded in-flight completion path and excludes unbounded external waits.",
+  "alt": "A bounded worker shutdown budget: Stop admission 5 seconds, Finish in-flight work 18 seconds, Flush required state 4 seconds, Remaining margin 3 seconds. Illustrative inputs.",
+  "dataOrigin": "synthetic",
+  "steps": [],
+  "studyPaths": [
+    "platform"
+  ]
+}

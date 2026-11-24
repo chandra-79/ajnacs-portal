@@ -39,3 +39,68 @@ The quiet architectural shift of the GitOps era: in Argo CD and Flux estates, **
 Community charts are enormous accelerators and unreviewed root access, simultaneously. The estate rules: **pin exact versions** (never track latest); **mirror into your own registry** (availability plus a scan/review checkpoint); **render and read** what a chart actually creates before first install — cluster roles, webhooks, and privileged DaemonSets hide in respectable charts; and **wrap, don't fork** — carry your policy (values overrides, added NetworkPolicies) in a thin internal wrapper chart or post-render step (kustomize-as-post-renderer covers the awkward gaps), so upstream upgrades stay cheap. The fork you made to change two labels in 2023 is the unpatched CVE you'll own in 2026.
 
 The summary that fits on a sticky note: treat charts as versioned software with schemas and CI; treat values as a designed API with an explicit merge order; treat rendered-diff review as the merge gate; let the GitOps layer own ordering and rollback; and treat third-party charts like third-party code, because that's what they are. Helm's ergonomics will keep being argued about; estates that run it with this discipline stop noticing — the packaging layer goes quiet, which is all anyone ever wanted from it.
+
+## Make the operating contract explicit
+
+A Helm chart is a versioned interface between application teams and Kubernetes resources. Its values are inputs to that interface, while rendered manifests are the output that the cluster actually accepts. Reviewing only the templates misses interactions between defaults, overrides and dependencies. Keep small representative values files for the supported configurations and inspect their rendered resources in review.
+
+Validation has several layers. A values schema can reject a malformed input but cannot prove that the resulting workload can start. Render-time checks can catch missing resources and unsupported manifest fields without verifying runtime permissions. An installation test exercises admission, scheduling and workload behavior. Distinguish these layers so a successful lint command is not treated as evidence of a successful upgrade.
+
+Upgrade safety depends on data and controller behavior as well as chart syntax. A rollback of Kubernetes manifests does not necessarily reverse a database migration, an external side effect or a custom-resource change. Jobs and hooks need explicit retry and cleanup rules. Keep release names, selectors and ownership stable where required, and test the path from the currently deployed chart version rather than only testing clean installation of the new version.
+
+## Design the chart contract around supported changes
+
+Begin with the changes an application team is expected to make: image version, replicas, resource requests, service ports and approved integration settings. Expose those as documented values with validation. Avoid a general-purpose override that lets a consumer replace every part of the Pod specification without understanding the platform assumptions. If an escape hatch is necessary, make its support boundary explicit and validate the resulting object against the required security and operational policy.
+
+Selectors deserve special attention. A label used only for display can change without the same consequences as a label used by a Service or controller selector. If a chart update changes the selector relationship, traffic may stop reaching the intended Pods or the controller may reject the update. Keep identification labels, ownership labels and mutable descriptive labels distinct. Include the rendered selectors and labels in the review diff, even when the template change looks minor.
+
+Custom resource definitions require a separate lifecycle plan. Installing a controller chart and introducing or updating a CRD affect different objects and can have different upgrade behavior. Existing custom resources may need conversion or migration. Do not assume uninstalling a release safely removes every piece of state associated with its controller. Read the specific chart and controller documentation, and rehearse the supported sequence with representative resources before production use.
+
+GitOps changes who performs reconciliation, not the need to understand it. If a controller continuously applies the desired chart state, a manual Helm action can be overwritten or conflict with that controller's ownership. Choose a supported emergency procedure that records the divergence and returns control cleanly. During an incident, inspect the desired values, rendered revision, controller status and live objects as separate views. The first successful sync does not prove that the application passed its health and data checks.
+
+Finally, retain the last known good artifact and values. A repository branch that keeps moving is not a reproducible rollback input. Pin dependency versions, preserve the lock information where the chart uses it, and test the actual upgrade path rather than assuming a clean installation exercises the same behavior.
+
+Test what happens when a value is omitted. Defaults are part of the contract and can change behavior even when every consumer's values file is unchanged. Include a minimal supported configuration and an explicit-default configuration in the fixture set. If the rendered results differ unexpectedly, explain whether the difference is intentional before releasing the chart. Also test a disabled optional feature: removing an integration can leave stale permissions, secrets or service references when cleanup is not part of the chart's supported behavior. A smaller rendered manifest does not prove that the live cluster has no remaining dependency on the removed feature.
+
+A chart release should include a concise compatibility statement naming the tested predecessor, Kubernetes API assumptions and any manual data migration. This gives consumers an actionable upgrade boundary rather than a vague assertion that the chart is production ready.
+
+## Work through an illustrative scenario
+
+A fictional chart supports six values profiles. Rendering all six creates 48 Kubernetes resources. A schema test rejects two deliberately malformed inputs. An upgrade rehearsal then discovers that one of the six valid profiles changes a StatefulSet field that cannot be updated in place. Five upgrade paths pass and one needs a documented migration. The chart compares clean installation with upgrade coverage to show why successful creation is not sufficient evidence for production rollout.
+
+| Observation | Value (passing profiles) |
+| --- | ---: |
+| Clean installation | 6 |
+| Upgrade rehearsal | 5 |
+| Target coverage | 6 |
+
+**Calculation and limits.** Synthetic six-profile compatibility matrix. Each profile must pass both installation and upgrade from the deployed version. Forty-eight rendered resources are context, not forty-eight independent acceptance tests.
+
+## Build the evidence worksheet
+
+**Supported profile.** Name the application configuration, Kubernetes compatibility range and enabled chart features.
+
+**Values contract.** Document each public value, its type, default and validation rule; treat changes as interface changes.
+
+**Rendered object.** Retain the resulting resource kind, name, namespace and ownership metadata for review.
+
+**Upgrade predecessor.** Identify the exact deployed chart and values from which the new release must upgrade.
+
+**Persistent state.** List claims, databases and external resources that a manifest rollback cannot restore automatically.
+
+**Controller ownership.** Choose whether GitOps or an operator manages the release and avoid competing reconciliation loops.
+
+## Rehearse the failure boundary
+
+1. **Supply an invalid value.** Verify the schema produces a useful failure before a cluster mutation.
+
+2. **Render each supported profile.** Check required resource references and policy constraints in the actual manifests.
+
+3. **Upgrade with stored data.** Confirm the data remains usable and identify changes that require a separate migration.
+
+4. **Interrupt a hook job.** Exercise its retry and cleanup behavior without assuming the chart rollback undoes external effects.
+
+## Sources for the mechanisms
+
+- [Helm chart best practices](https://helm.sh/docs/chart_best_practices/)
+- [Kubernetes production considerations](https://kubernetes.io/docs/setup/production-environment/)

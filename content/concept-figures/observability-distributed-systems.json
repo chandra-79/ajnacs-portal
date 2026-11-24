@@ -1,0 +1,27 @@
+{
+  "slug": "observability-distributed-systems",
+  "kind": "bar",
+  "title": "Queue time can dominate completion latency",
+  "unit": "ms",
+  "points": [
+    {
+      "label": "Queue waiting",
+      "value": 700
+    },
+    {
+      "label": "Worker execution",
+      "value": 200
+    },
+    {
+      "label": "Result publication",
+      "value": 100
+    }
+  ],
+  "method": "Synthetic nonoverlapping timeline: 700+200+100=1,000 ms. Worker execution alone is 20% of total; nested or overlapping spans must not be summed the same way.",
+  "alt": "Queue time can dominate completion latency: Queue waiting 700 ms, Worker execution 200 ms, Result publication 100 ms. Illustrative inputs.",
+  "dataOrigin": "synthetic",
+  "steps": [],
+  "studyPaths": [
+    "performance"
+  ]
+}

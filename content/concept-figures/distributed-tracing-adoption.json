@@ -1,0 +1,32 @@
+{
+  "slug": "distributed-tracing-adoption",
+  "kind": "bar",
+  "title": "Parallel spans are not additive latency",
+  "unit": "ms",
+  "points": [
+    {
+      "label": "Local work",
+      "value": 30
+    },
+    {
+      "label": "Branch A",
+      "value": 120
+    },
+    {
+      "label": "Branch B",
+      "value": 80
+    },
+    {
+      "label": "End-to-end",
+      "value": 150
+    }
+  ],
+  "method": "Synthetic sequence: 30 ms local work then simultaneous required branches of 120 and 80 ms; elapsed=30+max(120,80)=150. Sum 230 would double-count overlap. Excludes extra overhead and clock error.",
+  "alt": "Parallel spans are not additive latency: Local work 30 ms, Branch A 120 ms, Branch B 80 ms, End-to-end 150 ms. Synthetic example.",
+  "dataOrigin": "synthetic",
+  "steps": [],
+  "studyPaths": [
+    "performance",
+    "reliability"
+  ]
+}

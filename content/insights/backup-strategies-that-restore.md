@@ -12,7 +12,7 @@ Every organization answers "do you have backups?" with yes, and the question tha
 
 The classic rule — three copies, two media, one offsite — survives translation to cloud with its *intent* sharpened: the copies must fail **independently**, and the failure modes that matter have changed. The modern additions: **one copy logically air-gapped or immutable** (the ransomware update — object-lock/WORM retention on the backup tier, per the storage disciplines, so that the attacker holding your admin credentials — the scenario, not the edge case, in modern incident reports — can encrypt production and *cannot* purge the backups; immutability windows sized to detection lag, because ransomware dwells before it detonates), **one copy in a separate trust domain** (the cross-*account* replication rule from object-storage practice — a compromised production account must not reach the backup copy; separate credentials, separate administrators, deletion requiring separate compromise), and **zero copies whose restore path depends on the thing being restored** (the circular-dependency audit from DR practice: the backup catalog inside the database it backs up, the KMS key for backup encryption managed by the account that's on fire, the runbook wiki on the cluster being recovered — each a genuine incident pattern, each findable by tracing the restore path on paper before tracing it in anger).
 
-**Snapshots are not backups** deserves its own sentence: storage-level snapshots share the substrate, the account, and often the failure domain of their source — superb as the fast-restore tier, disqualifying as the *only* tier.
+**Snapshot isolation determines backup usefulness** deserves its own sentence: a snapshot can form part of a backup strategy. Evaluate its consistency, retention, account isolation and dependencies against the failure being protected against; a copy that shares the threatened failure domain is insufficient for that scenario.
 
 ## Point-in-time and the corruption problem
 
@@ -27,3 +27,67 @@ RTO promises are made in meetings; restores happen at physics speed, and the ari
 ## The program: scope, ownership, rehearsal
 
 The remaining failures are inventory failures: the backup program covering the databases while the object storage, the message-queue state, the CI system, the IaC state files, the secrets manager, and the SaaS tier (the export-your-data question for every vendor, per the exit-cost diligence) went unbacked — the fix is the backup *scope review* against the same criticality inventory the capacity and DR programs use, with per-system RPO/RTO written down and a named owner per backup pipeline. And the proof, as everywhere in this series, is rehearsal: quarterly restore drills rotating through scenarios (single database to point-in-time, full-account compromise from the isolated copy, the regional case per multi-region practice), timed against the written RTO, with findings feeding fixes — because the drill that embarrasses you in an afternoon is the incident that would have ended you in a week. The maturity test compresses to one sentence: *the organization knows, from measurement within the last quarter, exactly how long its worst realistic restore takes* — and organizations that can say it, almost by construction, are the ones that will get to say anything at all afterward.
+
+## Make the operating contract explicit
+
+A recovery design starts with the failure you intend to survive. A local snapshot can be an excellent backup mechanism when it has the required consistency, retention and isolation. It is insufficient for a threat that destroys both the snapshot and its source. The word snapshot does not decide the answer; the storage, account, key and administrative failure domains do. Draw those dependencies before declaring any copy independent.
+
+Database recovery also has a consistency boundary. Restoring a database to 10:00 while a payment provider and object store retain later actions can leave the application internally inconsistent. The recovery procedure therefore needs reconciliation for external side effects, immutable identifiers and duplicate processing. A database that starts successfully has passed only one stage of service recovery. Business checks may reveal missing attachments, orphaned payments or jobs that should not be replayed.
+
+Separate the recovery objective from the measured result. Recovery time includes detection and decision time if the business promise is measured from loss of service. A stopwatch started only when the restore command begins answers a narrower question. Recovery point is established by the last verified recoverable business event, not by the timestamp of a backup file. Keep both definitions visible when discussing whether a rehearsal passed.
+
+## Establish what the restored system is allowed to do
+
+Keep a restored copy isolated until its identity and external integrations have been reviewed. A database recovery environment that immediately sends customer notifications, settles payments or consumes the production queue can create new harm while being tested. Substitute harmless endpoints or disable outbound actions, and document those substitutions so the rehearsal is not mistaken for a complete end-to-end production test.
+
+Choose validation queries that test business relationships. A row count can match while references are broken or recent updates are missing. For an order service, verify that a sample of completed orders has the expected line items, monetary totals and external transaction identifiers. Include records near the recovery target because boundary mistakes often appear there. A checksum can establish byte identity with a known artifact; it cannot establish that the artifact contains the intended business state.
+
+Recovery access should survive the failure scenario. Check the location of encryption keys, recovery secrets, package repositories and infrastructure definitions. If restoring the service requires an identity provider inside that service's failed environment, prepare an appropriately controlled alternative. Test its permissions and record its use. Merely storing a password in a runbook creates a new security problem without proving the recovery route works.
+
+After a rehearsal, retain a small evidence bundle: backup identifier, requested target, actual recoverable point, command and tool versions, elapsed stages, validation results and cleanup confirmation. Compare the result with the objective using the declared clock. If a stage was skipped, state that explicitly. A rehearsal that proves data restoration but omits traffic restoration is still useful, provided its conclusion remains limited to the capability actually exercised. Use the uncovered dependency to define the next test instead of changing the objective after the result is known.
+
+Include cleanup in the rehearsal. Restored copies may contain sensitive production data and may incur significant storage cost. Confirm their intended retention, restrict access while the exercise runs, and remove temporary credentials when the exercise ends. Retain the evidence needed to reproduce the result without retaining an unnecessary duplicate of the entire dataset. If an exercise uses masked or reduced data, record that limitation: it may validate the procedure while leaving production-scale transfer, replay and application validation time unmeasured. The next rehearsal can then target the missing scale evidence deliberately.
+
+Keep backup verification and recovery authorization as separately assigned responsibilities.
+
+## Work through an illustrative scenario
+
+A fictional restore rehearsal uses a 180 GB database and an observed effective transfer rate of 150 MB/s, using decimal units. The idealized data-transfer component is 180,000/150 = 1,200 seconds, or twenty minutes. The rehearsal also spends eight minutes authorizing recovery, twelve replaying logs and ten validating application behavior. Total modeled recovery time is fifty minutes. The chart shows these components separately. It is not a performance promise: throttling, decompression, storage contention and replay volume can change the result.
+
+| Observation | Value (minutes) |
+| --- | ---: |
+| Decision and access | 8 |
+| Restore data | 20 |
+| Replay logs | 12 |
+| Validate service | 10 |
+
+**Calculation and limits.** Synthetic sequential recovery stages. Restore time uses 180,000 MB divided by 150 MB/s and sixty seconds per minute. Sum all four stages for fifty minutes. Parallel work would require a critical-path calculation instead.
+
+## Build the evidence worksheet
+
+**Failure scenario.** State whether the rehearsal represents accidental deletion, corruption, account compromise or a regional outage.
+
+**Recovery point.** Record the last business event proved present after restoration and the latest event known before failure.
+
+**Restore dependency.** List the account, keys, backup catalogue, network route and credentials needed while production is unavailable.
+
+**Data size and rate.** Use an observed effective transfer rate and consistent units; provisioned bandwidth alone is not a restore benchmark.
+
+**Business validation.** Choose invariant checks across databases, object stores and external side effects before reopening writes.
+
+**Measured clock.** Preserve detection, declaration, transfer, replay, validation and traffic-restoration timestamps separately.
+
+## Rehearse the failure boundary
+
+1. **Remove production access.** Restore using the recovery identity and documentation without borrowing production-only credentials.
+
+2. **Select an earlier target.** Prove that archived logs cover the target and that replay stops at the intended consistent point.
+
+3. **Make one archive unavailable.** Confirm that the tool reports the missing dependency and that the procedure does not declare success.
+
+4. **Replay a completed job.** Verify that external side effects are reconciled or deduplicated before normal processing resumes.
+
+## Sources for the mechanisms
+
+- [PostgreSQL point-in-time recovery](https://www.postgresql.org/docs/current/continuous-archiving.html)
+- [AWS recovery planning](https://docs.aws.amazon.com/wellarchitected/latest/reliability-pillar/plan-for-disaster-recovery-dr.html)

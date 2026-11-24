@@ -23,3 +23,67 @@ The structural difference from consumer social login: **IdP configuration is per
 The operations inherit every federation failure mode: per-tenant IdP certificate expiry (the customer's cert lapses and *their* whole workforce is locked out of *your* product — proactive expiry monitoring on tenant connections, with automated customer notifications, converts a support fire into an email), per-tenant login observability (SSO failure rates by connection — the "is it us or their IdP?" triage question, answerable in one dashboard), and test coverage against the IdP matrix (the major providers behave differently enough — attribute formats, logout semantics, metadata quirks — that a connection-simulation test tier pays for itself by the third enterprise onboarding). And the commercial question every SaaS eventually faces — the **"SSO tax"** debate (gating SSO behind the enterprise tier) — deserves a deliberate answer rather than a default: the security community's position (SSO is a baseline security control, and paywalling it pushes customers toward worse security) has real force and public shaming lists; the pragmatic middle many land on prices *SSO* accessibly while reserving the genuinely enterprise-shaped machinery (SCIM, audit-log APIs, custom policies) for the enterprise tier — aligning the paywall with operational cost rather than with a security fundamental.
 
 The closing calibration: enterprise SSO is a rare feature that's simultaneously a security control, an operational integration, and a sales artifact — and it rewards being built once, properly: protocols normalized at the edge, connections as tenant state with self-service setup, domains verified, lifecycles closed with SCIM, connections monitored like the dependencies they are. The deal that demanded it is rarely the last; the questionnaire, as ever, is just the enterprise writing its incident history down as requirements.
+
+## Make the operating contract explicit
+
+Enterprise federation needs a tenant-specific trust configuration. The application must know which issuer is trusted for which tenant, which client or audience is expected and how signing-key changes are handled. An email address ending with a corporate domain is not sufficient proof that an identity provider has authority over that tenant. Domain discovery can help route a login, but it cannot replace the trust configuration used to validate the assertion.
+
+Separate sign-in from account lifecycle. A successful federation response does not explain whether a person should still have a seat, which role they should hold or what happens when they leave the organization. Provisioning, group mapping and deprovisioning need their own contracts. Existing application sessions may continue after identity-provider access is removed unless the application explicitly enforces revocation or bounded session expiration.
+
+Keep account linking conservative. If a user previously signed in through a password account and later arrives from an enterprise identity provider, matching an email address alone can create an account takeover path when ownership assumptions differ. Require the linking proof appropriate to the product and retain the prior identity relationship in the audit record. Recovery administrators also need a tested route that does not depend on the unavailable federation configuration they are trying to repair.
+
+## Exercise tenant administration as part of federation
+
+The administrator configuring federation needs a safe way to prove that the new configuration works before making it mandatory for every user. A staged connection can allow an authorized test user to complete sign-in while existing access remains available. Show the verified issuer, subject and tenant mapping to the administrator without exposing bearer credentials. Prevent an administrator from claiming an unrelated tenant merely by entering a domain name or metadata URL.
+
+Signing-key and certificate rotation must be treated as ordinary lifecycle events. Record which component discovers new keys, how long cached keys remain usable and how an unknown key identifier is handled. An application should not accept arbitrary keys supplied by an untrusted request. At the same time, pinning one key indefinitely can turn a routine identity-provider rotation into an outage. Use the protocol's supported trust and discovery mechanisms and test the overlap behavior.
+
+Account recovery needs to preserve tenant boundaries. A support process that disables federation for an entire organization to help one user can create a much larger access change than intended. Require an accountable administrator, a bounded action and a record of what changed. Consider how a tenant with only one administrator can recover without allowing an attacker to use that exception as an account-linking shortcut.
+
+Keep deprovisioning tests separate from login tests. A user can be unable to start a new identity-provider session while retaining an application session, an API token or an outstanding background export. List those access forms and state which lifecycle event invalidates each one. For a requirement that access end within a particular interval, measure from the authoritative disable event to the last accepted protected request. An identity-provider success screen does not establish that the application has met that requirement.
+
+Observe failed sign-in paths without turning logs into a credential store. Record a correlation identifier, tenant, protocol stage and sanitized validation reason. Avoid recording complete assertions or tokens simply because they help debugging. A useful diagnostic distinguishes an untrusted issuer, an expired response and a tenant-mapping error while keeping the underlying bearer material protected. Give support teams a way to locate that diagnostic from the user's error screen so that troubleshooting does not depend on asking the user to copy sensitive browser traffic into a ticket.
+
+Tenant deletion should also revoke federation configuration and outstanding recovery authority.
+
+## Work through an illustrative scenario
+
+A hypothetical rollout has twelve federation acceptance cases: three ordinary sign-ins, three invalid assertion cases, three lifecycle changes and three recovery cases. Ten pass. The two failures are an old application session surviving a required deprovisioning deadline and a signing-key rollover that needs a manual restart. The rollout remains incomplete even though every ordinary sign-in works. The chart groups the passing cases so the team can see which category needs work.
+
+| Observation | Value (passing cases) |
+| --- | ---: |
+| Ordinary sign-in | 3 |
+| Invalid assertions | 3 |
+| Lifecycle changes | 2 |
+| Recovery and rollover | 2 |
+
+**Calculation and limits.** Synthetic acceptance matrix with three cases in each of four categories. Ten of twelve pass. This measures the chosen test suite rather than customer adoption or protocol compliance certification.
+
+## Build the evidence worksheet
+
+**Tenant trust.** Store the authorized issuer, client identifier, expected audience and permitted protocol for the tenant.
+
+**Assertion validation.** Record signature, issuer, audience, expiration and request-correlation checks required by the chosen protocol.
+
+**Account identity.** Use stable subject identifiers and explicit account-linking rules instead of treating email as a universal immutable key.
+
+**Lifecycle owner.** Identify how provisioning, group changes and deprovisioning reach the application and how quickly they take effect.
+
+**Session policy.** Define idle and absolute lifetimes and the actions that revoke existing application sessions.
+
+**Recovery access.** Test an accountable break-glass route and monitor its use separately from normal federation.
+
+## Rehearse the failure boundary
+
+1. **Present the wrong audience.** Reject a validly signed assertion intended for another application.
+
+2. **Rotate the signing key.** Confirm that discovery and caching behavior support the intended overlap without accepting an untrusted key.
+
+3. **Remove a user.** Measure session and authorization behavior through the agreed deprovisioning deadline.
+
+4. **Break tenant routing.** Verify a recovery administrator can repair configuration without granting access to an unrelated tenant.
+
+## Sources for the mechanisms
+
+- [OpenID Connect Core](https://openid.net/specs/openid-connect-core-1_0.html)
+- [OWASP session management](https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html)

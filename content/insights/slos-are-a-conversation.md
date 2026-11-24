@@ -1,18 +1,43 @@
 ---
-title: "SLOs are a conversation between engineering and the business, not a monitoring configuration"
-description: "An SLO programme that only engineering reads is not an SLO programme. It's a set of internal metrics dressed in SLO terminology."
+title: "SLOs: Agree on the User Outcome and the Response Policy"
+description: "Define the population, deadline and failure consequences before turning a reliability objective into monitoring configuration."
 date: 2029-06-01
 tags: ["DevSecOps", "Observability", "Engineering Leadership"]
 format: note
 derived: true
 ---
 
-An SLO programme that only engineering reads is not an SLO programme. It's a set of internal metrics dressed in SLO terminology.
+An SLO is useful when people agree on the experience it represents and the action taken when that experience deteriorates. Product and business stakeholders explain the consequences of failure; engineers establish what can be measured and operated. A percentage without those definitions is difficult to use during a release decision or incident.
 
-The value of an SLO comes from the shared understanding it creates between engineering and the business: this is what reliability means for this service, this is how we measure it, this is what we commit to, and this is what we do when we're below it. The number is less important than the shared understanding the number represents.
+A time-based availability objective can be translated into an allowed duration for its stated window. A request-based objective instead uses eligible events. A batch workflow may need completion before a deadline. Do not convert every 99.9% target into a yearly downtime allowance regardless of the service or measurement window.
 
-Getting to that shared understanding requires a conversation that most SLO implementations skip. When you say 99.9% availability, does the business understand that means 8.7 hours of downtime per year? Is that acceptable for a payment service? A customer-facing checkout? An internal HR portal? The answers are different, and a blanket "99.9% for everything" reflects nobody's actual reliability requirements.
+## Define a deadline-based indicator
 
-The other half of the SLO that rarely gets implemented: the error budget policy. When the error budget is depleted, what actually changes? If the answer is "engineering discusses it in the next sprint planning," the error budget concept has no teeth. The value of error budgets is in the pre-agreed trade-off: reliability work takes priority when the budget is gone. That trade-off requires product and leadership agreement, not just engineering metrics.
+Consider a hypothetical morning reporting service with 500 eligible reports. A report is good only if it contains the required data and is available by 09:00 in the agreed timezone. Of the 500, 475 meet the deadline, twenty arrive late and five fail completely. Good-event performance is 475/500 = 95%.
 
-Set your SLOs by starting with the business impact question, not the technical metrics question. The monitoring configuration comes last.
+If the objective for this observation window is 98%, the bad-event allowance is 2% of 500, or ten reports. Twenty-five are bad under the definition, exceeding that allowance by fifteen. A late report counts as bad even if it eventually succeeds, because the customer needed it before the meeting. These numbers are synthetic and do not prescribe the appropriate target for a real reporting product.
+
+## Write the indicator worksheet
+
+Record the eligible report population, required content checks, timezone, cutoff, measurement source and exclusions. Define what happens when a customer cancels a report or its required input is missing. Exclusions need a documented reason rather than a retrospective attempt to improve the score. Keep the original ledger so another person can reproduce the calculation.
+
+For an exercise, create synthetic report events containing on-time completion, late completion, missing output and an incorrect result. Have two reviewers classify them using the written rules. Resolve disagreements before building the dashboard. This exposes ambiguous requirements that a monitoring query cannot decide on its own.
+
+## Agree what changes when the budget is consumed
+
+An error-budget policy needs an owner and a concrete response. The reporting team might pause a risky scheduler migration, investigate the dominant missed-deadline cause and restrict the next rollout until the evidence improves. Necessary security and recovery work may still proceed under an explicit exception. A blanket freeze can make an unhealthy system harder to repair.
+
+Review the objective when user expectations, delivery schedules or workload mix change. Preserve earlier definitions so historical comparisons remain interpretable. The goal is a shared operating decision grounded in user impact, with monitoring implementing that agreement rather than inventing it.
+
+| Observation | Value (reports) |
+| --- | ---: |
+| On time and correct | 475 |
+| Late | 20 |
+| Failed | 5 |
+
+**Figure method.** Synthetic 500-report window: good=475/500=95%. At 98% objective, bad allowance=(1−0.98)×500=10; actual bad=20+5=25, exceeding by 15. Deadline and content criteria are explicit.
+
+## Primary references
+
+- [Google SRE SLO alerting](https://sre.google/workbook/alerting-on-slos/)
+- [Google SRE monitoring](https://sre.google/sre-book/monitoring-distributed-systems/)

@@ -1,0 +1,27 @@
+{
+  "slug": "audit-logging-design",
+  "kind": "bar",
+  "title": "Audit event reconciliation",
+  "unit": "unique events",
+  "points": [
+    {
+      "label": "Expected operations",
+      "value": 10000
+    },
+    {
+      "label": "Initially searchable",
+      "value": 9970
+    },
+    {
+      "label": "After queue recovery",
+      "value": 10000
+    }
+  ],
+  "method": "Synthetic fixed window. Deduplicate on producer and event ID. Compare selected operations with searchable unique events; retransmitted envelopes do not increase the denominator. The thirty missing events are deliberately queued in this exercise.",
+  "alt": "Audit event reconciliation: Expected operations 10000 unique events, Initially searchable 9970 unique events, After queue recovery 10000 unique events. Illustrative inputs.",
+  "dataOrigin": "synthetic",
+  "steps": [],
+  "studyPaths": [
+    "platform"
+  ]
+}

@@ -33,3 +33,69 @@ Incident communication is a *protocol*, and the protocol does the thinking so pe
 Every part of the above decays without exercise, and real incidents are terrible practice (rare, high-stakes, unevenly distributed across the roster). The regimen that works: **game days** (the chaos-engineering scenarios run *with the full incident process* — the point is drilling coordination, not just failure modes), **IC shadowing and rotation** (every on-call engineer eventually takes the IC seat in a drill; the bench depth is what lets the best debugger debug), **the severity-declaration reflex tested** in drills ("at what point in this scenario would you have declared?" — calibrating the hesitation out), and **post-incident review of the *response itself*** alongside the technical mechanism (did the picture stay shared? did handoffs hold? was the cadence kept? — response quality is a system with its own failure modes and its own improvement backlog, and the blameless discipline applies to it identically). Organizations that drill quarterly report the compounding effect: incident coordination stops consuming cognition, which returns that cognition to the actual problem — which is the entire design goal of the structure.
 
 The strategic frame for leadership: incident response is one of the few engineering capabilities whose quality is *fully visible to customers* — they never see your architecture reviews, but they live through your SEV1s. The investment is modest (a role structure, a severity table, a comms protocol, a drill calendar); the return arrives on the worst day of the quarter, in the form of an incident that felt — to responders and customers alike — strangely, professionally calm. That calm is not temperament. It's rehearsal, wearing temperament's clothes.
+
+## Make the operating contract explicit
+
+Incident command separates coordination from technical investigation so that each can continue when the other becomes busy. The commander maintains priorities, assigns work and decides when to escalate. Technical responders investigate and execute agreed actions. A communications role translates the known impact and next update time for affected people. Small incidents can combine roles, but the team should state that explicitly and split them when the workload grows.
+
+A useful incident record distinguishes observation, hypothesis and action. A rise in errors is an observation. A database connection leak is a hypothesis. Restarting a worker is an action with an owner, expected effect and risk. Recording all three prevents the next responder from treating a discarded theory as an established fact. It also makes handover possible without requiring someone to reread an entire chat history.
+
+Restore service before claiming a cause. A rollback may reduce impact without proving which code path was faulty. The response can close its urgent phase when service objectives and recovery checks pass, while analysis continues separately. Keep customer impact intervals distinct from internal investigation time and communication time. Those clocks support different decisions and should not be collapsed into a single impressive incident duration.
+
+## Build a handover that survives an interruption
+
+The incident record should be short enough to read while joining the response. Start with the current impact, the active commander, the working hypotheses and the changes already made. Include the next decision and the time at which it will be reconsidered. Link to detailed evidence rather than pasting every log line into the summary. A responder should be able to tell which facts are current without reconstructing the conversation.
+
+Make interventions observable. Before an action, record its expected effect and the signal that would show it worked. If the team rolls back a release to reduce checkout errors, note the affected cohort and the observation window. If the signal does not improve, say so explicitly and either reverse the action or keep it for a documented reason. This prevents a sequence of unexamined changes from destroying the evidence needed to understand the failure.
+
+Communication should preserve uncertainty. State what users cannot do, what is being attempted and when the next update will arrive. Avoid promising a restoration time without a basis. A useful update can say that the team has isolated one dependency and is testing a recovery path even when the cause is unresolved. Keep sensitive customer information and internal credentials out of broad channels. The communications role needs an agreed audience and escalation route, not merely permission to copy the engineering chat.
+
+After restoration, separate learning from blame. The response record can reveal slow access approval, unclear ownership or a missing rollback route. These are concrete improvement opportunities. Asking why an individual did not react faster often overlooks the information and permissions available at the time. Select follow-up work that changes the system or operating process, attach an owner and acceptance test, and revisit whether the change actually made a later rehearsal easier.
+
+For a long incident, plan relief before responders become ineffective. A deliberate handover includes authority, current state and pending actions. Changing the commander without communicating that change can create two competing decision paths.
+
+Define an escalation route for uncertainty about authority. If the team cannot determine who may approve data loss during recovery, the response should reach a named decision-maker before the emergency occurs. The commander can coordinate that decision without inventing a business tolerance. Record the option considered, the known consequences and the person accepting them. This is particularly important when a technically faster recovery would discard recent work or expose a restricted dataset. The incident process should make the trade-off explicit while preserving a clear path to action.
+
+Record explicitly when incident command transfers to another person. Update the shared incident document and communication channel so technical responders do not continue seeking approval from the previous commander.
+
+## Work through an illustrative scenario
+
+In a fictional rehearsal, detection takes four minutes, declaration and role assignment take six, mitigation takes eighteen, and verification takes seven. The sequential impact window is thirty-five minutes. A second rehearsal reduces declaration to three minutes but takes twenty-one minutes to mitigate, leaving the same thirty-five-minute total. The comparison shows why improving one handoff does not prove end-to-end recovery improved. No actual customer incident is represented.
+
+| Observation | Value (minutes) |
+| --- | ---: |
+| Detection | 4 |
+| Declare and assign | 6 |
+| Mitigate | 18 |
+| Verify recovery | 7 |
+
+**Calculation and limits.** Synthetic sequential timeline from first affected request to verified restoration: 4 + 6 + 18 + 7 = 35 minutes. Stage definitions are fixed. Parallel investigation time and post-incident analysis are excluded from this impact window.
+
+## Build the evidence worksheet
+
+**Impact statement.** Describe the affected operation, user population and known start time without presenting hypotheses as confirmed causes.
+
+**Role assignment.** Record who coordinates, who changes the system and who communicates to affected stakeholders.
+
+**Action log.** Write the owner, timestamp, expected effect and rollback route for each material intervention.
+
+**Decision threshold.** Identify the evidence required to fail over, roll back or stop a risky mitigation.
+
+**Update cadence.** State when the next update will arrive even when the cause remains uncertain.
+
+**Recovery proof.** Record the user-facing checks that establish restoration and the conditions requiring renewed escalation.
+
+## Rehearse the failure boundary
+
+1. **Remove the lead responder.** Hand over with the incident record and verify that current hypotheses and actions remain understandable.
+
+2. **Introduce conflicting theories.** Assign bounded investigations while preserving one shared decision log.
+
+3. **Make mitigation ineffective.** Stop or reverse the action according to its predeclared observation window.
+
+4. **Restore infrastructure only.** Continue verification until the affected business operation succeeds, rather than closing on a green host graph.
+
+## Sources for the mechanisms
+
+- [Google SRE incident response](https://sre.google/workbook/incident-response/)
+- [Google SRE monitoring](https://sre.google/sre-book/monitoring-distributed-systems/)

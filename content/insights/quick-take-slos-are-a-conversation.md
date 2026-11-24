@@ -36,3 +36,32 @@ The error budget makes the reliability-velocity trade-off explicit and gives tea
 An SLO that is set by engineering without business input is a technical target. An SLO set without engineering input may be technically impossible or economically unreasonable. The right process involves engineering, product, and the business stakeholders who understand the cost of unreliability.
 
 SLOs are where the technical and business sides of reliability meet. They are effective when both sides have been in the conversation.
+
+## Agree the denominator before negotiating the target
+
+A request-based SLO measures eligible events, while a time-based availability objective measures intervals. Converting a percentage directly into hours is appropriate only for the stated time-based model. A batch service may instead need an objective for completion before a deadline, and a low-traffic endpoint may need explicit treatment of empty intervals. Select a measure that represents the user's experience.
+
+Consider an illustrative request-based objective of 99.5% over a rolling window containing 200,000 eligible requests. The allowed bad-event budget is 0.005 × 200,000 = 1,000 requests. If 650 have already failed under the agreed definition, 350 remain. This does not mean the team may deliberately fail 350 requests; it is a planning and alerting model with an agreed response policy. Future traffic changes the denominator in a rolling window.
+
+The worksheet should state the eligible operation, good-event criteria, exclusions, measurement source, window and target. If client errors are excluded, explain which errors and why. Excluding every unsuccessful request because it is inconvenient would make the indicator meaningless. Include correctness or durability when a technically successful response can still harm the user.
+
+## Connect the budget to a decision the team can execute
+
+Agree the action for rapid consumption before the alert fires. It may be pausing risky releases, narrowing a rollout, fixing a dependency or obtaining explicit risk acceptance. An error-budget policy should allow necessary security and recovery changes rather than imposing an indiscriminate freeze that makes the service less safe.
+
+For a lab, generate a synthetic event ledger with success, timeout and invalid-input outcomes. Compute the indicator from the documented rules, then have a second person reproduce it independently. Change one exclusion and quantify its effect so stakeholders can see how definitions influence the result. Plot budget consumption over the same window and avoid mixing a monthly objective with a yearly downtime conversion.
+
+Finally, review whether users recognize the measured failure as meaningful. A payment authorization and a background recommendation have different consequences even if both return HTTP responses. Product input defines acceptable experience, and engineering establishes feasible measurement and response. Revisit the objective when the service or user journey changes, retaining the old definition so historical comparisons remain interpretable.
+
+| Observation | Value (requests) |
+| --- | ---: |
+| Allowed bad events | 1000 |
+| Already consumed | 650 |
+| Remaining | 350 |
+
+**Figure method.** Synthetic request SLO: (1−0.995)×200,000=1,000 allowed bad events; 1,000−650=350 remaining. A rolling window changes with future traffic; not a time-based downtime allowance.
+
+## Further reading
+
+- [Google SRE SLO alerting](https://sre.google/workbook/alerting-on-slos/)
+- [Google SRE monitoring](https://sre.google/sre-book/monitoring-distributed-systems/)

@@ -20,3 +20,24 @@ These are not interchangeable terms. An organization that says "we're multi-clou
 The confusion becomes expensive when architecture decisions are made on the wrong premise. If you're multi-region and think you're multi-cloud, you won't invest in the provider-abstraction layer that multi-cloud actually requires. When the provider-level incident eventually happens, you'll discover the gap at the worst possible moment.
 
 Be precise about what you're building and why. The right label leads to the right engineering investment.
+
+## Classify the topology and the continuity promise separately
+
+Running payroll on one provider and analytics on another is multi-cloud, but it does not make either workload fail over automatically. Running one application in two regions is multi-region, but its availability still depends on data, routing and shared services. A provider-neutral abstraction is optional engineering work, not a definitional requirement of multi-cloud.
+
+In a hypothetical portfolio of 20 applications, twelve run in one region, five run in two regions of the same provider and three span providers. This inventory accounts for all 20 applications under mutually exclusive categories chosen for the exercise. It does not say whether any has a tested recovery path. Add a second column to the worksheet for that evidence rather than treating topology as proof.
+
+Ask the owner of one application to describe a specific failure and the surviving path. Identify where writes are accepted, how users reconnect and which credentials remain usable. Then inspect the architecture for a shared identity or DNS dependency. If the goal is commercial diversity across unrelated workloads, a common failover layer may be unnecessary. If the goal is application continuity, prove that continuity directly with an appropriate recovery exercise.
+
+| Observation | Value (applications) |
+| --- | ---: |
+| Single region | 12 |
+| Multiple regions | 5 |
+| Multiple providers | 3 |
+
+**Figure method.** Synthetic mutually exclusive portfolio: 12+5+3=20 applications. Topology counts do not establish tested failover or availability.
+
+## Further reading
+
+- [AWS disaster-recovery planning](https://docs.aws.amazon.com/wellarchitected/latest/reliability-pillar/plan-for-disaster-recovery-dr.html)
+- [PostgreSQL recovery mechanics](https://www.postgresql.org/docs/current/continuous-archiving.html)

@@ -31,3 +31,32 @@ Without this ownership, the natural entropy of any unowned system takes over. Po
 **Regular policy reviews.** Quarterly review of all active policies: are they still relevant? Are any producing excessive noise? Are there gaps in coverage for new infrastructure patterns?
 
 The policies are the easy part. The organisational practice that keeps them effective is the investment.
+
+## Give each rule a contract and a test fixture
+
+A policy should state the input it expects, the condition it enforces and the decision it returns. The same business requirement may need different adapters for a Terraform plan, a Kubernetes admission request and an inventory report. A rule that expects a field absent from one input can silently evaluate differently unless missing values are tested explicitly.
+
+In an illustrative policy suite, 24 fixtures comprise ten allowed configurations, ten denied configurations and four malformed or incomplete inputs. A change passes 22 fixtures and fails two negative cases. Reporting 91.7% passing tests does not justify enforcement: the two failures may admit exactly the prohibited resources. The chart shows fixture categories, while the release decision depends on each expected outcome.
+
+For the lab, choose a rule that requires an explicit owner tag on a resource. Test a valid owner, a missing key, an empty string, the wrong type and an exempt resource with an approved exception. Keep the fixture data synthetic and record the policy and input-schema versions. An empty or malformed field should not be interpreted as a valid owner merely because the key exists.
+
+## Roll out enforcement without hiding uncertainty
+
+Run the rule against representative existing plans and classify failures before blocking all changes. Audit mode is a legitimate detective phase when it has an owner, a response path and a time-bounded decision. Enforcement is useful for preventive controls, but a policy can also produce actionable evidence after deployment. Choose the mode according to the control objective instead of declaring every warning worthless.
+
+The operating worksheet needs a policy owner, rationale, supported input types, exception process, remediation advice and rollback plan. A policy deployment can cause an availability problem if it blocks an emergency repair or rejects every workload because an upstream schema changed. Test the policy engine's failure behavior and define who can authorize a narrow bypass.
+
+Review decision logs for both unexpected denials and suspicious absence of denials. Zero violations may mean the estate is compliant, or that the policy never received relevant inputs. Retain a known failing fixture as a health check for the evaluation path. Policy ownership becomes concrete when someone can explain a decision, correct a rule and verify that the intended boundary still holds after the surrounding platform changes.
+
+| Observation | Value (fixtures) |
+| --- | ---: |
+| Allowed cases | 10 |
+| Denied cases | 10 |
+| Malformed input | 4 |
+
+**Figure method.** Synthetic suite has 24 fixtures; 22/24=91.7% pass in the example, but two failed negative cases block release. Category counts do not prove policy coverage.
+
+## Further reading
+
+- [OPA policy testing](https://www.openpolicyagent.org/docs/policy-testing)
+- [Terraform tests](https://developer.hashicorp.com/terraform/language/tests)
