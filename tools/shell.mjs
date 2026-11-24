@@ -104,7 +104,7 @@ ${jsonld.map(j => `<script type="application/ld+json">${JSON.stringify(j).replac
     <nav class="nav" id="nav" aria-label="Primary">
       ${NAV.map(([href, label]) =>
         `<a href="${href}"${primaryCurrent(href)}>${label}</a>`).join("\n      ")}
-      <a class="btn btn-sm" href="/contact/" style="margin-left:.4rem">Engage engineering</a>
+      <a class="btn btn-sm" href="/contact/"${primaryCurrent("/contact/")} style="margin-left:.4rem">Engage engineering</a>
     </nav>
     <div class="nav-actions">
       <button class="icon-btn" id="themeBtn" type="button" aria-label="Switch to dark mode" aria-pressed="false">${icon.moon}</button>

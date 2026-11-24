@@ -236,9 +236,8 @@ ${seriesMap.size ? `<section class="section band band-warm">
     path: "/services/",
     bodyClass: "services-frame",
     body: `
-<section class="section mesh"><div class="publication-wrap service-intro">
+<section class="section mesh menu-intro"><div class="publication-wrap service-intro">
   <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><span aria-current="page">Services</span></nav>
-  <p class="eyebrow">Services</p>
   <h1 class="h-display">From a clear scope to an operable outcome.</h1>
   <p class="lede field-intro">Explore how we plan, execute, measure and hand over engineering work. Each service includes a detailed methodology, five industry scenarios, explanatory charts and primary references.</p>
   <p class="case-notice">12 service methodologies · 60 hypothetical industry scenarios. Scenario organisations, delivery events and numbers are invented for explanation; they are not customer results.</p>
@@ -276,7 +275,7 @@ ${SERVICES.map(s => `<section class="section ${s.id === "ai" ? "surface hair" : 
     description: "Hypothetical engineering scenarios on architecture audits, legacy modernisation, production AI and team enablement.",
     path: "/case-studies/",
     body: `
-<section class="section mesh"><div class="publication-wrap">
+<section class="section mesh menu-intro"><div class="publication-wrap">
   <h1 class="h-display">Engineering case studies</h1>
   <p class="lede field-intro">See how we would scope, execute, and hand over an engagement. Each scenario includes a delivery sequence, acceptance criteria, and measurements you can inspect.</p>
   <p class="case-notice">The public scenarios are hypothetical. Organisations, delivery events and results are simulated.</p>
@@ -371,11 +370,11 @@ ${SERVICES.map(s => `<section class="section ${s.id === "ai" ? "surface hair" : 
     description: "Ajna Consulting Services is a specialised engineering firm led by Chandra Lanka, working with Tier-1 financial, telecommunications and aviation organisations.",
     path: "/about/",
     body: `
-<section class="section mesh"><div class="wrap-narrow">
+<section class="section mesh menu-intro"><div class="publication-wrap">
   <p class="eyebrow">About</p>
-  <h1 class="h-display" style="margin-top:.8rem">A dedicated engineering partner.</h1>
+  <h1 class="h-display">A dedicated engineering partner.</h1>
 </div></section>
-<section class="wrap-narrow prose" style="padding-bottom:var(--section-y)">
+<section class="publication-wrap menu-content"><div class="prose menu-prose">
   <p>Ajna Consulting Services operates as a dedicated engineering partner. Our technical leadership has extensive experience designing, securing and recovering mission-critical infrastructure for Tier-1 financial, telecommunications and aviation organisations.</p>
   <p>We specialise in transitioning complex legacy architectures into highly distributed, event-driven microservices. We engage directly alongside client engineering teams to execute deployments, configure CI/CD pipelines and establish operational governance — the work itself, not a recommendation about the work.</p>
   <h2>Why the writing exists</h2>
@@ -384,7 +383,7 @@ ${SERVICES.map(s => `<section class="section ${s.id === "ai" ? "surface hair" : 
   <p>Chandra Lanka leads the practice — twenty-five years across enterprise middleware, cloud platforms and, more recently, putting AI systems somewhere they can be operated rather than demonstrated. Reflections on learning, craft and career appear in <a href="/notes/">Personal notes</a>.</p>
   <h2>Contact</h2>
   <p>Email <a href="mailto:${SITE.email}">${SITE.email}</a>, or use the <a href="/contact/">enquiry form</a>. We reply to specifics faster than to introductions.</p>
-</section>`,
+</div></section>`,
   });
 
   /* ---------------- contact ---------------- */
@@ -393,18 +392,18 @@ ${SERVICES.map(s => `<section class="section ${s.id === "ai" ? "surface hair" : 
     description: "Start an engagement with Ajna Consulting Services — architecture, cloud modernisation, AI and MLOps, or corporate technical training.",
     path: "/contact/",
     body: `
-<section class="section mesh"><div class="wrap-narrow">
+<section class="section mesh menu-intro"><div class="publication-wrap">
   <p class="eyebrow">Contact</p>
-  <h1 class="h-display" style="margin-top:.8rem;max-width:15ch">Start with the problem.</h1>
-  <p class="lede" style="margin-top:1.3rem">Tell us the system, the constraint and what needs to be true in six months. That is enough for a useful first conversation.</p>
+  <h1 class="h-display">Start with the problem.</h1>
+  <p class="lede field-intro">Tell us the system, the constraint and what needs to be true in six months. That is enough for a useful first conversation.</p>
 </div></section>
-<section class="wrap-narrow" style="padding-bottom:var(--section-y)">
+<section class="publication-wrap menu-content"><div class="menu-enquiry">
   <div class="form-panel">${contactForm("contact")}</div>
   <div class="grid g-2" style="margin-top:2.5rem">
     <div class="feature">${thumbnail('An engineering conversation',['Engineering Leadership'],'contact-feedback')}<h2 class="h3">Email</h2><p class="muted" style="margin-top:.5rem"><a href="mailto:${SITE.email}">${SITE.email}</a></p></div>
     <div class="feature">${thumbnail('Engineering writing',['Engineering Leadership'],'contact-technical-writing')}<h2 class="h3">Writing</h2><p class="muted" style="margin-top:.5rem"><a href="${SITE.blog}" rel="noopener">techknowen.com</a> · <a href="${SITE.youtube}" rel="noopener">YouTube</a> · <a href="/feed.xml">RSS</a></p></div>
   </div>
-</section>`,
+</div></section>`,
     jsonld: [{ "@context": "https://schema.org", "@type": "ContactPage", url: SITE.url + "/contact/", about: { "@id": SITE.url + "/#org" } }],
   });
 

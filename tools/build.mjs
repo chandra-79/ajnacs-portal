@@ -293,11 +293,11 @@ await out("insights", page({
   description: "Field notes on enterprise architecture, cloud, AI and MLOps, security and cost — written from production work, not theory.",
   path: "/insights/",
   body: `
-<section class="section mesh">
+<section class="section mesh menu-intro">
   <div class="publication-wrap">
     <p class="eyebrow">Insights</p>
-    <h1 class="h-display" style="margin-top:.8rem;max-width:18ch">Engineering, written down.</h1>
-    <p class="lede" style="margin-top:1.2rem;max-width:62ch">Architecture decisions, production failures and the trade-offs behind them. Written for the people who build and run production systems.</p>
+    <h1 class="h-display">Engineering, written down.</h1>
+    <p class="lede field-intro">Architecture decisions, production failures and the trade-offs behind them. Written for the people who build and run production systems.</p>
     <div class="row insights-actions"><a class="btn" href="/field-guides/">Field guides and worksheets</a><a class="btn btn-ghost" href="/topics/">Browse topics</a><a class="btn btn-ghost" href="/deep-dives/">Deep dives</a><a class="btn btn-ghost" href="/follow/">Follow Ajna Insights</a></div>
   </div>
 </section>
@@ -350,11 +350,11 @@ await out("notes", page({
   description: "Personal writing — career, craft, and the parts of a long technical life that do not fit on a CV.",
   path: "/notes/",
   body: `
-<section class="section">
+<section class="section mesh menu-intro">
   <div class="publication-wrap">
     <p class="eyebrow">Learning, work and everyday judgment</p>
-    <h1 class="h1" style="margin-top:.8rem">Personal notes</h1>
-    <p class="lede" style="margin-top:1rem">Writing by Chandra Lanka on learning, craft, career and the questions that stay with us after the workday.</p>
+    <h1 class="h-display">Personal notes</h1>
+    <p class="lede field-intro">Writing by Chandra Lanka on learning, craft, career and the questions that stay with us after the workday.</p>
     <p class="notes-follow"><a href="/notes/feed.xml">Follow personal notes via RSS</a> · <a href="/follow/">All publication feeds</a></p>
     <div class="notes-search row">
       <label class="notes-search-field">Search personal notes<input type="search" id="postSearch" aria-controls="postList" placeholder="Try learning, teaching or attention"></label>
@@ -416,11 +416,11 @@ await out("series", page({
   description: "Multi-part engineering series — Linux, containers, platform engineering, FinOps, AI, DevSecOps and operating systems.",
   path: "/series/",
   body: `
-<section class="section mesh">
+<section class="section mesh menu-intro">
   <div class="publication-wrap">
     <p class="eyebrow">Series</p>
-    <h1 class="h-display" style="margin-top:.8rem;max-width:16ch">Read it in order.</h1>
-    <p class="lede" style="margin-top:1.2rem;max-width:58ch">Longer arcs, written to be read start to finish rather than dipped into.</p>
+    <h1 class="h-display">Read it in order.</h1>
+    <p class="lede field-intro">Longer arcs, written to be read start to finish rather than dipped into.</p>
   </div>
 </section>
 <section class="publication-wrap archive-layout">
