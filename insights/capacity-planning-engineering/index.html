@@ -14,18 +14,18 @@
 <meta property="og:title" content="Capacity Planning in the Cloud Era: Headroom as an Engineered Property">
 <meta property="og:description" content="Elastic infrastructure didn&#39;t kill capacity planning — it changed what gets planned. Demand modeling, the utilization-vs-headroom trade, quota and constrai…">
 <meta property="og:url" content="https://ajnacs.com/insights/capacity-planning-engineering/">
-<meta property="og:image" content="https://ajnacs.com/assets/og/articles/capacity-planning-engineering.png?v=478833a3b348">
+<meta property="og:image" content="https://ajnacs.com/assets/og/articles/capacity-planning-engineering.png?v=f3f5919c7d9b">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="A theater has a blocked seating bay and a lit, unused balcony reserved for a surge in demand.">
+<meta property="og:image:alt" content="A launch and burst push forecast demand toward a load-tested database write ceiling. A raised bar marks the time available to deliver the capacity fix.">
 <meta property="article:published_time" content="2026-11-09">
 <meta property="article:modified_time" content="2026-11-23">
 <meta property="og:image:type" content="image/png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Capacity Planning in the Cloud Era: Headroom as an Engineered Property">
 <meta name="twitter:description" content="Elastic infrastructure didn&#39;t kill capacity planning — it changed what gets planned. Demand modeling, the utilization-vs-headroom trade, quota and constrai…">
-<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/capacity-planning-engineering.png?v=478833a3b348">
-<meta name="twitter:image:alt" content="A theater has a blocked seating bay and a lit, unused balcony reserved for a surge in demand.">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/capacity-planning-engineering.png?v=f3f5919c7d9b">
+<meta name="twitter:image:alt" content="A launch and burst push forecast demand toward a load-tested database write ceiling. A raised bar marks the time available to deliver the capacity fix.">
 
 <link rel="icon" href="/favicon.ico?v=8affdbd5" sizes="any">
 <link rel="icon" href="/images/ajna-mark.svg?v=8affdbd5" type="image/svg+xml">
@@ -51,7 +51,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Capacity Planning in the Cloud Era: Headroom as an Engineered Property","description":"Elastic infrastructure didn't kill capacity planning — it changed what gets planned. Demand modeling, the utilization-vs-headroom trade, quota and constraint archaeology, and the quarterly loop that replaces both waste and 3 AM scrambles.","datePublished":"2026-11-09","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/capacity-planning-engineering/","image":"https://ajnacs.com/assets/og/articles/capacity-planning-engineering.png?v=478833a3b348","keywords":"Cloud Architecture, Reliability, FinOps, Engineering Leadership","articleSection":"Cloud Architecture","wordCount":2243}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Capacity Planning in the Cloud Era: Headroom as an Engineered Property","description":"Elastic infrastructure didn't kill capacity planning — it changed what gets planned. Demand modeling, the utilization-vs-headroom trade, quota and constraint archaeology, and the quarterly loop that replaces both waste and 3 AM scrambles.","datePublished":"2026-11-09","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/capacity-planning-engineering/","image":"https://ajnacs.com/assets/og/articles/capacity-planning-engineering.png?v=f3f5919c7d9b","keywords":"Cloud Architecture, Reliability, FinOps, Engineering Leadership","articleSection":"Cloud Architecture","wordCount":2243}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Capacity Planning in the Cloud Era: Headroom as an Engineered Property"}]}</script>
 </head>
 <body class="article-frame" data-topic="Cloud Architecture">
@@ -107,7 +107,7 @@ d.setAttribute('data-theme',t);
       </div>
     </header>
 
-    <div class="article-hero" data-topic="Cloud Architecture"><img data-article-art="capacity-planning-engineering" src="/assets/covers/capacity-planning-engineering.svg?v=56f6b8787f82" width="1280" height="720" alt="A theater has a blocked seating bay and a lit, unused balcony reserved for a surge in demand." decoding="async" fetchpriority="high"></div>
+    <div class="article-hero" data-topic="Cloud Architecture"><img data-article-art="capacity-planning-engineering" src="/assets/covers/capacity-planning-engineering.svg?v=97bc330f94e3" width="1280" height="720" alt="A launch and burst push forecast demand toward a load-tested database write ceiling. A raised bar marks the time available to deliver the capacity fix." decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#demand-model-the-driver-not-the-metric">Demand: model the driver, not the metric</a></li><li><a href="#supply-find-the-real-constraints-before-they-find-you">Supply: find the real constraints before they find you</a></li><li><a href="#the-trade-utilization-is-not-the-goal-survivable-headroom-is">The trade: utilization is not the goal, survivable headroom is</a></li><li><a href="#the-loop-quarterly-rhythm-event-driven-exceptions">The loop: quarterly rhythm, event-driven exceptions</a></li><li><a href="#calculate-usable-capacity-after-a-placement-failure">Calculate usable capacity after a placement failure</a></li><li><a href="#budget-capacity-during-a-burst-before-the-scaler-rescues-it">Budget capacity during a burst, before the scaler rescues it</a></li><li><a href="#translate-more-capacity-into-signals-you-can-verify">Translate more capacity into signals you can verify</a></li><li><a href="#track-time-until-a-decision-rather-than-time-until-saturatio">Track time until a decision rather than time until saturation</a></li><li><a href="#keep-capacity-promises-meaningful-during-maintenance">Keep capacity promises meaningful during maintenance</a></li></ol>
