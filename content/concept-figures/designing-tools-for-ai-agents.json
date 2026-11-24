@@ -1,0 +1,27 @@
+{
+  "slug": "designing-tools-for-ai-agents",
+  "kind": "bar",
+  "title": "Ambiguous retries and duplicate effects",
+  "unit": "operations",
+  "points": [
+    {
+      "label": "Execution attempts",
+      "value": 120
+    },
+    {
+      "label": "Naive effects",
+      "value": 120
+    },
+    {
+      "label": "Idempotent effects",
+      "value": 100
+    }
+  ],
+  "method": "Synthetic 100 intended operations plus 20 retries after post-commit timeouts. Attempts=100+20. Naive execution creates 120 effects; atomic idempotency creates100. Assumes durable keys and identical retry payloads; not an observed failure rate.",
+  "alt": "Ambiguous retries and duplicate effects. Execution attempts: 120 operations, Naive effects: 120 operations, Idempotent effects: 100 operations. Illustrative data.",
+  "dataOrigin": "synthetic",
+  "steps": [],
+  "studyPaths": [
+    "ai-evaluation"
+  ]
+}

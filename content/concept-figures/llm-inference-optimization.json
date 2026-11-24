@@ -1,0 +1,28 @@
+{
+  "slug": "llm-inference-optimization",
+  "kind": "bar",
+  "title": "Illustrative KV cache growth per request",
+  "unit": "MiB",
+  "points": [
+    {
+      "label": "2,048 cached tokens",
+      "value": 256
+    },
+    {
+      "label": "4,096 cached tokens",
+      "value": 512
+    },
+    {
+      "label": "8,192 cached tokens",
+      "value": 1024
+    }
+  ],
+  "method": "Synthetic architecture:2\u00d732 layers\u00d78 KV heads\u00d7128 dimensions\u00d72 bytes=128KiB per token. Multiply by cached tokens and divide by2^20 for MiB. Excludes overhead, cache sharing and architecture-specific variants; no named-model claim.",
+  "alt": "Illustrative KV cache growth per request. 2,048 cached tokens: 256 MiB, 4,096 cached tokens: 512 MiB, 8,192 cached tokens: 1024 MiB. Illustrative data.",
+  "dataOrigin": "synthetic",
+  "steps": [],
+  "studyPaths": [
+    "performance",
+    "ai-evaluation"
+  ]
+}

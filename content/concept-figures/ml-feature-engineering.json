@@ -1,0 +1,28 @@
+{
+  "slug": "ml-feature-engineering",
+  "kind": "bar",
+  "title": "Feature values with different temporal joins",
+  "unit": "USD",
+  "points": [
+    {
+      "label": "Available at noon",
+      "value": 40
+    },
+    {
+      "label": "Event-time-only join",
+      "value": 100
+    },
+    {
+      "label": "End-of-day aggregation",
+      "value": 200
+    }
+  ],
+  "method": "Synthetic purchases:40USD at09:00 available09:01;60USD at11:00 available12:30;100USD at13:00. Noon decision may use only40. Event-time-only includes late60; end-of-day includes future100. Illustrates leakage, not model accuracy.",
+  "alt": "Feature values with different temporal joins. Available at noon: 40 USD, Event-time-only join: 100 USD, End-of-day aggregation: 200 USD. Illustrative data.",
+  "dataOrigin": "synthetic",
+  "steps": [],
+  "studyPaths": [
+    "ai-evaluation",
+    "platform"
+  ]
+}

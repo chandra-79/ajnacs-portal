@@ -1,0 +1,28 @@
+{
+  "slug": "api-rate-limiting-design",
+  "kind": "bar",
+  "title": "Token bucket: burst followed by refill",
+  "unit": "exports",
+  "points": [
+    {
+      "label": "At 0 seconds",
+      "value": 8
+    },
+    {
+      "label": "At 1 second",
+      "value": 2
+    },
+    {
+      "label": "At 2 seconds",
+      "value": 2
+    }
+  ],
+  "method": "Synthetic deterministic exercise: capacity 40 tokens, refill 10 tokens/second, each export costs 5 tokens. Initially full; spend all available tokens at t=0,1,2. Counts are admission allowances, not throughput or customer measurements.",
+  "alt": "Token bucket: burst followed by refill. Illustrative values: At 0 seconds 8 exports, At 1 second 2 exports, At 2 seconds 2 exports.",
+  "dataOrigin": "synthetic",
+  "steps": [],
+  "studyPaths": [
+    "reliability",
+    "performance"
+  ]
+}

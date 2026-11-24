@@ -7,14 +7,29 @@ format: note
 derived: true
 ---
 
-The default assumption in enterprise AI conversations is that inference runs against cloud APIs. The case for local inference gets dismissed as enthusiast territory — useful for developers running experiments, not for enterprise workloads.
+Local inference is an architectural option for workloads that benefit from controlled infrastructure, limited connectivity, or predictable demand. It is not automatically cheaper, more private, or more accurate than a hosted service. Those properties depend on the deployment, model, surrounding software, and operational controls.
 
-This is underweighting a real alternative for a specific class of requirements.
+## Define what must remain local
 
-**Air-gapped environments** have no choice. Classified networks, critical infrastructure operational technology networks, and certain healthcare systems cannot connect to commercial AI APIs by design. Local inference is the only path to AI capability in these environments. This isn't a niche case — it covers a significant portion of government, defence, utilities, and regulated healthcare workloads.
+If an environment is intentionally disconnected, model files, dependencies, updates, evaluation data, and support procedures all need a compatible delivery process. If the concern is data location, inspect every path: prompts, tool results, logs, telemetry, crash reports, and backups. Running model weights on an organization's machine does not prove that the rest of the application makes no external requests.
 
-**Data sovereignty requirements** apply wherever regulated data — PII, financial records, medical information — cannot leave a jurisdiction or the organization's infrastructure. Running inference locally means the data never traverses an external API boundary. Some cloud providers offer data residency commitments that address this; others don't; and for some regulatory environments, "your provider's contractual commitment" isn't sufficient — the data must remain on infrastructure you control.
+Avoid treating every regulated workload as an air-gapped requirement. Determine the actual organizational and contractual constraints with the responsible teams. A managed deployment with appropriate controls may satisfy some requirements, while another workload may require infrastructure the organization directly operates.
 
-**Economics at scale**: the per-token cost of cloud API inference is justified for variable demand and high-capability tasks. For high-volume, routine tasks — document classification, summary generation, form extraction — the break-even against dedicated inference infrastructure arrives within 12–18 months for organizations running significant volumes.
+## Calculate a workload-specific break-even
 
-The tooling has matured enough to make this a genuine architectural choice rather than a DIY experiment. Evaluate the requirement before defaulting to the API.
+The chart is a fictional monthly cost comparison using assumed inputs, not provider prices. A local service has $1,800 of fixed infrastructure and operating allocation plus $0.001 per completed request. A hosted route costs $0.01 per completed request under the same simplified accounting boundary. At 100,000 requests, local cost is $1,900 and hosted cost is $1,000. At 300,000 requests, local cost is $2,100 and hosted cost is $3,000.
+
+Under these assumptions the break-even is 1,800 / (0.01 − 0.001) = 200,000 requests per month. The answer changes if model quality, token lengths, redundancy, support effort, or hardware utilization changes. A request count is only comparable when both routes satisfy the same task and service objectives. No universal twelve-month or eighteen-month payback follows from this example.
+
+## Test capacity and failure behavior
+
+Replay representative prompt and output lengths at the expected concurrency. Measure queueing, time to first token, completion latency, memory use, and rejected requests. Include a cold start and a process restart. A model fitting in memory is a necessary capacity check, not proof that the service can meet a latency objective under load.
+
+Keep a quality evaluation for the exact model and quantization used. A smaller or lower-precision model may be suitable for extraction while performing differently on a difficult reasoning task. Route unsupported tasks explicitly rather than silently substituting a weaker answer.
+
+The worksheet should list data boundaries, workload distribution, quality criteria, recurring cost, redundancy, upgrade owner, and fallback. The local option is attractive when those details form a coherent operating plan. The decision should remain reversible where possible, with a stable application interface and portable evaluation set so that a future hosting change can be assessed against the same requirements.
+
+## Sources and further study
+
+- [vLLM — Paged attention design](https://docs.vllm.ai/en/latest/design/paged_attention/)
+- [NIST — AI Risk Management Framework](https://www.nist.gov/itl/ai-risk-management-framework)

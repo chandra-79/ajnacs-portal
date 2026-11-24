@@ -1,18 +1,35 @@
 ---
-title: "RAG solves the knowledge problem. It does not solve the reasoning problem."
-description: "…"
+title: "RAG needs separate evidence for retrieval and answer quality"
+description: "Separate missing documents, retrieval failures, and unsupported synthesis before changing your RAG architecture."
 date: 2029-04-23
 tags: ["Enterprise AI", "Emerging Technology"]
 format: note
 derived: true
 ---
 
-RAG is the right architecture when your problem is "the model doesn't have access to your proprietary data." It is not a solution for every AI quality problem, and treating it as one leads to architectures that are complex without being better.
+Retrieval-augmented generation supplies selected external information to a model at request time. It can help a system answer questions about material outside the model's training data, but it does not guarantee correct retrieval, complete coverage, sound interpretation, or valid citations. Treat retrieval and answer generation as separate components with separate evidence.
 
-What RAG fixes: the model's knowledge cutoff, access to your internal documents, and hallucinations about domain-specific facts it was never trained on. By grounding the model's responses in retrieved context, you reduce the gap between what the model says and what your documents actually contain.
+## Diagnose where the answer became wrong
 
-What RAG doesn't fix: poor retrieval means the model reasons on wrong or irrelevant context, which can actually worsen output quality compared to no retrieval. Questions that require synthesis across many documents push against chunking limitations. Questions that require reasoning about absence — "are there any exceptions to this policy in our documentation?" — are poorly served by retrieval that only surfaces what's present.
+For a hypothetical policy assistant, preserve the question, the authorized document set, the retrieved passage identifiers, and the final answer. First ask whether an authoritative answer exists in that document set. Then ask whether retrieval found it. Finally ask whether the answer accurately used it. Without this separation, a team can spend weeks rewriting prompts for a problem caused by missing documents.
 
-The quality of a RAG system is largely the quality of its retrieval. Embedding model choice, chunking strategy, metadata filtering, re-ranking — these determine whether the model sees relevant context or noise. Most teams spend effort on the generation side and underinvest in the retrieval side.
+Consider 100 fictional questions with known answers in the approved corpus. Retrieval includes a sufficient passage for 80. The generator produces a supported answer for 72 of those 80. End-to-end supported answers are therefore 72 of 100. Even perfect generation on the same retrieved passages could reach at most 80 of 100 in this simplified exercise. The chart makes that ceiling visible; it is not a benchmark for real RAG systems.
 
-The diagnostic question: is your problem "the model doesn't know X" or "the model reasons badly about X it does know"? RAG addresses the first. The second requires different interventions.
+## Handle absence carefully
+
+A top-ranked passage is the best match among the searched candidates, not proof that it answers the question. A query about exceptions is especially demanding: failing to retrieve an exception does not prove that none exists. The application may need a structured policy database, an exhaustive search over a bounded collection, or escalation to a subject-matter expert.
+
+Document access is another boundary. Apply authorization before supplying passages to the model, and account for permissions in caches. A citation that the user cannot open does not repair a disclosure that has already appeared in the answer. Retain document version and effective-date metadata so that an obsolete policy can be identified rather than merely ranked highly.
+
+## Run a useful retrieval exercise
+
+Build a worksheet with question, expected source, actual retrieved sources, sufficient-evidence judgment, answer support, and failure category. Include near-duplicate documents and questions with no supported answer. Compare a keyword baseline with the proposed retriever before adding more components. Domain identifiers and exact product names can behave differently from natural-language paraphrases.
+
+Change one retrieval decision at a time: chunk boundary, filter, query rewrite, candidate count, or reranking. Track latency and the number of passages supplied as well as coverage. A longer context may add useful evidence, but it may also introduce contradictions and irrelevant detail. Check the specific model and corpus rather than assuming that more text is always better.
+
+The original RAG and dense-passage-retrieval papers are useful foundations for understanding the architecture. Their benchmark results do not transfer automatically to an enterprise permission model or a policy corpus. The local evidence must establish that the information reached the model, that the answer used it correctly, and that unsupported questions receive an honest limitation.
+
+## Sources and further study
+
+- [Lewis et al. — Retrieval-Augmented Generation](https://arxiv.org/abs/2005.11401)
+- [Karpukhin et al. — Dense Passage Retrieval](https://arxiv.org/abs/2004.04906)
