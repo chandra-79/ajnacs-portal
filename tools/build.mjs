@@ -15,8 +15,7 @@ import { readResearchLinks, referencesFor, referencesBlock } from "./references.
 import { publicationDate } from "./publication.mjs";
 import { buildArticleImages } from "./article-images.mjs";
 import { buildPageImage } from "./site-images.mjs";
-import { coverFor, photoFor } from "./covers.mjs";
-import { noteCover } from "./note-covers.mjs";
+import { coverDescription, coverFor, photoFor } from "./covers.mjs";
 import { fieldGuides, worksheet, worksheetCsv } from "./field-guides.mjs";
 import { relatedArticles, robotsPolicy, topicPath, featuredCollections } from "./discovery.mjs";
 import "./icons.mjs";
@@ -120,7 +119,7 @@ for (const m of live) {
   /* Every article's subject-specific preview is prepared before publication. */
   const photo = photoFor(m.slug);
   const ogPath = photo?.path || `/assets/og/articles/${m.slug}.png?v=${articlePreviewHashes[m.slug].slice(0,12)}`;
-  const imageAlt = photo?.alt || noteCover(m.slug, 1200, 630)?.alt || `Illustration for ${m.title}`;
+  const imageAlt = photo?.alt || coverDescription(m.slug);
 
   const idx = live.filter(x => x.section === m.section);
   const pos = idx.findIndex(x => x.slug === m.slug);
