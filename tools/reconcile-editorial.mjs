@@ -18,7 +18,7 @@ if (!process.argv.includes('--notes-only')) {
     const path = `content/${current.section}/${current.slug}.md`, raw = await readFile(path, 'utf8');
     const { fm, body } = parseFront(raw);
     if (!conceptFor(current.slug) || words(body) < original.baselineBodyWords * 2) continue;
-    Object.assign(current, { title: fm.title, description: fm.description, tags: fm.tags, words: words(body), queueRevision: reviewDate });
+    Object.assign(current, { title: fm.title, description: fm.description, tags: fm.tags, derived: fm.derived === true || fm.derived === "true", format: fm.format || "article", words: words(body), queueRevision: reviewDate });
     // Older imports retained a superseded date in Markdown after rescheduling.
     // The manifest remains authoritative; synchronize the source, not the queue.
     if (fm.date !== current.date) await writeFile(path, raw.replace(/^date:[^\r\n]*$/m, `date: ${current.date}`));
@@ -27,8 +27,10 @@ if (!process.argv.includes('--notes-only')) {
 }
 
 let newNotes = [];
-try { newNotes = JSON.parse(await readFile('docs/queue-expansion/new-notes.json', 'utf8')); }
-catch (error) { if (error.code !== 'ENOENT') throw error; }
+for (const name of ['new-notes', 'additional-notes']) {
+  try { newNotes.push(...JSON.parse(await readFile(`docs/queue-expansion/${name}.json`, 'utf8'))); }
+  catch (error) { if (error.code !== 'ENOENT') throw error; }
+}
 for (const note of newNotes) {
   const path = `content/notes/${note.slug}.md`, raw = await readFile(path, 'utf8');
   const { fm, body } = parseFront(raw);

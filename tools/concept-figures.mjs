@@ -66,7 +66,7 @@ export function conceptSvg(figure, width = 1280, height = 720) {
     figure.points.forEach((point, i) => {
       const y = top + row * i;
       const middle = y + row / 2;
-      drawing += textBlock(point.label, 352, middle + 8 - (lines(point.label, 25).length - 1) * 15, { size: 24, limit: 25, anchor: 'end' });
+      drawing += textBlock(point.label, 352, middle + 8 - (lines(point.label, 22).length - 1) * 15, { size: 24, limit: 22, anchor: 'end' });
       const barWidth = point.value / max * chartWidth;
       const barHeight = Math.min(44, row - 18);
       drawing += `<rect x="${left}" y="${middle - barHeight / 2}" width="${barWidth}" height="${barHeight}" rx="7" fill="${colors[i]}"/>`;
@@ -91,10 +91,11 @@ export function conceptSvg(figure, width = 1280, height = 720) {
     figure.steps.forEach((step, i) => {
       const x = 62 + (boxWidth + gap) * i;
       if (i) drawing += `<path d="M${x - gap + 4} 367H${x - 7}m-8 -7 8 7-8 7" fill="none" stroke="#7b899e" stroke-width="3"/>`;
-      drawing += `<rect x="${x}" y="233" width="${boxWidth}" height="300" rx="18" fill="#fff" stroke="#dce4ed" stroke-width="2"/><rect x="${x}" y="233" width="${boxWidth}" height="8" rx="4" fill="${colors[i]}"/><circle cx="${x + 33}" cy="275" r="17" fill="${colors[i]}"/>`;
+      drawing += `<rect x="${x}" y="233" width="${boxWidth}" height="340" rx="18" fill="#fff" stroke="#dce4ed" stroke-width="2"/><rect x="${x}" y="233" width="${boxWidth}" height="8" rx="4" fill="${colors[i]}"/><circle cx="${x + 33}" cy="275" r="17" fill="${colors[i]}"/>`;
       drawing += textBlock(String(i + 1), x + 33, 282, { size: 19, weight: 700, fill: '#fff', anchor: 'middle' });
       drawing += textBlock(step.label, x + 20, 330, { size: 24, weight: 700, limit: Math.floor((boxWidth - 40) / 14) });
-      drawing += textBlock(step.detail, x + 20, 415, { size: 21, limit: Math.floor((boxWidth - 40) / 11) });
+      const detailY = Math.max(415, 330 + (lines(step.label, Math.floor((boxWidth - 40) / 14)).length - 1) * 31.2 + 42);
+      drawing += textBlock(step.detail, x + 20, detailY, { size: 21, limit: Math.floor((boxWidth - 40) / 11) });
     });
   }
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 1280 720" data-article-art="${figure.slug}" role="img" aria-label="${esc(figure.alt)}"><rect width="1280" height="720" fill="#f3f6fa"/><g font-family="Inter, sans-serif">${title}${textBlock(intro, 62, 159, { size: 23, fill: '#64748b', limit: 85 })}${drawing}${textBlock('AJNA  /  Method, assumptions and values accompany the article.', 62, 682, { size: 19, fill: '#64748b', limit: 110 })}</g></svg>`;
@@ -103,7 +104,7 @@ export function conceptSvg(figure, width = 1280, height = 720) {
 export function conceptDetails(figure) {
   const flow = figure.kind === 'flow';
   const values = flow ? `<ol>${figure.steps.map(step => `<li><strong>${esc(step.label)}.</strong> ${esc(step.detail)}</li>`).join('')}</ol>`
-    : `<ul>${figure.points.map(point => `<li>${esc(point.label)}: <strong>${esc(valueLabel(point.value))} ${esc(figure.unit)}</strong></li>`).join('')}</ul>`;
+    : `<ul>${figure.points.map(point => `<li>${esc(point.label)}: <strong>${esc(String(point.value))} ${esc(figure.unit)}</strong></li>`).join('')}</ul>`;
   return `<section class="concept-method" aria-labelledby="concept-method-title"><h2 id="concept-method-title">${flow ? 'How to use the diagram' : 'Chart methodology and values'}</h2><p class="case-notice">${flow ? 'Conceptual illustration. The sequence describes an approach, not measured customer results.' : 'Synthetic worked example. These figures illustrate the calculation; they are not customer results or industry benchmarks.'}</p><p>${esc(figure.method)}</p><details><summary>${flow ? 'Read the steps' : 'Read the chart values'}</summary>${values}</details>${flow ? '' : `<p><a href="/field-guides/examples/${figure.slug}.csv" download>Download these example values (CSV)</a></p>`}</section>`;
 }
 
