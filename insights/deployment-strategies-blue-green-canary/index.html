@@ -33,8 +33,9 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=a8e7c95a">
-<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<link rel="stylesheet" href="/assets/css/site.css?v=bd74be96">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
+<link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
    never flashes the wrong ground or resets someone's text size mid-read. */
@@ -105,6 +106,7 @@ d.setAttribute('data-theme',t);
 </nav></div>
     <div class="article-copy">
       <div class="prose">
+<p class="article-opening">A deployment strategy should make its first bad outcome small and easy to reverse.</p>
 <p>Deployment strategy discussions have a way of floating free of their constraints. Teams debate blue-green versus canary as if choosing a philosophy, when the real determinants are unglamorous: how many instances you run, whether your traffic layer can split by percentage, what your observability can detect in five minutes, and — above all — whether your database schema can serve two application versions at once.</p>
 <p>Here&#39;s the strategy landscape with the constraints attached.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
@@ -133,15 +135,40 @@ d.setAttribute('data-theme',t);
 <p>And note what all four strategies quietly assume: <strong>decoupling deploy from release</strong>. Feature flags let code ship dark and activate independently, which shrinks deployment risk to &quot;does the binary run&quot; while product risk is managed per-feature. Teams that internalize that separation stop needing deployment strategies to carry product risk at all — which is the actual end state worth aiming for: deploys so routine and reversible that the strategy discussion gets boring. Boring is the win condition.</p>
 
       </div>
+<section class="field-worksheet worked-example" aria-labelledby="worked-example">
+    <h2 id="worked-example">Worked example</h2>
+    <p class="case-notice">This scenario and its results are illustrative.</p>
+    
+    <p>Inject the same readiness regression in a full cutover rehearsal and a stable 5% traffic canary. Test both versions against the same schema and measure failure until traffic reverts.</p>
+    <figure class="delivery-flow">
+    <figcaption>Execution sequence</figcaption>
+    <ol><li>Verify compatibility</li><li>Route chosen cohort</li><li>Observe gates</li><li>Revert or widen</li></ol>
+  </figure>
+    <figure class="field-chart case-chart">
+    <figcaption>Example comparison <span>Simulated figures</span></figcaption>
+    <ul class="case-metrics"><li class="case-metric">
+      <h3>Requests returning an error <small>%</small></h3>
+      <ul class="chart-rows"><li><span>Full cutover</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:9.8%"></i></span>
+        <strong>9.8% <small>(980/10000)</small></strong></li><li><span>Five-percent canary</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:0.64%"></i></span>
+        <strong>0.64% <small>(64/10000)</small></strong></li></ul>
+    </li></ul>
+  </figure>
+    <h3>Method and limits</h3>
+    <p>Use 10,000 requests across identical failure windows. These rates depend on detection speed, traffic allocation and cohort selection.</p>
+    <a href="/field-guides/worked-examples.csv" download>Download the worked figures (CSV)</a>
+  </section>
 
 
 <aside class="refs" aria-labelledby="refs-h">
   <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
-  <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
+  <p class="refs-note">Primary documentation, standards and research for the methods discussed here.</p>
   <ul>
-    <li><a href="https://dora.dev/guides/dora-metrics/" rel="noopener nofollow" target="_blank">DORA — DevOps Research and Assessment</a><span>Current delivery metrics and their historical definitions.</span></li>
-    <li><a href="https://kubernetes.io/docs/" rel="noopener nofollow" target="_blank">Kubernetes documentation</a><span>Primary reference for the concepts used here.</span></li>
-    <li><a href="https://prometheus.io/docs/" rel="noopener nofollow" target="_blank">Prometheus</a><span>Query language and operational guidance.</span></li>
+    <li><a href="https://sre.google/workbook/canarying-releases/" rel="noopener" target="_blank">Google SRE Workbook · Canarying Releases</a><span>Canary selection, comparison and rollout evaluation.</span></li>
+    <li><a href="https://dora.dev/guides/dora-metrics/" rel="noopener" target="_blank">DORA — DevOps Research and Assessment</a><span>Current delivery metrics and their historical definitions.</span></li>
+    <li><a href="https://kubernetes.io/docs/" rel="noopener" target="_blank">Kubernetes documentation</a><span>Primary reference for the concepts used here.</span></li>
+    <li><a href="https://prometheus.io/docs/" rel="noopener" target="_blank">Prometheus</a><span>Query language and operational guidance.</span></li>
   </ul>
 </aside>
 
@@ -149,7 +176,7 @@ d.setAttribute('data-theme',t);
 
       <footer class="article-foot">
         <div class="row" style="gap:.4rem">
-          <a class="chip chip-plain" href="/insights/?topic=Deployment">Deployment</a><a class="chip chip-plain" href="/topics/platform-engineering/">Platform Engineering</a><a class="chip chip-plain" href="/topics/engineering-practice/">Engineering Practice</a><a class="chip chip-plain" href="/topics/containers/">Containers</a><a class="chip chip-plain" href="/topics/reliability/">Reliability</a>
+          <a class="chip" href="/topics/deployment/">Deployment</a><a class="chip" href="/topics/platform-engineering/">Platform Engineering</a><a class="chip" href="/topics/engineering-practice/">Engineering Practice</a><a class="chip" href="/topics/containers/">Containers</a><a class="chip" href="/topics/reliability/">Reliability</a>
         </div>
         <nav class="prevnext" aria-label="More articles">
           <a href="/insights/java-legacy-modernization-roadmap/"><span>Previous</span><strong>Modernizing Legacy Java: A Roadmap from Java 8 to 21+ Without Stopping the Business</strong></a>
@@ -163,12 +190,12 @@ d.setAttribute('data-theme',t);
     <section class="promo-card promo-techknowen" aria-label="TechKnowen">
       <p class="promo-name">TechKnowen</p>
       <p>Practical reading on software, architecture, and engineering.</p>
-      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+      <a class="card-destination" href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
     </section>
     <section class="promo-card promo-ziggle" aria-label="Ziggle">
       <p class="promo-name">Ziggle</p>
       <p>A new place to play brain teasers.</p>
-      <p class="promo-status">Coming soon</p>
+      <a class="card-destination" href="/projects/ziggle/">Ziggle preview</a> <span class="promo-status">Coming soon</span>
     </section>
   </div>
 </aside>
@@ -177,33 +204,33 @@ d.setAttribute('data-theme',t);
   <section class="section surface hair" style="margin-top:4rem">
     <div class="wrap">
       <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|Python|Platform Engineering|Engineering Practice|Supply Chain Security|Developer Experience|" data-search="python packaging and dependency management in 2026: from requirements.txt chaos to reproducible builds the python packaging story finally consolidated — pyproject.toml, lockfiles, and uv. what a modern, reproducible python dependency setup looks like for teams, and how to migrate an estate of requirements.txt files without drama. python platform engineering engineering practice supply chain security developer experience" data-topic="Platform Engineering" href="/insights/python-packaging-dependency-management/">
+      <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|Python|Platform Engineering|Engineering Practice|Supply Chain Security|Developer Experience|" data-search="python packaging and dependency management in 2026: from requirements.txt chaos to reproducible builds the python packaging story finally consolidated — pyproject.toml, lockfiles, and uv. what a modern, reproducible python dependency setup looks like for teams, and how to migrate an estate of requirements.txt files without drama. python platform engineering engineering practice supply chain security developer experience" data-topic="Platform Engineering">
   <div class="card-art"><img data-article-art="python-packaging-dependency-management" src="/assets/covers/python-packaging-dependency-management.svg?v=6e961a943279" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Platform Engineering</span>
-    <h3 class="card-title">Python Packaging and Dependency Management in 2026: From requirements.txt Chaos to Reproducible Builds</h3>
+    <a class="chip" href="/topics/platform-engineering/">Platform Engineering</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/python-packaging-dependency-management/">Python Packaging and Dependency Management in 2026: From requirements.txt Chaos to Reproducible Builds</a></h3>
     <p class="card-desc">The Python packaging story finally consolidated — pyproject.toml, lockfiles, and uv. What a modern, reproducible Python dependency setup looks like for teams, and how to migrate an estate of requirements.txt files without drama.</p>
     <div class="card-meta"><time datetime="2026-11-23">23 Nov 2026</time><span class="dot"></span><span>4 min read</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|Observability|Programming|Platform Engineering|Reliability|Cloud Architecture|" data-search="structured logging that pays for itself: schema, context, and cost discipline logs are the most expensive telemetry most organizations run and the least designed. event schemas, correlation context, level discipline, sampling, and the cost engineering that keeps the logging bill from becoming the observability program&#39;s obituary. observability programming platform engineering reliability cloud architecture" data-topic="Observability" href="/insights/structured-logging-practices/">
+</article>
+<article class="card" data-card data-topics="|Observability|Programming|Platform Engineering|Reliability|Cloud Architecture|" data-search="structured logging that pays for itself: schema, context, and cost discipline logs are the most expensive telemetry most organizations run and the least designed. event schemas, correlation context, level discipline, sampling, and the cost engineering that keeps the logging bill from becoming the observability program&#39;s obituary. observability programming platform engineering reliability cloud architecture" data-topic="Observability">
   <div class="card-art"><img data-article-art="structured-logging-practices" src="/assets/covers/structured-logging-practices.svg?v=8d951869e265" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Observability</span>
-    <h3 class="card-title">Structured Logging That Pays for Itself: Schema, Context, and Cost Discipline</h3>
+    <a class="chip" href="/topics/observability/">Observability</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/structured-logging-practices/">Structured Logging That Pays for Itself: Schema, Context, and Cost Discipline</a></h3>
     <p class="card-desc">Logs are the most expensive telemetry most organizations run and the least designed. Event schemas, correlation context, level discipline, sampling, and the cost engineering that keeps the logging bill from becoming the observability program&#39;s obituary.</p>
     <div class="card-meta"><time datetime="2025-10-03">3 Oct 2025</time><span class="dot"></span><span>5 min read</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|Cloud Architecture|Reliability|FinOps|Engineering Leadership|" data-search="capacity planning in the cloud era: headroom as an engineered property elastic infrastructure didn&#39;t kill capacity planning — it changed what gets planned. demand modeling, the utilization-vs-headroom trade, quota and constraint archaeology, and the quarterly loop that replaces both waste and 3 am scrambles. cloud architecture reliability finops engineering leadership" data-topic="Cloud Architecture" href="/insights/capacity-planning-engineering/">
+</article>
+<article class="card" data-card data-topics="|Cloud Architecture|Reliability|FinOps|Engineering Leadership|" data-search="capacity planning in the cloud era: headroom as an engineered property elastic infrastructure didn&#39;t kill capacity planning — it changed what gets planned. demand modeling, the utilization-vs-headroom trade, quota and constraint archaeology, and the quarterly loop that replaces both waste and 3 am scrambles. cloud architecture reliability finops engineering leadership" data-topic="Cloud Architecture">
   <div class="card-art"><img data-article-art="capacity-planning-engineering" src="/assets/covers/capacity-planning-engineering.svg?v=2ff332e2bf38" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Cloud Architecture</span>
-    <h3 class="card-title">Capacity Planning in the Cloud Era: Headroom as an Engineered Property</h3>
+    <a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/capacity-planning-engineering/">Capacity Planning in the Cloud Era: Headroom as an Engineered Property</a></h3>
     <p class="card-desc">Elastic infrastructure didn&#39;t kill capacity planning — it changed what gets planned. Demand modeling, the utilization-vs-headroom trade, quota and constraint archaeology, and the quarterly loop that replaces both waste and 3 AM scrambles.</p>
     <div class="card-meta"><time datetime="2026-11-09">9 Nov 2026</time><span class="dot"></span><span>5 min read</span></div>
   </div>
-</a></div>
+</article></div>
     </div>
   </section>
 
@@ -283,6 +310,7 @@ d.setAttribute('data-theme',t);
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/follow/">Follow new writing</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
           <li><a href="/notes/">Personal notes</a></li>
@@ -303,7 +331,7 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=a8e7c95a" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=a8e7c95a"></script>
+<script src="/assets/js/site.js?v=bd74be96" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=bd74be96"></script>
 </body>
 </html>

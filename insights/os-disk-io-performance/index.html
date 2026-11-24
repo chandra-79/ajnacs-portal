@@ -33,8 +33,9 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=a8e7c95a">
-<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<link rel="stylesheet" href="/assets/css/site.css?v=bd74be96">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
+<link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
    never flashes the wrong ground or resets someone's text size mid-read. */
@@ -108,6 +109,7 @@ d.setAttribute('data-theme',t);
     </nav></div>
     <div class="article-copy">
       <div class="prose">
+<p class="article-opening">Use a measured storage workload to distinguish a saturated device from an application that is waiting somewhere else.</p>
 <p>Disk I/O problems are the most deceptive category of Linux performance issues. An application stalls, CPU shows low utilisation, memory looks fine — and you discover that everything is waiting on disk. Databases, log pipelines, and container image pulls are the most common offenders. Understanding what the storage stack is telling you is a prerequisite for any serious Linux work.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
 <p><strong>IOPS and p99 at a fixed queue depth.</strong> At a fixed 4 KiB block size and queue depth, record IOPS, throughput and p99 latency. At 25,000 operations/s, throughput is about 102 MB/s in decimal units. A higher queue depth can increase throughput and worsen tails simultaneously.</p>
@@ -271,13 +273,38 @@ sudo bpftrace -e &#39;
 <p>The output is a histogram of I/O completion times in microseconds, showing exactly where the latency distribution sits and whether there are outlier spikes.</p>
 
       </div>
+<section class="field-worksheet worked-example" aria-labelledby="worked-example">
+    <h2 id="worked-example">Worked example</h2>
+    <p class="case-notice">This scenario and its results are illustrative.</p>
+    
+    <p>On an isolated scratch device, compare steady and burst requests with matching reads and writes. Record queue depth, I/O sizes and disk latency alongside application spans.</p>
+    <figure class="delivery-flow">
+    <figcaption>Execution sequence</figcaption>
+    <ol><li>Inspect application wait</li><li>Check device counters</li><li>Replay safe workload</li><li>Match timestamps</li></ol>
+  </figure>
+    <figure class="field-chart case-chart">
+    <figcaption>Example comparison <span>Simulated figures</span></figcaption>
+    <ul class="case-metrics"><li class="case-metric">
+      <h3>p95 read completion <small>ms</small></h3>
+      <ul class="chart-rows"><li><span>Steady fixture</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:17.204301075268816%"></i></span>
+        <strong>3.2</strong></li><li><span>Burst queue fixture</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:100%"></i></span>
+        <strong>18.6</strong></li></ul>
+    </li></ul>
+  </figure>
+    <h3>Method and limits</h3>
+    <p>Replay identical operation sizes at different arrival patterns. This diagnostic contrast does not establish that physical disk latency is the only cause.</p>
+    <a href="/field-guides/worked-examples.csv" download>Download the worked figures (CSV)</a>
+  </section>
 
 
 <aside class="refs" aria-labelledby="refs-h">
   <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
-  <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
+  <p class="refs-note">Primary documentation, standards and research for the methods discussed here.</p>
   <ul>
-    <li><a href="https://www.postgresql.org/docs/current/" rel="noopener nofollow" target="_blank">PostgreSQL documentation</a><span>Configuration and planner behaviour.</span></li>
+    <li><a href="https://docs.kernel.org/admin-guide/iostats.html" rel="noopener" target="_blank">Linux kernel · I/O statistics fields</a><span>Counters and caveats for block device observations.</span></li>
+    <li><a href="https://www.postgresql.org/docs/current/" rel="noopener" target="_blank">PostgreSQL documentation</a><span>Configuration and planner behaviour.</span></li>
   </ul>
 </aside>
 
@@ -285,7 +312,7 @@ sudo bpftrace -e &#39;
 
       <footer class="article-foot">
         <div class="row" style="gap:.4rem">
-          <a class="chip chip-plain" href="/topics/programming/">Programming</a><a class="chip chip-plain" href="/topics/fundamentals/">Fundamentals</a>
+          <a class="chip" href="/topics/programming/">Programming</a><a class="chip" href="/topics/fundamentals/">Fundamentals</a>
         </div>
         <nav class="prevnext" aria-label="More articles">
           <a href="/insights/oracle-db-performance-tuning/"><span>Previous</span><strong>Oracle DB Performance Tuning: The 10 Things That Actually Move the Needle</strong></a>
@@ -299,12 +326,12 @@ sudo bpftrace -e &#39;
     <section class="promo-card promo-techknowen" aria-label="TechKnowen">
       <p class="promo-name">TechKnowen</p>
       <p>Practical reading on software, architecture, and engineering.</p>
-      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+      <a class="card-destination" href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
     </section>
     <section class="promo-card promo-ziggle" aria-label="Ziggle">
       <p class="promo-name">Ziggle</p>
       <p>A new place to play brain teasers.</p>
-      <p class="promo-status">Coming soon</p>
+      <a class="card-destination" href="/projects/ziggle/">Ziggle preview</a> <span class="promo-status">Coming soon</span>
     </section>
   </div>
 </aside>
@@ -313,33 +340,33 @@ sudo bpftrace -e &#39;
   <section class="section surface hair" style="margin-top:4rem">
     <div class="wrap">
       <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|Programming|Fundamentals|" data-search="kernel tuning with sysctl: memory, networking, and i/o the sysctl parameters that actually matter in production — vm reclaim tuning, tcp stack optimisation, file descriptor limits, and the settings that separate a well-tuned server from a default install. programming fundamentals" data-topic="Programming" href="/insights/os-kernel-tuning-sysctl/">
+      <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|Programming|Fundamentals|" data-search="kernel tuning with sysctl: memory, networking, and i/o the sysctl parameters that actually matter in production — vm reclaim tuning, tcp stack optimisation, file descriptor limits, and the settings that separate a well-tuned server from a default install. programming fundamentals" data-topic="Programming">
   <div class="card-art"><img data-article-art="os-kernel-tuning-sysctl" src="/assets/covers/os-kernel-tuning-sysctl.svg?v=a1a105ee70e4" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Programming</span>
-    <h3 class="card-title">Kernel Tuning with sysctl: Memory, Networking, and I/O</h3>
+    <a class="chip" href="/topics/programming/">Programming</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/os-kernel-tuning-sysctl/">Kernel Tuning with sysctl: Memory, Networking, and I/O</a></h3>
     <p class="card-desc">The sysctl parameters that actually matter in production — VM reclaim tuning, TCP stack optimisation, file descriptor limits, and the settings that separate a well-tuned server from a default install.</p>
     <div class="card-meta"><time datetime="2026-09-30">30 Sept 2026</time><span class="dot"></span><span>5 min read</span><span class="dot"></span><span>Series</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|Programming|Fundamentals|" data-search="linux namespaces and cgroups: the foundation of containers how linux namespaces isolate processes, filesystems, networks, and users — and how cgroups enforce resource limits. the primitives that docker, kubernetes, and every container runtime are built on. programming fundamentals" data-topic="Programming" href="/insights/os-namespaces-cgroups/">
+</article>
+<article class="card" data-card data-topics="|Programming|Fundamentals|" data-search="linux namespaces and cgroups: the foundation of containers how linux namespaces isolate processes, filesystems, networks, and users — and how cgroups enforce resource limits. the primitives that docker, kubernetes, and every container runtime are built on. programming fundamentals" data-topic="Programming">
   <div class="card-art"><img data-article-art="os-namespaces-cgroups" src="/assets/covers/os-namespaces-cgroups.svg?v=f7cddf38f8fc" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Programming</span>
-    <h3 class="card-title">Linux Namespaces and cgroups: The Foundation of Containers</h3>
+    <a class="chip" href="/topics/programming/">Programming</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/os-namespaces-cgroups/">Linux Namespaces and cgroups: The Foundation of Containers</a></h3>
     <p class="card-desc">How Linux namespaces isolate processes, filesystems, networks, and users — and how cgroups enforce resource limits. The primitives that Docker, Kubernetes, and every container runtime are built on.</p>
     <div class="card-meta"><time datetime="2026-06-02">2 Jun 2026</time><span class="dot"></span><span>5 min read</span><span class="dot"></span><span>Series</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|Programming|Fundamentals|" data-search="linux storage management: disks, partitions, lvm, filesystems, and mounting how linux storage works from physical disk to mounted filesystem — block devices, partition tables, lvm for flexible volume management, filesystem creation and tuning, and nfs for network storage. programming fundamentals" data-topic="Programming" href="/insights/os-storage-management/">
+</article>
+<article class="card" data-card data-topics="|Programming|Fundamentals|" data-search="linux storage management: disks, partitions, lvm, filesystems, and mounting how linux storage works from physical disk to mounted filesystem — block devices, partition tables, lvm for flexible volume management, filesystem creation and tuning, and nfs for network storage. programming fundamentals" data-topic="Programming">
   <div class="card-art"><img data-article-art="os-storage-management" src="/assets/covers/os-storage-management.svg?v=d533e5f8f1f4" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Programming</span>
-    <h3 class="card-title">Linux Storage Management: Disks, Partitions, LVM, Filesystems, and Mounting</h3>
+    <a class="chip" href="/topics/programming/">Programming</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/os-storage-management/">Linux Storage Management: Disks, Partitions, LVM, Filesystems, and Mounting</a></h3>
     <p class="card-desc">How Linux storage works from physical disk to mounted filesystem — block devices, partition tables, LVM for flexible volume management, filesystem creation and tuning, and NFS for network storage.</p>
     <div class="card-meta"><time datetime="2024-10-08">8 Oct 2024</time><span class="dot"></span><span>6 min read</span><span class="dot"></span><span>Series</span></div>
   </div>
-</a></div>
+</article></div>
     </div>
   </section>
 
@@ -429,6 +456,7 @@ sudo bpftrace -e &#39;
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/follow/">Follow new writing</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
           <li><a href="/notes/">Personal notes</a></li>
@@ -449,7 +477,7 @@ sudo bpftrace -e &#39;
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=a8e7c95a" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=a8e7c95a"></script>
+<script src="/assets/js/site.js?v=bd74be96" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=bd74be96"></script>
 </body>
 </html>

@@ -33,8 +33,9 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=a8e7c95a">
-<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<link rel="stylesheet" href="/assets/css/site.css?v=bd74be96">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
+<link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
    never flashes the wrong ground or resets someone's text size mid-read. */
@@ -108,6 +109,7 @@ d.setAttribute('data-theme',t);
     </nav></div>
     <div class="article-copy">
       <div class="prose">
+<p class="article-opening">Draw the host, container and service endpoints first, then explain each observed connection.</p>
 <p>Container networking is the source of a disproportionate fraction of production incidents. Containers cannot reach each other, external traffic cannot reach a container, DNS resolution fails inside the container, or a connection that works on localhost fails in a deployed environment. These failures are diagnosable once you understand how the network is actually constructed.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
 <p><strong>Latency and packet loss along the same path.</strong> Compare identical same-node and cross-node requests at a controlled payload and load. If p99 goes from 4 ms to 12 ms, isolate DNS, service routing, encapsulation and policy handling before blaming container networking in general.</p>
@@ -212,14 +214,39 @@ sudo tcpdump -i docker0 -n host &lt;container-ip&gt;
 </ol>
 
       </div>
+<section class="field-worksheet worked-example" aria-labelledby="worked-example">
+    <h2 id="worked-example">Worked example</h2>
+    <p class="case-notice">This scenario and its results are illustrative.</p>
+    
+    <p>Build a lab network with three services. Test internal names and explicitly exposed host routes. Compare the observed reachability matrix against the agreed intent.</p>
+    <figure class="delivery-flow">
+    <figcaption>Execution sequence</figcaption>
+    <ol><li>Map interfaces</li><li>Register service names</li><li>Exercise routes</li><li>Verify expected isolation</li></ol>
+  </figure>
+    <figure class="field-chart case-chart">
+    <figcaption>Example comparison <span>Simulated figures</span></figcaption>
+    <ul class="case-metrics"><li class="case-metric">
+      <h3>Connectivity checks matching intent <small>%</small></h3>
+      <ul class="chart-rows"><li><span>Implicit networking</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:61.111111111111114%"></i></span>
+        <strong>61.111111% <small>(11/18)</small></strong></li><li><span>Explicit service boundaries</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:100%"></i></span>
+        <strong>100% <small>(18/18)</small></strong></li></ul>
+    </li></ul>
+  </figure>
+    <h3>Method and limits</h3>
+    <p>Run the same 18 benign tests from the same namespaces. Revisit policy and ports before claiming an application is private.</p>
+    <a href="/field-guides/worked-examples.csv" download>Download the worked figures (CSV)</a>
+  </section>
 
 
 <aside class="refs" aria-labelledby="refs-h">
   <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
-  <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
+  <p class="refs-note">Primary documentation, standards and research for the methods discussed here.</p>
   <ul>
-    <li><a href="https://kubernetes.io/docs/" rel="noopener nofollow" target="_blank">Kubernetes documentation</a><span>Primary reference for the concepts used here.</span></li>
-    <li><a href="https://www.postgresql.org/docs/current/" rel="noopener nofollow" target="_blank">PostgreSQL documentation</a><span>Configuration and planner behaviour.</span></li>
+    <li><a href="https://kubernetes.io/docs/concepts/services-networking/network-policies/" rel="noopener" target="_blank">Kubernetes Network Policies</a><span>Additive allow rules, scope and implementation prerequisites.</span></li>
+    <li><a href="https://kubernetes.io/docs/" rel="noopener" target="_blank">Kubernetes documentation</a><span>Primary reference for the concepts used here.</span></li>
+    <li><a href="https://www.postgresql.org/docs/current/" rel="noopener" target="_blank">PostgreSQL documentation</a><span>Configuration and planner behaviour.</span></li>
   </ul>
 </aside>
 
@@ -227,7 +254,7 @@ sudo tcpdump -i docker0 -n host &lt;container-ip&gt;
 
       <footer class="article-foot">
         <div class="row" style="gap:.4rem">
-          <a class="chip chip-plain" href="/topics/devsecops/">DevSecOps</a><a class="chip chip-plain" href="/topics/fundamentals/">Fundamentals</a>
+          <a class="chip" href="/topics/devsecops/">DevSecOps</a><a class="chip" href="/topics/fundamentals/">Fundamentals</a>
         </div>
         <nav class="prevnext" aria-label="More articles">
           <a href="/insights/kubernetes-security-hardening/"><span>Previous</span><strong>Kubernetes Security Hardening: The Controls That Actually Reduce Attack Surface</strong></a>
@@ -241,12 +268,12 @@ sudo tcpdump -i docker0 -n host &lt;container-ip&gt;
     <section class="promo-card promo-techknowen" aria-label="TechKnowen">
       <p class="promo-name">TechKnowen</p>
       <p>Practical reading on software, architecture, and engineering.</p>
-      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+      <a class="card-destination" href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
     </section>
     <section class="promo-card promo-ziggle" aria-label="Ziggle">
       <p class="promo-name">Ziggle</p>
       <p>A new place to play brain teasers.</p>
-      <p class="promo-status">Coming soon</p>
+      <a class="card-destination" href="/projects/ziggle/">Ziggle preview</a> <span class="promo-status">Coming soon</span>
     </section>
   </div>
 </aside>
@@ -255,33 +282,33 @@ sudo tcpdump -i docker0 -n host &lt;container-ip&gt;
   <section class="section surface hair" style="margin-top:4rem">
     <div class="wrap">
       <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|DevSecOps|Fundamentals|" data-search="container security: the specific misconfigurations that open production systems to attack running containers as root, privileged mode, unrestricted capabilities, exposed docker sockets — the container security mistakes that appear in breach reports and how to prevent them systematically. devsecops fundamentals" data-topic="DevSecOps" href="/insights/containers-security/">
+      <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|DevSecOps|Fundamentals|" data-search="container security: the specific misconfigurations that open production systems to attack running containers as root, privileged mode, unrestricted capabilities, exposed docker sockets — the container security mistakes that appear in breach reports and how to prevent them systematically. devsecops fundamentals" data-topic="DevSecOps">
   <div class="card-art"><img data-article-art="containers-security" src="/assets/covers/containers-security.svg?v=8f7989b6d4dd" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">DevSecOps</span>
-    <h3 class="card-title">Container Security: The Specific Misconfigurations That Open Production Systems to Attack</h3>
+    <a class="chip" href="/topics/devsecops/">DevSecOps</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/containers-security/">Container Security: The Specific Misconfigurations That Open Production Systems to Attack</a></h3>
     <p class="card-desc">Running containers as root, privileged mode, unrestricted capabilities, exposed Docker sockets — the container security mistakes that appear in breach reports and how to prevent them systematically.</p>
     <div class="card-meta"><time datetime="2026-09-28">28 Sept 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|DevSecOps|Fundamentals|" data-search="what containers actually are — not the marketing version containers are not lightweight vms. they are processes with resource constraints and namespace isolation. understanding the actual mechanism makes you a better user of docker, kubernetes, and every container runtime. devsecops fundamentals" data-topic="DevSecOps" href="/insights/containers-what-they-actually-are/">
+</article>
+<article class="card" data-card data-topics="|DevSecOps|Fundamentals|" data-search="what containers actually are — not the marketing version containers are not lightweight vms. they are processes with resource constraints and namespace isolation. understanding the actual mechanism makes you a better user of docker, kubernetes, and every container runtime. devsecops fundamentals" data-topic="DevSecOps">
   <div class="card-art"><img data-article-art="containers-what-they-actually-are" src="/assets/covers/containers-what-they-actually-are.svg?v=ab1bf2998d29" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">DevSecOps</span>
-    <h3 class="card-title">What Containers Actually Are — Not the Marketing Version</h3>
+    <a class="chip" href="/topics/devsecops/">DevSecOps</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/containers-what-they-actually-are/">What Containers Actually Are — Not the Marketing Version</a></h3>
     <p class="card-desc">Containers are not lightweight VMs. They are processes with resource constraints and namespace isolation. Understanding the actual mechanism makes you a better user of Docker, Kubernetes, and every container runtime.</p>
     <div class="card-meta"><time datetime="2026-07-30">30 Jul 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|DevSecOps|Fundamentals|" data-search="writing production-grade dockerfiles: the decisions that actually matter multi-stage builds, minimal base images, layer caching, non-root users, build arguments, and the specific dockerfile patterns that separate a working image from a secure, efficient, maintainable one. devsecops fundamentals" data-topic="DevSecOps" href="/insights/containers-production-dockerfiles/">
+</article>
+<article class="card" data-card data-topics="|DevSecOps|Fundamentals|" data-search="writing production-grade dockerfiles: the decisions that actually matter multi-stage builds, minimal base images, layer caching, non-root users, build arguments, and the specific dockerfile patterns that separate a working image from a secure, efficient, maintainable one. devsecops fundamentals" data-topic="DevSecOps">
   <div class="card-art"><img data-article-art="containers-production-dockerfiles" src="/assets/covers/containers-production-dockerfiles.svg?v=d3341ad17a87" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">DevSecOps</span>
-    <h3 class="card-title">Writing Production-Grade Dockerfiles: The Decisions That Actually Matter</h3>
+    <a class="chip" href="/topics/devsecops/">DevSecOps</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/containers-production-dockerfiles/">Writing Production-Grade Dockerfiles: The Decisions That Actually Matter</a></h3>
     <p class="card-desc">Multi-stage builds, minimal base images, layer caching, non-root users, build arguments, and the specific Dockerfile patterns that separate a working image from a secure, efficient, maintainable one.</p>
     <div class="card-meta"><time datetime="2026-06-24">24 Jun 2026</time><span class="dot"></span><span>3 min read</span><span class="dot"></span><span>Series</span></div>
   </div>
-</a></div>
+</article></div>
     </div>
   </section>
 
@@ -371,6 +398,7 @@ sudo tcpdump -i docker0 -n host &lt;container-ip&gt;
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/follow/">Follow new writing</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
           <li><a href="/notes/">Personal notes</a></li>
@@ -391,7 +419,7 @@ sudo tcpdump -i docker0 -n host &lt;container-ip&gt;
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=a8e7c95a" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=a8e7c95a"></script>
+<script src="/assets/js/site.js?v=bd74be96" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=bd74be96"></script>
 </body>
 </html>

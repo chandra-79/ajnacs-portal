@@ -33,8 +33,9 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=a8e7c95a">
-<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<link rel="stylesheet" href="/assets/css/site.css?v=bd74be96">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
+<link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
    never flashes the wrong ground or resets someone's text size mid-read. */
@@ -105,6 +106,7 @@ d.setAttribute('data-theme',t);
 </nav></div>
     <div class="article-copy">
       <div class="prose">
+<p class="article-opening">A performance recommendation should identify the plan or resource that dominates the workload.</p>
 <p>PostgreSQL ships with defaults that are deliberately conservative — tuned for a server with 256MB of RAM to avoid out-of-memory failures on resource-constrained machines. Production deployments on modern hardware leave most of that performance on the table.</p>
 <p>This isn&#39;t a comprehensive tuning guide (PostgreSQL&#39;s performance characteristics depend heavily on workload, hardware, and access patterns). It&#39;s the settings that matter most for most production workloads, with the reasoning behind each.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
@@ -122,7 +124,7 @@ d.setAttribute('data-theme',t);
 <p><strong><code>wal_buffers</code></strong>: WAL write buffer. Default is usually auto-tuned to 1/32 of shared_buffers (max 16MB). <code>wal_buffers = 16MB</code> is fine for most workloads.</p>
 <p><strong><code>checkpoint_completion_target</code></strong>: spreads checkpoint writes over a fraction of the checkpoint interval. Default is 0.9 (90%). Keep this at 0.9 — it prevents I/O spikes from checkpoint activity.</p>
 <p><strong><code>max_wal_size</code></strong>: controls how large the WAL can grow between checkpoints. Default is 1GB. For write-heavy workloads, increasing this reduces checkpoint frequency: <code>max_wal_size = 4GB</code>.</p>
-<p><strong><code>synchronous_commit</code></strong>: whether transactions wait for WAL to be durably written to disk before returning. Default <code>on</code> provides maximum durability. <code>synchronous_commit = off</code> improves write throughput significantly by making commits asynchronous — with the trade-off that up to <code>wal_writer_delay</code> (200ms by default) of committed transactions can be lost in a crash. Acceptable for some workloads (logging, analytics); never acceptable for financial or critical data.</p>
+<p><strong><code>synchronous_commit</code></strong> controls how a commit waits for local or configured replication durability. With <code>off</code>, PostgreSQL can report success before the WAL is flushed. The documented risk window can be up to three times <code>wal_writer_delay</code>, or up to 600 ms at 200 ms. Change this setting only for transactions whose owners explicitly accept losing acknowledged writes. See <a href="https://www.postgresql.org/docs/current/wal-async-commit.html" rel="noopener" target="_blank">PostgreSQL asynchronous commit</a>.</p>
 <h2 id="connection-management-don39t-skip-pgbouncer"><a class="h-anchor" href="#connection-management-don39t-skip-pgbouncer" aria-hidden="true" tabindex="-1">#</a>Connection management: don&#39;t skip PgBouncer</h2>
 <p>PostgreSQL&#39;s connection model is one-process-per-connection. Each connection creates a backend process that consumes ~5-10MB of memory. A PostgreSQL instance with 500 direct connections has committed 2.5-5GB of memory to connection overhead before a single query runs.</p>
 <p><code>max_connections = 100</code> (the default) is surprisingly low for many applications. Increasing it directly has diminishing returns — the memory overhead grows, and PostgreSQL&#39;s connection management doesn&#39;t scale linearly.</p>
@@ -167,13 +169,38 @@ SELECT * FROM orders WHERE customer_id = 123 AND status = &#39;pending&#39;;
 <p><em>Working through a PostgreSQL performance problem or setting up a production database configuration? <a href="/contact/">Happy to look at specifics.</a></em></p>
 
       </div>
+<section class="field-worksheet worked-example" aria-labelledby="worked-example">
+    <h2 id="worked-example">Worked example</h2>
+    <p class="case-notice">This scenario and its results are illustrative.</p>
+    
+    <p>Capture representative query parameters and run controlled EXPLAIN analysis in staging. Compare mixed read and write load before adopting an index or changing a wide server setting.</p>
+    <figure class="delivery-flow">
+    <figcaption>Execution sequence</figcaption>
+    <ol><li>Capture fingerprint</li><li>Inspect plan</li><li>Replay mixed load</li><li>Review trade-off</li></ol>
+  </figure>
+    <figure class="field-chart case-chart">
+    <figcaption>Example comparison <span>Simulated figures</span></figcaption>
+    <ul class="case-metrics"><li class="case-metric">
+      <h3>p95 query latency <small>ms</small></h3>
+      <ul class="chart-rows"><li><span>Baseline plan</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:100%"></i></span>
+        <strong>760</strong></li><li><span>Validated candidate index</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:20.394736842105264%"></i></span>
+        <strong>155</strong></li></ul>
+    </li></ul>
+  </figure>
+    <h3>Method and limits</h3>
+    <p>Replay identical read parameters and data. Report write p95 and index size so the read result can be weighed against the extra work.</p>
+    <a href="/field-guides/worked-examples.csv" download>Download the worked figures (CSV)</a>
+  </section>
 
 
 <aside class="refs" aria-labelledby="refs-h">
   <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
-  <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
+  <p class="refs-note">Primary documentation, standards and research for the methods discussed here.</p>
   <ul>
-    <li><a href="https://www.postgresql.org/docs/current/" rel="noopener nofollow" target="_blank">PostgreSQL documentation</a><span>Configuration and planner behaviour.</span></li>
+    <li><a href="https://www.postgresql.org/docs/current/using-explain.html" rel="noopener" target="_blank">PostgreSQL · Using EXPLAIN</a><span>Planner estimates, execution evidence and measurement overhead.</span></li>
+    <li><a href="https://www.postgresql.org/docs/current/" rel="noopener" target="_blank">PostgreSQL documentation</a><span>Configuration and planner behaviour.</span></li>
   </ul>
 </aside>
 
@@ -181,7 +208,7 @@ SELECT * FROM orders WHERE customer_id = 123 AND status = &#39;pending&#39;;
 
       <footer class="article-foot">
         <div class="row" style="gap:.4rem">
-          <a class="chip chip-plain" href="/topics/data-engineering/">Data Engineering</a><a class="chip chip-plain" href="/topics/programming/">Programming</a><a class="chip chip-plain" href="/topics/cloud-architecture/">Cloud Architecture</a>
+          <a class="chip" href="/topics/data-engineering/">Data Engineering</a><a class="chip" href="/topics/programming/">Programming</a><a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a>
         </div>
         <nav class="prevnext" aria-label="More articles">
           <a href="/insights/ai-cost-management-production/"><span>Previous</span><strong>AI Cost Management in Production: Controlling Token Spend Without Degrading Quality</strong></a>
@@ -195,12 +222,12 @@ SELECT * FROM orders WHERE customer_id = 123 AND status = &#39;pending&#39;;
     <section class="promo-card promo-techknowen" aria-label="TechKnowen">
       <p class="promo-name">TechKnowen</p>
       <p>Practical reading on software, architecture, and engineering.</p>
-      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+      <a class="card-destination" href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
     </section>
     <section class="promo-card promo-ziggle" aria-label="Ziggle">
       <p class="promo-name">Ziggle</p>
       <p>A new place to play brain teasers.</p>
-      <p class="promo-status">Coming soon</p>
+      <a class="card-destination" href="/projects/ziggle/">Ziggle preview</a> <span class="promo-status">Coming soon</span>
     </section>
   </div>
 </aside>
@@ -209,33 +236,33 @@ SELECT * FROM orders WHERE customer_id = 123 AND status = &#39;pending&#39;;
   <section class="section surface hair" style="margin-top:4rem">
     <div class="wrap">
       <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|Performance|Programming|Cloud Architecture|Data Engineering|FinOps|" data-search="compression in production: choosing between gzip, zstd, lz4, and brotli like it matters compression is a three-way trade — ratio, speed, and cpu — that most systems set once by default and never revisit. the algorithm landscape, placement decisions across web, storage, and streaming, dictionary compression&#39;s quiet superpower, and the measurement discipline. performance programming cloud architecture data engineering finops" data-topic="Performance" href="/insights/compression-selection-guide/">
+      <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|Performance|Programming|Cloud Architecture|Data Engineering|FinOps|" data-search="compression in production: choosing between gzip, zstd, lz4, and brotli like it matters compression is a three-way trade — ratio, speed, and cpu — that most systems set once by default and never revisit. the algorithm landscape, placement decisions across web, storage, and streaming, dictionary compression&#39;s quiet superpower, and the measurement discipline. performance programming cloud architecture data engineering finops" data-topic="Performance">
   <div class="card-art"><img data-article-art="compression-selection-guide" src="/assets/covers/compression-selection-guide.svg?v=841ffbacef2b" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Performance</span>
-    <h3 class="card-title">Compression in Production: Choosing Between gzip, zstd, lz4, and Brotli Like It Matters</h3>
+    <a class="chip" href="/topics/performance/">Performance</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/compression-selection-guide/">Compression in Production: Choosing Between gzip, zstd, lz4, and Brotli Like It Matters</a></h3>
     <p class="card-desc">Compression is a three-way trade — ratio, speed, and CPU — that most systems set once by default and never revisit. The algorithm landscape, placement decisions across web, storage, and streaming, dictionary compression&#39;s quiet superpower, and the measurement discipline.</p>
     <div class="card-meta"><time datetime="2026-10-12">12 Oct 2026</time><span class="dot"></span><span>5 min read</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|Programming|Architecture|Cloud Architecture|" data-search="api design for enterprise systems: the decisions that age well an api that&#39;s easy to build against is easy to build wrong. the decisions around versioning, error models, pagination, idempotency, and authentication compound over time — here&#39;s how to make the ones that don&#39;t cause regret. programming architecture cloud architecture" data-topic="Programming" href="/insights/api-design-enterprise/">
+</article>
+<article class="card" data-card data-topics="|Programming|Architecture|Cloud Architecture|" data-search="api design for enterprise systems: the decisions that age well an api that&#39;s easy to build against is easy to build wrong. the decisions around versioning, error models, pagination, idempotency, and authentication compound over time — here&#39;s how to make the ones that don&#39;t cause regret. programming architecture cloud architecture" data-topic="Programming">
   <div class="card-art"><img data-article-art="api-design-enterprise" src="/assets/covers/api-design-enterprise.svg?v=d197ddfe2b3d" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Programming</span>
-    <h3 class="card-title">API Design for Enterprise Systems: The Decisions That Age Well</h3>
+    <a class="chip" href="/topics/programming/">Programming</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/api-design-enterprise/">API Design for Enterprise Systems: The Decisions That Age Well</a></h3>
     <p class="card-desc">An API that&#39;s easy to build against is easy to build wrong. The decisions around versioning, error models, pagination, idempotency, and authentication compound over time — here&#39;s how to make the ones that don&#39;t cause regret.</p>
     <div class="card-meta"><time datetime="2026-11-06">6 Nov 2026</time><span class="dot"></span><span>5 min read</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|Programming|Architecture|Cloud Architecture|" data-search="system design patterns every backend engineer should know cqrs, event sourcing, saga pattern, outbox pattern — the patterns that solve specific distributed systems problems, what trade-offs they introduce, and when the simpler option is actually the right one. programming architecture cloud architecture" data-topic="Programming" href="/insights/system-design-patterns-backend/">
+</article>
+<article class="card" data-card data-topics="|Programming|Architecture|Cloud Architecture|" data-search="system design patterns every backend engineer should know cqrs, event sourcing, saga pattern, outbox pattern — the patterns that solve specific distributed systems problems, what trade-offs they introduce, and when the simpler option is actually the right one. programming architecture cloud architecture" data-topic="Programming">
   <div class="card-art"><img data-article-art="system-design-patterns-backend" src="/assets/covers/system-design-patterns-backend.svg?v=1cc422a8deab" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Programming</span>
-    <h3 class="card-title">System Design Patterns Every Backend Engineer Should Know</h3>
+    <a class="chip" href="/topics/programming/">Programming</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/system-design-patterns-backend/">System Design Patterns Every Backend Engineer Should Know</a></h3>
     <p class="card-desc">CQRS, event sourcing, saga pattern, outbox pattern — the patterns that solve specific distributed systems problems, what trade-offs they introduce, and when the simpler option is actually the right one.</p>
     <div class="card-meta"><time datetime="2026-10-28">28 Oct 2026</time><span class="dot"></span><span>5 min read</span></div>
   </div>
-</a></div>
+</article></div>
     </div>
   </section>
 
@@ -315,6 +342,7 @@ SELECT * FROM orders WHERE customer_id = 123 AND status = &#39;pending&#39;;
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/follow/">Follow new writing</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
           <li><a href="/notes/">Personal notes</a></li>
@@ -335,7 +363,7 @@ SELECT * FROM orders WHERE customer_id = 123 AND status = &#39;pending&#39;;
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=a8e7c95a" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=a8e7c95a"></script>
+<script src="/assets/js/site.js?v=bd74be96" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=bd74be96"></script>
 </body>
 </html>

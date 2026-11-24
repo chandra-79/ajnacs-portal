@@ -33,8 +33,9 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=a8e7c95a">
-<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<link rel="stylesheet" href="/assets/css/site.css?v=bd74be96">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
+<link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
    never flashes the wrong ground or resets someone's text size mid-read. */
@@ -105,6 +106,7 @@ d.setAttribute('data-theme',t);
 </nav></div>
     <div class="article-copy">
       <div class="prose">
+<p class="article-opening">Start JVM tuning from an agreed latency or memory problem and a repeatable load.</p>
 <p>JVM tuning has a reputation problem: it&#39;s either treated as dark magic requiring a specialist with a beard, or dismissed entirely because &quot;the defaults are fine now.&quot; Both takes are wrong. The defaults <em>are</em> dramatically better than a decade ago — and a handful of deliberate decisions still separate services that hum from services that page you.</p>
 <p>Here&#39;s the 2026 version of what&#39;s worth knowing, for engineers running Java services on JDK 17/21+ in containers and clouds.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
@@ -130,7 +132,7 @@ d.setAttribute('data-theme',t);
 <p><strong>High GC CPU, short pauses, everywhere</strong> → allocation rate problem. JFR&#39;s allocation profiling names the call sites; the fix is in code (buffer reuse, streaming instead of materializing), not flags.</p>
 <p><strong>Latency spikes with no GC activity</strong> → look at safepoints in the log (that&#39;s why <code>safepoint</code> is in the logging config). Time-to-safepoint stalls from long-running counted loops or massive array copies masquerade as GC problems while the collector is innocent.</p>
 <p><strong>Process RSS grows, heap flat</strong> → native: direct buffers, metaspace (classloader leak — the classic in anything doing hot redeploys), or a native library. <code>jcmd VM.native_memory</code> after starting with NMT answers which.</p>
-<p>The tools, in the order to reach for them: GC log (free, always there), <code>jcmd</code> (thread dumps, heap histograms, NMT — all safe in production), JFR + JDK Mission Control (the profiler you already have), async-profiler when you want flame graphs with native frames.</p>
+<p>Start with GC logging or a scoped JFR recording. Use <code>jcmd</code> diagnostics after checking the documented impact for that exact command and JDK. Oracle classifies <code>GC.class_histogram</code> and <code>GC.heap_dump</code> as high impact. A heap dump can request a full GC and consume significant disk space. Review the <a href="https://docs.oracle.com/en/java/javase/25/docs/specs/man/jcmd.html" rel="noopener" target="_blank">JDK diagnostic command reference</a>.</p>
 <h2 id="what-modern-java-changed"><a class="h-anchor" href="#what-modern-java-changed" aria-hidden="true" tabindex="-1">#</a>What modern Java changed</h2>
 <p>Three shifts worth internalizing if your mental model dates from JDK 8:</p>
 <p><strong>Virtual threads (JDK 21) change thread math, not heap math.</strong> You&#39;ll stop tuning thread pool sizes for I/O-bound services, and thread-stack memory pressure eases. Allocation and GC behavior stay the same — a million virtual threads all allocating still feed the same collector.</p>
@@ -141,14 +143,39 @@ d.setAttribute('data-theme',t);
 <p>The JVM in 2026 is a superb piece of engineering that mostly tunes itself. Your job is to size it honestly, pick the collector that matches your latency contract, keep the observability flags on, and resist the urge to help it more than that.</p>
 
       </div>
+<section class="field-worksheet worked-example" aria-labelledby="worked-example">
+    <h2 id="worked-example">Worked example</h2>
+    <p class="case-notice">This scenario and its results are illustrative.</p>
+    
+    <p>Compare two heap limits using the same JDK, collector, container budget and fixture. Capture GC events, allocation and service percentiles. Inspect native memory before attributing total RSS to heap.</p>
+    <figure class="delivery-flow">
+    <figcaption>Execution sequence</figcaption>
+    <ol><li>Replay workload</li><li>Collect GC evidence</li><li>Adjust one setting</li><li>Check service SLO</li></ol>
+  </figure>
+    <figure class="field-chart case-chart">
+    <figcaption>Example comparison <span>Simulated figures</span></figcaption>
+    <ul class="case-metrics"><li class="case-metric">
+      <h3>p99 GC pause <small>ms</small></h3>
+      <ul class="chart-rows"><li><span>Baseline heap</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:100%"></i></span>
+        <strong>84</strong></li><li><span>Candidate heap</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:58.333333333333336%"></i></span>
+        <strong>49</strong></li></ul>
+    </li></ul>
+  </figure>
+    <h3>Method and limits</h3>
+    <p>Take the 99th percentile of GC pauses in matched 30-minute soak windows. Application p99 and container memory remain separate gates.</p>
+    <a href="/field-guides/worked-examples.csv" download>Download the worked figures (CSV)</a>
+  </section>
 
 
 <aside class="refs" aria-labelledby="refs-h">
   <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
-  <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
+  <p class="refs-note">Primary documentation, standards and research for the methods discussed here.</p>
   <ul>
-    <li><a href="https://kafka.apache.org/documentation/" rel="noopener nofollow" target="_blank">Apache Kafka documentation</a><span>Partitioning, consumer groups and delivery semantics.</span></li>
-    <li><a href="https://spark.apache.org/docs/latest/" rel="noopener nofollow" target="_blank">Apache Spark</a><span>Execution model and tuning.</span></li>
+    <li><a href="https://docs.oracle.com/en/java/javase/25/docs/specs/man/jcmd.html" rel="noopener" target="_blank">Oracle JDK · jcmd reference</a><span>Diagnostic scope and documented runtime impact.</span></li>
+    <li><a href="https://kafka.apache.org/documentation/" rel="noopener" target="_blank">Apache Kafka documentation</a><span>Partitioning, consumer groups and delivery semantics.</span></li>
+    <li><a href="https://spark.apache.org/docs/latest/" rel="noopener" target="_blank">Apache Spark</a><span>Execution model and tuning.</span></li>
   </ul>
 </aside>
 
@@ -156,7 +183,7 @@ d.setAttribute('data-theme',t);
 
       <footer class="article-foot">
         <div class="row" style="gap:.4rem">
-          <a class="chip chip-plain" href="/insights/?topic=Java">Java</a><a class="chip chip-plain" href="/insights/?topic=JVM">JVM</a><a class="chip chip-plain" href="/topics/performance/">Performance</a><a class="chip chip-plain" href="/topics/cloud-architecture/">Cloud Architecture</a>
+          <a class="chip" href="/topics/java/">Java</a><a class="chip" href="/topics/jvm/">JVM</a><a class="chip" href="/topics/performance/">Performance</a><a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a>
         </div>
         <nav class="prevnext" aria-label="More articles">
           <a href="/insights/compression-selection-guide/"><span>Previous</span><strong>Compression in Production: Choosing Between gzip, zstd, lz4, and Brotli Like It Matters</strong></a>
@@ -170,12 +197,12 @@ d.setAttribute('data-theme',t);
     <section class="promo-card promo-techknowen" aria-label="TechKnowen">
       <p class="promo-name">TechKnowen</p>
       <p>Practical reading on software, architecture, and engineering.</p>
-      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+      <a class="card-destination" href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
     </section>
     <section class="promo-card promo-ziggle" aria-label="Ziggle">
       <p class="promo-name">Ziggle</p>
       <p>A new place to play brain teasers.</p>
-      <p class="promo-status">Coming soon</p>
+      <a class="card-destination" href="/projects/ziggle/">Ziggle preview</a> <span class="promo-status">Coming soon</span>
     </section>
   </div>
 </aside>
@@ -184,33 +211,33 @@ d.setAttribute('data-theme',t);
   <section class="section surface hair" style="margin-top:4rem">
     <div class="wrap">
       <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|Java|JVM|GraalVM|Cloud Architecture|Performance|" data-search="graalvm native image for enterprise java: when compiling ahead of time pays native image turns java applications into instant-starting, memory-lean executables — at the cost of a closed-world assumption that fights two decades of java dynamism. where native compilation genuinely wins, what breaks, and a decision framework. java jvm graalvm cloud architecture performance" data-topic="Cloud Architecture" href="/insights/java-graalvm-native-image/">
+      <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|Java|JVM|GraalVM|Cloud Architecture|Performance|" data-search="graalvm native image for enterprise java: when compiling ahead of time pays native image turns java applications into instant-starting, memory-lean executables — at the cost of a closed-world assumption that fights two decades of java dynamism. where native compilation genuinely wins, what breaks, and a decision framework. java jvm graalvm cloud architecture performance" data-topic="Cloud Architecture">
   <div class="card-art"><img data-article-art="java-graalvm-native-image" src="/assets/covers/java-graalvm-native-image.svg?v=19aa5f526e76" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Cloud Architecture</span>
-    <h3 class="card-title">GraalVM Native Image for Enterprise Java: When Compiling Ahead of Time Pays</h3>
+    <a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/java-graalvm-native-image/">GraalVM Native Image for Enterprise Java: When Compiling Ahead of Time Pays</a></h3>
     <p class="card-desc">Native Image turns Java applications into instant-starting, memory-lean executables — at the cost of a closed-world assumption that fights two decades of Java dynamism. Where native compilation genuinely wins, what breaks, and a decision framework.</p>
     <div class="card-meta"><time datetime="2026-10-26">26 Oct 2026</time><span class="dot"></span><span>5 min read</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|Java|JVM|Concurrency|Performance|Architecture|" data-search="virtual threads in the enterprise: what changes, what doesn&#39;t, and what breaks java 21&#39;s virtual threads promise massive concurrency without reactive complexity. here&#39;s what actually changes in enterprise services — thread pool math, pinning pitfalls, connection pools as the new bottleneck, and when reactive still wins. java jvm concurrency performance architecture" data-topic="Performance" href="/insights/java-virtual-threads-enterprise/">
+</article>
+<article class="card" data-card data-topics="|Java|JVM|Concurrency|Performance|Architecture|" data-search="virtual threads in the enterprise: what changes, what doesn&#39;t, and what breaks java 21&#39;s virtual threads promise massive concurrency without reactive complexity. here&#39;s what actually changes in enterprise services — thread pool math, pinning pitfalls, connection pools as the new bottleneck, and when reactive still wins. java jvm concurrency performance architecture" data-topic="Performance">
   <div class="card-art"><img data-article-art="java-virtual-threads-enterprise" src="/assets/covers/java-virtual-threads-enterprise.svg?v=4020d4af4506" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Performance</span>
-    <h3 class="card-title">Virtual Threads in the Enterprise: What Changes, What Doesn&#39;t, and What Breaks</h3>
+    <a class="chip" href="/topics/performance/">Performance</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/java-virtual-threads-enterprise/">Virtual Threads in the Enterprise: What Changes, What Doesn&#39;t, and What Breaks</a></h3>
     <p class="card-desc">Java 21&#39;s virtual threads promise massive concurrency without reactive complexity. Here&#39;s what actually changes in enterprise services — thread pool math, pinning pitfalls, connection pools as the new bottleneck, and when reactive still wins.</p>
     <div class="card-meta"><time datetime="2026-02-24">24 Feb 2026</time><span class="dot"></span><span>5 min read</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|Performance|Programming|Cloud Architecture|Data Engineering|FinOps|" data-search="compression in production: choosing between gzip, zstd, lz4, and brotli like it matters compression is a three-way trade — ratio, speed, and cpu — that most systems set once by default and never revisit. the algorithm landscape, placement decisions across web, storage, and streaming, dictionary compression&#39;s quiet superpower, and the measurement discipline. performance programming cloud architecture data engineering finops" data-topic="Performance" href="/insights/compression-selection-guide/">
+</article>
+<article class="card" data-card data-topics="|Performance|Programming|Cloud Architecture|Data Engineering|FinOps|" data-search="compression in production: choosing between gzip, zstd, lz4, and brotli like it matters compression is a three-way trade — ratio, speed, and cpu — that most systems set once by default and never revisit. the algorithm landscape, placement decisions across web, storage, and streaming, dictionary compression&#39;s quiet superpower, and the measurement discipline. performance programming cloud architecture data engineering finops" data-topic="Performance">
   <div class="card-art"><img data-article-art="compression-selection-guide" src="/assets/covers/compression-selection-guide.svg?v=841ffbacef2b" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Performance</span>
-    <h3 class="card-title">Compression in Production: Choosing Between gzip, zstd, lz4, and Brotli Like It Matters</h3>
+    <a class="chip" href="/topics/performance/">Performance</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/compression-selection-guide/">Compression in Production: Choosing Between gzip, zstd, lz4, and Brotli Like It Matters</a></h3>
     <p class="card-desc">Compression is a three-way trade — ratio, speed, and CPU — that most systems set once by default and never revisit. The algorithm landscape, placement decisions across web, storage, and streaming, dictionary compression&#39;s quiet superpower, and the measurement discipline.</p>
     <div class="card-meta"><time datetime="2026-10-12">12 Oct 2026</time><span class="dot"></span><span>5 min read</span></div>
   </div>
-</a></div>
+</article></div>
     </div>
   </section>
 
@@ -290,6 +317,7 @@ d.setAttribute('data-theme',t);
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/follow/">Follow new writing</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
           <li><a href="/notes/">Personal notes</a></li>
@@ -310,7 +338,7 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=a8e7c95a" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=a8e7c95a"></script>
+<script src="/assets/js/site.js?v=bd74be96" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=bd74be96"></script>
 </body>
 </html>

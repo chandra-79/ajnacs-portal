@@ -14,7 +14,7 @@
 <meta property="og:title" content="Running LLMs Locally: What Six Months of Daily Use Actually Taught Me">
 <meta property="og:description" content="I started running local LLMs as a cost experiment. It became a privacy practice, a performance benchmark, and an education in what language models actually…">
 <meta property="og:url" content="https://ajnacs.com/insights/running-local-llm-lessons/">
-<meta property="og:image" content="https://ajnacs.com/assets/og/articles/running-local-llm-lessons.png?v=1281b9911fd6">
+<meta property="og:image" content="https://ajnacs.com/assets/og/articles/running-local-llm-lessons.png?v=b19d23e6c229">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Illustration for Running LLMs Locally: What Six Months of Daily Use Actually Taught Me">
@@ -24,7 +24,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Running LLMs Locally: What Six Months of Daily Use Actually Taught Me">
 <meta name="twitter:description" content="I started running local LLMs as a cost experiment. It became a privacy practice, a performance benchmark, and an education in what language models actually…">
-<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/running-local-llm-lessons.png?v=1281b9911fd6">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/running-local-llm-lessons.png?v=b19d23e6c229">
 <meta name="twitter:image:alt" content="Illustration for Running LLMs Locally: What Six Months of Daily Use Actually Taught Me">
 
 <link rel="icon" href="/favicon.ico?v=8affdbd5" sizes="any">
@@ -33,8 +33,9 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=a8e7c95a">
-<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<link rel="stylesheet" href="/assets/css/site.css?v=bd74be96">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
+<link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
    never flashes the wrong ground or resets someone's text size mid-read. */
@@ -49,7 +50,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Running LLMs Locally: What Six Months of Daily Use Actually Taught Me","description":"I started running local LLMs as a cost experiment. It became a privacy practice, a performance benchmark, and an education in what language models actually need to function well. Here's the honest version of what I found.","datePublished":"2025-06-05","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/running-local-llm-lessons/","image":"https://ajnacs.com/assets/og/articles/running-local-llm-lessons.png?v=1281b9911fd6","keywords":"Enterprise AI, Emerging Technology","articleSection":"Enterprise AI","wordCount":986}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Running LLMs Locally: What Six Months of Daily Use Actually Taught Me","description":"I started running local LLMs as a cost experiment. It became a privacy practice, a performance benchmark, and an education in what language models actually need to function well. Here's the honest version of what I found.","datePublished":"2025-06-05","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/running-local-llm-lessons/","image":"https://ajnacs.com/assets/og/articles/running-local-llm-lessons.png?v=b19d23e6c229","keywords":"Enterprise AI, Emerging Technology","articleSection":"Enterprise AI","wordCount":986}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Running LLMs Locally: What Six Months of Daily Use Actually Taught Me"}]}</script>
 </head>
 <body class="article-frame" data-topic="Enterprise AI">
@@ -98,13 +99,14 @@ d.setAttribute('data-theme',t);
       </div>
     </header>
 
-    <div class="article-hero" data-topic="Enterprise AI"><img data-article-art="running-local-llm-lessons" src="/assets/covers/running-local-llm-lessons.svg?v=bcdb3e093b8c" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div>
+    <div class="article-hero" data-topic="Enterprise AI"><img data-article-art="running-local-llm-lessons" src="/assets/covers/running-local-llm-lessons.svg?v=94055d7ab050" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#the-tooling-that-actually-works">The Tooling That Actually Works</a></li><li><a href="#what-hardware-you-actually-need">What Hardware You Actually Need</a></li><li><a href="#the-models-worth-running-locally">The Models Worth Running Locally</a></li><li><a href="#the-enterprise-case-that39s-being-underweighted">The Enterprise Case That&#39;s Being Underweighted</a></li><li><a href="#what-local-llms-still-can39t-do-well">What Local LLMs Still Can&#39;t Do Well</a></li></ol>
 </nav></div>
     <div class="article-copy">
       <div class="prose">
+<p class="article-opening">Local inference is easiest to assess with a repeated task, a realistic context size and a record of what the machine can sustain.</p>
 <p>I started running LLMs locally because I was spending more than I expected on API calls. That&#39;s the honest origin — cost, not principle. What I discovered over the following six months changed how I think about AI infrastructure for enterprise environments more broadly.</p>
 <p>The short version: local LLMs are genuinely useful for a specific set of tasks, the tooling has matured considerably, and the enterprise case for on-premises model hosting is stronger than most cloud-first conversations acknowledge.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
@@ -115,18 +117,18 @@ d.setAttribute('data-theme',t);
 <pre><code class="language-bash">ollama pull llama3.2
 ollama run llama3.2
 </code></pre>
-<p>You&#39;re talking to a model in 60 seconds. The Ollama API exposes <code>/api/chat</code> and <code>/api/generate</code> endpoints compatible enough with OpenAI&#39;s spec that tools like Continue (VS Code extension for AI coding assistance) connect without modification.</p>
+<p>The native Ollama API exposes <code>/api/chat</code> and <code>/api/generate</code>. Tools expecting an OpenAI-style API can use the supported <a href="https://docs.ollama.com/api/openai-compatibility" rel="noopener" target="_blank">compatibility endpoints</a> under <code>/v1/</code> and should verify the operations they need.</p>
 <p><strong>LM Studio</strong> is the right choice if you want a GUI and want to experiment with models from Hugging Face without writing anything. It handles quantised model downloads (GGUF format), has a built-in chat interface, and exposes a local API server. For non-technical stakeholders who want to evaluate local models, LM Studio lowers the barrier considerably.</p>
 <p><strong>Jan</strong> is an open-source alternative to LM Studio worth watching. Lighter footprint, active development, and a clean interface. Not as mature as LM Studio but improving quickly.</p>
 <p>For production-style deployments where you need inference server semantics — batching, concurrent requests, metrics — <strong>llama.cpp server</strong> or <strong>vLLM</strong> (if you have a GPU) are the serious options. Llama.cpp&#39;s server mode serves a subset of the OpenAI API and handles multiple concurrent users reasonably well on CPU-only hardware.</p>
 <h2 id="what-hardware-you-actually-need"><a class="h-anchor" href="#what-hardware-you-actually-need" aria-hidden="true" tabindex="-1">#</a>What Hardware You Actually Need</h2>
 <p>The honest answer: less than the internet will tell you, but more than you might have.</p>
-<p>Apple Silicon is the standout story here. The unified memory architecture means the M-series chips can use all installed RAM as GPU memory, which allows running larger models than any similarly-priced discrete GPU setup. A MacBook Pro M3 Max with 96 GB RAM can run a 70B parameter model at 4-bit quantisation at usable speeds — 15–25 tokens per second, which is slower than a hosted API but fast enough for interactive use.</p>
-<p>On x86 hardware without a GPU, expect 3–8 tokens per second for 7B models and slower still for larger ones. This is workable for batch tasks (summarisation, classification over documents) but frustrating for interactive conversation. If you&#39;re serious about x86 CPU inference, 64 GB RAM minimum and a recent-generation processor with AVX-512 support materially improves throughput.</p>
-<p>GPU acceleration via CUDA or ROCm brings the experience much closer to hosted API response times. An NVIDIA RTX 4090 with 24 GB VRAM handles 13B parameter models at 4-bit quantisation at 80–100 tokens per second — essentially indistinguishable from a hosted API in terms of latency.</p>
+<p>Apple Silicon shares memory across the CPU and GPU. Model weights compete for that memory with context cache, runtime buffers and other processes. Measure the expected context, prompt processing speed, time to first token and decode speed before sizing a machine.</p>
+<p>CPU-only inference can be useful for batch or lower-volume workloads. Benchmark the exact model and quantisation against your response-time target. SIMD instruction support, memory bandwidth, thread count and runtime all affect the result.</p>
+<p>GPU acceleration can change throughput and concurrency. Size memory for weights and the KV cache together, and verify the deployed runtime’s support for your hardware and operators.</p>
 <h2 id="the-models-worth-running-locally"><a class="h-anchor" href="#the-models-worth-running-locally" aria-hidden="true" tabindex="-1">#</a>The Models Worth Running Locally</h2>
 <p>Not every model is worth the weight. My practical shortlist as of mid-2026:</p>
-<p><strong>Llama 3.2 (3B and 8B)</strong> — excellent performance-to-size ratio, strong instruction following, genuinely useful for coding assistance and document tasks on modest hardware.</p>
+<p><strong>Llama 3.2 text models</strong> are published at 1B and 3B. Llama 3.1 includes an 8B model. Compare the exact weights, context and license for the intended use.</p>
 <p><strong>Mistral 7B and Mistral Nemo</strong> — fast, capable, and surprisingly good at structured output tasks. The Nemo variant has a 128K context window, which changes what you can do with long documents locally.</p>
 <p><strong>Qwen2.5 (7B and 14B)</strong> — strong multilingual capability and notably good coding performance. If your work involves multiple languages, Qwen outperforms the Llama family here.</p>
 <p><strong>Phi-4</strong> — Microsoft&#39;s small model series punches well above its parameter count for reasoning tasks. Excellent choice when you need capability on constrained hardware.</p>
@@ -134,8 +136,8 @@ ollama run llama3.2
 <h2 id="the-enterprise-case-that39s-being-underweighted"><a class="h-anchor" href="#the-enterprise-case-that39s-being-underweighted" aria-hidden="true" tabindex="-1">#</a>The Enterprise Case That&#39;s Being Underweighted</h2>
 <p>The privacy argument is obvious — data that doesn&#39;t leave your network can&#39;t be logged, trained on, or breached at the provider level. But there are stronger enterprise arguments that get less attention.</p>
 <p><strong>Air-gapped environments.</strong> Classified or sensitive networks can&#39;t reach commercial AI APIs. Local inference is not optional — it&#39;s the only path. The same applies to operational technology networks in critical infrastructure.</p>
-<p><strong>Latency-sensitive agentic workflows.</strong> When you&#39;re running multi-step agentic processes — code review, document analysis pipelines, evaluation loops — API call latency compounds. Local inference at 50+ tokens per second, even for a smaller model, can deliver end-to-end pipeline performance that beats a larger hosted model with network overhead.</p>
-<p><strong>Cost at scale.</strong> The break-even calculation depends on usage patterns, but organizations running more than 10 million tokens per day against commercial APIs are typically at a scale where dedicated inference infrastructure pays for itself within 12–18 months.</p>
+<p><strong>Multi-step workflows.</strong> Time the whole run, including prompt processing, generation and system calls. A local runtime avoids the trip to the inference provider, while model speed, capacity and workflow quality still need testing.</p>
+<p><strong>Cost at scale.</strong> Estimate effective cost per accepted result across expected load. Include idle capacity, the host, maintenance and the quality effects of quantisation. A break-even point requires measured utilisation and quality, and depends on the alternative service price.</p>
 <h2 id="what-local-llms-still-can39t-do-well"><a class="h-anchor" href="#what-local-llms-still-can39t-do-well" aria-hidden="true" tabindex="-1">#</a>What Local LLMs Still Can&#39;t Do Well</h2>
 <p>Honesty requires balance. Local models lag hosted frontier models on:</p>
 <ul>
@@ -148,13 +150,61 @@ ollama run llama3.2
 <p><em>Running local inference in production or evaluating it for an enterprise use case? I&#39;m interested in comparing notes — <a href="/contact/">get in touch</a>.</em></p>
 
       </div>
+<section class="field-worksheet worked-example" aria-labelledby="worked-example">
+    <h2 id="worked-example">Worked example</h2>
+    <p class="case-notice">This scenario and its results are illustrative.</p>
+    
+    <p>As a reader experiment, use a fixed prompt set and test two model configurations with identical output limits. Record first-token latency, answer review and memory pressure rather than relying on model size alone.</p>
+    <figure class="delivery-flow">
+    <figcaption>Execution sequence</figcaption>
+    <ol><li>Freeze prompts</li><li>Load model</li><li>Time first token</li><li>Review answers</li></ol>
+  </figure>
+    <figure class="field-chart case-chart">
+    <figcaption>Example comparison <span>Simulated figures</span></figcaption>
+    <ul class="case-metrics"><li class="case-metric">
+      <h3>Median time to first token <small>seconds</small></h3>
+      <ul class="chart-rows"><li><span>Larger fixture configuration</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:100%"></i></span>
+        <strong>3.8</strong></li><li><span>Smaller fixture configuration</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:36.8421052631579%"></i></span>
+        <strong>1.4</strong></li></ul>
+    </li></ul>
+  </figure>
+    <h3>Method and limits</h3>
+    <p>Use 20 scripted prompts and warm the environment in the same way. These illustrative results are independent of the author&#39;s personal experience.</p>
+    <a href="/field-guides/worked-examples.csv" download>Download the worked figures (CSV)</a>
+  </section>
 
-
+<section class="field-worksheet" aria-labelledby="local-run">
+  <h2 id="local-run">A measured CPU-only inference run</h2>
+  <p>We ran the same short prompt three times per model on one Apple Silicon machine using CPU-only llama.cpp, three threads and a 2,048-token context. These are local lab measurements.</p>
+  <figure class="field-chart case-chart">
+    <figcaption>Median decoder throughput <span>Measured in Ajna&#39;s local lab</span></figcaption>
+    <ul class="case-metrics"><li class="case-metric">
+      <h3>Decode throughput <small>tokens/s</small></h3>
+      <ul class="chart-rows"><li><span>Gemma 4 E2B Q8_0</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:100%"></i></span>
+        <strong>28.38</strong></li><li><span>Qwen3-Coder 30B</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:62.33262861169839%"></i></span>
+        <strong>17.69</strong></li></ul>
+    </li></ul>
+  </figure>
+  <h3>How to reproduce it</h3>
+  <p>The script alternates the two weight files over three runs. It requests 64 generated tokens at temperature zero. The chart uses the median of the runner’s reported evaluation throughput across 63 timed decode steps per run. The CSV retains timings, token counts and the runner build.</p>
+  <ul>
+    <li><a href="/field-guides/data/local-inference.csv" download>Download the six observations (CSV)</a></li>
+    <li><a href="/field-guides/data/run-local-inference-lab.py" download>Download the Python runner</a></li>
+  </ul>
+  <p>Tokenisers and weight formats differ. The run measures decoding on one short prompt with one model loaded at a time. It does not measure answer quality, first-token latency, memory, GPU acceleration or multi-user capacity.</p>
+  <pre><code>python3 run-local-inference-lab.py /path/to/gemma.gguf /path/to/qwen.gguf results.csv</code></pre>
+</section>
 <aside class="refs" aria-labelledby="refs-h">
   <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
-  <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
+  <p class="refs-note">Primary documentation, standards and research for the methods discussed here.</p>
   <ul>
-    <li><a href="https://huggingface.co/docs" rel="noopener nofollow" target="_blank">Hugging Face</a><span>Model and dataset hubs.</span></li>
+    <li><a href="https://github.com/ggml-org/llama.cpp" rel="noopener" target="_blank">llama.cpp · Source and usage</a><span>Inference runtime and CPU or GPU execution choices.</span></li>
+    <li><a href="https://arxiv.org/abs/2309.06180" rel="noopener" target="_blank">Kwon et al. · Efficient Memory Management for LLM Serving, SOSP</a><span>KV cache and serving under dynamic workloads.</span></li>
+    <li><a href="https://huggingface.co/docs" rel="noopener" target="_blank">Hugging Face</a><span>Model and dataset hubs.</span></li>
   </ul>
 </aside>
 
@@ -162,7 +212,7 @@ ollama run llama3.2
 
       <footer class="article-foot">
         <div class="row" style="gap:.4rem">
-          <a class="chip chip-plain" href="/topics/enterprise-ai/">Enterprise AI</a><a class="chip chip-plain" href="/insights/?topic=Emerging%20Technology">Emerging Technology</a>
+          <a class="chip" href="/topics/enterprise-ai/">Enterprise AI</a><a class="chip" href="/topics/emerging-technology/">Emerging Technology</a>
         </div>
         <nav class="prevnext" aria-label="More articles">
           <a href="/insights/aws-savings-plans/"><span>Previous</span><strong>AWS Savings Plans vs Reserved Instances: Making the Commitment Decision</strong></a>
@@ -176,12 +226,12 @@ ollama run llama3.2
     <section class="promo-card promo-techknowen" aria-label="TechKnowen">
       <p class="promo-name">TechKnowen</p>
       <p>Practical reading on software, architecture, and engineering.</p>
-      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+      <a class="card-destination" href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
     </section>
     <section class="promo-card promo-ziggle" aria-label="Ziggle">
       <p class="promo-name">Ziggle</p>
       <p>A new place to play brain teasers.</p>
-      <p class="promo-status">Coming soon</p>
+      <a class="card-destination" href="/projects/ziggle/">Ziggle preview</a> <span class="promo-status">Coming soon</span>
     </section>
   </div>
 </aside>
@@ -190,33 +240,33 @@ ollama run llama3.2
   <section class="section surface hair" style="margin-top:4rem">
     <div class="wrap">
       <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|Quantum Computing|Enterprise AI|Emerging Technology|" data-search="quantum computing milestones, 2019–2025: what the evidence shows distinguish demonstrations in random circuit sampling, quantum error correction, annealing, and experimental qubit architectures. quantum computing enterprise ai emerging technology" data-topic="Enterprise AI" href="/insights/quantum-computing-race-2025/">
+      <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|Quantum Computing|Enterprise AI|Emerging Technology|" data-search="quantum computing milestones, 2019–2025: what the evidence shows distinguish demonstrations in random circuit sampling, quantum error correction, annealing, and experimental qubit architectures. quantum computing enterprise ai emerging technology" data-topic="Enterprise AI">
   <div class="card-art"><img data-article-art="quantum-computing-race-2025" src="/assets/covers/quantum-computing-race-2025.svg?v=182be1a3299b" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Enterprise AI</span>
-    <h3 class="card-title">Quantum Computing Milestones, 2019–2025: What the Evidence Shows</h3>
+    <a class="chip" href="/topics/enterprise-ai/">Enterprise AI</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/quantum-computing-race-2025/">Quantum Computing Milestones, 2019–2025: What the Evidence Shows</a></h3>
     <p class="card-desc">Distinguish demonstrations in random circuit sampling, quantum error correction, annealing, and experimental qubit architectures.</p>
     <div class="card-meta"><time datetime="2026-11-18">18 Nov 2026</time><span class="dot"></span><span>2 min read</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|Programming|Enterprise AI|Developer Tools|" data-search="ai coding assistants in 2026: a practical comparison compare ai coding assistants by workflow, review time, patch acceptance and access controls. includes a practical scoring method for an engineering-team pilot. programming enterprise ai developer tools" data-topic="Programming" href="/insights/ai-coding-assistants-comparison-2026/">
+</article>
+<article class="card" data-card data-topics="|Programming|Enterprise AI|Developer Tools|" data-search="ai coding assistants in 2026: a practical comparison compare ai coding assistants by workflow, review time, patch acceptance and access controls. includes a practical scoring method for an engineering-team pilot. programming enterprise ai developer tools" data-topic="Programming">
   <div class="card-art"><img data-article-art="ai-coding-assistants-comparison-2026" src="/assets/covers/photos/ai-coding-assistants-comparison-2026.jpg?v=4205b08ba43a" srcset="/assets/covers/photos/ai-coding-assistants-comparison-2026-640.jpg?v=4205b08ba43a 640w, /assets/covers/photos/ai-coding-assistants-comparison-2026.jpg?v=4205b08ba43a 1280w" sizes="(min-width: 800px) 420px, 100vw" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Programming</span>
-    <h3 class="card-title">AI Coding Assistants in 2026: A Practical Comparison</h3>
+    <a class="chip" href="/topics/programming/">Programming</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/ai-coding-assistants-comparison-2026/">AI Coding Assistants in 2026: A Practical Comparison</a></h3>
     <p class="card-desc">Compare AI coding assistants by workflow, review time, patch acceptance and access controls. Includes a practical scoring method for an engineering-team pilot.</p>
     <div class="card-meta"><time datetime="2026-11-16">16 Nov 2026</time><span class="dot"></span><span>2 min read</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|AI &amp; MLOps|Programming|Enterprise AI|" data-search="prompt engineering for production systems: beyond the demo prompt engineering for a demo is different from prompt engineering for a system that runs reliably at scale. here&#39;s how to design prompts for consistency, build evaluation frameworks, and manage the failure modes that appear in production but not in testing. ai &amp; mlops programming enterprise ai" data-topic="AI &amp; MLOps" href="/insights/prompt-engineering-production/">
+</article>
+<article class="card" data-card data-topics="|AI &amp; MLOps|Programming|Enterprise AI|" data-search="prompt engineering for production systems: beyond the demo prompt engineering for a demo is different from prompt engineering for a system that runs reliably at scale. here&#39;s how to design prompts for consistency, build evaluation frameworks, and manage the failure modes that appear in production but not in testing. ai &amp; mlops programming enterprise ai" data-topic="AI &amp; MLOps">
   <div class="card-art"><img data-article-art="prompt-engineering-production" src="/assets/covers/prompt-engineering-production.svg?v=86dd56c177b3" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">AI &amp; MLOps</span>
-    <h3 class="card-title">Prompt Engineering for Production Systems: Beyond the Demo</h3>
+    <a class="chip" href="/topics/ai-mlops/">AI &amp; MLOps</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/prompt-engineering-production/">Prompt Engineering for Production Systems: Beyond the Demo</a></h3>
     <p class="card-desc">Prompt engineering for a demo is different from prompt engineering for a system that runs reliably at scale. Here&#39;s how to design prompts for consistency, build evaluation frameworks, and manage the failure modes that appear in production but not in testing.</p>
     <div class="card-meta"><time datetime="2026-11-04">4 Nov 2026</time><span class="dot"></span><span>4 min read</span></div>
   </div>
-</a></div>
+</article></div>
     </div>
   </section>
 
@@ -296,6 +346,7 @@ ollama run llama3.2
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/follow/">Follow new writing</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
           <li><a href="/notes/">Personal notes</a></li>
@@ -316,7 +367,7 @@ ollama run llama3.2
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=a8e7c95a" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=a8e7c95a"></script>
+<script src="/assets/js/site.js?v=bd74be96" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=bd74be96"></script>
 </body>
 </html>

@@ -33,8 +33,9 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=a8e7c95a">
-<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<link rel="stylesheet" href="/assets/css/site.css?v=bd74be96">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
+<link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
    never flashes the wrong ground or resets someone's text size mid-read. */
@@ -105,6 +106,7 @@ d.setAttribute('data-theme',t);
 </nav></div>
     <div class="article-copy">
       <div class="prose">
+<p class="article-opening">A replica is useful only if its lag and consistency match what the caller expects from a read.</p>
 <p>Database replication is often configured with a default setup — one primary, one replica — without clear thinking about whether the goal is availability, read scaling, geographic distribution, or disaster recovery. Different goals require different configurations, and the default is frequently suboptimal for the actual need.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
 <p><strong>Replica lag and recovery point.</strong> If a primary has committed through position 1,200 and a replica is durable through 1,185, 15 log positions remain outstanding in the example. Express actual business exposure in affected records or time and distinguish receive, flush and replay.</p>
@@ -135,11 +137,11 @@ SELECT pg_reload_conf();
 <p>Systems like Vitess (MySQL sharding), CockroachDB, and Cassandra are designed for multi-primary operation. Standard PostgreSQL multi-primary is implemented with tools like pglogical or BDR (Bi-Directional Replication) but requires careful conflict management.</p>
 <h2 id="managed-database-replication-in-cloud"><a class="h-anchor" href="#managed-database-replication-in-cloud" aria-hidden="true" tabindex="-1">#</a>Managed database replication in cloud</h2>
 <p>Cloud-managed databases abstract much of the replication complexity:</p>
-<p><strong>AWS RDS Multi-AZ</strong>: synchronous replication to a standby in a different availability zone. Automatic failover in 30-60 seconds. Zero data loss on failover. Higher cost (you pay for the standby even though it serves no read traffic).</p>
-<p><strong>AWS Aurora</strong>: six-way replication across three availability zones, with up to 15 read replicas. Failover in under 30 seconds (typically 10-15 seconds). The storage layer is multi-AZ by default; what fails over is the writer endpoint, not storage.</p>
-<p><strong>Azure Database for PostgreSQL — Flexible Server</strong> with high availability: standby server in the same or a different availability zone. 120-second failover SLA with zone-redundant HA.</p>
+<p><strong>Amazon RDS Multi-AZ</strong> comes in different configurations. A Multi-AZ DB instance deployment has a standby that serves failover. A Multi-AZ DB cluster exposes readable instances. Check your engine configuration and test application recovery, including reconnection and in-flight requests.</p>
+<p><strong>Amazon Aurora</strong> stores copies across Availability Zones. In a typical Aurora MySQL cluster with an eligible replica, AWS documents failover within about 30 seconds. Time restoration from the application’s first verified operation and check how clients rediscover the current writer.</p>
+<p><strong>Azure Database for PostgreSQL Flexible Server</strong> offers HA with a standby in the same or a different availability zone, depending on configuration. Use the selected configuration’s documented recovery characteristics and time a representative failover.</p>
 <p><strong>GCP Cloud SQL</strong>: similar primary-standby configuration with automatic failover within a region.</p>
-<p>For most production workloads, cloud-managed replication is the right choice: it removes the operational complexity of managing replication manually and provides well-defined RPO/RTO guarantees.</p>
+<p>Managed replication can remove some operating work. Establish RPO and RTO for your workload and failure boundaries, including impaired dependency zones. Read <a href="https://docs.aws.amazon.com/whitepapers/latest/amazon-aurora-mysql-db-admin-handbook/designing-for-fault-tolerance-and-quick-recovery.html" rel="noopener" target="_blank">AWS’s Aurora MySQL recovery guidance</a> and treat component failover and application recovery as separate measurements.</p>
 <h2 id="choosing-the-right-configuration"><a class="h-anchor" href="#choosing-the-right-configuration" aria-hidden="true" tabindex="-1">#</a>Choosing the right configuration</h2>
 <p>Questions to answer before configuring replication:</p>
 <ul>
@@ -153,13 +155,39 @@ SELECT pg_reload_conf();
 <p><em>Designing database replication for a new system or reviewing an existing configuration against availability requirements? <a href="/contact/">Happy to compare approaches.</a></em></p>
 
       </div>
+<section class="field-worksheet worked-example" aria-labelledby="worked-example">
+    <h2 id="worked-example">Worked example</h2>
+    <p class="case-notice">This scenario and its results are illustrative.</p>
+    
+    <p>Give two read paths the same writes and read-after-write requests. Compare sending every read to a replica with routing consistency-sensitive reads to the writer until the required position is available.</p>
+    <figure class="delivery-flow">
+    <figcaption>Execution sequence</figcaption>
+    <ol><li>Write version</li><li>Route sensitive read</li><li>Compare watermark</li><li>Check source load</li></ol>
+  </figure>
+    <figure class="field-chart case-chart">
+    <figcaption>Example comparison <span>Simulated figures</span></figcaption>
+    <ul class="case-metrics"><li class="case-metric">
+      <h3>Read-your-writes checks passing <small>%</small></h3>
+      <ul class="chart-rows"><li><span>Replica-only read path</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:86.5%"></i></span>
+        <strong>86.5% <small>(173/200)</small></strong></li><li><span>Consistency-aware routing</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:99.5%"></i></span>
+        <strong>99.5% <small>(199/200)</small></strong></li></ul>
+    </li></ul>
+  </figure>
+    <h3>Method and limits</h3>
+    <p>Use equal fixture traffic and define success as reading the same or a later committed version. Inspect the remaining miss and writer load.</p>
+    <a href="/field-guides/worked-examples.csv" download>Download the worked figures (CSV)</a>
+  </section>
 
 
 <aside class="refs" aria-labelledby="refs-h">
   <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
-  <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
+  <p class="refs-note">Primary documentation, standards and research for the methods discussed here.</p>
   <ul>
-    <li><a href="https://www.postgresql.org/docs/current/" rel="noopener nofollow" target="_blank">PostgreSQL documentation</a><span>Configuration and planner behaviour.</span></li>
+    <li><a href="https://research.google/pubs/spanner-googles-globally-distributed-database-2/" rel="noopener" target="_blank">Corbett et al. · Spanner, OSDI</a><span>An original case of externally consistent, synchronously replicated distributed transactions.</span></li>
+    <li><a href="https://www.postgresql.org/docs/current/warm-standby.html" rel="noopener" target="_blank">PostgreSQL · Warm standby and streaming replication</a><span>Replication lag, acknowledgements and promotion.</span></li>
+    <li><a href="https://www.postgresql.org/docs/current/" rel="noopener" target="_blank">PostgreSQL documentation</a><span>Configuration and planner behaviour.</span></li>
   </ul>
 </aside>
 
@@ -167,7 +195,7 @@ SELECT pg_reload_conf();
 
       <footer class="article-foot">
         <div class="row" style="gap:.4rem">
-          <a class="chip chip-plain" href="/topics/data-engineering/">Data Engineering</a><a class="chip chip-plain" href="/topics/cloud-architecture/">Cloud Architecture</a>
+          <a class="chip" href="/topics/data-engineering/">Data Engineering</a><a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a>
         </div>
         <nav class="prevnext" aria-label="More articles">
           <a href="/insights/aiml-what-is-machine-learning/"><span>Previous</span><strong>What Machine Learning Actually Is — Before the Hype and After the Buzzwords</strong></a>
@@ -181,12 +209,12 @@ SELECT pg_reload_conf();
     <section class="promo-card promo-techknowen" aria-label="TechKnowen">
       <p class="promo-name">TechKnowen</p>
       <p>Practical reading on software, architecture, and engineering.</p>
-      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+      <a class="card-destination" href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
     </section>
     <section class="promo-card promo-ziggle" aria-label="Ziggle">
       <p class="promo-name">Ziggle</p>
       <p>A new place to play brain teasers.</p>
-      <p class="promo-status">Coming soon</p>
+      <a class="card-destination" href="/projects/ziggle/">Ziggle preview</a> <span class="promo-status">Coming soon</span>
     </section>
   </div>
 </aside>
@@ -195,33 +223,33 @@ SELECT pg_reload_conf();
   <section class="section surface hair" style="margin-top:4rem">
     <div class="wrap">
       <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|Performance|Programming|Cloud Architecture|Data Engineering|FinOps|" data-search="compression in production: choosing between gzip, zstd, lz4, and brotli like it matters compression is a three-way trade — ratio, speed, and cpu — that most systems set once by default and never revisit. the algorithm landscape, placement decisions across web, storage, and streaming, dictionary compression&#39;s quiet superpower, and the measurement discipline. performance programming cloud architecture data engineering finops" data-topic="Performance" href="/insights/compression-selection-guide/">
+      <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|Performance|Programming|Cloud Architecture|Data Engineering|FinOps|" data-search="compression in production: choosing between gzip, zstd, lz4, and brotli like it matters compression is a three-way trade — ratio, speed, and cpu — that most systems set once by default and never revisit. the algorithm landscape, placement decisions across web, storage, and streaming, dictionary compression&#39;s quiet superpower, and the measurement discipline. performance programming cloud architecture data engineering finops" data-topic="Performance">
   <div class="card-art"><img data-article-art="compression-selection-guide" src="/assets/covers/compression-selection-guide.svg?v=841ffbacef2b" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Performance</span>
-    <h3 class="card-title">Compression in Production: Choosing Between gzip, zstd, lz4, and Brotli Like It Matters</h3>
+    <a class="chip" href="/topics/performance/">Performance</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/compression-selection-guide/">Compression in Production: Choosing Between gzip, zstd, lz4, and Brotli Like It Matters</a></h3>
     <p class="card-desc">Compression is a three-way trade — ratio, speed, and CPU — that most systems set once by default and never revisit. The algorithm landscape, placement decisions across web, storage, and streaming, dictionary compression&#39;s quiet superpower, and the measurement discipline.</p>
     <div class="card-meta"><time datetime="2026-10-12">12 Oct 2026</time><span class="dot"></span><span>5 min read</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|Data Engineering|Cloud Architecture|AI &amp; MLOps|" data-search="the data lakehouse: why it won, and how to architect one that works data warehouses couldn&#39;t handle unstructured data at scale. data lakes couldn&#39;t enforce schemas or serve bi queries efficiently. the lakehouse combines both — here&#39;s the architecture, the open table formats that make it work, and the practical design decisions. data engineering cloud architecture ai &amp; mlops" data-topic="Data Engineering" href="/insights/data-lakehouse-architecture/">
+</article>
+<article class="card" data-card data-topics="|Data Engineering|Cloud Architecture|AI &amp; MLOps|" data-search="the data lakehouse: why it won, and how to architect one that works data warehouses couldn&#39;t handle unstructured data at scale. data lakes couldn&#39;t enforce schemas or serve bi queries efficiently. the lakehouse combines both — here&#39;s the architecture, the open table formats that make it work, and the practical design decisions. data engineering cloud architecture ai &amp; mlops" data-topic="Data Engineering">
   <div class="card-art"><img data-article-art="data-lakehouse-architecture" src="/assets/covers/data-lakehouse-architecture.svg?v=72be652f9f4a" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Data Engineering</span>
-    <h3 class="card-title">The Data Lakehouse: Why It Won, and How to Architect One That Works</h3>
+    <a class="chip" href="/topics/data-engineering/">Data Engineering</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/data-lakehouse-architecture/">The Data Lakehouse: Why It Won, and How to Architect One That Works</a></h3>
     <p class="card-desc">Data warehouses couldn&#39;t handle unstructured data at scale. Data lakes couldn&#39;t enforce schemas or serve BI queries efficiently. The lakehouse combines both — here&#39;s the architecture, the open table formats that make it work, and the practical design decisions.</p>
     <div class="card-meta"><time datetime="2026-10-05">5 Oct 2026</time><span class="dot"></span><span>4 min read</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|Data Engineering|Programming|Cloud Architecture|" data-search="postgresql performance tuning: the settings and patterns that actually matter postgresql&#39;s default configuration is conservative, designed for small deployments. for production workloads, the settings that control memory, parallelism, wal behavior, and connection handling need explicit tuning. here&#39;s where to start. data engineering programming cloud architecture" data-topic="Data Engineering" href="/insights/postgresql-performance-tuning/">
+</article>
+<article class="card" data-card data-topics="|Data Engineering|Programming|Cloud Architecture|" data-search="postgresql performance tuning: the settings and patterns that actually matter postgresql&#39;s default configuration is conservative, designed for small deployments. for production workloads, the settings that control memory, parallelism, wal behavior, and connection handling need explicit tuning. here&#39;s where to start. data engineering programming cloud architecture" data-topic="Data Engineering">
   <div class="card-art"><img data-article-art="postgresql-performance-tuning" src="/assets/covers/postgresql-performance-tuning.svg?v=0513939531f9" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Data Engineering</span>
-    <h3 class="card-title">PostgreSQL Performance Tuning: The Settings and Patterns That Actually Matter</h3>
+    <a class="chip" href="/topics/data-engineering/">Data Engineering</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/postgresql-performance-tuning/">PostgreSQL Performance Tuning: The Settings and Patterns That Actually Matter</a></h3>
     <p class="card-desc">PostgreSQL&#39;s default configuration is conservative, designed for small deployments. For production workloads, the settings that control memory, parallelism, WAL behavior, and connection handling need explicit tuning. Here&#39;s where to start.</p>
     <div class="card-meta"><time datetime="2025-12-26">26 Dec 2025</time><span class="dot"></span><span>5 min read</span></div>
   </div>
-</a></div>
+</article></div>
     </div>
   </section>
 
@@ -301,6 +329,7 @@ SELECT pg_reload_conf();
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/follow/">Follow new writing</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
           <li><a href="/notes/">Personal notes</a></li>
@@ -321,7 +350,7 @@ SELECT pg_reload_conf();
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=a8e7c95a" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=a8e7c95a"></script>
+<script src="/assets/js/site.js?v=bd74be96" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=bd74be96"></script>
 </body>
 </html>

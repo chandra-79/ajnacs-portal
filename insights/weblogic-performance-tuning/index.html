@@ -33,8 +33,9 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=a8e7c95a">
-<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<link rel="stylesheet" href="/assets/css/site.css?v=bd74be96">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
+<link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
    never flashes the wrong ground or resets someone's text size mid-read. */
@@ -105,6 +106,7 @@ d.setAttribute('data-theme',t);
 </nav></div>
     <div class="article-copy">
       <div class="prose">
+<p class="article-opening">A thread or pool setting deserves a change only after the team finds where requests wait.</p>
 <p>WebLogic tuning advice on the internet is mostly cargo cult: lists of parameters copied from a 2011 forum post, applied wholesale, with no measurement before or after. Meanwhile the actual levers that govern throughput in a WebLogic estate — thread management, connection pool sizing, and the JVM underneath — go untouched because the defaults &quot;seem fine.&quot;</p>
 <p>Here&#39;s the short list of what matters, why, and how to know when to change it.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
@@ -152,13 +154,37 @@ d.setAttribute('data-theme',t);
 <p>The estates that run fast aren&#39;t the ones with the longest <code>java</code> command lines. They&#39;re the ones where every parameter that differs from default has a sentence of justification, a date, and a measurement attached.</p>
 
       </div>
+<section class="field-worksheet worked-example" aria-labelledby="worked-example">
+    <h2 id="worked-example">Worked example</h2>
+    <p class="case-notice">This scenario and its results are illustrative.</p>
+    
+    <p>Collect a timer for incoming requests, execution, borrowing a connection and the query. Compare a pool change only after confirming the database can handle it, or keep a smaller cap and reduce slow-query occupancy.</p>
+    <figure class="delivery-flow">
+    <figcaption>Execution sequence</figcaption>
+    <ol><li>Instrument waits</li><li>Replay with fixed pool</li><li>Shorten hold time</li><li>Check database</li></ol>
+  </figure>
+    <figure class="field-chart case-chart">
+    <figcaption>Example comparison <span>Simulated figures</span></figcaption>
+    <ul class="case-metrics"><li class="case-metric">
+      <h3>p95 connection borrow wait <small>ms</small></h3>
+      <ul class="chart-rows"><li><span>Original query and pool</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:100%"></i></span>
+        <strong>430</strong></li><li><span>Shorter database transaction</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:18.13953488372093%"></i></span>
+        <strong>78</strong></li></ul>
+    </li></ul>
+  </figure>
+    <h3>Method and limits</h3>
+    <p>Use the same 5,000 fixture requests and pool size. Query time and successful transaction count must be reviewed alongside borrow time.</p>
+    <a href="/field-guides/worked-examples.csv" download>Download the worked figures (CSV)</a>
+  </section>
 
 
 <aside class="refs" aria-labelledby="refs-h">
   <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
-  <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
+  <p class="refs-note">Primary documentation, standards and research for the methods discussed here.</p>
   <ul>
-    <li><a href="https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/" rel="noopener nofollow" target="_blank">Oracle WebLogic Server documentation</a><span>Work managers, pools and tuning.</span></li>
+    <li><a href="https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/" rel="noopener" target="_blank">Oracle WebLogic Server Documentation</a><span>Version-specific domain topology, JMS targeting and performance guides.</span></li>
   </ul>
 </aside>
 
@@ -166,7 +192,7 @@ d.setAttribute('data-theme',t);
 
       <footer class="article-foot">
         <div class="row" style="gap:.4rem">
-          <a class="chip chip-plain" href="/insights/?topic=Java">Java</a><a class="chip chip-plain" href="/insights/?topic=WebLogic">WebLogic</a><a class="chip chip-plain" href="/insights/?topic=Middleware">Middleware</a><a class="chip chip-plain" href="/topics/performance/">Performance</a><a class="chip chip-plain" href="/topics/architecture/">Architecture</a>
+          <a class="chip" href="/topics/java/">Java</a><a class="chip" href="/topics/weblogic/">WebLogic</a><a class="chip" href="/topics/middleware/">Middleware</a><a class="chip" href="/topics/performance/">Performance</a><a class="chip" href="/topics/architecture/">Architecture</a>
         </div>
         <nav class="prevnext" aria-label="More articles">
           <a href="/insights/database-replication-patterns/"><span>Previous</span><strong>Database Replication Patterns: Read Replicas, Multi-Primary, and When Each Applies</strong></a>
@@ -180,12 +206,12 @@ d.setAttribute('data-theme',t);
     <section class="promo-card promo-techknowen" aria-label="TechKnowen">
       <p class="promo-name">TechKnowen</p>
       <p>Practical reading on software, architecture, and engineering.</p>
-      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+      <a class="card-destination" href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
     </section>
     <section class="promo-card promo-ziggle" aria-label="Ziggle">
       <p class="promo-name">Ziggle</p>
       <p>A new place to play brain teasers.</p>
-      <p class="promo-status">Coming soon</p>
+      <a class="card-destination" href="/projects/ziggle/">Ziggle preview</a> <span class="promo-status">Coming soon</span>
     </section>
   </div>
 </aside>
@@ -194,33 +220,33 @@ d.setAttribute('data-theme',t);
   <section class="section surface hair" style="margin-top:4rem">
     <div class="wrap">
       <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|Java|WebLogic|Middleware|Architecture|" data-search="weblogic domains, clusters, and managed servers: the architecture explained admin servers, managed servers, clusters, machines, and node manager — the weblogic domain model explained for people who have to run it, not just pass the exam. what each piece does, how they fit together, and where production deployments go wrong. java weblogic middleware architecture" data-topic="Architecture" href="/insights/weblogic-domains-clusters-explained/">
+      <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|Java|WebLogic|Middleware|Architecture|" data-search="weblogic domains, clusters, and managed servers: the architecture explained admin servers, managed servers, clusters, machines, and node manager — the weblogic domain model explained for people who have to run it, not just pass the exam. what each piece does, how they fit together, and where production deployments go wrong. java weblogic middleware architecture" data-topic="Architecture">
   <div class="card-art"><img data-article-art="weblogic-domains-clusters-explained" src="/assets/covers/weblogic-domains-clusters-explained.svg?v=985cb16a8800" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Architecture</span>
-    <h3 class="card-title">WebLogic Domains, Clusters, and Managed Servers: The Architecture Explained</h3>
+    <a class="chip" href="/topics/architecture/">Architecture</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/weblogic-domains-clusters-explained/">WebLogic Domains, Clusters, and Managed Servers: The Architecture Explained</a></h3>
     <p class="card-desc">Admin servers, managed servers, clusters, machines, and Node Manager — the WebLogic domain model explained for people who have to run it, not just pass the exam. What each piece does, how they fit together, and where production deployments go wrong.</p>
     <div class="card-meta"><time datetime="2025-09-09">9 Sept 2025</time><span class="dot"></span><span>7 min read</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|Java|WebLogic|Middleware|Messaging|Architecture|" data-search="weblogic jms in production: servers, stores, and the configuration that survives failover jms servers, persistent stores, distributed destinations, and connection factories — how weblogic messaging actually fits together, and the configuration decisions that determine whether your queues survive a server failure. java weblogic middleware messaging architecture" data-topic="Architecture" href="/insights/weblogic-jms-production-configuration/">
+</article>
+<article class="card" data-card data-topics="|Java|WebLogic|Middleware|Messaging|Architecture|" data-search="weblogic jms in production: servers, stores, and the configuration that survives failover jms servers, persistent stores, distributed destinations, and connection factories — how weblogic messaging actually fits together, and the configuration decisions that determine whether your queues survive a server failure. java weblogic middleware messaging architecture" data-topic="Architecture">
   <div class="card-art"><img data-article-art="weblogic-jms-production-configuration" src="/assets/covers/weblogic-jms-production-configuration.svg?v=1103de5c5813" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Architecture</span>
-    <h3 class="card-title">WebLogic JMS in Production: Servers, Stores, and the Configuration That Survives Failover</h3>
+    <a class="chip" href="/topics/architecture/">Architecture</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/weblogic-jms-production-configuration/">WebLogic JMS in Production: Servers, Stores, and the Configuration That Survives Failover</a></h3>
     <p class="card-desc">JMS servers, persistent stores, distributed destinations, and connection factories — how WebLogic messaging actually fits together, and the configuration decisions that determine whether your queues survive a server failure.</p>
     <div class="card-meta"><time datetime="2025-08-28">28 Aug 2025</time><span class="dot"></span><span>6 min read</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|Java|JVM|Concurrency|Performance|Architecture|" data-search="virtual threads in the enterprise: what changes, what doesn&#39;t, and what breaks java 21&#39;s virtual threads promise massive concurrency without reactive complexity. here&#39;s what actually changes in enterprise services — thread pool math, pinning pitfalls, connection pools as the new bottleneck, and when reactive still wins. java jvm concurrency performance architecture" data-topic="Performance" href="/insights/java-virtual-threads-enterprise/">
+</article>
+<article class="card" data-card data-topics="|Java|JVM|Concurrency|Performance|Architecture|" data-search="virtual threads in the enterprise: what changes, what doesn&#39;t, and what breaks java 21&#39;s virtual threads promise massive concurrency without reactive complexity. here&#39;s what actually changes in enterprise services — thread pool math, pinning pitfalls, connection pools as the new bottleneck, and when reactive still wins. java jvm concurrency performance architecture" data-topic="Performance">
   <div class="card-art"><img data-article-art="java-virtual-threads-enterprise" src="/assets/covers/java-virtual-threads-enterprise.svg?v=4020d4af4506" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Performance</span>
-    <h3 class="card-title">Virtual Threads in the Enterprise: What Changes, What Doesn&#39;t, and What Breaks</h3>
+    <a class="chip" href="/topics/performance/">Performance</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/java-virtual-threads-enterprise/">Virtual Threads in the Enterprise: What Changes, What Doesn&#39;t, and What Breaks</a></h3>
     <p class="card-desc">Java 21&#39;s virtual threads promise massive concurrency without reactive complexity. Here&#39;s what actually changes in enterprise services — thread pool math, pinning pitfalls, connection pools as the new bottleneck, and when reactive still wins.</p>
     <div class="card-meta"><time datetime="2026-02-24">24 Feb 2026</time><span class="dot"></span><span>5 min read</span></div>
   </div>
-</a></div>
+</article></div>
     </div>
   </section>
 
@@ -310,6 +336,7 @@ d.setAttribute('data-theme',t);
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/follow/">Follow new writing</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
           <li><a href="/notes/">Personal notes</a></li>
@@ -330,7 +357,7 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=a8e7c95a" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=a8e7c95a"></script>
+<script src="/assets/js/site.js?v=bd74be96" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=bd74be96"></script>
 </body>
 </html>

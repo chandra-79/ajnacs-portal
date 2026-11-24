@@ -33,8 +33,9 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=a8e7c95a">
-<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<link rel="stylesheet" href="/assets/css/site.css?v=bd74be96">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
+<link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
    never flashes the wrong ground or resets someone's text size mid-read. */
@@ -105,6 +106,7 @@ d.setAttribute('data-theme',t);
 </nav></div>
     <div class="article-copy">
       <div class="prose">
+<p class="article-opening">Retries, timeouts and circuit breakers should be chosen together around the real caller budget.</p>
 <p>Something shifts in how you think about system design after you&#39;ve been in enough production incidents. You stop trying to prevent all failure and start designing for recovery. The question changes from &quot;how do we make sure this never breaks&quot; to &quot;when this breaks — and it will — how fast do we get back?&quot;</p>
 <p>Here are the patterns I&#39;ve found worth investing in, and a few that sound better in theory than they perform under pressure.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
@@ -170,14 +172,39 @@ def retry_with_backoff(func, max_retries=3, base_delay=1.0):
 <p><em>What&#39;s your current MTTR, and what&#39;s the biggest contributor to it? <a href="/about/">I&#39;d like to hear.</a></em></p>
 
       </div>
+<section class="field-worksheet worked-example" aria-labelledby="worked-example">
+    <h2 id="worked-example">Worked example</h2>
+    <p class="case-notice">This scenario and its results are illustrative.</p>
+    
+    <p>Give a stub dependency the same error burst in two runs. Compare an unbounded application retry policy against a limited retry budget with backoff and an explicit degraded response.</p>
+    <figure class="delivery-flow">
+    <figcaption>Execution sequence</figcaption>
+    <ol><li>Inject fault</li><li>Count attempts</li><li>Apply budget</li><li>Check customer response</li></ol>
+  </figure>
+    <figure class="field-chart case-chart">
+    <figcaption>Example comparison <span>Simulated figures</span></figcaption>
+    <ul class="case-metrics"><li class="case-metric">
+      <h3>Dependency attempts per incoming request <small>attempts/request</small></h3>
+      <ul class="chart-rows"><li><span>Inherited retry chain</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:100%"></i></span>
+        <strong>3.4</strong></li><li><span>Capped end-to-end retry budget</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:39.705882352941174%"></i></span>
+        <strong>1.35</strong></li></ul>
+    </li></ul>
+  </figure>
+    <h3>Method and limits</h3>
+    <p>Divide all outbound attempts by incoming requests during the same fault window. Read user-facing success and degraded response share before treating lower amplification as sufficient.</p>
+    <a href="/field-guides/worked-examples.csv" download>Download the worked figures (CSV)</a>
+  </section>
 
 
 <aside class="refs" aria-labelledby="refs-h">
   <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
-  <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
+  <p class="refs-note">Primary documentation, standards and research for the methods discussed here.</p>
   <ul>
-    <li><a href="https://opentelemetry.io/docs/" rel="noopener nofollow" target="_blank">OpenTelemetry</a><span>Specification and language SDKs.</span></li>
-    <li><a href="https://prometheus.io/docs/" rel="noopener nofollow" target="_blank">Prometheus</a><span>Query language and operational guidance.</span></li>
+    <li><a href="https://aws.amazon.com/builders-library/timeouts-retries-and-backoff-with-jitter/" rel="noopener" target="_blank">AWS Builders&#39; Library · Timeouts, retries and backoff with jitter</a><span>Trade-offs in time budgets and retry amplification.</span></li>
+    <li><a href="https://opentelemetry.io/docs/" rel="noopener" target="_blank">OpenTelemetry</a><span>Specification and language SDKs.</span></li>
+    <li><a href="https://prometheus.io/docs/" rel="noopener" target="_blank">Prometheus</a><span>Query language and operational guidance.</span></li>
   </ul>
 </aside>
 
@@ -185,7 +212,7 @@ def retry_with_backoff(func, max_retries=3, base_delay=1.0):
 
       <footer class="article-foot">
         <div class="row" style="gap:.4rem">
-          <a class="chip chip-plain" href="/topics/cloud-architecture/">Cloud Architecture</a><a class="chip chip-plain" href="/topics/infrastructure/">Infrastructure</a><a class="chip chip-plain" href="/topics/observability/">Observability</a>
+          <a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a><a class="chip" href="/topics/infrastructure/">Infrastructure</a><a class="chip" href="/topics/observability/">Observability</a>
         </div>
         <nav class="prevnext" aria-label="More articles">
           <a href="/insights/postgresql-performance-tuning/"><span>Previous</span><strong>PostgreSQL Performance Tuning: The Settings and Patterns That Actually Matter</strong></a>
@@ -199,12 +226,12 @@ def retry_with_backoff(func, max_retries=3, base_delay=1.0):
     <section class="promo-card promo-techknowen" aria-label="TechKnowen">
       <p class="promo-name">TechKnowen</p>
       <p>Practical reading on software, architecture, and engineering.</p>
-      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+      <a class="card-destination" href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
     </section>
     <section class="promo-card promo-ziggle" aria-label="Ziggle">
       <p class="promo-name">Ziggle</p>
       <p>A new place to play brain teasers.</p>
-      <p class="promo-status">Coming soon</p>
+      <a class="card-destination" href="/projects/ziggle/">Ziggle preview</a> <span class="promo-status">Coming soon</span>
     </section>
   </div>
 </aside>
@@ -213,33 +240,33 @@ def retry_with_backoff(func, max_retries=3, base_delay=1.0):
   <section class="section surface hair" style="margin-top:4rem">
     <div class="wrap">
       <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|Cloud Architecture|DevSecOps|Infrastructure|" data-search="serverless vs containers: an honest comparison for 2026 neither is universally better. the answer depends on your workload profile, your team&#39;s operational maturity, and — honestly — your tolerance for cold starts. cloud architecture devsecops infrastructure" data-topic="Cloud Architecture" href="/insights/serverless-vs-containers-2026/">
+      <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|Cloud Architecture|DevSecOps|Infrastructure|" data-search="serverless vs containers: an honest comparison for 2026 neither is universally better. the answer depends on your workload profile, your team&#39;s operational maturity, and — honestly — your tolerance for cold starts. cloud architecture devsecops infrastructure" data-topic="Cloud Architecture">
   <div class="card-art"><img data-article-art="serverless-vs-containers-2026" src="/assets/covers/photos/serverless-vs-containers-2026.jpg?v=773805cd32f5" srcset="/assets/covers/photos/serverless-vs-containers-2026-640.jpg?v=773805cd32f5 640w, /assets/covers/photos/serverless-vs-containers-2026.jpg?v=773805cd32f5 1280w" sizes="(min-width: 800px) 420px, 100vw" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Cloud Architecture</span>
-    <h3 class="card-title">Serverless vs Containers: An Honest Comparison for 2026</h3>
+    <a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/serverless-vs-containers-2026/">Serverless vs Containers: An Honest Comparison for 2026</a></h3>
     <p class="card-desc">Neither is universally better. The answer depends on your workload profile, your team&#39;s operational maturity, and — honestly — your tolerance for cold starts.</p>
     <div class="card-meta"><time datetime="2026-11-13">13 Nov 2026</time><span class="dot"></span><span>4 min read</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|Systems|Infrastructure|Enterprise AI|Cloud Architecture|HPC|" data-search="ethernet vs. infiniband: choosing the right network fabric in 2026 a practical breakdown of when to use ethernet and when infiniband makes sense — with key metrics, topology differences, and real-world guidance for cloud, hpc, and ai workloads. systems infrastructure enterprise ai cloud architecture hpc" data-topic="Infrastructure" href="/insights/ethernet-vs-infiniband-networking-2026/">
+</article>
+<article class="card" data-card data-topics="|Systems|Infrastructure|Enterprise AI|Cloud Architecture|HPC|" data-search="ethernet vs. infiniband: choosing the right network fabric in 2026 a practical breakdown of when to use ethernet and when infiniband makes sense — with key metrics, topology differences, and real-world guidance for cloud, hpc, and ai workloads. systems infrastructure enterprise ai cloud architecture hpc" data-topic="Infrastructure">
   <div class="card-art"><img data-article-art="ethernet-vs-infiniband-networking-2026" src="/assets/covers/ethernet-vs-infiniband-networking-2026.svg?v=99c68a23a181" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Infrastructure</span>
-    <h3 class="card-title">Ethernet vs. InfiniBand: Choosing the Right Network Fabric in 2026</h3>
+    <a class="chip" href="/topics/infrastructure/">Infrastructure</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/ethernet-vs-infiniband-networking-2026/">Ethernet vs. InfiniBand: Choosing the Right Network Fabric in 2026</a></h3>
     <p class="card-desc">A practical breakdown of when to use Ethernet and when InfiniBand makes sense — with key metrics, topology differences, and real-world guidance for cloud, HPC, and AI workloads.</p>
     <div class="card-meta"><time datetime="2026-10-02">2 Oct 2026</time><span class="dot"></span><span>5 min read</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|Observability|Programming|Platform Engineering|Reliability|Cloud Architecture|" data-search="structured logging that pays for itself: schema, context, and cost discipline logs are the most expensive telemetry most organizations run and the least designed. event schemas, correlation context, level discipline, sampling, and the cost engineering that keeps the logging bill from becoming the observability program&#39;s obituary. observability programming platform engineering reliability cloud architecture" data-topic="Observability" href="/insights/structured-logging-practices/">
+</article>
+<article class="card" data-card data-topics="|Observability|Programming|Platform Engineering|Reliability|Cloud Architecture|" data-search="structured logging that pays for itself: schema, context, and cost discipline logs are the most expensive telemetry most organizations run and the least designed. event schemas, correlation context, level discipline, sampling, and the cost engineering that keeps the logging bill from becoming the observability program&#39;s obituary. observability programming platform engineering reliability cloud architecture" data-topic="Observability">
   <div class="card-art"><img data-article-art="structured-logging-practices" src="/assets/covers/structured-logging-practices.svg?v=8d951869e265" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Observability</span>
-    <h3 class="card-title">Structured Logging That Pays for Itself: Schema, Context, and Cost Discipline</h3>
+    <a class="chip" href="/topics/observability/">Observability</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/structured-logging-practices/">Structured Logging That Pays for Itself: Schema, Context, and Cost Discipline</a></h3>
     <p class="card-desc">Logs are the most expensive telemetry most organizations run and the least designed. Event schemas, correlation context, level discipline, sampling, and the cost engineering that keeps the logging bill from becoming the observability program&#39;s obituary.</p>
     <div class="card-meta"><time datetime="2025-10-03">3 Oct 2025</time><span class="dot"></span><span>5 min read</span></div>
   </div>
-</a></div>
+</article></div>
     </div>
   </section>
 
@@ -329,6 +356,7 @@ def retry_with_backoff(func, max_retries=3, base_delay=1.0):
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/follow/">Follow new writing</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
           <li><a href="/notes/">Personal notes</a></li>
@@ -349,7 +377,7 @@ def retry_with_backoff(func, max_retries=3, base_delay=1.0):
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=a8e7c95a" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=a8e7c95a"></script>
+<script src="/assets/js/site.js?v=bd74be96" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=bd74be96"></script>
 </body>
 </html>

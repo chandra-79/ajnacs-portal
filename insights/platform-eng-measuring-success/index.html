@@ -33,8 +33,9 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=a8e7c95a">
-<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<link rel="stylesheet" href="/assets/css/site.css?v=bd74be96">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
+<link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
    never flashes the wrong ground or resets someone's text size mid-read. */
@@ -108,6 +109,7 @@ d.setAttribute('data-theme',t);
     </nav></div>
     <div class="article-copy">
       <div class="prose">
+<p class="article-opening">Time-to-first-deploy needs a completion rate beside it or faster success can obscure more failures.</p>
 <p>Platform engineering teams face a measurement challenge: their output is other teams&#39; productivity. A platform feature that saves 200 engineering hours per month across 20 application teams delivers enormous value that is invisible in the platform team&#39;s own delivery metrics. Building the right measurement framework is essential for making that value visible, justifying continued investment, and identifying where the platform is failing to meet developer needs.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
 <p><strong>A balanced platform scorecard.</strong> Pair adoption, time to first deployment and service reliability. If 45 of 60 eligible teams use the path, adoption is 75%; a 10-team rollout is not a valid denominator for all 60 teams. Track change failures and rework to check that speed has not shifted work downstream.</p>
@@ -168,13 +170,38 @@ d.setAttribute('data-theme',t);
 <p>Platform engineering succeeds when it is invisible to the developers who benefit from it — when deploying a service is so effortless that nobody thinks about the infrastructure underneath. The measurement framework is what makes that invisibility legible as value.</p>
 
       </div>
+<section class="field-worksheet worked-example" aria-labelledby="worked-example">
+    <h2 id="worked-example">Worked example</h2>
+    <p class="case-notice">This scenario and its results are illustrative.</p>
+    
+    <p>Track one accepted request per eligible service through a fixed deadline. Record whether it completed, how long successful attempts took, and the number of help requests.</p>
+    <figure class="delivery-flow">
+    <figcaption>Execution sequence</figcaption>
+    <ol><li>Identify cohort</li><li>Define clock and end gate</li><li>Record open cases</li><li>Review outcomes together</li></ol>
+  </figure>
+    <figure class="field-chart case-chart">
+    <figcaption>Example comparison <span>Simulated figures</span></figcaption>
+    <ul class="case-metrics"><li class="case-metric">
+      <h3>Qualifying deployments in fixed window <small>%</small></h3>
+      <ul class="chart-rows"><li><span>Existing platform path</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:72%"></i></span>
+        <strong>72% <small>(18/25)</small></strong></li><li><span>Candidate path</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:84%"></i></span>
+        <strong>84% <small>(21/25)</small></strong></li></ul>
+    </li></ul>
+  </figure>
+    <h3>Method and limits</h3>
+    <p>Both cohorts use the same 72-hour cutoff and approved environment. Keep the time median to completed attempts and expose the sample sizes.</p>
+    <a href="/field-guides/worked-examples.csv" download>Download the worked figures (CSV)</a>
+  </section>
 
 
 <aside class="refs" aria-labelledby="refs-h">
   <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
-  <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
+  <p class="refs-note">Primary documentation, standards and research for the methods discussed here.</p>
   <ul>
-    <li><a href="https://dora.dev/guides/dora-metrics/" rel="noopener nofollow" target="_blank">DORA — DevOps Research and Assessment</a><span>Current delivery metrics and their historical definitions.</span></li>
+    <li><a href="https://dora.dev/guides/dora-metrics/" rel="noopener" target="_blank">DORA Delivery Performance Metrics</a><span>Current deployment-specific measures and distinctions from general incidents or onboarding.</span></li>
+    <li><a href="https://tag-app-delivery.cncf.io/whitepapers/platforms/" rel="noopener" target="_blank">CNCF Platforms White Paper</a><span>Platform product design, capability layers and adoption.</span></li>
   </ul>
 </aside>
 
@@ -182,7 +209,7 @@ d.setAttribute('data-theme',t);
 
       <footer class="article-foot">
         <div class="row" style="gap:.4rem">
-          <a class="chip chip-plain" href="/topics/engineering-leadership/">Engineering Leadership</a><a class="chip chip-plain" href="/topics/architecture/">Architecture</a><a class="chip chip-plain" href="/topics/fundamentals/">Fundamentals</a>
+          <a class="chip" href="/topics/engineering-leadership/">Engineering Leadership</a><a class="chip" href="/topics/architecture/">Architecture</a><a class="chip" href="/topics/fundamentals/">Fundamentals</a>
         </div>
         <nav class="prevnext" aria-label="More articles">
           <a href="/insights/finops-anomaly-detection/"><span>Previous</span><strong>Cloud Cost Anomaly Detection: Catching Runaway Spend Before It Becomes a Bill</strong></a>
@@ -196,12 +223,12 @@ d.setAttribute('data-theme',t);
     <section class="promo-card promo-techknowen" aria-label="TechKnowen">
       <p class="promo-name">TechKnowen</p>
       <p>Practical reading on software, architecture, and engineering.</p>
-      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+      <a class="card-destination" href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
     </section>
     <section class="promo-card promo-ziggle" aria-label="Ziggle">
       <p class="promo-name">Ziggle</p>
       <p>A new place to play brain teasers.</p>
-      <p class="promo-status">Coming soon</p>
+      <a class="card-destination" href="/projects/ziggle/">Ziggle preview</a> <span class="promo-status">Coming soon</span>
     </section>
   </div>
 </aside>
@@ -210,33 +237,33 @@ d.setAttribute('data-theme',t);
   <section class="section surface hair" style="margin-top:4rem">
     <div class="wrap">
       <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|Engineering Leadership|Architecture|Fundamentals|" data-search="platform engineering: what it is, why it emerged, and what makes it different from devops platform engineering is not rebranded devops. it is a specific organisational and technical discipline that treats internal infrastructure as a product. here is what that actually means. engineering leadership architecture fundamentals" data-topic="Engineering Leadership" href="/insights/platform-eng-what-it-is/">
+      <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|Engineering Leadership|Architecture|Fundamentals|" data-search="platform engineering: what it is, why it emerged, and what makes it different from devops platform engineering is not rebranded devops. it is a specific organisational and technical discipline that treats internal infrastructure as a product. here is what that actually means. engineering leadership architecture fundamentals" data-topic="Engineering Leadership">
   <div class="card-art"><img data-article-art="platform-eng-what-it-is" src="/assets/covers/platform-eng-what-it-is.svg?v=e8a42d52e086" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Engineering Leadership</span>
-    <h3 class="card-title">Platform Engineering: What It Is, Why It Emerged, and What Makes It Different from DevOps</h3>
+    <a class="chip" href="/topics/engineering-leadership/">Engineering Leadership</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/platform-eng-what-it-is/">Platform Engineering: What It Is, Why It Emerged, and What Makes It Different from DevOps</a></h3>
     <p class="card-desc">Platform engineering is not rebranded DevOps. It is a specific organisational and technical discipline that treats internal infrastructure as a product. Here is what that actually means.</p>
     <div class="card-meta"><time datetime="2026-10-16">16 Oct 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|Engineering Leadership|Architecture|Fundamentals|" data-search="designing an internal developer platform: abstraction layers, golden paths, and the governance balance how to design the abstraction layer between your platform and your application teams — what to hide, what to expose, and how to build the golden paths that make good practices the easy practices. engineering leadership architecture fundamentals" data-topic="Engineering Leadership" href="/insights/platform-eng-idp-design/">
+</article>
+<article class="card" data-card data-topics="|Engineering Leadership|Architecture|Fundamentals|" data-search="designing an internal developer platform: abstraction layers, golden paths, and the governance balance how to design the abstraction layer between your platform and your application teams — what to hide, what to expose, and how to build the golden paths that make good practices the easy practices. engineering leadership architecture fundamentals" data-topic="Engineering Leadership">
   <div class="card-art"><img data-article-art="platform-eng-idp-design" src="/assets/covers/platform-eng-idp-design.svg?v=fca966f98492" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Engineering Leadership</span>
-    <h3 class="card-title">Designing an Internal Developer Platform: Abstraction Layers, Golden Paths, and the Governance Balance</h3>
+    <a class="chip" href="/topics/engineering-leadership/">Engineering Leadership</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/platform-eng-idp-design/">Designing an Internal Developer Platform: Abstraction Layers, Golden Paths, and the Governance Balance</a></h3>
     <p class="card-desc">How to design the abstraction layer between your platform and your application teams — what to hide, what to expose, and how to build the golden paths that make good practices the easy practices.</p>
     <div class="card-meta"><time datetime="2026-05-19">19 May 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|DevSecOps|Architecture|Fundamentals|" data-search="platform observability: building the visibility layer every application team gets automatically how platform teams build and operate the metrics, logging, and tracing infrastructure that application teams consume without configuring — and what good platform observability coverage actually looks like. devsecops architecture fundamentals" data-topic="DevSecOps" href="/insights/platform-eng-observability/">
+</article>
+<article class="card" data-card data-topics="|DevSecOps|Architecture|Fundamentals|" data-search="platform observability: building the visibility layer every application team gets automatically how platform teams build and operate the metrics, logging, and tracing infrastructure that application teams consume without configuring — and what good platform observability coverage actually looks like. devsecops architecture fundamentals" data-topic="DevSecOps">
   <div class="card-art"><img data-article-art="platform-eng-observability" src="/assets/covers/platform-eng-observability.svg?v=5ca4babc5cf8" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">DevSecOps</span>
-    <h3 class="card-title">Platform Observability: Building the Visibility Layer Every Application Team Gets Automatically</h3>
+    <a class="chip" href="/topics/devsecops/">DevSecOps</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/platform-eng-observability/">Platform Observability: Building the Visibility Layer Every Application Team Gets Automatically</a></h3>
     <p class="card-desc">How platform teams build and operate the metrics, logging, and tracing infrastructure that application teams consume without configuring — and what good platform observability coverage actually looks like.</p>
     <div class="card-meta"><time datetime="2026-09-16">16 Sept 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
   </div>
-</a></div>
+</article></div>
     </div>
   </section>
 
@@ -326,6 +353,7 @@ d.setAttribute('data-theme',t);
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/follow/">Follow new writing</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
           <li><a href="/notes/">Personal notes</a></li>
@@ -346,7 +374,7 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=a8e7c95a" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=a8e7c95a"></script>
+<script src="/assets/js/site.js?v=bd74be96" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=bd74be96"></script>
 </body>
 </html>

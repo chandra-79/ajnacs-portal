@@ -33,8 +33,9 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=a8e7c95a">
-<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<link rel="stylesheet" href="/assets/css/site.css?v=bd74be96">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
+<link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
    never flashes the wrong ground or resets someone's text size mid-read. */
@@ -105,6 +106,7 @@ d.setAttribute('data-theme',t);
 </nav></div>
     <div class="article-copy">
       <div class="prose">
+<p class="article-opening">A domain layout is an operating model for applications, dependencies and recovery ownership.</p>
 <p>WebLogic Server has been running critical workloads in banks, telcos, insurers, and government systems for over twenty-five years, and it isn&#39;t going anywhere soon — there is simply too much revenue-generating code deployed on it. Yet most engineers who inherit a WebLogic estate learn it by archaeology: poking at a domain someone built in 2014, guessing at why there are eleven managed servers and a cluster named <code>cluster1_NEW_final</code>.</p>
 <p>This post is the explainer I wish those engineers had. Not exam trivia — the domain model as it actually matters in production.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
@@ -169,14 +171,38 @@ d.setAttribute('data-theme',t);
 <p>Every WebLogic production incident I&#39;ve been called into ultimately traced back to a violation at one of these layers: applications on the admin server, JMS singletons without migration, sessions that weren&#39;t serializable, servers started outside Node Manager, or configuration that existed nowhere but the running domain. The product is old, but it is coherent — and estates that respect the model are quiet estates.</p>
 
       </div>
+<section class="field-worksheet worked-example" aria-labelledby="worked-example">
+    <h2 id="worked-example">Worked example</h2>
+    <p class="case-notice">This scenario and its results are illustrative.</p>
+    
+    <p>Draw the Administration Server, Managed Servers, cluster traffic and Node Manager responsibilities. Drain one Managed Server in a lab and validate both new requests and the session behaviour the application actually depends on.</p>
+    <figure class="delivery-flow">
+    <figcaption>Execution sequence</figcaption>
+    <ol><li>Map control plane</li><li>Map request path</li><li>Drain member</li><li>Verify state</li></ol>
+  </figure>
+    <figure class="field-chart case-chart">
+    <figcaption>Example comparison <span>Simulated figures</span></figcaption>
+    <ul class="case-metrics"><li class="case-metric">
+      <h3>Successful requests during node drain <small>%</small></h3>
+      <ul class="chart-rows"><li><span>One application instance</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:91%"></i></span>
+        <strong>91% <small>(910/1000)</small></strong></li><li><span>Two instances with tested routing</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:99.8%"></i></span>
+        <strong>99.8% <small>(998/1000)</small></strong></li></ul>
+    </li></ul>
+  </figure>
+    <h3>Method and limits</h3>
+    <p>Replay 1,000 requests with a fixed drain point. Do not infer session migration from HTTP success. Inspect session identity and persistent state separately.</p>
+    <a href="/field-guides/worked-examples.csv" download>Download the worked figures (CSV)</a>
+  </section>
 
 
 <aside class="refs" aria-labelledby="refs-h">
   <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
-  <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
+  <p class="refs-note">Primary documentation, standards and research for the methods discussed here.</p>
   <ul>
-    <li><a href="https://kubernetes.io/docs/" rel="noopener nofollow" target="_blank">Kubernetes documentation</a><span>Primary reference for the concepts used here.</span></li>
-    <li><a href="https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/" rel="noopener nofollow" target="_blank">Oracle WebLogic Server documentation</a><span>Work managers, pools and tuning.</span></li>
+    <li><a href="https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/" rel="noopener" target="_blank">Oracle WebLogic Server Documentation</a><span>Version-specific domain topology, JMS targeting and performance guides.</span></li>
+    <li><a href="https://kubernetes.io/docs/" rel="noopener" target="_blank">Kubernetes documentation</a><span>Primary reference for the concepts used here.</span></li>
   </ul>
 </aside>
 
@@ -184,7 +210,7 @@ d.setAttribute('data-theme',t);
 
       <footer class="article-foot">
         <div class="row" style="gap:.4rem">
-          <a class="chip chip-plain" href="/insights/?topic=Java">Java</a><a class="chip chip-plain" href="/insights/?topic=WebLogic">WebLogic</a><a class="chip chip-plain" href="/insights/?topic=Middleware">Middleware</a><a class="chip chip-plain" href="/topics/architecture/">Architecture</a>
+          <a class="chip" href="/topics/java/">Java</a><a class="chip" href="/topics/weblogic/">WebLogic</a><a class="chip" href="/topics/middleware/">Middleware</a><a class="chip" href="/topics/architecture/">Architecture</a>
         </div>
         <nav class="prevnext" aria-label="More articles">
           <a href="/insights/weblogic-jms-production-configuration/"><span>Previous</span><strong>WebLogic JMS in Production: Servers, Stores, and the Configuration That Survives Failover</strong></a>
@@ -198,12 +224,12 @@ d.setAttribute('data-theme',t);
     <section class="promo-card promo-techknowen" aria-label="TechKnowen">
       <p class="promo-name">TechKnowen</p>
       <p>Practical reading on software, architecture, and engineering.</p>
-      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+      <a class="card-destination" href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
     </section>
     <section class="promo-card promo-ziggle" aria-label="Ziggle">
       <p class="promo-name">Ziggle</p>
       <p>A new place to play brain teasers.</p>
-      <p class="promo-status">Coming soon</p>
+      <a class="card-destination" href="/projects/ziggle/">Ziggle preview</a> <span class="promo-status">Coming soon</span>
     </section>
   </div>
 </aside>
@@ -212,33 +238,33 @@ d.setAttribute('data-theme',t);
   <section class="section surface hair" style="margin-top:4rem">
     <div class="wrap">
       <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|Java|WebLogic|Middleware|Messaging|Architecture|" data-search="weblogic jms in production: servers, stores, and the configuration that survives failover jms servers, persistent stores, distributed destinations, and connection factories — how weblogic messaging actually fits together, and the configuration decisions that determine whether your queues survive a server failure. java weblogic middleware messaging architecture" data-topic="Architecture" href="/insights/weblogic-jms-production-configuration/">
+      <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|Java|WebLogic|Middleware|Messaging|Architecture|" data-search="weblogic jms in production: servers, stores, and the configuration that survives failover jms servers, persistent stores, distributed destinations, and connection factories — how weblogic messaging actually fits together, and the configuration decisions that determine whether your queues survive a server failure. java weblogic middleware messaging architecture" data-topic="Architecture">
   <div class="card-art"><img data-article-art="weblogic-jms-production-configuration" src="/assets/covers/weblogic-jms-production-configuration.svg?v=1103de5c5813" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Architecture</span>
-    <h3 class="card-title">WebLogic JMS in Production: Servers, Stores, and the Configuration That Survives Failover</h3>
+    <a class="chip" href="/topics/architecture/">Architecture</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/weblogic-jms-production-configuration/">WebLogic JMS in Production: Servers, Stores, and the Configuration That Survives Failover</a></h3>
     <p class="card-desc">JMS servers, persistent stores, distributed destinations, and connection factories — how WebLogic messaging actually fits together, and the configuration decisions that determine whether your queues survive a server failure.</p>
     <div class="card-meta"><time datetime="2025-08-28">28 Aug 2025</time><span class="dot"></span><span>6 min read</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|Java|WebLogic|Middleware|Performance|Architecture|" data-search="weblogic performance tuning: work managers, connection pools, and the knobs that actually matter a field guide to tuning weblogic server in production — the self-tuning thread pool, work managers, jdbc connection pools, jvm settings, and the diagnostic tools that tell you which knob to turn. java weblogic middleware performance architecture" data-topic="Performance" href="/insights/weblogic-performance-tuning/">
+</article>
+<article class="card" data-card data-topics="|Java|WebLogic|Middleware|Performance|Architecture|" data-search="weblogic performance tuning: work managers, connection pools, and the knobs that actually matter a field guide to tuning weblogic server in production — the self-tuning thread pool, work managers, jdbc connection pools, jvm settings, and the diagnostic tools that tell you which knob to turn. java weblogic middleware performance architecture" data-topic="Performance">
   <div class="card-art"><img data-article-art="weblogic-performance-tuning" src="/assets/covers/weblogic-performance-tuning.svg?v=ceff0fa3231c" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Performance</span>
-    <h3 class="card-title">WebLogic Performance Tuning: Work Managers, Connection Pools, and the Knobs That Actually Matter</h3>
+    <a class="chip" href="/topics/performance/">Performance</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/weblogic-performance-tuning/">WebLogic Performance Tuning: Work Managers, Connection Pools, and the Knobs That Actually Matter</a></h3>
     <p class="card-desc">A field guide to tuning WebLogic Server in production — the self-tuning thread pool, work managers, JDBC connection pools, JVM settings, and the diagnostic tools that tell you which knob to turn.</p>
     <div class="card-meta"><time datetime="2025-08-19">19 Aug 2025</time><span class="dot"></span><span>6 min read</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|Java|Modernization|Technical Debt|Architecture|Engineering Practice|" data-search="modernizing legacy java: a roadmap from java 8 to 21+ without stopping the business most enterprise java still runs on versions the ecosystem has left behind. a staged roadmap for moving java 8 estates to 21+ — what breaks, what to automate, how to sequence framework upgrades, and how to sell the work to the business. java modernization technical debt architecture engineering practice" data-topic="Architecture" href="/insights/java-legacy-modernization-roadmap/">
+</article>
+<article class="card" data-card data-topics="|Java|Modernization|Technical Debt|Architecture|Engineering Practice|" data-search="modernizing legacy java: a roadmap from java 8 to 21+ without stopping the business most enterprise java still runs on versions the ecosystem has left behind. a staged roadmap for moving java 8 estates to 21+ — what breaks, what to automate, how to sequence framework upgrades, and how to sell the work to the business. java modernization technical debt architecture engineering practice" data-topic="Architecture">
   <div class="card-art"><img data-article-art="java-legacy-modernization-roadmap" src="/assets/covers/java-legacy-modernization-roadmap.svg?v=20d3968dbdd5" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Architecture</span>
-    <h3 class="card-title">Modernizing Legacy Java: A Roadmap from Java 8 to 21+ Without Stopping the Business</h3>
+    <a class="chip" href="/topics/architecture/">Architecture</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/java-legacy-modernization-roadmap/">Modernizing Legacy Java: A Roadmap from Java 8 to 21+ Without Stopping the Business</a></h3>
     <p class="card-desc">Most enterprise Java still runs on versions the ecosystem has left behind. A staged roadmap for moving Java 8 estates to 21+ — what breaks, what to automate, how to sequence framework upgrades, and how to sell the work to the business.</p>
     <div class="card-meta"><time datetime="2026-03-10">10 Mar 2026</time><span class="dot"></span><span>5 min read</span></div>
   </div>
-</a></div>
+</article></div>
     </div>
   </section>
 
@@ -328,6 +354,7 @@ d.setAttribute('data-theme',t);
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/follow/">Follow new writing</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
           <li><a href="/notes/">Personal notes</a></li>
@@ -348,7 +375,7 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=a8e7c95a" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=a8e7c95a"></script>
+<script src="/assets/js/site.js?v=bd74be96" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=bd74be96"></script>
 </body>
 </html>

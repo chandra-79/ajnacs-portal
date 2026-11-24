@@ -33,8 +33,9 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=a8e7c95a">
-<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<link rel="stylesheet" href="/assets/css/site.css?v=bd74be96">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
+<link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
    never flashes the wrong ground or resets someone's text size mid-read. */
@@ -105,6 +106,7 @@ d.setAttribute('data-theme',t);
 </nav></div>
     <div class="article-copy">
       <div class="prose">
+<p class="article-opening">More tests help only when their failure tells a team what contract was broken and the results arrive in time to act.</p>
 <p>The testing pyramid exists because not all tests are equivalent. Fast tests belong at the base; slow, brittle, expensive tests belong at the top. The problem with most Java microservice test suites is that the pyramid is inverted — a thin layer of unit tests, a thick layer of integration tests that each require a running database and a live queue, and a set of end-to-end tests that take 20 minutes and fail intermittently.</p>
 <p>Here&#39;s how I think about testing Java services built for cloud deployment.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
@@ -194,15 +196,40 @@ E2E tests:         deploy to staging + run E2E suite  (~20min)
 <p><em>Building a test suite from scratch or restructuring an existing one? <a href="/contact/">Happy to think through the right layers.</a></em></p>
 
       </div>
+<section class="field-worksheet worked-example" aria-labelledby="worked-example">
+    <h2 id="worked-example">Worked example</h2>
+    <p class="case-notice">This scenario and its results are illustrative.</p>
+    
+    <p>Stage a broken downstream response and a delayed dependency for one Java service. Compare a smoke-test-only pipeline with focused contract and integration checks.</p>
+    <figure class="delivery-flow">
+    <figcaption>Execution sequence</figcaption>
+    <ol><li>List critical contracts</li><li>Create fixture faults</li><li>Run CI variants</li><li>Inspect missed cases</li></ol>
+  </figure>
+    <figure class="field-chart case-chart">
+    <figcaption>Example comparison <span>Simulated figures</span></figcaption>
+    <ul class="case-metrics"><li class="case-metric">
+      <h3>Seeded regressions caught before deployment <small>%</small></h3>
+      <ul class="chart-rows"><li><span>Smoke tests only</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:33.333333333333336%"></i></span>
+        <strong>33.333333% <small>(6/18)</small></strong></li><li><span>Contract plus integration tests</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:88.88888888888889%"></i></span>
+        <strong>88.888889% <small>(16/18)</small></strong></li></ul>
+    </li></ul>
+  </figure>
+    <h3>Method and limits</h3>
+    <p>Use identical 18 fixture changes and decide whether the uncaught defects need targeted smoke or end-to-end coverage. Measure pipeline runtime too.</p>
+    <a href="/field-guides/worked-examples.csv" download>Download the worked figures (CSV)</a>
+  </section>
 
 
 <aside class="refs" aria-labelledby="refs-h">
   <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
-  <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
+  <p class="refs-note">Primary documentation, standards and research for the methods discussed here.</p>
   <ul>
-    <li><a href="https://www.postgresql.org/docs/current/" rel="noopener nofollow" target="_blank">PostgreSQL documentation</a><span>Configuration and planner behaviour.</span></li>
-    <li><a href="https://kafka.apache.org/documentation/" rel="noopener nofollow" target="_blank">Apache Kafka documentation</a><span>Partitioning, consumer groups and delivery semantics.</span></li>
-    <li><a href="https://redis.io/docs/latest/" rel="noopener nofollow" target="_blank">Redis documentation</a><span>Data types, persistence and eviction.</span></li>
+    <li><a href="https://docs.junit.org/current/user-guide/" rel="noopener" target="_blank">JUnit User Guide</a><span>Test lifecycle, execution and extensions for Java.</span></li>
+    <li><a href="https://www.postgresql.org/docs/current/" rel="noopener" target="_blank">PostgreSQL documentation</a><span>Configuration and planner behaviour.</span></li>
+    <li><a href="https://kafka.apache.org/documentation/" rel="noopener" target="_blank">Apache Kafka documentation</a><span>Partitioning, consumer groups and delivery semantics.</span></li>
+    <li><a href="https://redis.io/docs/latest/" rel="noopener" target="_blank">Redis documentation</a><span>Data types, persistence and eviction.</span></li>
   </ul>
 </aside>
 
@@ -210,7 +237,7 @@ E2E tests:         deploy to staging + run E2E suite  (~20min)
 
       <footer class="article-foot">
         <div class="row" style="gap:.4rem">
-          <a class="chip chip-plain" href="/topics/programming/">Programming</a><a class="chip chip-plain" href="/insights/?topic=Java">Java</a><a class="chip chip-plain" href="/topics/devsecops/">DevSecOps</a><a class="chip chip-plain" href="/insights/?topic=CI%2FCD">CI/CD</a>
+          <a class="chip" href="/topics/programming/">Programming</a><a class="chip" href="/topics/java/">Java</a><a class="chip" href="/topics/devsecops/">DevSecOps</a><a class="chip" href="/topics/ci-cd/">CI/CD</a>
         </div>
         <nav class="prevnext" aria-label="More articles">
           <a href="/insights/azure-well-architected-framework/"><span>Previous</span><strong>Applying the Azure Well-Architected Framework: What the Pillars Look Like in Practice</strong></a>
@@ -224,12 +251,12 @@ E2E tests:         deploy to staging + run E2E suite  (~20min)
     <section class="promo-card promo-techknowen" aria-label="TechKnowen">
       <p class="promo-name">TechKnowen</p>
       <p>Practical reading on software, architecture, and engineering.</p>
-      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+      <a class="card-destination" href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
     </section>
     <section class="promo-card promo-ziggle" aria-label="Ziggle">
       <p class="promo-name">Ziggle</p>
       <p>A new place to play brain teasers.</p>
-      <p class="promo-status">Coming soon</p>
+      <a class="card-destination" href="/projects/ziggle/">Ziggle preview</a> <span class="promo-status">Coming soon</span>
     </section>
   </div>
 </aside>
@@ -238,33 +265,33 @@ E2E tests:         deploy to staging + run E2E suite  (~20min)
   <section class="section surface hair" style="margin-top:4rem">
     <div class="wrap">
       <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|Programming|Python|Cloud Architecture|DevSecOps|" data-search="python for cloud engineers: the parts that actually matter you don&#39;t need to be a data scientist to get serious value from python as a cloud practitioner. here&#39;s what actually matters — and what you can safely skip. programming python cloud architecture devsecops" data-topic="Programming" href="/insights/python-for-cloud-engineers/">
+      <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|Programming|Python|Cloud Architecture|DevSecOps|" data-search="python for cloud engineers: the parts that actually matter you don&#39;t need to be a data scientist to get serious value from python as a cloud practitioner. here&#39;s what actually matters — and what you can safely skip. programming python cloud architecture devsecops" data-topic="Programming">
   <div class="card-art"><img data-article-art="python-for-cloud-engineers" src="/assets/covers/python-for-cloud-engineers.svg?v=502ce38f18c9" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Programming</span>
-    <h3 class="card-title">Python for Cloud Engineers: The Parts That Actually Matter</h3>
+    <a class="chip" href="/topics/programming/">Programming</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/python-for-cloud-engineers/">Python for Cloud Engineers: The Parts That Actually Matter</a></h3>
     <p class="card-desc">You don&#39;t need to be a data scientist to get serious value from Python as a cloud practitioner. Here&#39;s what actually matters — and what you can safely skip.</p>
     <div class="card-meta"><time datetime="2026-10-19">19 Oct 2026</time><span class="dot"></span><span>3 min read</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|DevSecOps|Cloud Architecture|Engineering Leadership|" data-search="platform onboarding: measure the path to a first deployment pilot a self-service path, measure time to a first qualifying deployment, and track completion, controls, and support effort. devsecops cloud architecture engineering leadership" data-topic="DevSecOps" href="/insights/platform-engineering-idp-2026/">
+</article>
+<article class="card" data-card data-topics="|DevSecOps|Cloud Architecture|Engineering Leadership|" data-search="platform onboarding: measure the path to a first deployment pilot a self-service path, measure time to a first qualifying deployment, and track completion, controls, and support effort. devsecops cloud architecture engineering leadership" data-topic="DevSecOps">
   <div class="card-art"><img data-article-art="platform-engineering-idp-2026" src="/assets/covers/photos/platform-engineering-idp-2026.jpg?v=e89682005513" srcset="/assets/covers/photos/platform-engineering-idp-2026-640.jpg?v=e89682005513 640w, /assets/covers/photos/platform-engineering-idp-2026.jpg?v=e89682005513 1280w" sizes="(min-width: 800px) 420px, 100vw" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">DevSecOps</span>
-    <h3 class="card-title">Platform Onboarding: Measure the Path to a First Deployment</h3>
+    <a class="chip" href="/topics/devsecops/">DevSecOps</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/platform-engineering-idp-2026/">Platform Onboarding: Measure the Path to a First Deployment</a></h3>
     <p class="card-desc">Pilot a self-service path, measure time to a first qualifying deployment, and track completion, controls, and support effort.</p>
     <div class="card-meta"><time datetime="2026-11-20">20 Nov 2026</time><span class="dot"></span><span>2 min read</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|Programming|Enterprise AI|Developer Tools|" data-search="ai coding assistants in 2026: a practical comparison compare ai coding assistants by workflow, review time, patch acceptance and access controls. includes a practical scoring method for an engineering-team pilot. programming enterprise ai developer tools" data-topic="Programming" href="/insights/ai-coding-assistants-comparison-2026/">
+</article>
+<article class="card" data-card data-topics="|Programming|Enterprise AI|Developer Tools|" data-search="ai coding assistants in 2026: a practical comparison compare ai coding assistants by workflow, review time, patch acceptance and access controls. includes a practical scoring method for an engineering-team pilot. programming enterprise ai developer tools" data-topic="Programming">
   <div class="card-art"><img data-article-art="ai-coding-assistants-comparison-2026" src="/assets/covers/photos/ai-coding-assistants-comparison-2026.jpg?v=4205b08ba43a" srcset="/assets/covers/photos/ai-coding-assistants-comparison-2026-640.jpg?v=4205b08ba43a 640w, /assets/covers/photos/ai-coding-assistants-comparison-2026.jpg?v=4205b08ba43a 1280w" sizes="(min-width: 800px) 420px, 100vw" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Programming</span>
-    <h3 class="card-title">AI Coding Assistants in 2026: A Practical Comparison</h3>
+    <a class="chip" href="/topics/programming/">Programming</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/ai-coding-assistants-comparison-2026/">AI Coding Assistants in 2026: A Practical Comparison</a></h3>
     <p class="card-desc">Compare AI coding assistants by workflow, review time, patch acceptance and access controls. Includes a practical scoring method for an engineering-team pilot.</p>
     <div class="card-meta"><time datetime="2026-11-16">16 Nov 2026</time><span class="dot"></span><span>2 min read</span></div>
   </div>
-</a></div>
+</article></div>
     </div>
   </section>
 
@@ -344,6 +371,7 @@ E2E tests:         deploy to staging + run E2E suite  (~20min)
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/follow/">Follow new writing</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
           <li><a href="/notes/">Personal notes</a></li>
@@ -364,7 +392,7 @@ E2E tests:         deploy to staging + run E2E suite  (~20min)
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=a8e7c95a" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=a8e7c95a"></script>
+<script src="/assets/js/site.js?v=bd74be96" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=bd74be96"></script>
 </body>
 </html>

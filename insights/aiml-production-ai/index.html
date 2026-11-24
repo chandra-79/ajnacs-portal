@@ -33,8 +33,9 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=a8e7c95a">
-<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<link rel="stylesheet" href="/assets/css/site.css?v=bd74be96">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
+<link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
    never flashes the wrong ground or resets someone's text size mid-read. */
@@ -108,6 +109,7 @@ d.setAttribute('data-theme',t);
     </nav></div>
     <div class="article-copy">
       <div class="prose">
+<p class="article-opening">A model deployment includes versioned inputs, a quality gate and a tested path back to a previous release.</p>
 <p>Moving an AI model from a Jupyter notebook to production is not primarily a technical challenge — it is an operational and organisational challenge. The model that produces impressive demos requires latency budgets, cost management, monitoring, access controls, and reliability engineering before it is a production system. This lesson covers what that operational work actually involves.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
 <p><strong>Quality at production latency.</strong> Count responses that pass your evaluation rubric and meet the latency objective. If 920 of 1,000 traffic-representative requests do both, the joint pass rate is 92%. Keep quality failures, timeouts and failed fallbacks visible as separate counts.</p>
@@ -117,9 +119,9 @@ d.setAttribute('data-theme',t);
 <ul>
 <li><strong>Latency requirements</strong>: a user-facing application may require &lt; 500ms end-to-end. A batch analytics job may tolerate hours.</li>
 <li><strong>Throughput requirements</strong>: a popular application serves hundreds of requests per second simultaneously.</li>
-<li><strong>Cost at scale</strong>: GPT-4 inference at $0.01 per 1K input tokens is negligible for a demo. At 10M requests per day with 2K tokens average, it is $200K per month.</li>
+<li><strong>Cost at scale</strong>: At an illustrative $0.01 per 1,000 input tokens, 10 million daily requests of 2,000 input tokens cost $200,000 a day and $6 million over 30 days before output or other charges.</li>
 </ul>
-<p><strong>Self-hosted models</strong>: for cost-sensitive or privacy-sensitive workloads, running open-weight models (Llama, Mistral, Qwen) on your own GPU infrastructure reduces per-token costs but adds operational overhead. Typical serving stack: vLLM or TGI (Text Generation Inference) running on NVIDIA A100s or H100s.</p>
+<p><strong>Self-hosted models</strong>: for cost-sensitive or privacy-sensitive workloads, running open-weight models (Llama, Mistral, Qwen) on your own GPU infrastructure can reduce per-result costs at sufficient utilisation and acceptable quality, while adding infrastructure and operational work. Typical serving stack: vLLM or TGI (Text Generation Inference) running on NVIDIA A100s or H100s.</p>
 <p><strong>API-based models</strong>: OpenAI, Anthropic, Google — managed inference with no infrastructure overhead but higher per-token cost and data residency considerations.</p>
 <p><strong>Hybrid</strong>: use API-based models for low-volume, high-quality use cases; self-hosted models for high-volume, cost-sensitive workloads.</p>
 <h2 id="latency-optimisation"><a class="h-anchor" href="#latency-optimisation" aria-hidden="true" tabindex="-1">#</a>Latency Optimisation</h2>
@@ -163,7 +165,7 @@ input_tokens_per_request = 2000   # system prompt + context + user query
 output_tokens_per_request = 500   # generated response
 requests_per_day = 100_000
 
-## GPT-4o pricing (approximate, verify current rates)
+## Illustrative rates for the worksheet, independent of any provider price
 input_cost_per_1k = 0.005
 output_cost_per_1k = 0.015
 
@@ -174,7 +176,7 @@ daily_cost = (
 
 monthly_cost = daily_cost * 30
 print(f&quot;Estimated monthly: ${monthly_cost:,.0f}&quot;)
-## With these numbers: ~$135,000/month
+## With these numbers: $52,500 over 30 days
 </code></pre>
 <p><strong>Cost reduction approaches</strong>:</p>
 <ul>
@@ -192,7 +194,7 @@ print(f&quot;Estimated monthly: ${monthly_cost:,.0f}&quot;)
 <li>Track distribution of response lengths (sudden changes indicate prompt or model changes)</li>
 <li>Monitor user feedback signals (thumbs up/down, regeneration requests, conversation abandonment)</li>
 </ul>
-<p><strong>Model drift</strong>: LLM API providers update models. A model version update can change response quality. Monitor for changes in key metrics after provider updates.</p>
+<p><strong>Provider updates and drift</strong>: evaluate a provider version change as an upstream release. Separately monitor shifts in inputs and, where labels exist, changes in the relationship between inputs and outcomes.</p>
 <p><strong>Hallucination detection</strong>: for RAG systems, monitor whether responses cite documents that exist and whether cited content matches the document. Automated citation verification is achievable.</p>
 <p><strong>Cost and latency dashboards</strong>:</p>
 <pre><code>Track per-endpoint:
@@ -213,13 +215,39 @@ print(f&quot;Estimated monthly: ${monthly_cost:,.0f}&quot;)
 <p>The AI systems that run reliably at enterprise scale are not the ones with the most capable models. They are the ones with the most complete operational discipline. The model is one component. The infrastructure, monitoring, and governance around it are what make the system production-ready.</p>
 
       </div>
+<section class="field-worksheet worked-example" aria-labelledby="worked-example">
+    <h2 id="worked-example">Worked example</h2>
+    <p class="case-notice">This scenario and its results are illustrative.</p>
+    
+    <p>Register all artifacts for a small inference pipeline, then walk the promotion and rollback sequence with a fixture failure. Score whether each rollback brings back the compatible model and feature mapping.</p>
+    <figure class="delivery-flow">
+    <figcaption>Execution sequence</figcaption>
+    <ol><li>Register artifact</li><li>Run parity checks</li><li>Route stable cohort</li><li>Roll back safely</li></ol>
+  </figure>
+    <figure class="field-chart case-chart">
+    <figcaption>Example comparison <span>Simulated figures</span></figcaption>
+    <ul class="case-metrics"><li class="case-metric">
+      <h3>Successful rollback rehearsals <small>%</small></h3>
+      <ul class="chart-rows"><li><span>Unpinned assets</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:50%"></i></span>
+        <strong>50% <small>(5/10)</small></strong></li><li><span>Pinned model and compatibility checks</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:100%"></i></span>
+        <strong>100% <small>(10/10)</small></strong></li></ul>
+    </li></ul>
+  </figure>
+    <h3>Method and limits</h3>
+    <p>Use ten paired simulated failure windows. Zero failures in a limited fixture leave unexplored combinations.</p>
+    <a href="/field-guides/worked-examples.csv" download>Download the worked figures (CSV)</a>
+  </section>
 
 
 <aside class="refs" aria-labelledby="refs-h">
   <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
-  <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
+  <p class="refs-note">Primary documentation, standards and research for the methods discussed here.</p>
   <ul>
-    <li><a href="https://redis.io/docs/latest/" rel="noopener nofollow" target="_blank">Redis documentation</a><span>Data types, persistence and eviction.</span></li>
+    <li><a href="https://doi.org/10.6028/NIST.AI.600-1" rel="noopener" target="_blank">NIST AI 600-1 · Generative AI Profile</a><span>Lifecycle evaluation, governance and operational controls.</span></li>
+    <li><a href="https://proceedings.neurips.cc/paper/2015/hash/86df7dcfd896fcaf2674f757a2463eba-Abstract.html" rel="noopener" target="_blank">Sculley et al. · Hidden Technical Debt in Machine Learning Systems, NeurIPS</a><span>Production ML dependencies, feedback loops and system boundaries.</span></li>
+    <li><a href="https://redis.io/docs/latest/" rel="noopener" target="_blank">Redis documentation</a><span>Data types, persistence and eviction.</span></li>
   </ul>
 </aside>
 
@@ -227,7 +255,7 @@ print(f&quot;Estimated monthly: ${monthly_cost:,.0f}&quot;)
 
       <footer class="article-foot">
         <div class="row" style="gap:.4rem">
-          <a class="chip chip-plain" href="/topics/ai-mlops/">AI &amp; MLOps</a><a class="chip chip-plain" href="/topics/enterprise-ai/">Enterprise AI</a><a class="chip chip-plain" href="/topics/fundamentals/">Fundamentals</a>
+          <a class="chip" href="/topics/ai-mlops/">AI &amp; MLOps</a><a class="chip" href="/topics/enterprise-ai/">Enterprise AI</a><a class="chip" href="/topics/fundamentals/">Fundamentals</a>
         </div>
         <nav class="prevnext" aria-label="More articles">
           <a href="/insights/containers-what-they-actually-are/"><span>Previous</span><strong>What Containers Actually Are — Not the Marketing Version</strong></a>
@@ -241,12 +269,12 @@ print(f&quot;Estimated monthly: ${monthly_cost:,.0f}&quot;)
     <section class="promo-card promo-techknowen" aria-label="TechKnowen">
       <p class="promo-name">TechKnowen</p>
       <p>Practical reading on software, architecture, and engineering.</p>
-      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+      <a class="card-destination" href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
     </section>
     <section class="promo-card promo-ziggle" aria-label="Ziggle">
       <p class="promo-name">Ziggle</p>
       <p>A new place to play brain teasers.</p>
-      <p class="promo-status">Coming soon</p>
+      <a class="card-destination" href="/projects/ziggle/">Ziggle preview</a> <span class="promo-status">Coming soon</span>
     </section>
   </div>
 </aside>
@@ -255,33 +283,33 @@ print(f&quot;Estimated monthly: ${monthly_cost:,.0f}&quot;)
   <section class="section surface hair" style="margin-top:4rem">
     <div class="wrap">
       <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|AI &amp; MLOps|Enterprise AI|Fundamentals|" data-search="large language models: what they are, how they are built, and what they cannot do transformers, attention, pretraining, fine-tuning, rlhf — the architecture and training pipeline behind gpt, claude, llama, and every other modern llm, explained for engineers who need to use and evaluate these systems. ai &amp; mlops enterprise ai fundamentals" data-topic="AI &amp; MLOps" href="/insights/aiml-llms-explained/">
-  <div class="card-art"><img data-article-art="aiml-llms-explained" src="/assets/covers/aiml-llms-explained.svg?v=467f0ba2a14e" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+      <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|AI &amp; MLOps|Enterprise AI|Fundamentals|" data-search="large language models: what they are, how they are built, and what they cannot do transformers, attention, pretraining, fine-tuning, rlhf — the architecture and training pipeline behind gpt, claude, llama, and every other modern llm, explained for engineers who need to use and evaluate these systems. ai &amp; mlops enterprise ai fundamentals" data-topic="AI &amp; MLOps">
+  <div class="card-art"><img data-article-art="aiml-llms-explained" src="/assets/covers/aiml-llms-explained.svg?v=587a8ac6e06f" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">AI &amp; MLOps</span>
-    <h3 class="card-title">Large Language Models: What They Are, How They Are Built, and What They Cannot Do</h3>
+    <a class="chip" href="/topics/ai-mlops/">AI &amp; MLOps</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/aiml-llms-explained/">Large Language Models: What They Are, How They Are Built, and What They Cannot Do</a></h3>
     <p class="card-desc">Transformers, attention, pretraining, fine-tuning, RLHF — the architecture and training pipeline behind GPT, Claude, Llama, and every other modern LLM, explained for engineers who need to use and evaluate these systems.</p>
     <div class="card-meta"><time datetime="2026-10-21">21 Oct 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|AI &amp; MLOps|Enterprise AI|Fundamentals|" data-search="rag, prompting, and building applications on llms: the practitioner&#39;s guide retrieval-augmented generation, system prompts, few-shot examples, chain-of-thought, structured output, and the engineering patterns that make llm applications reliable in production. ai &amp; mlops enterprise ai fundamentals" data-topic="AI &amp; MLOps" href="/insights/aiml-rag-and-prompting/">
+</article>
+<article class="card" data-card data-topics="|AI &amp; MLOps|Enterprise AI|Fundamentals|" data-search="rag, prompting, and building applications on llms: the practitioner&#39;s guide retrieval-augmented generation, system prompts, few-shot examples, chain-of-thought, structured output, and the engineering patterns that make llm applications reliable in production. ai &amp; mlops enterprise ai fundamentals" data-topic="AI &amp; MLOps">
   <div class="card-art"><img data-article-art="aiml-rag-and-prompting" src="/assets/covers/aiml-rag-and-prompting.svg?v=8b3b55690283" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">AI &amp; MLOps</span>
-    <h3 class="card-title">RAG, Prompting, and Building Applications on LLMs: The Practitioner&#39;s Guide</h3>
+    <a class="chip" href="/topics/ai-mlops/">AI &amp; MLOps</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/aiml-rag-and-prompting/">RAG, Prompting, and Building Applications on LLMs: The Practitioner&#39;s Guide</a></h3>
     <p class="card-desc">Retrieval-augmented generation, system prompts, few-shot examples, chain-of-thought, structured output, and the engineering patterns that make LLM applications reliable in production.</p>
     <div class="card-meta"><time datetime="2026-08-25">25 Aug 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|AI &amp; MLOps|Fundamentals|" data-search="neural networks explained: what they are, how they learn, and why they work neurons, layers, weights, activation functions, backpropagation, and gradient descent — the actual mechanics of how a neural network learns from data, explained without the mathematics becoming the obstacle. ai &amp; mlops fundamentals" data-topic="AI &amp; MLOps" href="/insights/aiml-neural-networks/">
+</article>
+<article class="card" data-card data-topics="|AI &amp; MLOps|Fundamentals|" data-search="neural networks explained: what they are, how they learn, and why they work neurons, layers, weights, activation functions, backpropagation, and gradient descent — the actual mechanics of how a neural network learns from data, explained without the mathematics becoming the obstacle. ai &amp; mlops fundamentals" data-topic="AI &amp; MLOps">
   <div class="card-art"><img data-article-art="aiml-neural-networks" src="/assets/covers/aiml-neural-networks.svg?v=66ce49bca579" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">AI &amp; MLOps</span>
-    <h3 class="card-title">Neural Networks Explained: What They Are, How They Learn, and Why They Work</h3>
+    <a class="chip" href="/topics/ai-mlops/">AI &amp; MLOps</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/aiml-neural-networks/">Neural Networks Explained: What They Are, How They Learn, and Why They Work</a></h3>
     <p class="card-desc">Neurons, layers, weights, activation functions, backpropagation, and gradient descent — the actual mechanics of how a neural network learns from data, explained without the mathematics becoming the obstacle.</p>
     <div class="card-meta"><time datetime="2026-09-04">4 Sept 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
   </div>
-</a></div>
+</article></div>
     </div>
   </section>
 
@@ -371,6 +399,7 @@ print(f&quot;Estimated monthly: ${monthly_cost:,.0f}&quot;)
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/follow/">Follow new writing</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
           <li><a href="/notes/">Personal notes</a></li>
@@ -391,7 +420,7 @@ print(f&quot;Estimated monthly: ${monthly_cost:,.0f}&quot;)
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=a8e7c95a" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=a8e7c95a"></script>
+<script src="/assets/js/site.js?v=bd74be96" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=bd74be96"></script>
 </body>
 </html>

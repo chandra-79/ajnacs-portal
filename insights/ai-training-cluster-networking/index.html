@@ -14,7 +14,7 @@
 <meta property="og:title" content="AI Training Cluster Networking: Architecture for Large-Scale Model Training">
 <meta property="og:description" content="Training large models at scale requires network architecture that most data centres aren&#39;t built for. Here&#39;s how to think about the networking stack for AI…">
 <meta property="og:url" content="https://ajnacs.com/insights/ai-training-cluster-networking/">
-<meta property="og:image" content="https://ajnacs.com/assets/og/articles/ai-training-cluster-networking.png?v=e150001f8bd9">
+<meta property="og:image" content="https://ajnacs.com/assets/og/articles/ai-training-cluster-networking.png?v=132a025a9132">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Illustration for AI Training Cluster Networking: Architecture for Large-Scale Model Training">
@@ -24,7 +24,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="AI Training Cluster Networking: Architecture for Large-Scale Model Training">
 <meta name="twitter:description" content="Training large models at scale requires network architecture that most data centres aren&#39;t built for. Here&#39;s how to think about the networking stack for AI…">
-<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/ai-training-cluster-networking.png?v=e150001f8bd9">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/ai-training-cluster-networking.png?v=132a025a9132">
 <meta name="twitter:image:alt" content="Illustration for AI Training Cluster Networking: Architecture for Large-Scale Model Training">
 
 <link rel="icon" href="/favicon.ico?v=8affdbd5" sizes="any">
@@ -33,8 +33,9 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=a8e7c95a">
-<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<link rel="stylesheet" href="/assets/css/site.css?v=bd74be96">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
+<link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
    never flashes the wrong ground or resets someone's text size mid-read. */
@@ -49,7 +50,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"AI Training Cluster Networking: Architecture for Large-Scale Model Training","description":"Training large models at scale requires network architecture that most data centres aren't built for. Here's how to think about the networking stack for AI training clusters — topology, bandwidth requirements, collective operations, and the trade-offs between InfiniBand and high-speed Ethernet.","datePublished":"2025-04-08","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/ai-training-cluster-networking/","image":"https://ajnacs.com/assets/og/articles/ai-training-cluster-networking.png?v=e150001f8bd9","keywords":"Systems, AI & MLOps, HPC","articleSection":"AI & MLOps","wordCount":954}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"AI Training Cluster Networking: Architecture for Large-Scale Model Training","description":"Training large models at scale requires network architecture that most data centres aren't built for. Here's how to think about the networking stack for AI training clusters — topology, bandwidth requirements, collective operations, and the trade-offs between InfiniBand and high-speed Ethernet.","datePublished":"2025-04-08","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/ai-training-cluster-networking/","image":"https://ajnacs.com/assets/og/articles/ai-training-cluster-networking.png?v=132a025a9132","keywords":"Systems, AI & MLOps, HPC","articleSection":"AI & MLOps","wordCount":954}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"AI Training Cluster Networking: Architecture for Large-Scale Model Training"}]}</script>
 </head>
 <body class="article-frame" data-topic="AI &amp; MLOps">
@@ -98,77 +99,76 @@ d.setAttribute('data-theme',t);
       </div>
     </header>
 
-    <div class="article-hero" data-topic="AI &amp; MLOps"><img data-article-art="ai-training-cluster-networking" src="/assets/covers/ai-training-cluster-networking.svg?v=e467b8645f54" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div>
+    <div class="article-hero" data-topic="AI &amp; MLOps"><img data-article-art="ai-training-cluster-networking" src="/assets/covers/ai-training-cluster-networking.svg?v=f43cfe5e7a5c" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
-  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#why-training-clusters-need-different-networking">Why training clusters need different networking</a></li><li><a href="#topology-for-training-clusters">Topology for training clusters</a></li><li><a href="#infiniband-vs-roce-at-training-scale">InfiniBand vs. RoCE at training scale</a></li><li><a href="#intra-node-interconnect-nvlink-and-nvswitch">Intra-node interconnect: NVLink and NVSwitch</a></li><li><a href="#bandwidth-requirements-in-practice">Bandwidth requirements in practice</a></li><li><a href="#storage-networking-for-ai-workloads">Storage networking for AI workloads</a></li></ol>
+  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#estimate-communication-by-participant-and-boundary">Estimate communication by participant and boundary</a></li><li><a href="#evaluate-the-fit">Evaluate the fit</a></li><li><a href="#sources">Sources</a></li></ol>
 </nav></div>
     <div class="article-copy">
       <div class="prose">
-<p>Training large language models and diffusion models at scale is a fundamentally different networking problem from running web services. The workload characteristics are different: very high bandwidth between adjacent nodes, synchronisation points that require all nodes in a group to communicate simultaneously, and sensitivity to network variance that doesn&#39;t matter in loosely-coupled microservice architectures.</p>
-<p>A slow network in a web service deployment slightly increases response time. A slow network in a distributed model training job slows the entire job to the speed of the slowest link, because all nodes must synchronise at each gradient exchange.</p>
+<p class="article-opening">Training fabric improvements are useful when they reduce time spent communicating at realistic job scale.</p>
+<p>A training job uses a fabric for latency-sensitive exchanges between accelerators, and storage paths for reading training data and writing checkpoints. Plan both from the job&#39;s communication pattern. A link rating cannot tell you whether the scheduler places active ranks onto healthy paths.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
-<p><strong>Scaling efficiency at fixed work.</strong> Keep the model, batch protocol and precision fixed. If an 8-GPU run handles 4,000 tokens/s and a 32-GPU run handles 13,000, the speedup is 3.25× for 4× the GPUs, or about 81% scaling efficiency. Record collective time and per-rank stragglers before attributing the gap to the network.</p>
-<p><em>Illustrative measurement. Any numbers in this example are hypothetical.</em></p>
-<h2 id="why-training-clusters-need-different-networking"><a class="h-anchor" href="#why-training-clusters-need-different-networking" aria-hidden="true" tabindex="-1">#</a>Why training clusters need different networking</h2>
-<p>Distributed training breaks a model&#39;s computation across multiple GPUs and nodes. Two dominant parallelism strategies:</p>
-<p><strong>Data parallelism</strong>: each GPU trains on a different batch of data with the same model parameters. After each batch, gradients are synchronised across all GPUs via an all-reduce collective. The bandwidth requirement scales with model size — for a model with billions of parameters, the all-reduce requires exchanging hundreds of gigabytes per step, hundreds of times per second.</p>
-<p><strong>Tensor/pipeline parallelism</strong>: for models too large to fit in a single GPU&#39;s memory, the model itself is split across GPUs. Layers or tensor slices are distributed. Each forward pass requires data to move from one GPU to the next in the pipeline, and from one rank to another for tensor-parallel operations. Latency between adjacent stages directly adds to step time.</p>
-<p>Both patterns require:</p>
+<p>Measure representative training-step time, collective duration and checkpoint throughput. Keep model configuration, tensor shapes, rank count, software and placement comparable. <strong>Illustrative measurement.</strong> A synthetic pilot shows an 830 ms median step before changes and 620 ms in an isolated-fabric replay. Profile overlap before assigning the entire improvement to networking.</p>
+<h2 id="estimate-communication-by-participant-and-boundary"><a class="h-anchor" href="#estimate-communication-by-participant-and-boundary" aria-hidden="true" tabindex="-1">#</a>Estimate communication by participant and boundary</h2>
+<p>In replicated data parallel training, gradients commonly pass through all-reduce. A standard ring with N participants moves approximately 2(N−1)S/N bytes sent per rank for a rank&#39;s S-byte buffer, plus receives. This describes algorithmic traffic, not bytes crossing one physical host link. With multiple GPUs per host, a hierarchical collective can combine traffic within the host before it reaches the network. Tensor and pipeline parallelism use different communication schedules. Check the implementation, rank topology and the reported counters.</p>
+<p>A platform may publish a per-GPU NVLink aggregate, such as the 900 GB/s figure for the H100 platform configuration, while a network worksheet describes nominal one-way NIC line rate. Four 400 Gb/s links provide 1.6 Tb/s, or 200 GB/s nominal aggregate one-way line rate, before protocol overhead and placement limits. Keep direction, link count, host versus rank and usable payload explicit before comparing units.</p>
+<h2 id="evaluate-the-fit"><a class="h-anchor" href="#evaluate-the-fit" aria-hidden="true" tabindex="-1">#</a>Evaluate the fit</h2>
+<ol>
+<li>Record accelerators, NICs, rank placement and collective library settings, then run a representative sweep of collectives and payload sizes.</li>
+<li>Repeat under an expected background workload and a controlled link impairment. Compare the slowest rank and job-step tail against the average.</li>
+<li>Watch checkpoint bursts, metadata operations and restart time. Confirm that storage and control paths are separated or provisioned for measured contention.</li>
+<li>Document what operators can see when a rail is unhealthy and how the runtime behaves. Never assume failover or full link-striping from hardware count alone.</li>
+</ol>
+<h2 id="sources"><a class="h-anchor" href="#sources" aria-hidden="true" tabindex="-1">#</a>Sources</h2>
 <ul>
-<li><strong>High bandwidth</strong>: enough to exchange gradients without becoming the training bottleneck</li>
-<li><strong>Low latency</strong>: especially for tight synchronisation points in pipeline and tensor parallelism</li>
-<li><strong>Low variance</strong>: a single slow link in a ring all-reduce makes every GPU wait for the slowest link</li>
+<li><a href="https://docs.nvidia.com/deeplearning/nccl/user-guide/docs/usage/collectives.html" rel="noopener" target="_blank">NVIDIA NCCL collective reference</a></li>
+<li><a href="https://github.com/NVIDIA/nccl-tests/blob/master/doc/PERFORMANCE.md" rel="noopener" target="_blank">NCCL Tests bandwidth definitions</a></li>
+<li><a href="https://docs.pytorch.org/docs/stable/notes/ddp" rel="noopener" target="_blank">PyTorch DistributedDataParallel design</a></li>
+<li><a href="https://docs.nvidia.com/enterprise-reference-architectures/hgx-ai-factory-h100-h200-b200/latest/components.html" rel="noopener" target="_blank">NVIDIA HGX system components</a></li>
 </ul>
-<h2 id="topology-for-training-clusters"><a class="h-anchor" href="#topology-for-training-clusters" aria-hidden="true" tabindex="-1">#</a>Topology for training clusters</h2>
-<p><strong>Fat-tree / Clos topology</strong>: the standard for large-scale training. A three-tier Clos (leaf-spine-core or ToR-aggregate-core) provides full bisection bandwidth — any-to-any communication at full line rate. For training clusters, full bisection bandwidth ensures that inter-node communication doesn&#39;t bottleneck regardless of which nodes are assigned to a job.</p>
-<p><strong>Rail-optimized topology</strong>: a specialised topology for training at scale. Multiple independent networks (rails) connect all nodes, and the training framework distributes all-reduce traffic across rails. A 4-rail design with 400GbE links per rail provides 1.6 Tbps of aggregate bandwidth per node — comparable to multi-rail NVLink bandwidth within a node. Used by large-scale cloud AI clusters (AWS Trainium, Google TPU pods).</p>
-<p><strong>InfiniBand non-blocking fabric</strong>: InfiniBand topologies (fat-tree with HDR/NDR) are non-blocking within the fabric — a switch can forward traffic from all ports simultaneously at line rate. Many HPC and AI training clusters use InfiniBand with EDR (100 Gbps), HDR (200 Gbps), or NDR (400 Gbps) links.</p>
-<h2 id="infiniband-vs-roce-at-training-scale"><a class="h-anchor" href="#infiniband-vs-roce-at-training-scale" aria-hidden="true" tabindex="-1">#</a>InfiniBand vs. RoCE at training scale</h2>
-<p><strong>InfiniBand</strong> remains the preferred choice for the largest training clusters:</p>
-<ul>
-<li>Native RDMA without the Ethernet compatibility overhead</li>
-<li>SHARP (Scalable Hierarchical Aggregation and Reduction Protocol) performs in-network all-reduce — the reduction happens in the switches, reducing the volume of data that needs to traverse the network</li>
-<li>Consistent, predictable latency</li>
-<li>Managed fabric with centralised subnet management</li>
-</ul>
-<p><strong>RoCE</strong> (RDMA over Converged Ethernet) is viable at scale with proper configuration:</p>
-<ul>
-<li>Requires lossless Ethernet (Priority Flow Control + DCQCN)</li>
-<li>Works with standard Ethernet switching infrastructure</li>
-<li>Increasingly competitive with InfiniBand at 400GbE for many training workloads</li>
-<li>Cloudscale AI clusters (AWS, Microsoft, Google) use RoCE in various configurations</li>
-</ul>
-<p>The performance gap between InfiniBand and high-speed RoCE has narrowed at 400GbE speeds. For new buildouts without existing InfiniBand infrastructure, RoCE on 400GbE Ethernet is often the more economical choice when combined with good switch silicon (Spectrum-4, Tomahawk 5).</p>
-<h2 id="intra-node-interconnect-nvlink-and-nvswitch"><a class="h-anchor" href="#intra-node-interconnect-nvlink-and-nvswitch" aria-hidden="true" tabindex="-1">#</a>Intra-node interconnect: NVLink and NVSwitch</h2>
-<p>Within a node, GPU-to-GPU communication uses NVLink rather than PCIe. NVLink Gen4 (used in H100) provides 900 GB/s total GPU-to-GPU bandwidth within a node via NVSwitch — orders of magnitude more than PCIe would provide.</p>
-<p>This asymmetry (high-bandwidth intra-node, relatively lower-bandwidth inter-node) drives the tensor/pipeline parallelism decomposition strategy: operations that require frequent, high-volume communication (tensor-parallel) stay within a node; operations that require less frequent synchronisation (data-parallel all-reduce) span nodes.</p>
-<h2 id="bandwidth-requirements-in-practice"><a class="h-anchor" href="#bandwidth-requirements-in-practice" aria-hidden="true" tabindex="-1">#</a>Bandwidth requirements in practice</h2>
-<p>A rule of thumb for all-reduce bandwidth requirements in data-parallel training:</p>
-<pre><code>Required network bandwidth (per node) ≈ (2 * model_parameters * bytes_per_parameter) / step_time
-</code></pre>
-<p>For a 70B parameter model with bf16 (2 bytes) and a target step time of 1 second:</p>
-<pre><code>(2 * 70e9 * 2) / 1 = 280 GB/s per node
-</code></pre>
-<p>This exceeds what even 400GbE can provide — which is why large model training uses multiple nodes per NVLink domain (tensor parallelism within nodes) to reduce the inter-node all-reduce volume, and why SHARP in-network reduction (which reduces traffic on the switches) is valuable.</p>
-<h2 id="storage-networking-for-ai-workloads"><a class="h-anchor" href="#storage-networking-for-ai-workloads" aria-hidden="true" tabindex="-1">#</a>Storage networking for AI workloads</h2>
-<p>Training clusters need fast access to training data (petabyte-scale datasets) and checkpoint storage. The storage network is often separate from the training interconnect:</p>
-<ul>
-<li><strong>Training data</strong>: parallel file systems (GPFS, Lustre, WekaFS) or object storage (S3, GCS) with high-throughput access. Storage bandwidth needs to keep all GPUs fed without bottlenecking on data loading.</li>
-<li><strong>Checkpoints</strong>: regular writes of model state to durable storage. Checkpoint frequency and size (hundreds of GB for large models) determine storage I/O requirements. NVMe over Fabrics (NVMe-oF) or high-throughput object storage are common patterns.</li>
-</ul>
-<p><em>Designing networking for an AI training cluster or evaluating whether your existing infrastructure is suitable? <a href="/contact/">Happy to compare configurations.</a></em></p>
 
       </div>
+<section class="field-worksheet worked-example" aria-labelledby="worked-example">
+    <h2 id="worked-example">Worked example</h2>
+    <p class="case-notice">This scenario and its results are illustrative.</p>
+    
+    <p>Hold model, batch size, GPU count and placement constant. Record step time and time in collectives as you compare two configured fabrics or congestion settings.</p>
+    <figure class="delivery-flow">
+    <figcaption>Execution sequence</figcaption>
+    <ol><li>Fix training setup</li><li>Time collectives</li><li>Simulate contention</li><li>Compare steps</li></ol>
+  </figure>
+    <figure class="field-chart case-chart">
+    <figcaption>Example comparison <span>Simulated figures</span></figcaption>
+    <ul class="case-metrics"><li class="case-metric">
+      <h3>Median training step time <small>ms</small></h3>
+      <ul class="chart-rows"><li><span>Contention fixture</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:100%"></i></span>
+        <strong>830</strong></li><li><span>Isolated fabric fixture</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:74.6987951807229%"></i></span>
+        <strong>620</strong></li></ul>
+    </li></ul>
+  </figure>
+    <h3>Method and limits</h3>
+    <p>Use equal warm-up and 500 measured steps per run. Changes may arise from placement or workload variability. Capture network counters and phase overlap.</p>
+    <a href="/field-guides/worked-examples.csv" download>Download the worked figures (CSV)</a>
+  </section>
 
 
-
+<aside class="refs" aria-labelledby="refs-h">
+  <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
+  <p class="refs-note">Primary documentation, standards and research for the methods discussed here.</p>
+  <ul>
+    <li><a href="https://github.com/NVIDIA/nccl-tests/blob/master/doc/PERFORMANCE.md" rel="noopener" target="_blank">NVIDIA NCCL Tests · Performance definitions</a><span>Collective workload, algorithm bandwidth and bus bandwidth.</span></li>
+    <li><a href="https://pytorch.org/docs/stable/" rel="noopener" target="_blank">PyTorch</a><span>Reference for the APIs discussed.</span></li>
+  </ul>
+</aside>
 
 
 
       <footer class="article-foot">
         <div class="row" style="gap:.4rem">
-          <a class="chip chip-plain" href="/insights/?topic=Systems">Systems</a><a class="chip chip-plain" href="/topics/ai-mlops/">AI &amp; MLOps</a><a class="chip chip-plain" href="/insights/?topic=HPC">HPC</a>
+          <a class="chip" href="/topics/systems/">Systems</a><a class="chip" href="/topics/ai-mlops/">AI &amp; MLOps</a><a class="chip" href="/topics/hpc/">HPC</a>
         </div>
         <nav class="prevnext" aria-label="More articles">
           <a href="/insights/quick-take-ethernet-vs-infiniband/"><span>Previous</span><strong>Ethernet vs. InfiniBand for AI Training: Why the Network Fabric Matters More Than You Think</strong></a>
@@ -182,12 +182,12 @@ d.setAttribute('data-theme',t);
     <section class="promo-card promo-techknowen" aria-label="TechKnowen">
       <p class="promo-name">TechKnowen</p>
       <p>Practical reading on software, architecture, and engineering.</p>
-      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+      <a class="card-destination" href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
     </section>
     <section class="promo-card promo-ziggle" aria-label="Ziggle">
       <p class="promo-name">Ziggle</p>
       <p>A new place to play brain teasers.</p>
-      <p class="promo-status">Coming soon</p>
+      <a class="card-destination" href="/projects/ziggle/">Ziggle preview</a> <span class="promo-status">Coming soon</span>
     </section>
   </div>
 </aside>
@@ -196,33 +196,33 @@ d.setAttribute('data-theme',t);
   <section class="section surface hair" style="margin-top:4rem">
     <div class="wrap">
       <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|Systems|HPC|AI &amp; MLOps|" data-search="roce vs iwarp: choosing the right rdma technology for your workload both roce and iwarp provide rdma over ethernet, but they have different network requirements, loss behavior, and operational characteristics. here&#39;s how to choose between them for ai training, hpc, and storage workloads. systems hpc ai &amp; mlops" data-topic="AI &amp; MLOps" href="/insights/roce-vs-iwarp-networking/">
+      <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|Systems|HPC|AI &amp; MLOps|" data-search="roce vs iwarp: choosing the right rdma technology for your workload both roce and iwarp provide rdma over ethernet, but they have different network requirements, loss behavior, and operational characteristics. here&#39;s how to choose between them for ai training, hpc, and storage workloads. systems hpc ai &amp; mlops" data-topic="AI &amp; MLOps">
   <div class="card-art"><img data-article-art="roce-vs-iwarp-networking" src="/assets/covers/roce-vs-iwarp-networking.svg?v=a8e2c3a18738" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">AI &amp; MLOps</span>
-    <h3 class="card-title">RoCE vs iWARP: Choosing the Right RDMA Technology for Your Workload</h3>
+    <a class="chip" href="/topics/ai-mlops/">AI &amp; MLOps</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/roce-vs-iwarp-networking/">RoCE vs iWARP: Choosing the Right RDMA Technology for Your Workload</a></h3>
     <p class="card-desc">Both RoCE and iWARP provide RDMA over Ethernet, but they have different network requirements, loss behavior, and operational characteristics. Here&#39;s how to choose between them for AI training, HPC, and storage workloads.</p>
     <div class="card-meta"><time datetime="2026-11-02">2 Nov 2026</time><span class="dot"></span><span>4 min read</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|Systems|HPC|AI &amp; MLOps|" data-search="hpc network topology patterns: fat-tree, torus, and dragonfly explained the network topology of an hpc or ai training cluster determines its bandwidth, latency, cost, and how well it scales. here&#39;s how fat-tree, torus, and dragonfly topologies work, their trade-offs, and which workloads each suits best. systems hpc ai &amp; mlops" data-topic="AI &amp; MLOps" href="/insights/hpc-network-topology-patterns/">
-  <div class="card-art"><img data-article-art="hpc-network-topology-patterns" src="/assets/covers/hpc-network-topology-patterns.svg?v=b1a03a07d72a" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+</article>
+<article class="card" data-card data-topics="|Systems|HPC|AI &amp; MLOps|" data-search="hpc network topology patterns: fat-tree, torus, and dragonfly explained the network topology of an hpc or ai training cluster determines its bandwidth, latency, cost, and how well it scales. here&#39;s how fat-tree, torus, and dragonfly topologies work, their trade-offs, and which workloads each suits best. systems hpc ai &amp; mlops" data-topic="AI &amp; MLOps">
+  <div class="card-art"><img data-article-art="hpc-network-topology-patterns" src="/assets/covers/hpc-network-topology-patterns.svg?v=cff49d20b2b8" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">AI &amp; MLOps</span>
-    <h3 class="card-title">HPC Network Topology Patterns: Fat-Tree, Torus, and Dragonfly Explained</h3>
+    <a class="chip" href="/topics/ai-mlops/">AI &amp; MLOps</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/hpc-network-topology-patterns/">HPC Network Topology Patterns: Fat-Tree, Torus, and Dragonfly Explained</a></h3>
     <p class="card-desc">The network topology of an HPC or AI training cluster determines its bandwidth, latency, cost, and how well it scales. Here&#39;s how fat-tree, torus, and dragonfly topologies work, their trade-offs, and which workloads each suits best.</p>
     <div class="card-meta"><time datetime="2026-10-30">30 Oct 2026</time><span class="dot"></span><span>5 min read</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|Systems|Infrastructure|Enterprise AI|Cloud Architecture|HPC|" data-search="ethernet vs. infiniband: choosing the right network fabric in 2026 a practical breakdown of when to use ethernet and when infiniband makes sense — with key metrics, topology differences, and real-world guidance for cloud, hpc, and ai workloads. systems infrastructure enterprise ai cloud architecture hpc" data-topic="Infrastructure" href="/insights/ethernet-vs-infiniband-networking-2026/">
+</article>
+<article class="card" data-card data-topics="|Systems|Infrastructure|Enterprise AI|Cloud Architecture|HPC|" data-search="ethernet vs. infiniband: choosing the right network fabric in 2026 a practical breakdown of when to use ethernet and when infiniband makes sense — with key metrics, topology differences, and real-world guidance for cloud, hpc, and ai workloads. systems infrastructure enterprise ai cloud architecture hpc" data-topic="Infrastructure">
   <div class="card-art"><img data-article-art="ethernet-vs-infiniband-networking-2026" src="/assets/covers/ethernet-vs-infiniband-networking-2026.svg?v=99c68a23a181" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Infrastructure</span>
-    <h3 class="card-title">Ethernet vs. InfiniBand: Choosing the Right Network Fabric in 2026</h3>
+    <a class="chip" href="/topics/infrastructure/">Infrastructure</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/ethernet-vs-infiniband-networking-2026/">Ethernet vs. InfiniBand: Choosing the Right Network Fabric in 2026</a></h3>
     <p class="card-desc">A practical breakdown of when to use Ethernet and when InfiniBand makes sense — with key metrics, topology differences, and real-world guidance for cloud, HPC, and AI workloads.</p>
     <div class="card-meta"><time datetime="2026-10-02">2 Oct 2026</time><span class="dot"></span><span>5 min read</span></div>
   </div>
-</a></div>
+</article></div>
     </div>
   </section>
 
@@ -302,6 +302,7 @@ d.setAttribute('data-theme',t);
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/follow/">Follow new writing</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
           <li><a href="/notes/">Personal notes</a></li>
@@ -322,7 +323,7 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=a8e7c95a" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=a8e7c95a"></script>
+<script src="/assets/js/site.js?v=bd74be96" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=bd74be96"></script>
 </body>
 </html>

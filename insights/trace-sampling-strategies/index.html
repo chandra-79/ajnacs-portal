@@ -33,8 +33,9 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=a8e7c95a">
-<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<link rel="stylesheet" href="/assets/css/site.css?v=bd74be96">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
+<link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
    never flashes the wrong ground or resets someone's text size mid-read. */
@@ -105,6 +106,7 @@ d.setAttribute('data-theme',t);
 </nav></div>
     <div class="article-copy">
       <div class="prose">
+<p class="article-opening">A trace-sampling policy should state which rare signals it is willing to miss.</p>
 <p>Distributed tracing&#39;s pitch — every request&#39;s journey across services, reconstructible on demand — collides at production scale with arithmetic nobody escapes: a mid-size estate serving 50k requests/sec, each touching a dozen services with a handful of spans apiece, generates <em>billions of spans daily</em>, and storing them all costs more than the incidents they&#39;d explain. Tracing at scale is therefore a <strong>retention-policy problem</strong>: which traces do you keep, decided by what logic, enforced where — and the quality of those decisions determines whether the tracing system answers the 3 AM question (&quot;show me a trace of the failure&quot;) or delivers its most demoralizing failure mode: perfect instrumentation, 1% sampling, and <em>no trace of the incident anyone is debugging</em>, because uniform randomness keeps mostly the healthy majority.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
 <p><strong>Retention across error and normal cohorts.</strong> If 180 of 200 error traces and 980 of 9,800 normal traces survive, cohort retention is 90% and 10%, respectively. Keep the full denominators for verification, and measure late spans and collector memory at the configured decision delay.</p>
@@ -120,14 +122,39 @@ d.setAttribute('data-theme',t);
 <p>The closing frame: sampling isn&#39;t the compromise tracing makes with cost — it&#39;s the design surface where an observability team encodes <em>what questions the organization has committed to answering</em>. Keep the errors, keep the outliers, keep whole traces or none, let metrics carry the aggregates, link them with exemplars, and cap the volume everywhere else — and 1% storage delivers 95% of the answers, which is the trade every honest telemetry budget was always going to make. The only unacceptable policy is the accidental one.</p>
 
       </div>
+<section class="field-worksheet worked-example" aria-labelledby="worked-example">
+    <h2 id="worked-example">Worked example</h2>
+    <p class="case-notice">This scenario and its results are illustrative.</p>
+    
+    <p>Compare 10% head sampling with a tail policy that retains completed error traces within its buffer budget. Generate the same successful and failing requests and record how many failing traces arrive complete.</p>
+    <figure class="delivery-flow">
+    <figcaption>Execution sequence</figcaption>
+    <ol><li>Build trace fixture</li><li>Apply policies</li><li>Count completeness</li><li>Check budget</li></ol>
+  </figure>
+    <figure class="field-chart case-chart">
+    <figcaption>Example comparison <span>Simulated figures</span></figcaption>
+    <ul class="case-metrics"><li class="case-metric">
+      <h3>Complete failing traces kept <small>%</small></h3>
+      <ul class="chart-rows"><li><span>Head sample</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:10.833333333333336%"></i></span>
+        <strong>10.833333% <small>(13/120)</small></strong></li><li><span>Tail policy with bounded buffer</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:92.5%"></i></span>
+        <strong>92.5% <small>(111/120)</small></strong></li></ul>
+    </li></ul>
+  </figure>
+    <h3>Method and limits</h3>
+    <p>Use 120 failed requests as denominator. Queue drops, late spans and trace completeness still matter. Report retained success traffic and backend volume as separate outputs.</p>
+    <a href="/field-guides/worked-examples.csv" download>Download the worked figures (CSV)</a>
+  </section>
 
 
 <aside class="refs" aria-labelledby="refs-h">
   <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
-  <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
+  <p class="refs-note">Primary documentation, standards and research for the methods discussed here.</p>
   <ul>
-    <li><a href="https://opentelemetry.io/docs/" rel="noopener nofollow" target="_blank">OpenTelemetry</a><span>Specification and language SDKs.</span></li>
-    <li><a href="https://www.finops.org/" rel="noopener nofollow" target="_blank">FinOps Foundation</a><span>Framework, capabilities and terminology.</span></li>
+    <li><a href="https://opentelemetry.io/docs/concepts/sampling/" rel="noopener" target="_blank">OpenTelemetry · Sampling</a><span>Head and tail selection and operational trade-offs.</span></li>
+    <li><a href="https://opentelemetry.io/docs/" rel="noopener" target="_blank">OpenTelemetry</a><span>Specification and language SDKs.</span></li>
+    <li><a href="https://www.finops.org/" rel="noopener" target="_blank">FinOps Foundation</a><span>Framework, capabilities and terminology.</span></li>
   </ul>
 </aside>
 
@@ -135,7 +162,7 @@ d.setAttribute('data-theme',t);
 
       <footer class="article-foot">
         <div class="row" style="gap:.4rem">
-          <a class="chip chip-plain" href="/topics/observability/">Observability</a><a class="chip chip-plain" href="/topics/distributed-systems/">Distributed Systems</a><a class="chip chip-plain" href="/topics/reliability/">Reliability</a><a class="chip chip-plain" href="/topics/performance/">Performance</a><a class="chip chip-plain" href="/topics/cloud-architecture/">Cloud Architecture</a>
+          <a class="chip" href="/topics/observability/">Observability</a><a class="chip" href="/topics/distributed-systems/">Distributed Systems</a><a class="chip" href="/topics/reliability/">Reliability</a><a class="chip" href="/topics/performance/">Performance</a><a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a>
         </div>
         <nav class="prevnext" aria-label="More articles">
           <a href="/insights/weblogic-domains-clusters-explained/"><span>Previous</span><strong>WebLogic Domains, Clusters, and Managed Servers: The Architecture Explained</strong></a>
@@ -149,12 +176,12 @@ d.setAttribute('data-theme',t);
     <section class="promo-card promo-techknowen" aria-label="TechKnowen">
       <p class="promo-name">TechKnowen</p>
       <p>Practical reading on software, architecture, and engineering.</p>
-      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+      <a class="card-destination" href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
     </section>
     <section class="promo-card promo-ziggle" aria-label="Ziggle">
       <p class="promo-name">Ziggle</p>
       <p>A new place to play brain teasers.</p>
-      <p class="promo-status">Coming soon</p>
+      <a class="card-destination" href="/projects/ziggle/">Ziggle preview</a> <span class="promo-status">Coming soon</span>
     </section>
   </div>
 </aside>
@@ -163,33 +190,33 @@ d.setAttribute('data-theme',t);
   <section class="section surface hair" style="margin-top:4rem">
     <div class="wrap">
       <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|Cloud Architecture|Architecture|Reliability|Disaster Recovery|Distributed Systems|" data-search="multi-region architecture patterns: what you&#39;re actually buying at each tier active-passive, pilot light, active-active, and the data problem underneath them all. a tiered framework for multi-region design that matches architecture to actual availability requirements — and prices the tiers honestly. cloud architecture architecture reliability disaster recovery distributed systems" data-topic="Cloud Architecture" href="/insights/multi-region-architecture-patterns/">
+      <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|Cloud Architecture|Architecture|Reliability|Disaster Recovery|Distributed Systems|" data-search="multi-region architecture patterns: what you&#39;re actually buying at each tier active-passive, pilot light, active-active, and the data problem underneath them all. a tiered framework for multi-region design that matches architecture to actual availability requirements — and prices the tiers honestly. cloud architecture architecture reliability disaster recovery distributed systems" data-topic="Cloud Architecture">
   <div class="card-art"><img data-article-art="multi-region-architecture-patterns" src="/assets/covers/multi-region-architecture-patterns.svg?v=2d4e43cac29c" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Cloud Architecture</span>
-    <h3 class="card-title">Multi-Region Architecture Patterns: What You&#39;re Actually Buying at Each Tier</h3>
+    <a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/multi-region-architecture-patterns/">Multi-Region Architecture Patterns: What You&#39;re Actually Buying at Each Tier</a></h3>
     <p class="card-desc">Active-passive, pilot light, active-active, and the data problem underneath them all. A tiered framework for multi-region design that matches architecture to actual availability requirements — and prices the tiers honestly.</p>
     <div class="card-meta"><time datetime="2026-02-12">12 Feb 2026</time><span class="dot"></span><span>5 min read</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|Performance|Capacity Planning|Reliability|Distributed Systems|Architecture|" data-search="queueing theory for engineers: why everything melts at 80% utilization little&#39;s law, the utilization-latency curve, and variability&#39;s tax — the three results that explain most capacity mysteries, from connection pools to on-call load. no calculus required, just the intuitions that make systems behavior predictable. performance capacity planning reliability distributed systems architecture" data-topic="Performance" href="/insights/queueing-theory-for-engineers/">
-  <div class="card-art"><img data-article-art="queueing-theory-for-engineers" src="/assets/covers/queueing-theory-for-engineers.svg?v=bb565278f2d1" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+</article>
+<article class="card" data-card data-topics="|Performance|Capacity Planning|Reliability|Distributed Systems|Architecture|" data-search="queueing theory for engineers: how utilisation and variability shape waits little&#39;s law, the utilization-latency curve, and variability&#39;s tax — the three results that explain most capacity mysteries, from connection pools to on-call load. no calculus required, just the intuitions that make systems behavior predictable. performance capacity planning reliability distributed systems architecture" data-topic="Performance">
+  <div class="card-art"><img data-article-art="queueing-theory-for-engineers" src="/assets/covers/queueing-theory-for-engineers.svg?v=d84fb687ef65" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Performance</span>
-    <h3 class="card-title">Queueing Theory for Engineers: Why Everything Melts at 80% Utilization</h3>
+    <a class="chip" href="/topics/performance/">Performance</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/queueing-theory-for-engineers/">Queueing Theory for Engineers: How Utilisation and Variability Shape Waits</a></h3>
     <p class="card-desc">Little&#39;s Law, the utilization-latency curve, and variability&#39;s tax — the three results that explain most capacity mysteries, from connection pools to on-call load. No calculus required, just the intuitions that make systems behavior predictable.</p>
     <div class="card-meta"><time datetime="2026-02-03">3 Feb 2026</time><span class="dot"></span><span>5 min read</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|Observability|Programming|Platform Engineering|Reliability|Cloud Architecture|" data-search="structured logging that pays for itself: schema, context, and cost discipline logs are the most expensive telemetry most organizations run and the least designed. event schemas, correlation context, level discipline, sampling, and the cost engineering that keeps the logging bill from becoming the observability program&#39;s obituary. observability programming platform engineering reliability cloud architecture" data-topic="Observability" href="/insights/structured-logging-practices/">
+</article>
+<article class="card" data-card data-topics="|Observability|Programming|Platform Engineering|Reliability|Cloud Architecture|" data-search="structured logging that pays for itself: schema, context, and cost discipline logs are the most expensive telemetry most organizations run and the least designed. event schemas, correlation context, level discipline, sampling, and the cost engineering that keeps the logging bill from becoming the observability program&#39;s obituary. observability programming platform engineering reliability cloud architecture" data-topic="Observability">
   <div class="card-art"><img data-article-art="structured-logging-practices" src="/assets/covers/structured-logging-practices.svg?v=8d951869e265" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Observability</span>
-    <h3 class="card-title">Structured Logging That Pays for Itself: Schema, Context, and Cost Discipline</h3>
+    <a class="chip" href="/topics/observability/">Observability</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/structured-logging-practices/">Structured Logging That Pays for Itself: Schema, Context, and Cost Discipline</a></h3>
     <p class="card-desc">Logs are the most expensive telemetry most organizations run and the least designed. Event schemas, correlation context, level discipline, sampling, and the cost engineering that keeps the logging bill from becoming the observability program&#39;s obituary.</p>
     <div class="card-meta"><time datetime="2025-10-03">3 Oct 2025</time><span class="dot"></span><span>5 min read</span></div>
   </div>
-</a></div>
+</article></div>
     </div>
   </section>
 
@@ -269,6 +296,7 @@ d.setAttribute('data-theme',t);
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/follow/">Follow new writing</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
           <li><a href="/notes/">Personal notes</a></li>
@@ -289,7 +317,7 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=a8e7c95a" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=a8e7c95a"></script>
+<script src="/assets/js/site.js?v=bd74be96" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=bd74be96"></script>
 </body>
 </html>

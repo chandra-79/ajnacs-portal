@@ -33,8 +33,9 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=a8e7c95a">
-<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<link rel="stylesheet" href="/assets/css/site.css?v=bd74be96">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
+<link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
    never flashes the wrong ground or resets someone's text size mid-read. */
@@ -105,14 +106,15 @@ d.setAttribute('data-theme',t);
 </nav></div>
     <div class="article-copy">
       <div class="prose">
+<p class="article-opening">A worked quantum comparison is interpretable only when its circuit, error measure and experimental conditions are stated.</p>
 <p>A 53-qubit sampling experiment, a quantum memory, and an annealer with thousands of qubits answer different questions. This retrospective covers published milestones through 2025. The useful comparison starts with the workload and the evidence each team reported.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
 <p>For a quantum memory experiment, compare logical error per cycle at stated code distances, the physical-qubit overhead, and the number of cycles observed. For a workload benchmark, ask how the answer is validated, what classical baseline was used and what the timings include. Native gate fidelity, logical error per cycle and end-to-end time each measure a different thing.</p>
 <p><strong>Illustrative measurement.</strong> If two experiments under comparable conditions report 0.1% and 0.05% logical errors per cycle, the second rate is half the first. Check the uncertainty and compare multiple code distances before claiming below-threshold operation.</p>
 <h2 id="what-the-milestones-established"><a class="h-anchor" href="#what-the-milestones-established" aria-hidden="true" tabindex="-1">#</a>What the milestones established</h2>
-<p><strong>Google Sycamore, 2019.</strong> Google reported running a random circuit sampling experiment on a 53-qubit processor in about 200 seconds. Its paper compared that run with a pre-publication estimate for classical simulation. The result concerns the stated sampling task and the classical comparison depends on the algorithms and hardware used.</p>
+<p><strong>Google Sycamore, 2019.</strong> Google reported running a random circuit sampling experiment on a 53-qubit processor in about 200 seconds. Its paper compared that run with a pre-publication estimate for classical simulation. The result concerns the stated sampling task and the classical comparison depends on the algorithms and hardware used. A subsequent <a href="https://pubmed.ncbi.nlm.nih.gov/36083655/" rel="noopener" target="_blank">classical simulation study</a> produced samples and distinguished its actual run from a projection for a larger system.</p>
 <p><strong>IBM Heron, 2023.</strong> IBM introduced a 133-qubit superconducting processor with tunable couplers. Couplers affect how qubits interact and are one piece of a system’s error budget. Compare error rates on the same operation and under a stated protocol before using those rates to compare processors.</p>
-<p><strong>Google Willow, published 2025.</strong> Google reported that increasing surface-code distance reduced logical error per cycle in its quantum memory experiment, evidence of operation below threshold for that experiment. The measured object was an encoded memory. An application also requires a sequence of sufficiently reliable logical operations and a full accounting of overhead.</p>
+<p><strong>Google Willow, reported December 2024 in a 2025 Nature issue.</strong> Google reported that increasing surface-code distance reduced logical error per cycle in its quantum memory experiment, evidence of operation below threshold for that experiment. The measured object was an encoded memory. An application also requires a sequence of sufficiently reliable logical operations and a full accounting of overhead.</p>
 <p><strong>Microsoft’s parity readout, 2025.</strong> The Nature paper reported single-shot interferometric measurement of fermion parity in indium arsenide–aluminium devices. The reported measurements do not distinguish Majorana zero modes uniquely, so the paper establishes a readout result and leaves the topological qubit claim open.</p>
 <p><strong>Photonic components, 2025.</strong> PsiQuantum reported integrated photonic components, including sources, optical circuits, and superconducting detectors. Photonic encoding and cryogenic detectors can be part of the same architecture. System-scale losses, feed-forward operations, and error correction determine whether a collection of components can execute a useful program.</p>
 <p><strong>D-Wave Advantage2, 2025.</strong> D-Wave announced general availability in May 2025 with more than 4,400 annealing qubits. Its qubit count describes an annealer for a particular class of problems. For a proposed workload, account for embedding overhead, problem encoding, the quality of solutions, and the strongest available classical solver.</p>
@@ -132,13 +134,38 @@ d.setAttribute('data-theme',t);
 </ul>
 
       </div>
+<section class="field-worksheet worked-example" aria-labelledby="worked-example">
+    <h2 id="worked-example">Worked example</h2>
+    <p class="case-notice">This scenario and its results are illustrative.</p>
+    
+    <p>Compare two fictional surface-code memory results measured per cycle. Record physical qubits, code distance, run duration and uncertainty before trying to interpret the change.</p>
+    <figure class="delivery-flow">
+    <figcaption>Execution sequence</figcaption>
+    <ol><li>Define logical observable</li><li>Compare code distances</li><li>Estimate uncertainty</li><li>Bound the claim</li></ol>
+  </figure>
+    <figure class="field-chart case-chart">
+    <figcaption>Example comparison <span>Simulated figures</span></figcaption>
+    <ul class="case-metrics"><li class="case-metric">
+      <h3>Logical error per cycle <small>%</small></h3>
+      <ul class="chart-rows"><li><span>Illustrative smaller code</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:0.1%"></i></span>
+        <strong>0.1%</strong></li><li><span>Illustrative larger code</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:0.05%"></i></span>
+        <strong>0.05%</strong></li></ul>
+    </li></ul>
+  </figure>
+    <h3>Method and limits</h3>
+    <p>The rate halves in this hypothetical arithmetic example. It neither reproduces a published experiment nor establishes scalable fault tolerance. Require matched conditions and several code distances.</p>
+    <a href="/field-guides/worked-examples.csv" download>Download the worked figures (CSV)</a>
+  </section>
 
 
 <aside class="refs" aria-labelledby="refs-h">
   <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
-  <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
+  <p class="refs-note">Primary documentation, standards and research for the methods discussed here.</p>
   <ul>
-    <li><a href="https://csrc.nist.gov/" rel="noopener nofollow" target="_blank">NIST Computer Security Resource Center</a><span>Standards and special publications.</span></li>
+    <li><a href="https://www.nature.com/articles/s41586-024-08449-y" rel="noopener" target="_blank">Google Quantum AI · Quantum error correction below the surface code threshold, Nature</a><span>Code-distance comparisons and measured logical error.</span></li>
+    <li><a href="https://csrc.nist.gov/" rel="noopener" target="_blank">NIST Computer Security Resource Center</a><span>Standards and special publications.</span></li>
   </ul>
 </aside>
 
@@ -146,7 +173,7 @@ d.setAttribute('data-theme',t);
 
       <footer class="article-foot">
         <div class="row" style="gap:.4rem">
-          <a class="chip chip-plain" href="/insights/?topic=Quantum%20Computing">Quantum Computing</a><a class="chip chip-plain" href="/topics/enterprise-ai/">Enterprise AI</a><a class="chip chip-plain" href="/insights/?topic=Emerging%20Technology">Emerging Technology</a>
+          <a class="chip" href="/topics/quantum-computing/">Quantum Computing</a><a class="chip" href="/topics/enterprise-ai/">Enterprise AI</a><a class="chip" href="/topics/emerging-technology/">Emerging Technology</a>
         </div>
         <nav class="prevnext" aria-label="More articles">
           <a href="/insights/ai-coding-assistants-comparison-2026/"><span>Previous</span><strong>AI Coding Assistants in 2026: A Practical Comparison</strong></a>
@@ -160,12 +187,12 @@ d.setAttribute('data-theme',t);
     <section class="promo-card promo-techknowen" aria-label="TechKnowen">
       <p class="promo-name">TechKnowen</p>
       <p>Practical reading on software, architecture, and engineering.</p>
-      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+      <a class="card-destination" href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
     </section>
     <section class="promo-card promo-ziggle" aria-label="Ziggle">
       <p class="promo-name">Ziggle</p>
       <p>A new place to play brain teasers.</p>
-      <p class="promo-status">Coming soon</p>
+      <a class="card-destination" href="/projects/ziggle/">Ziggle preview</a> <span class="promo-status">Coming soon</span>
     </section>
   </div>
 </aside>
@@ -174,33 +201,33 @@ d.setAttribute('data-theme',t);
   <section class="section surface hair" style="margin-top:4rem">
     <div class="wrap">
       <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|Enterprise AI|Emerging Technology|" data-search="running llms locally: what six months of daily use actually taught me i started running local llms as a cost experiment. it became a privacy practice, a performance benchmark, and an education in what language models actually need to function well. here&#39;s the honest version of what i found. enterprise ai emerging technology" data-topic="Enterprise AI" href="/insights/running-local-llm-lessons/">
-  <div class="card-art"><img data-article-art="running-local-llm-lessons" src="/assets/covers/running-local-llm-lessons.svg?v=bcdb3e093b8c" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+      <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|Enterprise AI|Emerging Technology|" data-search="running llms locally: what six months of daily use actually taught me i started running local llms as a cost experiment. it became a privacy practice, a performance benchmark, and an education in what language models actually need to function well. here&#39;s the honest version of what i found. enterprise ai emerging technology" data-topic="Enterprise AI">
+  <div class="card-art"><img data-article-art="running-local-llm-lessons" src="/assets/covers/running-local-llm-lessons.svg?v=94055d7ab050" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Enterprise AI</span>
-    <h3 class="card-title">Running LLMs Locally: What Six Months of Daily Use Actually Taught Me</h3>
+    <a class="chip" href="/topics/enterprise-ai/">Enterprise AI</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/running-local-llm-lessons/">Running LLMs Locally: What Six Months of Daily Use Actually Taught Me</a></h3>
     <p class="card-desc">I started running local LLMs as a cost experiment. It became a privacy practice, a performance benchmark, and an education in what language models actually need to function well. Here&#39;s the honest version of what I found.</p>
     <div class="card-meta"><time datetime="2025-06-05">5 Jun 2025</time><span class="dot"></span><span>4 min read</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|Programming|Enterprise AI|Developer Tools|" data-search="ai coding assistants in 2026: a practical comparison compare ai coding assistants by workflow, review time, patch acceptance and access controls. includes a practical scoring method for an engineering-team pilot. programming enterprise ai developer tools" data-topic="Programming" href="/insights/ai-coding-assistants-comparison-2026/">
+</article>
+<article class="card" data-card data-topics="|Programming|Enterprise AI|Developer Tools|" data-search="ai coding assistants in 2026: a practical comparison compare ai coding assistants by workflow, review time, patch acceptance and access controls. includes a practical scoring method for an engineering-team pilot. programming enterprise ai developer tools" data-topic="Programming">
   <div class="card-art"><img data-article-art="ai-coding-assistants-comparison-2026" src="/assets/covers/photos/ai-coding-assistants-comparison-2026.jpg?v=4205b08ba43a" srcset="/assets/covers/photos/ai-coding-assistants-comparison-2026-640.jpg?v=4205b08ba43a 640w, /assets/covers/photos/ai-coding-assistants-comparison-2026.jpg?v=4205b08ba43a 1280w" sizes="(min-width: 800px) 420px, 100vw" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Programming</span>
-    <h3 class="card-title">AI Coding Assistants in 2026: A Practical Comparison</h3>
+    <a class="chip" href="/topics/programming/">Programming</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/ai-coding-assistants-comparison-2026/">AI Coding Assistants in 2026: A Practical Comparison</a></h3>
     <p class="card-desc">Compare AI coding assistants by workflow, review time, patch acceptance and access controls. Includes a practical scoring method for an engineering-team pilot.</p>
     <div class="card-meta"><time datetime="2026-11-16">16 Nov 2026</time><span class="dot"></span><span>2 min read</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|AI &amp; MLOps|Programming|Enterprise AI|" data-search="prompt engineering for production systems: beyond the demo prompt engineering for a demo is different from prompt engineering for a system that runs reliably at scale. here&#39;s how to design prompts for consistency, build evaluation frameworks, and manage the failure modes that appear in production but not in testing. ai &amp; mlops programming enterprise ai" data-topic="AI &amp; MLOps" href="/insights/prompt-engineering-production/">
+</article>
+<article class="card" data-card data-topics="|AI &amp; MLOps|Programming|Enterprise AI|" data-search="prompt engineering for production systems: beyond the demo prompt engineering for a demo is different from prompt engineering for a system that runs reliably at scale. here&#39;s how to design prompts for consistency, build evaluation frameworks, and manage the failure modes that appear in production but not in testing. ai &amp; mlops programming enterprise ai" data-topic="AI &amp; MLOps">
   <div class="card-art"><img data-article-art="prompt-engineering-production" src="/assets/covers/prompt-engineering-production.svg?v=86dd56c177b3" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">AI &amp; MLOps</span>
-    <h3 class="card-title">Prompt Engineering for Production Systems: Beyond the Demo</h3>
+    <a class="chip" href="/topics/ai-mlops/">AI &amp; MLOps</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/prompt-engineering-production/">Prompt Engineering for Production Systems: Beyond the Demo</a></h3>
     <p class="card-desc">Prompt engineering for a demo is different from prompt engineering for a system that runs reliably at scale. Here&#39;s how to design prompts for consistency, build evaluation frameworks, and manage the failure modes that appear in production but not in testing.</p>
     <div class="card-meta"><time datetime="2026-11-04">4 Nov 2026</time><span class="dot"></span><span>4 min read</span></div>
   </div>
-</a></div>
+</article></div>
     </div>
   </section>
 
@@ -280,6 +307,7 @@ d.setAttribute('data-theme',t);
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/follow/">Follow new writing</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
           <li><a href="/notes/">Personal notes</a></li>
@@ -300,7 +328,7 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=a8e7c95a" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=a8e7c95a"></script>
+<script src="/assets/js/site.js?v=bd74be96" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=bd74be96"></script>
 </body>
 </html>

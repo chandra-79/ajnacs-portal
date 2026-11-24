@@ -14,7 +14,7 @@
 <meta property="og:title" content="HPC Network Topology Patterns: Fat-Tree, Torus, and Dragonfly Explained">
 <meta property="og:description" content="The network topology of an HPC or AI training cluster determines its bandwidth, latency, cost, and how well it scales. Here&#39;s how fat-tree, torus, and drag…">
 <meta property="og:url" content="https://ajnacs.com/insights/hpc-network-topology-patterns/">
-<meta property="og:image" content="https://ajnacs.com/assets/og/articles/hpc-network-topology-patterns.png?v=86b53f45fd47">
+<meta property="og:image" content="https://ajnacs.com/assets/og/articles/hpc-network-topology-patterns.png?v=1f12ff39e024">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Illustration for HPC Network Topology Patterns: Fat-Tree, Torus, and Dragonfly Explained">
@@ -24,7 +24,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="HPC Network Topology Patterns: Fat-Tree, Torus, and Dragonfly Explained">
 <meta name="twitter:description" content="The network topology of an HPC or AI training cluster determines its bandwidth, latency, cost, and how well it scales. Here&#39;s how fat-tree, torus, and drag…">
-<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/hpc-network-topology-patterns.png?v=86b53f45fd47">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/hpc-network-topology-patterns.png?v=1f12ff39e024">
 <meta name="twitter:image:alt" content="Illustration for HPC Network Topology Patterns: Fat-Tree, Torus, and Dragonfly Explained">
 
 <link rel="icon" href="/favicon.ico?v=8affdbd5" sizes="any">
@@ -33,8 +33,9 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=a8e7c95a">
-<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<link rel="stylesheet" href="/assets/css/site.css?v=bd74be96">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
+<link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
    never flashes the wrong ground or resets someone's text size mid-read. */
@@ -49,7 +50,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"HPC Network Topology Patterns: Fat-Tree, Torus, and Dragonfly Explained","description":"The network topology of an HPC or AI training cluster determines its bandwidth, latency, cost, and how well it scales. Here's how fat-tree, torus, and dragonfly topologies work, their trade-offs, and which workloads each suits best.","datePublished":"2026-10-30","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/hpc-network-topology-patterns/","image":"https://ajnacs.com/assets/og/articles/hpc-network-topology-patterns.png?v=86b53f45fd47","keywords":"Systems, HPC, AI & MLOps","articleSection":"AI & MLOps","wordCount":1027}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"HPC Network Topology Patterns: Fat-Tree, Torus, and Dragonfly Explained","description":"The network topology of an HPC or AI training cluster determines its bandwidth, latency, cost, and how well it scales. Here's how fat-tree, torus, and dragonfly topologies work, their trade-offs, and which workloads each suits best.","datePublished":"2026-10-30","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/hpc-network-topology-patterns/","image":"https://ajnacs.com/assets/og/articles/hpc-network-topology-patterns.png?v=1f12ff39e024","keywords":"Systems, HPC, AI & MLOps","articleSection":"AI & MLOps","wordCount":1027}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"HPC Network Topology Patterns: Fat-Tree, Torus, and Dragonfly Explained"}]}</script>
 </head>
 <body class="article-frame" data-topic="AI &amp; MLOps">
@@ -98,84 +99,73 @@ d.setAttribute('data-theme',t);
       </div>
     </header>
 
-    <div class="article-hero" data-topic="AI &amp; MLOps"><img data-article-art="hpc-network-topology-patterns" src="/assets/covers/hpc-network-topology-patterns.svg?v=b1a03a07d72a" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div>
+    <div class="article-hero" data-topic="AI &amp; MLOps"><img data-article-art="hpc-network-topology-patterns" src="/assets/covers/hpc-network-topology-patterns.svg?v=cff49d20b2b8" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
-  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#fat-tree-full-bisection-bandwidth-high-cost">Fat-tree: full bisection bandwidth, high cost</a></li><li><a href="#torus-low-diameter-bandwidth-penalty-for-non-local-traffic">Torus: low diameter, bandwidth penalty for non-local traffic</a></li><li><a href="#dragonfly-low-diameter-moderate-cost">Dragonfly: low diameter, moderate cost</a></li><li><a href="#rail-optimized-topology-for-ai-training">Rail-optimized topology for AI training</a></li><li><a href="#choosing-for-your-workload">Choosing for your workload</a></li></ol>
+  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#fat-tree">Fat-tree</a></li><li><a href="#torus">Torus</a></li><li><a href="#dragonfly">Dragonfly</a></li><li><a href="#rails-and-placement">Rails and placement</a></li><li><a href="#sources">Sources</a></li></ol>
 </nav></div>
     <div class="article-copy">
       <div class="prose">
-<p>The network fabric of a high-performance computing cluster isn&#39;t just cabling — it&#39;s an architectural decision that determines the performance ceiling of every job that runs on it. The topology defines how bandwidth scales with cluster size, how much any-to-any communication costs, and how many switches and cables you need.</p>
-<p>Three topologies dominate HPC and AI training infrastructure: fat-tree, torus, and dragonfly. Each makes different trade-offs between bandwidth, diameter (maximum hops between any two nodes), cost, and engineering complexity.</p>
+<p class="article-opening">Topology choice is determined by communication pattern, oversubscription and placement rather than the label on a diagram.</p>
+<p>A topology specifies which paths exist. The application&#39;s communication pattern, routing and the placement of work determine whether it can use them efficiently. A sensible comparison starts with the job and its busiest phases.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
-<p><strong>Bisection capacity under competing jobs.</strong> If eight endpoints can each offer 100 Gb/s across a cut provisioned at 400 Gb/s, offered load is 2× capacity. Compare cross-rack collective performance while other jobs run, rather than relying on an unloaded pairwise benchmark.</p>
-<p><em>Illustrative measurement. Any numbers in this example are hypothetical.</em></p>
-<h2 id="fat-tree-full-bisection-bandwidth-high-cost"><a class="h-anchor" href="#fat-tree-full-bisection-bandwidth-high-cost" aria-hidden="true" tabindex="-1">#</a>Fat-tree: full bisection bandwidth, high cost</h2>
-<p>Fat-tree (also called Clos or folded Clos) is the most widely deployed topology for data centres, HPC clusters, and large-scale AI training. The name comes from the original Leiserson fat-tree paper, though the implementation used in practice is the three-tier Clos: edge (top-of-rack) switches connected to aggregation switches connected to core switches.</p>
-<p>The defining property: <strong>full bisection bandwidth</strong>. Any half of the nodes can communicate with the other half at full line rate simultaneously. Any-to-any communication between any two nodes uses the same bandwidth — there&#39;s no penalty for communicating with a non-adjacent node.</p>
-<p><strong>Why this matters for distributed training</strong>: all-reduce collective operations require every node to communicate with every other node in the group. Full bisection bandwidth means these operations don&#39;t become network-bottlenecked regardless of which nodes are assigned to a job.</p>
-<p><strong>The cost</strong>: scales as O(N log N) in switch ports. A fat-tree for N nodes requires significantly more switches than sparser topologies. At 10,000+ nodes, the cabling complexity is substantial.</p>
-<p>Variants:</p>
+<p>Run a matched comparison of local and global transfers, placement, payload size and offered load. Report median and p95 by job and the most contended path. <strong>Illustrative measurement.</strong> In a fictional comparison p95 falls from 92 µs on an oversubscribed fixture to 41 µs on a matched nonblocking configuration. State which resources the traffic exercises before extending that conclusion.</p>
+<h2 id="fat-tree"><a class="h-anchor" href="#fat-tree" aria-hidden="true" tabindex="-1">#</a>Fat-tree</h2>
+<p>A correctly provisioned fat-tree can provide full bisection bandwidth. That is an aggregate capability across a partition. It does not eliminate host injection limits, unbalanced path choice or congestion from shared links. A rank in a ring all-reduce exchanges data with neighbours, while other collectives use tree or hierarchical patterns. Compare placement and oversubscription for the communication actually performed.</p>
+<h2 id="torus"><a class="h-anchor" href="#torus" aria-hidden="true" tabindex="-1">#</a>Torus</h2>
+<p>A torus extends a mesh with wraparound links. A conventional k-ary d-dimensional torus has up to 2d distinct neighbours per node in the usual case. Very small dimensions can share neighbours. Mapping a grid-like workload to adjacent nodes can keep traffic local. Global exchanges can compete for the same links over longer routes.</p>
+<h2 id="dragonfly"><a class="h-anchor" href="#dragonfly" aria-hidden="true" tabindex="-1">#</a>Dragonfly</h2>
+<p>A Dragonfly uses groups of routers with local connections and sparse global links between groups. Canonical minimal routes in the design can traverse at most three router-to-router links, with at most one global hop. Adaptive detours may travel farther to avoid congestion. Check per-group placement and global link usage under job mixes that the system will see.</p>
+<h2 id="rails-and-placement"><a class="h-anchor" href="#rails-and-placement" aria-hidden="true" tabindex="-1">#</a>Rails and placement</h2>
+<p>Multiple rails can increase aggregate line rate if the hosts and runtime can stripe useful traffic across them. Four identical rails give a four-times line-rate ceiling, not a four-times application guarantee. Check failure behaviour explicitly. Train a scheduler to respect the fabric&#39;s placement assumptions before relying on a benchmark from ideal placement.</p>
+<h2 id="sources"><a class="h-anchor" href="#sources" aria-hidden="true" tabindex="-1">#</a>Sources</h2>
 <ul>
-<li><strong>2-tier Clos</strong> (leaf-spine): simpler, used in smaller deployments</li>
-<li><strong>3-tier Clos</strong>: standard for larger HPC clusters; 10,000+ nodes</li>
-<li><strong>Non-blocking vs oversubscribed</strong>: full fat-tree is non-blocking (full bisection bandwidth); oversubscribed fat-tree (e.g., 2:1 at the spine) reduces cost at the expense of bisection bandwidth</li>
+<li><a href="https://doi.org/10.1145/1402958.1402967" rel="noopener" target="_blank">Al-Fares et al., A Scalable, Commodity Data Center Network Architecture, SIGCOMM</a></li>
+<li><a href="https://research.google/pubs/technology-driven-highly-scalable-dragonfly-topology/" rel="noopener" target="_blank">Kim et al., Technology-Driven, Highly-Scalable Dragonfly Topology, ISCA</a></li>
+<li><a href="https://github.com/NVIDIA/nccl-tests/blob/master/doc/PERFORMANCE.md" rel="noopener" target="_blank">NVIDIA NCCL Tests, bandwidth definitions</a></li>
 </ul>
-<p>InfiniBand and high-speed Ethernet deployments at hyperscalers predominantly use fat-tree variants.</p>
-<h2 id="torus-low-diameter-bandwidth-penalty-for-non-local-traffic"><a class="h-anchor" href="#torus-low-diameter-bandwidth-penalty-for-non-local-traffic" aria-hidden="true" tabindex="-1">#</a>Torus: low diameter, bandwidth penalty for non-local traffic</h2>
-<p>A torus connects nodes in a multi-dimensional grid where each node connects directly to its neighbours, and the edges of the grid wrap around to connect to the opposite edge (making a torus rather than a flat grid).</p>
-<p>A 3D torus: each node has 6 neighbours (left/right, front/back, up/down) and wraps in all three dimensions.</p>
-<p><strong>Advantages:</strong></p>
-<ul>
-<li>Low switch port count — a k-ary d-dimensional torus connects N = k^d nodes with only d·k links per node</li>
-<li>Low diameter for uniform nearest-neighbour communication patterns</li>
-<li>Cost-effective for very large clusters (IBM Blue Gene series, Cray systems)</li>
-</ul>
-<p><strong>Disadvantages:</strong></p>
-<ul>
-<li>Non-uniform bandwidth: communication between nearby nodes uses a short path; communication between distant nodes uses many hops through intermediate nodes</li>
-<li>All-reduce performance depends heavily on the mapping of parallel jobs to the torus — a job whose nodes are spread across the torus will see higher latency than one whose nodes are co-located</li>
-<li>Poor bisection bandwidth relative to fat-tree: splitting the cluster in half leaves relatively few cross-links</li>
-</ul>
-<p><strong>When torus is used</strong>: large-scale scientific computing where the communication pattern is primarily nearest-neighbour (computational fluid dynamics, climate simulation, molecular dynamics). In these workloads, the torus topology matches the communication pattern of the physics being simulated.</p>
-<p>For ML training with all-reduce patterns (which require any-to-any communication), fat-tree or dragonfly outperform torus at scale.</p>
-<h2 id="dragonfly-low-diameter-moderate-cost"><a class="h-anchor" href="#dragonfly-low-diameter-moderate-cost" aria-hidden="true" tabindex="-1">#</a>Dragonfly: low diameter, moderate cost</h2>
-<p>Dragonfly is a two-level topology that aims to combine the low diameter of a torus with the bandwidth of a fat-tree at lower cost than a full fat-tree.</p>
-<p><strong>Structure:</strong></p>
-<ul>
-<li>Nodes connect to a local switch (group)</li>
-<li>Groups are connected to each other via global links</li>
-<li>Each group has high internal bandwidth; global links provide inter-group connectivity</li>
-</ul>
-<p>The key design property: any two nodes are at most 3 hops apart (local switch → global link → destination local switch), regardless of cluster size. This is significantly lower than a fat-tree for very large clusters.</p>
-<p><strong>Trade-offs:</strong></p>
-<ul>
-<li>Adaptive routing is essential — static routing can create hotspots on global links when many jobs need inter-group communication simultaneously</li>
-<li>Less uniform bandwidth than fat-tree: intra-group communication is cheaper than inter-group</li>
-<li>More complex to manage than fat-tree due to the two-level hierarchy</li>
-</ul>
-<p><strong>Where dragonfly is deployed</strong>: Cray Aries (Cray XC series), HPE Slingshot, some large-scale supercomputers. The topology was designed for the scale (100,000+ nodes) where fat-tree becomes impractically expensive.</p>
-<p>At the scale of typical enterprise HPC clusters (hundreds to a few thousand nodes), fat-tree is usually the better choice — simpler to configure, easier to reason about, and the cost advantage of dragonfly only materialises at very large scale.</p>
-<h2 id="rail-optimized-topology-for-ai-training"><a class="h-anchor" href="#rail-optimized-topology-for-ai-training" aria-hidden="true" tabindex="-1">#</a>Rail-optimized topology for AI training</h2>
-<p>For AI training specifically, a specialised variant called rail-optimized (or multi-rail) topology is gaining adoption.</p>
-<p><strong>Structure</strong>: multiple independent networks (rails) each connecting all compute nodes. A 4-rail design means each node has 4 NICs, each connected to a separate independent fat-tree fabric.</p>
-<p><strong>Why it helps for all-reduce</strong>: all-reduce traffic is distributed across all 4 rails simultaneously, quadrupling effective bandwidth. Each rail uses a separate switch fabric — a failure on one rail reduces bandwidth but doesn&#39;t stop training.</p>
-<p>NVIDIA&#39;s NVLink switch fabric operates on this principle within a rack; multi-rail Ethernet or InfiniBand extends it inter-rack.</p>
-<h2 id="choosing-for-your-workload"><a class="h-anchor" href="#choosing-for-your-workload" aria-hidden="true" tabindex="-1">#</a>Choosing for your workload</h2>
-<div class="table-wrap"><table><thead><tr><th>Topology</th><th>Best for</th><th>Not ideal for</th></tr></thead><tbody><tr><td>Fat-tree</td><td>General HPC, AI training, any-to-any workloads</td><td>Very large clusters (cost)</td></tr><tr><td>Torus</td><td>Nearest-neighbour scientific simulation</td><td>All-reduce heavy ML training</td></tr><tr><td>Dragonfly</td><td>Very large HPC (100k+ nodes)</td><td>Small/medium clusters (complexity cost)</td></tr><tr><td>Rail-optimized</td><td>Large-scale AI training (1000+ GPUs)</td><td>General-purpose workloads</td></tr></tbody></table></div>
-<p>For most enterprise AI training clusters under 1,000 GPUs, a fat-tree with RoCE or InfiniBand at 200–400 Gbps is the pragmatic choice: well-understood, supported by standard tooling, and delivers the bandwidth that distributed training requires.</p>
-<p><em>Designing or evaluating network infrastructure for HPC or AI training? <a href="/contact/">Happy to compare configurations.</a></em></p>
 
       </div>
+<section class="field-worksheet worked-example" aria-labelledby="worked-example">
+    <h2 id="worked-example">Worked example</h2>
+    <p class="case-notice">This scenario and its results are illustrative.</p>
+    
+    <p>Create a workload that alternates local and global communication. Measure all-to-all traffic in two network fixtures using equal endpoints and report the worst host pairs, not just a fabric-wide mean.</p>
+    <figure class="delivery-flow">
+    <figcaption>Execution sequence</figcaption>
+    <ol><li>Describe workload</li><li>Place ranks</li><li>Replay traffic</li><li>Review worst paths</li></ol>
+  </figure>
+    <figure class="field-chart case-chart">
+    <figcaption>Example comparison <span>Simulated figures</span></figcaption>
+    <ul class="case-metrics"><li class="case-metric">
+      <h3>p95 messaging delay under load <small>µs</small></h3>
+      <ul class="chart-rows"><li><span>Oversubscribed fixture</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:100%"></i></span>
+        <strong>92</strong></li><li><span>Matched nonblocking fixture</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:44.56521739130435%"></i></span>
+        <strong>41</strong></li></ul>
+    </li></ul>
+  </figure>
+    <h3>Method and limits</h3>
+    <p>Time the same message sizes and offered load with fixed placements. These figures describe two configurations and do not rank general topology families.</p>
+    <a href="/field-guides/worked-examples.csv" download>Download the worked figures (CSV)</a>
+  </section>
 
 
-
+<aside class="refs" aria-labelledby="refs-h">
+  <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
+  <p class="refs-note">Primary documentation, standards and research for the methods discussed here.</p>
+  <ul>
+    <li><a href="https://doi.org/10.1145/1402958.1402967" rel="noopener" target="_blank">Al-Fares et al. · A Scalable, Commodity Data Center Network Architecture, SIGCOMM</a><span>Fat-tree construction and bisection bandwidth.</span></li>
+    <li><a href="https://research.google/pubs/technology-driven-highly-scalable-dragonfly-topology/" rel="noopener" target="_blank">Kim et al. · Dragonfly, ISCA</a><span>Router groups, minimal and adaptive routes.</span></li>
+  </ul>
+</aside>
 
 
 
       <footer class="article-foot">
         <div class="row" style="gap:.4rem">
-          <a class="chip chip-plain" href="/insights/?topic=Systems">Systems</a><a class="chip chip-plain" href="/insights/?topic=HPC">HPC</a><a class="chip chip-plain" href="/topics/ai-mlops/">AI &amp; MLOps</a>
+          <a class="chip" href="/topics/systems/">Systems</a><a class="chip" href="/topics/hpc/">HPC</a><a class="chip" href="/topics/ai-mlops/">AI &amp; MLOps</a>
         </div>
         <nav class="prevnext" aria-label="More articles">
           <a href="/insights/system-design-patterns-backend/"><span>Previous</span><strong>System Design Patterns Every Backend Engineer Should Know</strong></a>
@@ -189,12 +179,12 @@ d.setAttribute('data-theme',t);
     <section class="promo-card promo-techknowen" aria-label="TechKnowen">
       <p class="promo-name">TechKnowen</p>
       <p>Practical reading on software, architecture, and engineering.</p>
-      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+      <a class="card-destination" href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
     </section>
     <section class="promo-card promo-ziggle" aria-label="Ziggle">
       <p class="promo-name">Ziggle</p>
       <p>A new place to play brain teasers.</p>
-      <p class="promo-status">Coming soon</p>
+      <a class="card-destination" href="/projects/ziggle/">Ziggle preview</a> <span class="promo-status">Coming soon</span>
     </section>
   </div>
 </aside>
@@ -203,33 +193,33 @@ d.setAttribute('data-theme',t);
   <section class="section surface hair" style="margin-top:4rem">
     <div class="wrap">
       <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|Systems|HPC|AI &amp; MLOps|" data-search="roce vs iwarp: choosing the right rdma technology for your workload both roce and iwarp provide rdma over ethernet, but they have different network requirements, loss behavior, and operational characteristics. here&#39;s how to choose between them for ai training, hpc, and storage workloads. systems hpc ai &amp; mlops" data-topic="AI &amp; MLOps" href="/insights/roce-vs-iwarp-networking/">
+      <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|Systems|HPC|AI &amp; MLOps|" data-search="roce vs iwarp: choosing the right rdma technology for your workload both roce and iwarp provide rdma over ethernet, but they have different network requirements, loss behavior, and operational characteristics. here&#39;s how to choose between them for ai training, hpc, and storage workloads. systems hpc ai &amp; mlops" data-topic="AI &amp; MLOps">
   <div class="card-art"><img data-article-art="roce-vs-iwarp-networking" src="/assets/covers/roce-vs-iwarp-networking.svg?v=a8e2c3a18738" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">AI &amp; MLOps</span>
-    <h3 class="card-title">RoCE vs iWARP: Choosing the Right RDMA Technology for Your Workload</h3>
+    <a class="chip" href="/topics/ai-mlops/">AI &amp; MLOps</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/roce-vs-iwarp-networking/">RoCE vs iWARP: Choosing the Right RDMA Technology for Your Workload</a></h3>
     <p class="card-desc">Both RoCE and iWARP provide RDMA over Ethernet, but they have different network requirements, loss behavior, and operational characteristics. Here&#39;s how to choose between them for AI training, HPC, and storage workloads.</p>
     <div class="card-meta"><time datetime="2026-11-02">2 Nov 2026</time><span class="dot"></span><span>4 min read</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|Systems|AI &amp; MLOps|HPC|" data-search="ai training cluster networking: architecture for large-scale model training training large models at scale requires network architecture that most data centres aren&#39;t built for. here&#39;s how to think about the networking stack for ai training clusters — topology, bandwidth requirements, collective operations, and the trade-offs between infiniband and high-speed ethernet. systems ai &amp; mlops hpc" data-topic="AI &amp; MLOps" href="/insights/ai-training-cluster-networking/">
-  <div class="card-art"><img data-article-art="ai-training-cluster-networking" src="/assets/covers/ai-training-cluster-networking.svg?v=e467b8645f54" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+</article>
+<article class="card" data-card data-topics="|Systems|AI &amp; MLOps|HPC|" data-search="ai training cluster networking: architecture for large-scale model training training large models at scale requires network architecture that most data centres aren&#39;t built for. here&#39;s how to think about the networking stack for ai training clusters — topology, bandwidth requirements, collective operations, and the trade-offs between infiniband and high-speed ethernet. systems ai &amp; mlops hpc" data-topic="AI &amp; MLOps">
+  <div class="card-art"><img data-article-art="ai-training-cluster-networking" src="/assets/covers/ai-training-cluster-networking.svg?v=f43cfe5e7a5c" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">AI &amp; MLOps</span>
-    <h3 class="card-title">AI Training Cluster Networking: Architecture for Large-Scale Model Training</h3>
+    <a class="chip" href="/topics/ai-mlops/">AI &amp; MLOps</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/ai-training-cluster-networking/">AI Training Cluster Networking: Architecture for Large-Scale Model Training</a></h3>
     <p class="card-desc">Training large models at scale requires network architecture that most data centres aren&#39;t built for. Here&#39;s how to think about the networking stack for AI training clusters — topology, bandwidth requirements, collective operations, and the trade-offs between InfiniBand and high-speed Ethernet.</p>
     <div class="card-meta"><time datetime="2025-04-08">8 Apr 2025</time><span class="dot"></span><span>4 min read</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|Systems|Infrastructure|Enterprise AI|Cloud Architecture|HPC|" data-search="ethernet vs. infiniband: choosing the right network fabric in 2026 a practical breakdown of when to use ethernet and when infiniband makes sense — with key metrics, topology differences, and real-world guidance for cloud, hpc, and ai workloads. systems infrastructure enterprise ai cloud architecture hpc" data-topic="Infrastructure" href="/insights/ethernet-vs-infiniband-networking-2026/">
+</article>
+<article class="card" data-card data-topics="|Systems|Infrastructure|Enterprise AI|Cloud Architecture|HPC|" data-search="ethernet vs. infiniband: choosing the right network fabric in 2026 a practical breakdown of when to use ethernet and when infiniband makes sense — with key metrics, topology differences, and real-world guidance for cloud, hpc, and ai workloads. systems infrastructure enterprise ai cloud architecture hpc" data-topic="Infrastructure">
   <div class="card-art"><img data-article-art="ethernet-vs-infiniband-networking-2026" src="/assets/covers/ethernet-vs-infiniband-networking-2026.svg?v=99c68a23a181" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Infrastructure</span>
-    <h3 class="card-title">Ethernet vs. InfiniBand: Choosing the Right Network Fabric in 2026</h3>
+    <a class="chip" href="/topics/infrastructure/">Infrastructure</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/ethernet-vs-infiniband-networking-2026/">Ethernet vs. InfiniBand: Choosing the Right Network Fabric in 2026</a></h3>
     <p class="card-desc">A practical breakdown of when to use Ethernet and when InfiniBand makes sense — with key metrics, topology differences, and real-world guidance for cloud, HPC, and AI workloads.</p>
     <div class="card-meta"><time datetime="2026-10-02">2 Oct 2026</time><span class="dot"></span><span>5 min read</span></div>
   </div>
-</a></div>
+</article></div>
     </div>
   </section>
 
@@ -309,6 +299,7 @@ d.setAttribute('data-theme',t);
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/follow/">Follow new writing</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
           <li><a href="/notes/">Personal notes</a></li>
@@ -329,7 +320,7 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=a8e7c95a" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=a8e7c95a"></script>
+<script src="/assets/js/site.js?v=bd74be96" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=bd74be96"></script>
 </body>
 </html>
