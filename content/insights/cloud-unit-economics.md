@@ -1,6 +1,6 @@
 ---
-title: "Cloud Unit Economics: The Metric That Makes Cloud Spend Conversations Productive"
-description: "Talking about cloud spend in absolute dollars rarely leads anywhere useful. Unit economics — cost per transaction, cost per user, cost per GB processed — creates the context that turns 'we spend too much on cloud' into an actionable conversation."
+title: "Cloud Cost per Unit: Calculate What It Costs to Deliver an Order"
+description: "Reconcile effective cloud cost, allocate shared services, and compare spend per completed business unit using a repeatable worksheet."
 date: 2025-10-15
 tags: ["FinOps", "Cost Optimisation", "Engineering Leadership"]
 series: "FinOps from Zero to Production"
@@ -8,78 +8,28 @@ seriesOrder: 3
 format: article
 ---
 
-Most cloud cost conversations go in circles because they're comparing the wrong things. "Our AWS bill went up 20% this quarter" is a statement that could mean we're growing efficiently, we're scaling poorly, or someone left a cluster running — and you can't tell which from the number alone.
-
-Unit economics cuts through this. Cost per unit of business output — per active user, per transaction, per API call, per GB of data processed — contextualises spend against the business it's supporting.
+A cloud bill can rise while the cost of delivering each order falls. To tell which happened, join an accounting numerator to a business denominator. The numerator answers what the service cost during a period. The denominator answers how many useful units it delivered during the same period. Decide both definitions before looking at the result.
 
 ## What to measure
 
-**Cost per completed business unit.** At $18,000 monthly allocated cloud spend and 600,000 completed orders, cloud cost is $0.03 per order. At the same spend and 450,000 orders, it is $0.04. Use the same cost scope and exclude failed orders from the completed-order denominator.
+For an order pipeline, use unique completed orders. Count a retry as part of the cost of delivering the order. Deduplicate by a stable order identifier and decide how to handle cancellations, refunds and late completions. For another service, choose a meaningful output that stays interpretable over time, such as settled transfers or successfully processed gigabytes. Document the exact event and cutoff.
 
-*Illustrative measurement. Any numbers in this example are hypothetical.*
+Add directly attributable effective cost to the allocated share of common services. Use the same currency and cost basis in both periods. Reconcile to the billing export after accounting for excluded costs. Document treatments of credits, taxes, commitments and amortisation. Effective cost is a defined cost basis in FOCUS. The mapping still depends on the billing export and the cost scope you choose.
 
-Further reading: [FinOps Foundation, State of FinOps 2026](https://data.finops.org/).
+## Build a traceable cost model
 
-## Why absolute spend is the wrong metric
+1. Tag or otherwise map billing line items to a stable service owner and cost scope. Classify charges as direct, shared, or excluded. Track unmapped costs where reviewers can see them.
+2. Choose a measurable shared-cost driver, such as request share for an API gateway. Calculate the starting pool once. Check that allocated and unallocated portions reconcile to the pool and that direct items were excluded from it.
+3. Join the effective-cost aggregate and deduplicated completion aggregate using consistent time boundaries and service scope. Sum costs and units before dividing across services or periods with different volumes. Mark zero-volume periods as unavailable for the rate.
+4. Compare total cost, completed units, rate, and reliability together. Investigate changes in traffic mix, retry volume, success rate and latency. Rerun the calculation once with an alternative shared-cost driver to see whether that decision affects the conclusion.
 
-An engineering team that grew its AWS bill from $50k to $100k over a year might have:
-- Doubled their user base at constant efficiency (good)
-- Maintained their user base but halved their efficiency (bad)
-- Grown their user base by 10x while doubling their bill (excellent)
+## Use the worksheet to explain a change
 
-The absolute number doesn't tell you which scenario you're in. The unit cost does.
+Enter direct and allocated costs and the completed units for each period. In the worked example, spend rises from $240 to $280 while completed orders rise from 1,200 to 2,000. The resulting cost falls from $0.20 to $0.14 per order. A rate change alone cannot tell you whether an engineering change caused the improvement. For a real comparison, review your reconciliation and reliability evidence before attributing the difference.
 
-Unit economics doesn't make the cost conversation easier — it makes it more honest. When a business leader asks "why is our cloud bill so high?", the unit cost answer is either: "it isn't, we're running at $0.003 per transaction and the market rate is $0.005" or "you're right, our cost per user has increased since Q3 and here's why." Both answers are useful. "Our bill is $200k a month" isn't.
+**Illustrative measurement.** The worked data below is synthetic. See the [platform onboarding guide](/insights/platform-engineering-idp-2026/) if cost attribution needs to be consistent at service creation.
 
-## Defining the right unit
+## References
 
-The unit should be something the business already tracks and cares about. Common options:
-
-- **SaaS products**: cost per monthly active user (MAU)
-- **Transaction systems**: cost per transaction (order, payment, booking)
-- **Data platforms**: cost per GB ingested, cost per GB processed, cost per query
-- **APIs**: cost per 1,000 API calls
-- **Streaming**: cost per event processed
-
-The unit has to be consistent — use the same definition across teams and time periods. If "transaction" means one thing to the payments team and another to the analytics team, the comparisons won't be useful.
-
-For complex products that do many different things, start with the unit that most directly connects cloud spend to revenue. Optimise for clarity first.
-
-## How to calculate it
-
-Unit cost calculation:
-```
-unit_cost = total_infrastructure_cost / unit_count
-```
-
-Where `total_infrastructure_cost` includes all cloud spend attributable to the workload: compute, storage, networking, database, managed services. The tagging taxonomy your team maintains is what makes this possible — if your resources aren't tagged by application, you're allocating costs by estimation.
-
-For a microservice architecture, cost attribution often requires allocating shared infrastructure (Kubernetes cluster overhead, shared load balancers, monitoring) proportionally. Common approaches:
-- **Resource-proportional**: allocate shared costs based on CPU/memory consumption share
-- **Transaction-proportional**: allocate based on request volume share
-- **Flat allocation**: divide shared infrastructure equally across workloads
-
-Each approach is a simplification. The goal is consistent, good-enough allocation rather than perfect attribution.
-
-## Benchmarks and thresholds
-
-Unit costs become most useful when you have a target to compare against.
-
-Setting targets:
-- **Baseline from current performance**: your current unit cost is the baseline. Track improvement (or degradation) over time.
-- **Architecture exercises**: when planning a major architectural change, estimate the expected unit cost. Compare to actuals after deployment.
-- **Peer context**: compare benchmarks only when both the spend categories and the business model match. Use your own prior-period unit costs for the primary comparison.
-
-Threshold alerts: if unit cost increases by more than X% quarter-over-quarter without a corresponding product change or growth inflection, that's a signal to investigate. Growth in spend is expected; disproportionate growth in unit cost is an efficiency signal.
-
-## The conversation unit economics enables
-
-With unit economics, the cloud spend conversation becomes:
-
-"Our cost per MAU has stayed flat at $0.42 despite 30% user growth, which tells us our architecture is scaling efficiently. However, the data processing cost per GB has increased from $0.18 to $0.31 — that's the area worth investigating before we grow the data pipeline further."
-
-This is the conversation FinOps aims to enable: context-rich, actionable, connected to the business. It requires the underlying data (tagging, cost allocation, unit tracking) to be in good shape, which is the infrastructure that takes time to build.
-
-The return on that investment is conversations like the one above, instead of conversations about whether $200k is too much.
-
-*Working toward this kind of visibility in your organization? The data infrastructure that supports unit economics is worth building. [Happy to compare approaches.](/contact/)*
+- [FinOps Foundation · Unit Economics](https://www.finops.org/framework/capabilities/unit-economics/)
+- [FinOps Foundation · FOCUS specification](https://focus.finops.org/focus-specification/)

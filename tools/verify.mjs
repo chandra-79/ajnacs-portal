@@ -6,6 +6,8 @@ import { createHash } from "node:crypto";
 import { markFile } from "./mark.mjs";
 import { seriesSlug } from "./lib.mjs";
 import { publicationDate } from "./publication.mjs";
+import { fieldGuides, worksheetCsv } from "./field-guides.mjs";
+import { models } from "../assets/js/field-math.mjs";
 
 let failures = 0;
 const fail = (m) => { console.error("  ✗ " + m); failures++; };
@@ -19,7 +21,7 @@ const queued = manifest.filter(m => m.date > TODAY);
 console.log("\nStructure");
 for (const f of [".nojekyll", "index.html", "404.html", "robots.txt", "sitemap.xml", "feed.xml",
                  "CNAME", "assets/css/site.css", "assets/js/site.js",
-                 "services/index.html", "insights/index.html", "contact/index.html",
+                 "services/index.html", "insights/index.html", "contact/index.html", "field-guides/index.html",
                  "privacy/index.html", "terms/index.html", "about/index.html"]) {
   try { await access(f, constants.R_OK); } catch { fail(`missing ${f}`); }
 }
@@ -61,8 +63,28 @@ console.log("\nDiscovery");
       if (!text.includes("## What to measure") || !text.includes("Illustrative measurement.")) fail(`edited insight missing a labelled measurement: ${m.slug}`);
     }
   }
+  if (!urls.has("https://ajnacs.com/field-guides/")) fail("field guide archive missing from sitemap");
   if ([...urls].some(url => url.includes('?') || url.endsWith('404.html'))) fail("sitemap contains a filter or error URL");
   if (!failures) ok("crawler rules, article sitemap dates and labelled evidence checked");
+}
+
+console.log("\nField guides");
+{
+  const expected = new Map([["toil", [24, 11]], ["onboarding", [30, 6.5]], ["unitCost", [.2, .14]]]);
+  for (const guide of fieldGuides.filter(guide => liveInsights.some(m => m.slug === guide.slug))) {
+    const html = await readFile(`insights/${guide.slug}/index.html`, "utf8");
+    const csv = await readFile(`field-guides/${guide.slug}.csv`, "utf8");
+    const sample = Object.fromEntries(guide.inputs.map(([key, , value]) => [key, value]));
+    const chart = models[guide.key](sample).chart;
+    if (!html.includes('id="measurement-worksheet"') || !html.includes('id="methodology"') ||
+        !html.includes("Illustrative data") || !html.includes(`data-field-worksheet="${guide.key}"`)) {
+      fail(`worksheet with labelled evidence missing: ${guide.slug}`);
+    }
+    if (csv !== worksheetCsv(guide) || chart.some((value, index) => value !== expected.get(guide.key)[index])) {
+      fail(`worked inputs and chart disagree: ${guide.slug}`);
+    }
+  }
+  if (!failures) ok("worksheets, methodology, worked results and CSVs checked");
 }
 
 console.log("\nQuality");

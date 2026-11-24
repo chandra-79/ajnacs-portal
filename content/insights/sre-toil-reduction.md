@@ -1,64 +1,33 @@
 ---
-title: "SRE Toil: What It Is, How to Measure It, and How to Reduce It"
-description: "Toil is the manual, repetitive, automatable work that keeps systems running without actually improving them. SRE practice says: measure toil, set a ceiling, and invest engineering effort in eliminating it."
+title: "SRE Toil: How to Measure It and Decide What to Automate"
+description: "Build a toil baseline, calculate automation payback, and check that the work actually went away."
 date: 2026-10-09
 tags: ["Engineering Leadership", "DevSecOps", "Cloud Architecture"]
 format: article
 ---
 
-Google's SRE book introduced the concept of toil as a specific category of work worth tracking and actively reducing. The definition is precise: toil is work that is manual, repetitive, automatable, tactical (it doesn't produce lasting value), and that scales linearly with service growth.
-
-The reason to track it separately from other work: teams that spend too much time on toil have no capacity for the reliability improvements that would eliminate toil. They are on a treadmill. [Google’s SRE organisation sets a goal](https://sre.google/sre-book/eliminating-toil/) of keeping operational work below 50% of each SRE’s time. Treat that as a published operating policy; set your own ceiling after measuring where your time goes.
+On-call logs tell you where the team is spending time. They rarely tell you which work will keep coming back. Start with a recurring task the team can name, such as reprocessing a batch after a known timeout. Record the hands-on effort, identify why it recurs, and decide whether to remove the trigger, improve the procedure, or automate it.
 
 ## What to measure
 
-**Toil fraction and automation payback.** If a team records 64 hours of toil in 240 available engineering hours, the toil fraction is about 27%. If automation costs 60 engineer-hours and saves 6 per week after maintenance, simple payback is 10 weeks. Review results across a full on-call rotation and include incidents created by the automation.
+Count hands-on time spent on manual, repeatable operational tasks that could be automated and produce little enduring improvement. A routine replay can meet that definition. Diagnosing a new data-loss mechanism or engineering a permanent fix belongs in a different category. Google’s published 50% target covers operational work more broadly. Set a local budget based on the team’s obligations and capacity.
 
-*Illustrative measurement. Any numbers in this example are hypothetical.*
+Create one row per occurrence with date, service, trigger, active minutes, number of operators and outcome. Add person-minutes if several people work simultaneously. Record time spent waiting separately when it delays recovery. Divide toil hours by available engineering hours for the same team and window. Document the handling of leave, holidays, and overlapping incidents so later windows use the same rules.
 
-Further reading: [Google’s SRE book, Eliminating Toil](https://sre.google/sre-book/eliminating-toil/).
+## Run a small pilot
 
-## Recognizing toil
+1. Baseline at least one complete on-call rotation. Reconcile tickets, paging and deployment records with the operators who did the work. Record the workload and incident severity so the follow-up can account for unusual weeks.
+2. Rank repeat tasks by hands-on hours, frequency and operational risk. Investigate the trigger first. If the batch replay is caused by a stale timeout, fixing the timeout might save more than writing a replay bot.
+3. Pilot the smallest safe change. For a replay, use idempotency where the system supports it, show the planned scope, reject ambiguous requests, and record what ran. Keep a manual recovery path and test partial failure before rollout.
+4. Re-measure with the same team and scope. Count manual exceptions, upkeep, failures and operator time transferred to another team. Compare service objectives and error rates before calling the savings durable.
 
-The examples are recognizable to anyone who has operated production infrastructure:
+## Use the worksheet to decide
 
-- Manually responding to pager alerts that could be handled by an automated recovery script
-- Running a database query by hand to answer a recurring business question that could be a scheduled report
-- Manually approving deployments that could be automated with sufficient testing
-- Manually copying data between systems that could be connected with a pipeline
-- Restarting a service on a schedule because it has a known memory leak (the leak is tech debt; the restart is toil)
-- Manually granting access to a system for new team members who always need the same access (an automation problem, not a policy problem)
+Enter equal windows and the one-time implementation effort. The calculator reports baseline and follow-up toil as a share of capacity, ongoing hours released and simple payback. Follow-up upkeep is included in the savings calculation and tracked separately from manual toil. A payback in weeks reflects team capacity and assumes the observed weekly release continues. Rate savings and service risk separately before making a larger investment.
 
-The common thread: someone doing this work is doing it because no automation exists, not because human judgment is required.
+**Illustrative measurement.** The worked data below is synthetic. Use your own windows and leave any field with missing evidence out of your decision until you can measure it. Review [platform onboarding](/insights/platform-engineering-idp-2026/) if the work occurs when developers create a service.
 
-## Measuring toil
+## References
 
-You cannot reduce what you do not measure. Toil measurement approaches:
-
-**Incident-linked toil**: when responding to a PagerDuty/OpsGenie alert, mark whether the response was manual and repetitive (toil) or required investigation and judgment (not toil). Over time, you can see the toil fraction of on-call work.
-
-**Time tracking for ops work**: a week-long exercise where the team tracks their time in categories: toil, project work, meetings, unplanned work. The granularity doesn't need to be high — 30-minute buckets are sufficient. This produces a surprisingly clear picture of where time actually goes.
-
-**Ticket analysis**: tag support and operational tickets as toil vs. not. Review the toil tickets monthly. What categories of toil appear repeatedly? These are the automation candidates.
-
-A team measuring 40% toil has a baseline for its own work. Compare across rotations and account for unusual incident weeks before using it to set a target.
-
-## Prioritizing what to automate
-
-Not all toil is equally worth automating. The priority framework:
-
-**High-frequency + manual + high-consequence**: a manual step in a deployment that is done 20 times per week and occasionally causes incidents is the highest priority for automation. The frequency means the automation saves significant time; the incident rate means it reduces risk.
-
-**On-call toil**: manual alert responses that happen at 2am have both a reliability cost (delayed response) and a human cost (degraded sleep, on-call burnout). Automating these has disproportionate value compared to the time saved during business hours.
-
-**Toil that blocks other teams**: a manual approval step that other teams wait on for hours each time is a bottleneck. Automating it removes a dependency.
-
-**Scaling toil**: work that increases linearly with service growth will eventually consume the team. Automating it before it reaches that point is cheaper than automating under pressure.
-
-## The investment conversation
-
-Reducing toil requires trading short-term capacity for long-term capacity. The team needs to spend time building automation instead of doing the manual work. This is a conversation with leadership: we are spending 35% of our engineering capacity on work that doesn't improve the system, and we need 2 sprints to build automation that will reduce this to 15%.
-
-Estimate payback as one-time engineering effort divided by weekly hours saved after recurring maintenance. Use observed weekly frequencies and include the work needed to keep the automation running.
-
-*Working through a toil reduction initiative for an operations or SRE team? The measurement step is often the most revealing part. [Happy to compare approaches.](/contact/)*
+- [Google SRE Book · Eliminating Toil](https://sre.google/sre-book/eliminating-toil/)
+- [Google SRE Workbook · Identifying and Tracking Toil Using SRE Principles](https://sre.google/workbook/eliminating-toil/)
