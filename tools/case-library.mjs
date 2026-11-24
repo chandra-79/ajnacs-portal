@@ -3,6 +3,7 @@ import { SITE, esc } from "./lib.mjs";
 import { page } from "./shell.mjs";
 import { headingAnchors, makeRenderer, tableOfContents } from "./render.mjs";
 import { csv, deliveryFlow, evidence, metricValue } from "./measurements.mjs";
+import { caseIllustration } from "./case-illustrations.mjs";
 
 const base = "/case-studies/";
 export const simulationNotice = "Hypothetical engagement. The organisation, delivery events, and measurements are simulated.";
@@ -43,6 +44,13 @@ export async function caseLibrary(out, promotions) {
       throw new Error(`Expected 8–10 unique case studies in ${source}`);
     }
 
+    const covers = new Map();
+    for (const item of cases) covers.set(item.slug, await caseIllustration(out, item, category.topic));
+
+    const image = (item, lazy) => {
+      const { src, description, width, height } = covers.get(item.slug);
+      return `<img src="${src}" alt="${esc(description)}" width="${width}" height="${height}" ${lazy ? 'loading="lazy"' : 'fetchpriority="high"'} decoding="async">`;
+    };
     const crumbs = `<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="${base}">Case studies</a>`;
     await out(dir.slice(1), page({
       title: category.title + " case studies",
@@ -56,9 +64,12 @@ export async function caseLibrary(out, promotions) {
   <p class="case-notice">These ${cases.length} worked examples use simulated organisations, events and results.</p>
 </div></section>
 <section class="publication-wrap case-library" aria-label="Scenarios">
-  <div class="grid g-2 capability-grid">${cases.map(item => `<article class="guide-tile">
-    <h2 class="h3"><a class="card-destination" href="${dir}${item.slug}/">${esc(item.title)}</a></h2>
-    <p>${esc(item.description)}</p>
+  <div class="grid g-2 capability-grid">${cases.map(item => `<article class="card case-card">
+    <div class="card-art">${image(item, true)}</div>
+    <div class="card-body">
+      <h2 class="card-title"><a class="card-destination" href="${dir}${item.slug}/">${esc(item.title)}</a></h2>
+      <p class="card-desc">${esc(item.description)}</p>
+    </div>
   </article>`).join("\n")}</div>
 </section>`,
     }));
@@ -88,9 +99,10 @@ export async function caseLibrary(out, promotions) {
       <p class="lede field-intro">${esc(item.description)}</p>
       <p class="case-notice">${simulationNotice}</p>
     </header>
-    <div class="article-hero case-schematic" data-topic="${esc(category.topic)}">${deliveryFlow(item.flow)}</div>
+    <div class="article-hero" data-topic="${esc(category.topic)}">${image(item, false)}</div>
     <div class="reader-aside">${tableOfContents(headings)}</div>
     <div class="article-copy">
+      ${deliveryFlow(item.flow)}
       <div class="prose">${caseCopy}</div>
       ${evidence("Worked comparison", item.metrics)}
       <p class="case-download"><a href="${dataPath}" download>Download the simulated measurements (CSV)</a></p>

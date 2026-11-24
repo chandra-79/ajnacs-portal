@@ -506,11 +506,14 @@ await out("field-guides", page({
 </section>
 <section class="publication-wrap archive-layout" aria-label="Field guides and worksheets">
   <div class="grid series-cards">
-    ${publishedGuides.map(guide => `<article class="guide-tile">
-      <h2 class="h3"><a class="card-destination" href="/insights/${guide.slug}/">${esc(guide.name)}</a></h2>
-      <p>${esc(guide.question)}</p>
-      <a href="/insights/${guide.slug}/#measurement-worksheet">Open the worksheet</a>
-      <a href="/insights/${guide.slug}/#methodology">Review the methodology</a>
+    ${publishedGuides.map(guide => `<article class="card field-guide-card">
+      <div class="card-art">${coverFor(insights.find(article => article.slug === guide.slug))}</div>
+      <div class="card-body">
+        <h2 class="card-title"><a class="card-destination" href="/insights/${guide.slug}/">${esc(guide.name)}</a></h2>
+        <p class="card-desc">${esc(guide.question)}</p>
+        <a class="guide-action" href="/insights/${guide.slug}/#measurement-worksheet">Open the worksheet</a>
+        <a class="guide-action" href="/insights/${guide.slug}/#methodology">Review the methodology</a>
+      </div>
     </article>`).join("\n    ")}
   </div>
   ${housePromotions("field-guides-rail")}
