@@ -1,74 +1,33 @@
 ---
-title: "Platform Engineering in 2026: What an Internal Developer Platform Actually Needs"
-description: "Design an internal developer platform around self-service, supported deployment paths and policy checks. Measure onboarding, adoption and change failures before expanding it."
+title: "Platform Onboarding: Measure the Path to a First Deployment"
+description: "Pilot a self-service path, measure time to a first qualifying deployment, and track completion, controls, and support effort."
 date: 2027-08-16
 tags: ["DevSecOps", "Cloud Architecture", "Engineering Leadership"]
 format: article
 ---
 
-The pitch for an internal developer platform is always the same: reduce cognitive load, standardise environments, let developers self-serve infrastructure. The reality, for many IDP initiatives, is a portal that developers route around and a platform team that spends most of their time answering questions about why the portal doesn't support their use case.
-
-The gap between pitch and reality comes down to a few decisions made early.
+Start with one group of developers creating one kind of service. Ask them to get from an accepted onboarding request to a healthy deployment in an approved environment. Watch where they wait, what they repeat, and who has to intervene. That sequence gives a platform team something it can improve and measure.
 
 ## What to measure
 
-**First deployment lead time, adoption and failure.** If the median time from service creation to first production deployment falls from 3 days to 1, report the 2-day reduction alongside sample size. Check change failures and opt-outs before expanding beyond the pilot.
+Choose a start event such as acceptance of an eligible request, and a stop event such as the first healthy deployment with mandatory policy checks passed. Record elapsed hours, including approval queues and time waiting for dependencies. Decide in advance whether the target environment is staging or production and hold it fixed across cohorts. This measure covers the whole onboarding path. DORA’s change lead time begins at code commit and ends at production deployment.
 
-*Illustrative measurement. Any numbers in this example are hypothetical.*
+Report completion within a fixed observation window and median elapsed time among attempts that completed in that window. Retain blocked and incomplete attempts in the denominator. Record known blockers, support effort, and opt-outs. Distinguish service onboarding from adding a contributor to an existing service, since those take different paths.
 
-Further reading: [CNCF’s 2025 Annual Cloud Native Survey](https://www.cncf.io/announcements/2026/01/20/kubernetes-established-as-the-de-facto-operating-system-for-ai-as-production-use-hits-82-in-2025-cncf-annual-cloud-native-survey/).
+## Build and pilot a supported path
 
-## The product mindset that most platform teams miss
+1. Pick a team and workload with a repeatable deployment shape. Include teammates new to the tooling. Write the expected prerequisites, access rules, and ownership handoffs before the pilot.
+2. Provide a versioned template with repository ownership, CI, runtime configuration, secrets references, and an observable health check. Give the starter a deploy action with actionable errors and a documented recovery path.
+3. Use the same approved environment and mandatory controls for the ticket and self-service cohorts. Record queue time, delivery time, policy failures and help requests. Log platform support effort even when the service owner does the deployment.
+4. Review completion and support effort together. A faster successful path can mask more abandoned or blocked attempts. Inspect the failures, fix the common blockers, and document cases that need an exception path before broadening the rollout.
 
-A platform is a product. Its customers are the developers who use it. If developers don't adopt it, the platform has failed — regardless of how well-engineered the underlying infrastructure is.
+## Use the worksheet to compare two cohorts
 
-Platform teams that succeed treat adoption as their primary metric. They talk to developers before building, not after. They have a feedback loop. They measure time-to-deploy for new services, not lines of Terraform written.
+Enter one item per eligible service. Use elapsed hours for completions and `open` for attempts without a qualifying deployment by the cutoff. Wait until every attempt in the cohort has reached the cutoff or completed before estimating the rate. Review the count and median together. With enough observations add a tail measure and report the sample size. Compare like workloads or report the cohorts separately.
 
-Platform teams that struggle treat adoption as something that will happen once the platform is complete. The platform is never complete, adoption never comes naturally, and the platform team starts mandating use rather than earning it.
+**Illustrative measurement.** The worked data below is synthetic. It deliberately shows faster successful deployments alongside fewer completions. Track follow-on delivery performance separately with measures such as DORA’s change fail rate and failed deployment recovery time. Use the [toil guide](/insights/sre-toil-reduction/) to account for recurring support work that moves between teams.
 
-The practical test: when a developer has a deadline and needs to set up a new service, do they reach for the platform or do they go around it? If they go around it, the platform has failed on that use case. Finding out why — and fixing it — is platform work.
+## References
 
-## The golden path: opinionated defaults, not the only option
-
-The most effective IDP design pattern is the "golden path": a well-lit, well-supported route for the 80% use case. New service, standard tech stack, standard deployment target — the golden path should get a developer from zero to production-deployed in under an hour with no platform team involvement.
-
-The key word is *path*, not *tunnel*. Developers who need to go off the golden path for legitimate reasons should be able to — with a documented off-ramp and appropriate support. A platform that can only do exactly what it was designed for becomes a constraint, not an accelerator.
-
-Golden path components:
-- **Service template**: a repository template that includes the standard project structure, CI/CD pipeline, Dockerfile, and platform integration hooks. Scaffolded with a single command.
-- **Environment provisioning**: dev, staging, and production environments provisioned from the template, with correct RBAC, networking, and observability pre-configured.
-- **CI/CD pipeline**: security scanning, testing, and deployment baked in. Developer pushes code; pipeline handles the rest.
-- **Observability**: metrics, logs, and traces connected to the central observability platform automatically. The developer shouldn't need to wire this up.
-- **Secrets management**: integration with the secrets manager without requiring developers to understand the underlying infrastructure.
-
-## The portal: necessary but not sufficient
-
-A developer portal (Backstage is the most widely adopted open-source option) surfaces the platform's capabilities: service catalogue, infrastructure self-service, documentation, deployment history, on-call routing.
-
-Backstage is not a platform. It's a UI layer on top of the platform. Teams that build a Backstage instance without the underlying automation end up with a portal that lists services and links to documentation but doesn't actually enable self-service.
-
-The portal is valuable when: the platform underneath has real capabilities (provisioning, deployment, observability), the catalogue is accurate and maintained, and developers find it genuinely faster to use than alternatives.
-
-The portal is a liability when: it's out of date (catalogue has stale entries), it can't do the things developers actually need, or the portal interaction is slower than just opening the cloud console.
-
-## The metrics that show whether the platform is working
-
-**Time to production for a new service**: from "I need to deploy a new service" to the first deployment in production. For a mature golden path, this should be measured in hours, not days.
-
-**Developer portal adoption**: what percentage of new services use the golden path vs. are built directly in the cloud console or from scratch?
-
-**DORA metrics for platform team vs. non-platform-using teams**: if the platform is working, teams using it should deploy more frequently, with lower change failure rates and faster recovery.
-
-**Time spent on platform support**: how many hours per week does the platform team spend on support tickets? High support time means the platform has gaps that developers are hitting. Low support time (combined with high adoption) means the platform is working.
-
-**Developer satisfaction (NPS or qualitative)**: ask developers directly, at least quarterly, whether the platform is making their lives easier or harder. Act on the feedback.
-
-## What platform engineering is not
-
-Platform engineering is not a DevOps rebranding. Platform engineering that focuses entirely on tooling without addressing the product mindset produces better-tooled platforms with the same adoption problems.
-
-Platform engineering is not the same as infrastructure automation. Infrastructure automation (Terraform, Pulumi, CDK) is a component of platform engineering, not the output. The output is developer capability — what can a developer do today that they couldn't do last quarter?
-
-Platform engineering is not a solution to governance problems. If the platform is primarily a mechanism for enforcing standards on developers rather than accelerating them, developers will treat it as overhead. Governance is a constraint; the platform's job is to make compliance the path of least resistance, not to be a gatekeeper.
-
-*Building or scaling an internal developer platform? [Happy to compare approaches — the design decisions compound.](/contact/)*
+- [CNCF · Platforms White Paper](https://tag-app-delivery.cncf.io/whitepapers/platforms/)
+- [DORA · Software delivery performance metrics](https://dora.dev/guides/dora-metrics/)

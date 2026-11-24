@@ -30,6 +30,10 @@ export function page({
   const metaShort = meta.length > 158 ? meta.slice(0, 155).replace(/[\s,;:—-]+$/, "") + "…" : meta;
   ogImage ||= siteImagePath(urlPath,title,metaShort,topic);
   const imagePath=ogImage.split(/[?#]/)[0];
+  const frame = type === "article" ? "article-frame" :
+    /^(?:\/insights|\/notes|\/series|\/topics|\/field-guides)\//.test(urlPath) ? "publication-frame" : "";
+  const primaryCurrent = href => urlPath === href ? ' aria-current="page"' :
+    urlPath.startsWith(href) ? ' aria-current="location"' : "";
   const imageType = /\.png$/i.test(imagePath) ? "image/png" : /\.svg$/i.test(imagePath) ? "image/svg+xml" : /\.webp$/i.test(imagePath) ? "image/webp" : "image/jpeg";
 
   return `<!DOCTYPE html>
@@ -85,18 +89,18 @@ d.setAttribute('data-theme',t);
 </script>
 ${jsonld.map(j => `<script type="application/ld+json">${JSON.stringify(j).replace(/</g, "\\u003c")}</script>`).join("\n")}
 </head>
-<body class="${bodyClass}"${topic ? ` data-topic="${esc(topic)}"` : ""}>
+<body class="${[bodyClass, frame].filter(Boolean).join(" ")}"${topic ? ` data-topic="${esc(topic)}"` : ""}>
 <a class="skip-link" href="#main">Skip to content</a>
 
 <header class="site-header" id="siteHeader">
-  <div class="wrap" style="display:flex;align-items:center;width:min(1220px,100% - var(--gutter)*2)">
+  <div class="shell-inner header-inner">
     <div class="brand">
-      <button class="brand-motion" type="button" data-ajna-motion data-arrival aria-label="Open Ajna logo" aria-pressed="false">${mark({ size: 40, uid: "hdr" })}</button>
+      <button class="brand-motion" type="button" data-ajna-motion data-arrival aria-label="Open Ajna logo" aria-pressed="false">${mark({ size: 56, uid: "hdr" })}</button>
       <a class="brand-home" href="/" aria-label="${esc(SITE.name)} — home"><span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span></a>
     </div>
     <nav class="nav" id="nav" aria-label="Primary">
       ${NAV.map(([href, label]) =>
-        `<a href="${href}"${urlPath === href ? ' aria-current="page"' : ""}>${label}</a>`).join("\n      ")}
+        `<a href="${href}"${primaryCurrent(href)}>${label}</a>`).join("\n      ")}
       <a class="btn btn-sm" href="/contact/" style="margin-left:.4rem">Engage engineering</a>
     </nav>
     <div class="nav-actions">
@@ -111,11 +115,11 @@ ${body}
 </main>
 
 <footer class="site-footer">
-  <div class="wrap">
+  <div class="shell-inner">
     <div class="grid g-4" style="gap:2rem">
       <div>
         <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem" aria-label="${esc(SITE.name)} — home">
-          ${mark({ size: 36, uid: "ftr", still: true })}
+          ${mark({ size: 52, uid: "ftr", still: true })}
           <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
         </a>
         <p style="font-size:.88rem;line-height:1.65;color:#9fb0d0;max-width:30ch">
@@ -140,6 +144,7 @@ ${body}
         <h2 class="foot-title">Insights</h2>
         <ul>
           <li><a href="/insights/">All articles</a></li>
+          <li><a href="/field-guides/">Field guides</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
           <li><a href="/notes/">Personal notes</a></li>

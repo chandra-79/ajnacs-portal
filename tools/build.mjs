@@ -14,6 +14,7 @@ import { buildArticleImages } from "./article-images.mjs";
 import { buildPageImage } from "./site-images.mjs";
 import { coverFor, photoFor } from "./covers.mjs";
 import { noteCover } from "./note-covers.mjs";
+import { fieldGuides, worksheet, worksheetCsv } from "./field-guides.mjs";
 import { relatedArticles, robotsPolicy, topicPath, featuredCollections } from "./discovery.mjs";
 import "./icons.mjs";
 import "./diagrams.mjs";
@@ -28,6 +29,7 @@ const live = manifest
   .sort((a, b) => b.date.localeCompare(a.date));
 const insights = live.filter(m => m.section === "insights");
 const notes = live.filter(m => m.section === "notes");
+const guideBySlug = new Map(fieldGuides.map(guide => [guide.slug, guide]));
 
 const topicCounts = {};
 for (const m of insights) for (const t of m.tags) if (PRIMARY_TOPICS.includes(t)) topicCounts[t] = (topicCounts[t] || 0) + 1;
@@ -94,6 +96,7 @@ let built = 0;
 for (const m of live) {
   const raw = await readFile(`content/${m.section}/${m.slug}.md`, "utf8");
   const { body } = parseFront(raw);
+  const fieldGuide = guideBySlug.get(m.slug);
   const { marked, headings } = makeRenderer();
   let html = await marked.parse(body);
 
@@ -209,6 +212,7 @@ ${asideHtml}
       <div class="prose">
 ${html}
       </div>
+${fieldGuide ? worksheet(fieldGuide) : ""}
 
 ${refsHtml}
 
@@ -300,7 +304,7 @@ await out("insights", page({
     <p class="eyebrow">Insights</p>
     <h1 class="h-display" style="margin-top:.8rem;max-width:18ch">Engineering, written down.</h1>
     <p class="lede" style="margin-top:1.2rem;max-width:62ch">Architecture decisions, production failures and the trade-offs behind them. Written for the people who build and run production systems.</p>
-    <div class="row insights-actions"><a class="btn btn-ghost" href="/topics/">Browse topics</a><a class="btn btn-ghost" href="/feed.xml">Subscribe via RSS</a></div>
+    <div class="row insights-actions"><a class="btn" href="/field-guides/">Field guides and worksheets</a><a class="btn btn-ghost" href="/topics/">Browse topics</a><a class="btn btn-ghost" href="/feed.xml">Subscribe via RSS</a></div>
   </div>
 </section>
 
@@ -469,6 +473,38 @@ for (const topic of hubTopics) {
   }));
 }
 
+/* ---------- evergreen field guides ---------- */
+const publishedGuides = fieldGuides.filter(guide => insights.some(article => article.slug === guide.slug));
+await out("field-guides", page({
+  title: "Engineering field guides",
+  description: "Practical guides and measurement worksheets for SRE toil, platform onboarding, and cloud cost per unit.",
+  path: "/field-guides/",
+  body: `
+<section class="section mesh">
+  <div class="publication-wrap">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/insights/">Insights</a></nav>
+    <h1 class="h-display">Engineering field guides</h1>
+    <p class="lede field-intro">Measure recurring production work, first deployment, and the cost of delivering an order. Each guide pairs a practical decision with a worked example and its method.</p>
+    <div class="row insights-actions"><a class="btn btn-ghost" href="/feed.xml">Follow Insights via RSS</a></div>
+  </div>
+</section>
+<section class="publication-wrap archive-layout" aria-label="Field guides and worksheets">
+  <div class="grid series-cards">
+    ${publishedGuides.map(guide => `<article class="guide-tile">
+      <h2 class="h3">${esc(guide.name)}</h2>
+      <p>${esc(guide.question)}</p>
+      <a href="/insights/${guide.slug}/">Read the guide</a>
+      <a href="/insights/${guide.slug}/#measurement-worksheet">Open the worksheet</a>
+      <a href="/insights/${guide.slug}/#methodology">Review the methodology</a>
+    </article>`).join("\n    ")}
+  </div>
+  ${housePromotions("field-guides-rail")}
+</section>`,
+}));
+for (const guide of publishedGuides) {
+  await out(`field-guides/${guide.slug}.csv`, worksheetCsv(guide));
+}
+
 /* ---------- static pages ---------- */
 for (const [rel, html] of Object.entries(staticPages({ insights, notes, seriesMap, topicList, cardFor }))) {
   await out(rel, html);
@@ -491,13 +527,20 @@ await out("feed.xml", `<?xml version="1.0" encoding="UTF-8"?>
   <atom:link href="${SITE.url}/feed.xml" rel="self" type="application/rss+xml"/>
   <description>Enterprise architecture, cloud, AI and MLOps writing from Ajna Consulting Services.</description>
   <language>en</language>
+  <image>
+    <url>${SITE.url}/favicon.png</url>
+    <title>${esc(SITE.name)} — Insights</title>
+    <link>${SITE.url}/insights/</link>
+    <width>32</width>
+    <height>32</height>
+  </image>
   <lastBuildDate>${new Date((insights[0]?.date || TODAY) + "T09:00:00Z").toUTCString()}</lastBuildDate>
 ${feedItems}
 </channel>
 </rss>`);
 
 const urls = [
-  ...['/', '/services/', '/insights/', '/series/', '/topics/', '/case-studies/', '/about/', '/contact/', '/notes/', '/privacy/', '/terms/'].map(url => [url]),
+  ...['/', '/services/', '/insights/', '/series/', '/topics/', '/field-guides/', '/case-studies/', '/about/', '/contact/', '/notes/', '/privacy/', '/terms/'].map(url => [url]),
   ...live.map(m => [`/${m.section}/${m.slug}/`, m.modified || m.date]),
   ...[...seriesMap.keys()].map(n => [`/series/${seriesSlug(n)}/`]),
   ...[...hubTopics].map(topic => [articleTopicPath(topic)]),
