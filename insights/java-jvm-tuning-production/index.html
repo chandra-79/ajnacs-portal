@@ -33,7 +33,7 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=821ac6ed">
+<link rel="stylesheet" href="/assets/css/site.css?v=2a696502">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
 <link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
@@ -111,6 +111,7 @@ d.setAttribute('data-theme',t);
 <p>Here&#39;s the 2026 version of what&#39;s worth knowing, for engineers running Java services on JDK 17/21+ in containers and clouds.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
 <p><strong>Tail latency and GC contribution.</strong> Measure request latency, pause duration and allocation rate under identical traffic. If request p99 falls from 250 ms to 190 ms, the reduction is 24%. Correlate per-window pause events with request traces before attributing the whole improvement to GC.</p>
+<p class="depth-reading"><a href="/deep-dives/performance/mergeable-latency-percentiles/">Level 2 · Read tail latency from a mergeable distribution</a></p>
 <p><em>Illustrative measurement. Any numbers in this example are hypothetical.</em></p>
 <h2 id="heap-sizing-the-decision-that-drives-everything-else"><a class="h-anchor" href="#heap-sizing-the-decision-that-drives-everything-else" aria-hidden="true" tabindex="-1">#</a>Heap sizing: the decision that drives everything else</h2>
 <p><strong>Set <code>-Xms</code> equal to <code>-Xmx</code>.</strong> Growing the heap is work the JVM does at the worst time (under load), and in containers the memory is reserved anyway. Predictability beats elasticity inside a single process.</p>
@@ -178,6 +179,10 @@ d.setAttribute('data-theme',t);
     <li><a href="https://spark.apache.org/docs/latest/" rel="noopener" target="_blank">Apache Spark</a><span>Execution model and tuning.</span></li>
   </ul>
 </aside>
+<nav class="series-box" aria-label="Study paths">
+    <h2 class="h3">Study this in more depth</h2>
+    <ul class="series-list"><li><a href="/deep-dives/performance/">Latency and capacity <span>· Levels 2–4</span></a></li></ul>
+  </nav>
 
 
 
@@ -317,6 +322,7 @@ d.setAttribute('data-theme',t);
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/deep-dives/">Deep dives</a></li>
           <li><a href="/follow/">Follow new writing</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
@@ -338,7 +344,7 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=821ac6ed" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=821ac6ed"></script>
+<script src="/assets/js/site.js?v=2a696502" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=2a696502"></script>
 </body>
 </html>

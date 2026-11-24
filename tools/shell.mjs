@@ -31,7 +31,7 @@ export function page({
   ogImage ||= siteImagePath(urlPath,title,metaShort,topic);
   const imagePath=ogImage.split(/[?#]/)[0];
   const frame = type === "article" ? "article-frame" :
-    /^(?:\/insights|\/notes|\/series|\/topics|\/field-guides|\/case-studies)\//.test(urlPath) ? "publication-frame" : "";
+    /^(?:\/insights|\/notes|\/series|\/topics|\/field-guides|\/case-studies|\/deep-dives)\//.test(urlPath) ? "publication-frame" : "";
   const primaryCurrent = href => urlPath === href ? ' aria-current="page"' :
     urlPath.startsWith(href) ? ' aria-current="location"' : "";
   const imageType = /\.png$/i.test(imagePath) ? "image/png" : /\.svg$/i.test(imagePath) ? "image/svg+xml" : /\.webp$/i.test(imagePath) ? "image/webp" : "image/jpeg";
@@ -146,6 +146,7 @@ ${body}
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/deep-dives/">Deep dives</a></li>
           <li><a href="/follow/">Follow new writing</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>

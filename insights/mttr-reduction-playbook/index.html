@@ -33,7 +33,7 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=821ac6ed">
+<link rel="stylesheet" href="/assets/css/site.css?v=2a696502">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
 <link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
@@ -126,6 +126,7 @@ d.setAttribute('data-theme',t);
 <p>Detection time depends on your monitoring and alerting strategy. The investments:</p>
 <p><strong>Symptom-based alerting over cause-based alerting</strong>: alert on user-visible symptoms (error rate &gt; 1%, latency P99 &gt; 2s, success rate &lt; 99%) rather than on infrastructure metrics alone (CPU &gt; 80%). A CPU spike that doesn&#39;t affect users doesn&#39;t need a 3am page. An error rate spike does.</p>
 <p><strong>Service Level Objectives (SLOs)</strong>: define the user experience you&#39;re committing to, measure it, and alert when you&#39;re burning error budget too fast. SLO-based alerting is more meaningful than threshold-based alerting on arbitrary metrics.</p>
+<p class="depth-reading"><a href="/deep-dives/reliability/error-budget-accounting/">Level 2 · Count bad events before spending the error budget</a></p>
 <p><strong>Anomaly detection with context</strong>: an alert that fires and points you to the relevant logs, traces, and recent deployments is faster to act on than an alert that fires and leaves you with a metric graph and no context. Invest in alert enrichment — dashboards that open automatically from alert links, runbook links embedded in alert messages, recent deploys shown alongside the anomaly.</p>
 <h2 id="diagnosis-distributed-tracing-and-correlated-observability"><a class="h-anchor" href="#diagnosis-distributed-tracing-and-correlated-observability" aria-hidden="true" tabindex="-1">#</a>Diagnosis: distributed tracing and correlated observability</h2>
 <p>Distributed tracing is the most impactful single investment for diagnosis time in microservice architectures. A trace that shows the full request path across services — which service was slow, which query timed out, which dependency returned an error — compresses what would otherwise be hours of log correlation into minutes.</p>
@@ -206,6 +207,10 @@ d.setAttribute('data-theme',t);
     <li><a href="https://prometheus.io/docs/" rel="noopener" target="_blank">Prometheus</a><span>Query language and operational guidance.</span></li>
   </ul>
 </aside>
+<nav class="series-box" aria-label="Study paths">
+    <h2 class="h3">Study this in more depth</h2>
+    <ul class="series-list"><li><a href="/deep-dives/reliability/">Service reliability <span>· Levels 2–4</span></a></li></ul>
+  </nav>
 
 
 
@@ -345,6 +350,7 @@ d.setAttribute('data-theme',t);
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/deep-dives/">Deep dives</a></li>
           <li><a href="/follow/">Follow new writing</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
@@ -366,7 +372,7 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=821ac6ed" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=821ac6ed"></script>
+<script src="/assets/js/site.js?v=2a696502" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=2a696502"></script>
 </body>
 </html>

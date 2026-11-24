@@ -75,7 +75,7 @@ COMMIT;
 -- relay reads outbox, publishes to Kafka, marks as sent
 ```
 
-This guarantees at-least-once delivery — the event will eventually be published. Consumers need to be idempotent (handling the same event twice is harmless) which is good practice regardless.
+The transaction commits both the business record and the outbox record. Delivery still depends on a functioning relay, broker availability, and retention. A relay can publish again after a crash between broker acknowledgement and marking the item sent. Use a stable event ID and idempotent consumer processing, and monitor undelivered records. See the [transactional outbox guidance](https://docs.aws.amazon.com/prescriptive-guidance/latest/cloud-design-patterns/transactional-outbox.html).
 
 ## Cache-aside: reading from cache, falling back to the database
 

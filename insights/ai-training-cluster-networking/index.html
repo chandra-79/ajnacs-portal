@@ -33,7 +33,7 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=821ac6ed">
+<link rel="stylesheet" href="/assets/css/site.css?v=2a696502">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
 <link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
@@ -112,6 +112,7 @@ d.setAttribute('data-theme',t);
 <p>Measure representative training-step time, collective duration and checkpoint throughput. Keep model configuration, tensor shapes, rank count, software and placement comparable. <strong>Illustrative measurement.</strong> A synthetic pilot shows an 830 ms median step before changes and 620 ms in an isolated-fabric replay. Profile overlap before assigning the entire improvement to networking.</p>
 <h2 id="estimate-communication-by-participant-and-boundary"><a class="h-anchor" href="#estimate-communication-by-participant-and-boundary" aria-hidden="true" tabindex="-1">#</a>Estimate communication by participant and boundary</h2>
 <p>In replicated data parallel training, gradients commonly pass through all-reduce. A standard ring with N participants moves approximately 2(N−1)S/N bytes sent per rank for a rank&#39;s S-byte buffer, plus receives. This describes algorithmic traffic, not bytes crossing one physical host link. With multiple GPUs per host, a hierarchical collective can combine traffic within the host before it reaches the network. Tensor and pipeline parallelism use different communication schedules. Check the implementation, rank topology and the reported counters.</p>
+<p class="depth-reading"><a href="/deep-dives/networks/allreduce-bandwidth-budget/">Level 4 · Compare collective communication with the right bandwidth metric</a></p>
 <p>A platform may publish a per-GPU NVLink aggregate, such as the 900 GB/s figure for the H100 platform configuration, while a network worksheet describes nominal one-way NIC line rate. Four 400 Gb/s links provide 1.6 Tb/s, or 200 GB/s nominal aggregate one-way line rate, before protocol overhead and placement limits. Keep direction, link count, host versus rank and usable payload explicit before comparing units.</p>
 <h2 id="evaluate-the-fit"><a class="h-anchor" href="#evaluate-the-fit" aria-hidden="true" tabindex="-1">#</a>Evaluate the fit</h2>
 <ol>
@@ -163,6 +164,10 @@ d.setAttribute('data-theme',t);
     <li><a href="https://pytorch.org/docs/stable/" rel="noopener" target="_blank">PyTorch</a><span>Reference for the APIs discussed.</span></li>
   </ul>
 </aside>
+<nav class="series-box" aria-label="Study paths">
+    <h2 class="h3">Study this in more depth</h2>
+    <ul class="series-list"><li><a href="/deep-dives/networks/">Networks and workload isolation <span>· Levels 2–4</span></a></li></ul>
+  </nav>
 
 
 
@@ -302,6 +307,7 @@ d.setAttribute('data-theme',t);
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/deep-dives/">Deep dives</a></li>
           <li><a href="/follow/">Follow new writing</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
@@ -323,7 +329,7 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=821ac6ed" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=821ac6ed"></script>
+<script src="/assets/js/site.js?v=2a696502" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=2a696502"></script>
 </body>
 </html>

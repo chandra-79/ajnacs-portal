@@ -28,7 +28,7 @@ If you're a cloud or infrastructure engineer evaluating whether Python is worth 
 
 ## What You Actually Need to Learn
 
-The subset covering 90% of cloud engineering use cases:
+A practical starting subset for cloud automation:
 
 **Core language**: Data structures (list, dict, set), comprehensions, functions, classes (basics), exception handling, context managers, file I/O, `pathlib`.
 

@@ -24,7 +24,7 @@ The common use case: a read-heavy application where a single database instance i
 
 **Replication lag**: read replicas are eventually consistent — they may lag behind the primary by milliseconds to seconds depending on write volume and replica load. Applications that read data immediately after writing it must either read from the primary for those operations or account for the possibility of stale reads. This is the most common operational surprise with read replicas.
 
-**Promotion time**: if the primary fails, promoting a replica to primary takes time — typically 30-60 seconds for cloud managed databases (AWS RDS, Azure Database for PostgreSQL) with automated failover. During this window, writes fail. This is the availability cost of a primary-replica architecture.
+**Promotion time** depends on deployment mode, backlog, and client reconnection. AWS documents typical failover of 60–120 seconds for [RDS Multi-AZ DB instances](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.MultiAZ.Failover.html), and under 35 seconds for [RDS Multi-AZ DB clusters](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/multi-az-db-clusters-concepts-failover.html). These figures describe provider failover, while application recovery includes connection pools, DNS, and write verification. Measure that end-to-end duration during a rehearsal.
 
 ## Synchronous vs. asynchronous replication
 

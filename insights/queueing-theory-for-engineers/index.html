@@ -33,7 +33,7 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=821ac6ed">
+<link rel="stylesheet" href="/assets/css/site.css?v=2a696502">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
 <link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
@@ -110,6 +110,7 @@ d.setAttribute('data-theme',t);
 <p>There&#39;s a small body of mathematics that explains a remarkable share of production behavior — why latency explodes as utilization approaches capacity, why &quot;we have headroom, we&#39;re at 75%&quot; precedes incidents, why batch arrivals wreck systems that handle the same average load smoothly, and why adding one more server sometimes fixes everything. It&#39;s queueing theory, engineers mostly encounter it as interview trivia, and that&#39;s a waste: three results, held as intuitions rather than equations, upgrade nearly every capacity, performance, and even staffing conversation you&#39;ll have.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
 <p><strong>Work in flight in a stable window.</strong> For 120 completions/s and 0.25 s average time in the measured system, Little’s Law implies an average of 30 items in flight. Use matching boundaries and a stable window. An overloaded queue growing without bound violates that steady-state assumption.</p>
+<p class="depth-reading"><a href="/deep-dives/performance/queue-saturation-model/">Level 3 · Calculate the cost of saturation with a queue model</a></p>
 <p><em>Illustrative measurement. Any numbers in this example are hypothetical.</em></p>
 <h2 id="little39s-law-the-conservation-law-of-systems"><a class="h-anchor" href="#little39s-law-the-conservation-law-of-systems" aria-hidden="true" tabindex="-1">#</a>Little&#39;s Law: the conservation law of systems</h2>
 <p><strong>Little’s Law is L = λW.</strong> In a stable system with consistent boundaries, the long-run average number of items equals throughput times mean time in that system. If 200 requests each hold a connection for 50 ms on average, the mean number of held connections is ten. This says little about the peak or percentiles. When comparing a backlog and its drain rate, subtract new arrivals from service capacity and check whether the assumed rates are stable.</p>
@@ -156,6 +157,10 @@ d.setAttribute('data-theme',t);
     <li><a href="https://kafka.apache.org/documentation/" rel="noopener" target="_blank">Apache Kafka documentation</a><span>Partitioning, consumer groups and delivery semantics.</span></li>
   </ul>
 </aside>
+<nav class="series-box" aria-label="Study paths">
+    <h2 class="h3">Study this in more depth</h2>
+    <ul class="series-list"><li><a href="/deep-dives/performance/">Latency and capacity <span>· Levels 2–4</span></a></li></ul>
+  </nav>
 
 
 
@@ -295,6 +300,7 @@ d.setAttribute('data-theme',t);
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/deep-dives/">Deep dives</a></li>
           <li><a href="/follow/">Follow new writing</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
@@ -316,7 +322,7 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=821ac6ed" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=821ac6ed"></script>
+<script src="/assets/js/site.js?v=2a696502" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=2a696502"></script>
 </body>
 </html>

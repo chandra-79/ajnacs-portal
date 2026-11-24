@@ -33,7 +33,7 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=821ac6ed">
+<link rel="stylesheet" href="/assets/css/site.css?v=2a696502">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
 <link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
@@ -122,6 +122,7 @@ d.setAttribute('data-theme',t);
 <p>Then the two hygiene habits that make it engineering rather than numerology: <strong>write the assumptions down</strong> (the envelope&#39;s value is auditable reasoning — &quot;assumed 2KB events, 90-day retention, 3× replication&quot; is checkable and updatable; a bare conclusion is neither), and <strong>bracket instead of point-guessing</strong> (run the pessimistic and optimistic cases; if both land on the same side of the decision, the decision is robust to your ignorance — the calibrated-range discipline from estimation practice, applied to systems).</p>
 <h2 id="where-it-earns-its-keep"><a class="h-anchor" href="#where-it-earns-its-keep" aria-hidden="true" tabindex="-1">#</a>Where it earns its keep</h2>
 <p>The applications beyond the design review: <strong>sanity-checking vendor claims and benchmarks</strong> (does the promised throughput exceed what the instance&#39;s memory bandwidth could physically deliver? — marketing decks fail envelope math at an instructive rate), <strong>incident triage</strong> (&quot;the queue is growing at 5k/sec and drains at 3k/sec — we have 40 minutes of buffer&quot; is envelope math under adrenaline, and the responders who do it steer better), <strong>capacity and headroom reasoning</strong> (the time-to-wall trajectory from capacity planning is an envelope calculation maintained quarterly), <strong>prioritization</strong> (&quot;this optimization saves 2ms on a path that runs 100 times/day&quot; versus &quot;0.2ms on one that runs 10k/sec&quot; — total-time thinking, the profiler&#39;s lesson, computable before profiling), and — increasingly — <strong>AI-era feasibility</strong> (tokens × price × volume is the new storage-math; many an LLM feature has died or been re-scoped in one line of per-request cost arithmetic, exactly as it should).</p>
+<p class="depth-reading"><a href="/deep-dives/performance/queue-saturation-model/">Level 3 · Calculate the cost of saturation with a queue model</a></p>
 <p>The deeper case for the habit is cultural: teams that estimate publicly develop a shared sense of <em>scale</em> — the collective instinct for what&#39;s big, what&#39;s cheap, what&#39;s absurd — which is the actual foundation under every judgment this series describes: choosing databases by working set, deployment strategies by blast radius, architectures by fan-out, tools by workload shape. None of those judgments require precision; all of them require knowing the orders of magnitude, and orders of magnitude are exactly what the envelope delivers. Thirty seconds of arithmetic before every consequential choice — assumptions written, ranges bracketed, dollars attached — is the highest-return ritual available to a technical organization. The prototype confirms; the envelope <em>decides</em>.</p>
 
       </div>
@@ -159,6 +160,10 @@ d.setAttribute('data-theme',t);
     <li><a href="https://www.postgresql.org/docs/current/" rel="noopener" target="_blank">PostgreSQL documentation</a><span>Configuration and planner behaviour.</span></li>
   </ul>
 </aside>
+<nav class="series-box" aria-label="Study paths">
+    <h2 class="h3">Study this in more depth</h2>
+    <ul class="series-list"><li><a href="/deep-dives/performance/">Latency and capacity <span>· Levels 2–4</span></a></li></ul>
+  </nav>
 
 
 
@@ -298,6 +303,7 @@ d.setAttribute('data-theme',t);
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/deep-dives/">Deep dives</a></li>
           <li><a href="/follow/">Follow new writing</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
@@ -319,7 +325,7 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=821ac6ed" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=821ac6ed"></script>
+<script src="/assets/js/site.js?v=2a696502" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=2a696502"></script>
 </body>
 </html>

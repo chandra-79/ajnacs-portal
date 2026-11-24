@@ -10,6 +10,7 @@ import { fieldGuides, worksheetCsv } from "./field-guides.mjs";
 import { models } from "../assets/js/field-math.mjs";
 import { caseCategories } from "./case-library.mjs";
 import { topicPath } from "./discovery.mjs";
+import { loadDeepDives } from "./deep-dives.mjs";
 
 let failures = 0;
 const fail = (m) => { console.error("  ✗ " + m); failures++; };
@@ -112,7 +113,7 @@ console.log("\nCase studies and article discovery");
       caseImages.add(hash);
       if (!html.includes("Hypothetical engagement") || !html.includes("Simulated figures") ||
           !html.includes('class="delivery-flow"') || !csv.includes('"synthetic"') ||
-          !categoryHtml.includes(`href="/${path}/"`)) fail(`case study or supporting evidence missing: ${path}`);
+          !categoryHtml.includes(`href="/${path}/"`) || !html.includes('aria-label="Study paths"')) fail(`case study or supporting evidence missing: ${path}`);
       count++;
     }
   }
@@ -127,12 +128,47 @@ console.log("\nCase studies and article discovery");
   const revised = live.filter(article => article.date <= "2026-11-23");
   for (const article of revised) {
     const html = await readFile(`${article.section}/${article.slug}/index.html`, "utf8");
+    if (!html.includes('aria-label="Study paths"')) fail(`Study path missing: ${article.slug}`);
     if (!/<div class="article-hero"[^>]*><img[^>]* alt="[^"]+"/.test(html)) fail(`Cover description missing: ${article.slug}`);
     if (!fieldSlugs.has(article.slug) && !html.includes('id="worked-example"')) fail(`Worked example missing: ${article.slug}`);
     if (article.section === "insights" && !html.includes('class="refs-title"')) fail(`References missing: ${article.slug}`);
     if (article.tags.some(tag => !html.includes(`href="${topicPath(tag, tags)}"`))) fail(`Topic links missing: ${article.slug}`);
   }
   if (!failures) ok(`${count} case studies, ${revised.length} archive revisions, ${caseImages.size} case illustrations and ${tags.size} topic paths verified`);
+}
+
+console.log("\nDeep dives");
+{
+  const { tracks } = await loadDeepDives();
+  const indexed = await readFile("sitemap.xml", "utf8");
+  const hub = await readFile("deep-dives/index.html", "utf8");
+  const images = new Set();
+  if (!indexed.includes("<loc>https://ajnacs.com/deep-dives/</loc>")) fail("Deep-dive hub missing from sitemap");
+  for (const track of tracks) {
+    const paths = await readFile(`.${track.path}index.html`, "utf8");
+    if (!hub.includes(`href="${track.path}"`) || !paths.includes(`href="/${track.start}/"`)) fail(`Study path entry missing: ${track.id}`);
+    for (const [index, lesson] of track.lessons.entries()) {
+      const html = await readFile(`.${lesson.path}index.html`, "utf8");
+      const data = await readFile(`.${lesson.path}chart.csv`, "utf8");
+      const asset = `assets/deep-dives/${track.id}-${lesson.slug}.png`;
+      const png = await readFile(asset);
+      const hash = createHash("sha256").update(png).digest("hex");
+      if (!indexed.includes(`<loc>https://ajnacs.com${lesson.path}</loc>`) ||
+          !paths.includes(`href="${lesson.path}"`) || !html.includes(`Level ${lesson.level} ·`) ||
+          !html.includes(`href="${lesson.path}chart.csv"`) || !html.includes(`<img src="/${asset}?v=`) ||
+          !html.includes("Limits of the example") || !html.includes("The chart uses illustrative inputs.") ||
+          !html.includes(`href="${track.lessons[index - 1]?.path || "/" + track.start + "/"}"`) ||
+          (track.lessons[index + 1] && !html.includes(`href="${track.lessons[index + 1].path}"`)) ||
+          data.trimEnd().split("\n").length !== lesson.points.length + 1 ||
+          png.readUInt32BE(16) !== 1000 || png.readUInt32BE(20) !== 370 || images.has(hash)) {
+        fail(`Missing lesson, chart data, source path or navigation: ${lesson.path}`);
+      }
+      images.add(hash);
+    }
+  }
+  const audit = await readFile("docs/deep-dive-coverage.csv", "utf8");
+  if (audit.trimEnd().split("\n").length !== 131) fail("Editorial coverage must record all 130 source entries");
+  if (!failures) ok(`${tracks.length} paths with ${images.size} distinct visual examples and downloadable chart data`);
 }
 
 console.log("\nQuality");

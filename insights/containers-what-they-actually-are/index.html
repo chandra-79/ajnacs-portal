@@ -33,7 +33,7 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=821ac6ed">
+<link rel="stylesheet" href="/assets/css/site.css?v=2a696502">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
 <link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
@@ -143,6 +143,7 @@ d.setAttribute('data-theme',t);
 <h2 id="the-two-linux-features-that-make-containers-work"><a class="h-anchor" href="#the-two-linux-features-that-make-containers-work" aria-hidden="true" tabindex="-1">#</a>The Two Linux Features That Make Containers Work</h2>
 <p>Containers are built on two Linux kernel features:</p>
 <p><strong>Namespaces</strong> provide isolation — making processes believe they have exclusive access to a resource. Linux has seven namespace types:</p>
+<p class="depth-reading"><a href="/deep-dives/networks/network-policy-verification/">Level 3 · Verify a workload isolation policy with a traffic matrix</a></p>
 <div class="table-wrap"><table><thead><tr><th>Namespace</th><th>What It Isolates</th></tr></thead><tbody><tr><td>PID</td><td>Process IDs — container processes start at PID 1</td></tr><tr><td>Network</td><td>Network interfaces, IP addresses, routing tables</td></tr><tr><td>Mount</td><td>Filesystem mount points</td></tr><tr><td>UTS</td><td>Hostname and domain name</td></tr><tr><td>IPC</td><td>Inter-process communication (shared memory, semaphores)</td></tr><tr><td>User</td><td>User and group IDs</td></tr><tr><td>Cgroup</td><td>Control group hierarchy</td></tr></tbody></table></div>
 <p><strong>Cgroups</strong> (control groups) enforce resource limits — preventing one container from consuming all available CPU or RAM.</p>
 <pre><code class="language-bash">## A container is just a process with namespaces applied
@@ -236,6 +237,10 @@ ls /proc/&lt;container-pid&gt;/ns/
     <li><a href="https://kubernetes.io/docs/" rel="noopener" target="_blank">Kubernetes documentation</a><span>Primary reference for the concepts used here.</span></li>
   </ul>
 </aside>
+<nav class="series-box" aria-label="Study paths">
+    <h2 class="h3">Study this in more depth</h2>
+    <ul class="series-list"><li><a href="/deep-dives/networks/">Networks and workload isolation <span>· Levels 2–4</span></a></li></ul>
+  </nav>
 
 
 
@@ -385,6 +390,7 @@ ls /proc/&lt;container-pid&gt;/ns/
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/deep-dives/">Deep dives</a></li>
           <li><a href="/follow/">Follow new writing</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
@@ -406,7 +412,7 @@ ls /proc/&lt;container-pid&gt;/ns/
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=821ac6ed" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=821ac6ed"></script>
+<script src="/assets/js/site.js?v=2a696502" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=2a696502"></script>
 </body>
 </html>

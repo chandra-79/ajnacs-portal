@@ -26,7 +26,7 @@ Further reading: [AWS Lambda pricing and billing dimensions](https://aws.amazon.
 
 ## Where containers win
 
-**Predictable, sustained workloads.** If your service is handling a steady stream of requests throughout the day, containers are almost always cheaper. You provision resources once and use them continuously. Serverless pricing works against you at sustained load.
+**Predictable, sustained workloads.** Compare the cost of sufficiently utilized container capacity with request and duration charges. Use measured requests per second, memory, CPU time, concurrency and tenancy. Provisioned concurrency, ingress, and operational work belong in the comparison. The [AWS decision guide](https://docs.aws.amazon.com/decision-guides/latest/decision-guides/fargate-or-lambda.html) explains the billing units for Fargate and Lambda.
 
 **Long-running processes.** Lambda's 15-minute timeout is a hard constraint. Containers don't have one. Batch jobs, data processing pipelines, anything that might run for 30+ minutes belongs in a container.
 
@@ -46,7 +46,7 @@ Further reading: [AWS Lambda pricing and billing dimensions](https://aws.amazon.
 
 **Experimentation speed.** Getting a Lambda function running is fast. Getting a containerised service running in a Kubernetes cluster — with load balancer, ingress, service discovery, etc. — takes longer. For rapid prototyping and MVPs, serverless removes friction.
 
-**True pay-per-use at low volume.** If you're running a service with intermittent usage (a nightly job, an internal tool used by 50 people, a webhook handler) — serverless is almost always cheaper than keeping a container running for the 95% of time nothing is happening.
+**Intermittent workloads.** Request-based billing can reduce idle compute charges for a nightly job or a webhook handler. Compare with a container platform that can scale to zero, and include cold starts, duration, storage, and networking. Explicitly cost any capacity kept warm to meet a latency target.
 
 ## The cold start problem, honestly
 

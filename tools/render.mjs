@@ -12,12 +12,15 @@ const unescapeEntities = (s) => s
 const slugifyHeading = (s) => s.toLowerCase().replace(/<[^>]+>/g, "")
   .replace(/[^a-z0-9\s-]/g, "").trim().replace(/\s+/g, "-").slice(0, 60);
 
-export function makeRenderer() {
+export function makeRenderer(afterParagraph) {
   const m = new Marked({ gfm: true, breaks: false });
   const headings = [];
   const usedIds = new Set();
   m.use({
     renderer: {
+      paragraph(token) {
+        return `<p>${this.parser.parseInline(token.tokens)}</p>\n${afterParagraph?.(token.raw) || ""}`;
+      },
       heading({ tokens, depth }) {
         const text = this.parser.parseInline(tokens);
         const base = slugifyHeading(text) || 'section';

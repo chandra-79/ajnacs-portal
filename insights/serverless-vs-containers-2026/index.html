@@ -33,7 +33,7 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=821ac6ed">
+<link rel="stylesheet" href="/assets/css/site.css?v=2a696502">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
 <link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
@@ -111,13 +111,14 @@ d.setAttribute('data-theme',t);
 <p>Here&#39;s how I think about it.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
 <p><strong>Cost per successful request across two loads.</strong> Replay a bursty trace and a steady trace, keeping region, memory and quality objectives fixed. If a platform spends $12 on 200,000 successful requests, it costs $60 per million successful requests. Include idle capacity, provisioned concurrency and request or network charges as applicable.</p>
+<p class="depth-reading"><a href="/deep-dives/finops/cost-per-successful-order/">Level 2 · Build a unit-cost denominator that survives an audit</a></p>
 <p><em>Illustrative measurement. Any numbers in this example are hypothetical.</em></p>
 <p>Further reading: <a href="https://aws.amazon.com/lambda/pricing/" rel="noopener" target="_blank">AWS Lambda pricing and billing dimensions</a>.</p>
 <h2 id="what-each-one-actually-is"><a class="h-anchor" href="#what-each-one-actually-is" aria-hidden="true" tabindex="-1">#</a>What each one actually is</h2>
 <p><strong>Containers</strong> (Docker, deployed on Kubernetes, ECS, Cloud Run, etc.) give you a packaged, portable runtime environment. Your application runs in a defined environment with defined resources. You pay for those resources whether the application is actively processing requests or idle.</p>
 <p><strong>Serverless</strong> (AWS Lambda, Azure Functions, GCP Cloud Functions) gives you functions that execute on demand. You don&#39;t manage the runtime environment, you don&#39;t allocate persistent resources, and you pay only for execution time — down to milliseconds. The tradeoff is you give up control over the execution environment and accept the platform&#39;s constraints.</p>
 <h2 id="where-containers-win"><a class="h-anchor" href="#where-containers-win" aria-hidden="true" tabindex="-1">#</a>Where containers win</h2>
-<p><strong>Predictable, sustained workloads.</strong> If your service is handling a steady stream of requests throughout the day, containers are almost always cheaper. You provision resources once and use them continuously. Serverless pricing works against you at sustained load.</p>
+<p><strong>Predictable, sustained workloads.</strong> Compare the cost of sufficiently utilized container capacity with request and duration charges. Use measured requests per second, memory, CPU time, concurrency and tenancy. Provisioned concurrency, ingress, and operational work belong in the comparison. The <a href="https://docs.aws.amazon.com/decision-guides/latest/decision-guides/fargate-or-lambda.html" rel="noopener" target="_blank">AWS decision guide</a> explains the billing units for Fargate and Lambda.</p>
 <p><strong>Long-running processes.</strong> Lambda&#39;s 15-minute timeout is a hard constraint. Containers don&#39;t have one. Batch jobs, data processing pipelines, anything that might run for 30+ minutes belongs in a container.</p>
 <p><strong>State and local storage.</strong> Serverless functions are stateless by design. If your workload involves significant local I/O, in-memory caching, or long-lived connections (WebSockets, persistent database connections), containers handle it naturally. Serverless requires architectural workarounds.</p>
 <p><strong>Debugging and observability.</strong> Distributed tracing across Lambda invocations is harder than it sounds. Container-based services are generally easier to observe, reproduce locally, and debug — especially for complex multi-service interactions.</p>
@@ -127,7 +128,7 @@ d.setAttribute('data-theme',t);
 <p><strong>Operational simplicity.</strong> No containers to build, no Kubernetes clusters to manage, no nodes to patch. The platform handles the infrastructure. For teams without strong DevOps capability, this is a genuine advantage.</p>
 <p><strong>Event-driven integrations.</strong> Triggering logic from S3 uploads, SNS messages, DynamoDB streams, API Gateway requests — Lambda&#39;s event source integrations are mature and simple. Wiring up the same event-response pattern with containers requires more infrastructure plumbing.</p>
 <p><strong>Experimentation speed.</strong> Getting a Lambda function running is fast. Getting a containerised service running in a Kubernetes cluster — with load balancer, ingress, service discovery, etc. — takes longer. For rapid prototyping and MVPs, serverless removes friction.</p>
-<p><strong>True pay-per-use at low volume.</strong> If you&#39;re running a service with intermittent usage (a nightly job, an internal tool used by 50 people, a webhook handler) — serverless is almost always cheaper than keeping a container running for the 95% of time nothing is happening.</p>
+<p><strong>Intermittent workloads.</strong> Request-based billing can reduce idle compute charges for a nightly job or a webhook handler. Compare with a container platform that can scale to zero, and include cold starts, duration, storage, and networking. Explicitly cost any capacity kept warm to meet a latency target.</p>
 <h2 id="the-cold-start-problem-honestly"><a class="h-anchor" href="#the-cold-start-problem-honestly" aria-hidden="true" tabindex="-1">#</a>The cold start problem, honestly</h2>
 <p>Cold starts are the most common objection to serverless, and they&#39;re real but often overstated.</p>
 <p>A Lambda cold start (the time to initialise a new execution environment before processing the first request) is typically 100ms–1s for most runtimes. For JVM-based functions it can be several seconds, which is genuinely problematic for latency-sensitive workloads.</p>
@@ -184,6 +185,10 @@ d.setAttribute('data-theme',t);
     <li><a href="https://kubernetes.io/docs/" rel="noopener" target="_blank">Kubernetes documentation</a><span>Primary reference for the concepts used here.</span></li>
   </ul>
 </aside>
+<nav class="series-box" aria-label="Study paths">
+    <h2 class="h3">Study this in more depth</h2>
+    <ul class="series-list"><li><a href="/deep-dives/finops/">Cloud unit economics <span>· Levels 2–4</span></a></li></ul>
+  </nav>
 
 
 
@@ -323,6 +328,7 @@ d.setAttribute('data-theme',t);
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/deep-dives/">Deep dives</a></li>
           <li><a href="/follow/">Follow new writing</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
@@ -344,7 +350,7 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=821ac6ed" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=821ac6ed"></script>
+<script src="/assets/js/site.js?v=2a696502" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=2a696502"></script>
 </body>
 </html>

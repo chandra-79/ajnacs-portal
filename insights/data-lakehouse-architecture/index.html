@@ -33,7 +33,7 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=821ac6ed">
+<link rel="stylesheet" href="/assets/css/site.css?v=2a696502">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
 <link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
@@ -117,6 +117,7 @@ d.setAttribute('data-theme',t);
 <p><strong>Delta Lake</strong>: created by Databricks, open-sourced under the Linux Foundation. Mature ecosystem, tight Databricks integration, strong adoption in Azure environments. Delta tables are Parquet files with a <code>_delta_log</code> transaction log directory that records all changes. Time travel uses the transaction log: <code>SELECT * FROM table VERSION AS OF 5</code> or <code>TIMESTAMP AS OF &#39;2026-01-01&#39;</code>.</p>
 <p><strong>Apache Iceberg</strong>: created at Netflix, broadly adopted across cloud providers. AWS Glue, AWS Athena, Snowflake, Trino, Spark, and Flink all support Iceberg natively. The strongest option for multi-engine environments where different teams use different query engines. Iceberg&#39;s manifest files enable partition pruning and hidden partitioning (partitioning by an expression like <code>day(ts)</code> rather than materialised partition columns).</p>
 <p><strong>Apache Hudi</strong>: created at Uber, specialised for streaming upserts and incremental processing. Hudi&#39;s record-level upsert capability (using Bloom filter indices for efficient key lookup) makes it the strongest option for change data capture pipelines that need to apply database row-level changes to the lakehouse.</p>
+<p class="depth-reading"><a href="/deep-dives/migration/cutover-replay-window/">Level 2 · Calculate how much replay time a cutover needs</a></p>
 <p>For new deployments: Delta Lake if your primary compute is Databricks; Iceberg if you need query engine flexibility or you&#39;re on AWS with Athena/Glue.</p>
 <h2 id="storage-layer-design"><a class="h-anchor" href="#storage-layer-design" aria-hidden="true" tabindex="-1">#</a>Storage layer design</h2>
 <p>Object storage is the foundation: S3, ADLS Gen2, or GCS. The cost advantage over traditional storage is significant — object storage at $0.02-0.023/GB/month vs block storage at $0.08-0.10/GB/month.</p>
@@ -186,6 +187,10 @@ d.setAttribute('data-theme',t);
     <li><a href="https://spark.apache.org/docs/latest/" rel="noopener" target="_blank">Apache Spark</a><span>Execution model and tuning.</span></li>
   </ul>
 </aside>
+<nav class="series-box" aria-label="Study paths">
+    <h2 class="h3">Study this in more depth</h2>
+    <ul class="series-list"><li><a href="/deep-dives/migration/">Database migration and recovery <span>· Levels 2–4</span></a></li></ul>
+  </nav>
 
 
 
@@ -325,6 +330,7 @@ d.setAttribute('data-theme',t);
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/deep-dives/">Deep dives</a></li>
           <li><a href="/follow/">Follow new writing</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
@@ -346,7 +352,7 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=821ac6ed" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=821ac6ed"></script>
+<script src="/assets/js/site.js?v=2a696502" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=2a696502"></script>
 </body>
 </html>

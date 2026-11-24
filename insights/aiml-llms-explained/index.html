@@ -33,7 +33,7 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=821ac6ed">
+<link rel="stylesheet" href="/assets/css/site.css?v=2a696502">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
 <link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
@@ -136,6 +136,7 @@ d.setAttribute('data-theme',t);
 <h2 id="what-llms-cannot-do-the-architectural-limits"><a class="h-anchor" href="#what-llms-cannot-do-the-architectural-limits" aria-hidden="true" tabindex="-1">#</a>What LLMs Cannot Do: The Architectural Limits</h2>
 <p>Understanding limitations is more important than understanding capabilities for production decision-making.</p>
 <p><strong>LLMs do not have knowledge of events after their training cutoff.</strong> The model&#39;s knowledge is frozen at the point its training data was collected. This is why retrieval-augmented generation (RAG) exists — to provide up-to-date information at inference time.</p>
+<p class="depth-reading"><a href="/deep-dives/ai-evaluation/claim-level-grounding/">Level 2 · Score grounded answers at the claim level</a></p>
 <p><strong>LLMs confabulate (hallucinate).</strong> The model generates the most plausible next tokens. When the correct answer is not well-represented in training data, the model generates a plausible-sounding but incorrect answer confidently. This is not a bug — it is the architecture operating as designed. It means LLM outputs in factual domains require verification.</p>
 <p><strong>LLMs are not search engines.</strong> They do not retrieve information from a database; they synthesise text based on patterns learned during training. Two queries about the same fact may produce different answers.</p>
 <p><strong>LLMs have context window limits.</strong> They can only attend to a fixed number of tokens at once (context window). Check context and output limits for the exact deployed model and API. Beyond the context window, the model cannot access information.</p>
@@ -178,6 +179,10 @@ d.setAttribute('data-theme',t);
     <li><a href="https://cdn.openai.com/papers/gpt-4.pdf" rel="noopener" target="_blank">OpenAI · GPT-4 Technical Report</a><span>Reported evaluation and the limits of public model specifications.</span></li>
   </ul>
 </aside>
+<nav class="series-box" aria-label="Study paths">
+    <h2 class="h3">Study this in more depth</h2>
+    <ul class="series-list"><li><a href="/deep-dives/ai-evaluation/">Production AI evaluation <span>· Levels 2–4</span></a></li></ul>
+  </nav>
 
 
 
@@ -327,6 +332,7 @@ d.setAttribute('data-theme',t);
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/deep-dives/">Deep dives</a></li>
           <li><a href="/follow/">Follow new writing</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
@@ -348,7 +354,7 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=821ac6ed" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=821ac6ed"></script>
+<script src="/assets/js/site.js?v=2a696502" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=2a696502"></script>
 </body>
 </html>
