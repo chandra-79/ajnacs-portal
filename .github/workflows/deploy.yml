@@ -4,7 +4,9 @@
 #
 #  1. On push — rebuild and verify, and fail loudly if the committed output does
 #     not match what the generator produces from content/.
-#  2. On a schedule — rebuild so that queued articles whose date has arrived are
+#  2. On a reviewed codex branch — build, verify and commit generated output
+#     before the branch is merged; do not request a live Pages deployment.
+#  3. On a schedule — rebuild so that queued articles whose date has arrived are
 #     generated, then commit them. That commit is what publishes them.
 #
 # The queue lives in content/manifest.json. The generator only emits items whose
@@ -13,7 +15,7 @@ name: Build and verify
 
 on:
   push:
-    branches: [main]
+    branches: [main, "codex/**"]
   schedule:
     - cron: "17 6 * * 1,3,5"   # Mon/Wed/Fri 06:17 UTC — matches the queue cadence
   workflow_dispatch:
@@ -52,7 +54,7 @@ jobs:
         run: npm test
 
       - name: Publish anything now due
-        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' || github.ref != 'refs/heads/main'
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -68,13 +70,13 @@ jobs:
           fi
 
       - name: Request the scheduled GitHub Pages deployment
-        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        if: github.ref == 'refs/heads/main' && (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh api --method POST "repos/${{ github.repository }}/pages/builds"
 
       - name: Fail if committed output is stale
-        if: github.event_name == 'push'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
           if [ -n "$(git status --porcelain)" ]; then
             echo "::error::The committed site does not match the generator output."

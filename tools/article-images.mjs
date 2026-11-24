@@ -5,6 +5,8 @@ import { createHash } from 'node:crypto';
 import { Resvg } from '@resvg/resvg-js';
 import { artwork } from './visuals.mjs';
 import { coverArt, photoFor } from './covers.mjs';
+import { conceptFor } from './concept-figures.mjs';
+import { renderEditorialPng } from './raster-art.mjs';
 
 export async function buildArticleImages(manifest, today) {
   const folder='assets/og/articles';
@@ -16,10 +18,11 @@ export async function buildArticleImages(manifest, today) {
   let rendered=0;
   for(const article of manifest) {
     const active = article.date <= today;
-    if (active && !photoFor(article.slug)) {
+    const concept = conceptFor(article.slug);
+    if ((active || concept) && !photoFor(article.slug)) {
       await writeFile(`assets/covers/${article.slug}.svg`, coverArt(article.slug));
     }
-    const svg = active ? coverArt(article.slug, 1200, 630) : artwork(article.slug, article.tags, {
+    const svg = active || concept ? coverArt(article.slug, 1200, 630) : artwork(article.slug, article.tags, {
       w: 1200, h: 630, title: article.title, calm: article.section === 'notes',
     }).replace(/var\(--[\w-]+,\s*(#[0-9a-fA-F]+)\)/g,'$1');
     const hash=createHash('sha256').update(svg).digest('hex');
@@ -27,8 +30,8 @@ export async function buildArticleImages(manifest, today) {
     let exists=true;
     try { await access(`${folder}/${article.slug}.png`); } catch { exists=false; }
     if(previous[article.slug]===hash && exists) continue;
-    const renderer=new Resvg(svg,{background:'#f2f6fb',font:{loadSystemFonts:true,defaultFontFamily:'Arial'}});
-    await writeFile(`${folder}/${article.slug}.png`,renderer.render().asPng());
+    const png = concept ? renderEditorialPng(svg) : new Resvg(svg,{background:'#f2f6fb',font:{loadSystemFonts:true,defaultFontFamily:'Arial'}}).render().asPng();
+    await writeFile(`${folder}/${article.slug}.png`,png);
     rendered++;
   }
   await writeFile(`${folder}/sources.json`,JSON.stringify(hashes,null,2)+'\n');

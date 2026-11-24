@@ -6,6 +6,7 @@ import path from "node:path";
 import { SITE, esc, fmtDate, readingTime, seriesSlug, primaryTopic, PRIMARY_TOPICS, icon, parseFront } from "./lib.mjs";
 import { page } from "./shell.mjs";
 import { copyLinkControl, readerControls } from "./reader.mjs";
+import { conceptFor, conceptDetails, conceptCsv } from "./concept-figures.mjs";
 import { artwork, colorFor } from "./visuals.mjs";
 import { makeRenderer, tableOfContents, headingAnchors } from "./render.mjs";
 import { staticPages } from "./pages.mjs";
@@ -107,8 +108,14 @@ for (const m of live) {
   const { body } = parseFront(raw);
   const fieldGuide = guideBySlug.get(m.slug);
   const example = examples.get(m.slug);
+  const concept = conceptFor(m.slug);
   if (!fieldGuide && !example && m.date <= "2026-11-23") throw new Error(`Missing worked example: ${m.slug}`);
-  const depth = depthLinks(depthCatalog.sources.get(m.slug), body);
+  const studyPaths = depthCatalog.sources.get(m.slug) || concept?.studyPaths?.map(id => {
+    const track = depthCatalog.tracks.find(track => track.id === id);
+    if (!track) throw new Error(`Unknown study path ${id} for ${m.slug}`);
+    return track;
+  });
+  const depth = depthLinks(studyPaths, body);
   const { marked, headings } = makeRenderer(depth.afterParagraph);
   let html = await marked.parse(body);
 
@@ -194,6 +201,7 @@ ${example && m.section === "insights" ? `<p class="article-opening">${esc(exampl
 ${html}
       </div>
 ${fieldGuide ? worksheet(fieldGuide) : example ? workedExample(example, m.section === "notes") : ""}
+${concept ? conceptDetails(concept) : ""}
 
 ${m.slug === "running-local-llm-lessons" ? localInference.html : ""}
 ${refsHtml}
@@ -240,6 +248,7 @@ ${seriesItems.length > 1 && !chaptersHtml ? `<aside class="series-box" style="ma
 </article>
 ${readerChrome}`;
 
+  if (concept && concept.kind !== "flow") await out(`field-guides/examples/${m.slug}.csv`, conceptCsv(concept));
   await out(`${m.section === "notes" ? "notes" : "insights"}/${m.slug}`, page({
     title: m.title,
     description: m.description,
@@ -344,8 +353,9 @@ await out("notes", page({
     <p class="eyebrow">Learning, work and everyday judgment</p>
     <h1 class="h1" style="margin-top:.8rem">Personal notes</h1>
     <p class="lede" style="margin-top:1rem">Writing by Chandra Lanka on learning, craft, career and the questions that stay with us after the workday.</p>
+    <p class="notes-follow"><a href="/notes/feed.xml">Follow personal notes via RSS</a> · <a href="/follow/">All publication feeds</a></p>
     <div class="notes-search row">
-      <label class="search-field">Search personal notes<input type="search" id="postSearch" aria-controls="postList" placeholder="Try learning, teaching or attention"></label>
+      <label class="notes-search-field">Search personal notes<input type="search" id="postSearch" aria-controls="postList" placeholder="Try learning, teaching or attention"></label>
       <button class="btn btn-ghost btn-sm" id="postClear" type="button" hidden>Clear filters</button>
       <p id="postCount" aria-live="polite" class="muted"></p>
     </div>
@@ -570,6 +580,17 @@ await out("feed.xml", `<?xml version="1.0" encoding="UTF-8"?>
 ${feedItems}
 </channel>
 </rss>`);
+
+await out("notes/feed.xml", `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel>
+  <title>${esc(SITE.name)} — Personal notes</title>
+  <link>${SITE.url}/notes/</link>
+  <atom:link href="${SITE.url}/notes/feed.xml" rel="self" type="application/rss+xml"/>
+  <description>Reflections on learning, craft, career and everyday judgment by Chandra Lanka.</description>
+  <language>en</language>
+  <lastBuildDate>${new Date((notes[0]?.date || TODAY) + "T09:00:00Z").toUTCString()}</lastBuildDate>
+  ${notes.slice(0, 50).map(note => `<item><title>${esc(note.title)}</title><link>${SITE.url}/notes/${note.slug}/</link><guid isPermaLink="true">${SITE.url}/notes/${note.slug}/</guid><pubDate>${new Date(note.date + "T09:00:00Z").toUTCString()}</pubDate><description>${esc(note.description)}</description></item>`).join("\n  ")}
+</channel></rss>`);
 
 const urls = [
   ...[...caseUrls, ...depthUrls].map(url => [url]),

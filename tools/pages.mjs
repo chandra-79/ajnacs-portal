@@ -330,18 +330,19 @@ ${SERVICES.map(s => `<section class="section ${s.id === "ai" ? "surface hair" : 
   });
 
   pages["follow"] = page({
-    title: "Follow Ajna engineering writing",
-    description: "Follow new Ajna Insights and substantive revisions to existing field guides in the feed reader you use.",
+    title: "Follow Ajna writing",
+    description: "Follow new Insights, updated field guides and personal notes in the feed reader you use.",
     path: "/follow/",
     body: `<section class="section mesh"><div class="publication-wrap">
   <nav class="crumbs" aria-label="Breadcrumb"><a href="/insights/">Insights</a></nav>
-  <h1 class="h-display">Follow Ajna engineering writing</h1>
-  <p class="lede field-intro">Follow new articles, guide revisions and methods you can use. Add one of these feeds to your reader.</p>
+  <h1 class="h-display">Follow Ajna writing</h1>
+  <p class="lede field-intro">Choose engineering articles, guide revisions or personal notes. Add a feed to your reader to follow new writing.</p>
 </div></section>
 <section class="publication-wrap case-library" aria-label="Publication feeds">
   <div class="grid g-2">
     <article class="guide-tile"><h2 class="h3"><a class="card-destination" href="/updates.xml">Engineering updates (Atom)</a></h2><p>Start here for new writing and revised guides. The feed keeps one identity per article and includes publication and update dates.</p></article>
     <article class="guide-tile"><h2 class="h3"><a class="card-destination" href="/feed.xml">New Insights (RSS)</a></h2><p>Follow articles in publication order.</p></article>
+    <article class="guide-tile"><h2 class="h3"><a class="card-destination" href="/notes/feed.xml">Personal notes (RSS)</a></h2><p>Follow reflections on learning, craft, career and everyday judgment.</p></article>
   </div>
   <div class="row follow-links"><a class="btn" href="/field-guides/">Start with a field guide</a><a class="btn btn-ghost" href="/case-studies/">Read case studies</a></div>
 </section>`,
@@ -390,7 +391,7 @@ ${SERVICES.map(s => `<section class="section ${s.id === "ai" ? "surface hair" : 
   <h2>Why the writing exists</h2>
   <p>The <a href="/insights/">Insights</a> section is not marketing. It is the working material: architecture decisions, production failures and the trade-offs behind them, written down so they can be argued with. If you disagree with something there, that is a reasonable way to start a conversation.</p>
   <h2 id="chandra-lanka">Who writes it</h2>
-  <p>Chandra Lanka leads the practice — twenty-five years across enterprise middleware, cloud platforms and, more recently, putting AI systems somewhere they can be operated rather than demonstrated. Personal writing that does not belong on a company site lives under <a href="/notes/">Notes</a>.</p>
+  <p>Chandra Lanka leads the practice — twenty-five years across enterprise middleware, cloud platforms and, more recently, putting AI systems somewhere they can be operated rather than demonstrated. Reflections on learning, craft and career appear in <a href="/notes/">Personal notes</a>.</p>
   <h2>Contact</h2>
   <p>Email <a href="mailto:${SITE.email}">${SITE.email}</a>, or use the <a href="/contact/">enquiry form</a>. We reply to specifics faster than to introductions.</p>
 </section>`,

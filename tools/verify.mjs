@@ -11,6 +11,7 @@ import { models } from "../assets/js/field-math.mjs";
 import { caseCategories } from "./case-library.mjs";
 import { topicPath } from "./discovery.mjs";
 import { loadDeepDives } from "./deep-dives.mjs";
+import { conceptFor } from "./concept-figures.mjs";
 
 let failures = 0;
 const fail = (m) => { console.error("  ✗ " + m); failures++; };
@@ -31,7 +32,7 @@ console.log("\nStructure");
 for (const f of [".nojekyll", "index.html", "404.html", "robots.txt", "sitemap.xml", "feed.xml",
                  "CNAME", "assets/css/site.css", "assets/js/site.js",
                  "services/index.html", "insights/index.html", "contact/index.html", "field-guides/index.html",
-                 "privacy/index.html", "terms/index.html", "about/index.html"]) {
+                 "privacy/index.html", "terms/index.html", "about/index.html", "notes/feed.xml"]) {
   try { await access(f, constants.R_OK); } catch { fail(`missing ${f}`); }
 }
 if (!failures) ok("all required pages present");
@@ -75,6 +76,28 @@ console.log("\nDiscovery");
   if (!urls.has("https://ajnacs.com/field-guides/")) fail("field guide archive missing from sitemap");
   if ([...urls].some(url => url.includes('?') || url.endsWith('404.html'))) fail("sitemap contains a filter or error URL");
   if (!failures) ok("crawler rules, article sitemap dates and labelled evidence checked");
+}
+
+console.log("\nPersonal notes and explanatory figures");
+{
+  const notes = live.filter(article => article.section === "notes").sort((a,b) => b.date.localeCompare(a.date));
+  const feed = await readFile("notes/feed.xml", "utf8");
+  const entries = [...feed.matchAll(/<guid isPermaLink="true">([^<]+)<\/guid>/g)].map(match => match[1]);
+  if (entries.length !== Math.min(50, notes.length) || new Set(entries).size !== entries.length || entries.some(url => !notes.some(note => url === `https://ajnacs.com/notes/${note.slug}/`))) fail("Personal notes feed contains missing, duplicated or unrelated entries");
+  const index = await readFile("notes/index.html", "utf8");
+  if (!index.includes('data-kind="note"') || !index.includes('aria-label="Primary"') || !index.includes('href="/notes/feed.xml"')) fail("Notes search, navigation or feed discovery missing");
+  for (const article of live) {
+    const figure = conceptFor(article.slug);
+    if (!figure) continue;
+    const html = await readFile(`${article.section}/${article.slug}/index.html`, "utf8");
+    const svg = await readFile(`assets/covers/${article.slug}.svg`, "utf8");
+    if (!html.includes('id="concept-method-title"') || !svg.includes(`data-article-art="${article.slug}"`) || !svg.includes('viewBox="0 0 1280 720"')) fail(`Missing explanatory figure or methodology: ${article.slug}`);
+    if (figure.kind !== "flow") {
+      const csv = await readFile(`field-guides/examples/${article.slug}.csv`, "utf8");
+      if (!csv.includes('"synthetic"') || !html.includes(`/field-guides/examples/${article.slug}.csv`)) fail(`Missing labelled chart data: ${article.slug}`);
+    }
+  }
+  if (!failures) ok(`${notes.length} personal notes, dedicated RSS and published concept figures checked`);
 }
 
 console.log("\nField guides");

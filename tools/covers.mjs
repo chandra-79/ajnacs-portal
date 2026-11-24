@@ -7,6 +7,7 @@ import { colorFor } from './visuals.mjs';
 import { noteCover } from './note-covers.mjs';
 import { leadCover } from './lead-covers.mjs';
 import { esc } from './lib.mjs';
+import { conceptFor, conceptSvg } from './concept-figures.mjs';
 
 const photos = new Set([
   'sre-toil-reduction',
@@ -17,6 +18,8 @@ const photos = new Set([
 ]);
 
 export function coverArt(slug, width = 1280, height = 720) {
+  const concept = conceptFor(slug);
+  if (concept) return conceptSvg(concept, width, height);
   const illustration = noteCover(slug, width, height) || leadCover(slug, width, height);
   if (illustration) return illustration.svg;
   const direction = articleDirection(slug);
@@ -37,7 +40,7 @@ export function photoFor(slug) {
 }
 
 export function coverDescription(slug) {
-  return noteCover(slug, 1280, 720)?.alt || leadCover(slug, 1280, 720)?.alt || articleDirection(slug)?.description || "";
+  return conceptFor(slug)?.alt || noteCover(slug, 1280, 720)?.alt || leadCover(slug, 1280, 720)?.alt || articleDirection(slug)?.description || "";
 }
 
 export function coverFor(article, { hero = false, sizes = '(min-width: 800px) 420px, 100vw' } = {}) {
