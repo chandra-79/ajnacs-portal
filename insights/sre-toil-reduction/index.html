@@ -3,16 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>SRE Toil: What It Is, How to Measure It, and How to Reduce It | Ajna CS</title>
-<meta name="description" content="Toil is the manual, repetitive, automatable work that keeps systems running without actually improving them. SRE practice says: measure toil, set a ceiling…">
+<title>SRE Toil: How to Measure It and Decide What to Automate | Ajna CS</title>
+<meta name="description" content="Build a toil baseline, calculate automation payback, and check that the work actually went away.">
 <meta name="author" content="Chandra Lanka">
 <link rel="canonical" href="https://ajnacs.com/insights/sre-toil-reduction/">
 <meta name="robots" content="index, follow, max-image-preview:large">
 
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Ajna Consulting Services">
-<meta property="og:title" content="SRE Toil: What It Is, How to Measure It, and How to Reduce It">
-<meta property="og:description" content="Toil is the manual, repetitive, automatable work that keeps systems running without actually improving them. SRE practice says: measure toil, set a ceiling…">
+<meta property="og:title" content="SRE Toil: How to Measure It and Decide What to Automate">
+<meta property="og:description" content="Build a toil baseline, calculate automation payback, and check that the work actually went away.">
 <meta property="og:url" content="https://ajnacs.com/insights/sre-toil-reduction/">
 <meta property="og:image" content="https://ajnacs.com/assets/covers/photos/sre-toil-reduction.jpg?v=4dcb59b184bd">
 <meta property="og:image:width" content="1280">
@@ -22,8 +22,8 @@
 <meta property="article:modified_time" content="2026-11-23">
 <meta property="og:image:type" content="image/jpeg">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="SRE Toil: What It Is, How to Measure It, and How to Reduce It">
-<meta name="twitter:description" content="Toil is the manual, repetitive, automatable work that keeps systems running without actually improving them. SRE practice says: measure toil, set a ceiling…">
+<meta name="twitter:title" content="SRE Toil: How to Measure It and Decide What to Automate">
+<meta name="twitter:description" content="Build a toil baseline, calculate automation payback, and check that the work actually went away.">
 <meta name="twitter:image" content="https://ajnacs.com/assets/covers/photos/sre-toil-reduction.jpg?v=4dcb59b184bd">
 <meta name="twitter:image:alt" content="Repetitive tickets pass a stopwatch and collect in an automation tray">
 
@@ -33,7 +33,7 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=80901545">
+<link rel="stylesheet" href="/assets/css/site.css?v=a8e7c95a">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
@@ -49,21 +49,21 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"SRE Toil: What It Is, How to Measure It, and How to Reduce It","description":"Toil is the manual, repetitive, automatable work that keeps systems running without actually improving them. SRE practice says: measure toil, set a ceiling, and invest engineering effort in eliminating it.","datePublished":"2026-10-09","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/sre-toil-reduction/","image":"https://ajnacs.com/assets/covers/photos/sre-toil-reduction.jpg?v=4dcb59b184bd","keywords":"Engineering Leadership, DevSecOps, Cloud Architecture","articleSection":"Engineering Leadership","wordCount":736}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"SRE Toil: What It Is, How to Measure It, and How to Reduce It"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"SRE Toil: How to Measure It and Decide What to Automate","description":"Build a toil baseline, calculate automation payback, and check that the work actually went away.","datePublished":"2026-10-09","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/sre-toil-reduction/","image":"https://ajnacs.com/assets/covers/photos/sre-toil-reduction.jpg?v=4dcb59b184bd","keywords":"Engineering Leadership, DevSecOps, Cloud Architecture","articleSection":"Engineering Leadership","wordCount":459}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"SRE Toil: How to Measure It and Decide What to Automate"}]}</script>
 </head>
-<body class="" data-topic="Engineering Leadership">
+<body class="article-frame" data-topic="Engineering Leadership">
 <a class="skip-link" href="#main">Skip to content</a>
 
 <header class="site-header" id="siteHeader">
-  <div class="wrap" style="display:flex;align-items:center;width:min(1220px,100% - var(--gutter)*2)">
+  <div class="shell-inner header-inner">
     <div class="brand">
-      <button class="brand-motion" type="button" data-ajna-motion data-arrival aria-label="Open Ajna logo" aria-pressed="false"><svg class="ajna-mark" viewBox="0 0 100 100" width="40" height="40" fill="none" aria-hidden="true" focusable="false"><defs><path id="t-hdr" d="M 50 4 L 96 50 L 50 50 Z"/><path id="e-hdr" d="M 50 4 L 96 50"/><path id="k-hdr" d="M 50 4 L 50 50 L 96 50"/><linearGradient id="bev-hdr" gradientUnits="userSpaceOnUse" x1="50" y1="50" x2="73" y2="27"><stop offset="0" stop-color="#000" stop-opacity=".13"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity=".2"/></linearGradient><radialGradient id="core-hdr" cx=".34" cy=".3" r=".85"><stop offset="0" stop-color="#fff" stop-opacity=".42"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".45"/></radialGradient><path id="ll-hdr" d="M 50 50 C 34 30.26, 40.08 9.579999999999998, 50 3 C 59.92 9.579999999999998, 66 30.26, 50 50 Z"/><path id="ls-hdr" d="M 50 50 C 36 33.620000000000005, 41.32 16.46, 50 11 C 58.68 16.46, 64 33.620000000000005, 50 50 Z"/><clipPath id="clip-ll-hdr"><use href="#ll-hdr"/></clipPath><clipPath id="clip-ls-hdr"><use href="#ls-hdr"/></clipPath></defs><g class="am-leaf" opacity="0" transform="translate(50 50) rotate(0) scale(.38 .02) translate(-50 -50)"><use href="#ll-hdr" fill="#D95547"/><path d="M50 0 H100 V100 H50Z" fill="#000" fill-opacity=".13" clip-path="url(#clip-ll-hdr)"/><path d="M50 50 L50 3" stroke="#fff" stroke-opacity=".2" stroke-width=".7"/></g><g class="am-leaf" opacity="0" transform="translate(50 50) rotate(45) scale(.38 .02) translate(-50 -50)"><use href="#ls-hdr" fill="#D95547"/><path d="M50 0 H100 V100 H50Z" fill="#000" fill-opacity=".13" clip-path="url(#clip-ls-hdr)"/><path d="M50 50 L50 11" stroke="#fff" stroke-opacity=".2" stroke-width=".7"/></g><g class="am-leaf" opacity="0" transform="translate(50 50) rotate(90) scale(.38 .02) translate(-50 -50)"><use href="#ll-hdr" fill="#E8A347"/><path d="M50 0 H100 V100 H50Z" fill="#000" fill-opacity=".13" clip-path="url(#clip-ll-hdr)"/><path d="M50 50 L50 3" stroke="#fff" stroke-opacity=".2" stroke-width=".7"/></g><g class="am-leaf" opacity="0" transform="translate(50 50) rotate(135) scale(.38 .02) translate(-50 -50)"><use href="#ls-hdr" fill="#E8A347"/><path d="M50 0 H100 V100 H50Z" fill="#000" fill-opacity=".13" clip-path="url(#clip-ls-hdr)"/><path d="M50 50 L50 11" stroke="#fff" stroke-opacity=".2" stroke-width=".7"/></g><g class="am-leaf" opacity="0" transform="translate(50 50) rotate(180) scale(.38 .02) translate(-50 -50)"><use href="#ll-hdr" fill="#348C72"/><path d="M50 0 H100 V100 H50Z" fill="#000" fill-opacity=".13" clip-path="url(#clip-ll-hdr)"/><path d="M50 50 L50 3" stroke="#fff" stroke-opacity=".2" stroke-width=".7"/></g><g class="am-leaf" opacity="0" transform="translate(50 50) rotate(225) scale(.38 .02) translate(-50 -50)"><use href="#ls-hdr" fill="#348C72"/><path d="M50 0 H100 V100 H50Z" fill="#000" fill-opacity=".13" clip-path="url(#clip-ls-hdr)"/><path d="M50 50 L50 11" stroke="#fff" stroke-opacity=".2" stroke-width=".7"/></g><g class="am-leaf" opacity="0" transform="translate(50 50) rotate(270) scale(.38 .02) translate(-50 -50)"><use href="#ll-hdr" fill="#3B69C4"/><path d="M50 0 H100 V100 H50Z" fill="#000" fill-opacity=".13" clip-path="url(#clip-ll-hdr)"/><path d="M50 50 L50 3" stroke="#fff" stroke-opacity=".2" stroke-width=".7"/></g><g class="am-leaf" opacity="0" transform="translate(50 50) rotate(315) scale(.38 .02) translate(-50 -50)"><use href="#ls-hdr" fill="#3B69C4"/><path d="M50 0 H100 V100 H50Z" fill="#000" fill-opacity=".13" clip-path="url(#clip-ls-hdr)"/><path d="M50 50 L50 11" stroke="#fff" stroke-opacity=".2" stroke-width=".7"/></g><g class="am-bud"><g class="am-petal" style="--a:0deg"><use href="#t-hdr" fill="#D95547"/><use href="#t-hdr" fill="url(#bev-hdr)"/><use href="#t-hdr" fill="#fff" opacity="0.07"/><use href="#e-hdr" stroke="#fff" stroke-opacity="0.27" stroke-width="1.6" stroke-linecap="round"/><use href="#k-hdr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g class="am-petal" style="--a:90deg"><use href="#t-hdr" fill="#E8A347"/><use href="#t-hdr" fill="url(#bev-hdr)"/><use href="#t-hdr" fill="#000" opacity="0.12"/><use href="#e-hdr" stroke="#000" stroke-opacity="0.16" stroke-width="1.6" stroke-linecap="round"/><use href="#k-hdr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g class="am-petal" style="--a:180deg"><use href="#t-hdr" fill="#348C72"/><use href="#t-hdr" fill="url(#bev-hdr)"/><use href="#t-hdr" fill="#000" opacity="0.05"/><use href="#e-hdr" stroke="#000" stroke-opacity="0.1" stroke-width="1.6" stroke-linecap="round"/><use href="#k-hdr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g class="am-petal" style="--a:270deg"><use href="#t-hdr" fill="#3B69C4"/><use href="#t-hdr" fill="url(#bev-hdr)"/><use href="#t-hdr" fill="#fff" opacity="0.30"/><use href="#e-hdr" stroke="#fff" stroke-opacity="0.37" stroke-width="1.6" stroke-linecap="round"/><use href="#k-hdr" stroke="#000" stroke-width=".9" opacity=".2"/></g></g><g class="am-core"><circle cx="50" cy="50" r="6" fill="currentColor"/><circle cx="50" cy="50" r="6" fill="url(#core-hdr)"/></g></svg></button>
+      <button class="brand-motion" type="button" data-ajna-motion data-arrival aria-label="Open Ajna logo" aria-pressed="false"><svg class="ajna-mark" viewBox="0 0 100 100" width="56" height="56" fill="none" aria-hidden="true" focusable="false"><defs><path id="t-hdr" d="M 50 4 L 96 50 L 50 50 Z"/><path id="e-hdr" d="M 50 4 L 96 50"/><path id="k-hdr" d="M 50 4 L 50 50 L 96 50"/><linearGradient id="bev-hdr" gradientUnits="userSpaceOnUse" x1="50" y1="50" x2="73" y2="27"><stop offset="0" stop-color="#000" stop-opacity=".13"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity=".2"/></linearGradient><radialGradient id="core-hdr" cx=".34" cy=".3" r=".85"><stop offset="0" stop-color="#fff" stop-opacity=".42"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".45"/></radialGradient><path id="ll-hdr" d="M 50 50 C 34 30.26, 40.08 9.579999999999998, 50 3 C 59.92 9.579999999999998, 66 30.26, 50 50 Z"/><path id="ls-hdr" d="M 50 50 C 36 33.620000000000005, 41.32 16.46, 50 11 C 58.68 16.46, 64 33.620000000000005, 50 50 Z"/><clipPath id="clip-ll-hdr"><use href="#ll-hdr"/></clipPath><clipPath id="clip-ls-hdr"><use href="#ls-hdr"/></clipPath></defs><g class="am-leaf" opacity="0" transform="translate(50 50) rotate(0) scale(.38 .02) translate(-50 -50)"><use href="#ll-hdr" fill="#D95547"/><path d="M50 0 H100 V100 H50Z" fill="#000" fill-opacity=".13" clip-path="url(#clip-ll-hdr)"/><path d="M50 50 L50 3" stroke="#fff" stroke-opacity=".2" stroke-width=".7"/></g><g class="am-leaf" opacity="0" transform="translate(50 50) rotate(45) scale(.38 .02) translate(-50 -50)"><use href="#ls-hdr" fill="#D95547"/><path d="M50 0 H100 V100 H50Z" fill="#000" fill-opacity=".13" clip-path="url(#clip-ls-hdr)"/><path d="M50 50 L50 11" stroke="#fff" stroke-opacity=".2" stroke-width=".7"/></g><g class="am-leaf" opacity="0" transform="translate(50 50) rotate(90) scale(.38 .02) translate(-50 -50)"><use href="#ll-hdr" fill="#E8A347"/><path d="M50 0 H100 V100 H50Z" fill="#000" fill-opacity=".13" clip-path="url(#clip-ll-hdr)"/><path d="M50 50 L50 3" stroke="#fff" stroke-opacity=".2" stroke-width=".7"/></g><g class="am-leaf" opacity="0" transform="translate(50 50) rotate(135) scale(.38 .02) translate(-50 -50)"><use href="#ls-hdr" fill="#E8A347"/><path d="M50 0 H100 V100 H50Z" fill="#000" fill-opacity=".13" clip-path="url(#clip-ls-hdr)"/><path d="M50 50 L50 11" stroke="#fff" stroke-opacity=".2" stroke-width=".7"/></g><g class="am-leaf" opacity="0" transform="translate(50 50) rotate(180) scale(.38 .02) translate(-50 -50)"><use href="#ll-hdr" fill="#348C72"/><path d="M50 0 H100 V100 H50Z" fill="#000" fill-opacity=".13" clip-path="url(#clip-ll-hdr)"/><path d="M50 50 L50 3" stroke="#fff" stroke-opacity=".2" stroke-width=".7"/></g><g class="am-leaf" opacity="0" transform="translate(50 50) rotate(225) scale(.38 .02) translate(-50 -50)"><use href="#ls-hdr" fill="#348C72"/><path d="M50 0 H100 V100 H50Z" fill="#000" fill-opacity=".13" clip-path="url(#clip-ls-hdr)"/><path d="M50 50 L50 11" stroke="#fff" stroke-opacity=".2" stroke-width=".7"/></g><g class="am-leaf" opacity="0" transform="translate(50 50) rotate(270) scale(.38 .02) translate(-50 -50)"><use href="#ll-hdr" fill="#3B69C4"/><path d="M50 0 H100 V100 H50Z" fill="#000" fill-opacity=".13" clip-path="url(#clip-ll-hdr)"/><path d="M50 50 L50 3" stroke="#fff" stroke-opacity=".2" stroke-width=".7"/></g><g class="am-leaf" opacity="0" transform="translate(50 50) rotate(315) scale(.38 .02) translate(-50 -50)"><use href="#ls-hdr" fill="#3B69C4"/><path d="M50 0 H100 V100 H50Z" fill="#000" fill-opacity=".13" clip-path="url(#clip-ls-hdr)"/><path d="M50 50 L50 11" stroke="#fff" stroke-opacity=".2" stroke-width=".7"/></g><g class="am-bud"><g class="am-petal" style="--a:0deg"><use href="#t-hdr" fill="#D95547"/><use href="#t-hdr" fill="url(#bev-hdr)"/><use href="#t-hdr" fill="#fff" opacity="0.07"/><use href="#e-hdr" stroke="#fff" stroke-opacity="0.27" stroke-width="1.6" stroke-linecap="round"/><use href="#k-hdr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g class="am-petal" style="--a:90deg"><use href="#t-hdr" fill="#E8A347"/><use href="#t-hdr" fill="url(#bev-hdr)"/><use href="#t-hdr" fill="#000" opacity="0.12"/><use href="#e-hdr" stroke="#000" stroke-opacity="0.16" stroke-width="1.6" stroke-linecap="round"/><use href="#k-hdr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g class="am-petal" style="--a:180deg"><use href="#t-hdr" fill="#348C72"/><use href="#t-hdr" fill="url(#bev-hdr)"/><use href="#t-hdr" fill="#000" opacity="0.05"/><use href="#e-hdr" stroke="#000" stroke-opacity="0.1" stroke-width="1.6" stroke-linecap="round"/><use href="#k-hdr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g class="am-petal" style="--a:270deg"><use href="#t-hdr" fill="#3B69C4"/><use href="#t-hdr" fill="url(#bev-hdr)"/><use href="#t-hdr" fill="#fff" opacity="0.30"/><use href="#e-hdr" stroke="#fff" stroke-opacity="0.37" stroke-width="1.6" stroke-linecap="round"/><use href="#k-hdr" stroke="#000" stroke-width=".9" opacity=".2"/></g></g><g class="am-core"><circle cx="50" cy="50" r="6" fill="currentColor"/><circle cx="50" cy="50" r="6" fill="url(#core-hdr)"/></g></svg></button>
       <a class="brand-home" href="/" aria-label="Ajna Consulting Services — home"><span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span></a>
     </div>
     <nav class="nav" id="nav" aria-label="Primary">
       <a href="/services/">Services</a>
-      <a href="/insights/">Insights</a>
+      <a href="/insights/" aria-current="location">Insights</a>
       <a href="/series/">Series</a>
       <a href="/case-studies/">Case studies</a>
       <a href="/about/">About</a>
@@ -87,13 +87,13 @@ d.setAttribute('data-theme',t);
         <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
         <a href="/topics/engineering-leadership/">Engineering Leadership</a>
       </nav>
-      <h1 class="h1">SRE Toil: What It Is, How to Measure It, and How to Reduce It</h1>
-      <p class="lede" style="margin-top:1rem">Toil is the manual, repetitive, automatable work that keeps systems running without actually improving them. SRE practice says: measure toil, set a ceiling, and invest engineering effort in eliminating it.</p>
+      <h1 class="h1">SRE Toil: How to Measure It and Decide What to Automate</h1>
+      <p class="lede" style="margin-top:1rem">Build a toil baseline, calculate automation payback, and check that the work actually went away.</p>
       <div class="article-meta">
         <a class="article-byline" href="/about/#chandra-lanka">Chandra Lanka</a>
         <span class="dot" aria-hidden="true"></span><time datetime="2026-10-09">9 Oct 2026</time>
         <span class="dot" aria-hidden="true"></span><span>Updated <time datetime="2026-11-23">23 Nov 2026</time></span>
-        <span class="dot"></span><span>3 min read</span>
+        <span class="dot"></span><span>2 min read</span>
         <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
       </div>
     </header>
@@ -101,45 +101,55 @@ d.setAttribute('data-theme',t);
     <div class="article-hero" data-topic="Engineering Leadership"><img data-article-art="sre-toil-reduction" src="/assets/covers/photos/sre-toil-reduction.jpg?v=4dcb59b184bd" srcset="/assets/covers/photos/sre-toil-reduction-640.jpg?v=4dcb59b184bd 640w, /assets/covers/photos/sre-toil-reduction.jpg?v=4dcb59b184bd 1280w" sizes="(min-width: 90rem) 1180px, (min-width: 74rem) 65vw, 100vw" width="1280" height="720" alt="Repetitive tickets pass a stopwatch and collect in an automation tray" decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
-  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#recognizing-toil">Recognizing toil</a></li><li><a href="#measuring-toil">Measuring toil</a></li><li><a href="#prioritizing-what-to-automate">Prioritizing what to automate</a></li><li><a href="#the-investment-conversation">The investment conversation</a></li></ol>
+  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#run-a-small-pilot">Run a small pilot</a></li><li><a href="#use-the-worksheet-to-decide">Use the worksheet to decide</a></li><li><a href="#references">References</a></li></ol>
 </nav></div>
     <div class="article-copy">
       <div class="prose">
-<p>Google&#39;s SRE book introduced the concept of toil as a specific category of work worth tracking and actively reducing. The definition is precise: toil is work that is manual, repetitive, automatable, tactical (it doesn&#39;t produce lasting value), and that scales linearly with service growth.</p>
-<p>The reason to track it separately from other work: teams that spend too much time on toil have no capacity for the reliability improvements that would eliminate toil. They are on a treadmill. <a href="https://sre.google/sre-book/eliminating-toil/" rel="noopener" target="_blank">Google’s SRE organisation sets a goal</a> of keeping operational work below 50% of each SRE’s time. Treat that as a published operating policy; set your own ceiling after measuring where your time goes.</p>
+<p>On-call logs tell you where the team is spending time. They rarely tell you which work will keep coming back. Start with a recurring task the team can name, such as reprocessing a batch after a known timeout. Record the hands-on effort, identify why it recurs, and decide whether to remove the trigger, improve the procedure, or automate it.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
-<p><strong>Toil fraction and automation payback.</strong> If a team records 64 hours of toil in 240 available engineering hours, the toil fraction is about 27%. If automation costs 60 engineer-hours and saves 6 per week after maintenance, simple payback is 10 weeks. Review results across a full on-call rotation and include incidents created by the automation.</p>
-<p><em>Illustrative measurement. Any numbers in this example are hypothetical.</em></p>
-<p>Further reading: <a href="https://sre.google/sre-book/eliminating-toil/" rel="noopener" target="_blank">Google’s SRE book, Eliminating Toil</a>.</p>
-<h2 id="recognizing-toil"><a class="h-anchor" href="#recognizing-toil" aria-hidden="true" tabindex="-1">#</a>Recognizing toil</h2>
-<p>The examples are recognizable to anyone who has operated production infrastructure:</p>
+<p>Count hands-on time spent on manual, repeatable operational tasks that could be automated and produce little enduring improvement. A routine replay can meet that definition. Diagnosing a new data-loss mechanism or engineering a permanent fix belongs in a different category. Google’s published 50% target covers operational work more broadly. Set a local budget based on the team’s obligations and capacity.</p>
+<p>Create one row per occurrence with date, service, trigger, active minutes, number of operators and outcome. Add person-minutes if several people work simultaneously. Record time spent waiting separately when it delays recovery. Divide toil hours by available engineering hours for the same team and window. Document the handling of leave, holidays, and overlapping incidents so later windows use the same rules.</p>
+<h2 id="run-a-small-pilot"><a class="h-anchor" href="#run-a-small-pilot" aria-hidden="true" tabindex="-1">#</a>Run a small pilot</h2>
+<ol>
+<li>Baseline at least one complete on-call rotation. Reconcile tickets, paging and deployment records with the operators who did the work. Record the workload and incident severity so the follow-up can account for unusual weeks.</li>
+<li>Rank repeat tasks by hands-on hours, frequency and operational risk. Investigate the trigger first. If the batch replay is caused by a stale timeout, fixing the timeout might save more than writing a replay bot.</li>
+<li>Pilot the smallest safe change. For a replay, use idempotency where the system supports it, show the planned scope, reject ambiguous requests, and record what ran. Keep a manual recovery path and test partial failure before rollout.</li>
+<li>Re-measure with the same team and scope. Count manual exceptions, upkeep, failures and operator time transferred to another team. Compare service objectives and error rates before calling the savings durable.</li>
+</ol>
+<h2 id="use-the-worksheet-to-decide"><a class="h-anchor" href="#use-the-worksheet-to-decide" aria-hidden="true" tabindex="-1">#</a>Use the worksheet to decide</h2>
+<p>Enter equal windows and the one-time implementation effort. The calculator reports baseline and follow-up toil as a share of capacity, ongoing hours released and simple payback. Follow-up upkeep is included in the savings calculation and tracked separately from manual toil. A payback in weeks reflects team capacity and assumes the observed weekly release continues. Rate savings and service risk separately before making a larger investment.</p>
+<p><strong>Illustrative measurement.</strong> The worked data below is synthetic. Use your own windows and leave any field with missing evidence out of your decision until you can measure it. Review <a href="/insights/platform-engineering-idp-2026/">platform onboarding</a> if the work occurs when developers create a service.</p>
+<h2 id="references"><a class="h-anchor" href="#references" aria-hidden="true" tabindex="-1">#</a>References</h2>
 <ul>
-<li>Manually responding to pager alerts that could be handled by an automated recovery script</li>
-<li>Running a database query by hand to answer a recurring business question that could be a scheduled report</li>
-<li>Manually approving deployments that could be automated with sufficient testing</li>
-<li>Manually copying data between systems that could be connected with a pipeline</li>
-<li>Restarting a service on a schedule because it has a known memory leak (the leak is tech debt; the restart is toil)</li>
-<li>Manually granting access to a system for new team members who always need the same access (an automation problem, not a policy problem)</li>
+<li><a href="https://sre.google/sre-book/eliminating-toil/" rel="noopener" target="_blank">Google SRE Book · Eliminating Toil</a></li>
+<li><a href="https://sre.google/workbook/eliminating-toil/" rel="noopener" target="_blank">Google SRE Workbook · Identifying and Tracking Toil Using SRE Principles</a></li>
 </ul>
-<p>The common thread: someone doing this work is doing it because no automation exists, not because human judgment is required.</p>
-<h2 id="measuring-toil"><a class="h-anchor" href="#measuring-toil" aria-hidden="true" tabindex="-1">#</a>Measuring toil</h2>
-<p>You cannot reduce what you do not measure. Toil measurement approaches:</p>
-<p><strong>Incident-linked toil</strong>: when responding to a PagerDuty/OpsGenie alert, mark whether the response was manual and repetitive (toil) or required investigation and judgment (not toil). Over time, you can see the toil fraction of on-call work.</p>
-<p><strong>Time tracking for ops work</strong>: a week-long exercise where the team tracks their time in categories: toil, project work, meetings, unplanned work. The granularity doesn&#39;t need to be high — 30-minute buckets are sufficient. This produces a surprisingly clear picture of where time actually goes.</p>
-<p><strong>Ticket analysis</strong>: tag support and operational tickets as toil vs. not. Review the toil tickets monthly. What categories of toil appear repeatedly? These are the automation candidates.</p>
-<p>A team measuring 40% toil has a baseline for its own work. Compare across rotations and account for unusual incident weeks before using it to set a target.</p>
-<h2 id="prioritizing-what-to-automate"><a class="h-anchor" href="#prioritizing-what-to-automate" aria-hidden="true" tabindex="-1">#</a>Prioritizing what to automate</h2>
-<p>Not all toil is equally worth automating. The priority framework:</p>
-<p><strong>High-frequency + manual + high-consequence</strong>: a manual step in a deployment that is done 20 times per week and occasionally causes incidents is the highest priority for automation. The frequency means the automation saves significant time; the incident rate means it reduces risk.</p>
-<p><strong>On-call toil</strong>: manual alert responses that happen at 2am have both a reliability cost (delayed response) and a human cost (degraded sleep, on-call burnout). Automating these has disproportionate value compared to the time saved during business hours.</p>
-<p><strong>Toil that blocks other teams</strong>: a manual approval step that other teams wait on for hours each time is a bottleneck. Automating it removes a dependency.</p>
-<p><strong>Scaling toil</strong>: work that increases linearly with service growth will eventually consume the team. Automating it before it reaches that point is cheaper than automating under pressure.</p>
-<h2 id="the-investment-conversation"><a class="h-anchor" href="#the-investment-conversation" aria-hidden="true" tabindex="-1">#</a>The investment conversation</h2>
-<p>Reducing toil requires trading short-term capacity for long-term capacity. The team needs to spend time building automation instead of doing the manual work. This is a conversation with leadership: we are spending 35% of our engineering capacity on work that doesn&#39;t improve the system, and we need 2 sprints to build automation that will reduce this to 15%.</p>
-<p>Estimate payback as one-time engineering effort divided by weekly hours saved after recurring maintenance. Use observed weekly frequencies and include the work needed to keep the automation running.</p>
-<p><em>Working through a toil reduction initiative for an operations or SRE team? The measurement step is often the most revealing part. <a href="/contact/">Happy to compare approaches.</a></em></p>
 
       </div>
+<section class="field-worksheet" aria-labelledby="measurement-worksheet">
+  <h2 id="measurement-worksheet">Measurement worksheet</h2>
+  <figure class="field-chart">
+    <figcaption>Operating effort per two-week window <span>Illustrative data · hours</span></figcaption>
+    <ul class="chart-rows"><li><span>Baseline toil</span><span class="chart-bar" aria-hidden="true"><i style="--bar-width:100%"></i></span><strong>24h</strong></li><li><span>Follow-up toil and upkeep</span><span class="chart-bar" aria-hidden="true"><i style="--bar-width:45.833333333333336%"></i></span><strong>11h</strong></li></ul>
+    <p class="muted">Baseline 20% of capacity. Follow-up 9.2% including upkeep. 6.5 net hours released per week. Simple payback 6.2 weeks.</p>
+  </figure>
+  <details class="field-method" id="methodology" open>
+    <summary>Methodology and limits</summary>
+    <p>Compare two equal 14-day windows for the same team and production scope. Each has 120 available engineering hours. Count hands-on work, including manual retries and triage. Log automation upkeep separately from remaining manual toil.</p>
+    <p>Add follow-up manual toil and upkeep to get 11 hours. Subtract from the 24-hour baseline and divide by two weeks to get 6.5 hours released per week. Divide 40 implementation hours by 6.5 for simple payback. A zero or negative release has no payback in this model.</p>
+    <p>Check request volume, incident severity, service objectives, and transferred work before treating a change as durable. The chart omits one-time implementation effort from ongoing work and excludes novel incident investigation from toil.</p>
+  </details>
+  <form data-field-worksheet="toil" hidden>
+    <fieldset>
+      <legend>Calculate with your own inputs</legend>
+      <div class="field-inputs"><label>Available engineering hours in each window<input type="number" name="capacity" min=".01" step="any" value="120" required></label><label>Weeks in each window<input type="number" name="weeks" min=".01" step="any" value="2" required></label><label>Baseline manual toil hours<input type="number" name="before" min="0" step="any" value="24" required></label><label>Follow-up manual toil hours<input type="number" name="manual" min="0" step="any" value="9" required></label><label>Follow-up upkeep hours, separately logged<input type="number" name="maintenance" min="0" step="any" value="2" required></label><label>One-time implementation hours<input type="number" name="build" min="0" step="any" value="40" required></label></div>
+    </fieldset>
+    <div class="row"><button type="submit" class="btn">Calculate</button><button type="reset" class="btn btn-ghost">Reset example</button></div>
+    <output aria-live="polite"></output>
+  </form>
+  <a href="/field-guides/sre-toil-reduction.csv" download>Download the worked inputs (CSV)</a>
+</section>
+<script type="module" src="/assets/js/field-worksheet.mjs"></script>
 
 
 
@@ -175,13 +185,13 @@ d.setAttribute('data-theme',t);
   <section class="section surface hair" style="margin-top:4rem">
     <div class="wrap">
       <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|DevSecOps|Cloud Architecture|Engineering Leadership|" data-search="platform engineering in 2026: what an internal developer platform actually needs design an internal developer platform around self-service, supported deployment paths and policy checks. measure onboarding, adoption and change failures before expanding it. devsecops cloud architecture engineering leadership" data-topic="DevSecOps" href="/insights/platform-engineering-idp-2026/">
+      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|DevSecOps|Cloud Architecture|Engineering Leadership|" data-search="platform onboarding: measure the path to a first deployment pilot a self-service path, measure time to a first qualifying deployment, and track completion, controls, and support effort. devsecops cloud architecture engineering leadership" data-topic="DevSecOps" href="/insights/platform-engineering-idp-2026/">
   <div class="card-art"><img data-article-art="platform-engineering-idp-2026" src="/assets/covers/photos/platform-engineering-idp-2026.jpg?v=e89682005513" srcset="/assets/covers/photos/platform-engineering-idp-2026-640.jpg?v=e89682005513 640w, /assets/covers/photos/platform-engineering-idp-2026.jpg?v=e89682005513 1280w" sizes="(min-width: 800px) 420px, 100vw" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
     <span class="chip">DevSecOps</span>
-    <h3 class="card-title">Platform Engineering in 2026: What an Internal Developer Platform Actually Needs</h3>
-    <p class="card-desc">Design an internal developer platform around self-service, supported deployment paths and policy checks. Measure onboarding, adoption and change failures before expanding it.</p>
-    <div class="card-meta"><time datetime="2026-11-20">20 Nov 2026</time><span class="dot"></span><span>4 min read</span></div>
+    <h3 class="card-title">Platform Onboarding: Measure the Path to a First Deployment</h3>
+    <p class="card-desc">Pilot a self-service path, measure time to a first qualifying deployment, and track completion, controls, and support effort.</p>
+    <div class="card-meta"><time datetime="2026-11-20">20 Nov 2026</time><span class="dot"></span><span>2 min read</span></div>
   </div>
 </a>
 <a class="card" data-card data-topics="|Cloud Architecture|DevSecOps|Infrastructure|" data-search="serverless vs containers: an honest comparison for 2026 neither is universally better. the answer depends on your workload profile, your team&#39;s operational maturity, and — honestly — your tolerance for cold starts. cloud architecture devsecops infrastructure" data-topic="Cloud Architecture" href="/insights/serverless-vs-containers-2026/">
@@ -251,11 +261,11 @@ d.setAttribute('data-theme',t);
 </main>
 
 <footer class="site-footer">
-  <div class="wrap">
+  <div class="shell-inner">
     <div class="grid g-4" style="gap:2rem">
       <div>
         <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem" aria-label="Ajna Consulting Services — home">
-          <svg class="ajna-mark is-still" viewBox="0 0 100 100" width="36" height="36" fill="none" aria-hidden="true" focusable="false"><defs><path id="t-ftr" d="M 50 4 L 96 50 L 50 50 Z"/><path id="e-ftr" d="M 50 4 L 96 50"/><path id="k-ftr" d="M 50 4 L 50 50 L 96 50"/><linearGradient id="bev-ftr" gradientUnits="userSpaceOnUse" x1="50" y1="50" x2="73" y2="27"><stop offset="0" stop-color="#000" stop-opacity=".13"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity=".2"/></linearGradient><radialGradient id="core-ftr" cx=".34" cy=".3" r=".85"><stop offset="0" stop-color="#fff" stop-opacity=".42"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".45"/></radialGradient></defs><g class="am-bud"><g transform="rotate(0 50 50)"><use href="#t-ftr" fill="#D95547"/><use href="#t-ftr" fill="url(#bev-ftr)"/><use href="#t-ftr" fill="#fff" opacity="0.07"/><use href="#e-ftr" stroke="#fff" stroke-opacity="0.27" stroke-width="1.6" stroke-linecap="round"/><use href="#k-ftr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g transform="rotate(90 50 50)"><use href="#t-ftr" fill="#E8A347"/><use href="#t-ftr" fill="url(#bev-ftr)"/><use href="#t-ftr" fill="#000" opacity="0.12"/><use href="#e-ftr" stroke="#000" stroke-opacity="0.16" stroke-width="1.6" stroke-linecap="round"/><use href="#k-ftr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g transform="rotate(180 50 50)"><use href="#t-ftr" fill="#348C72"/><use href="#t-ftr" fill="url(#bev-ftr)"/><use href="#t-ftr" fill="#000" opacity="0.05"/><use href="#e-ftr" stroke="#000" stroke-opacity="0.1" stroke-width="1.6" stroke-linecap="round"/><use href="#k-ftr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g transform="rotate(270 50 50)"><use href="#t-ftr" fill="#3B69C4"/><use href="#t-ftr" fill="url(#bev-ftr)"/><use href="#t-ftr" fill="#fff" opacity="0.30"/><use href="#e-ftr" stroke="#fff" stroke-opacity="0.37" stroke-width="1.6" stroke-linecap="round"/><use href="#k-ftr" stroke="#000" stroke-width=".9" opacity=".2"/></g></g><g class="am-core"><circle cx="50" cy="50" r="6" fill="currentColor"/><circle cx="50" cy="50" r="6" fill="url(#core-ftr)"/></g></svg>
+          <svg class="ajna-mark is-still" viewBox="0 0 100 100" width="52" height="52" fill="none" aria-hidden="true" focusable="false"><defs><path id="t-ftr" d="M 50 4 L 96 50 L 50 50 Z"/><path id="e-ftr" d="M 50 4 L 96 50"/><path id="k-ftr" d="M 50 4 L 50 50 L 96 50"/><linearGradient id="bev-ftr" gradientUnits="userSpaceOnUse" x1="50" y1="50" x2="73" y2="27"><stop offset="0" stop-color="#000" stop-opacity=".13"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity=".2"/></linearGradient><radialGradient id="core-ftr" cx=".34" cy=".3" r=".85"><stop offset="0" stop-color="#fff" stop-opacity=".42"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".45"/></radialGradient></defs><g class="am-bud"><g transform="rotate(0 50 50)"><use href="#t-ftr" fill="#D95547"/><use href="#t-ftr" fill="url(#bev-ftr)"/><use href="#t-ftr" fill="#fff" opacity="0.07"/><use href="#e-ftr" stroke="#fff" stroke-opacity="0.27" stroke-width="1.6" stroke-linecap="round"/><use href="#k-ftr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g transform="rotate(90 50 50)"><use href="#t-ftr" fill="#E8A347"/><use href="#t-ftr" fill="url(#bev-ftr)"/><use href="#t-ftr" fill="#000" opacity="0.12"/><use href="#e-ftr" stroke="#000" stroke-opacity="0.16" stroke-width="1.6" stroke-linecap="round"/><use href="#k-ftr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g transform="rotate(180 50 50)"><use href="#t-ftr" fill="#348C72"/><use href="#t-ftr" fill="url(#bev-ftr)"/><use href="#t-ftr" fill="#000" opacity="0.05"/><use href="#e-ftr" stroke="#000" stroke-opacity="0.1" stroke-width="1.6" stroke-linecap="round"/><use href="#k-ftr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g transform="rotate(270 50 50)"><use href="#t-ftr" fill="#3B69C4"/><use href="#t-ftr" fill="url(#bev-ftr)"/><use href="#t-ftr" fill="#fff" opacity="0.30"/><use href="#e-ftr" stroke="#fff" stroke-opacity="0.37" stroke-width="1.6" stroke-linecap="round"/><use href="#k-ftr" stroke="#000" stroke-width=".9" opacity=".2"/></g></g><g class="am-core"><circle cx="50" cy="50" r="6" fill="currentColor"/><circle cx="50" cy="50" r="6" fill="url(#core-ftr)"/></g></svg>
           <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
         </a>
         <p style="font-size:.88rem;line-height:1.65;color:#9fb0d0;max-width:30ch">
@@ -280,6 +290,7 @@ d.setAttribute('data-theme',t);
         <h2 class="foot-title">Insights</h2>
         <ul>
           <li><a href="/insights/">All articles</a></li>
+          <li><a href="/field-guides/">Field guides</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
           <li><a href="/notes/">Personal notes</a></li>
@@ -300,7 +311,7 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=80901545" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=80901545"></script>
+<script src="/assets/js/site.js?v=a8e7c95a" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=a8e7c95a"></script>
 </body>
 </html>
