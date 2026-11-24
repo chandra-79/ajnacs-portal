@@ -124,3 +124,39 @@ OpenAPI (Swagger) specification as the source of truth, generated documentation 
 The documentation is the contract. When consumers build against the documentation, the documentation becomes the specification you're committed to maintaining.
 
 *Designing a new API or auditing an existing one for consistency and longevity? [Happy to compare approaches.](/contact/)*
+
+## Test compatibility from both sides of the contract
+
+Build a compatibility suite with a previously published client and one new client. Exercise the response as a real consumer sees it, including wire types, missing values, headers, ordering and assumptions about maps or enums. A newly added enum value can break a generated client even when the JSON field still has its documented type. Run the old client against the new service and test failures as carefully as the happy path. For the public schema, document which fields and enumerations are open to future extension. [OpenAPI Specification 3.1.1](https://spec.openapis.org/oas/v3.1.1.html)
+
+When a change requires moving clients to a new contract, make the migration measurable. Inventory active consumers by supported version and put the proposed replacement against their saved integration tests. Agree on a retirement criterion that accounts for traffic and contractual obligations. Consider a hypothetical retirement dashboard where 98% of endpoint requests use the new version, but one monthly settlement consumer has yet to move. That consumer could be invisible during a normal week, so the team needs a successful parallel settlement or an explicitly agreed exception before choosing a removal date.
+
+## Make a retried mutation an observable state machine
+
+For an order-creation endpoint, scope a key to the authenticated tenant and operation. Persist a fingerprint of the inputs that determine the action. Define what happens while work is in progress, after success and after an error. A key reused with a different request is an input conflict even when the original request has finished. Responses must be scoped to the same actor or owner authorised to retrieve the result. Avoid storing secrets in a fingerprint diagnostic, and document how clients can recover when the original result is no longer retained.
+
+The key claim and the local write need a clear atomic boundary. In a single relational store, a unique key and transaction can let one request establish the operation before performing a write. For work involving an external system, a committed order and a pending message can be recorded together, with the downstream operation correlated using its own idempotency or reconciliation contract. Keep a stable lookup resource or status so a lost response does not require creating another order. Pick a retention period long enough to cover real retry and recovery windows. If an operation can be retried after it expires, consider a durable business identifier that survives the deduplication record.
+
+Test concurrent duplicates, a disconnect after commit, a crash after an external action, different bodies under the same key and a retry after expiry. Suppose an illustrative exercise issues 12 concurrent duplicate requests for one order. The useful result is one order, one allowed side effect and 12 observations tied to the same operation, with intermediate responses consistent with the published status contract. A uniform status code across responses tells you little about those invariants. HTTP defines a method as idempotent based on the intended effect, and a POST operation’s retry behaviour depends on the contract you implement. [HTTP Semantics, RFC 9110](https://www.rfc-editor.org/rfc/rfc9110.html)
+
+## Write the cursor contract around real update behaviour
+
+Order rows by a stable, deterministic tuple such as creation time and record ID. Use the entire tuple, including the tie-breaker, to resume where the page ended. Treat cursors as opaque externally and validate their scope, compatible filters and expiration on arrival. An encoded cursor alone does not provide integrity or authorisation. Check the permissions at each request, including after a user's access changes between pages.
+
+A live cursor gives a stable position relative to its sort key. It is different from a snapshot. If a user changes a sort key such as priority during a scan, the record can move to either side of the boundary. If the consumer is exporting a settlement batch, use a stable high-water mark, a snapshot capability or a separately materialised export with a stated revision. Then document how corrections after the cutoff become visible. For an activity feed, a live view can be sufficient if its behaviour around inserts and deletions is explicit.
+
+Create a pagination fixture with multiple rows having the same timestamp and a small page size. Test navigating across the tie, deleting an already returned row and inserting a new record at each side of the boundary. Show whether each test expects a stable snapshot, a live position or an intentionally expired cursor. Test the documented maximum page size as part of resource budgeting.
+
+## Make failures consistent from the gateway to the application
+
+Use the HTTP status for the broad interaction and a stable problem identifier for consumer logic. RFC 9457 specifies the `application/problem+json` representation with a problem `type` and fields such as `status` and `detail`. Consumers should be able to decide whether to correct input, refresh credentials, retry or escalate without interpreting human prose. Publish test responses for malformed inputs and transient failures. Avoid echoing internal stack traces or sensitive request data, and keep a correlation identifier that support can use. [Problem Details for HTTP APIs, RFC 9457](https://www.rfc-editor.org/rfc/rfc9457.html)
+
+If a partner is rate limited, make the quota dimensions and retry behaviour clear. When applicable, use `Retry-After` and demonstrate how callers should cap and spread their retries so recovery does not create a second burst. Include error formats emitted by the gateway as part of the contract and test the result when a request is rejected before it reaches the service. When credentials rotate, test how callers observe the change and how long it takes for the new credential to work. OAuth access tokens can be opaque or structured. Apply the validation required by the chosen issuer and token profile, and centralise decisions such as audience and permission verification. [OAuth 2.0 security best current practice, RFC 9700](https://www.rfc-editor.org/rfc/rfc9700.html)
+
+## Measure use after shipping the contract
+
+Track the proportion of requests clients reject locally, the fraction of mutations retried and recovered, and the incidence of expired cursors by consumer type. A high retry-recovery rate paired with rising timeouts can point to reliability work even while deduplication is functioning. Keep sample sizes, time windows and exclusions on those charts. Review the data after the first partner rollout. Update the examples when observed integration questions reveal incomplete contractual details, and hold future changes against these examples in continuous integration.
+
+Review the evidence with the support team that handles consumer incidents. For a hypothetical release, a team sees 10,000 attempted operations and 350 retries. Thirty retries return the existing result after a client timeout, while six produce a contract conflict. Those are different observations about the service. Investigate whether conflicts came from the same client submitting different payloads or from confusing guidance about when to generate a key. Fold the answer into a test case and improve the documentation if it would let readers distinguish when a new logical operation begins.
+
+Track each resulting documentation change.

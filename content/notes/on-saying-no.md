@@ -32,3 +32,17 @@ These require the more effortful version of no — specific, explained, offered 
 What I've found is that saying no more consistently does not damage professional relationships as much as I expected when I started doing it. Most people respect clear, explained decisions more than vague availability that ultimately doesn't deliver. The colleagues who react badly to a clear no are often the same ones who would have been unhappy with the result of an overwhelmed yes.
 
 The reputation I would rather have: someone whose yes means something, because they have been willing to say no when no was the right answer.
+
+## Ask what the yes would replace
+
+An overloaded week is easier to discuss when the trade-off is visible. Imagine having three days left before a release and being asked for a design review that will take most of one of them. A yes offered in a few seconds hides a decision about which day disappears. Writing down the work already promised makes it possible to name that decision. The release owner might agree to move a test, the review might be smaller than it first sounded, or the person asking might find somebody with more relevant context. Any of those is easier to arrange before the work has been promised.
+
+The conversation changes depending on who is entitled to make the decision. When two assignments come from the same manager, it can be useful to ask which result they want first. When a request comes from another team, explain which commitment you would have to move and ask what deadline they are working against. When the request is genuinely urgent and your responsibility is clear, stop negotiating and help. A calendar is a description of the current plan. Sometimes the plan needs to change, and saying so plainly is part of the job.
+
+## Be precise about what you are declining
+
+Declining an outcome, a deadline, and a way of working are different decisions. You may agree that a proposal needs review, and be able to read it tomorrow, while being unable to join a meeting today. Offering a narrow alternative is useful when you really can deliver it. A vague promise to look at it later only leaves the other person with another thing to chase. Sometimes the kindest answer is an early one that gives them time to make a different arrangement.
+
+There is also a way of saying no that puts the work back on the person least able to make it happen. Sending a junior colleague away with a list of four people to ask may be as unhelpful as taking on something you will never finish. One useful introduction, a note about what to ask, or a brief explanation of the decision the work depends on can be a much smaller commitment for you and a real way forward for them. Make the offer concrete enough that you could actually keep it.
+
+The hardest part can be leaving the answer where you put it. If you keep qualifying a clear no until it sounds like a yes, people will reasonably plan around the yes. Care still matters. A request may represent a problem someone has spent a week trying to solve. Acknowledge that and answer while the choices are still open. Try the next request on a small scale. State the commitment already made, say which part of the proposed work you can realistically help with, and leave enough room for the other person to decide what they want to do next. If the priority does change, confirm what moved. That is how two people end up with the same plan.

@@ -138,9 +138,9 @@ Network policies require a CNI plugin that implements them — Calico, Cilium, o
 
 Running unknown images is a risk. The controls:
 
-**Admission controllers** can enforce image policies before pods start. OPA Gatekeeper or Kyverno allow policies like "images must come from approved registries" and "images must not use the `:latest` tag" (which pins to a specific image).
+**Admission controllers** can enforce image policies before pods start. OPA Gatekeeper or Kyverno allow policies like "images must come from approved registries" and "images must specify an approved digest" (a tag, even when versioned, can move unless the registry enforces immutability).
 
-**Image signing** with Sigstore/Cosign allows you to verify that an image was built by your CI pipeline and hasn't been tampered with. The admission controller verifies the signature before allowing the image to run. This is the strongest control for supply chain security in Kubernetes.
+**Image signing** verifies a signature over a digest against an expected signer or identity and trust policy. Require an approved workload identity, and validate separate provenance attestations when the build process itself is in scope. Admission policies can enforce these decisions before creating workloads. See [Sigstore verification](https://docs.sigstore.dev/cosign/verifying/verify/).
 
 **Regular base image updates**: a hardened cluster with outdated container images is still vulnerable. Automate base image updates (Dependabot for container base images, or Renovate Bot) and run Trivy or Grype image scanning in CI to catch vulnerabilities before deployment.
 
@@ -153,12 +153,44 @@ Enable etcd encryption at rest. For managed clusters:
 - GKE: encrypted by default with Google-managed keys; customer-managed keys available.
 - AKS: encryption at rest with platform keys by default; customer-managed keys available.
 
-Better: don't store sensitive secrets in etcd at all. Use the External Secrets Operator or the CSI Secrets Store Driver to pull secrets from AWS Secrets Manager, Azure Key Vault, or GCP Secret Manager at pod startup. The secret exists in memory; it never lives in etcd.
+The [Secrets Store CSI Driver](https://secrets-store-csi-driver.sigs.k8s.io/topics/sync-as-kubernetes-secret) can mount external values directly. Its optional sync creates a Kubernetes Secret. External Secrets Operator also commonly reconciles external values into Kubernetes Secret objects. If either path creates a Secret resource, apply controls for storage encryption and least-privilege access. Verify rotation behavior in the application as well as the provider.
 
 ## Audit logging
 
 Kubernetes API server audit logging records every request to the API — who created what, who deleted what, who accessed which secrets. This is essential for incident response and compliance.
 
-Audit logs should be shipped to a central logging system (CloudWatch Logs, Azure Monitor, GCP Cloud Logging, or your own ELK stack) where they're retained and searchable. The default audit policy logs everything, which is voluminous; a policy that logs at `RequestResponse` level for sensitive operations (secret access, RBAC changes) and `Metadata` level for routine operations is more manageable.
+Audit logs should be shipped to a central logging system (CloudWatch Logs, Azure Monitor, GCP Cloud Logging, or your own ELK stack) where they're retained and searchable. On self-managed control planes, set an explicit audit policy. Metadata is often sufficient for Secret operations because request and response bodies can expose the values the policy is meant to protect. Choose body logging where it is justified and reviewed. Verify collection, retention, and access in your environment. See [Kubernetes auditing](https://kubernetes.io/docs/tasks/debug/debug-cluster/audit/).
 
 *Reviewing your cluster security posture or hardening a new cluster? [Happy to compare configurations.](/contact/)*
+
+## Establish who can change the security boundary
+
+Use a small inventory of principals rather than starting from a count of policy objects. List the identities that can create workloads, change permissions, alter admission rules, publish trusted images, and read or rotate sensitive credentials. Give each a purpose, scope, owner, and review date. A role named after a single application can still confer broad access if it is bound across namespaces. Review the actual bindings and permissions together. Include both human groups and CI identities. If a workflow creates Pods with service account credentials, examine which accounts it is permitted to attach. Kubernetes calls out the indirect privileges of creating workloads in its [RBAC good practices](https://kubernetes.io/docs/concepts/security/rbac-good-practices/).
+
+Build representative authorization checks to show what the role can and cannot do. For a read-only support identity, verify that it can read health and logs for its service and that an attempt to change a deployment or read a credential is denied. Use an approved staging identity or the access review capabilities explicitly delegated to the tester. A successful denial by one identity proves nothing about another binding or a production namespace that uses different policy. Include service and environment identifiers in the test result. Store permissions as code so removals receive the same technical review as additions.
+
+## Separate policy rollout from application rollout
+
+Pod Security Admission gives a migration team different ways to observe behavior. Start with a named set of intended workloads and define which policy and version are under evaluation. Use warnings and audit data while teams bring manifests into compliance. Recreate representative Pods in a nonproduction environment. Include periodic jobs and controllers that only create replacement Pods after a failure. Testing existing Pods does not prove that a node drain or scale-up can create replacements. Confirm that the evidence covers every required workload category before enabling the enforce mode in the applicable namespaces.
+
+Suppose an illustrative program has eight namespaces with ten standard workloads each plus two infrastructure namespaces with a combined 20 workloads. All eight standard namespaces enforce the target policy, and two infrastructure workloads have documented exemptions under a separately monitored policy. The first policy covers 80 of 100 workloads. Reporting the absence of exceptions across the standard namespaces describes compliance within their scope, while the inventory still needs to account for the 20 infrastructure workloads. For each exception write down the control that still applies, who owns it, and how it can expire or be reconsidered. Distinguish a deliberate exception from an unresolved failure to enforce the control.
+
+Verify that releases still work after changing enforcement. Keep a known compatible manifest available and update the platform templates as part of the change. If the platform creates a new namespace for a service, confirm it receives the expected labels and policies at creation. Compare environments, especially older namespaces that predate bootstrap automation. Kubernetes describes namespace-level policy and version selection in its [Pod Security Admission guide](https://kubernetes.io/docs/concepts/security/pod-security-admission/).
+
+## Verify containment from a workload viewpoint
+
+Default-deny policies are useful only when paired with a working application and a tested communication model. In a controlled cluster, keep a matrix of the routes required for a request, scheduled task, or recovery action. Include name resolution, identity exchange, approved service dependencies, and telemetry endpoints. Check traffic from the intended source to the actual destination and port. Verify both allowed and denied cases using owned test workloads with known-ready endpoints. A timeout to an unavailable service is not proof that policy blocked a reachable service. Save the test context and avoid relying on traffic that predates an enforcement change.
+
+A namespace boundary organizes resources and policies. Treat it as one layer in the isolation design. When two workloads have different trust requirements, compare service identities, network controls, host privileges, and administrative ownership. Network policies apply through a supporting plugin. Confirm their behavior on the platform and version actually running the workload, particularly for cross-node traffic and interfaces whose paths differ from a simple Pod-to-Pod test. Preserve a route for emergency operation that can be used and reviewed without granting a broad permanent exception.
+
+## Separate secret storage, consumption, and logging
+
+Document the source of every category of sensitive value and the places where copies can exist. An integration that mounts content into a workload can differ from one that materializes a Kubernetes Secret. The Secrets Store CSI Driver supports optional synchronization to a Secret object. If synchronization is enabled, assess the controls for that object and its lifecycle as well as for the external store. Check what the application does when the value rotates. Updating a file mount does not mean the application has reloaded it. Run a rehearsal with a harmless test credential and verify both the new value taking effect and the old value losing authority within the expected interval. See the [Secrets Store CSI Driver usage guide](https://secrets-store-csi-driver.sigs.k8s.io/getting-started/usage).
+
+Keep credential contents out of diagnostic output, release records, and audit evidence. Audit metadata generally answers who acted, which resource they targeted, and the result. Use more detailed request or response records only when justified and after checking which sensitive payloads can enter the audit stream. Kubernetes audit records depend on server configuration and policy. Verify collection and retention by performing a controlled action on a test object and finding the expected event in the destination. Restrict access to those records and test that a responder can retrieve them through the intended process. See the [Kubernetes auditing guide](https://kubernetes.io/docs/tasks/debug/debug-cluster/audit/).
+
+## Make hardening measurable after the rollout
+
+Create a short verification pack for each preventive control. A test image matching the expected digest and trusted identity should be accepted. A benign fixture missing the expected attestation should produce the recorded deny or warning. Treat a signature test as evidence of artifact and identity verification. Build provenance is a separate attestation with its own policy. Establish which signals tell responders about failed verification, policy exceptions, and drift after the next cluster or controller upgrade.
+
+Operational thresholds should trigger a decision, not an activity count. If an illustrative check finds 42,000 compliant admissions and 21 denied over a month, inspect what the 21 represent. A broken manifest repeatedly attempted by a controller does not constitute 21 independent security events. Group by workload and policy decision, identify the owners, and look at gaps in instrumentation. Run the same checks after upgrades and after changing the fleet profile. A result is only as meaningful as the scope and software versions recorded with it.

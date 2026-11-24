@@ -66,3 +66,29 @@ The 3-year term makes most sense for: core infrastructure workloads that have be
 Most organizations use no-upfront or partial-upfront Savings Plans. The all-upfront discount rarely justifies the cash commitment for a 1-year term; it is more compelling for a 3-year term at scale.
 
 *Modeling Savings Plans or RI purchases for a significant AWS spend? The commitment analysis requires a solid understanding of your usage patterns over time. [Happy to walk through the approach.](/contact/)*
+
+## Replay the plan one hour at a time
+
+Build a small simulation from an hourly cost export for the accounts and usage families the purchase could cover. Keep eligible demand at its On-Demand equivalent and convert each applicable line to plan-rate dollars before consuming the commitment. That conversion matters because a dollar of hourly commitment can cover more than a dollar of On-Demand spend. Keep the rest of the bill out of the simulation, then add it back unchanged when comparing whole-account totals.
+
+Put benefits you already own into the replay once. If an instance is still covered by a Reserved Instance for the simulated period, do not count that usage as demand for a new commitment. Model the covered line when its RI expires as well. Use the payer's current sharing settings. Different account sharing can change which usage receives the benefit. Reserve a test month at the end of the export so your assumptions face an interval you did not use to pick the purchase size.
+
+## Price a low hour and a busy hour separately
+
+Use fictional rates to see what the simulation should calculate. Suppose comparable compute would cost $0.10 per unit-hour On-Demand. The plan rate for this example is $0.07. Set an hourly commitment of $3.50, which covers up to 50 eligible units an hour at that rate. During an hour with 65 units, the first 50 use the full $3.50 and the extra 15 cost $1.50. The total is $5.00 instead of $6.50. The commitment is fully used and roughly 77% of the eligible On-Demand-equivalent usage is covered.
+
+Now replay a quiet hour with 25 units. Only $1.75 of the commitment finds eligible usage. The hour still costs $3.50, versus $2.50 On-Demand. That hour looks fully covered because every eligible unit receives a benefit. It only uses half the commitment and loses $1 against On-Demand. Combined across the two illustrative hours, the commitment costs $8.50 and On-Demand costs $9.00. A dashboard that shows only coverage would hide the loss in the quiet period. Consult the [Cost Explorer coverage metric definitions](https://docs.aws.amazon.com/savingsplans/latest/userguide/ce-sp-cr-metrics.html) when comparing the simulation with AWS reports.
+
+## Put flexibility and capacity in separate decisions
+
+A service may need both a billing discount and the ability to launch in a particular Availability Zone when another part of the system fails. Write those as separate requirements. A flexible billing plan can meet one without reserving the capacity required by the other. A zonal purchase, or an appropriately configured capacity reservation, must match the tenancy, platform, instance shape, and location that the recovery procedure actually uses. Run the recovery exercise using the architecture that will use the reservation.
+
+For billing flexibility, test a workload mix change. Keep the same overall usage in a scenario that moves eligible compute from one EC2 family to another. Compare a family-and-region plan with a broader compute commitment under that scenario and under the existing estate. A deeper listed discount can lose in the migration case if too few eligible hours remain. Capture enough detail to show whether that loss comes from underuse or from paying On-Demand for newly ineligible work.
+
+## Make a purchase decision the next reviewer can redo
+
+Give the approver a short record with the export window, eligibility assumptions, existing commitments, sharing configuration, candidate purchases, and the On-Demand comparison. Include one low-demand forecast and one planned architecture change. Show the worst period of unused commitment alongside the median. A low monthly average can hide repeat waste every night or weekend.
+
+Separate the payment schedule from expected economic cost. An all-upfront quote includes an immediate cash outlay. Show that event and the per-period cost in different columns. Compare it with the no-upfront and partial-upfront alternatives using the same dates and term. End with a renewal owner, notice date, and a condition that would stop renewal. After purchase, use the observed benefit allocation in [Cost Explorer Savings Plans reporting](https://docs.aws.amazon.com/savingsplans/latest/userguide/ce-sp-usingSP.html) to check whether it follows the simulation. A mismatch is a reason to inspect eligibility, sharing and rate assumptions before increasing the commitment. Compare unblended cash charges and unused commitments as separate rows so the explanation stays reproducible even if the finance report uses different amortisation dates.
+
+Review one hourly record where the model predicts both unused commitment and uncovered spend. That combination can be legitimate if the uncovered service or rate is ineligible. A simultaneous surplus and shortfall on genuinely matching usage usually indicates that a rate, account boundary, or sharing preference was applied incorrectly. Trace the record from the underlying usage to the commitment and invoice, then turn that example into a reusable check for each future purchase.

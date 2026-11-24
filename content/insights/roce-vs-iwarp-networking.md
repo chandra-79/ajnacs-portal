@@ -26,6 +26,20 @@ The iWARP RDMAP stack commonly uses TCP via its lower-layer mapping. TCP impleme
 
 Compare approved hardware, workload latency, network features, driver support, telemetry and failover. An existing Ethernet fabric can affect rollout cost. A dedicated InfiniBand option deserves the same application test and recovery exercise if it is a viable candidate.
 
+## Make congestion the subject of the comparison
+
+Run a single sender first to verify the intended data path and establish an unloaded completion-time distribution. Then add simultaneous senders to one receiver and vary the transfer size and rate. Match the total offered workload when you compare transports. Keep adapter generation, host resources and transfer library as similar as practical, and report differences that could explain the result. An adapter’s offload capabilities can matter as much as the name of the protocol.
+
+An illustrative workload has 16 senders directed toward one 100 Gb/s receiver. If each offers 10 Gb/s, the receiver link faces 160 Gb/s before headers and other traffic. The excess 60 Gb/s cannot be delivered at that rate. It must queue, be slowed upstream or be lost and recovered. The valuable test measures how quickly completion time stabilizes under sustained load and how much an unrelated transfer suffers during the burst.
+
+## Save counters that explain the tail
+
+Record offered and delivered rates, completion p50 and p99, transfer failures, retry counters, host CPU and per-port queue observations. On a RoCE network, capture ECN markings and, if configured, pause duration by priority. A rise in pause time on another port can help explain collateral delay. On an iWARP network, check transport and NIC counters available to the actual offload implementation. Compare events on a shared time window and repeat the run after an unrelated flow changes.
+
+Include recovery under a planned link or path impairment on your own test fabric. Document what the application sees and whether its session or queue must be re-created. A completion-time win in a quiet isolated run is weak evidence for a shared service when the team cannot diagnose a stalled transfer. Use the [Cumulus RoCE guide](https://docs.nvidia.com/networking-ethernet-software/cumulus-linux-519/Layer-1-and-Switch-Ports/Quality-of-Service/RDMA-over-Converged-Ethernet-RoCE/) for vendor-specific configuration and counter meanings, and [RFC 5040](https://www.rfc-editor.org/rfc/rfc5040) for the RDMAP protocol.
+
+Collect measurements in both directions between representative hosts. A clean transmit path from one endpoint cannot explain poor completion times when the acknowledgement or return path crosses a different congested link.
+
 ## Sources
 
 - [IETF RFC 5040, RDMAP](https://www.rfc-editor.org/rfc/rfc5040)

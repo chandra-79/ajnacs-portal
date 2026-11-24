@@ -46,16 +46,22 @@ The build environment needs compilers, package managers, and build tools. The ru
 
 ```dockerfile
 ## Stage 1: Build
-FROM node:20-slim AS builder
+FROM node:24-slim AS builder
 WORKDIR /app
 COPY package*.json ./
-RUN npm ci --only=production
+RUN npm ci
 
 COPY . .
 RUN npm run build
 
-## Stage 2: Runtime (only production artifacts, no build tools)
-FROM node:20-slim AS runtime
+## Stage 2: Install production dependencies from the same lockfile
+FROM node:24-slim AS production-deps
+WORKDIR /app
+COPY package.json package-lock.json ./
+RUN npm ci --omit=dev
+
+## Stage 3: Runtime
+FROM node:24-slim AS runtime
 WORKDIR /app
 
 ## Create non-root user
@@ -64,7 +70,7 @@ RUN addgroup --system --gid 1001 appgroup && \
 
 ## Copy only what runtime needs
 COPY --from=builder --chown=appuser:appgroup /app/dist ./dist
-COPY --from=builder --chown=appuser:appgroup /app/node_modules ./node_modules
+COPY --from=production-deps --chown=appuser:appgroup /app/node_modules ./node_modules
 COPY --from=builder --chown=appuser:appgroup /app/package.json ./
 
 USER appuser
@@ -76,7 +82,7 @@ Final image contains: Node.js runtime, production node_modules, compiled dist. N
 
 ## Layer Caching: Order Instructions by Change Frequency
 
-Docker caches each layer. When a layer changes, all subsequent layers are invalidated. Order instructions from least-likely-to-change to most-likely-to-change:
+A cache miss invalidates later instructions that depend on that result in the build stage. Independent stages follow their own dependencies. Order instructions from least-likely-to-change to most-likely-to-change:
 
 ```dockerfile
 ## Bad: changes to requirements invalidate package install cache
@@ -162,3 +168,27 @@ A production Dockerfile review checklist:
 - No secrets or credentials in any layer (use build secrets or environment variables at runtime)
 - Image scanned for CVEs before registry push
 - Image size is reasonable (< 200MB for most web applications; < 50MB for Go binaries)
+
+## Start with the runtime contract
+
+Define the exact command, required files, user identifier, writable paths, signal behavior, and dependencies before reducing image size. Run a representative request in Linux with the same architecture and constraints as production. In a container that writes temporary files, include expected writable mounts in the test. Check that data written during verification does not silently depend on the container's default writable layer when production requires a separate volume or a read-only root filesystem. Ensure that the process behaves when it cannot write to its application directory. A build that produces the expected digest but fails under the production runtime contract is not ready for deployment.
+
+For compiled applications, separate build tooling from runtime dependency installation. A TypeScript or bundle build can need packages in development dependencies even though the final process does not. Verify that the build stage installs the compiler and build tools, and that the runtime stage receives a separately prepared production dependency set or a verified self-contained artifact. Native modules may need architecture and library compatibility between stages. Test them by starting the final container and reaching the actual functionality rather than seeing whether a base image's package list looks complete.
+
+## Validate reproducibility rather than assuming it
+
+Pinning a base digest establishes which base the builder used. Use the application's lockfile and a repeatable install process, then record the source revision, base digests, architecture, and builder configuration for a release. If you intentionally update base digests, send the change through automated verification rather than silently switching the runtime environment. A narrow base reduces the packages you have to maintain. Its security value also depends on how promptly you can obtain and roll out a usable replacement.
+
+Ensure the policies apply to every stage that can influence the output. If a build reads a private test fixture or an access token, keep it out of the build context and use the builder's scoped secret mechanism when a credential is required during a step. Do not put sensitive values in Dockerfile arguments or environment metadata. A value omitted from the final application filesystem may still appear in histories, caches, or logs. Confirm what the builder exports and who can read it. [Docker's build secrets guide](https://docs.docker.com/build/building/secrets/) explains why secret mounts are preferred over build arguments for this purpose.
+
+## Measure cold and warm behavior independently
+
+Consider a fictional rollout of 20 nodes. A runtime image has 150 decimal MB of transferable layers missing on each node during a cold rollout. The nominal transfer for those layers is 3,000 MB, or three decimal GB, if each node pulls them once. After a routine code update, only a 35 MB application layer changes and all shared layers remain present. The nominal transfer is about 700 MB across all nodes under those assumptions. These figures leave out protocol overhead, retries, compression differences, and caching elsewhere. They explain why a cold-pull test and a routine release test are different and why total image size alone does not predict either one.
+
+Time the path from creating a container to an eligible user request. Separate scheduling, downloading layers, starting the process, warming caches, and reaching the first successful response. If download accounts for a small share of the total and application startup dominates, prioritize where time actually goes. Also capture rebuild time for a small source edit, a dependency update, and a base refresh. Build caches are beneficial only when the right step is reused. Compare results on the same architecture and test a clean build with no local cache before declaring inputs complete.
+
+## Review the release artifact and recovery path
+
+Test the resulting image with explicit access boundaries, using only the capabilities and mounts the application needs. Exercise shutdown with an in-flight request and verify the exit behavior of the actual entrypoint. Some lightweight images omit a shell, so choose an approved debugging mechanism ahead of the incident. It could be a purpose-built test image, runtime diagnostics, or an observability signal that eliminates the need to inspect a running task interactively. Keep the debug workflow authorized and distinct from the image approved for routine production.
+
+Write a short acceptance record containing the image and test digests, relevant compatibility checks, inventory results, and downgrade or rollback plan. Inspect the size increase of a new release in context. An intentional addition to support a critical compatibility requirement differs from an unnecessary compiler accidentally bundled into the runtime image. [Docker's build best practices](https://docs.docker.com/build/building/best-practices/) describes how build context, stages, and base-image choices affect the artifact. Verify the decisions against what the image actually does when the service is deployed.

@@ -52,7 +52,7 @@ iostat -xz 2
 - `r/s`, `w/s` — reads and writes per second (IOPS)
 - `rMB/s`, `wMB/s` — throughput in MB/s
 - `r_await`, `w_await` — average time in milliseconds for a read/write request to complete (from I/O submission to completion). This includes queue wait time. For NVMe: sub-millisecond is normal. For SSD: 1–5ms. For HDD: 5–20ms. Higher means the device is overwhelmed.
-- `aqu-sz` — average queue depth. Values consistently above 1–2 indicate the device cannot keep up with the request rate.
+- `aqu-sz` — average queue depth. Read this alongside throughput and tail latency for the same request mix. Parallel devices can sustain multiple outstanding operations.
 - `%util` — percentage of time the device had at least one request in flight. For HDDs, 100% = saturated. For SSDs and NVMe, 100% is less meaningful because they can service multiple requests in parallel (check `aqu-sz` instead).
 
 ```bash
@@ -162,16 +162,16 @@ cat /proc/meminfo | grep -E "Dirty|Writeback"
 
 ## Tuning page cache flush behaviour
 ## /etc/sysctl.conf
-vm.dirty_ratio = 10          # start background write at 10% of RAM
-vm.dirty_background_ratio = 5  # flush when dirty pages hit 5% of RAM
+vm.dirty_ratio = 10          # writing processes participate at 10% of eligible memory
+vm.dirty_background_ratio = 5  # background writeback threshold at 5% of eligible memory
 vm.dirty_expire_centisecs = 3000  # flush pages older than 30 seconds
 vm.dirty_writeback_centisecs = 500  # check for dirty pages every 5 seconds
 
 sysctl -p   # apply immediately
 
-## For databases, disable page cache entirely and use O_DIRECT
-## PostgreSQL: fsync = on, full_page_writes = on handles its own durability
-## The database bypasses the page cache with O_DIRECT
+## Measure the database’s actual cache and durability behavior.
+## PostgreSQL uses shared buffers and can benefit from the operating system page cache.
+## Keep durability settings enabled and measure the end-to-end commit latency.
 ```
 
 ## Diagnosing I/O Latency Spikes
@@ -199,3 +199,39 @@ sudo bpftrace -e '
 ```
 
 The output is a histogram of I/O completion times in microseconds, showing exactly where the latency distribution sits and whether there are outlier spikes.
+
+## Start with the time the application actually waits
+
+Pick a user-visible operation such as a transaction commit and record its elapsed time. Break the timeline into application work, writes issued, durability calls, and acknowledgement. Align these with device-level reads, writes, and queue metrics. Use the process, container, and filesystem identities to correlate them. A single elevated device average cannot explain the path of a particular transaction. For remote storage, include client-side request time and the provider’s resource metrics because the issue can be outside the guest’s block layer.
+
+A buffered write can finish quickly while the kernel still holds dirty data. For a service that promises durable results, collect timing for the operation that actually forces the intended durability guarantee. Compare the storage benchmark’s completion semantics to the application’s. Direct I/O, synchronous open options, and explicit synchronization calls answer different questions. The Linux kernel’s [virtual-memory documentation](https://docs.kernel.org/admin-guide/sysctl/vm.html) distinguishes the thresholds for background writeback and for write-generating processes to participate. Verify database access and synchronization behavior for the installed database version. For example, PostgreSQL uses its own shared buffers and may use the operating-system page cache. Its [resource configuration documentation](https://www.postgresql.org/docs/current/runtime-config-resource.html) discusses their interaction.
+
+## Interpret queue depth as a workload measurement
+
+At a stable rate, average in-flight work approximates average completion rate times average duration over matching boundaries. In an illustrative run, 8,000 completed operations/s averaging 2 ms implies about 16 outstanding requests on average. That can be an efficient operating point for a parallel device. For a single transactional thread waiting for one operation at a time, concurrency is limited and the same storage might feel slow even at a tiny fraction of its maximum throughput. Compare the actual workload against a measured latency-throughput curve before deciding a queue depth is too high.
+
+Averages also hide mixtures. A 4 KiB random read and a 1 MiB sequential write use storage differently. Separate reads from writes at minimum, and include operation size and whether they share the device. Observe how the same arrival rate behaves at different points in the volume’s operating range. If the service improves when writers stop while reads continue, investigate contention, upload bursts, or flushing. If the database still waits on one slow write at low volume, focus on its individual durable-write latency.
+
+Select the correct block layer. In a device-mapper setup, a logical volume and an underlying device can each report the same operation at different stages. Summing them double counts traffic. Locate the filesystem’s actual device and follow its parent chain. The kernel’s [I/O statistics field descriptions](https://docs.kernel.org/admin-guide/iostats.html) explain the underlying counters and what time in flight captures. Use device utilization, observed completions, and latency together when judging a multi-queue device.
+
+## Use pressure data to confirm impact on work
+
+Check I/O pressure stall information with kernel support enabled. It measures time workloads spend stalled on I/O resources and adds a workload-oriented perspective to device counters. Compare available workload-level pressure with host pressure where the hierarchy exposes both. Read `/proc/pressure/io` for the host view. A background test can keep a device busy while business applications still meet their objectives. A workload with repeated delays and rising I/O stall time deserves investigation even if other tenants remain healthy.
+
+Record the measurement window when using pressure averages. Two dashboard samples at different rollup periods can disagree without either being wrong. Report the difference in total stall time across a known interval when comparing short experiments. Correlate with per-process I/O and application traces. Account for asynchronous writeback and journalling, whose device work can appear under a different task from the one that initiated the original write. Pressure is evidence of a stall, and the timing and attribution data help identify the responsible path. The Linux kernel provides a [pressure stall reference](https://docs.kernel.org/accounting/psi.html).
+
+## Design a storage test that reproduces the production constraint
+
+Use a disposable file on the intended mount, record the file size, and preserve enough free space for the test and existing services. Write-test only a nonproduction target prepared for the experiment. Choose an I/O engine and verify achieved queue depth rather than reading it only from the command line. A nominal queue depth can differ from actual concurrency depending on the engine, buffered operation, and workload shape. Review the I/O depth distribution together with completion latency and scheduling delays in the tool output. The [fio reference](https://fio.readthedocs.io/en/latest/fio_doc.html) documents these options and output.
+
+Build a load series with shallow concurrency to capture baseline latency and larger concurrency to find where throughput stops growing. Test the real read/write mix and include synchronization if the application actually synchronizes durable transactions. Use a documented warm-up, run long enough to detect temporary volume burst limits, and repeat the same schedule after a change. Save job files and volume settings including provisioned bandwidth or IOPS limits. Comparing runs on different volume types or burst states can be useful when those conditions are the variable being studied. Keep the baseline consistent when isolating another factor.
+
+A hypothetical device holds p99 read latency under 4 ms through 12,000 IOPS and reaches 15,000 IOPS at p99 14 ms. A service with a 5 ms storage budget would need to operate closer to the first measured point or change its workload. Those figures illustrate the comparison, rather than forecasting a specific class of device. Retain enough samples to interpret high percentiles, and compare only like latency definitions. A percentile from an I/O generator does not include the rest of the application’s request path.
+
+## Require a falsifiable explanation for a change
+
+If you suspect periodic writeback, look for dirty-memory growth and a burst of writes aligned with the slow application interval. Record the current kernel settings and compare the expected behavior with a controlled change on a candidate host. Changing a scheduler may help if work is queued differently at the block layer. It cannot eliminate a provider bandwidth cap or a database lock. Verify an improvement at the business operation boundary and check that backgrounds such as exports or backups still finish within their objectives.
+
+If you use event tracing, document which timestamps are collected and what they represent. A dispatch timestamp paired with its matching completion can yield time after dispatch. One timestamp with no matched event does not yield a duration. Validate the probe names and arguments against the running kernel and account for events that are dropped, merged, or otherwise unavailable. Keep host overlays and test artifacts long enough for a teammate to reproduce the measurement. End with a record of the bottleneck isolated, the change evaluated, and what new evidence would make you revisit the conclusion.
+
+Include at least one test condition that leaves the original code and storage settings intact while varying only the suspected competing work. For example, shift an export window and compare the same commit workload between normal and export periods. When moving the export improves the transaction objective, measure where the export now competes and whether that new slot is acceptable for both services.

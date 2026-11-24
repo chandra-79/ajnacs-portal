@@ -28,3 +28,17 @@ For me, the practice has been mostly about the end of the day being a genuine en
 The other thing that helps: doing things in the evenings that are genuinely restorative. Not just differently productive. Music, walking, reading things unrelated to technology. The brain needs inputs that have nothing to do with the outputs it's being asked to produce.
 
 *Worth discussing, if this resonates: what does recovery actually look like in your context?*
+
+## Decide what can wait before the evening starts
+
+The end of the day is easier when the status of the work is visible. Imagine a colleague preparing to leave with three unfinished items. One has an owner tomorrow, one is waiting for a dependency, and one might need an immediate decision if a customer calls. The last item needs a handoff. The others need good notes and a date. Leaving all three in the same state makes it easy to carry the whole list home and hard for anybody else to tell what deserves their attention.
+
+A short handoff gives the person picking up the work a place to begin. Say what happened, what you checked, what still needs doing, and who can decide if the situation changes. If there is an urgent exception, put it in the agreed place and identify the person covering it. Once those arrangements exist, checking the ordinary chat channel from bed stops being part of the plan. The handoff has done something more useful than a general announcement that you are unavailable.
+
+## Pay attention to who carries the gap
+
+A team may feel that it has solved availability because its senior people can disconnect. It is worth finding out who now handles the things those people stopped doing. A more junior colleague may be quietly replying to the same requests after dinner. A team in another time zone may have inherited the awkward meeting every week. Ask what arrived, who actually answered it, and how often it needed an answer at that hour. The record does not have to be elaborate. It has to reveal whose time the arrangement depends on.
+
+There are times when extra work is genuinely necessary. A service failure or a fixed delivery deadline can make a normal day impossible. The useful questions start afterwards. Who took the extra hours? When can they recover them? What work will be removed from the next day so they get a chance to rest? An answer in terms of priorities or staffing gives people a chance to see when the exceptional period is over. A vague assurance that things will settle down leaves the same decision for every evening.
+
+Try reading the policy from the perspective of a person about to use it. Who can approve a day away? Who covers the work? What do they need to know before the person leaves? If the answers depend on whether somebody is brave enough to ask, there is still a design problem. The fix might be a narrower on-call duty, clearer expectations for replies, or making a handoff ordinary enough that the person taking leave can go without explaining it. Free time feels different when you know another person has agreed to be responsible for the things you are leaving.

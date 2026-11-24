@@ -24,7 +24,7 @@ Redis isn't a key-value store. It's a data structure server that happens to have
 
 **Hashes**: for objects with multiple fields where you update fields independently. A user profile stored as a Hash lets you `HSET user:123 email new@email.com` without touching the rest of the profile. Hashes are also memory-efficient for small collections — Redis uses a more compact encoding for hashes with fewer than 128 fields.
 
-**Sorted Sets**: for leaderboards, priority queues, and range-by-score queries. `ZADD` and `ZRANGEBYSCORE` are O(log N). If you're building a leaderboard, a sorted set is the right structure — don't simulate it with strings and sorting in application code.
+**Sorted Sets**: for leaderboards, priority queues, and range-by-score queries. `ZADD` is O(log N) per element. `ZRANGEBYSCORE` is O(log N + M), where M is the number of elements returned. If you're building a leaderboard, a sorted set is the right structure — don't simulate it with strings and sorting in application code.
 
 **Sets**: for unique collections, tag systems, and membership tests. `SMEMBERS`, `SUNION`, `SINTERSTORE`. The `SINTERSTORE` for computing the intersection of tag sets (e.g., "articles tagged both 'cloud' and 'finops'") is fast and idiomatic.
 
@@ -64,7 +64,7 @@ end
 
 The Lua script makes the check-and-delete atomic.
 
-**Why this is still not guaranteed safe**: Redis is single-threaded but not instantaneous. Under partition scenarios (split-brain), two clients can both acquire the lock. For most applications this is an acceptable trade-off. For financial operations, inventory management, or any operation where double-execution has serious consequences — consider a different approach or use the Redlock algorithm (with understanding of its limitations).
+**Why this is still not guaranteed safe**: Redis is single-threaded but not instantaneous. Under partition scenarios (split-brain), two clients can both acquire the lock. For most applications this is an acceptable trade-off. When duplicate execution has serious consequences, enforce a transaction, idempotency key, or monotonic fencing check at the protected resource. Match the mechanism to the failure you must prevent. A lease can expire while the former holder is still running.
 
 The Redlock algorithm requires acquiring the lock on a majority of N independent Redis nodes. It's more robust against single-node failures but adds complexity. Martin Kleppmann's critique of Redlock is worth reading before implementing it.
 
@@ -99,3 +99,39 @@ Approaches:
 The choice between Sentinel and Cluster depends on throughput. If a single Redis instance handles your peak load comfortably with headroom, use Sentinel. If you're hitting single-instance CPU or memory limits, move to Cluster.
 
 *Diagnosing Redis performance issues or planning a migration from single-node to cluster? [Happy to talk through the specifics.](/contact/)*
+
+## Give each use of Redis a durability and failure contract
+
+List the data families stored in each deployment and identify who owns the authoritative copy. For a catalogue cache, eviction should fall back to the catalogue service within a bounded budget. For a rate counter, choose what happens during a timeout based on the effect of allowing or denying the next operation. A job stream and a session store have different recovery and retention needs. Keep disposable values separate from state that cannot safely disappear when using eviction policies with broad scope. For each family, record expected expiry, maximum tolerated loss and whether clients can reconstruct it after an outage.
+
+Persistence and replication protect through different failure modes. Redis documentation describes RDB snapshots and append-only-file persistence and explains the trade-offs of fsync settings. A snapshot works from a prior point in time. An AOF configuration trades how frequently it syncs against potential loss and latency. Redis `WAIT` can request replication acknowledgements for earlier writes on the connection, and the client must inspect the count it actually receives. Redis does not guarantee that a supported failover promotes a replica with those acknowledged writes. Rehearse this distinction with known sequence numbers, compare client-acknowledged operations to recovered state, and document the outcome alongside the workload, failover mechanism and settings. [Redis persistence](https://redis.io/docs/latest/operate/oss_and_stack/management/persistence/) · [Redis WAIT](https://redis.io/docs/latest/commands/wait/)
+
+## Profile memory by workload and allocator behaviour
+
+Sample representative keys across data types and size bands, using a controlled lab built from generated fixtures. Include common field counts, large values, expiry metadata and key length. Redis can use compact encodings for small collections subject to configured thresholds. Fixed field-count rules do not describe every version or value shape. Large collection reads also need limits, even where insertion is efficient. Sorted-set range cost includes the number of members returned, so a query for 50,000 members deserves different budgeting from a top-ten request. [Redis sorted-set range command](https://redis.io/docs/latest/commands/zrangebyscore/)
+
+Assume 600,000 synthetic cache entries with a measured median footprint near 700 bytes. Multiplying gives 420 MB in decimal units as a rough scale indicator. A median is not a total-capacity estimate when there is a long tail. If 10% take 5,000 bytes each and the remainder take 700, the same population becomes 678 MB before unmeasured overhead. Use a sampled mean or grouped sum to size the data and verify resident memory separately. Exercise representative expiry patterns, write load, persistence events and replica reconnection. Some buffers, such as those used for persistence or replication, are excluded from the memory calculation used for eviction. Observe process RSS and allocator statistics as well as eviction and actual system headroom. [Redis key eviction](https://redis.io/docs/latest/develop/reference/eviction/)
+
+In a cache-only deployment, test whether a policy improves the cost of misses. A frequently accessed tiny object and an infrequently read expensive database aggregate might contribute differently to that problem. Break out workload groups and check latency and origin demand. Treat an all-keys policy as applying to every key in the affected deployment. A no-eviction policy can be intentional when a service has an explicit response to failed writes. Test that callers can handle the response and that alerts arrive before operations become routine failures.
+
+## Give workers a recovery path beyond the broker acknowledgement
+
+For a Redis Stream with consumer groups, track delivered pending work separately from entries waiting to be read. A worker can fail after committing a side effect and before acknowledging the entry. Give each operation a stable identifier stored with the result or effect, and verify that a reinvoked worker checks it before writing. Redis can transfer ownership of pending entries with `XAUTOCLAIM` subject to the idle threshold and command semantics. Set the threshold relative to legitimate processing duration and monitor repeated claims. Reclaiming a slow operation can otherwise produce concurrent work on the same item. [Redis XAUTOCLAIM](https://redis.io/docs/latest/commands/xautoclaim/)
+
+In a queue exercise, stop a worker while it processes a synthetic batch. Check which entries remain pending, when a replacement can resume them and which results already exist. Test trim and retention with a reader stopped longer than usual. Retention that removes the source payload before the recovery window can make the pending list insufficient for reconstruction. Keep a record of terminal failures and a documented owner for replay or manual reconciliation. Consumer throughput and queue depth should be paired with unfinished-work age and verified output counts.
+
+## Protect shared resources after a lease expires
+
+A lease helps coordinate workers when the resource tolerates the residual failure modes. A process can hold a lease, pause longer than the expiry and then resume after a different worker acquires it. Verifying the stored token at release protects the next holder’s lease from an incorrect release. It does not prevent the first worker from making an obsolete write. When correctness depends on distinguishing ownership generations, consider a monotonically increasing token that the protected resource validates, or use a conditional update or transaction at the authoritative store. The enforceable decision belongs where the durable side effect occurs.
+
+Rehearse an expired lease with two controlled workers and a fixture resource. Let the first acquire a lease and pause past expiry. Let the second complete its work, then resume the first and verify the obsolete action is rejected by the protected resource. Do the same for unknown outcomes after a timeout. An operation that only updates a regenerable preview may have different requirements from a payment or inventory reservation, where a database constraint and reconciliation should protect the invariant.
+
+## Test whether the fallback survives your worst cache window
+
+Load an isolated environment with a representative key distribution and a bounded traffic source. Compare a warm cache, a cold cache, a single busy shard and the expected failover case. Report client latency, command counts, rejected writes, evictions and the proportion of requests that reached each origin. Use per-command and per-shard views so a healthy fleet average does not hide concentrated demand. Measure cache reconnection pressure and client retry settings as well as steady-state throughput.
+
+Suppose 2,000 reads per second normally produce 100 origin fills per second, and the origin has been validated at 300 fills per second for this workload. A full bypass would offer twenty times the normal fill rate and more than six times the validated budget. Bound concurrent fills, apply prioritisation or serve previously verified public data where eligible, and publish how the remaining requests are handled. Include a recovery plan that gradually warms demand instead of instantly reopening every caller. A useful test records which actions preserve the authority of original data even when some requests return a reduced response.
+
+## Treat a cluster move as a change to request semantics
+
+Inventory commands that operate on multiple keys, transactions and scripts before moving them to a sharded deployment. A co-location rule can preserve an operation that needs one slot, while placing every busy tenant into the same slot can create a new concentration. Test representative transaction boundaries and connection behaviour while slots move and a managed or self-hosted failover completes. Confirm the client can refresh redirection state. Time each retry from the original request deadline and inspect which operations may have completed before the connection was lost. Put idempotency at the authoritative write so a transport retry can only reproduce an intended effect once. Include these scenarios in the acceptance record, alongside throughput and latency measured after the cluster settles.

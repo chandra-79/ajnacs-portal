@@ -51,7 +51,7 @@ Virtual Machine:                Container:
 
 Containers are built on two Linux kernel features:
 
-**Namespaces** provide isolation — making processes believe they have exclusive access to a resource. Linux has seven namespace types:
+**Namespaces** provide isolation — making processes believe they have exclusive access to a resource. The following Linux namespace types are common in container discussions. Modern Linux also has the time namespace.
 
 | Namespace | What It Isolates |
 |---|---|
@@ -81,7 +81,7 @@ unshare --pid --mount --net --fork bash
 
 ## Container Images: Layered Filesystems
 
-A container image is a layered filesystem. Each instruction in a Dockerfile creates a read-only layer:
+A container image is a layered filesystem. Instructions that change the filesystem can introduce filesystem layers. Instructions such as CMD record configuration metadata.
 
 ```dockerfile
 FROM ubuntu:22.04        # Base layer from Ubuntu image
@@ -119,7 +119,7 @@ docker run \
 
 ## Inspect the actual namespaces and cgroups for a running container
 docker inspect my-service
-cat /sys/fs/cgroup/memory/docker/<container-id>/memory.limit_in_bytes
+Locate the workload's control group and identify the cgroup version first. On cgroup v2, inspect memory.max at its discovered path. Older cgroup v1 memory controllers expose memory.limit_in_bytes.
 ls /proc/<container-pid>/ns/
 ```
 
@@ -133,3 +133,27 @@ The kernel-sharing model has security implications. If a container runs as root,
 4. For strong isolation requirements, consider VM-based container runtimes (gVisor, Kata Containers) that add a thin kernel per container
 
 The next lesson covers writing production-quality Dockerfiles — the specific decisions that determine whether your container image is secure, efficient, and reproducible.
+
+## Draw the boundary from the process outward
+
+When examining a container, identify the application process, the environment it sees, and the resources it can actually use. Compare the process ID shown inside the container with the host view in an environment you administer. The same task can have a process ID in both views because namespaces change how another process can name it. Work performed by that task still consumes resources on its host. Visibility and accounting can therefore disagree in a completely healthy deployment. A dashboard showing a busy host doesn't tell you which container used those resources. Start the diagnostic with per-workload counters.
+
+A container's filesystem also comes in multiple parts. A runtime can mount an image, add a writable area, and place a separate volume at one of the visible paths. A file written to the volume does not have the same lifecycle as a file written to the container's default writable layer. Test that distinction by storing synthetic records in both locations and replacing the container with a new instance built from the same digest. Record which records survive and whether a new instance can read them with its configured user. Mounting over an existing application directory can hide the files already present in the image. If a configuration suddenly vanishes after adding storage, inspect the mount targets before rebuilding the image.
+
+## Distinguish contention from enforcement
+
+Assume a fictional worker uses three independent CPU-bound tasks. It is allowed an average of one CPU worth of time under its runtime quota and is placed on a host with four otherwise idle CPUs. A dashboard may report idle capacity at the host while the worker still stalls during its busiest intervals. Verify the per-container throttle counters alongside throughput and queue time. A scheduling reservation, a hard CPU quota, and contention from neighboring work answer different questions. Increasing the replica's CPU allocation can help if throttling sets the pace. It will not fix a dependency that serializes all work inside one database transaction.
+
+Memory deserves a similar exercise. Suppose a process uses roughly 160 MiB for application allocations and another 110 MiB in file-backed working data. A limit of 256 MiB does not mean it has 96 MiB spare. Application working-set measures, container accounting, and reclaimable cache cover different populations. In your own test environment, vary the workload and compare the application's allocation statistics with the container's memory events and actual throughput. On cgroup v2, record memory events and distinguish a high threshold that induces reclaim and throttling from a hard maximum. Save the exit reason when a process disappears. Similar symptoms can come from the process choosing to stop, from a container runtime action, or from memory enforcement. See [the kernel cgroup v2 documentation](https://docs.kernel.org/admin-guide/cgroup-v2.html).
+
+## Check startup, readiness, and shutdown separately
+
+Using the time it takes the container process to appear as your performance measure will miss warmup and dependency checks. In an illustrative exercise, process startup takes 0.2 seconds, the dependency connection takes 1.8 seconds, and warming a local index takes 3.0 additional seconds. The first eligible request arrives after about five seconds if those stages run in order. Changing the process launcher to save 0.1 seconds does little for the time users wait. Measure from a defined creation event to the first successful request through the real serving path. Log the milestones so the team can see where startup time went.
+
+Exercise termination with an in-flight request. Observe what the process receives, how long it stops accepting new work, and whether it can finish or hand back outstanding work before the runtime shuts it down. If your service starts child processes, verify that the container's init or entry process forwards signals and reaps exited children as intended. Set the termination allowance based on actual behavior. A larger allowance will not help an application that ignores the signal. Test with the exact packaged process, because an entrypoint wrapper can change signal delivery.
+
+## Compare options using equal workload assumptions
+
+Compare a container, a VM, and a stronger isolation runtime under the same successful workload and durability requirements. Use matched versions, connection behavior, data sets, and the same observation intervals. For a cold trial, account for image or disk transfer and for prerequisites that a warm trial keeps loaded. Track requests completed at the required latency alongside infrastructure usage and operator work. Report the underlying host setup. A container running inside a developer desktop's Linux VM adds host and VM effects to desktop measurements. Those figures will not directly characterize a Linux production fleet.
+
+Before selecting a runtime for untrusted workloads, distinguish the access the process has from the isolation boundary it shares. Verify how identities map to host privileges and what volumes or control-plane services are exposed. An application running as an unprivileged user with minimal mounts is a useful control. It does not remove the requirement to update the host and configure workload separation. Use the boundary and threat model to choose the deployment architecture. Then rerun the application measurements with that architecture in place. The [Open Container Initiative Runtime Specification](https://github.com/opencontainers/runtime-spec/blob/main/config-linux.md) documents how Linux runtime configuration expresses namespaces, resources, and security settings.

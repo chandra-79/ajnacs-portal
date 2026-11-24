@@ -91,3 +91,40 @@ Platform engineering investment requires ongoing justification to engineering le
 The platform team should be able to quantify the engineering hours saved through self-service and automation. If 50 services onboard per quarter and each onboarding takes 8 hours less than before the platform, that is 400 engineering hours per quarter — roughly 2.5 engineering months of capacity returned to product work. That is the business case in terms leadership can act on.
 
 Platform engineering succeeds when it is invisible to the developers who benefit from it — when deploying a service is so effortless that nobody thinks about the infrastructure underneath. The measurement framework is what makes that invisibility legible as value.
+
+## Put a measurement contract beside every metric
+
+Use a short specification with the unit of analysis, event source, eligibility rule, numerator, denominator, window and reporting owner. In a platform pilot, a service, a recurring workflow run and a survey respondent are different units. An organization that counts all workflow executions can give a frequently deployed team more weight than several slower teams. This may suit a question about pipeline load. For onboarding, use one row per eligible service or request and record the owning team, first accepted timestamp, deployment environment, and evidence of a qualifying deployment.
+
+| Measure | Denominator and evidence | Decision it supports |
+| --- | --- | --- |
+| Timely onboarding completion | Eligible requests with enough follow-up and policy-verified deployment events | Whether the target experience reaches enough teams |
+| Platform support burden | Eligible requests with human work logged in a defined period | Whether a change moves work into platform support |
+| Adoption among eligible teams | Eligible teams with independently verifiable use | Whether the platform reaches its intended audience |
+| Application delivery performance | Eligible service deployments and changes under the published definitions | Whether service delivery speed and stability changed |
+
+Ask a second person to reproduce one number from event records. Document how duplicates, retries, cancelled work, missing services and changed timestamps are handled. For delivery performance, group by service or an equivalent independently deployed workload and use the current DORA definitions for the dated report. Record outages unrelated to a deployment in the workload's reliability review. [DORA software delivery performance measures](https://dora.dev/guides/dora-metrics/)
+
+## Keep unsuccessful journeys in the comparison
+
+Set a fixed follow-up period before starting. In an illustrative 10-business-day comparison, the prior process handles 24 eligible services and 21 complete. The pilot handles 24 and 18 complete. Among completers, median time falls from 16 to 10 elapsed working hours. The completion rates are 87.5% and 75%, a decrease of 12.5 percentage points. Both numbers can be true. The pilot may have improved smooth-path experience while making common exceptions harder to resolve.
+
+Tag unfinished records as awaiting access, awaiting approval, failed verification, abandoned, or unknown. Keep cases that join at the end under follow-up until their full window has passed. Report incomplete evidence as its own category instead of assuming missing timestamps imply failure or success. If teams intentionally opt out after starting, count them in the eligible cohort and report the reason separately. Exclusion is appropriate only when the predefined eligibility rule shows the request was never in scope.
+
+Review which applications are comparable. A production rollout requiring data approval and a staging deployment with synthetic data have different constraints. Compare them separately and hold operational rules constant where possible. Log other changes in the same period such as an identity migration, a platform outage or a major staffing change. A before-and-after contrast with those changes cannot assign an observed difference to the platform alone.
+
+## Estimate capacity using observed work
+
+Separate elapsed time from active effort. An approval queue can shrink by a day while reviewer effort stays constant. A task can also move from application developers to platform engineers. For a fictional month, a reviewed sample estimates four hours of active application effort per eligible onboarding before the change and two afterward. Across 30 comparable onboardings, the gross application opportunity is 60 hours. Platform operations add 18 hours of routine support and 10 hours of recurring maintenance. For the recurring work in this simplified calculation, approximate net time returned is 32 hours. Show one-time implementation costs and avoid treating reclaimed time as immediate cash savings.
+
+Publish the inputs and a low and high estimate if the active time data comes from recollection or small samples. Test how the result changes when rare but expensive requests are included. Include time spent by the supplier, product team and on-call if the workflow creates or removes routine work for them. When participants log activity, explain which categories are for understanding the process and keep individual measurement out of performance assessment.
+
+A useful monthly chart puts counts of completed and incomplete requests next to support time per eligible request. Annotate product and policy changes. Health checks follow the same principle. For an example target on image pulls, measure successful eligible pulls within a user-relevant threshold over the window and distinguish platform errors from invalid producer requests using documented rules. Keep outages in the actual developer journey visible even when the cause lives in a dependency. [Google SRE Workbook on implementing SLOs](https://sre.google/workbook/implementing-slos/)
+
+## Translate the scorecard into one next test
+
+Segment slow completed journeys by workflow and by reason for waiting. Pick a time-consuming category with enough observations for a fresh cohort. If approval creates a bottleneck, compare queue wait and reviewer minutes after a narrowly scoped workflow change. Keep the same control requirements and record any failed mandatory checks. If access failure causes abandonment, exercise the access prerequisites with a developer who is new to the tooling before widening the pilot.
+
+Report adoption with the eligible population and response rates beside survey scores. Follow up with respondents who experienced both fluent and blocked workflows. A sample composed mostly of template maintainers can miss the problems seen by new teams. Ask about a task the developer just attempted and request the specific point where they became blocked. Then confirm that the next proposed intervention has a measurable completion condition.
+
+Record who owns the next test, which services are included and what evidence would reverse the decision. Repeat the checks after modernization of shared runners, policies or runtime contracts. The documentation for the next reader should include what was tried, under which operating conditions, and which changes should be evaluated separately. [DORA platform engineering guidance](https://dora.dev/capabilities/platform-engineering/)

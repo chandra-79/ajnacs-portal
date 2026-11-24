@@ -234,7 +234,7 @@ for (const a of kept) {
   const slug = importedSlug(a, slugify(a.file.replace(/\.mdx?$/, "")), collisions, PRIOR);
   const prior = PRIOR.get(slug);
   if (prior) keptDates++;
-  if (prior?.editorialRevision) {
+  if (prior?.editorialRevision || prior?.depthRevision) {
     await access(path.join(OUT, prior.section, `${slug}.md`), constants.R_OK);
     manifest.push(prior);
     continue;
@@ -274,7 +274,7 @@ for (const a of kept) {
 // Editorial versions are Ajna's source even if the imported file is renamed or removed.
 const retainedSlugs = new Set(manifest.map(record => record.slug));
 for (const prior of PRIOR.values()) {
-  if (!prior.editorialRevision || retainedSlugs.has(prior.slug)) continue;
+  if ((!prior.editorialRevision && !prior.depthRevision) || retainedSlugs.has(prior.slug)) continue;
   await access(path.join(OUT, prior.section, `${prior.slug}.md`), constants.R_OK);
   manifest.push(prior);
 }

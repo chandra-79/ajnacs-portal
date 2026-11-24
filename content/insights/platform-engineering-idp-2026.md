@@ -27,6 +27,30 @@ Enter one item per eligible service. Use elapsed hours for completions and `open
 
 **Illustrative measurement.** The worked data below is synthetic. It deliberately shows faster successful deployments alongside fewer completions. Track follow-on delivery performance separately with measures such as DORA’s change fail rate and failed deployment recovery time. Use the [toil guide](/insights/sre-toil-reduction/) to account for recurring support work that moves between teams.
 
+## Define what the pilot considers complete
+
+Write one completion rule the teams can apply without interpretation. For an illustrative staging pilot, the declared team owns the repository, a pinned build artifact has passed the mandatory checks, a runtime revision serves an expected health response, and the service record has an owner and working runbook link. Capture the start and completion timestamps from the systems that accepted the request and deployed the artifact. Validate clock and time zone handling before comparing durations. Keep unsuccessful requests in the cohort, including cases where instrumentation recorded a submission but the application failed to deploy.
+
+| Journey stage | Evidence to collect |
+| --- | --- |
+| Request accepted | Eligible request and start time |
+| Artifact built | Immutable artifact identifier and pipeline result |
+| Policy evaluated | Required checks and recorded decisions |
+| Deployment verified | Target, deployed revision and synthetic response |
+| Service handed off | Owner, support contact and recovery instructions |
+
+## Read the timing and completion results together
+
+In a fictional follow-up, six of eight ticket requests complete within the window, with a median of 18 hours among completions. Five of eight self-service requests complete, with a median of 10 hours among completions. Completion falls from 75% to 62.5% despite the faster completed path. If two incomplete self-service requests waited on unresolved permissions and one never provided an owning team, prioritize testing an early permission check and an actionable request-validation message. Keep the same required controls. Review the next cohort on the same follow-up interval and publish explicit counts alongside median durations.
+
+Log platform effort in minutes per eligible request. If the ticket path consumed 240 support minutes and the pilot 160, the observed averages were 30 and 20 minutes per request. Report this comparison alongside the completed and incomplete counts. Record maintenance time separately so an initially manual pilot can distinguish support from investments in the next version. [CNCF Platforms White Paper](https://tag-app-delivery.cncf.io/whitepapers/platforms/)
+
+## Exercise failure before opening the path to more teams
+
+In a safe environment, test a missing declaration, a permission rejection, an unavailable dependency and a retry after the runner stops. This exposes whether developers receive next steps and whether the platform repeats work it already completed. Record events under a stable request ID so that retry attempts do not inflate adoption. Verify which stage an observer can reach from the ID, how application owners can see and report a failure, and who restores the path when the platform is the failing dependency.
+
+Close the pilot by deciding which workloads are eligible for the next version. Product teams at a different readiness level may need separate coverage. Compare delivery performance at service level once teams have a production deployment history. Keep these measures separate from initial time to a qualifying deployment so repeat delivery and learning the initial workflow are both visible. [DORA delivery performance measures](https://dora.dev/guides/dora-metrics/)
+
 ## References
 
 - [CNCF · Platforms White Paper](https://tag-app-delivery.cncf.io/whitepapers/platforms/)

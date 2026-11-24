@@ -140,3 +140,35 @@ Self-service success is measured by:
 - **Developer satisfaction**: quarterly survey of application teams on platform usability
 
 The escape hatch rate is the most honest signal. If 40% of new infrastructure is being created directly through the cloud console or raw Terraform, the self-service offering is not meeting developer needs. Understand why before building more features.
+
+## Give a request a durable lifecycle
+
+A provision command may return when the platform accepts the work, minutes before the underlying resource is useful. Return a durable request ID and make status available from the interface the caller used. The state transitions should distinguish validation, authorization, provisioning, verification and completion. Report which check failed and who owns the next action. If the operation uses credentials, expose a reference through the approved secret mechanism and avoid printing secret material into build and support logs.
+
+In a fictional development environment workflow, a request has the service identity, environment, module version and caller-generated retry key. The platform validates ownership and inputs, records the desired change, and assigns a provisioning runner identity. A worker can safely restart after a timeout because it can look up the existing request and reconcile its recorded state. A repeated request with the same key can return the original receipt. A different payload with that key signals a caller error requiring resolution. Capture concurrent requests for the same target in the test suite even if their keys differ. State locking can protect operations on a shared Terraform state where the backend supports it. The request lifecycle still needs rules for duplicate requests and for resources that already exist. [Terraform state locking](https://developer.hashicorp.com/terraform/language/state/locking)
+
+## Prove that provisioned means usable
+
+Define completion from the application team's perspective. A resource ID alone leaves open whether the intended workload can reach it, whether backup is enabled and whether access is limited as designed. Add one automated check for each guarantee the platform exposes. Record outcomes alongside the requester, module version, policy version, and owner. Keep evidence that can be shared separate from any configuration values that carry credentials.
+
+| Promise | Verification in a safe test environment |
+| --- | --- |
+| Resource exists at approved scope | Query the expected resource by the assigned identifier |
+| Workload can reach it | Run a bounded application-level health check using its test identity |
+| Ownership and cost allocation are visible | Compare the registered owner and allocation fields against inventory |
+| Workload can recover | Verify the backup schedule and run a separate restore rehearsal against synthetic data |
+| Resource will be reclaimed | Review the expiry and exercise cleanup for a disposable instance |
+
+Start with a resource type that has an easy cleanup path and no real data. Test a failure after provisioning and before verification. The status should acknowledge that something exists even though the request failed. For a new empty sandbox, automatic cleanup may suit the contract. For a resource that might already contain data, route to its owner with the recorded resource status. Test whether the next attempt attaches to the surviving resource safely rather than allocating another.
+
+## Measure where the work went
+
+A lower help-ticket count can hide repeated retries or higher platform maintenance. For an illustrative cohort of 50 eligible requests, 36 complete within the target time without assistance, five complete late without assistance, four complete with help, and five fail or remain incomplete. Report 72% timely self-service completion and 82% overall self-service completion, with a denominator of all 50. Record the disposition of the other nine requests and report the follow-up cutoff. A request that eventually succeeds can still represent a missed target.
+
+Review retry counts and queue wait alongside tickets. If eight individuals retry a failed page several times, group events by operation ID and keep event volume as a secondary measure. Compare the flow against the prior process for the same request types and risk tier. Record how much time the service owner spends verifying the resource and how much time platform staff spends maintaining and repairing the workflow. A shorter wait can improve the user experience even while the team is still learning whether total staff time fell.
+
+## Design for the lifecycle after creation
+
+Every template needs a documented path to change ownership, move to a supported version and retire its resources. Add a visible expiry and reminder policy to short-lived environments. Give long-lived production resources a separate review and state ownership. When a request creates artifacts in several systems, the service record should link the repository, pipeline, cloud resource and backup owner or provide a way to locate them. Run periodic inventory checks for resources whose owner is gone or whose lifecycle no longer matches the approved configuration.
+
+Pilot version updates with a small group and verify an older supported workload. The platform should show who must act when a version is retired and what action they need to take. Confirm that an engineer can export or recover business data before scheduling a destructive change. Document the outcome of the pilot and update the template documentation when a request fails in a way that will affect the next team. [CNCF Platforms White Paper](https://tag-app-delivery.cncf.io/whitepapers/platforms/)

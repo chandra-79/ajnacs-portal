@@ -35,7 +35,7 @@ The solution is to decompose "rename a column" into a sequence of backward-compa
 6. Deploy code that only uses the new column
 7. Drop the old column (now unreferenced)
 
-This takes longer. It requires multiple deployments. It's the only approach that doesn't carry downtime risk.
+This takes multiple deployments because two representations coexist while readers and writers migrate. The approach reduces avoidable incompatibility. Rehearse lock acquisition, resource headroom, and recovery before promising uninterrupted operation.
 
 ## The expand/contract pattern
 
@@ -57,32 +57,25 @@ Backfilling a column on a 50-million-row table with a single UPDATE statement wi
 - Potentially cause replication lag
 - Potentially trigger autovacuum contention on PostgreSQL
 
-The correct approach is batched backfill:
+Use a runner that commits one bounded keyset batch at a time. A plain loop without a commit holds one transaction, even if it sleeps between updates. Start with a recorded high-water key. The example assumes an immutable positive integer key and a derived value that cannot be NULL. Bind the cursor, high-water key, and batch size from the client rather than interpolating text.
 
 ```sql
--- PostgreSQL batch backfill with row-level targeting
-DO $$
-DECLARE
-  batch_size INT := 10000;
-  last_id BIGINT := 0;
-  max_id BIGINT;
-BEGIN
-  SELECT MAX(id) INTO max_id FROM orders;
-  WHILE last_id < max_id LOOP
-    UPDATE orders
-    SET new_column = derive_value(old_column)
-    WHERE id > last_id AND id <= last_id + batch_size
-      AND new_column IS NULL;
-    last_id := last_id + batch_size;
-    PERFORM pg_sleep(0.1); -- brief pause to reduce contention
-  END LOOP;
-END $$;
+WITH batch AS (
+    SELECT id FROM orders
+    WHERE id > $1 AND id <= $2
+    ORDER BY id LIMIT $3
+), applied AS (
+    UPDATE orders AS o
+    SET new_column = derive_value(o.old_column)
+    FROM batch
+    WHERE o.id = batch.id AND o.new_column IS NULL
+    RETURNING o.id
+)
+SELECT (SELECT MAX(id) FROM batch) AS through_id,
+       (SELECT COUNT(*) FROM applied) AS updated;
 ```
 
-Key parameters to tune:
-- **Batch size**: 1,000–50,000 rows depending on row width and index contention
-- **Sleep interval**: 50–200ms to let replication catch up and reduce lock contention
-- **Idempotency**: the `AND new_column IS NULL` guard means the script can be rerun safely if interrupted
+Commit before advancing a durable checkpoint, and stop when the batch has no keys. A replay after a missed checkpoint is safe only if the update guard and writer contract still hold. Sleep between committed transactions. Test with production-like concurrent writes and monitor lock time, replica lag, and batch duration. Reconcile the backfill with rows touched after the high-water key and handle nullable target values with an explicit progress marker.
 
 Track progress with a dedicated monitoring query:
 
@@ -96,14 +89,7 @@ FROM orders;
 
 ## Online schema change tools
 
-For MySQL, Percona's `pt-online-schema-change` or GitHub's `gh-ost` handle the shadow table pattern automatically:
-
-- Create a shadow table with the new schema
-- Set up triggers to replicate ongoing changes
-- Copy existing rows in batches
-- Perform a near-instant table swap when caught up
-
-`gh-ost` is generally preferred for production use because it uses binary log streaming rather than triggers, which avoids the write amplification problem with trigger-based approaches on high-write tables.
+MySQL tools can copy to a shadow table while the primary table remains live. [Percona’s pt-online-schema-change](https://docs.percona.com/percona-toolkit/pt-online-schema-change.html) uses triggers to capture concurrent changes. [GitHub’s gh-ost](https://github.com/github/gh-ost) streams changes from the binary log. Both copy existing data in bounded batches before cutover. A final table swap must acquire locks. Test lock acquisition, foreign keys, triggers, replication topology, throttling, and restart behavior before choosing either tool.
 
 For PostgreSQL, `pglogical` replication or manual expand/contract is the standard approach. The `pg_repack` extension handles CLUSTER and VACUUM FULL equivalents online, but schema changes still require the manual pattern.
 
@@ -124,7 +110,7 @@ The migration phases for cross-database moves:
 3. **CDC (Change Data Capture)**: ongoing replication of changes during cutover preparation. AWS DMS, Debezium, or Striim are common options.
 4. **Cutover**: stop writes to source, verify CDC has caught up, redirect application connections to target, verify, open writes to target.
 
-The cutover window is the exposure period. For most production systems, a 15–30 minute cutover window (stop writes, verify, redirect, verify again) is achievable with proper preparation.
+The cutover window is the exposure period from stopping source writes to verifying healthy writes on the target. Treat the duration as a workload-specific estimate. Include lag drain, lock acquisition, connection recycling, application verification, and timed abort points in a rehearsal at representative scale.
 
 ## Testing the rollback
 
@@ -137,3 +123,33 @@ The rollback plan that hasn't been tested is not a rollback plan. Before any sig
 The most common rollback failure mode: the rollback assumes the old schema still exists, but the contract phase already removed it.
 
 *Working through a database migration with a tight cutover constraint? The sequencing of expand/contract phases is where most of the risk sits. [Happy to think through the specific trade-offs.](/contact/)*
+
+## Define a migration unit that can be reconciled
+
+Start with a bounded table, key range, or tenant cohort and document who can write to it during each step. For example, an order migration could leave payment state, customer records, and fulfillment in their established systems while moving only the order representation. Use immutable order identifiers to compare outcomes. State which fields permit a deliberate transformation, which fields must be equal, and which non-row outcomes must also agree. A notification or inventory reservation is an effect that row equality alone cannot prove. Include updates, deletions, changes arriving out of order, and records with no matching source object in the reconciliation design.
+
+Define a consistent cut before comparing databases. A live scan of the source against a later scan of a target can report legitimate transactions as errors, or miss transactions that were skipped by both scans. Use a documented snapshot and a replay checkpoint supported by the mechanism in use. Compare counts and grouped aggregates first. Match values for keys that differ, using canonical type, units, timestamp precision, and handling of null. Retain a small immutable report rather than a bulk copy of customer data. Use checks that detect extra target rows as well as missing rows. A global checksum may help narrow a mismatch but cannot explain a transformed decimal or an out-of-order delete.
+
+## Commit each batch and establish a stop rule
+
+A loop inside one transaction still holds the transaction open even when it updates small ID ranges and sleeps between them. In PostgreSQL, the example loop above has no commit between ranges. It therefore does not provide committed batching. Run one transaction per batch from an orchestrator or design a routine with transaction control supported by the deployment context. Persist a progress checkpoint after successful commit, or in the same database transaction where appropriate. An interruption may cause the runner to repeat work, so the update should be safe on replay. Use keyset progress instead of assuming identifiers are densely packed.
+
+A null condition is safe as a replay guard only when null unambiguously means incomplete and a concurrent writer cannot make the derived value stale. Some transformations intentionally produce null. Those need a separate marker or derivation version. For rows concurrently changed or deleted, pick an explicit policy, such as a version-aware update or ongoing synchronization by the authoritative writer. Test repeated runs in staging with inserts, updates, and deletions between batches. Verify that rows whose material fields changed during the copy are updated exactly as the business requires. Test an interrupted transaction, an interruption after commit but before checkpoint persistence, and a replay of a batch that already committed.
+
+Use observed pressure to raise or lower batch size. In an illustrative trial, 10,000 rows complete every four seconds, implying 2,500 rows a second and 100 minutes to process 15 million rows if the rate holds. Suppose foreground traffic leaves 40 MB per second of spare replay capacity and the batch job emits 55 MB per second of transferable changes. The resulting backlog grows about 15 MB per second at constant rates. The nominal finish time then fails to include catch-up. Reduce the copy rate, pause the job during peaks, or provision verified spare capacity. Add a stop rule for query latency, blocked transactions, replica lag, and retention volume. Verify what the stop actually cancels and check for background work that continues after the runner exits.
+
+## Treat the write switch as a sequence of durable milestones
+
+Make the decision conditions visible to operators. Stop or drain the old writers, persist their final durable position, wait until the target can prove it applied the required changes, run approved reconciliation, and transfer write authority. Verify a new transaction with a traceable test key through the real consumer path before opening the whole cohort. Confirm behavior of lingering connection pools, asynchronous jobs, and scheduled exporters. A connection string change does not revoke old permissions or terminate every existing session. Give one person control of the transition and make each stage report its actual result instead of returning unchecked success when a request to change state is accepted.
+
+Native PostgreSQL logical replication has version-specific restrictions. For PostgreSQL 18, schema changes and sequence state need separate handling. Record which schema definition and publication filters were used, and verify the affected sequence values before new inserts use them. In a cross-engine migration, test the exact comparison and sorting rules the application relies on, especially decimals, padded text, datetime precision, and collation. A successful sample import does not demonstrate equivalence for dates during a timezone transition or a historical identifier format. Keep examples of known differences and decide which transformations are acceptable before the cutover window opens.
+
+## Separate reversing traffic from reversing storage effects
+
+Before the target accepts new writes, returning consumers to the existing authoritative source can be straightforward. After the first target-only commit, rollback may require preserving or replaying new results. A design does not get that property from a route flag. Decide how those new records, downstream effects, and idempotency keys would be returned to the old system or otherwise retained. A repair process that handles new rows but omits deletes or notifications can produce inconsistent outcomes even if all keys exist in both systems. Exercise a controlled revert after creating a small authorized set of representative operations and prove what customers would observe.
+
+Record the last point where traffic can be routed back without reconciliation. Also record a separate point after which a restore or forward repair is the approved response. If the plan depends on a reverse replication stream, prove it can preserve order, catch up, and operate under failure with both writers fenced as needed. Run the entire rehearsal with a cold connection pool and an on-call responder who was not involved in implementation. Save durations, test scope, outstanding risks, and exact conditions that would abort. Treat illustrative switch windows as capacity planning inputs. Actual time includes the traffic pause, latest replay, correctness checks, operational authorization, and restoration of the representative user path.
+
+[PostgreSQL transaction management in PL/pgSQL](https://www.postgresql.org/docs/18/plpgsql-transactions.html) and [PostgreSQL 18 logical replication restrictions](https://www.postgresql.org/docs/18/logical-replication-restrictions.html)
+
+For follow-up, order the verification queries by cost. A lightweight count can run every minute during replay. A full comparison that competes with replication can wait until the expected source and target cut is stable. Write the schedule into the runbook and set realistic time limits on the verification steps themselves.

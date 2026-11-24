@@ -98,3 +98,41 @@ If the answer is "our event publishing is unreliable" — outbox.
 A pattern applied because it's architecturally interesting, not because it solves a specific problem, adds complexity without benefit. The simplest implementation that meets the requirements is usually the right one.
 
 *Working through a distributed systems design challenge? [Always happy to think through trade-offs.](/contact/)*
+
+## Start with the invariant the product depends on
+
+Take a hypothetical order workflow where a customer can authorise payment while a warehouse reserves stock. Write down the properties the system must preserve. The confirmed order must have a valid reservation. A customer should never be charged twice for the same order. The support team needs to know when a payment is awaiting reconciliation. Put the team that can enforce each rule next to it in the design. A local database can enforce the uniqueness of an order record. Confirmation across an external payment service needs a way to identify and verify the outcome before fulfilling.
+
+Draw the boundary around each durable write and mark any communication that follows it. A synchronous API response is observable by the caller but it remains possible for the client to lose it. An event confirms whatever its producer has actually committed, and its consumer may see duplicates or delays. Build a test matrix that crosses these boundaries. For each one, check what callers see before, during and after a failure. Count duplicates, unknowns and delayed confirmations separately.
+
+## Keep CQRS proportionate to the difference between reads and writes
+
+You can apply command and query separation in one process and one database. For one overloaded summary query, try an appropriate index, a separate query model or a materialised view before adding a new store. Teams can move projections out later if they need an independently scaled or differently shaped read path. Once there is a separate projection, put its freshness in the contract and identify how readers handle updates that have not appeared yet. [Azure CQRS pattern](https://learn.microsoft.com/en-us/azure/architecture/patterns/cqrs)
+
+Suppose a dashboard projection receives 400 accepted changes per second for five minutes and applies 350 during that period. It accumulates 15,000 changes. When new traffic drops to 200 changes per second and it keeps applying 350, the backlog takes 100 seconds to clear under the illustrative rates. An ordered offset gives a position, while the age of the oldest relevant pending change describes a different consequence. Correlate both with publication time and verified data. Show a visible pending state that points to the authoritative order when the product needs a recent confirmation.
+
+Include a rebuild strategy. Start from a named snapshot or a source position, replay to a known watermark and check record counts and the underlying business totals. Catch up changes written during the rebuild before switching the reader. Rehearse recovery while the old projection remains available. Check that consumer offsets and the comparison are scoped to the same schema and partition layout.
+
+## Design compensation around business semantics
+
+A compensation is a new business action. It may have a cost and may complete long after the request times out. Refunds can post on a different schedule from capture, and releasing an inventory hold should verify that it has not already been fulfilled. Identify the first action that cannot be reversed within the needed time, also called a pivot in some saga designs. Prefer validating reservations and permissions beforehand. After the pivot, recovery may mean progressing to a consistent final outcome, compensating where possible or sending the case to an operator. [AWS saga patterns](https://docs.aws.amazon.com/prescriptive-guidance/latest/cloud-design-patterns/saga-patterns.html)
+
+Represent the next legal actions explicitly in a workflow state. Give execution and compensation separate identifiers so a retried refund can be recognised without suppressing a legitimate second operation. On a timeout from an external service, reconcile before repeating an irreversible action. In a fixture, test a payment that completed but never returned, a reservation that expired before confirmation and a compensation that needs human review. Judge the result from the stored workflow and the external ledger, including whether support can explain the state accurately.
+
+Record the backlog of workflows waiting for a transition, the age of the oldest one, the count of reversals and the number of cases needing intervention. For choreography, rebuild the history by following one stable workflow ID across its events. For orchestration, ensure the coordinator’s durable state can be recovered by another operator. The choice affects what is easy to observe and repair. Test a restart in both cases before adopting one broadly.
+
+## Treat event replay like a production release
+
+Define which events are business facts and give each type a version. Test a replay using older records, unknown optional fields and repeated events. A consumer may use upcasting or support several schema versions at once. A replay that reconstructs a read model must avoid repeating notifications, charges or other external side effects. Set a clear boundary between rebuilding derived state and requesting new work. Verify a replay against a stable set of expected totals before relying on it for recovery. [Azure Event Sourcing pattern](https://learn.microsoft.com/en-us/azure/architecture/patterns/event-sourcing)
+
+Snapshots reduce work only if they can be understood by the restoring code and reconciled against later events. Document their format, position and checks, and run a restore from a prior snapshot on a schedule appropriate to the service. Handle retained sensitive fields deliberately. An event store needs access control, a data retention policy and a way to fulfil obligations to customers. An audit table or ledger may meet a narrower history requirement with fewer moving parts when replay of the entire workflow has no product value.
+
+## Verify delivery at the point where the event matters
+
+The outbox row establishes that a state change produced a durable intent to publish. Record publish attempts, delivery age and the applied effect for critical consumers. Imagine 40,000 orders written during a worked example. The publisher reports 40,040 accepted deliveries due to repeated attempts, and the projection applies all 40,000 unique order IDs. The goal is satisfied for this dataset only if the relevant values also match, such as amount, currency and status. If three IDs are missing, identify whether the publisher skipped them or a later consumer failed. A dashboard showing only broker throughput cannot provide that evidence. [AWS transactional outbox pattern](https://docs.aws.amazon.com/prescriptive-guidance/latest/cloud-design-patterns/transactional-outbox.html)
+
+Scope ordering to the operation that depends on it. A projection may need one order’s updates to arrive in sequence, while separate orders have no shared invariant. Event IDs support replay and deduplication. Revisions or expected versions can also detect an unexpected sequence. Decide where to defer, rebuild or alert, and keep the record long enough for someone to resolve it. Exercise duplicate delivery after a consumer restart and confirm any deduplication record survives it.
+
+At the design review, attach tests to the decisions about where each pattern is used. Include a plan to withdraw a candidate if its delivery lag, operational cost or failure modes exceed your tolerances. Publish the test inputs, result and limitations beside the architecture. An implementation choice should follow from the workflow’s needs and what the team has demonstrated it can operate.
+
+For the first release, pick one representative workflow and record its behaviour in an agreed test ledger. Give support a lookup by order identifier, provide finance with a reconciliation view and ask each service owner to verify the transitions it owns. Repeat with the operator who would respond after hours. Review how often provisional states or manual repairs occur before expanding the workflow to independent services.

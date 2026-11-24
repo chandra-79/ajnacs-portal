@@ -22,9 +22,9 @@ Further reading: [Azure Well-Architected Framework, reliability targets](https:/
 
 The Azure definition of reliability covers fault tolerance, recovery, and the capacity to maintain acceptable behavior under adverse conditions. The key design decisions:
 
-**Availability Zones**: Azure regions with availability zones contain three physically separate datacenters with independent power, cooling, and networking. Zone-redundant configurations (placing resources across at least two zones) protect against single-datacenter failure. For production workloads, zone-redundancy on compute (VMSS with zone spreading), storage (ZRS storage accounts), and databases (zone-redundant SQL Managed Instance, zone-redundant Azure Cache for Redis) is the baseline.
+**Availability Zones**: In supporting Azure regions, availability zones physically separate groups of datacenters. Check the relevant service and tier for zonal and zone-redundant options in the selected region. Zone-redundant configurations (placing resources across at least two zones) protect against single-datacenter failure. For production workloads, zone-redundancy on compute (VMSS with zone spreading), storage (ZRS storage accounts), and databases (zone-redundant SQL Managed Instance, zone-redundant Azure Cache for Redis) is the baseline.
 
-**Service-level targets drive architecture choices**: before choosing a reliability configuration, be explicit about the target availability. 99.9% availability tolerates roughly 9 hours of downtime per year. 99.99% tolerates 53 minutes. The architecture choices — and the cost premium — scale significantly between these targets. Multi-region active-active deployments required for 99.99% cost substantially more than zone-redundant single-region deployments at 99.9%.
+**Service-level targets drive architecture choices**: before choosing a reliability configuration, be explicit about the target availability. 99.9% availability tolerates roughly 9 hours of downtime per year. 99.99% tolerates 53 minutes. The architecture choices — and the cost premium — scale significantly between these targets. A workload's availability target informs redundancy choices alongside outage scenarios and recovery behavior. A particular percentage does not prescribe active-active deployment. Price the options that meet the workload's tested objectives.
 
 **Recovery targets need to be tested**: Recovery Time Objective (RTO) and Recovery Point Objective (RPO) are design parameters, not measurements. The actual recovery time under realistic failure conditions is only known after testing. Azure Chaos Studio provides controlled fault injection for testing recovery paths without production incidents.
 
@@ -54,7 +54,7 @@ The WAF security pillar covers identity, data protection, network security, and 
 
 **Azure Monitor and Log Analytics**: centralized logging via Log Analytics workspaces with diagnostic settings on all resources. Application Insights for distributed tracing across microservices. Alert rules on key metrics with routing to appropriate on-call channels. Workbooks for operational dashboards.
 
-**Deployment practices**: blue-green or canary deployments for high-traffic services. Azure Deployment Slots for App Service provide zero-downtime swaps with automatic traffic shifting. Feature flags (Azure App Configuration) to decouple deployment from release.
+**Deployment practices**: blue-green or canary deployments for high-traffic services. Azure App Service deployment slots support warm-up and routing changes during swaps. Test application readiness, slot settings and durable-state compatibility before establishing a workload-specific downtime expectation. Feature flags (Azure App Configuration) to decouple deployment from release.
 
 ## Performance Efficiency
 
@@ -67,3 +67,41 @@ The WAF security pillar covers identity, data protection, network security, and 
 The WAF Review (available in the Azure portal and via the Well-Architected Review assessment tool) is useful for structured evaluation of existing architectures against these pillars. The output is a prioritized list of recommendations with effort estimates — a starting point for technical debt backlog, not a definitive audit.
 
 *Reviewing an Azure architecture against the WAF pillars or preparing for an enterprise cloud assessment? [Happy to compare notes on the high-impact areas.](/contact/)*
+
+## Start the review with a business journey and its dependencies
+
+Choose a single critical operation and define what successful completion means. For an illustrative order placement service, the API should accept a valid order, persist the new record once and return a confirmation within the agreed limit. Map every dependency between the client and that result. Include the network entry point, identity, application compute, durable storage, messaging and telemetry. Mark dependencies required for customer service separately from those needed for diagnosis and recovery. Restore and rollback plans should name the same dependencies they expect to change.
+
+| Pillar | Question for this journey | Evidence to collect |
+| --- | --- | --- |
+| Reliability | How long can order intake be unavailable and what state can be lost? | Timed recovery with data reconciliation |
+| Security | Which identities can read or change an order? | Scoped assignments and authorized test results |
+| Cost optimization | What does it cost to complete an order at normal and peak volume? | Billing allocation and distinct successful order count |
+| Operational excellence | Can the on-call team detect and revert a failed release? | Deployment status, records and drill timeline |
+| Performance efficiency | Does peak traffic meet the latency target? | Offered and accepted load, error rate and latency distribution |
+
+Write down the assumptions before assigning improvement work. A weekly report's tolerance for delayed data will differ from an interactive payment request. Apply scores to the selected journey and date the review. Microsoft groups design guidance into five pillars and provides a workload assessment to turn the findings into next actions. [Azure Well-Architected Framework](https://learn.microsoft.com/en-us/azure/well-architected/)
+
+## Build one timed recovery decision
+
+Exercise a documented scenario in a production-like test environment with synthetic records. Choose which region or service dependency becomes unavailable and specify the signals that start the clock. Record detection, incident declaration, access and configuration checks, traffic cutover, and customer-path verification. Give an observer control of the timeline so operators can focus on recovery. Keep the customer-impact clock and internal incident-response clock in the record because they can start at different points.
+
+A fictional recovery exercise begins at 11:00 with interrupted writes. Service verification resumes at 11:24 and confirms the latest consistent order checkpoint is from 10:53. The observed recovery is 24 minutes, and the observed checkpoint gap is 7 minutes. A 30-minute recovery time objective is met by 6 minutes. A 5-minute recovery point objective is missed by 2 minutes. Read the two targets independently, then trace the gap to the underlying reason. If the restoration tool simply returns the first available replica, check replica state and write reconciliation before selecting that candidate.
+
+Rehearse deactivating the secondary and returning to the normal topology as its own work item. Include authorization to move traffic, DNS and resolver effects where relevant, access to secrets in the target region, and observability during and after failover. Confirm the business path before declaring recovery. Record any partial or degraded operation during the drill, including queued work and reconciliation. [Azure disaster recovery guidance](https://learn.microsoft.com/en-us/azure/well-architected/reliability/disaster-recovery)
+
+## Quantify the bill and capacity together
+
+Define the cost denominator before changing a SKU. For an illustrative comparison, allocate the same categories of compute, storage, network and logging to the order service in both windows. Suppose a baseline month uses USD 12,000 to complete 400,000 orders. Unit cost is USD 0.030 per completed order. A higher-volume month uses USD 15,000 and completes 600,000, or USD 0.025 per order. Spend rose 25% and unit cost fell about 16.7%. Show both measures and note what qualifies an order as completed. Exclude duplicates by business identifier and resolve credits, shared cost allocation and billing period rules the same way in both windows.
+
+Give each architecture option an explicit workload profile. Record steady-state and burst request rates, instance startup latency, resource saturation, and service calls that queue as the system scales. Measure the offered load, including requests shed or timed out, and distinguish these from successful request latency. Set thresholds for cost and performance together. If a lower-resource SKU stays within the cost ceiling but adds recovery time or substantial errors, use the pillar trade-off record to decide whether it satisfies the objective.
+
+Review regional and SKU support before proposing a change. Examples for cache tiers, database redundancy and other platform services depend on location and product family. Azure Cache for Redis has an announced retirement process, and Azure Managed Redis has its own high availability and zone support prerequisites. Validate your selected service and tier against current product documentation, and test data, client and operational compatibility if the change involves migration. [Azure Cache for Redis announcements](https://learn.microsoft.com/en-us/azure/azure-cache-for-redis/cache-whats-new) [Azure Managed Redis reliability guidance](https://learn.microsoft.com/en-us/azure/redis/plan-reliability-and-durability)
+
+## Accept an architecture change using evidence from all five pillars
+
+For each change, specify the hypothesis, owner, test, rollback trigger and revisit date. A capacity change might reduce expected timeouts and raise transfer costs. A security change might reduce permissions and block an automated recovery path that relies on the old identity. Invite the owners of both effects to the review. Document who can approve a release, and prove the on-call engineer can still respond with the normal scoped identity.
+
+Run an end-to-end rehearsal on representative traffic, then inject a controlled interruption at the affected dependency in the test environment. Check customer success, timeouts, failover permissions, diagnostic visibility and whether rollback is safe. A reaching target percentage is meaningful only with the observed load, error budget window and failure scenarios attached. A pass on one dependency does not validate every unexpected combination. Include unsuccessful exercises and unresolved limitations in the decision record.
+
+Keep a small findings log with expected impact, observed result, owner and verified date. For a cross-pillar decision, such as geographic duplication, evaluate the tested recovery benefit against the cost of separate compute, replication and maintenance alongside workload constraints. Assign practical checks to the owning team and schedule another review after a major topology, identity or provider service change. This turns the review into an operating record for the engineers who will actually run the service. [Azure Well-Architected Framework](https://learn.microsoft.com/en-us/azure/well-architected/)

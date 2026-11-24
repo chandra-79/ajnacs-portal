@@ -34,6 +34,27 @@ Set a pilot acceptance criterion in terms of your workload’s solution quality,
 
 Treat post-quantum cryptography as a separate programme. NIST finalised its first three post-quantum cryptography standards in August 2024. Inventory public-key dependencies and long-lived sensitive data so teams can plan migrations around supplier support and the time required to upgrade protocols and certificates.
 
+## Match the metric to the milestone
+
+Random circuit sampling asks a processor to draw bit strings from a distribution set by a chosen circuit. Cross-entropy benchmarking compares sampled strings with probabilities from an ideal simulation where that comparison is tractable. This tests how well hardware can track a particular distribution as circuit size and depth grow. It says little about how many reliable logical gates an application can execute. When a report estimates a classical runtime, check which numerical precision and fidelity it requires, what classical hardware and algorithm it assumes, and whether it reports a run or extrapolates one. Simulators and their implementation can improve after a hardware paper appears. [Google Sycamore experiment](https://www.nature.com/articles/s41586-019-1666-5).
+
+The Willow result answers a different engineering question. A surface code protects quantum information across data qubits, and repeated rounds of syndrome measurements supply evidence to a decoder. A comparison across code distances can show whether increasing the size of the encoded memory suppresses measured logical error in that implementation. Check the sequence length, timing, decoder assumptions, and treatment of rare correlated failures before using those rates in a resource estimate. Storing a state and operating on it have different costs. A workload may need movement or interactions between encoded patches, logical gates, state preparation, extra space for operations, and classical feedback. [Google Willow error correction experiment](https://www.nature.com/articles/s41586-024-08449-y).
+
+| Claim in a paper | Evidence to look for | Decision it can support |
+| --- | --- | --- |
+| Hardware follows the expected statistics | Circuit family, depth, sample counts, fidelity estimate, and verification method | Whether the device can reproduce a particular benchmark distribution |
+| Encoding suppresses memory errors | Error per cycle across code distances, cycle duration, wall-clock run time, and decoder configuration | Whether investing in a larger instance of the same memory is plausible |
+| A logical circuit completes reliably | Logical primitive mix, number of operations, target confidence, calibration, and discarded runs | Which subroutine merits a larger demonstration |
+| A workload benefits end to end | Fixed input, acceptance criterion, operational cost, wall-clock timing, and tuned classical comparison | Whether the technique warrants using on a specific problem |
+
+## Freeze a workload before comparing vendors
+
+Pick a small instance a classical solver can verify and a larger family that varies in one way at a time. For a manufacturing schedule, write down feasibility rules, the acceptable optimality gap, and how you will score an infeasible or missing result. Publish a fixed set of instances and a separate held-out collection for the final comparison. A team that tunes a quantum parameter circuit on the test cases can make the same evaluation mistake as a classical team that tunes solver parameters after inspecting held-out outcomes. Include model construction, transfers, compilation, calibration time attributable to the run, repeat shots, and final verification. Record queue time separately if it varies by provider.
+
+Here is an illustrative repeat-run calculation. Suppose a run has an independently measured 10% chance of returning a verified answer of the specified quality. Under an independent, stable trial assumption, 29 attempts are needed for at least a 95% chance of one success because the chance of 29 failures is about 4.7%. At 250 milliseconds per attempt, serial attempts alone take 7.25 seconds. An additional fixed four seconds of setup would raise that estimate to 11.25 seconds. A service may batch shots, and repeated attempts under one calibration may share failure modes. Measure the actual duration and repeat the experiment across calibration windows before reporting an observed reliability or wall-clock advantage.
+
+Read the results alongside their raw denominators. Publish the number of feasible instances and the quality distribution for all attempts, and show how missing entries affect aggregate time to solution. A chart can put success rate against elapsed time by instance size while marking censored runs at the declared time limit. Evidence on a small instance may justify studying a larger one. A purchasing decision needs comparable throughput, reliability, and constraints on the workload that will actually run.
+
 ## References
 
 - [Google · Sycamore random-circuit sampling](https://www.nature.com/articles/s41586-019-1666-5)
