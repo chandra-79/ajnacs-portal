@@ -9,6 +9,7 @@ import { artwork, colorFor } from "./visuals.mjs";
 import { makeRenderer, tableOfContents, headingAnchors } from "./render.mjs";
 import { staticPages } from "./pages.mjs";
 import { caseLibrary } from "./case-library.mjs";
+import { loadDeepDives, depthLinks, depthAudit, publishDeepDives } from "./deep-dives.mjs";
 import { examplesCsv, readWorkedExamples, workedExample } from "./worked-examples.mjs";
 import { localInferenceNote } from "./local-inference-note.mjs";
 import { readResearchLinks, referencesFor, referencesBlock } from "./references.mjs";
@@ -31,6 +32,7 @@ const live = manifest
   .sort((a, b) => b.date.localeCompare(a.date));
 const insights = live.filter(m => m.section === "insights");
 const notes = live.filter(m => m.section === "notes");
+const depthCatalog = await loadDeepDives();
 const examples = await readWorkedExamples();
 const researchLinks = await readResearchLinks();
 const localInference = await localInferenceNote();
@@ -105,7 +107,8 @@ for (const m of live) {
   const fieldGuide = guideBySlug.get(m.slug);
   const example = examples.get(m.slug);
   if (!fieldGuide && !example && m.date <= "2026-11-23") throw new Error(`Missing worked example: ${m.slug}`);
-  const { marked, headings } = makeRenderer();
+  const depth = depthLinks(depthCatalog.sources.get(m.slug), body);
+  const { marked, headings } = makeRenderer(depth.afterParagraph);
   let html = await marked.parse(body);
 
   const topic = primaryTopic(m.tags);
@@ -227,6 +230,7 @@ ${fieldGuide ? worksheet(fieldGuide) : example ? workedExample(example, m.sectio
 
 ${m.slug === "running-local-llm-lessons" ? localInference.html : ""}
 ${refsHtml}
+${depth.footer || ""}
 
 ${seriesItems.length > 1 && !chaptersHtml ? `<aside class="series-box" style="margin-top:3rem">
         <p class="eyebrow">Series</p>
@@ -316,7 +320,7 @@ await out("insights", page({
     <p class="eyebrow">Insights</p>
     <h1 class="h-display" style="margin-top:.8rem;max-width:18ch">Engineering, written down.</h1>
     <p class="lede" style="margin-top:1.2rem;max-width:62ch">Architecture decisions, production failures and the trade-offs behind them. Written for the people who build and run production systems.</p>
-    <div class="row insights-actions"><a class="btn" href="/field-guides/">Field guides and worksheets</a><a class="btn btn-ghost" href="/topics/">Browse topics</a><a class="btn btn-ghost" href="/follow/">Follow Ajna Insights</a></div>
+    <div class="row insights-actions"><a class="btn" href="/field-guides/">Field guides and worksheets</a><a class="btn btn-ghost" href="/topics/">Browse topics</a><a class="btn btn-ghost" href="/deep-dives/">Deep dives</a><a class="btn btn-ghost" href="/follow/">Follow Ajna Insights</a></div>
   </div>
 </section>
 
@@ -500,7 +504,7 @@ await out("field-guides", page({
     <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/insights/">Insights</a></nav>
     <h1 class="h-display">Engineering field guides</h1>
     <p class="lede field-intro">Measure recurring production work, first deployment, and the cost of delivering an order. Each guide pairs a practical decision with a worked example and its method.</p>
-    <div class="row insights-actions"><a class="btn btn-ghost" href="/follow/">Follow new guides and revisions</a><a class="btn btn-ghost" href="/field-guides/methods/">Read the methods</a></div>
+    <div class="row insights-actions"><a class="btn btn-ghost" href="/follow/">Follow new guides and revisions</a><a class="btn btn-ghost" href="/field-guides/methods/">Read the methods</a><a class="btn btn-ghost" href="/deep-dives/">Levels 2–4</a></div>
   </div>
 </section>
 <section class="publication-wrap archive-layout" aria-label="Field guides and worksheets">
@@ -530,7 +534,9 @@ for (const [rel, html] of Object.entries(staticPages({ insights, notes, seriesMa
   await out(rel, html);
 }
 
-const caseUrls = await caseLibrary(out, housePromotions);
+const caseUrls = await caseLibrary(out, housePromotions, depthCatalog.caseSources);
+const depthUrls = await publishDeepDives(out, depthCatalog, new Map(live.map(article => [`${article.section}/${article.slug}`, article])));
+await out("docs/deep-dive-coverage.csv", await depthAudit(depthCatalog, live));
 
 /* ---------- feeds and robots ---------- */
 const stamp = date => new Date(date + "T09:00:00Z").toISOString();
@@ -589,7 +595,7 @@ ${feedItems}
 </rss>`);
 
 const urls = [
-  ...caseUrls.map(url => [url]),
+  ...[...caseUrls, ...depthUrls].map(url => [url]),
   ["/follow/"], ["/field-guides/methods/"],
   ...['/', '/services/', '/insights/', '/series/', '/topics/', '/field-guides/', '/case-studies/', '/about/', '/contact/', '/notes/', '/privacy/', '/terms/', '/projects/ziggle/'].map(url => [url]),
   ...live.map(m => [`/${m.section}/${m.slug}/`, m.modified || m.date]),

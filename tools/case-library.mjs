@@ -4,6 +4,7 @@ import { page } from "./shell.mjs";
 import { headingAnchors, makeRenderer, tableOfContents } from "./render.mjs";
 import { csv, deliveryFlow, evidence, metricValue } from "./measurements.mjs";
 import { caseIllustration } from "./case-illustrations.mjs";
+import { depthLinks } from "./deep-dives.mjs";
 
 const base = "/case-studies/";
 export const simulationNotice = "Hypothetical engagement. The organisation, delivery events, and measurements are simulated.";
@@ -33,7 +34,7 @@ function readCase(raw, source) {
   return { slug, title, description, flow, metrics, markdown, reference };
 }
 
-export async function caseLibrary(out, promotions) {
+export async function caseLibrary(out, promotions, studyPaths) {
   const urls = [];
   for (const category of caseCategories) {
     const dir = base + category.id + "/";
@@ -79,8 +80,10 @@ export async function caseLibrary(out, promotions) {
       const route = dir + item.slug + "/";
       const dataPath = dir + item.slug + ".csv";
       const [referenceName, referenceLink] = item.reference;
-      const { marked, headings } = makeRenderer();
-      const caseCopy = headingAnchors(marked.parse(item.markdown.replace(/^### /gm, "## ")));
+      const markdown = item.markdown.replace(/^### /gm, "## ");
+      const depth = depthLinks(studyPaths.get(item.slug), markdown);
+      const { marked, headings } = makeRenderer(depth.afterParagraph);
+      const caseCopy = headingAnchors(marked.parse(markdown));
       await out(dataPath.slice(1), csv([
         ["metric", "unit", "baseline_input", "pilot_input", "baseline_value", "pilot_value", "data_origin"],
         ...item.metrics.map(([label, unit, baseline, pilot]) => [label, unit, baseline, pilot, metricValue(baseline), metricValue(pilot), "synthetic"]),
@@ -107,6 +110,7 @@ export async function caseLibrary(out, promotions) {
       ${evidence("Worked comparison", item.metrics)}
       <p class="case-download"><a href="${dataPath}" download>Download the simulated measurements (CSV)</a></p>
       <p class="case-download"><a href="${esc(referenceLink)}">${esc(referenceName)}</a></p>
+      ${depth.footer || ""}
       <div class="row"><a class="btn btn-ghost" href="${dir}">More ${esc(category.title.toLowerCase())} scenarios</a><a class="btn" href="/contact/">Discuss a similar engagement</a></div>
     </div>
     ${promotions("case-study-rail")}
