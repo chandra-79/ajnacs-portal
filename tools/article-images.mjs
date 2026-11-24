@@ -4,7 +4,7 @@ import { readFile, writeFile, mkdir, access } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { Resvg } from '@resvg/resvg-js';
 import { artwork } from './visuals.mjs';
-import { coverArt, photoFor } from './covers.mjs';
+import { coverArt, hasLocalCover, photoFor } from './covers.mjs';
 import { conceptFor } from './concept-figures.mjs';
 import { renderEditorialPng } from './raster-art.mjs';
 
@@ -19,10 +19,11 @@ export async function buildArticleImages(manifest, today) {
   for(const article of manifest) {
     const active = article.date <= today;
     const concept = conceptFor(article.slug);
+    const useCover = active || concept || hasLocalCover(article.slug);
     if ((active || concept) && !photoFor(article.slug)) {
       await writeFile(`assets/covers/${article.slug}.svg`, coverArt(article.slug));
     }
-    const svg = active || concept ? coverArt(article.slug, 1200, 630) : artwork(article.slug, article.tags, {
+    const svg = useCover ? coverArt(article.slug, 1200, 630) : artwork(article.slug, article.tags, {
       w: 1200, h: 630, title: article.title, calm: article.section === 'notes',
     }).replace(/var\(--[\w-]+,\s*(#[0-9a-fA-F]+)\)/g,'$1');
     const hash=createHash('sha256').update(svg).digest('hex');

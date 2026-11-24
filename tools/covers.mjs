@@ -9,6 +9,22 @@ import { leadCover } from './lead-covers.mjs';
 import { esc } from './lib.mjs';
 import { conceptFor, conceptSvg } from './concept-figures.mjs';
 
+const localCoverDirectory = new URL('../content/covers/', import.meta.url);
+const localCoverDescriptions = JSON.parse(readFileSync(new URL('descriptions.json', localCoverDirectory), 'utf8'));
+const localCoverCache = new Map();
+
+export function hasLocalCover(slug) {
+  return Object.hasOwn(localCoverDescriptions, slug);
+}
+
+function localCoverArt(slug, width, height) {
+  if (!localCoverCache.has(slug)) {
+    localCoverCache.set(slug, readFileSync(new URL(`${slug}.svg`, localCoverDirectory), 'utf8'));
+  }
+  const source = localCoverCache.get(slug);
+  return `<svg xmlns="http://www.w3.org/2000/svg" data-article-art="${esc(slug)}" role="img" aria-label="${esc(localCoverDescriptions[slug])}" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">${source}</svg>`;
+}
+
 const photos = new Set([
   'sre-toil-reduction',
   'platform-engineering-idp-2026',
@@ -18,6 +34,7 @@ const photos = new Set([
 ]);
 
 export function coverArt(slug, width = 1280, height = 720) {
+  if (hasLocalCover(slug)) return localCoverArt(slug, width, height);
   const concept = conceptFor(slug);
   if (concept) return conceptSvg(concept, width, height);
   const illustration = noteCover(slug, width, height) || leadCover(slug, width, height);
@@ -30,7 +47,7 @@ export function coverArt(slug, width = 1280, height = 720) {
 }
 
 export function photoFor(slug) {
-  if (!photos.has(slug)) return null;
+  if (hasLocalCover(slug) || !photos.has(slug)) return null;
   const alt = leadCover(slug, 1280, 720).alt;
   const path = `/assets/covers/photos/${slug}.jpg`;
   const small = `/assets/covers/photos/${slug}-640.jpg`;
@@ -40,6 +57,7 @@ export function photoFor(slug) {
 }
 
 export function coverDescription(slug) {
+  if (hasLocalCover(slug)) return localCoverDescriptions[slug];
   return conceptFor(slug)?.alt || noteCover(slug, 1280, 720)?.alt || leadCover(slug, 1280, 720)?.alt || articleDirection(slug)?.description || "";
 }
 
