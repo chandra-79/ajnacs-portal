@@ -22,7 +22,7 @@ function localCoverArt(slug, width, height) {
     localCoverCache.set(slug, readFileSync(new URL(`${slug}.svg`, localCoverDirectory), 'utf8'));
   }
   const source = localCoverCache.get(slug);
-  return `<svg xmlns="http://www.w3.org/2000/svg" data-article-art="${esc(slug)}" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">${source}</svg>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" data-article-art="${esc(slug)}" role="img" aria-label="${esc(localCoverDescriptions[slug])}" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">${source}</svg>`;
 }
 
 const photos = new Set([
