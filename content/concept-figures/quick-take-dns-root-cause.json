@@ -1,0 +1,28 @@
+{
+  "slug": "quick-take-dns-root-cause",
+  "kind": "bar",
+  "title": "Separate DNS response classes",
+  "unit": "lookups",
+  "points": [
+    {
+      "label": "Expected positive answer",
+      "value": 170
+    },
+    {
+      "label": "NXDOMAIN",
+      "value": 20
+    },
+    {
+      "label": "Timeout",
+      "value": 10
+    }
+  ],
+  "method": "Synthetic sample of 200 lookups. Response categories sum to 200; 170/200 = 85% expected positive answers. No inference about subsequent TCP, TLS or application success is included.",
+  "alt": "Separate DNS response classes. Expected positive answer: 170 lookups; NXDOMAIN: 20 lookups; Timeout: 10 lookups. Illustrative values.",
+  "dataOrigin": "synthetic",
+  "steps": [],
+  "studyPaths": [
+    "networks",
+    "reliability"
+  ]
+}

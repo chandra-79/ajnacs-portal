@@ -1,0 +1,28 @@
+{
+  "slug": "cache-stampede-prevention",
+  "kind": "bar",
+  "title": "Modeled origin refreshes for one hot-key expiry",
+  "unit": "refresh attempts",
+  "points": [
+    {
+      "label": "No coalescing",
+      "value": 100
+    },
+    {
+      "label": "10 local single-flights",
+      "value": 10
+    },
+    {
+      "label": "Shared single-flight",
+      "value": 1
+    }
+  ],
+  "method": "Synthetic 200 requests/s×0.5 s regeneration gives 100 arrivals in the miss window. Ten processes with local coalescing can produce 10 refreshes; a healthy shared claim targets 1. Assumes steady arrivals and no lease failure; not an exactly-once guarantee.",
+  "alt": "Modeled origin refreshes for one hot-key expiry. No coalescing: 100 refresh attempts; 10 local single-flights: 10 refresh attempts; Shared single-flight: 1 refresh attempts. Illustrative values.",
+  "dataOrigin": "synthetic",
+  "steps": [],
+  "studyPaths": [
+    "performance",
+    "reliability"
+  ]
+}

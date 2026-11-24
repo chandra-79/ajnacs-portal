@@ -1,0 +1,28 @@
+{
+  "slug": "postgres-vs-nosql-decision",
+  "kind": "bar",
+  "title": "A skewed tenant workload versus its average",
+  "unit": "requests per second",
+  "points": [
+    {
+      "label": "Balanced average",
+      "value": 100
+    },
+    {
+      "label": "Small tenant",
+      "value": 50
+    },
+    {
+      "label": "Largest tenant",
+      "value": 550
+    }
+  ],
+  "method": "Synthetic ten-tenant workload: nine tenants ×50 requests/second plus one ×550 =1,000. Mean per tenant is 100; largest tenant is 55% of traffic and 5.5× the mean. These are logical tenant loads, not database partition limits or benchmark results.",
+  "alt": "A skewed tenant workload versus its average. Balanced average: 100 requests per second; Small tenant: 50 requests per second; Largest tenant: 550 requests per second. Illustrative values.",
+  "dataOrigin": "synthetic",
+  "steps": [],
+  "studyPaths": [
+    "performance",
+    "reliability"
+  ]
+}

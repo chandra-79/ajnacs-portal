@@ -1,0 +1,28 @@
+{
+  "slug": "kafka-production-patterns",
+  "kind": "bar",
+  "title": "Modeled backlog during one partition overload",
+  "unit": "records",
+  "points": [
+    {
+      "label": "Start",
+      "value": 0
+    },
+    {
+      "label": "After 1 minute",
+      "value": 12000
+    },
+    {
+      "label": "After 5 minutes",
+      "value": 60000
+    }
+  ],
+  "method": "Synthetic arrival 1,200 records/s minus processing 1,000/s gives 200/s backlog growth. At 60 s backlog=12,000; at 300 s=60,000. Recovery at 1,500/s leaves 300/s net drain and takes 200 s. Constant rates and no data loss assumed.",
+  "alt": "Modeled backlog during one partition overload. Start: 0 records; After 1 minute: 12000 records; After 5 minutes: 60000 records. Illustrative values.",
+  "dataOrigin": "synthetic",
+  "steps": [],
+  "studyPaths": [
+    "reliability",
+    "performance"
+  ]
+}

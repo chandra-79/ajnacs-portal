@@ -1,0 +1,24 @@
+{
+  "slug": "dns-for-engineers",
+  "kind": "bar",
+  "title": "Different valid caches after a TTL reduction",
+  "unit": "seconds remaining",
+  "points": [
+    {
+      "label": "Resolver A at 09:05",
+      "value": 3240
+    },
+    {
+      "label": "Resolver B at 09:05",
+      "value": 60
+    }
+  ],
+  "method": "Synthetic observation at 09:05: resolver A fetched a 3,600-second TTL at 08:59, leaving 3,600 - 360 = 3,240 seconds. Resolver B fetched a 300-second TTL at 09:01, leaving 300 - 240 = 60 seconds. This excludes serve-stale and application connection reuse.",
+  "alt": "Different valid caches after a TTL reduction. Resolver A at 09:05: 3240 seconds remaining; Resolver B at 09:05: 60 seconds remaining. Illustrative values.",
+  "dataOrigin": "synthetic",
+  "steps": [],
+  "studyPaths": [
+    "networks",
+    "reliability"
+  ]
+}

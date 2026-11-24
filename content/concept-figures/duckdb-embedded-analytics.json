@@ -1,0 +1,27 @@
+{
+  "slug": "duckdb-embedded-analytics",
+  "kind": "bar",
+  "title": "Idealized reduction in analytical data read",
+  "unit": "GiB",
+  "points": [
+    {
+      "label": "All columns",
+      "value": 100
+    },
+    {
+      "label": "Two of ten columns",
+      "value": 20
+    },
+    {
+      "label": "After row-group pruning",
+      "value": 2
+    }
+  ],
+  "method": "Synthetic 100 GiB dataset assumes ten equally sized columns. Selecting two gives 100×2/10=20 GiB; skipping 90% of projected data gives 2 GiB. Ignores metadata, compression differences and incomplete pushdown. Not an observed benchmark.",
+  "alt": "Idealized reduction in analytical data read. All columns: 100 GiB; Two of ten columns: 20 GiB; After row-group pruning: 2 GiB. Illustrative values.",
+  "dataOrigin": "synthetic",
+  "steps": [],
+  "studyPaths": [
+    "performance"
+  ]
+}

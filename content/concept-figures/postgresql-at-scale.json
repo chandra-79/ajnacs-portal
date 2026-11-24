@@ -1,0 +1,28 @@
+{
+  "slug": "postgresql-at-scale",
+  "kind": "bar",
+  "title": "Average active transactions at a fixed completion rate",
+  "unit": "active transactions",
+  "points": [
+    {
+      "label": "20 ms service time",
+      "value": 8
+    },
+    {
+      "label": "50 ms service time",
+      "value": 20
+    },
+    {
+      "label": "100 ms service time",
+      "value": 40
+    }
+  ],
+  "method": "Synthetic stable workload completes 400 transactions/second. Little’s Law L=λW gives 8, 20 and 40 average active transactions for mean service times 0.020, 0.050 and 0.100 seconds. Excludes pool wait and is not a pool-size recommendation.",
+  "alt": "Average active transactions at a fixed completion rate. 20 ms service time: 8 active transactions; 50 ms service time: 20 active transactions; 100 ms service time: 40 active transactions. Illustrative values.",
+  "dataOrigin": "synthetic",
+  "steps": [],
+  "studyPaths": [
+    "performance",
+    "reliability"
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "slug": "data-pipeline-schema-assumptions",
+  "kind": "bar",
+  "title": "Explicit handling of a new status",
+  "unit": "rows",
+  "points": [
+    {
+      "label": "Accepted known statuses",
+      "value": 920
+    },
+    {
+      "label": "Unrecognized REVIEW",
+      "value": 80
+    }
+  ],
+  "method": "Synthetic 1,000-row batch: 80 rows use a newly introduced status, leaving 920 accepted by an old allowlist. The 8% loss measures excluded rows, not invalid business events. A visible quarantine preserves the unresolved population.",
+  "alt": "Explicit handling of a new status. Accepted known statuses: 920 rows; Unrecognized REVIEW: 80 rows. Illustrative values.",
+  "dataOrigin": "synthetic",
+  "steps": [],
+  "studyPaths": [
+    "reliability",
+    "migration"
+  ]
+}

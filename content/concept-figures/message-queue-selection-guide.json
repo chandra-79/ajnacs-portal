@@ -1,0 +1,28 @@
+{
+  "slug": "message-queue-selection-guide",
+  "kind": "bar",
+  "title": "Catch-up time after a ten-minute worker outage",
+  "unit": "minutes to drain",
+  "points": [
+    {
+      "label": "Capacity 300 per second",
+      "value": 20
+    },
+    {
+      "label": "Capacity 400 per second",
+      "value": 10
+    },
+    {
+      "label": "Capacity 600 per second",
+      "value": 5
+    }
+  ],
+  "method": "Synthetic arrivals are 200 messages/s. A 600-second processing outage creates 120,000 messages. Drain time = backlog / (processing capacity - arrival rate), then divide seconds by 60. Capacity assumptions exclude retries, overhead and downstream bottlenecks.",
+  "alt": "Catch-up time after a ten-minute worker outage. Capacity 300 per second: 20 minutes to drain; Capacity 400 per second: 10 minutes to drain; Capacity 600 per second: 5 minutes to drain. Illustrative values.",
+  "dataOrigin": "synthetic",
+  "steps": [],
+  "studyPaths": [
+    "reliability",
+    "performance"
+  ]
+}

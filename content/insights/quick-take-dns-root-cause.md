@@ -1,6 +1,6 @@
 ---
-title: "DNS: Why It Causes More Production Incidents Than It Gets Credit For"
-description: "DNS failures are responsible for a surprising proportion of production incidents — but they are often misdiagnosed because the symptoms look like application or network failures, not DNS failures."
+title: "Diagnose DNS by Response Type and Resolver Path"
+description: "Compare DNS answers from the intended resolver path, preserve incident evidence, and calculate cache age before changing records."
 date: 2028-09-01
 tags: ["Systems", "Infrastructure", "Observability"]
 format: article
@@ -30,6 +30,41 @@ Because the failure is indistinguishable from the downstream system's failure at
 
 ## The diagnostic reflex
 
-When a service is unreachable and the cause is not immediately obvious: check DNS before checking the service. `dig`, `nslookup`, or `host` against both the default resolver and a known-good external resolver (8.8.8.8) within 30 seconds of starting an investigation eliminates or confirms DNS as a cause.
+When a service is unreachable and the cause is not immediately obvious: check DNS before checking the service. `dig`, `nslookup`, or `host` from the affected runtime and the intended resolver path can narrow the fault; use external resolvers only when the name and comparison are appropriate.
 
 DNS is not interesting until it breaks. When it breaks, nothing else is interesting.
+
+## Distinguish three different incidents
+
+A DNS timeout, a negative answer and a positive answer pointing to an unavailable service require different responses. Restarting an application may temporarily change a cache but does not identify which of those failures occurred. Capture the query and response from the affected runtime before changing the system.
+
+For a fictional diagnostic sample of 200 lookups, 170 return the expected address, 20 return NXDOMAIN and 10 time out. The chart records those disjoint results. A successful-lookup share of 85% says nothing about whether the application could connect to the returned address. Keep connection, TLS and application outcomes in separate stages of the trace so a resolver improvement is not confused with an end-to-end recovery.
+
+## Reproduce the relevant resolver path
+
+Start with the exact hostname the application uses, including any search-domain behavior. Record whether it requests IPv4, IPv6 or both. Identify the configured recursive resolver and any local cache or proxy. Test from the same network context and namespace as the affected process; a host shell and a container can have different resolution paths.
+
+Compare the observed answer with the authoritative zone when that is appropriate and authorized. Public resolvers are not a universal ground truth for private names or split-horizon zones. Sending an internal hostname to an external service can expose information and still produce an irrelevant negative answer. Use the organization's known resolver path and its intended private-zone configuration.
+
+If the answer is negative, inspect how that negative result is cached. Creating the missing record does not necessarily make every client retry immediately. If it is positive, inspect the answer TTL and the age of relevant caches. Lowering a TTL after clients have cached an older answer does not retroactively shorten that answer's lifetime. For timeouts, inspect reachability and resolver capacity rather than treating the absence of a response as proof that the name does not exist.
+
+## Test the cutover before relying on it
+
+Construct a nonproduction name with a short, recorded TTL and two controlled endpoints. Observe the result before and after changing the authoritative record. Include a client that established a long-lived connection before the change; that connection may continue using the old endpoint independently of new lookups. Include a missing-name test to demonstrate negative caching as a separate mechanism.
+
+Record the actual adoption distribution across clients instead of reporting one instant of global propagation. DNS is a distributed system with caches and implementation policies. A migration plan should keep the old endpoint safe for the observed overlap and have a route to restore service if the new endpoint is unhealthy. The rehearsal turns a vague propagation assumption into a concrete dependency and rollback window.
+
+### Figure methodology
+
+Synthetic sample of 200 lookups. Response categories sum to 200; 170/200 = 85% expected positive answers. No inference about subsequent TCP, TLS or application success is included.
+
+| Worked observation | lookups |
+| --- | ---: |
+| Expected positive answer | 170 |
+| NXDOMAIN | 20 |
+| Timeout | 10 |
+
+## Primary references and further study
+
+- [DNS messages and TTLs](https://www.rfc-editor.org/rfc/rfc1035.html)
+- [DNS negative caching](https://www.rfc-editor.org/rfc/rfc2308.html)

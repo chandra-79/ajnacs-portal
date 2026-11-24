@@ -1,0 +1,27 @@
+{
+  "slug": "database-transactions-isolation-levels",
+  "kind": "bar",
+  "title": "Invariant count after a controlled race",
+  "unit": "on-call rows",
+  "points": [
+    {
+      "label": "Initial roster",
+      "value": 2
+    },
+    {
+      "label": "Snapshot race",
+      "value": 0
+    },
+    {
+      "label": "Serializable retry",
+      "value": 1
+    }
+  ],
+  "method": "Synthetic two-session schedule with two initially active rows. Both snapshot transactions read before either commits and update different rows. Under serializable execution with complete transaction retry and the stated business rule, at least one row remains active. Counts are an illustrative trace, not measured anomaly rates.",
+  "alt": "Invariant count after a controlled race. Initial roster: 2 on-call rows; Snapshot race: 0 on-call rows; Serializable retry: 1 on-call rows. Illustrative values.",
+  "dataOrigin": "synthetic",
+  "steps": [],
+  "studyPaths": [
+    "reliability"
+  ]
+}

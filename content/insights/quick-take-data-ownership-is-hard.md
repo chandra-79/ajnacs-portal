@@ -1,6 +1,6 @@
 ---
 title: "Why Data Ownership Is the Hardest Part of Data Governance"
-description: "Every data governance framework names data owners. Almost none of them explain what ownership actually means in practice — or what happens when the named owner changes roles."
+description: "Define data ownership as concrete decisions, quality obligations and escalation paths, with a practical responsibility worksheet."
 date: 2028-07-07
 tags: ["Data Engineering", "Engineering Leadership"]
 format: article
@@ -35,3 +35,40 @@ The governance framework that survives personnel changes is built around role-ba
 Most organizations do not have the capacity to implement full data ownership across every dataset simultaneously. The honest approach is to start with the data that causes the most pain when it is wrong — the revenue-affecting datasets, the compliance-sensitive data, the tables that three teams depend on — and build ownership practices there first.
 
 Governance that covers 20% of the data with genuine accountability is more valuable than governance that nominally covers 100% with none.
+
+## Put a real change through the ownership model
+
+A dataset owner needs authority over meaning and a route to coordinate changes. The person operating the storage platform may not be able to decide whether a cancelled order counts toward a commercial metric. Separate business-definition ownership from technical operation, while making their collaboration explicit.
+
+In a fictional review of 25 critical datasets,15 have a named owner. Only nine have both an owner and a tested process for notifying consumers and correcting prior data. Name coverage is 60%; operational coverage is 36%. The gap is not an argument against catalogs. It shows which capability the catalog entry still needs to represent.
+
+## Exercise meaning, change and correction
+
+Choose one dataset and propose adding a new business status. Ask who approves its meaning, who changes the producer contract and who identifies affected reports. Then ask how a correction to last month's records is communicated. A correction can affect exported spreadsheets, materialized aggregates and regulatory reports that are outside the pipeline's direct control.
+
+Record the grain, keys, units, permitted states, freshness objective and correction semantics. Provide a contact route that survives an individual's absence, and name a delegate for decisions. Ownership should persist through team changes rather than depend on one engineer remembering the history of the field.
+
+Test the arrangement with a bounded change. Produce a sample event in the proposed shape, run important consumers against it and record their interpretation. A consumer that deserializes the event successfully can still calculate the wrong metric if the meaning changed. Include a rollback or compatibility period appropriate to stored history and replay behavior.
+
+## Prioritize by consequence
+
+Start with datasets whose incorrect interpretation could materially affect access, money, customers or operational decisions. Size alone is a weak priority signal. A small entitlement table may be more consequential than a large exploratory event collection. Map the important consumers and the decisions they make before assigning a generic governance score.
+
+For each ownership gap, name the next action: resolve the business definition, identify a producer, establish a notification route or rehearse a correction. Review whether those actions produce usable decisions. Counting completed catalog fields can help track work, but cannot prove that a future incident will find the right person.
+
+A good ownership model makes disagreement manageable. It states who decides, what evidence they use, who implements the change and how consumers learn about it. That is a more durable foundation than expecting every team to interpret the same dataset identically without an explicit contract.
+
+### Figure methodology
+
+Synthetic 25-dataset review.15 named owners imply 60% name coverage;9 with tested notification and correction imply 36% operational coverage. Categories are disjoint and definitions should remain stable across reviews.
+
+| Worked observation | datasets |
+| --- | ---: |
+| Operationally covered | 9 |
+| Name without process | 6 |
+| No named owner | 10 |
+
+## Primary references and further study
+
+- [Schema evolution and compatibility](https://docs.confluent.io/platform/current/schema-registry/fundamentals/schema-evolution.html)
+- [FinOps framework accountability](https://www.finops.org/framework/)

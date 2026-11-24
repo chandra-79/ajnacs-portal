@@ -1,0 +1,28 @@
+{
+  "slug": "ghost-vms-cloud-cost-hidden-waste",
+  "kind": "bar",
+  "title": "Modeled bill after staged VM retirement",
+  "unit": "currency units per month",
+  "points": [
+    {
+      "label": "Initial inventory",
+      "value": 2400
+    },
+    {
+      "label": "Eight VMs stopped",
+      "value": 1600
+    },
+    {
+      "label": "Eight fully retired",
+      "value": 1440
+    }
+  ],
+  "method": "Synthetic inventory:20 VMs×(100 compute+20 storage)=2,400/month. Stopping eight saves 8×100=800, leaving 1,600. Removing their storage saves 8×20=160 more, leaving 1,440. Assumes usage-based billing and excludes snapshots, addresses and commitment effects.",
+  "alt": "Modeled bill after staged VM retirement. Initial inventory: 2400 currency units per month; Eight VMs stopped: 1600 currency units per month; Eight fully retired: 1440 currency units per month. Illustrative values.",
+  "dataOrigin": "synthetic",
+  "steps": [],
+  "studyPaths": [
+    "finops",
+    "reliability"
+  ]
+}

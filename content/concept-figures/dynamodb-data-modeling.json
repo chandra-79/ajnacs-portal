@@ -1,0 +1,28 @@
+{
+  "slug": "dynamodb-data-modeling",
+  "kind": "bar",
+  "title": "Candidate evaluation before and after key redesign",
+  "unit": "items",
+  "points": [
+    {
+      "label": "Broad key candidates",
+      "value": 1000
+    },
+    {
+      "label": "Returned after filter",
+      "value": 20
+    },
+    {
+      "label": "Selective key candidates",
+      "value": 20
+    }
+  ],
+  "method": "Synthetic key condition selects 1,000 items and a filter returns 20, or 2%. A redesigned key/index condition selects 20, reducing candidate evaluation 50×. Actual read capacity depends on item size, consistency and request boundaries; this is not a billed-cost estimate.",
+  "alt": "Candidate evaluation before and after key redesign. Broad key candidates: 1000 items; Returned after filter: 20 items; Selective key candidates: 20 items. Illustrative values.",
+  "dataOrigin": "synthetic",
+  "steps": [],
+  "studyPaths": [
+    "performance",
+    "reliability"
+  ]
+}

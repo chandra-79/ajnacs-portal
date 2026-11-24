@@ -1,0 +1,28 @@
+{
+  "slug": "workflow-orchestration-selection",
+  "kind": "bar",
+  "title": "Cumulative time in a three-attempt retry example",
+  "unit": "elapsed seconds",
+  "points": [
+    {
+      "label": "First attempt ends",
+      "value": 2
+    },
+    {
+      "label": "Second attempt ends",
+      "value": 9
+    },
+    {
+      "label": "Third attempt succeeds",
+      "value": 21
+    }
+  ],
+  "method": "Synthetic attempts each take 2 seconds, with backoffs of 5 then 10 seconds. Cumulative times are 2, 2+5+2=9 and 9+10+2=21 seconds. Queueing, jitter and external uncertainty are excluded; this is a retry-budget exercise, not a product benchmark.",
+  "alt": "Cumulative time in a three-attempt retry example. First attempt ends: 2 elapsed seconds; Second attempt ends: 9 elapsed seconds; Third attempt succeeds: 21 elapsed seconds. Illustrative values.",
+  "dataOrigin": "synthetic",
+  "steps": [],
+  "studyPaths": [
+    "reliability",
+    "platform"
+  ]
+}

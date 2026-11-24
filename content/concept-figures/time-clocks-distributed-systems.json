@@ -1,0 +1,32 @@
+{
+  "slug": "time-clocks-distributed-systems",
+  "kind": "bar",
+  "title": "Clock offset can reverse a logged event order",
+  "unit": "milliseconds",
+  "points": [
+    {
+      "label": "Physical send",
+      "value": 100
+    },
+    {
+      "label": "Physical receive",
+      "value": 120
+    },
+    {
+      "label": "Recorded send",
+      "value": 130
+    },
+    {
+      "label": "Recorded receive",
+      "value": 110
+    }
+  ],
+  "method": "Synthetic inputs: send at 100 ms, receive at 120 ms, host A offset +30 ms and host B offset -10 ms. Logged timestamps are 130 and 110 ms. Cross-host subtraction gives -20 ms although actual elapsed time is 20 ms. Values illustrate offsets, not measured clock quality.",
+  "alt": "Clock offset can reverse a logged event order. Physical send: 100 milliseconds; Physical receive: 120 milliseconds; Recorded send: 130 milliseconds; Recorded receive: 110 milliseconds. Illustrative values.",
+  "dataOrigin": "synthetic",
+  "steps": [],
+  "studyPaths": [
+    "reliability",
+    "networks"
+  ]
+}

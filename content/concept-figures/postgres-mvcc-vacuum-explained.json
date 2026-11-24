@@ -1,0 +1,28 @@
+{
+  "slug": "postgres-mvcc-vacuum-explained",
+  "kind": "bar",
+  "title": "Modeled dead-version backlog after ten minutes",
+  "unit": "row versions",
+  "points": [
+    {
+      "label": "Starting backlog",
+      "value": 100000
+    },
+    {
+      "label": "Cleanup keeps up",
+      "value": 0
+    },
+    {
+      "label": "Cleanup falls behind",
+      "value": 150000
+    }
+  ],
+  "method": "Synthetic model starts at 100,000 eligible obsolete versions. Creation is 20,000/minute for ten minutes. Cleanup at 30,000/minute yields max(0,100,000+200,000−300,000)=0; cleanup at 15,000/minute yields 150,000. No blocked snapshots are assumed; this is not a benchmark.",
+  "alt": "Modeled dead-version backlog after ten minutes. Starting backlog: 100000 row versions; Cleanup keeps up: 0 row versions; Cleanup falls behind: 150000 row versions. Illustrative values.",
+  "dataOrigin": "synthetic",
+  "steps": [],
+  "studyPaths": [
+    "performance",
+    "reliability"
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "slug": "dns-root-cause",
+  "kind": "bar",
+  "title": "Cache expiry after a DNS cutover",
+  "unit": "seconds",
+  "points": [
+    {
+      "label": "Client 1",
+      "value": 260
+    },
+    {
+      "label": "Client 2",
+      "value": 120
+    },
+    {
+      "label": "Client 3",
+      "value": 10
+    }
+  ],
+  "method": "Synthetic positive-cache example. Remaining lifetime equals 300 seconds minus the answer age. It excludes serve-stale policies, application caching and negative answers; it is not a universal cutover duration.",
+  "alt": "Cache expiry after a DNS cutover. Client 1: 260 seconds; Client 2: 120 seconds; Client 3: 10 seconds. Illustrative values.",
+  "dataOrigin": "synthetic",
+  "steps": [],
+  "studyPaths": [
+    "networks",
+    "reliability"
+  ]
+}

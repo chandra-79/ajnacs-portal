@@ -1,0 +1,27 @@
+{
+  "slug": "quick-take-slowest-query",
+  "kind": "bar",
+  "title": "Accumulated statement work in one interval",
+  "unit": "seconds",
+  "points": [
+    {
+      "label": "Repeated lookup",
+      "value": 120
+    },
+    {
+      "label": "Occasional report",
+      "value": 80
+    },
+    {
+      "label": "Synchronization",
+      "value": 20
+    }
+  ],
+  "method": "Synthetic ten-minute population. Calls × mean execution time yields 120, 80 and 20 seconds. The lookup is 54.5% of these groups only. Accumulated execution overlaps under concurrency and is not a CPU measurement.",
+  "alt": "Accumulated statement work in one interval. Repeated lookup: 120 seconds; Occasional report: 80 seconds; Synchronization: 20 seconds. Illustrative values.",
+  "dataOrigin": "synthetic",
+  "steps": [],
+  "studyPaths": [
+    "performance"
+  ]
+}
