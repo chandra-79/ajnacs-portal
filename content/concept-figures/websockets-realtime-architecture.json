@@ -1,0 +1,28 @@
+{
+  "slug": "websockets-realtime-architecture",
+  "kind": "bar",
+  "title": "Payload fan-out grows with subscriber count",
+  "unit": "MB/s",
+  "points": [
+    {
+      "label": "100 subscribers",
+      "value": 0.1
+    },
+    {
+      "label": "1000 subscribers",
+      "value": 1
+    },
+    {
+      "label": "5000 subscribers",
+      "value": 5
+    }
+  ],
+  "method": "Synthetic workload: 2 events/s * 500 payload bytes * subscriber count / 1,000,000. Decimal MB/s excludes framing, TLS, brokers and retransmissions. Not measured service capacity.",
+  "alt": "Payload fan-out grows with subscriber count. Illustrative values: 100 subscribers 0.1 MB/s, 1000 subscribers 1 MB/s, 5000 subscribers 5 MB/s.",
+  "dataOrigin": "synthetic",
+  "steps": [],
+  "studyPaths": [
+    "networks",
+    "reliability"
+  ]
+}

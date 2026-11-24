@@ -1,31 +1,53 @@
 ---
 title: "How to Choose an AI Coding Assistant: What Benchmarks Don't Tell You"
-description: "A practical breakdown of Copilot, Amazon Q, Codeium, Tabnine, Cody, and Qodo — what each is actually best at and how to run a real two-week trial."
+description: "Run a repository-based trial that measures accepted changes, verification effort, data handling, and recovery from bad suggestions."
 date: 2028-05-19
 tags: ["Enterprise AI", "Developer Tools", "Programming"]
 format: article
 ---
 
-The benchmark wars for AI coding assistants produce beautiful bar charts and almost no useful signal for engineering teams. A model that scores highest on HumanEval may still frustrate your developers because it doesn't understand your internal APIs, requires an extra keystroke in your IDE, or misses the style conventions in your codebase.
+A coding assistant should be evaluated as part of an engineering workflow. Model benchmarks, feature lists, and demonstrations can narrow the candidate set, but they do not show how a tool behaves in a particular repository with a particular review standard. The most useful trial asks whether accepted changes become easier to produce and maintain without weakening the team's controls.
 
-Here is what actually differentiates the leading tools:
+Avoid durable rankings such as the best free tool, the only private deployment, or the strongest assistant for a language. Product capabilities and terms change. Verify current documentation and contractual requirements during selection, then test the exact plan, editor integration, and deployment mode the team would use.
 
-**GitHub Copilot** is the default choice for teams that live in GitHub. Its IDE coverage is the broadest — VS Code, JetBrains, Vim, Neovim, Azure Data Studio. The chat interface understands repository context. If your workflow is already GitHub-centric, Copilot has the lowest integration friction.
+## Define the work before selecting the candidates
 
-**Amazon Q Developer** (formerly CodeWhisperer) is the most contextually aware tool for AWS-heavy teams. It understands AWS SDK patterns, knows which IAM policies are too permissive, and surfaces service-specific best practices. Outside AWS, it is a capable but unexceptional assistant.
+Choose a small set of tasks that represents the team's actual bottlenecks. Examples include explaining a dependency path in an unfamiliar module, fixing a reproducible defect, adding an endpoint under existing conventions, and reviewing a change for a specific failure mode. A team maintaining a large monolith may value repository navigation differently from a team building isolated data transformations.
 
-**Codeium** is the most credible free-tier option. Quality is competitive with paid tools on standard completion tasks. For teams with tight procurement cycles or budget constraints, Codeium is worth a serious evaluation rather than a dismissal.
+Write acceptance criteria before the trial. The implementation must satisfy the requirement, pass the relevant checks, and survive ordinary review. Keep a record of unsupported tasks rather than excluding them after seeing poor results. A tool that excels at one task class may still be useful if that class is frequent and valuable.
 
-**Tabnine** occupies a specific niche: it runs entirely on-premises or in a private cloud. For organizations in regulated industries where source code cannot leave the network boundary — financial services, healthcare, defense contractors — Tabnine is the only serious option. The compliance use case is genuine.
+## Compare the complete effort
 
-**Cody (Sourcegraph)** is built specifically for large codebases. It indexes your entire repository and uses that index for context when completing or explaining code. Teams working with multi-million-line codebases where cross-file understanding matters should evaluate Cody seriously.
+The chart uses a fictional trial of 12 equivalent tasks per condition. The baseline consumes 24 hours of implementation, six of review, and three of correction: 33 hours. Candidate A consumes 18, nine, and four hours: 31 total. Candidate B consumes 20, six, and two hours: 28 total. Candidate A writes faster, while candidate B uses less measured team effort.
 
-**Qodo** (formerly CodiumAI) specializes in test generation. This is genuinely underrated. Most assistants write tests awkwardly; Qodo treats test generation as the primary use case and the quality shows.
+These numbers demonstrate the accounting boundary and are not product results. Actual task difficulty, participant experience, and learning effects can alter the comparison. Record elapsed completion time separately from person-hours; waiting for a reviewer can dominate lead time even when the review itself is short.
 
-## How to actually choose
+Do not use accepted lines of code as the main outcome. More code can increase maintenance burden, and a useful refactor may delete code. Similarly, test-coverage percentage is incomplete without the quality of assertions and the behavior covered. The trial should evaluate whether the resulting change meets the requirement and what effort was needed to establish that fact.
 
-The mistake most teams make is choosing based on marketing material, then measuring adoption by whether developers "feel productive." Neither is useful.
+## Inspect context and permission behavior
 
-A better approach: pick two candidates based on the criteria above, run a structured two-week trial with a small group doing real work, and measure concrete outputs — lines of accepted completion per hour, pull request turnaround time, test coverage delta. The productivity signal is obvious when it is genuine. If you cannot see it in two weeks of real work, you are not going to find it in a vendor benchmark.
+Test whether the assistant finds the relevant local interfaces and respects the repository's conventions. Ask it to explain which files support its answer, then inspect those files. A plausible explanation based on a similarly named public API may be worse than an explicit limitation.
 
-The tool that wins is the one that disappears into the workflow. The best AI assistant is the one you stop noticing.
+Review data handling for source code, prompts, logs, and feedback. Determine what can leave the environment, which administrators can configure it, and how access is revoked. Evaluate the actual enabled connectors and tools. A chat assistant with read access and an agent that can run commands or open pull requests have different operational consequences.
+
+Use a sandbox repository for trials involving tool execution. Include a task where the correct response is to stop and request missing information. An assistant should not invent credentials, bypass a failing check, or make an unrelated destructive change to satisfy an ambiguous request. The surrounding environment should enforce permissions regardless of what the model proposes.
+
+## Include failure and recovery in the trial
+
+Interrupt a generation, provide an outdated API example, and ask for a change whose requirements conflict. Observe whether the developer can recover without losing their work. Measure time spent diagnosing incorrect suggestions. A tool can feel helpful while shifting substantial verification effort to the user.
+
+Have participants explain the final patch without consulting the assistant. This is especially useful when the tool generated unfamiliar code. The team remains responsible for maintaining the change after the chat session is gone. Retain a concise rationale and relevant tests in the repository rather than leaving essential knowledge in a private conversation.
+
+## Record a bounded selection decision
+
+The worksheet contains task class, participant experience, tool configuration, implementation effort, review effort, corrections, acceptance outcome, and follow-up defects. Add qualitative observations about interruptions and comprehension. Keep the trial's limitations visible, including sample size and changes in model versions during the exercise.
+
+A two-week trial can reveal integration problems and provide early evidence. It may not reveal maintenance cost, rare security failures, or the effect of prolonged learning. Decide what the first rollout is allowed to conclude and schedule a later review of the outcomes it cannot yet measure.
+
+Published developer-productivity studies provide useful examples of measurement design, but their results apply to their studied settings. Compare the participant population, task scope, and outcome definition with the local trial. The selection should identify the tasks the tool helps, the controls it requires, and the evidence that would cause the organization to reconsider it.
+
+## Sources and further study
+
+- [Becker et al. — Early-2025 AI and experienced developer productivity](https://arxiv.org/abs/2507.09089)
+- [DORA — 2024 research report and methodology](https://dora.dev/research/2024/dora-report/)
+- [Model Context Protocol — Tool specification](https://modelcontextprotocol.io/specification/2025-06-18/server/tools)

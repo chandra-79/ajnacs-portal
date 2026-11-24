@@ -1,0 +1,28 @@
+{
+  "slug": "object-storage-architecture-patterns",
+  "kind": "bar",
+  "title": "Batching changes request count, not input payload",
+  "unit": "PUT requests",
+  "points": [
+    {
+      "label": "1 record per object",
+      "value": 100000
+    },
+    {
+      "label": "100 records per object",
+      "value": 1000
+    },
+    {
+      "label": "1000 records per object",
+      "value": 100
+    }
+  ],
+  "method": "Synthetic 100,000 records * 1,000 bytes = 100 MB decimal. PUT count = 100,000 / records per object, for batches of 1, 100, and 1,000. Excludes multipart uploads, metadata, compression, and retries; not a price or throughput benchmark.",
+  "alt": "Batching changes request count, not input payload. Illustrative values: 1 record per object 100000 PUT requests, 100 records per object 1000 PUT requests, 1000 records per object 100 PUT requests.",
+  "dataOrigin": "synthetic",
+  "steps": [],
+  "studyPaths": [
+    "finops",
+    "platform"
+  ]
+}

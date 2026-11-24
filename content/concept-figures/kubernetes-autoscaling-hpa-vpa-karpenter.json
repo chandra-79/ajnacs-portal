@@ -1,0 +1,28 @@
+{
+  "slug": "kubernetes-autoscaling-hpa-vpa-karpenter",
+  "kind": "bar",
+  "title": "Requests change the CPU utilization scaling calculation",
+  "unit": "replicas",
+  "points": [
+    {
+      "label": "Current replicas",
+      "value": 4
+    },
+    {
+      "label": "500m request target",
+      "value": 6
+    },
+    {
+      "label": "1000m request target",
+      "value": 3
+    }
+  ],
+  "method": "Synthetic simplified HPA calculation: 4 pods each use 375m CPU; target utilization is 50%. At a 500m request, utilization is 75% and ceil(4*75/50)=6. At a 1000m request, utilization is 37.5% and ceil(4*37.5/50)=3. Excludes real controller safeguards; not a resize recommendation.",
+  "alt": "Requests change the CPU utilization scaling calculation. Illustrative values: Current replicas 4 replicas, 500m request target 6 replicas, 1000m request target 3 replicas.",
+  "dataOrigin": "synthetic",
+  "steps": [],
+  "studyPaths": [
+    "platform",
+    "performance"
+  ]
+}
