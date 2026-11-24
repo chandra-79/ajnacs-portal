@@ -4,6 +4,7 @@ import { Marked } from "marked";
 import { renderEditorialPng } from "./raster-art.mjs";
 import { SITE, esc, parseFront } from "./lib.mjs";
 import { page } from "./shell.mjs";
+import { copyLinkControl, readerControls } from "./reader.mjs";
 import { headingAnchors, makeRenderer, tableOfContents } from "./render.mjs";
 import { csv, metricValue } from "./measurements.mjs";
 
@@ -145,7 +146,7 @@ export async function publishDeepDives(out, catalog, existing) {
         body: `<article class="article"><div class="reading-layout"><header class="article-head">
           <nav class="crumbs" aria-label="Breadcrumb"><a href="${base}">Deep dives</a><span aria-hidden="true">/</span><a href="${track.path}">${esc(track.title)}</a></nav>
           <p class="eyebrow">Level ${lesson.level} · ${levelNames[index]}</p><h1 class="h1">${esc(lesson.title)}</h1><p class="lede field-intro">${esc(lesson.description)}</p>
-          </header><div class="article-hero depth-chart"><img src="/${asset}?v=${plot.version}" width="${plot.width}" height="${plot.height}" alt="${esc(alt)}" fetchpriority="high" decoding="async"></div>
+          ${copyLinkControl()}</header><div class="article-hero depth-chart"><img src="/${asset}?v=${plot.version}" width="${plot.width}" height="${plot.height}" alt="${esc(alt)}" fetchpriority="high" decoding="async"></div>
           <div class="reader-aside">${tableOfContents(headings)}</div>
           <div class="article-copy"><p class="case-notice">The chart uses illustrative inputs. It is a worked example.</p>
           <details class="depth-chart-data"><summary>Chart values and units</summary><ul>${lesson.points.map(point => `<li>${esc(point.label)} · ${number(point.number)} ${esc(lesson.unit)}</li>`).join("")}</ul>
@@ -155,7 +156,7 @@ export async function publishDeepDives(out, catalog, existing) {
             <li><a href="${prior?.path || "/" + track.start + "/"}">${prior ? `Previous · Level ${prior.level} · ${esc(prior.title)}` : "Previous · " + esc(first.title)}</a></li>
             <li><a href="${track.path}">All levels in ${esc(track.title)}</a></li>
             ${next ? `<li><a href="${next.path}">Next · Level ${next.level} · ${esc(next.title)}</a></li>` : ""}
-          </ul></nav></div></div></article>`
+          </ul></nav></div></div>${readerControls()}</article>`
       }));
       urls.push(lesson.path);
     }

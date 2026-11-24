@@ -32,26 +32,23 @@
       navToggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
     });
     nav.addEventListener("click", function (e) {
-      if (e.target.tagName === "A") {
+      if (e.target.closest("a")) {
         nav.classList.remove("open");
         navToggle.setAttribute("aria-expanded", "false");
+        navToggle.setAttribute("aria-label", "Open menu");
       }
     });
     document.addEventListener("keydown", function (e) {
       if (e.key === "Escape" && nav.classList.contains("open")) {
         nav.classList.remove("open");
         navToggle.setAttribute("aria-expanded", "false");
+        navToggle.setAttribute("aria-label", "Open menu");
         navToggle.focus();
       }
     });
   }
 
   var header = $("siteHeader");
-  if (header) {
-    var onScroll = function () { header.classList.toggle("is-stuck", window.scrollY > 8); };
-    addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
-  }
 
   var yr = $("yr");
   if (yr) yr.textContent = String(new Date().getFullYear());
@@ -60,61 +57,95 @@
   var listEl = $("postList");
   if (listEl) {
     var cards = [].slice.call(listEl.querySelectorAll("[data-card]"));
-    var searchEl = $("postSearch");
-    var countEl = $("postCount");
-    var topicSelect = $("postTopic");
+    var searchEl = $("postSearch"), countEl = $("postCount"), topicSelect = $("postTopic");
     var chips = [].slice.call(document.querySelectorAll("[data-topic-filter]"));
-    var emptyEl = $("postEmpty");
-    var moreBtn = $("postMore");
-    var activeTopic = "";
-    var query = "";
-    var PAGE = 24;
-    var shown = PAGE;
+    var emptyEl = $("postEmpty"), moreBtn = $("postMore"), clearBtn = $("postClear");
+    var activeTopic = "", query = "", queryTerms = [];
+    var PAGE = 24, shown = PAGE, searchTimer;
+
+    function setQuery(value) {
+      query = value.trim().replace(/\s+/g, " ");
+      queryTerms = query.toLowerCase().split(" ").filter(Boolean);
+    }
 
     function matches(card) {
-      if (activeTopic && card.dataset.topics.indexOf("|" + activeTopic + "|") === -1) return false;
-      if (query && card.dataset.search.indexOf(query) === -1) return false;
-      return true;
+      return (!activeTopic || card.dataset.topics.includes("|" + activeTopic + "|")) &&
+        queryTerms.every(function (term) { return card.dataset.search.includes(term); });
+    }
+
+    function syncFilters() {
+      if (topicSelect) topicSelect.value = activeTopic;
+      if (clearBtn) clearBtn.hidden = !(activeTopic || query);
+      chips.forEach(function (chip) {
+        chip.setAttribute("aria-pressed", String(chip.dataset.topicFilter === activeTopic));
+      });
+    }
+
+    function saveSearch() {
+      var url = new URL(location.href);
+      if (query) url.searchParams.set("q", query);
+      else url.searchParams.delete("q");
+      if (activeTopic) url.searchParams.set("topic", activeTopic);
+      else url.searchParams.delete("topic");
+      if (shown > PAGE) url.searchParams.set("page", String(Math.ceil(shown / PAGE)));
+      else url.searchParams.delete("page");
+      try { history.replaceState(history.state, "", url); } catch (e) {}
     }
 
     function apply(resetPage) {
       if (resetPage) shown = PAGE;
       var n = 0, visible = 0;
-      for (var i = 0; i < cards.length; i++) {
-        var ok = matches(cards[i]);
-        if (ok) {
-          n++;
-          var show = n <= shown;
-          cards[i].hidden = !show;
-          if (show) visible++;
-        } else {
-          cards[i].hidden = true;
-        }
-      }
-      // Only report a count while the reader is actually filtering; the total
-      // is not something to advertise.
-      if (countEl) {
-        const filtering = !!(activeTopic || query);
-        countEl.textContent = filtering ? (n === 1 ? "1 match" : n + " matches") : "";
-      }
+      cards.forEach(function (card) {
+        var match = matches(card);
+        if (match) n++;
+        card.hidden = !match || n > shown;
+        if (!card.hidden) visible++;
+      });
+      if (countEl) countEl.textContent = "Showing " + visible + " of " + n + (n === 1 ? " article" : " articles");
       if (emptyEl) emptyEl.hidden = n !== 0;
-      if (moreBtn) moreBtn.hidden = n <= visible ? true : false;
+      if (moreBtn) {
+        moreBtn.hidden = n <= visible;
+        moreBtn.textContent = "Show " + Math.min(PAGE, n - visible) + " more";
+      }
+      syncFilters();
+    }
+
+    function restoreSearch() {
+      clearTimeout(searchTimer);
+      var params = new URLSearchParams(location.search);
+      var topic = params.get("topic") || "";
+      activeTopic = cards.some(function (card) { return card.dataset.topics.includes("|" + topic + "|"); }) ? topic : "";
+      setQuery(params.get("q") || "");
+      if (searchEl) searchEl.value = query;
+      var page = Number(params.get("page"));
+      shown = Number.isSafeInteger(page) && page > 0
+        ? Math.min(page, Math.max(1, Math.ceil(cards.length / PAGE))) * PAGE : PAGE;
+      apply(false);
+    }
+
+    function updateSearch() {
+      clearTimeout(searchTimer);
+      setQuery(searchEl ? searchEl.value : "");
+      apply(true);
+      saveSearch();
     }
 
     if (searchEl) {
-      var t;
       searchEl.addEventListener("input", function () {
-        clearTimeout(t);
-        t = setTimeout(function () { query = searchEl.value.trim().toLowerCase(); apply(true); }, 140);
+        clearTimeout(searchTimer);
+        searchTimer = setTimeout(updateSearch, 140);
+      });
+      searchEl.addEventListener("change", updateSearch);
+      searchEl.addEventListener("keydown", function (event) {
+        if (event.key === "Enter") {
+          event.preventDefault();
+          updateSearch();
+        }
       });
     }
     function selectTopic(value) {
       activeTopic = value;
-      if (topicSelect) topicSelect.value = value;
-      chips.forEach(function (chip) {
-        chip.setAttribute("aria-pressed", String(chip.dataset.topicFilter === value));
-      });
-      apply(true);
+      updateSearch();
     }
     if (topicSelect) {
       topicSelect.hidden = false;
@@ -126,29 +157,23 @@
         selectTopic(activeTopic === value ? "" : value);
       });
     });
-    if (moreBtn) moreBtn.addEventListener("click", function () { shown += PAGE; apply(false); });
-
-    // a ?topic= in the URL preselects a filter
-    try {
-      var qp = new URLSearchParams(location.search).get("topic");
-      if (qp && cards.some(function (card) { return card.dataset.topics.includes("|" + qp + "|"); })) {
-        selectTopic(qp);
-      }
-    } catch (e) {}
-    apply(true);
-  }
-
-  /* ---------- article progress + heading links ---------- */
-  var bar = $("readBar");
-  if (bar) {
-    var tick = function () {
-      var el = document.documentElement;
-      var max = el.scrollHeight - el.clientHeight;
-      bar.style.width = (max > 0 ? (el.scrollTop / max) * 100 : 0) + "%";
-    };
-    addEventListener("scroll", tick, { passive: true });
-    addEventListener("resize", tick);
-    tick();
+    if (clearBtn) clearBtn.addEventListener("click", function () {
+      activeTopic = "";
+      if (searchEl) searchEl.value = "";
+      updateSearch();
+      if (searchEl) searchEl.focus();
+    });
+    if (moreBtn) moreBtn.addEventListener("click", function () {
+      var firstNew = cards.find(function (card) { return card.hidden && matches(card); });
+      shown += PAGE;
+      apply(false);
+      saveSearch();
+      var link = firstNew && firstNew.querySelector(".card-title a");
+      if (link) link.focus();
+    });
+    window.addEventListener("popstate", restoreSearch);
+    window.addEventListener("pageshow", restoreSearch);
+    restoreSearch();
   }
 
   /* ---------- forms (Formspree, AJAX so the visitor stays on the page) ---------- */
@@ -177,63 +202,88 @@
       return ok;
     }
 
-    form.addEventListener("submit", function (e) {
-      e.preventDefault();
+    var sending = false;
+    form.addEventListener("input", function (event) {
+      if (event.target.name) setError(event.target, "");
+    });
+    form.addEventListener("submit", async function (event) {
+      event.preventDefault();
+      if (sending) return;
       if (status) { status.textContent = ""; status.className = "form-note"; }
       if (!validate()) {
         var bad = form.querySelector('[aria-invalid="true"]');
         if (bad) bad.focus();
         return;
       }
+      sending = true;
       if (btn) { btn.disabled = true; btn.textContent = "Sending…"; }
-
-      fetch(form.action, {
-        method: "POST",
-        body: new FormData(form),
-        headers: { Accept: "application/json" },
-      }).then(function (res) {
-        return res.json().catch(function () { return {}; }).then(function (data) {
-          return { ok: res.ok, data: data };
+      var controller = new AbortController();
+      var timer = setTimeout(function () { controller.abort(); }, 15000);
+      try {
+        var response = await fetch(form.action, {
+          method: "POST",
+          body: new FormData(form),
+          headers: { Accept: "application/json" },
+          signal: controller.signal,
         });
-      }).then(function (r) {
-        if (btn) { btn.disabled = false; btn.textContent = btnText; }
-        if (r.ok) {
-          var done = form.getAttribute("data-success");
+        var data = await response.json().catch(function () { return {}; });
+        if (response.ok) {
           form.reset();
           if (status) {
-            status.textContent = done || "Thank you — we will reply shortly.";
-            status.className = "form-note";
+            status.textContent = form.getAttribute("data-success") || "Thank you — we will reply shortly.";
             status.style.color = "var(--green)";
           }
           form.dispatchEvent(new CustomEvent("formsent", { bubbles: true }));
-        } else {
-          var msg = (r.data && r.data.errors && r.data.errors.map(function (x) { return x.message; }).join(", "))
-            || "That did not send. Please email " + "info@ajnacs.com" + " instead.";
-          if (status) { status.textContent = msg; status.style.color = "var(--red)"; }
-        }
-      }).catch(function () {
-        if (btn) { btn.disabled = false; btn.textContent = btnText; }
-        if (status) {
-          status.textContent = "Network error. Please email info@ajnacs.com instead.";
+        } else if (status) {
+          status.textContent = (Array.isArray(data.errors) && data.errors.map(function (error) { return error.message; }).join(", "))
+            || "That did not send. Your text is still here. Try again or email info@ajnacs.com.";
           status.style.color = "var(--red)";
         }
-      });
+      } catch (error) {
+        if (status) {
+          status.textContent = controller.signal.aborted
+            ? "Delivery confirmation timed out. Your text is still here. You can retry or email info@ajnacs.com."
+            : "We could not confirm delivery. Your text is still here. Try again or email info@ajnacs.com.";
+          status.style.color = "var(--red)";
+        }
+      } finally {
+        clearTimeout(timer);
+        sending = false;
+        if (btn) { btn.disabled = false; btn.textContent = btnText; }
+      }
     });
   }
   [].slice.call(document.querySelectorAll("[data-formspree]")).forEach(wireForm);
 
   /* ---------- copy link on articles ---------- */
-  var copyBtn = $("copyLink");
+  var copyBtn = $("copyLink"), copyStatus = $("copyStatus");
   if (copyBtn) {
-    copyBtn.addEventListener("click", function () {
+    var copyLabel = copyBtn.textContent, copyTimer;
+    var copyFallback = $("copyFallback"), copyValue = $("copyValue");
+    copyBtn.addEventListener("click", async function () {
+      if (copyBtn.disabled) return;
+      clearTimeout(copyTimer);
+      copyBtn.disabled = true;
       var url = location.href.split("#")[0];
-      var done = function () {
-        var old = copyBtn.textContent;
+      try {
+        if (!navigator.clipboard || !navigator.clipboard.writeText) throw new Error("Clipboard unavailable");
+        await navigator.clipboard.writeText(url);
+        if (copyFallback) copyFallback.hidden = true;
         copyBtn.textContent = "Link copied";
-        setTimeout(function () { copyBtn.textContent = old; }, 1800);
-      };
-      if (navigator.clipboard) navigator.clipboard.writeText(url).then(done, function () {});
-      else done();
+        if (copyStatus) copyStatus.textContent = "Page link copied to the clipboard.";
+        copyTimer = setTimeout(function () { copyBtn.textContent = copyLabel; }, 1800);
+      } catch (error) {
+        copyBtn.textContent = copyLabel;
+        if (copyStatus) copyStatus.textContent = "Automatic copying is unavailable. Select and copy the page link.";
+        if (copyFallback && copyValue) {
+          copyFallback.hidden = false;
+          copyValue.value = url;
+          copyValue.focus();
+          copyValue.select();
+        }
+      } finally {
+        copyBtn.disabled = false;
+      }
     });
   }
 
@@ -254,6 +304,7 @@
     try { localStorage.setItem(PREFS[name], value); } catch (e) {}
     if (name === "theme" && typeof syncTheme === "function") syncTheme();
     syncSegs();
+    scheduleReading();
   }
 
   var segs = [].slice.call(document.querySelectorAll(".seg[data-pref]"));
@@ -280,6 +331,10 @@
       readerBtn.setAttribute("aria-expanded", "false");
       if (refocus) readerBtn.focus();
     };
+    $("readerClose").addEventListener("click", function () { closePanel(true); });
+    readerPanel.addEventListener("focusout", function (event) {
+      if (event.relatedTarget && !readerPanel.contains(event.relatedTarget) && event.relatedTarget !== readerBtn) closePanel(false);
+    });
     readerBtn.addEventListener("click", function () {
       var open = readerPanel.hidden;
       readerPanel.hidden = !open;
@@ -287,7 +342,10 @@
       if (open) { var f = readerPanel.querySelector("button"); if (f) f.focus(); }
     });
     document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape" && !readerPanel.hidden) closePanel(true);
+      if (e.key === "Escape" && !readerPanel.hidden) {
+        closePanel(true);
+        e.stopImmediatePropagation();
+      }
     });
     document.addEventListener("click", function (e) {
       if (readerPanel.hidden) return;
@@ -301,6 +359,7 @@
         try { localStorage.removeItem(PREFS[k]); } catch (e) {}
       });
       syncSegs();
+      scheduleReading();
     });
   }
 
@@ -313,6 +372,7 @@
       focusBtn.setAttribute("aria-label", on ? "Exit focus mode" : "Enter focus mode");
     }
     if (!on && focusBtn) focusBtn.focus();
+    scheduleReading();
   }
   if (focusBtn) focusBtn.addEventListener("click", function () {
     setFocus(root.getAttribute("data-focus") !== "on");
@@ -322,32 +382,52 @@
     if (e.key === "Escape" && root.getAttribute("data-focus") === "on") setFocus(false);
   });
 
-  /* ---------- chapter bar ---------- */
-  var chapterBar = $("chapterBar"), chapterLeft = $("chapterLeft");
+  /* ---------- reading progress ---------- */
+  var bar = $("readBar"), chapterBar = $("chapterBar"), chapterLeft = $("chapterLeft");
+  var copyEl = document.querySelector(".article-copy");
   var proseEl = document.querySelector(".article .prose");
-  if (chapterBar && proseEl) {
-    var words = (proseEl.textContent || "").trim().split(/\s+/).length;
-    var lastLeft = -1;
-    var tickBar = function () {
-      var box = proseEl.getBoundingClientRect();
-      var total = box.height - window.innerHeight;
-      var read = total > 0 ? Math.min(1, Math.max(0, -box.top / total)) : (box.top < 0 ? 1 : 0);
-      chapterBar.classList.toggle("is-on", box.top < window.innerHeight * 0.4 && read < 0.999);
-      if (chapterLeft) {
-        var left = Math.max(0, Math.round((words * (1 - read)) / 220));
-        if (left !== lastLeft) {
-          lastLeft = left;
-          chapterLeft.textContent = left > 0 ? left + " min left" : "Finished";
-        }
+  var words = proseEl ? (proseEl.textContent || "").trim().split(/\s+/).length : 0;
+  var scrollQueued = false, lastStuck, lastProgress = -1, lastLeft = -1, lastChapter;
+  function updateReading() {
+    scrollQueued = false;
+    // Read geometry before changing styles. A transform avoids resizing the bar.
+    var stuck = window.scrollY > 8;
+    var box = copyEl && copyEl.getBoundingClientRect();
+    var progress = box ? (box.height > window.innerHeight
+      ? Math.min(1, Math.max(0, -box.top / (box.height - window.innerHeight)))
+      : (box.bottom <= window.innerHeight ? 1 : 0)) : 0;
+    var showChapter = !!box && box.top < window.innerHeight * 0.4 && progress < 0.999;
+    if (header && stuck !== lastStuck) {
+      lastStuck = stuck;
+      header.classList.toggle("is-stuck", stuck);
+    }
+    if (bar && progress !== lastProgress) {
+      lastProgress = progress;
+      bar.style.transform = "scaleX(" + progress + ")";
+    }
+    if (chapterBar && showChapter !== lastChapter) {
+      lastChapter = showChapter;
+      chapterBar.classList.toggle("is-on", showChapter);
+      chapterBar.inert = !showChapter;
+    }
+    if (chapterLeft) {
+      var left = Math.max(0, Math.round(words * (1 - progress) / 220));
+      if (left !== lastLeft) {
+        lastLeft = left;
+        chapterLeft.textContent = left > 0 ? left + " min left" : "Finished";
       }
-    };
-    var barQueued = false;
-    window.addEventListener("scroll", function () {
-      if (barQueued) return;
-      barQueued = true;
-      requestAnimationFrame(function () { barQueued = false; tickBar(); });
-    }, { passive: true });
-    window.addEventListener("resize", tickBar);
-    tickBar();
+    }
   }
+  function scheduleReading() {
+    if (scrollQueued) return;
+    scrollQueued = true;
+    requestAnimationFrame(updateReading);
+  }
+  window.addEventListener("scroll", scheduleReading, { passive: true });
+  window.addEventListener("resize", scheduleReading);
+  if (copyEl && typeof ResizeObserver !== "undefined") {
+    new ResizeObserver(scheduleReading).observe(copyEl);
+  }
+  if (document.fonts) document.fonts.ready.then(scheduleReading);
+  updateReading();
 })();
