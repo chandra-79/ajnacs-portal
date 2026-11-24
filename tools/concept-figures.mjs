@@ -101,11 +101,12 @@ export function conceptSvg(figure, width = 1280, height = 720) {
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 1280 720" data-article-art="${figure.slug}" role="img" aria-label="${esc(figure.alt)}"><rect x="-1280" y="-720" width="3840" height="2160" fill="#f3f6fa"/><g font-family="Inter, sans-serif">${title}${textBlock(intro, 62, 159, { size: 23, fill: '#64748b', limit: 85 })}${drawing}${textBlock('AJNA  /  Method, assumptions and values accompany the article.', 62, 682, { size: 19, fill: '#64748b', limit: 110 })}</g></svg>`;
 }
 
-export function conceptDetails(figure) {
+export function conceptDetails(figure, { showFigure = false } = {}) {
   const flow = figure.kind === 'flow';
   const values = flow ? `<ol>${figure.steps.map(step => `<li><strong>${esc(step.label)}.</strong> ${esc(step.detail)}</li>`).join('')}</ol>`
     : `<ul>${figure.points.map(point => `<li>${esc(point.label)}: <strong>${esc(String(point.value))} ${esc(figure.unit)}</strong></li>`).join('')}</ul>`;
-  return `<section class="concept-method" aria-labelledby="concept-method-title"><h2 id="concept-method-title">${flow ? 'How to use the diagram' : 'Chart methodology and values'}</h2><p class="case-notice">${flow ? 'Conceptual illustration. The sequence describes an approach, not measured customer results.' : 'Synthetic worked example. These figures illustrate the calculation; they are not customer results or industry benchmarks.'}</p><p>${esc(figure.method)}</p><details><summary>${flow ? 'Read the steps' : 'Read the chart values'}</summary>${values}</details>${flow ? '' : `<p><a href="/field-guides/examples/${figure.slug}.csv" download>Download these example values (CSV)</a></p>`}</section>`;
+  const drawing = showFigure ? `<figure style="aspect-ratio:16/9;margin:1rem 0">${conceptSvg(figure, "100%", "100%")}</figure>` : "";
+  return `<section class="concept-method" aria-labelledby="concept-method-title"><h2 id="concept-method-title">${flow ? 'How to use the diagram' : 'Chart methodology and values'}</h2><p class="case-notice">${flow ? 'Conceptual illustration. The sequence describes an approach, not measured customer results.' : 'Synthetic worked example. These figures illustrate the calculation; they are not customer results or industry benchmarks.'}</p><p>${esc(figure.method)}</p>${drawing}<details><summary>${flow ? 'Read the steps' : 'Read the chart values'}</summary>${values}</details>${flow ? '' : `<p><a href="/field-guides/examples/${figure.slug}.csv" download>Download these example values (CSV)</a></p>`}</section>`;
 }
 
 export function conceptCsv(figure) {

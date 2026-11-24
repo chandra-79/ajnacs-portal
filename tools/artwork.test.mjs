@@ -5,7 +5,7 @@ import { createHash } from 'node:crypto';
 import { articleDirection, compositionFor } from './editorial-art.mjs';
 import { artwork } from './visuals.mjs';
 import { publicationDate } from './publication.mjs';
-import { coverArt, photoFor } from './covers.mjs';
+import { coverArt, hasLocalCover, photoFor } from './covers.mjs';
 import { noteCover } from './note-covers.mjs';
 import { conceptFor } from './concept-figures.mjs';
 import { loadServiceLibrary, servicePath } from './service-library.mjs';
@@ -163,7 +163,7 @@ test('every published and planned article has a real 1200 by 630 social preview'
     assert.equal(bytes.readUInt32BE(16),1200);
     assert.equal(bytes.readUInt32BE(20),630);
     assert.ok(bytes.length>1000,`empty preview for ${article.slug}`);
-    const svg=article.date <= publicationDate() || conceptFor(article.slug) ? coverArt(article.slug, 1200, 630) : artwork(article.slug,article.tags,{w:1200,h:630,title:article.title,calm:article.section==='notes'})
+    const svg=article.date <= publicationDate() || conceptFor(article.slug) || hasLocalCover(article.slug) ? coverArt(article.slug, 1200, 630) : artwork(article.slug,article.tags,{w:1200,h:630,title:article.title,calm:article.section==='notes'})
       .replace(/var\(--[\w-]+,\s*(#[0-9a-fA-F]+)\)/g,'$1');
     assert.equal(sources[article.slug],createHash('sha256').update(svg).digest('hex'),`outdated preview for ${article.slug}`);
   }
