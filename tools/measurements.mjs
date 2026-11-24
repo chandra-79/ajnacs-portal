@@ -14,7 +14,7 @@ export function csv(rows) {
   return rows.map(row => row.map(value => `"${String(value).replaceAll('"', '""')}"`).join(",")).join("\n") + "\n";
 }
 
-export function evidence(title, metrics, labels = ["Baseline", "Pilot"]) {
+export function evidence(title, metrics, labels = ["Baseline", "Pilot"], origin = "Simulated figures") {
   const format = number => number.toLocaleString("en-US", { maximumFractionDigits: 6 });
   const series = metrics.map(([label, unit, ...values]) => {
     const max = unit === "%" ? 100 : Math.max(...values.map(metricValue)) || 1;
@@ -26,7 +26,7 @@ export function evidence(title, metrics, labels = ["Baseline", "Pilot"]) {
     </li>`;
   }).join("");
   return `<figure class="field-chart case-chart">
-    <figcaption>${esc(title)} <span>Simulated figures</span></figcaption>
+    <figcaption>${esc(title)} <span>${esc(origin)}</span></figcaption>
     <ul class="case-metrics">${series}</ul>
   </figure>`;
 }

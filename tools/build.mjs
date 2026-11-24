@@ -10,6 +10,7 @@ import { makeRenderer, tableOfContents, headingAnchors } from "./render.mjs";
 import { staticPages } from "./pages.mjs";
 import { caseLibrary } from "./case-library.mjs";
 import { examplesCsv, readWorkedExamples, workedExample } from "./worked-examples.mjs";
+import { localInferenceNote } from "./local-inference-note.mjs";
 import { readResearchLinks, referencesFor, referencesBlock } from "./references.mjs";
 import { publicationDate } from "./publication.mjs";
 import { buildArticleImages } from "./article-images.mjs";
@@ -33,6 +34,7 @@ const insights = live.filter(m => m.section === "insights");
 const notes = live.filter(m => m.section === "notes");
 const examples = await readWorkedExamples();
 const researchLinks = await readResearchLinks();
+const localInference = await localInferenceNote();
 const guideBySlug = new Map(fieldGuides.map(guide => [guide.slug, guide]));
 
 const topicCounts = {};
@@ -224,6 +226,7 @@ ${html}
       </div>
 ${fieldGuide ? worksheet(fieldGuide) : example ? workedExample(example, m.section === "notes") : ""}
 
+${m.slug === "running-local-llm-lessons" ? localInference.html : ""}
 ${refsHtml}
 
 ${seriesItems.length > 1 && !chaptersHtml ? `<aside class="series-box" style="margin-top:3rem">
@@ -471,13 +474,16 @@ await out("topics", page({
 for (const topic of hubTopics) {
   const url = articleTopicPath(topic);
   const articles = live.filter(m => m.tags.includes(topic));
+  const start = featuredCollections.find(item => articles.some(article => article.slug === item.slug));
+  const lead = start ? articles.find(article => article.slug === start.slug) : articles[0];
+  const leadBody = examples.get(lead.slug)?.lead || lead.description;
   await out(url.slice(1, -1), page({
     title: `${topic} articles and guides`,
     description: `Browse ${topic} articles from Ajna Consulting Services, with production trade-offs, worked measurements and implementation guides.`,
     path: url, topic,
-    body: `<section class="section mesh"><div class="publication-wrap"><nav class="crumbs" aria-label="Breadcrumb"><a href="/insights/">Insights</a><span aria-hidden="true">/</span><a href="/topics/">Topics</a></nav><h1 class="h-display">${esc(topic)}</h1><p class="lede">${articles.length} articles</p></div></section>
+    body: `<section class="section mesh"><div class="publication-wrap"><nav class="crumbs" aria-label="Breadcrumb"><a href="/insights/">Insights</a><span aria-hidden="true">/</span><a href="/topics/">Topics</a></nav><h1 class="h-display">${esc(topic)}</h1><p class="lede field-intro">${esc(leadBody)}</p><div class="row insights-actions"><a class="btn" href="/${lead.section}/${lead.slug}/">Start with ${esc(lead.title)}</a></div></div></section>
 <section class="publication-wrap archive-layout" aria-label="Articles about ${esc(topic)}">
-  <div class="grid archive-cards">${articles.map(m => cardFor(m, `/${m.section}`)).join('')}</div>
+  <div class="archive-main"><h2 class="h3 topic-archive-title">${articles.length} ${articles.length === 1 ? "article" : "articles"}</h2><div class="grid archive-cards">${articles.map(m => cardFor(m, `/${m.section}`)).join('')}</div></div>
   ${housePromotions("topic-rail")}
 </section>`,
   }));
@@ -501,9 +507,8 @@ await out("field-guides", page({
 <section class="publication-wrap archive-layout" aria-label="Field guides and worksheets">
   <div class="grid series-cards">
     ${publishedGuides.map(guide => `<article class="guide-tile">
-      <h2 class="h3">${esc(guide.name)}</h2>
+      <h2 class="h3"><a class="card-destination" href="/insights/${guide.slug}/">${esc(guide.name)}</a></h2>
       <p>${esc(guide.question)}</p>
-      <a href="/insights/${guide.slug}/">Read the guide</a>
       <a href="/insights/${guide.slug}/#measurement-worksheet">Open the worksheet</a>
       <a href="/insights/${guide.slug}/#methodology">Review the methodology</a>
     </article>`).join("\n    ")}
@@ -512,6 +517,8 @@ await out("field-guides", page({
 </section>`,
 }));
 await out("field-guides/worked-examples.csv", examplesCsv(examples));
+await out("field-guides/data/local-inference.csv", localInference.data);
+await out("field-guides/data/run-local-inference-lab.py", localInference.script);
 for (const guide of publishedGuides) {
   await out(`field-guides/${guide.slug}.csv`, worksheetCsv(guide));
 }
@@ -521,7 +528,7 @@ for (const [rel, html] of Object.entries(staticPages({ insights, notes, seriesMa
   await out(rel, html);
 }
 
-const caseUrls = await caseLibrary(out);
+const caseUrls = await caseLibrary(out, housePromotions);
 
 /* ---------- feeds and robots ---------- */
 const stamp = date => new Date(date + "T09:00:00Z").toISOString();

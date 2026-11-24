@@ -164,7 +164,7 @@ export function staticPages({ insights, notes, seriesMap, topicList, cardFor, to
     <p class="eyebrow">The Ajna methodology</p>
     <h2 class="h1" style="margin-top:.8rem;max-width:22ch">How an engagement actually runs.</h2>
     <ol class="method">
-      ${METHOD.map(([t, d], i) => `<li>${thumbnail(t,[['Architecture'],['Cloud Architecture'],['DevSecOps'],['Engineering Leadership']][i],'method-'+['audit','migration','automation','technical-learning'][i])}<span class="n">${String(i + 1).padStart(2, "0")}</span><strong>${esc(t)}</strong><p>${esc(d)}</p></li>`).join("\n      ")}
+      ${METHOD.map(([t, d], i) => `<li>${thumbnail(t,[['Architecture'],['Cloud Architecture'],['DevSecOps'],['Engineering Leadership']][i],'method-'+['audit','migration','automation','technical-learning'][i])}<span class="n">${String(i + 1).padStart(2, "0")}</span><strong><a href="/case-studies/${caseCategories[i].id}/">${esc(t)}</a></strong><p>${esc(d)}</p></li>`).join("\n      ")}
     </ol>
   </div>
 </section>
@@ -176,7 +176,7 @@ export function staticPages({ insights, notes, seriesMap, topicList, cardFor, to
         <p class="eyebrow">Insights</p>
         <h2 class="h1" style="margin-top:.8rem;max-width:20ch">We write down what we learn.</h2>
       </div>
-      <a class="link-arrow" href="/insights/">Further reading ${icon.arrow}</a>
+      <div class="row"><a class="btn" href="/field-guides/">Start with a field guide</a><a class="link-arrow" href="/insights/">All Insights ${icon.arrow}</a></div>
     </div>
     ${featured.length ? `<article class="feature-post" data-topic="${esc(primaryTopic(featured[0].tags))}" style="margin-top:2.6rem">
       <span class="art">${coverFor(featured[0], { sizes: "(min-width: 800px) 640px, 100vw" })}</span>
@@ -365,7 +365,7 @@ ${SERVICES.map(s => `<section class="section ${s.id === "ai" ? "surface hair" : 
   </ul>
   <h2>Data origin</h2>
   <p>Figures marked simulated or illustrative are worked examples. The case studies call out their context, acceptance criteria, handover and limits. Each one includes its own downloadable values. The article archive <a href="/field-guides/worked-examples.csv" download>worked examples CSV</a> records input strings, chart values and each method.</p>
-  <p>Where observations were actually collected, say how they were produced, report the environment and sample selection, and publish the data and code where possible. Keep attribution and causal claims within the scope of that experiment.</p>
+  <p>The <a href="/insights/running-local-llm-lessons/#local-run">CPU-only inference run</a> is an Ajna lab observation. The article publishes the environment, raw observations, rerun script and scope of the comparison. Future measurements follow the same pattern.</p>
   <h2>References</h2>
   <ul>
     <li><a href="https://radar.cloudflare.com/about">Cloudflare Radar data sources</a></li>

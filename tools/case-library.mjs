@@ -1,8 +1,7 @@
 import { readFile } from "node:fs/promises";
 import { SITE, esc } from "./lib.mjs";
 import { page } from "./shell.mjs";
-import { caseCoverArt } from "./case-covers.mjs";
-import { makeRenderer } from "./render.mjs";
+import { headingAnchors, makeRenderer, tableOfContents } from "./render.mjs";
 import { csv, deliveryFlow, evidence, metricValue } from "./measurements.mjs";
 
 const base = "/case-studies/";
@@ -33,8 +32,7 @@ function readCase(raw, source) {
   return { slug, title, description, flow, metrics, markdown, reference };
 }
 
-export async function caseLibrary(out) {
-  const { marked: renderer } = makeRenderer();
+export async function caseLibrary(out, promotions) {
   const urls = [];
   for (const category of caseCategories) {
     const dir = base + category.id + "/";
@@ -70,6 +68,8 @@ export async function caseLibrary(out) {
       const route = dir + item.slug + "/";
       const dataPath = dir + item.slug + ".csv";
       const [referenceName, referenceLink] = item.reference;
+      const { marked, headings } = makeRenderer();
+      const caseCopy = headingAnchors(marked.parse(item.markdown.replace(/^### /gm, "## ")));
       await out(dataPath.slice(1), csv([
         ["metric", "unit", "baseline_input", "pilot_input", "baseline_value", "pilot_value", "data_origin"],
         ...item.metrics.map(([label, unit, baseline, pilot]) => [label, unit, baseline, pilot, metricValue(baseline), metricValue(pilot), "synthetic"]),
@@ -88,15 +88,16 @@ export async function caseLibrary(out) {
       <p class="lede field-intro">${esc(item.description)}</p>
       <p class="case-notice">${simulationNotice}</p>
     </header>
-    <div class="article-hero" data-topic="${esc(category.topic)}">${caseCoverArt(category.id, category.alt)}</div>
+    <div class="article-hero case-schematic" data-topic="${esc(category.topic)}">${deliveryFlow(item.flow)}</div>
+    <div class="reader-aside">${tableOfContents(headings)}</div>
     <div class="article-copy">
-      <div class="prose">${renderer.parse(item.markdown.replace(/^### /gm, "## "))}</div>
-      ${deliveryFlow(item.flow)}
+      <div class="prose">${caseCopy}</div>
       ${evidence("Worked comparison", item.metrics)}
       <p class="case-download"><a href="${dataPath}" download>Download the simulated measurements (CSV)</a></p>
       <p class="case-download"><a href="${esc(referenceLink)}">${esc(referenceName)}</a></p>
       <div class="row"><a class="btn btn-ghost" href="${dir}">More ${esc(category.title.toLowerCase())} scenarios</a><a class="btn" href="/contact/">Discuss a similar engagement</a></div>
     </div>
+    ${promotions("case-study-rail")}
   </div>
 </article>`,
         jsonld: [{
