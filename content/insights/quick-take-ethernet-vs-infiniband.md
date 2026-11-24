@@ -6,51 +6,24 @@ tags: ["Systems", "Enterprise AI", "Infrastructure"]
 format: article
 ---
 
-The GPU cluster is provisioned. 256 A100s. Expensive, powerful, and sitting at 42% GPU utilization during distributed training.
-
-The bottleneck is not the GPUs. The bottleneck is the network.
+The question for a distributed training run is how long communication delays useful work. A fabric may have ample nominal bandwidth and still show slow job steps because of rank placement, collective configuration, congestion, or a slow host.
 
 ## What to measure
 
-**Collective completion at representative load.** Compare p50 and p99 all-reduce duration at the same payload and rank count. A median of 20 ms with a p99 of 60 ms tells a different story from a median of 24 ms with a p99 of 29 ms. Test simultaneous jobs before standardising the fabric.
+Measure the application's step time and a representative collective with the same ranks and message sizes. Record the type of collective, placement, topology, and whether communication overlaps compute. **Illustrative measurement.** A fictional p95 collective completion time of 39 ms versus 32 ms describes only the two configurations tested.
 
-*Illustrative measurement. Any numbers in this example are hypothetical.*
+## Why the traffic estimate matters
 
-## Why distributed AI training is a network problem
+A conventional ring AllReduce with N ranks and a gradient buffer of S bytes per rank sends about 2(N−1)S/N per rank, with comparable receives. One rank follows the ring's neighbour exchanges. This estimate assumes that each rank participates with the full buffer. Sharded state, hierarchical algorithms, gradient bucketing and multiple ranks per host change the bytes crossing each NIC.
 
-Modern large model training uses distributed data parallelism or tensor parallelism, which requires frequent synchronization of gradients or activations across GPUs. The synchronization involves a lot of data moving very fast:
+At 128 ranks, a hypothetical 400 GB full buffer on each rank gives about 794 GB sent per rank per collective. Dividing the full buffer by 128 would describe a different assumption about data ownership. Specify the placement and the collective before estimating traffic on a host link.
 
-A GPT-scale model with 100 billion parameters has approximately 400GB of gradient data (in FP32) that needs to be averaged across all nodes after each backward pass. With 128-node training, each node sends and receives approximately 6GB per step. At 1,000 steps per minute, that is 100GB/s of sustained bidirectional traffic per node.
+## Select a system to test
 
-Standard 100GbE (100 gigabit Ethernet) provides approximately 12.5 GB/s unidirectional. The arithmetic does not work.
+InfiniBand and RDMA-capable Ethernet deployments each have transport, NIC and software requirements. Cloud providers expose different implementations and topologies. AWS EFA uses its own transport, and Azure ND H100 v5 documents dedicated InfiniBand networking. For a cloud selection, get the exact instance configuration and run a matched collective and training-step replay before comparing cost per useful step.
 
-## InfiniBand vs. Ethernet: the real differences
+## Sources
 
-**InfiniBand HDR (200 Gb/s)** — the standard for serious AI training infrastructure — provides:
-- 200 Gb/s bandwidth per port (25 GB/s)
-- Sub-microsecond latency (1–2 microseconds)
-- RDMA (Remote Direct Memory Access) — data moves directly between GPU memory on different nodes without CPU involvement
-- Congestion control designed for HPC all-reduce patterns
-
-**High-speed Ethernet (400GbE RoCE)** — the cloud-friendly alternative:
-- 400 Gb/s bandwidth (50 GB/s) on current-generation switches
-- 2–5 microsecond latency
-- RDMA over Converged Ethernet (RoCE v2) — requires careful ECN configuration to avoid congestion collapse
-- Available in all major cloud providers (AWS EFA, Azure InfiniBand, GCP GPUDirect TCPX)
-
-## The practical implication for training efficiency
-
-All-reduce communication efficiency (the collective operation that averages gradients) degrades sharply with latency and becomes network-bound when bandwidth is insufficient. The MFU (model flops utilization) of a training run on InfiniBand-connected H100s is typically 40–50% higher than the same run on standard Ethernet-connected nodes.
-
-This means:
-- Training the same model takes 40% more calendar time on Ethernet
-- Using 40% more GPU-hours
-- Spending 40% more on compute cost
-
-At the scale of serious training runs — weeks to months of GPU time — 40% is not a small difference.
-
-## The cloud context
-
-AWS Elastic Fabric Adapter (EFA), Azure InfiniBand, and GCP GPUDirect all provide high-speed fabric options in their GPU instances. Using a P4d or P5 instance on AWS without placing instances in a cluster placement group and enabling EFA leaves the high-speed fabric unused. The instance has the capability; the configuration has to explicitly use it.
-
-The engineers who optimize GPU selection and storage and then deploy on standard instance networking are leaving a large fraction of the cluster's performance unused.
+- [NVIDIA NCCL Tests performance methodology](https://github.com/NVIDIA/nccl-tests/blob/master/doc/PERFORMANCE.md)
+- [AWS Elastic Fabric Adapter](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/efa.html)
+- [Azure ND H100 v5 topology](https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/gpu-accelerated/ndh100v5-series)

@@ -33,8 +33,9 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=a8e7c95a">
-<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<link rel="stylesheet" href="/assets/css/site.css?v=bd74be96">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
+<link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
    never flashes the wrong ground or resets someone's text size mid-read. */
@@ -105,6 +106,7 @@ d.setAttribute('data-theme',t);
 </nav></div>
     <div class="article-copy">
       <div class="prose">
+<p class="article-opening">A CDN&#39;s usefulness depends on how safely it can serve a repeat response without visiting origin again.</p>
 <p>A CDN solves a simple problem — content is faster when it&#39;s closer to the user — in increasingly complex ways. Modern CDNs aren&#39;t just caches; they&#39;re the place where TLS terminates, where bot traffic is filtered, where geolocation routing happens, where edge compute runs, and where rate limiting is enforced. The CDN decision has more surface area than most teams realise when they first evaluate it.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
 <p><strong>Requests and bytes reaching origin.</strong> If 8,000 of 10,000 cache-eligible requests hit, request hit rate is 80%. Count bytes separately because the 2,000 misses may carry most of the payload. Break out first requests after expiry or purge to show how the origin behaves when the cache is cold.</p>
@@ -153,15 +155,45 @@ d.setAttribute('data-theme',t);
 <p><em>Working through CDN selection or configuration for a specific architecture? The trade-offs vary a lot by workload. <a href="/contact/">Happy to compare notes.</a></em></p>
 
       </div>
+<section class="field-worksheet worked-example" aria-labelledby="worked-example">
+    <h2 id="worked-example">Worked example</h2>
+    <p class="case-notice">This scenario and its results are illustrative.</p>
+    
+    <p>Model requests to immutable static files and private responses separately. Test cache keys, authenticated bypass and invalidation on a safe routing fixture.</p>
+    <figure class="delivery-flow">
+    <figcaption>Execution sequence</figcaption>
+    <ol><li>Classify response</li><li>Define cache key</li><li>Verify bypass</li><li>Measure hits</li></ol>
+  </figure>
+    <figure class="field-chart case-chart">
+    <figcaption>Example comparison <span>Simulated figures</span></figcaption>
+    <ul class="case-metrics"><li class="case-metric">
+      <h3>Eligible requests served from edge <small>%</small></h3>
+      <ul class="chart-rows"><li><span>Initial default behaviour</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:66%"></i></span>
+        <strong>66% <small>(660/1000)</small></strong></li><li><span>Explicit public cache policy</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:87%"></i></span>
+        <strong>87% <small>(870/1000)</small></strong></li></ul>
+    </li></ul>
+  </figure>
+    <h3>Method and limits</h3>
+    <p>Count only eligible public requests in the hit-rate denominator. Prove private responses never entered that cache in a separate test.</p>
+    <a href="/field-guides/worked-examples.csv" download>Download the worked figures (CSV)</a>
+  </section>
 
 
-
+<aside class="refs" aria-labelledby="refs-h">
+  <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
+  <p class="refs-note">Primary documentation, standards and research for the methods discussed here.</p>
+  <ul>
+    <li><a href="https://www.rfc-editor.org/rfc/rfc9111" rel="noopener" target="_blank">IETF RFC 9111 · HTTP Caching</a><span>Shared-cache semantics, freshness and validation.</span></li>
+  </ul>
+</aside>
 
 
 
       <footer class="article-foot">
         <div class="row" style="gap:.4rem">
-          <a class="chip chip-plain" href="/insights/?topic=CDN%20%26%20Caching">CDN &amp; Caching</a><a class="chip chip-plain" href="/topics/cloud-architecture/">Cloud Architecture</a><a class="chip chip-plain" href="/topics/infrastructure/">Infrastructure</a>
+          <a class="chip" href="/topics/cdn-caching/">CDN &amp; Caching</a><a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a><a class="chip" href="/topics/infrastructure/">Infrastructure</a>
         </div>
         <nav class="prevnext" aria-label="More articles">
           <a href="/insights/varnish-cache-configuration/"><span>Previous</span><strong>Varnish Cache Configuration: A Practical Guide to VCL and Caching Strategy</strong></a>
@@ -175,12 +207,12 @@ d.setAttribute('data-theme',t);
     <section class="promo-card promo-techknowen" aria-label="TechKnowen">
       <p class="promo-name">TechKnowen</p>
       <p>Practical reading on software, architecture, and engineering.</p>
-      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+      <a class="card-destination" href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
     </section>
     <section class="promo-card promo-ziggle" aria-label="Ziggle">
       <p class="promo-name">Ziggle</p>
       <p>A new place to play brain teasers.</p>
-      <p class="promo-status">Coming soon</p>
+      <a class="card-destination" href="/projects/ziggle/">Ziggle preview</a> <span class="promo-status">Coming soon</span>
     </section>
   </div>
 </aside>
@@ -189,33 +221,33 @@ d.setAttribute('data-theme',t);
   <section class="section surface hair" style="margin-top:4rem">
     <div class="wrap">
       <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|Cloud Architecture|DevSecOps|Infrastructure|" data-search="serverless vs containers: an honest comparison for 2026 neither is universally better. the answer depends on your workload profile, your team&#39;s operational maturity, and — honestly — your tolerance for cold starts. cloud architecture devsecops infrastructure" data-topic="Cloud Architecture" href="/insights/serverless-vs-containers-2026/">
+      <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|Cloud Architecture|DevSecOps|Infrastructure|" data-search="serverless vs containers: an honest comparison for 2026 neither is universally better. the answer depends on your workload profile, your team&#39;s operational maturity, and — honestly — your tolerance for cold starts. cloud architecture devsecops infrastructure" data-topic="Cloud Architecture">
   <div class="card-art"><img data-article-art="serverless-vs-containers-2026" src="/assets/covers/photos/serverless-vs-containers-2026.jpg?v=773805cd32f5" srcset="/assets/covers/photos/serverless-vs-containers-2026-640.jpg?v=773805cd32f5 640w, /assets/covers/photos/serverless-vs-containers-2026.jpg?v=773805cd32f5 1280w" sizes="(min-width: 800px) 420px, 100vw" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Cloud Architecture</span>
-    <h3 class="card-title">Serverless vs Containers: An Honest Comparison for 2026</h3>
+    <a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/serverless-vs-containers-2026/">Serverless vs Containers: An Honest Comparison for 2026</a></h3>
     <p class="card-desc">Neither is universally better. The answer depends on your workload profile, your team&#39;s operational maturity, and — honestly — your tolerance for cold starts.</p>
     <div class="card-meta"><time datetime="2026-11-13">13 Nov 2026</time><span class="dot"></span><span>4 min read</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|Systems|Infrastructure|Enterprise AI|Cloud Architecture|HPC|" data-search="ethernet vs. infiniband: choosing the right network fabric in 2026 a practical breakdown of when to use ethernet and when infiniband makes sense — with key metrics, topology differences, and real-world guidance for cloud, hpc, and ai workloads. systems infrastructure enterprise ai cloud architecture hpc" data-topic="Infrastructure" href="/insights/ethernet-vs-infiniband-networking-2026/">
+</article>
+<article class="card" data-card data-topics="|Systems|Infrastructure|Enterprise AI|Cloud Architecture|HPC|" data-search="ethernet vs. infiniband: choosing the right network fabric in 2026 a practical breakdown of when to use ethernet and when infiniband makes sense — with key metrics, topology differences, and real-world guidance for cloud, hpc, and ai workloads. systems infrastructure enterprise ai cloud architecture hpc" data-topic="Infrastructure">
   <div class="card-art"><img data-article-art="ethernet-vs-infiniband-networking-2026" src="/assets/covers/ethernet-vs-infiniband-networking-2026.svg?v=99c68a23a181" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Infrastructure</span>
-    <h3 class="card-title">Ethernet vs. InfiniBand: Choosing the Right Network Fabric in 2026</h3>
+    <a class="chip" href="/topics/infrastructure/">Infrastructure</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/ethernet-vs-infiniband-networking-2026/">Ethernet vs. InfiniBand: Choosing the Right Network Fabric in 2026</a></h3>
     <p class="card-desc">A practical breakdown of when to use Ethernet and when InfiniBand makes sense — with key metrics, topology differences, and real-world guidance for cloud, HPC, and AI workloads.</p>
     <div class="card-meta"><time datetime="2026-10-02">2 Oct 2026</time><span class="dot"></span><span>5 min read</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|Cloud Architecture|Infrastructure|Observability|" data-search="designing for failure: resilience patterns that actually hold in production circuit breakers, bulkheads, retry logic, chaos engineering — the resilience patterns that genuinely reduce mttr and the ones that look good on architecture diagrams but fail when things get real. cloud architecture infrastructure observability" data-topic="Cloud Architecture" href="/insights/designing-for-failure-resilience-patterns/">
+</article>
+<article class="card" data-card data-topics="|Cloud Architecture|Infrastructure|Observability|" data-search="designing for failure: resilience patterns that actually hold in production circuit breakers, bulkheads, retry logic, chaos engineering — the resilience patterns that genuinely reduce mttr and the ones that look good on architecture diagrams but fail when things get real. cloud architecture infrastructure observability" data-topic="Cloud Architecture">
   <div class="card-art"><img data-article-art="designing-for-failure-resilience-patterns" src="/assets/covers/designing-for-failure-resilience-patterns.svg?v=b1a0be3f9b70" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Cloud Architecture</span>
-    <h3 class="card-title">Designing for Failure: Resilience Patterns That Actually Hold in Production</h3>
+    <a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/designing-for-failure-resilience-patterns/">Designing for Failure: Resilience Patterns That Actually Hold in Production</a></h3>
     <p class="card-desc">Circuit breakers, bulkheads, retry logic, chaos engineering — the resilience patterns that genuinely reduce MTTR and the ones that look good on architecture diagrams but fail when things get real.</p>
     <div class="card-meta"><time datetime="2026-01-07">7 Jan 2026</time><span class="dot"></span><span>6 min read</span></div>
   </div>
-</a></div>
+</article></div>
     </div>
   </section>
 
@@ -295,6 +327,7 @@ d.setAttribute('data-theme',t);
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/follow/">Follow new writing</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
           <li><a href="/notes/">Personal notes</a></li>
@@ -315,7 +348,7 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=a8e7c95a" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=a8e7c95a"></script>
+<script src="/assets/js/site.js?v=bd74be96" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=bd74be96"></script>
 </body>
 </html>

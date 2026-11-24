@@ -33,8 +33,9 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=a8e7c95a">
-<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<link rel="stylesheet" href="/assets/css/site.css?v=bd74be96">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
+<link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
    never flashes the wrong ground or resets someone's text size mid-read. */
@@ -105,6 +106,7 @@ d.setAttribute('data-theme',t);
 </nav></div>
     <div class="article-copy">
       <div class="prose">
+<p class="article-opening">A service mesh earns its operational cost only when its capabilities solve a problem the workload actually has.</p>
 <p>A service mesh intercepts all traffic between services in a cluster via sidecar proxies (or, in newer implementations, node-level proxies), giving you mTLS encryption, fine-grained traffic management, and automatic observability on every service-to-service call — without any changes to the services themselves.</p>
 <p>The proposition is genuinely powerful. The operational reality is that service meshes add significant complexity, and that complexity has a cost that&#39;s easy to underestimate before you&#39;re running one in production.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
@@ -143,14 +145,40 @@ d.setAttribute('data-theme',t);
 <p><em>Evaluating a service mesh for your cluster or trying to debug a mesh configuration? <a href="/contact/">Happy to compare notes on what&#39;s worked.</a></em></p>
 
       </div>
+<section class="field-worksheet worked-example" aria-labelledby="worked-example">
+    <h2 id="worked-example">Worked example</h2>
+    <p class="case-notice">This scenario and its results are illustrative.</p>
+    
+    <p>For one busy service pair, enable a mesh in a test environment and rehearse identity enforcement, traffic splitting and a version upgrade. Compare net latency overhead with the same traffic and transport assumptions.</p>
+    <figure class="delivery-flow">
+    <figcaption>Execution sequence</figcaption>
+    <ol><li>Choose requirement</li><li>Deploy isolated pilot</li><li>Replay traffic</li><li>Check operability</li></ol>
+  </figure>
+    <figure class="field-chart case-chart">
+    <figcaption>Example comparison <span>Simulated figures</span></figcaption>
+    <ul class="case-metrics"><li class="case-metric">
+      <h3>p95 in-cluster request time <small>ms</small></h3>
+      <ul class="chart-rows"><li><span>Reference route</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:84%"></i></span>
+        <strong>21</strong></li><li><span>Configured mesh route</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:100%"></i></span>
+        <strong>25</strong></li></ul>
+    </li></ul>
+  </figure>
+    <h3>Method and limits</h3>
+    <p>Use 20,000 requests per configuration. This measures one setup rather than a universal mesh overhead. Measure upgrade and operational costs too.</p>
+    <a href="/field-guides/worked-examples.csv" download>Download the worked figures (CSV)</a>
+  </section>
 
 
 <aside class="refs" aria-labelledby="refs-h">
   <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
-  <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
+  <p class="refs-note">Primary documentation, standards and research for the methods discussed here.</p>
   <ul>
-    <li><a href="https://kubernetes.io/docs/" rel="noopener nofollow" target="_blank">Kubernetes documentation</a><span>Primary reference for the concepts used here.</span></li>
-    <li><a href="https://opentelemetry.io/docs/" rel="noopener nofollow" target="_blank">OpenTelemetry</a><span>Specification and language SDKs.</span></li>
+    <li><a href="https://kubernetes.io/docs/concepts/services-networking/network-policies/" rel="noopener" target="_blank">Kubernetes Network Policies</a><span>Additive allow rules, scope and implementation prerequisites.</span></li>
+    <li><a href="https://istio.io/latest/docs/ops/deployment/performance-and-scalability/" rel="noopener" target="_blank">Istio · Performance and scalability</a><span>Versioned data-plane overhead examples and test conditions.</span></li>
+    <li><a href="https://kubernetes.io/docs/" rel="noopener" target="_blank">Kubernetes documentation</a><span>Primary reference for the concepts used here.</span></li>
+    <li><a href="https://opentelemetry.io/docs/" rel="noopener" target="_blank">OpenTelemetry</a><span>Specification and language SDKs.</span></li>
   </ul>
 </aside>
 
@@ -158,7 +186,7 @@ d.setAttribute('data-theme',t);
 
       <footer class="article-foot">
         <div class="row" style="gap:.4rem">
-          <a class="chip chip-plain" href="/topics/cloud-architecture/">Cloud Architecture</a><a class="chip chip-plain" href="/topics/containers/">Containers</a><a class="chip chip-plain" href="/insights/?topic=Systems">Systems</a>
+          <a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a><a class="chip" href="/topics/containers/">Containers</a><a class="chip" href="/topics/systems/">Systems</a>
         </div>
         <nav class="prevnext" aria-label="More articles">
           <a href="/insights/observability-opentelemetry-2026/"><span>Previous</span><strong>Observability with OpenTelemetry: Getting the Three Pillars Working Together</strong></a>
@@ -172,12 +200,12 @@ d.setAttribute('data-theme',t);
     <section class="promo-card promo-techknowen" aria-label="TechKnowen">
       <p class="promo-name">TechKnowen</p>
       <p>Practical reading on software, architecture, and engineering.</p>
-      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+      <a class="card-destination" href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
     </section>
     <section class="promo-card promo-ziggle" aria-label="Ziggle">
       <p class="promo-name">Ziggle</p>
       <p>A new place to play brain teasers.</p>
-      <p class="promo-status">Coming soon</p>
+      <a class="card-destination" href="/projects/ziggle/">Ziggle preview</a> <span class="promo-status">Coming soon</span>
     </section>
   </div>
 </aside>
@@ -186,33 +214,33 @@ d.setAttribute('data-theme',t);
   <section class="section surface hair" style="margin-top:4rem">
     <div class="wrap">
       <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|Systems|Infrastructure|Enterprise AI|Cloud Architecture|HPC|" data-search="ethernet vs. infiniband: choosing the right network fabric in 2026 a practical breakdown of when to use ethernet and when infiniband makes sense — with key metrics, topology differences, and real-world guidance for cloud, hpc, and ai workloads. systems infrastructure enterprise ai cloud architecture hpc" data-topic="Infrastructure" href="/insights/ethernet-vs-infiniband-networking-2026/">
+      <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|Systems|Infrastructure|Enterprise AI|Cloud Architecture|HPC|" data-search="ethernet vs. infiniband: choosing the right network fabric in 2026 a practical breakdown of when to use ethernet and when infiniband makes sense — with key metrics, topology differences, and real-world guidance for cloud, hpc, and ai workloads. systems infrastructure enterprise ai cloud architecture hpc" data-topic="Infrastructure">
   <div class="card-art"><img data-article-art="ethernet-vs-infiniband-networking-2026" src="/assets/covers/ethernet-vs-infiniband-networking-2026.svg?v=99c68a23a181" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Infrastructure</span>
-    <h3 class="card-title">Ethernet vs. InfiniBand: Choosing the Right Network Fabric in 2026</h3>
+    <a class="chip" href="/topics/infrastructure/">Infrastructure</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/ethernet-vs-infiniband-networking-2026/">Ethernet vs. InfiniBand: Choosing the Right Network Fabric in 2026</a></h3>
     <p class="card-desc">A practical breakdown of when to use Ethernet and when InfiniBand makes sense — with key metrics, topology differences, and real-world guidance for cloud, HPC, and AI workloads.</p>
     <div class="card-meta"><time datetime="2026-10-02">2 Oct 2026</time><span class="dot"></span><span>5 min read</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|FinOps|Containers|Cloud Architecture|" data-search="kubernetes cost visibility — the gap that kills finops programs kubernetes is one of the hardest places to apply finops discipline. here&#39;s what actual cost visibility requires and where most teams fall short. finops containers cloud architecture" data-topic="FinOps" href="/insights/kubernetes-cost-optimization/">
+</article>
+<article class="card" data-card data-topics="|FinOps|Containers|Cloud Architecture|" data-search="kubernetes cost visibility — the gap that kills finops programs kubernetes is one of the hardest places to apply finops discipline. here&#39;s what actual cost visibility requires and where most teams fall short. finops containers cloud architecture" data-topic="FinOps">
   <div class="card-art"><img data-article-art="kubernetes-cost-optimization" src="/assets/covers/kubernetes-cost-optimization.svg?v=28f22d48b868" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">FinOps</span>
-    <h3 class="card-title">Kubernetes Cost Visibility — The Gap That Kills FinOps Programs</h3>
+    <a class="chip" href="/topics/finops/">FinOps</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/kubernetes-cost-optimization/">Kubernetes Cost Visibility — The Gap That Kills FinOps Programs</a></h3>
     <p class="card-desc">Kubernetes is one of the hardest places to apply FinOps discipline. Here&#39;s what actual cost visibility requires and where most teams fall short.</p>
     <div class="card-meta"><time datetime="2025-02-17">17 Feb 2025</time><span class="dot"></span><span>3 min read</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|Cloud Architecture|Containers|Programming|" data-search="kubernetes operators: when to build one and when to stop at crds operators extend kubernetes with custom domain logic. but writing an operator is a significant commitment — the control loop, the reconciliation logic, the rbac, the upgrade path. here&#39;s when operators solve real problems and when simpler alternatives are enough. cloud architecture containers programming" data-topic="Cloud Architecture" href="/insights/kubernetes-operators-custom-resources/">
+</article>
+<article class="card" data-card data-topics="|Cloud Architecture|Containers|Programming|" data-search="kubernetes operators: when to build one and when to stop at crds operators extend kubernetes with custom domain logic. but writing an operator is a significant commitment — the control loop, the reconciliation logic, the rbac, the upgrade path. here&#39;s when operators solve real problems and when simpler alternatives are enough. cloud architecture containers programming" data-topic="Cloud Architecture">
   <div class="card-art"><img data-article-art="kubernetes-operators-custom-resources" src="/assets/covers/kubernetes-operators-custom-resources.svg?v=ded0e7c0267c" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Cloud Architecture</span>
-    <h3 class="card-title">Kubernetes Operators: When to Build One and When to Stop at CRDs</h3>
+    <a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/kubernetes-operators-custom-resources/">Kubernetes Operators: When to Build One and When to Stop at CRDs</a></h3>
     <p class="card-desc">Operators extend Kubernetes with custom domain logic. But writing an operator is a significant commitment — the control loop, the reconciliation logic, the RBAC, the upgrade path. Here&#39;s when operators solve real problems and when simpler alternatives are enough.</p>
     <div class="card-meta"><time datetime="2025-02-05">5 Feb 2025</time><span class="dot"></span><span>4 min read</span></div>
   </div>
-</a></div>
+</article></div>
     </div>
   </section>
 
@@ -292,6 +320,7 @@ d.setAttribute('data-theme',t);
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/follow/">Follow new writing</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
           <li><a href="/notes/">Personal notes</a></li>
@@ -312,7 +341,7 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=a8e7c95a" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=a8e7c95a"></script>
+<script src="/assets/js/site.js?v=bd74be96" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=bd74be96"></script>
 </body>
 </html>

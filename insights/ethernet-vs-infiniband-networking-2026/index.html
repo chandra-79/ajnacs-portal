@@ -33,8 +33,9 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=a8e7c95a">
-<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<link rel="stylesheet" href="/assets/css/site.css?v=bd74be96">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
+<link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
    never flashes the wrong ground or resets someone's text size mid-read. */
@@ -101,81 +102,68 @@ d.setAttribute('data-theme',t);
     <div class="article-hero" data-topic="Infrastructure"><img data-article-art="ethernet-vs-infiniband-networking-2026" src="/assets/covers/ethernet-vs-infiniband-networking-2026.svg?v=99c68a23a181" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
-  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#the-short-version">The short version</a></li><li><a href="#key-metrics-side-by-side-2026">Key metrics side by side (2026)</a></li><li><a href="#what-each-one-is-actually-good-at">What each one is actually good at</a></li><li><a href="#the-ai-training-case-specifically">The AI training case specifically</a></li><li><a href="#rdma-on-ethernet-closing-the-gap">RDMA on Ethernet — closing the gap?</a></li><li><a href="#how-i39d-approach-the-decision">How I&#39;d approach the decision</a></li></ol>
+  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#transport-and-topology">Transport and topology</a></li><li><a href="#decide-on-evidence">Decide on evidence</a></li><li><a href="#sources">Sources</a></li></ol>
 </nav></div>
     <div class="article-copy">
       <div class="prose">
-<p>import { Image } from &#39;astro:assets&#39;;</p>
-<p>Network fabric decisions don&#39;t get talked about enough in enterprise architecture conversations. Everyone focuses on compute and storage, and the interconnect gets chosen by default or by habit. But if you&#39;re building anything involving AI training, HPC workloads, or large-scale data movement — the network fabric choice matters more than almost anything else.</p>
-<p>Here&#39;s how I think about the Ethernet vs. InfiniBand question in 2026.</p>
+<p class="article-opening">Choose a network fabric against the communication pattern, host configuration and operational constraints of the workload.</p>
+<p>Choose the complete network stack against the job: fabric, host adapters, transport, collective runtime and operating team. For an installed cluster, placement and congestion policy can matter more to step time than the name of the transport.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
-<p><strong>Effective collective throughput.</strong> Transfer 8 GB per rank in 0.16 s to get 50 GB/s algorithmic throughput for that test. Compare at identical message sizes, load, GPU topology and collective algorithm, and declare whether numbers are algorithmic or bus bandwidth.</p>
-<p><em>Illustrative measurement. Any numbers in this example are hypothetical.</em></p>
-<h2 id="the-short-version"><a class="h-anchor" href="#the-short-version" aria-hidden="true" tabindex="-1">#</a>The short version</h2>
-<p><strong>Ethernet</strong> is the right default for almost everything: enterprise IT, cloud infrastructure, general-purpose workloads, internet-facing systems. It&#39;s mature, widely understood, cost-effective, and the ecosystem is enormous.</p>
-<p><strong>InfiniBand</strong> is purpose-built for scenarios where latency below 1 microsecond and maximum bandwidth actually change the outcome: AI/ML cluster training, HPC research, supercomputing. It&#39;s not a general-purpose fabric — it&#39;s a specialist tool.</p>
-<p>Most teams building on Azure, AWS, or GCP never need to think about InfiniBand directly — the cloud providers abstract it at the right layer. Where this decision surfaces is when you&#39;re designing on-premises AI clusters, research infrastructure, or evaluating managed HPC services.</p>
-<h2 id="key-metrics-side-by-side-2026"><a class="h-anchor" href="#key-metrics-side-by-side-2026" aria-hidden="true" tabindex="-1">#</a>Key metrics side by side (2026)</h2>
-<div class="table-wrap"><table><thead><tr><th>Metric</th><th>Ethernet</th><th>InfiniBand</th></tr></thead><tbody><tr><td><strong>Bandwidth</strong></td><td>800G–1.6T+</td><td>1.6T–3.2T+ (NDR/CDR)</td></tr><tr><td><strong>Latency</strong></td><td>10s of microseconds</td><td>Under 1 microsecond</td></tr><tr><td><strong>RDMA</strong></td><td>Optional — RoCE / iWARP</td><td>Native — built in</td></tr><tr><td><strong>Network topology</strong></td><td>Switch-based, hierarchical</td><td>Fabric, fat-tree / torus</td></tr><tr><td><strong>TCO</strong></td><td>Lower</td><td>Higher — specialised hardware</td></tr><tr><td><strong>Ecosystem</strong></td><td>Immense, mature</td><td>Specialised but strong</td></tr></tbody></table></div>
-<h2 id="what-each-one-is-actually-good-at"><a class="h-anchor" href="#what-each-one-is-actually-good-at" aria-hidden="true" tabindex="-1">#</a>What each one is actually good at</h2>
-<h3 id="ethernet-the-reliable-generalist"><a class="h-anchor" href="#ethernet-the-reliable-generalist" aria-hidden="true" tabindex="-1">#</a>Ethernet — the reliable generalist</h3>
-<p>Seven things work reliably well with Ethernet:</p>
-<ol>
-<li><strong>Universal connectivity</strong> — data centres, LAN, internet. If something needs to talk to something else, Ethernet handles it.</li>
-<li><strong>Speed range</strong> — from 10G up through 100G, 400G, 800G+ now standardised. More than enough for most enterprise workloads.</li>
-<li><strong>Proven reliability</strong> — decades of production hardening, broad hardware compatibility.</li>
-<li><strong>Security</strong> — mature standards and protocols. The security tooling ecosystem is deep.</li>
-<li><strong>Scale</strong> — powers the internet backbone and the largest public clouds. Proven at hyperscale.</li>
-<li><strong>Cost</strong> — competitive market, lots of vendors, wide choice.</li>
-<li><strong>RDMA adoption growing</strong> — iWARP and RoCE v2 are making RDMA accessible on Ethernet, narrowing the gap with InfiniBand for some workloads.</li>
-</ol>
-<p><strong>Best fit:</strong> General enterprise IT, public and private clouds, internet infrastructure, and the vast majority of use cases.</p>
-<h3 id="infiniband-the-precision-specialist"><a class="h-anchor" href="#infiniband-the-precision-specialist" aria-hidden="true" tabindex="-1">#</a>InfiniBand — the precision specialist</h3>
-<p>Where InfiniBand earns its higher cost:</p>
+<p>Track application step time and a representative collective over the same nodes, ranks and buffers. Report port line rate in Gb/s, collective payload in GB/s, and whether a figure is one-way, bidirectional or aggregated. <strong>Illustrative measurement.</strong> For two fictional clusters the median collective step drops from 51 ms to 43 ms with the same job configuration. That comparison does not establish an advantage for every deployment of either fabric.</p>
+<h2 id="transport-and-topology"><a class="h-anchor" href="#transport-and-topology" aria-hidden="true" tabindex="-1">#</a>Transport and topology</h2>
+<p>Ethernet supports many workloads and network designs. RDMA deployments can use RoCE, whose observed congestion and loss behaviour depends on the transport, adapters and switch configuration. Provision, configure and observe the path that the workload actually uses. The existing office network is not a stand-in for a dedicated GPU fabric.</p>
+<p>InfiniBand defines a fabric and native RDMA capabilities. Port speed depends on generation and lane count. For example, a four-lane NDR port is rated at 400 Gb/s, while four-lane XDR is rated at 800 Gb/s. Payload transfer, host injection and collective completion must be checked separately.</p>
+<p>Accelerator interconnects and cluster fabrics are distinct. An NVIDIA DGX H100 uses NVLink and NVSwitch within the system, and network interfaces for inter-node exchange. Read the cloud SKU: AWS EFA uses Scalable Reliable Datagram transport, while Azure ND H100 v5 documents dedicated InfiniBand per GPU. Compute configuration, topology and runtime determine whether a measured cross-cloud comparison is meaningful.</p>
+<h2 id="decide-on-evidence"><a class="h-anchor" href="#decide-on-evidence" aria-hidden="true" tabindex="-1">#</a>Decide on evidence</h2>
+<p>Freeze the run configuration and record congestion, errors and buffer behaviour on the relevant network. Compare training-step distribution, fraction of step blocked on communication, cost for the completed job and recovery on a bad link. Repeat across a small and representative job size. Scale from the comparison without assuming a fixed GPU count at which one fabric becomes preferable.</p>
+<h2 id="sources"><a class="h-anchor" href="#sources" aria-hidden="true" tabindex="-1">#</a>Sources</h2>
 <ul>
-<li><strong>Exceptional bandwidth</strong> — NDR at 400G per port, XDR at 800G, CDR pushing 1.6T+. For AI training clusters moving terabytes between GPUs, this matters.</li>
-<li><strong>Sub-microsecond latency</strong> — consistent, deterministic, and in a different class from Ethernet. Critical for tightly-coupled parallel workloads.</li>
-<li><strong>Native RDMA</strong> — Remote Direct Memory Access without the configuration overhead of RoCE. Zero-copy data transfer, offloads the CPU.</li>
-<li><strong>High efficiency fabric management</strong> — traffic control at the fabric level, not just the port level.</li>
-<li><strong>Interconnect topology</strong> — fat-tree and torus topologies optimized for all-to-all communication patterns common in distributed AI training.</li>
+<li><a href="https://infinibandta.org/wp-content/uploads/2026/08/Whats-New-in-Vol.-1-and-2-Release-2.1-2026-07-31.pdf" rel="noopener" target="_blank">InfiniBand Trade Association specification update</a></li>
+<li><a href="https://docs.nvidia.com/dgx/dgxh100-user-guide/dgxh100-user-guide.pdf" rel="noopener" target="_blank">NVIDIA DGX H100 system guide</a></li>
+<li><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/efa.html" rel="noopener" target="_blank">AWS EFA</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/gpu-accelerated/ndh100v5-series" rel="noopener" target="_blank">Azure ND H100 v5</a></li>
 </ul>
-<p><strong>Best fit:</strong> AI and ML model training, HPC research clusters, supercomputing, extreme-scale scientific computing.</p>
-<h2 id="the-ai-training-case-specifically"><a class="h-anchor" href="#the-ai-training-case-specifically" aria-hidden="true" tabindex="-1">#</a>The AI training case specifically</h2>
-<p>This is where I see the most confusion in architecture conversations right now.</p>
-<p>If you&#39;re doing AI inference — serving a trained model to end users — Ethernet is generally fine. Inference is often embarrassingly parallel and latency between nodes is less critical.</p>
-<p>If you&#39;re doing distributed AI training — gradient synchronisation, all-reduce operations across many GPUs — the interconnect becomes a bottleneck. InfiniBand (or its close cousin, NVIDIA NVLink/NVSwitch at the chip level) is what makes large training runs practical at scale. This is why NVIDIA&#39;s DGX systems use InfiniBand internally, and why AWS&#39;s UltraCluster and Azure&#39;s NDv4/H100 instances use it.</p>
-<p>The question for most enterprise teams isn&#39;t &quot;which should I buy&quot; — it&#39;s &quot;when I choose a cloud instance type for AI training, do I know whether it uses InfiniBand or Ethernet under the hood?&quot; The answer affects cost, performance, and how you structure your training jobs.</p>
-<h2 id="rdma-on-ethernet-closing-the-gap"><a class="h-anchor" href="#rdma-on-ethernet-closing-the-gap" aria-hidden="true" tabindex="-1">#</a>RDMA on Ethernet — closing the gap?</h2>
-<p>RoCE (RDMA over Converged Ethernet) has matured significantly. For workloads where InfiniBand&#39;s full capabilities are overkill but you still need low-latency, high-bandwidth RDMA — RoCE v2 on 100G+ Ethernet is a reasonable middle ground.</p>
-<p>The caveats: RoCE requires a lossless network (Priority Flow Control), careful QoS configuration, and discipline in how you design the fabric. It&#39;s achievable but it adds operational complexity that native InfiniBand doesn&#39;t have.</p>
-<h2 id="how-i39d-approach-the-decision"><a class="h-anchor" href="#how-i39d-approach-the-decision" aria-hidden="true" tabindex="-1">#</a>How I&#39;d approach the decision</h2>
-<p>A quick framework:</p>
-<ol>
-<li><p><strong>Start with Ethernet as the default.</strong> Unless there&#39;s a specific reason to deviate, the ecosystem maturity and cost profile make it the right base assumption.</p>
-</li>
-<li><p><strong>Ask the latency question.</strong> Does your workload need sub-microsecond latency between nodes? If not, Ethernet + RoCE can usually get you where you need to go.</p>
-</li>
-<li><p><strong>Quantify the training cluster size.</strong> Under ~100 GPUs, Ethernet fabric is often fine for AI training with RoCE. Beyond that, InfiniBand&#39;s advantages compound.</p>
-</li>
-<li><p><strong>Check what the cloud provider is actually using.</strong> If you&#39;re on managed infrastructure, understand the interconnect before tuning your distributed training configuration. You may be optimizing for the wrong constraints.</p>
-</li>
-<li><p><strong>Factor in operational team capability.</strong> InfiniBand fabric management is specialist knowledge. The hardware advantage can evaporate if your team isn&#39;t equipped to operate it well.</p>
-</li>
-</ol>
-<p>There&#39;s genuinely no universal right answer here — it depends on workload characteristics, scale, team skills, and budget. What I&#39;ve found useful is having a clear mental model of where each fabric was designed to operate, and then mapping your actual requirements against that rather than chasing the higher headline number.</p>
-<p>Happy to go deeper on any of the specific decision points — drop a comment or <a href="/about/">get in touch</a>.</p>
-<p><em>Tagged: Networking · Infrastructure · AI · Cloud Architecture · HPC</em></p>
 
       </div>
+<section class="field-worksheet worked-example" aria-labelledby="worked-example">
+    <h2 id="worked-example">Worked example</h2>
+    <p class="case-notice">This scenario and its results are illustrative.</p>
+    
+    <p>Run the same distributed collective with equal nodes and placements. Record application step time and transport counters. Change one configuration at a time or describe the result as a system comparison.</p>
+    <figure class="delivery-flow">
+    <figcaption>Execution sequence</figcaption>
+    <ol><li>Lock benchmark scale</li><li>Configure transports</li><li>Repeat collectives</li><li>Review bottlenecks</li></ol>
+  </figure>
+    <figure class="field-chart case-chart">
+    <figcaption>Example comparison <span>Simulated figures</span></figcaption>
+    <ul class="case-metrics"><li class="case-metric">
+      <h3>Median time per collective step <small>ms</small></h3>
+      <ul class="chart-rows"><li><span>Configured system A</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:100%"></i></span>
+        <strong>51</strong></li><li><span>Configured system B</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:84.31372549019608%"></i></span>
+        <strong>43</strong></li></ul>
+    </li></ul>
+  </figure>
+    <h3>Method and limits</h3>
+    <p>Both fictional runs use the same topology scale and test buffers. They make no claim about the performance of all Ethernet or InfiniBand deployments.</p>
+    <a href="/field-guides/worked-examples.csv" download>Download the worked figures (CSV)</a>
+  </section>
 
 
-
+<aside class="refs" aria-labelledby="refs-h">
+  <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
+  <p class="refs-note">Primary documentation, standards and research for the methods discussed here.</p>
+  <ul>
+    <li><a href="https://github.com/NVIDIA/nccl-tests/blob/master/doc/PERFORMANCE.md" rel="noopener" target="_blank">NVIDIA NCCL Tests · Performance definitions</a><span>Collective workload, algorithm bandwidth and bus bandwidth.</span></li>
+  </ul>
+</aside>
 
 
 
       <footer class="article-foot">
         <div class="row" style="gap:.4rem">
-          <a class="chip chip-plain" href="/insights/?topic=Systems">Systems</a><a class="chip chip-plain" href="/topics/infrastructure/">Infrastructure</a><a class="chip chip-plain" href="/topics/enterprise-ai/">Enterprise AI</a><a class="chip chip-plain" href="/topics/cloud-architecture/">Cloud Architecture</a><a class="chip chip-plain" href="/insights/?topic=HPC">HPC</a>
+          <a class="chip" href="/topics/systems/">Systems</a><a class="chip" href="/topics/infrastructure/">Infrastructure</a><a class="chip" href="/topics/enterprise-ai/">Enterprise AI</a><a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a><a class="chip" href="/topics/hpc/">HPC</a>
         </div>
         <nav class="prevnext" aria-label="More articles">
           <a href="/insights/os-kernel-tuning-sysctl/"><span>Previous</span><strong>Kernel Tuning with sysctl: Memory, Networking, and I/O</strong></a>
@@ -189,12 +177,12 @@ d.setAttribute('data-theme',t);
     <section class="promo-card promo-techknowen" aria-label="TechKnowen">
       <p class="promo-name">TechKnowen</p>
       <p>Practical reading on software, architecture, and engineering.</p>
-      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+      <a class="card-destination" href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
     </section>
     <section class="promo-card promo-ziggle" aria-label="Ziggle">
       <p class="promo-name">Ziggle</p>
       <p>A new place to play brain teasers.</p>
-      <p class="promo-status">Coming soon</p>
+      <a class="card-destination" href="/projects/ziggle/">Ziggle preview</a> <span class="promo-status">Coming soon</span>
     </section>
   </div>
 </aside>
@@ -203,33 +191,33 @@ d.setAttribute('data-theme',t);
   <section class="section surface hair" style="margin-top:4rem">
     <div class="wrap">
       <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|Systems|Enterprise AI|Infrastructure|" data-search="ethernet vs. infiniband for ai training: why the network fabric matters more than you think most ai infrastructure decisions focus on gpus and storage. network fabric is the variable that determines whether your training cluster runs at 90% efficiency or 40%. systems enterprise ai infrastructure" data-topic="Enterprise AI" href="/insights/quick-take-ethernet-vs-infiniband/">
+      <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|Systems|Enterprise AI|Infrastructure|" data-search="ethernet vs. infiniband for ai training: why the network fabric matters more than you think most ai infrastructure decisions focus on gpus and storage. network fabric is the variable that determines whether your training cluster runs at 90% efficiency or 40%. systems enterprise ai infrastructure" data-topic="Enterprise AI">
   <div class="card-art"><img data-article-art="quick-take-ethernet-vs-infiniband" src="/assets/covers/quick-take-ethernet-vs-infiniband.svg?v=32963fb6718c" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Enterprise AI</span>
-    <h3 class="card-title">Ethernet vs. InfiniBand for AI Training: Why the Network Fabric Matters More Than You Think</h3>
+    <a class="chip" href="/topics/enterprise-ai/">Enterprise AI</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/quick-take-ethernet-vs-infiniband/">Ethernet vs. InfiniBand for AI Training: Why the Network Fabric Matters More Than You Think</a></h3>
     <p class="card-desc">Most AI infrastructure decisions focus on GPUs and storage. Network fabric is the variable that determines whether your training cluster runs at 90% efficiency or 40%.</p>
     <div class="card-meta"><time datetime="2025-03-25">25 Mar 2025</time><span class="dot"></span><span>2 min read</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|Cloud Architecture|DevSecOps|Infrastructure|" data-search="serverless vs containers: an honest comparison for 2026 neither is universally better. the answer depends on your workload profile, your team&#39;s operational maturity, and — honestly — your tolerance for cold starts. cloud architecture devsecops infrastructure" data-topic="Cloud Architecture" href="/insights/serverless-vs-containers-2026/">
+</article>
+<article class="card" data-card data-topics="|Cloud Architecture|DevSecOps|Infrastructure|" data-search="serverless vs containers: an honest comparison for 2026 neither is universally better. the answer depends on your workload profile, your team&#39;s operational maturity, and — honestly — your tolerance for cold starts. cloud architecture devsecops infrastructure" data-topic="Cloud Architecture">
   <div class="card-art"><img data-article-art="serverless-vs-containers-2026" src="/assets/covers/photos/serverless-vs-containers-2026.jpg?v=773805cd32f5" srcset="/assets/covers/photos/serverless-vs-containers-2026-640.jpg?v=773805cd32f5 640w, /assets/covers/photos/serverless-vs-containers-2026.jpg?v=773805cd32f5 1280w" sizes="(min-width: 800px) 420px, 100vw" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Cloud Architecture</span>
-    <h3 class="card-title">Serverless vs Containers: An Honest Comparison for 2026</h3>
+    <a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/serverless-vs-containers-2026/">Serverless vs Containers: An Honest Comparison for 2026</a></h3>
     <p class="card-desc">Neither is universally better. The answer depends on your workload profile, your team&#39;s operational maturity, and — honestly — your tolerance for cold starts.</p>
     <div class="card-meta"><time datetime="2026-11-13">13 Nov 2026</time><span class="dot"></span><span>4 min read</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|Systems|HPC|AI &amp; MLOps|" data-search="roce vs iwarp: choosing the right rdma technology for your workload both roce and iwarp provide rdma over ethernet, but they have different network requirements, loss behavior, and operational characteristics. here&#39;s how to choose between them for ai training, hpc, and storage workloads. systems hpc ai &amp; mlops" data-topic="AI &amp; MLOps" href="/insights/roce-vs-iwarp-networking/">
+</article>
+<article class="card" data-card data-topics="|Systems|HPC|AI &amp; MLOps|" data-search="roce vs iwarp: choosing the right rdma technology for your workload both roce and iwarp provide rdma over ethernet, but they have different network requirements, loss behavior, and operational characteristics. here&#39;s how to choose between them for ai training, hpc, and storage workloads. systems hpc ai &amp; mlops" data-topic="AI &amp; MLOps">
   <div class="card-art"><img data-article-art="roce-vs-iwarp-networking" src="/assets/covers/roce-vs-iwarp-networking.svg?v=a8e2c3a18738" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">AI &amp; MLOps</span>
-    <h3 class="card-title">RoCE vs iWARP: Choosing the Right RDMA Technology for Your Workload</h3>
+    <a class="chip" href="/topics/ai-mlops/">AI &amp; MLOps</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/roce-vs-iwarp-networking/">RoCE vs iWARP: Choosing the Right RDMA Technology for Your Workload</a></h3>
     <p class="card-desc">Both RoCE and iWARP provide RDMA over Ethernet, but they have different network requirements, loss behavior, and operational characteristics. Here&#39;s how to choose between them for AI training, HPC, and storage workloads.</p>
     <div class="card-meta"><time datetime="2026-11-02">2 Nov 2026</time><span class="dot"></span><span>4 min read</span></div>
   </div>
-</a></div>
+</article></div>
     </div>
   </section>
 
@@ -309,6 +297,7 @@ d.setAttribute('data-theme',t);
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/follow/">Follow new writing</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
           <li><a href="/notes/">Personal notes</a></li>
@@ -329,7 +318,7 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=a8e7c95a" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=a8e7c95a"></script>
+<script src="/assets/js/site.js?v=bd74be96" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=bd74be96"></script>
 </body>
 </html>

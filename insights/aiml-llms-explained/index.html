@@ -14,7 +14,7 @@
 <meta property="og:title" content="Large Language Models: What They Are, How They Are Built, and What They Cannot Do">
 <meta property="og:description" content="Transformers, attention, pretraining, fine-tuning, RLHF — the architecture and training pipeline behind GPT, Claude, Llama, and every other modern LLM, exp…">
 <meta property="og:url" content="https://ajnacs.com/insights/aiml-llms-explained/">
-<meta property="og:image" content="https://ajnacs.com/assets/og/articles/aiml-llms-explained.png?v=5a14f91cc232">
+<meta property="og:image" content="https://ajnacs.com/assets/og/articles/aiml-llms-explained.png?v=970c750921f5">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Illustration for Large Language Models: What They Are, How They Are Built, and What They Cannot Do">
@@ -24,7 +24,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Large Language Models: What They Are, How They Are Built, and What They Cannot Do">
 <meta name="twitter:description" content="Transformers, attention, pretraining, fine-tuning, RLHF — the architecture and training pipeline behind GPT, Claude, Llama, and every other modern LLM, exp…">
-<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/aiml-llms-explained.png?v=5a14f91cc232">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/aiml-llms-explained.png?v=970c750921f5">
 <meta name="twitter:image:alt" content="Illustration for Large Language Models: What They Are, How They Are Built, and What They Cannot Do">
 
 <link rel="icon" href="/favicon.ico?v=8affdbd5" sizes="any">
@@ -33,8 +33,9 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=a8e7c95a">
-<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<link rel="stylesheet" href="/assets/css/site.css?v=bd74be96">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
+<link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
    never flashes the wrong ground or resets someone's text size mid-read. */
@@ -49,7 +50,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Large Language Models: What They Are, How They Are Built, and What They Cannot Do","description":"Transformers, attention, pretraining, fine-tuning, RLHF — the architecture and training pipeline behind GPT, Claude, Llama, and every other modern LLM, explained for engineers who need to use and evaluate these systems.","datePublished":"2026-10-21","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/aiml-llms-explained/","image":"https://ajnacs.com/assets/og/articles/aiml-llms-explained.png?v=5a14f91cc232","keywords":"AI & MLOps, Enterprise AI, Fundamentals","articleSection":"AI & MLOps","wordCount":880}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Large Language Models: What They Are, How They Are Built, and What They Cannot Do","description":"Transformers, attention, pretraining, fine-tuning, RLHF — the architecture and training pipeline behind GPT, Claude, Llama, and every other modern LLM, explained for engineers who need to use and evaluate these systems.","datePublished":"2026-10-21","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/aiml-llms-explained/","image":"https://ajnacs.com/assets/og/articles/aiml-llms-explained.png?v=970c750921f5","keywords":"AI & MLOps, Enterprise AI, Fundamentals","articleSection":"AI & MLOps","wordCount":880}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Large Language Models: What They Are, How They Are Built, and What They Cannot Do"}]}</script>
 </head>
 <body class="article-frame" data-topic="AI &amp; MLOps">
@@ -98,7 +99,7 @@ d.setAttribute('data-theme',t);
       </div>
     </header>
 
-    <div class="article-hero" data-topic="AI &amp; MLOps"><img data-article-art="aiml-llms-explained" src="/assets/covers/aiml-llms-explained.svg?v=467f0ba2a14e" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div>
+    <div class="article-hero" data-topic="AI &amp; MLOps"><img data-article-art="aiml-llms-explained" src="/assets/covers/aiml-llms-explained.svg?v=587a8ac6e06f" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#the-transformer-the-architecture-that-changed-everything">The Transformer: The Architecture That Changed Everything</a></li><li><a href="#pretraining-what-llms-actually-learn">Pretraining: What LLMs Actually Learn</a></li><li><a href="#fine-tuning-and-rlhf-from-predictor-to-assistant">Fine-Tuning and RLHF: From Predictor to Assistant</a></li><li><a href="#what-llms-cannot-do-the-architectural-limits">What LLMs Cannot Do: The Architectural Limits</a></li></ol>
@@ -108,25 +109,26 @@ d.setAttribute('data-theme',t);
     </nav></div>
     <div class="article-copy">
       <div class="prose">
+<p class="article-opening">A fluent answer reveals how a language model continues text. It does not tell you whether the answer can be supported.</p>
 <p>Large language models are the most consequential technology development in AI since the GPU made deep learning practical. Understanding their architecture, their training process, and their limitations is essential for any engineer building on top of them — because the limitations are architectural, not incidental, and they shape what is safe and unsafe to build.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
 <p><strong>Useful answers out of all attempts.</strong> Have a reviewer score 100 representative prompts using a fixed rubric. If 82 pass, 12 give unsupported answers and 6 abstain, report all three outcomes. An 82% pass rate on this prompt set does not describe performance on other tasks.</p>
 <p><em>Illustrative measurement. Any numbers in this example are hypothetical.</em></p>
 <h2 id="the-transformer-the-architecture-that-changed-everything"><a class="h-anchor" href="#the-transformer-the-architecture-that-changed-everything" aria-hidden="true" tabindex="-1">#</a>The Transformer: The Architecture That Changed Everything</h2>
 <p>Every major language model — GPT, Claude, Llama, Gemini, Mistral — is built on the transformer architecture, introduced in the 2017 paper &quot;Attention Is All You Need&quot; by Vaswani et al.</p>
-<p>The transformer&#39;s key innovation: the <strong>attention mechanism</strong>, which allows every token (word or subword) in the input to directly attend to every other token, regardless of distance. Earlier architectures (RNNs, LSTMs) processed sequences left-to-right, making it difficult to connect information that was far apart in the sequence. Attention removes the distance constraint.</p>
-<p><strong>How attention works conceptually</strong>: for each token, attention computes a weighted sum of all other tokens in the sequence, where the weights reflect how relevant each token is to understanding the current one. &quot;The bank by the river was steep&quot; — when computing the representation of &quot;bank,&quot; attention assigns high weight to &quot;river&quot; (suggesting geographic bank, not financial bank) and lower weight to &quot;steep.&quot;</p>
+<p>The transformer&#39;s key innovation: the <strong>attention mechanism</strong>, which mixes information from allowed positions. In dense causal attention a position can attend to itself and earlier positions. Local or sparse attention uses narrower patterns. Earlier architectures (RNNs, LSTMs) processed sequences left-to-right, making it difficult to connect information that was far apart in the sequence. Attention removes the distance constraint.</p>
+<p><strong>How attention works conceptually</strong>: for each token, attention computes a weighted combination of value vectors from the permitted positions, where the weights reflect how relevant each token is to understanding the current one. &quot;The bank by the river was steep&quot; — when computing the representation of &quot;bank,&quot; attention assigns high weight to &quot;river&quot; (suggesting geographic bank, not financial bank) and lower weight to &quot;steep.&quot;</p>
 <p>The transformer has two main components:</p>
 <ul>
 <li><strong>Encoder</strong>: reads the input and builds contextualised representations (used in BERT and similar models for classification, named entity recognition, etc.)</li>
-<li><strong>Decoder</strong>: generates output tokens one at a time, attending to both the encoder output and its own previous output (used in GPT-style models for text generation)</li>
+<li><strong>Decoder</strong>: generates output tokens one at a time, using earlier output positions and, in an encoder–decoder model, encoder output. A decoder-only model uses a single causal stream</li>
 </ul>
 <p>GPT, Claude, and most modern LLMs are decoder-only transformers.</p>
 <h2 id="pretraining-what-llms-actually-learn"><a class="h-anchor" href="#pretraining-what-llms-actually-learn" aria-hidden="true" tabindex="-1">#</a>Pretraining: What LLMs Actually Learn</h2>
 <p>LLMs are pretrained on massive text corpora — trillions of tokens of web text, books, code, and scientific papers. The training objective is simple: predict the next token.</p>
 <p>Given &quot;The capital of France is&quot;, the model should predict &quot;Paris&quot; with high probability. Given &quot;Paris&quot;, it should predict reasonable continuations. This objective, applied at scale, forces the model to learn grammar, factual knowledge, reasoning patterns, code syntax, and cultural context — because all of these are predictive of what comes next in human text.</p>
 <p>The result is a model with broad world knowledge and language capability encoded in its billions of parameters.</p>
-<p><strong>Scale matters dramatically</strong>: GPT-2 (2019, 1.5B parameters) could write coherent paragraphs. GPT-3 (2020, 175B parameters) could follow instructions, translate languages, and write working code. GPT-4 and Claude 3 (2023–2024, estimated hundreds of billions of parameters) can reason through complex problems, write nuanced essays, and pass professional exams.</p>
+<p><strong>Scale matters dramatically</strong>: GPT-2 (2019, 1.5B parameters) could write coherent paragraphs. GPT-3 (2020, 175B parameters) could follow instructions, translate languages, and write working code. Later proprietary models improved on selected evaluations. Compare published tasks, controls, and contamination checks. The GPT-4 report does not publish its parameter count.</p>
 <h2 id="fine-tuning-and-rlhf-from-predictor-to-assistant"><a class="h-anchor" href="#fine-tuning-and-rlhf-from-predictor-to-assistant" aria-hidden="true" tabindex="-1">#</a>Fine-Tuning and RLHF: From Predictor to Assistant</h2>
 <p>A pretrained LLM predicts next tokens — it does not reliably follow instructions, maintain safe behaviour, or produce helpful responses. Two additional training stages address this:</p>
 <p><strong>Instruction fine-tuning</strong>: the pretrained model is further trained on a dataset of instruction-response pairs. &quot;Write a Python function that...&quot; → example correct response. This teaches the model to follow instructions rather than just complete text.</p>
@@ -136,21 +138,52 @@ d.setAttribute('data-theme',t);
 <p><strong>LLMs do not have knowledge of events after their training cutoff.</strong> The model&#39;s knowledge is frozen at the point its training data was collected. This is why retrieval-augmented generation (RAG) exists — to provide up-to-date information at inference time.</p>
 <p><strong>LLMs confabulate (hallucinate).</strong> The model generates the most plausible next tokens. When the correct answer is not well-represented in training data, the model generates a plausible-sounding but incorrect answer confidently. This is not a bug — it is the architecture operating as designed. It means LLM outputs in factual domains require verification.</p>
 <p><strong>LLMs are not search engines.</strong> They do not retrieve information from a database; they synthesise text based on patterns learned during training. Two queries about the same fact may produce different answers.</p>
-<p><strong>LLMs have context window limits.</strong> They can only attend to a fixed number of tokens at once (context window). GPT-4 supports 128K tokens; Claude supports up to 200K. Beyond the context window, the model cannot access information.</p>
-<p><strong>LLMs do not reason in the way humans do.</strong> Chain-of-thought prompting improves performance on reasoning tasks, but the model is generating text that looks like reasoning, not executing a reasoning algorithm. It can fail at simple logical tasks that require consistent rule application.</p>
+<p><strong>LLMs have context window limits.</strong> They can only attend to a fixed number of tokens at once (context window). Check context and output limits for the exact deployed model and API. Beyond the context window, the model cannot access information.</p>
+<p><strong>LLMs do not reason in the way humans do.</strong> Explicit intermediate steps can help on some tasks, while generated explanations can misrepresent why an answer was produced. Verify the answer and any claimed intermediate results. It can fail at simple logical tasks that require consistent rule application.</p>
 <p><strong>LLMs do not have persistent memory.</strong> Each conversation starts fresh. The model does not remember previous conversations unless that history is explicitly included in the context window.</p>
 <p>These limitations are architectural, not temporary. Building production systems on LLMs requires designing around them, not hoping they do not apply.</p>
 
       </div>
+<section class="field-worksheet worked-example" aria-labelledby="worked-example">
+    <h2 id="worked-example">Worked example</h2>
+    <p class="case-notice">This scenario and its results are illustrative.</p>
+    
+    <p>Test one model with absent evidence and another configuration with a provided document. Ask reviewers to score claims and appropriate abstentions under the same rubric and output budget.</p>
+    <figure class="delivery-flow">
+    <figcaption>Execution sequence</figcaption>
+    <ol><li>Choose questions</li><li>Define evidence</li><li>Score claims</li><li>Inspect unsupported statements</li></ol>
+  </figure>
+    <figure class="field-chart case-chart">
+    <figcaption>Example comparison <span>Simulated figures</span></figcaption>
+    <ul class="case-metrics"><li class="case-metric">
+      <h3>Responses supported by supplied evidence <small>%</small></h3>
+      <ul class="chart-rows"><li><span>Question without reference</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:27.5%"></i></span>
+        <strong>27.5% <small>(22/80)</small></strong></li><li><span>Question with reviewed reference</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:78.75%"></i></span>
+        <strong>78.75% <small>(63/80)</small></strong></li></ul>
+    </li></ul>
+  </figure>
+    <h3>Method and limits</h3>
+    <p>All 80 fixture questions have one reference answer. Keep citation accuracy, safety and output length as separate observations.</p>
+    <a href="/field-guides/worked-examples.csv" download>Download the worked figures (CSV)</a>
+  </section>
 
 
-
+<aside class="refs" aria-labelledby="refs-h">
+  <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
+  <p class="refs-note">Primary documentation, standards and research for the methods discussed here.</p>
+  <ul>
+    <li><a href="https://arxiv.org/abs/1706.03762" rel="noopener" target="_blank">Vaswani et al. · Attention Is All You Need, NeurIPS</a><span>Original Transformer architecture and attention.</span></li>
+    <li><a href="https://cdn.openai.com/papers/gpt-4.pdf" rel="noopener" target="_blank">OpenAI · GPT-4 Technical Report</a><span>Reported evaluation and the limits of public model specifications.</span></li>
+  </ul>
+</aside>
 
 
 
       <footer class="article-foot">
         <div class="row" style="gap:.4rem">
-          <a class="chip chip-plain" href="/topics/ai-mlops/">AI &amp; MLOps</a><a class="chip chip-plain" href="/topics/enterprise-ai/">Enterprise AI</a><a class="chip chip-plain" href="/topics/fundamentals/">Fundamentals</a>
+          <a class="chip" href="/topics/ai-mlops/">AI &amp; MLOps</a><a class="chip" href="/topics/enterprise-ai/">Enterprise AI</a><a class="chip" href="/topics/fundamentals/">Fundamentals</a>
         </div>
         <nav class="prevnext" aria-label="More articles">
           <a href="/insights/python-for-cloud-engineers/"><span>Previous</span><strong>Python for Cloud Engineers: The Parts That Actually Matter</strong></a>
@@ -164,12 +197,12 @@ d.setAttribute('data-theme',t);
     <section class="promo-card promo-techknowen" aria-label="TechKnowen">
       <p class="promo-name">TechKnowen</p>
       <p>Practical reading on software, architecture, and engineering.</p>
-      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+      <a class="card-destination" href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
     </section>
     <section class="promo-card promo-ziggle" aria-label="Ziggle">
       <p class="promo-name">Ziggle</p>
       <p>A new place to play brain teasers.</p>
-      <p class="promo-status">Coming soon</p>
+      <a class="card-destination" href="/projects/ziggle/">Ziggle preview</a> <span class="promo-status">Coming soon</span>
     </section>
   </div>
 </aside>
@@ -178,33 +211,33 @@ d.setAttribute('data-theme',t);
   <section class="section surface hair" style="margin-top:4rem">
     <div class="wrap">
       <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|AI &amp; MLOps|Enterprise AI|Fundamentals|" data-search="rag, prompting, and building applications on llms: the practitioner&#39;s guide retrieval-augmented generation, system prompts, few-shot examples, chain-of-thought, structured output, and the engineering patterns that make llm applications reliable in production. ai &amp; mlops enterprise ai fundamentals" data-topic="AI &amp; MLOps" href="/insights/aiml-rag-and-prompting/">
+      <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|AI &amp; MLOps|Enterprise AI|Fundamentals|" data-search="rag, prompting, and building applications on llms: the practitioner&#39;s guide retrieval-augmented generation, system prompts, few-shot examples, chain-of-thought, structured output, and the engineering patterns that make llm applications reliable in production. ai &amp; mlops enterprise ai fundamentals" data-topic="AI &amp; MLOps">
   <div class="card-art"><img data-article-art="aiml-rag-and-prompting" src="/assets/covers/aiml-rag-and-prompting.svg?v=8b3b55690283" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">AI &amp; MLOps</span>
-    <h3 class="card-title">RAG, Prompting, and Building Applications on LLMs: The Practitioner&#39;s Guide</h3>
+    <a class="chip" href="/topics/ai-mlops/">AI &amp; MLOps</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/aiml-rag-and-prompting/">RAG, Prompting, and Building Applications on LLMs: The Practitioner&#39;s Guide</a></h3>
     <p class="card-desc">Retrieval-augmented generation, system prompts, few-shot examples, chain-of-thought, structured output, and the engineering patterns that make LLM applications reliable in production.</p>
     <div class="card-meta"><time datetime="2026-08-25">25 Aug 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|AI &amp; MLOps|Enterprise AI|Fundamentals|" data-search="putting ai in production: what enterprise ai deployment actually requires model serving, latency, cost, monitoring, governance, and the operational discipline that separates a proof of concept from an ai system that runs reliably at enterprise scale. ai &amp; mlops enterprise ai fundamentals" data-topic="AI &amp; MLOps" href="/insights/aiml-production-ai/">
+</article>
+<article class="card" data-card data-topics="|AI &amp; MLOps|Enterprise AI|Fundamentals|" data-search="putting ai in production: what enterprise ai deployment actually requires model serving, latency, cost, monitoring, governance, and the operational discipline that separates a proof of concept from an ai system that runs reliably at enterprise scale. ai &amp; mlops enterprise ai fundamentals" data-topic="AI &amp; MLOps">
   <div class="card-art"><img data-article-art="aiml-production-ai" src="/assets/covers/aiml-production-ai.svg?v=72c04f2f1ef6" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">AI &amp; MLOps</span>
-    <h3 class="card-title">Putting AI in Production: What Enterprise AI Deployment Actually Requires</h3>
+    <a class="chip" href="/topics/ai-mlops/">AI &amp; MLOps</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/aiml-production-ai/">Putting AI in Production: What Enterprise AI Deployment Actually Requires</a></h3>
     <p class="card-desc">Model serving, latency, cost, monitoring, governance, and the operational discipline that separates a proof of concept from an AI system that runs reliably at enterprise scale.</p>
     <div class="card-meta"><time datetime="2026-08-11">11 Aug 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|AI &amp; MLOps|Fundamentals|" data-search="neural networks explained: what they are, how they learn, and why they work neurons, layers, weights, activation functions, backpropagation, and gradient descent — the actual mechanics of how a neural network learns from data, explained without the mathematics becoming the obstacle. ai &amp; mlops fundamentals" data-topic="AI &amp; MLOps" href="/insights/aiml-neural-networks/">
+</article>
+<article class="card" data-card data-topics="|AI &amp; MLOps|Fundamentals|" data-search="neural networks explained: what they are, how they learn, and why they work neurons, layers, weights, activation functions, backpropagation, and gradient descent — the actual mechanics of how a neural network learns from data, explained without the mathematics becoming the obstacle. ai &amp; mlops fundamentals" data-topic="AI &amp; MLOps">
   <div class="card-art"><img data-article-art="aiml-neural-networks" src="/assets/covers/aiml-neural-networks.svg?v=66ce49bca579" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">AI &amp; MLOps</span>
-    <h3 class="card-title">Neural Networks Explained: What They Are, How They Learn, and Why They Work</h3>
+    <a class="chip" href="/topics/ai-mlops/">AI &amp; MLOps</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/aiml-neural-networks/">Neural Networks Explained: What They Are, How They Learn, and Why They Work</a></h3>
     <p class="card-desc">Neurons, layers, weights, activation functions, backpropagation, and gradient descent — the actual mechanics of how a neural network learns from data, explained without the mathematics becoming the obstacle.</p>
     <div class="card-meta"><time datetime="2026-09-04">4 Sept 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
   </div>
-</a></div>
+</article></div>
     </div>
   </section>
 
@@ -294,6 +327,7 @@ d.setAttribute('data-theme',t);
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/follow/">Follow new writing</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
           <li><a href="/notes/">Personal notes</a></li>
@@ -314,7 +348,7 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=a8e7c95a" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=a8e7c95a"></script>
+<script src="/assets/js/site.js?v=bd74be96" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=bd74be96"></script>
 </body>
 </html>

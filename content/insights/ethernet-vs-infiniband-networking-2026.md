@@ -6,97 +6,27 @@ tags: ["Systems", "Infrastructure", "Enterprise AI", "Cloud Architecture", "HPC"
 format: article
 ---
 
-import { Image } from 'astro:assets';
-
-Network fabric decisions don't get talked about enough in enterprise architecture conversations. Everyone focuses on compute and storage, and the interconnect gets chosen by default or by habit. But if you're building anything involving AI training, HPC workloads, or large-scale data movement — the network fabric choice matters more than almost anything else.
-
-Here's how I think about the Ethernet vs. InfiniBand question in 2026.
+Choose the complete network stack against the job: fabric, host adapters, transport, collective runtime and operating team. For an installed cluster, placement and congestion policy can matter more to step time than the name of the transport.
 
 ## What to measure
 
-**Effective collective throughput.** Transfer 8 GB per rank in 0.16 s to get 50 GB/s algorithmic throughput for that test. Compare at identical message sizes, load, GPU topology and collective algorithm, and declare whether numbers are algorithmic or bus bandwidth.
+Track application step time and a representative collective over the same nodes, ranks and buffers. Report port line rate in Gb/s, collective payload in GB/s, and whether a figure is one-way, bidirectional or aggregated. **Illustrative measurement.** For two fictional clusters the median collective step drops from 51 ms to 43 ms with the same job configuration. That comparison does not establish an advantage for every deployment of either fabric.
 
-*Illustrative measurement. Any numbers in this example are hypothetical.*
+## Transport and topology
 
-## The short version
+Ethernet supports many workloads and network designs. RDMA deployments can use RoCE, whose observed congestion and loss behaviour depends on the transport, adapters and switch configuration. Provision, configure and observe the path that the workload actually uses. The existing office network is not a stand-in for a dedicated GPU fabric.
 
-**Ethernet** is the right default for almost everything: enterprise IT, cloud infrastructure, general-purpose workloads, internet-facing systems. It's mature, widely understood, cost-effective, and the ecosystem is enormous.
+InfiniBand defines a fabric and native RDMA capabilities. Port speed depends on generation and lane count. For example, a four-lane NDR port is rated at 400 Gb/s, while four-lane XDR is rated at 800 Gb/s. Payload transfer, host injection and collective completion must be checked separately.
 
-**InfiniBand** is purpose-built for scenarios where latency below 1 microsecond and maximum bandwidth actually change the outcome: AI/ML cluster training, HPC research, supercomputing. It's not a general-purpose fabric — it's a specialist tool.
+Accelerator interconnects and cluster fabrics are distinct. An NVIDIA DGX H100 uses NVLink and NVSwitch within the system, and network interfaces for inter-node exchange. Read the cloud SKU: AWS EFA uses Scalable Reliable Datagram transport, while Azure ND H100 v5 documents dedicated InfiniBand per GPU. Compute configuration, topology and runtime determine whether a measured cross-cloud comparison is meaningful.
 
-Most teams building on Azure, AWS, or GCP never need to think about InfiniBand directly — the cloud providers abstract it at the right layer. Where this decision surfaces is when you're designing on-premises AI clusters, research infrastructure, or evaluating managed HPC services.
+## Decide on evidence
 
-## Key metrics side by side (2026)
+Freeze the run configuration and record congestion, errors and buffer behaviour on the relevant network. Compare training-step distribution, fraction of step blocked on communication, cost for the completed job and recovery on a bad link. Repeat across a small and representative job size. Scale from the comparison without assuming a fixed GPU count at which one fabric becomes preferable.
 
-| Metric | Ethernet | InfiniBand |
-|---|---|---|
-| **Bandwidth** | 800G–1.6T+ | 1.6T–3.2T+ (NDR/CDR) |
-| **Latency** | 10s of microseconds | Under 1 microsecond |
-| **RDMA** | Optional — RoCE / iWARP | Native — built in |
-| **Network topology** | Switch-based, hierarchical | Fabric, fat-tree / torus |
-| **TCO** | Lower | Higher — specialised hardware |
-| **Ecosystem** | Immense, mature | Specialised but strong |
+## Sources
 
-## What each one is actually good at
-
-### Ethernet — the reliable generalist
-
-Seven things work reliably well with Ethernet:
-
-1. **Universal connectivity** — data centres, LAN, internet. If something needs to talk to something else, Ethernet handles it.
-2. **Speed range** — from 10G up through 100G, 400G, 800G+ now standardised. More than enough for most enterprise workloads.
-3. **Proven reliability** — decades of production hardening, broad hardware compatibility.
-4. **Security** — mature standards and protocols. The security tooling ecosystem is deep.
-5. **Scale** — powers the internet backbone and the largest public clouds. Proven at hyperscale.
-6. **Cost** — competitive market, lots of vendors, wide choice.
-7. **RDMA adoption growing** — iWARP and RoCE v2 are making RDMA accessible on Ethernet, narrowing the gap with InfiniBand for some workloads.
-
-**Best fit:** General enterprise IT, public and private clouds, internet infrastructure, and the vast majority of use cases.
-
-### InfiniBand — the precision specialist
-
-Where InfiniBand earns its higher cost:
-
-- **Exceptional bandwidth** — NDR at 400G per port, XDR at 800G, CDR pushing 1.6T+. For AI training clusters moving terabytes between GPUs, this matters.
-- **Sub-microsecond latency** — consistent, deterministic, and in a different class from Ethernet. Critical for tightly-coupled parallel workloads.
-- **Native RDMA** — Remote Direct Memory Access without the configuration overhead of RoCE. Zero-copy data transfer, offloads the CPU.
-- **High efficiency fabric management** — traffic control at the fabric level, not just the port level.
-- **Interconnect topology** — fat-tree and torus topologies optimized for all-to-all communication patterns common in distributed AI training.
-
-**Best fit:** AI and ML model training, HPC research clusters, supercomputing, extreme-scale scientific computing.
-
-## The AI training case specifically
-
-This is where I see the most confusion in architecture conversations right now.
-
-If you're doing AI inference — serving a trained model to end users — Ethernet is generally fine. Inference is often embarrassingly parallel and latency between nodes is less critical.
-
-If you're doing distributed AI training — gradient synchronisation, all-reduce operations across many GPUs — the interconnect becomes a bottleneck. InfiniBand (or its close cousin, NVIDIA NVLink/NVSwitch at the chip level) is what makes large training runs practical at scale. This is why NVIDIA's DGX systems use InfiniBand internally, and why AWS's UltraCluster and Azure's NDv4/H100 instances use it.
-
-The question for most enterprise teams isn't "which should I buy" — it's "when I choose a cloud instance type for AI training, do I know whether it uses InfiniBand or Ethernet under the hood?" The answer affects cost, performance, and how you structure your training jobs.
-
-## RDMA on Ethernet — closing the gap?
-
-RoCE (RDMA over Converged Ethernet) has matured significantly. For workloads where InfiniBand's full capabilities are overkill but you still need low-latency, high-bandwidth RDMA — RoCE v2 on 100G+ Ethernet is a reasonable middle ground.
-
-The caveats: RoCE requires a lossless network (Priority Flow Control), careful QoS configuration, and discipline in how you design the fabric. It's achievable but it adds operational complexity that native InfiniBand doesn't have.
-
-## How I'd approach the decision
-
-A quick framework:
-
-1. **Start with Ethernet as the default.** Unless there's a specific reason to deviate, the ecosystem maturity and cost profile make it the right base assumption.
-
-2. **Ask the latency question.** Does your workload need sub-microsecond latency between nodes? If not, Ethernet + RoCE can usually get you where you need to go.
-
-3. **Quantify the training cluster size.** Under ~100 GPUs, Ethernet fabric is often fine for AI training with RoCE. Beyond that, InfiniBand's advantages compound.
-
-4. **Check what the cloud provider is actually using.** If you're on managed infrastructure, understand the interconnect before tuning your distributed training configuration. You may be optimizing for the wrong constraints.
-
-5. **Factor in operational team capability.** InfiniBand fabric management is specialist knowledge. The hardware advantage can evaporate if your team isn't equipped to operate it well.
-
-There's genuinely no universal right answer here — it depends on workload characteristics, scale, team skills, and budget. What I've found useful is having a clear mental model of where each fabric was designed to operate, and then mapping your actual requirements against that rather than chasing the higher headline number.
-
-Happy to go deeper on any of the specific decision points — drop a comment or [get in touch](/about/).
-
-*Tagged: Networking · Infrastructure · AI · Cloud Architecture · HPC*
+- [InfiniBand Trade Association specification update](https://infinibandta.org/wp-content/uploads/2026/08/Whats-New-in-Vol.-1-and-2-Release-2.1-2026-07-31.pdf)
+- [NVIDIA DGX H100 system guide](https://docs.nvidia.com/dgx/dgxh100-user-guide/dgxh100-user-guide.pdf)
+- [AWS EFA](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/efa.html)
+- [Azure ND H100 v5](https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/gpu-accelerated/ndh100v5-series)

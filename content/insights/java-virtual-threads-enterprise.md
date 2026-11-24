@@ -18,7 +18,7 @@ But "mostly deleting things" is not "free." Two years into mainstream adoption, 
 
 ## The core idea in one paragraph
 
-Platform threads map 1:1 to OS threads: expensive to create (~1 MB stack), capped in the low thousands per host. Virtual threads are JVM-managed: cheap (bytes of initial footprint), scheduled onto a small pool of OS carrier threads, and *unmounted* from the carrier whenever they block on I/O. A million virtual threads waiting on HTTP responses costs almost nothing; the carriers stay busy running whichever threads are actually runnable. The result: you write plain, blocking, debuggable code and get the concurrency scaling that previously required reactive frameworks.
+Java platform threads are typically mapped to OS threads. Virtual threads use a scheduler and platform carriers. Common blocking operations can unmount virtual threads so carriers can run other work. Memory and throughput still depend on live request state, native calls, thread-local data, and downstream capacity. Test the target JDK and workload.
 
 ## What changes in practice
 
@@ -38,7 +38,7 @@ Platform threads map 1:1 to OS threads: expensive to create (~1 MB stack), cappe
 
 ## The failure modes to design against
 
-**Pinning.** A virtual thread that blocks while it cannot unmount *pins* its carrier, and enough pinned carriers starve the whole scheduler. The historical big one — blocking inside a `synchronized` block — was fixed in **JDK 24** (synchronized no longer pins), but two sources remain relevant: blocking inside native/JNI calls, and older JDKs where the synchronized fix hasn't arrived; on JDK 21 LTS, pinning via synchronized-around-I/O is still the top production issue. Detect it with `-Djdk.tracePinnedThreads=full` or JFR's `jdk.VirtualThreadPinned` event; fix it by replacing synchronized-around-I/O with `ReentrantLock` or upgrading. Audit third-party libraries — connection pools and drivers were the usual offenders; current HikariCP, JDBC drivers, and Apache HttpClient are fine, but that ancient SOAP client in the corner of the estate may not be.
+**Pinning** holds a carrier while a virtual thread blocks. On JDK 21–23, blocking while holding a Java monitor can pin. [JEP 491](https://openjdk.org/jeps/491) changed monitor behaviour in JDK 24. Native and foreign call boundaries can still pin in relevant cases. Use JFR’s `jdk.VirtualThreadPinned` event and check the guidance for your JDK. The older `jdk.tracePinnedThreads` property has no effect with JDK 24’s change.
 
 **ThreadLocal abuse.** ThreadLocals *work* on virtual threads, but patterns that assume few, long-lived threads — caching a 50 KB buffer per thread, say — turn into a memory bomb across a million short-lived ones. The replacement is **ScopedValues (final in JDK 25)** for request context, or just passing context explicitly. Audit anything stashing expensive state in ThreadLocals, including frameworks doing it on your behalf.
 

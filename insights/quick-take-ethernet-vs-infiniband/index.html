@@ -33,8 +33,9 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=a8e7c95a">
-<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<link rel="stylesheet" href="/assets/css/site.css?v=bd74be96">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
+<link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
    never flashes the wrong ground or resets someone's text size mid-read. */
@@ -101,57 +102,66 @@ d.setAttribute('data-theme',t);
     <div class="article-hero" data-topic="Enterprise AI"><img data-article-art="quick-take-ethernet-vs-infiniband" src="/assets/covers/quick-take-ethernet-vs-infiniband.svg?v=32963fb6718c" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
-  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#why-distributed-ai-training-is-a-network-problem">Why distributed AI training is a network problem</a></li><li><a href="#infiniband-vs-ethernet-the-real-differences">InfiniBand vs. Ethernet: the real differences</a></li><li><a href="#the-practical-implication-for-training-efficiency">The practical implication for training efficiency</a></li><li><a href="#the-cloud-context">The cloud context</a></li></ol>
+  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#why-the-traffic-estimate-matters">Why the traffic estimate matters</a></li><li><a href="#select-a-system-to-test">Select a system to test</a></li><li><a href="#sources">Sources</a></li></ol>
 </nav></div>
     <div class="article-copy">
       <div class="prose">
-<p>The GPU cluster is provisioned. 256 A100s. Expensive, powerful, and sitting at 42% GPU utilization during distributed training.</p>
-<p>The bottleneck is not the GPUs. The bottleneck is the network.</p>
+<p class="article-opening">A fabric comparison should tell a training owner what happens to the job, not just what the ports are rated for.</p>
+<p>The question for a distributed training run is how long communication delays useful work. A fabric may have ample nominal bandwidth and still show slow job steps because of rank placement, collective configuration, congestion, or a slow host.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
-<p><strong>Collective completion at representative load.</strong> Compare p50 and p99 all-reduce duration at the same payload and rank count. A median of 20 ms with a p99 of 60 ms tells a different story from a median of 24 ms with a p99 of 29 ms. Test simultaneous jobs before standardising the fabric.</p>
-<p><em>Illustrative measurement. Any numbers in this example are hypothetical.</em></p>
-<h2 id="why-distributed-ai-training-is-a-network-problem"><a class="h-anchor" href="#why-distributed-ai-training-is-a-network-problem" aria-hidden="true" tabindex="-1">#</a>Why distributed AI training is a network problem</h2>
-<p>Modern large model training uses distributed data parallelism or tensor parallelism, which requires frequent synchronization of gradients or activations across GPUs. The synchronization involves a lot of data moving very fast:</p>
-<p>A GPT-scale model with 100 billion parameters has approximately 400GB of gradient data (in FP32) that needs to be averaged across all nodes after each backward pass. With 128-node training, each node sends and receives approximately 6GB per step. At 1,000 steps per minute, that is 100GB/s of sustained bidirectional traffic per node.</p>
-<p>Standard 100GbE (100 gigabit Ethernet) provides approximately 12.5 GB/s unidirectional. The arithmetic does not work.</p>
-<h2 id="infiniband-vs-ethernet-the-real-differences"><a class="h-anchor" href="#infiniband-vs-ethernet-the-real-differences" aria-hidden="true" tabindex="-1">#</a>InfiniBand vs. Ethernet: the real differences</h2>
-<p><strong>InfiniBand HDR (200 Gb/s)</strong> — the standard for serious AI training infrastructure — provides:</p>
+<p>Measure the application&#39;s step time and a representative collective with the same ranks and message sizes. Record the type of collective, placement, topology, and whether communication overlaps compute. <strong>Illustrative measurement.</strong> A fictional p95 collective completion time of 39 ms versus 32 ms describes only the two configurations tested.</p>
+<h2 id="why-the-traffic-estimate-matters"><a class="h-anchor" href="#why-the-traffic-estimate-matters" aria-hidden="true" tabindex="-1">#</a>Why the traffic estimate matters</h2>
+<p>A conventional ring AllReduce with N ranks and a gradient buffer of S bytes per rank sends about 2(N−1)S/N per rank, with comparable receives. One rank follows the ring&#39;s neighbour exchanges. This estimate assumes that each rank participates with the full buffer. Sharded state, hierarchical algorithms, gradient bucketing and multiple ranks per host change the bytes crossing each NIC.</p>
+<p>At 128 ranks, a hypothetical 400 GB full buffer on each rank gives about 794 GB sent per rank per collective. Dividing the full buffer by 128 would describe a different assumption about data ownership. Specify the placement and the collective before estimating traffic on a host link.</p>
+<h2 id="select-a-system-to-test"><a class="h-anchor" href="#select-a-system-to-test" aria-hidden="true" tabindex="-1">#</a>Select a system to test</h2>
+<p>InfiniBand and RDMA-capable Ethernet deployments each have transport, NIC and software requirements. Cloud providers expose different implementations and topologies. AWS EFA uses its own transport, and Azure ND H100 v5 documents dedicated InfiniBand networking. For a cloud selection, get the exact instance configuration and run a matched collective and training-step replay before comparing cost per useful step.</p>
+<h2 id="sources"><a class="h-anchor" href="#sources" aria-hidden="true" tabindex="-1">#</a>Sources</h2>
 <ul>
-<li>200 Gb/s bandwidth per port (25 GB/s)</li>
-<li>Sub-microsecond latency (1–2 microseconds)</li>
-<li>RDMA (Remote Direct Memory Access) — data moves directly between GPU memory on different nodes without CPU involvement</li>
-<li>Congestion control designed for HPC all-reduce patterns</li>
+<li><a href="https://github.com/NVIDIA/nccl-tests/blob/master/doc/PERFORMANCE.md" rel="noopener" target="_blank">NVIDIA NCCL Tests performance methodology</a></li>
+<li><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/efa.html" rel="noopener" target="_blank">AWS Elastic Fabric Adapter</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/gpu-accelerated/ndh100v5-series" rel="noopener" target="_blank">Azure ND H100 v5 topology</a></li>
 </ul>
-<p><strong>High-speed Ethernet (400GbE RoCE)</strong> — the cloud-friendly alternative:</p>
-<ul>
-<li>400 Gb/s bandwidth (50 GB/s) on current-generation switches</li>
-<li>2–5 microsecond latency</li>
-<li>RDMA over Converged Ethernet (RoCE v2) — requires careful ECN configuration to avoid congestion collapse</li>
-<li>Available in all major cloud providers (AWS EFA, Azure InfiniBand, GCP GPUDirect TCPX)</li>
-</ul>
-<h2 id="the-practical-implication-for-training-efficiency"><a class="h-anchor" href="#the-practical-implication-for-training-efficiency" aria-hidden="true" tabindex="-1">#</a>The practical implication for training efficiency</h2>
-<p>All-reduce communication efficiency (the collective operation that averages gradients) degrades sharply with latency and becomes network-bound when bandwidth is insufficient. The MFU (model flops utilization) of a training run on InfiniBand-connected H100s is typically 40–50% higher than the same run on standard Ethernet-connected nodes.</p>
-<p>This means:</p>
-<ul>
-<li>Training the same model takes 40% more calendar time on Ethernet</li>
-<li>Using 40% more GPU-hours</li>
-<li>Spending 40% more on compute cost</li>
-</ul>
-<p>At the scale of serious training runs — weeks to months of GPU time — 40% is not a small difference.</p>
-<h2 id="the-cloud-context"><a class="h-anchor" href="#the-cloud-context" aria-hidden="true" tabindex="-1">#</a>The cloud context</h2>
-<p>AWS Elastic Fabric Adapter (EFA), Azure InfiniBand, and GCP GPUDirect all provide high-speed fabric options in their GPU instances. Using a P4d or P5 instance on AWS without placing instances in a cluster placement group and enabling EFA leaves the high-speed fabric unused. The instance has the capability; the configuration has to explicitly use it.</p>
-<p>The engineers who optimize GPU selection and storage and then deploy on standard instance networking are leaving a large fraction of the cluster&#39;s performance unused.</p>
 
       </div>
+<section class="field-worksheet worked-example" aria-labelledby="worked-example">
+    <h2 id="worked-example">Worked example</h2>
+    <p class="case-notice">This scenario and its results are illustrative.</p>
+    
+    <p>Run the same collective workload on two qualified lab fabrics with documented RDMA and congestion configurations. Compare elapsed job steps and verify dropped packets, retries or hot links.</p>
+    <figure class="delivery-flow">
+    <figcaption>Execution sequence</figcaption>
+    <ol><li>Pin hardware and ranks</li><li>Replay collectives</li><li>Observe counters</li><li>Compare job timing</li></ol>
+  </figure>
+    <figure class="field-chart case-chart">
+    <figcaption>Example comparison <span>Simulated figures</span></figcaption>
+    <ul class="case-metrics"><li class="case-metric">
+      <h3>p95 collective duration <small>ms</small></h3>
+      <ul class="chart-rows"><li><span>Fabric A fixture</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:100%"></i></span>
+        <strong>39</strong></li><li><span>Fabric B fixture</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:82.05128205128206%"></i></span>
+        <strong>32</strong></li></ul>
+    </li></ul>
+  </figure>
+    <h3>Method and limits</h3>
+    <p>These fictional results use the same ranks, placement and tensor sizes. They make no vendor or protocol benchmark claim.</p>
+    <a href="/field-guides/worked-examples.csv" download>Download the worked figures (CSV)</a>
+  </section>
 
 
-
+<aside class="refs" aria-labelledby="refs-h">
+  <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
+  <p class="refs-note">Primary documentation, standards and research for the methods discussed here.</p>
+  <ul>
+    <li><a href="https://github.com/NVIDIA/nccl-tests/blob/master/doc/PERFORMANCE.md" rel="noopener" target="_blank">NVIDIA NCCL Tests · Performance definitions</a><span>Collective workload, algorithm bandwidth and bus bandwidth.</span></li>
+  </ul>
+</aside>
 
 
 
       <footer class="article-foot">
         <div class="row" style="gap:.4rem">
-          <a class="chip chip-plain" href="/insights/?topic=Systems">Systems</a><a class="chip chip-plain" href="/topics/enterprise-ai/">Enterprise AI</a><a class="chip chip-plain" href="/topics/infrastructure/">Infrastructure</a>
+          <a class="chip" href="/topics/systems/">Systems</a><a class="chip" href="/topics/enterprise-ai/">Enterprise AI</a><a class="chip" href="/topics/infrastructure/">Infrastructure</a>
         </div>
         <nav class="prevnext" aria-label="More articles">
           <a href="/insights/cdn-strategy-decision-guide/"><span>Previous</span><strong>CDN Strategy: Choosing the Right Approach for Your Architecture</strong></a>
@@ -165,12 +175,12 @@ d.setAttribute('data-theme',t);
     <section class="promo-card promo-techknowen" aria-label="TechKnowen">
       <p class="promo-name">TechKnowen</p>
       <p>Practical reading on software, architecture, and engineering.</p>
-      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+      <a class="card-destination" href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
     </section>
     <section class="promo-card promo-ziggle" aria-label="Ziggle">
       <p class="promo-name">Ziggle</p>
       <p>A new place to play brain teasers.</p>
-      <p class="promo-status">Coming soon</p>
+      <a class="card-destination" href="/projects/ziggle/">Ziggle preview</a> <span class="promo-status">Coming soon</span>
     </section>
   </div>
 </aside>
@@ -179,33 +189,33 @@ d.setAttribute('data-theme',t);
   <section class="section surface hair" style="margin-top:4rem">
     <div class="wrap">
       <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|Systems|Infrastructure|Enterprise AI|Cloud Architecture|HPC|" data-search="ethernet vs. infiniband: choosing the right network fabric in 2026 a practical breakdown of when to use ethernet and when infiniband makes sense — with key metrics, topology differences, and real-world guidance for cloud, hpc, and ai workloads. systems infrastructure enterprise ai cloud architecture hpc" data-topic="Infrastructure" href="/insights/ethernet-vs-infiniband-networking-2026/">
+      <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|Systems|Infrastructure|Enterprise AI|Cloud Architecture|HPC|" data-search="ethernet vs. infiniband: choosing the right network fabric in 2026 a practical breakdown of when to use ethernet and when infiniband makes sense — with key metrics, topology differences, and real-world guidance for cloud, hpc, and ai workloads. systems infrastructure enterprise ai cloud architecture hpc" data-topic="Infrastructure">
   <div class="card-art"><img data-article-art="ethernet-vs-infiniband-networking-2026" src="/assets/covers/ethernet-vs-infiniband-networking-2026.svg?v=99c68a23a181" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Infrastructure</span>
-    <h3 class="card-title">Ethernet vs. InfiniBand: Choosing the Right Network Fabric in 2026</h3>
+    <a class="chip" href="/topics/infrastructure/">Infrastructure</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/ethernet-vs-infiniband-networking-2026/">Ethernet vs. InfiniBand: Choosing the Right Network Fabric in 2026</a></h3>
     <p class="card-desc">A practical breakdown of when to use Ethernet and when InfiniBand makes sense — with key metrics, topology differences, and real-world guidance for cloud, HPC, and AI workloads.</p>
     <div class="card-meta"><time datetime="2026-10-02">2 Oct 2026</time><span class="dot"></span><span>5 min read</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|Quantum Computing|Enterprise AI|Emerging Technology|" data-search="quantum computing milestones, 2019–2025: what the evidence shows distinguish demonstrations in random circuit sampling, quantum error correction, annealing, and experimental qubit architectures. quantum computing enterprise ai emerging technology" data-topic="Enterprise AI" href="/insights/quantum-computing-race-2025/">
+</article>
+<article class="card" data-card data-topics="|Quantum Computing|Enterprise AI|Emerging Technology|" data-search="quantum computing milestones, 2019–2025: what the evidence shows distinguish demonstrations in random circuit sampling, quantum error correction, annealing, and experimental qubit architectures. quantum computing enterprise ai emerging technology" data-topic="Enterprise AI">
   <div class="card-art"><img data-article-art="quantum-computing-race-2025" src="/assets/covers/quantum-computing-race-2025.svg?v=182be1a3299b" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Enterprise AI</span>
-    <h3 class="card-title">Quantum Computing Milestones, 2019–2025: What the Evidence Shows</h3>
+    <a class="chip" href="/topics/enterprise-ai/">Enterprise AI</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/quantum-computing-race-2025/">Quantum Computing Milestones, 2019–2025: What the Evidence Shows</a></h3>
     <p class="card-desc">Distinguish demonstrations in random circuit sampling, quantum error correction, annealing, and experimental qubit architectures.</p>
     <div class="card-meta"><time datetime="2026-11-18">18 Nov 2026</time><span class="dot"></span><span>2 min read</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|Programming|Enterprise AI|Developer Tools|" data-search="ai coding assistants in 2026: a practical comparison compare ai coding assistants by workflow, review time, patch acceptance and access controls. includes a practical scoring method for an engineering-team pilot. programming enterprise ai developer tools" data-topic="Programming" href="/insights/ai-coding-assistants-comparison-2026/">
+</article>
+<article class="card" data-card data-topics="|Programming|Enterprise AI|Developer Tools|" data-search="ai coding assistants in 2026: a practical comparison compare ai coding assistants by workflow, review time, patch acceptance and access controls. includes a practical scoring method for an engineering-team pilot. programming enterprise ai developer tools" data-topic="Programming">
   <div class="card-art"><img data-article-art="ai-coding-assistants-comparison-2026" src="/assets/covers/photos/ai-coding-assistants-comparison-2026.jpg?v=4205b08ba43a" srcset="/assets/covers/photos/ai-coding-assistants-comparison-2026-640.jpg?v=4205b08ba43a 640w, /assets/covers/photos/ai-coding-assistants-comparison-2026.jpg?v=4205b08ba43a 1280w" sizes="(min-width: 800px) 420px, 100vw" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Programming</span>
-    <h3 class="card-title">AI Coding Assistants in 2026: A Practical Comparison</h3>
+    <a class="chip" href="/topics/programming/">Programming</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/ai-coding-assistants-comparison-2026/">AI Coding Assistants in 2026: A Practical Comparison</a></h3>
     <p class="card-desc">Compare AI coding assistants by workflow, review time, patch acceptance and access controls. Includes a practical scoring method for an engineering-team pilot.</p>
     <div class="card-meta"><time datetime="2026-11-16">16 Nov 2026</time><span class="dot"></span><span>2 min read</span></div>
   </div>
-</a></div>
+</article></div>
     </div>
   </section>
 
@@ -285,6 +295,7 @@ d.setAttribute('data-theme',t);
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/follow/">Follow new writing</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
           <li><a href="/notes/">Personal notes</a></li>
@@ -305,7 +316,7 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=a8e7c95a" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=a8e7c95a"></script>
+<script src="/assets/js/site.js?v=bd74be96" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=bd74be96"></script>
 </body>
 </html>

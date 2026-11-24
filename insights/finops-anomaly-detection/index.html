@@ -33,8 +33,9 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=a8e7c95a">
-<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<link rel="stylesheet" href="/assets/css/site.css?v=bd74be96">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
+<link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
    never flashes the wrong ground or resets someone's text size mid-read. */
@@ -108,6 +109,7 @@ d.setAttribute('data-theme',t);
     </nav></div>
     <div class="article-copy">
       <div class="prose">
+<p class="article-opening">A cloud anomaly alert should lead to a decision and give its owner enough evidence to act.</p>
 <p>One of the most common FinOps conversations goes: &quot;Our cloud bill came in and it&#39;s 40% higher than last month. What happened?&quot; By the time the monthly invoice arrives, the overspend is weeks old, the cause may have already been fixed (or may have been running unnoticed for the entire period), and the cost is already incurred.</p>
 <p>The alternative is catching anomalies when they happen — not when the invoice arrives.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
@@ -186,13 +188,38 @@ ORDER BY variance DESC;
 <p><em>Setting up cost anomaly detection or responding to an unexpected bill? <a href="/contact/">Happy to compare approaches.</a></em></p>
 
       </div>
+<section class="field-worksheet worked-example" aria-labelledby="worked-example">
+    <h2 id="worked-example">Worked example</h2>
+    <p class="case-notice">This scenario and its results are illustrative.</p>
+    
+    <p>Replay a time series with weekend patterns and known cost steps. Compare a static daily threshold to a baseline that uses the same weekdays and documented delay in data availability.</p>
+    <figure class="delivery-flow">
+    <figcaption>Execution sequence</figcaption>
+    <ol><li>Model expected spend</li><li>Inject anomalies</li><li>Count alerts</li><li>Review missed events</li></ol>
+  </figure>
+    <figure class="field-chart case-chart">
+    <figcaption>Example comparison <span>Simulated figures</span></figcaption>
+    <ul class="case-metrics"><li class="case-metric">
+      <h3>Days with false alerts <small>%</small></h3>
+      <ul class="chart-rows"><li><span>Static threshold</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:31.66666666666667%"></i></span>
+        <strong>31.666667% <small>(19/60)</small></strong></li><li><span>Weekday-aware model</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:10%"></i></span>
+        <strong>10% <small>(6/60)</small></strong></li></ul>
+    </li></ul>
+  </figure>
+    <h3>Method and limits</h3>
+    <p>Both runs include the same 60 normal days. Count correct detection of seeded anomalies and time to alert separately before choosing an alert policy.</p>
+    <a href="/field-guides/worked-examples.csv" download>Download the worked figures (CSV)</a>
+  </section>
 
 
 <aside class="refs" aria-labelledby="refs-h">
   <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
-  <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
+  <p class="refs-note">Primary documentation, standards and research for the methods discussed here.</p>
   <ul>
-    <li><a href="https://www.finops.org/" rel="noopener nofollow" target="_blank">FinOps Foundation</a><span>Framework, capabilities and terminology.</span></li>
+    <li><a href="https://www.finops.org/framework/capabilities/anomaly-management/" rel="noopener" target="_blank">FinOps Foundation · Anomaly Management</a><span>Alert baselines, ownership and investigation.</span></li>
+    <li><a href="https://www.finops.org/" rel="noopener" target="_blank">FinOps Foundation</a><span>Framework, capabilities and terminology.</span></li>
   </ul>
 </aside>
 
@@ -200,7 +227,7 @@ ORDER BY variance DESC;
 
       <footer class="article-foot">
         <div class="row" style="gap:.4rem">
-          <a class="chip chip-plain" href="/topics/finops/">FinOps</a><a class="chip chip-plain" href="/insights/?topic=Cost%20Optimisation">Cost Optimisation</a><a class="chip chip-plain" href="/topics/cloud-architecture/">Cloud Architecture</a>
+          <a class="chip" href="/topics/finops/">FinOps</a><a class="chip" href="/topics/cost-optimisation/">Cost Optimisation</a><a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a>
         </div>
         <nav class="prevnext" aria-label="More articles">
           <a href="/insights/containers-production-dockerfiles/"><span>Previous</span><strong>Writing Production-Grade Dockerfiles: The Decisions That Actually Matter</strong></a>
@@ -214,12 +241,12 @@ ORDER BY variance DESC;
     <section class="promo-card promo-techknowen" aria-label="TechKnowen">
       <p class="promo-name">TechKnowen</p>
       <p>Practical reading on software, architecture, and engineering.</p>
-      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+      <a class="card-destination" href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
     </section>
     <section class="promo-card promo-ziggle" aria-label="Ziggle">
       <p class="promo-name">Ziggle</p>
       <p>A new place to play brain teasers.</p>
-      <p class="promo-status">Coming soon</p>
+      <a class="card-destination" href="/projects/ziggle/">Ziggle preview</a> <span class="promo-status">Coming soon</span>
     </section>
   </div>
 </aside>
@@ -228,33 +255,33 @@ ORDER BY variance DESC;
   <section class="section surface hair" style="margin-top:4rem">
     <div class="wrap">
       <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|FinOps|Cloud Architecture|Cost Optimisation|" data-search="cloud tagging policy template: the foundation finops actually requires a tagging policy that nobody enforces is worse than no tagging policy. here&#39;s how to design a tagging taxonomy that survives contact with real engineering teams — with enforcement mechanisms, exceptions handling, and the tags that actually drive cost allocation decisions. finops cloud architecture cost optimisation" data-topic="FinOps" href="/insights/finops-tagging-policy/">
+      <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|FinOps|Cloud Architecture|Cost Optimisation|" data-search="cloud tagging policy template: the foundation finops actually requires a tagging policy that nobody enforces is worse than no tagging policy. here&#39;s how to design a tagging taxonomy that survives contact with real engineering teams — with enforcement mechanisms, exceptions handling, and the tags that actually drive cost allocation decisions. finops cloud architecture cost optimisation" data-topic="FinOps">
   <div class="card-art"><img data-article-art="finops-tagging-policy" src="/assets/covers/finops-tagging-policy.svg?v=020fea3d6ae8" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">FinOps</span>
-    <h3 class="card-title">Cloud Tagging Policy Template: The Foundation FinOps Actually Requires</h3>
+    <a class="chip" href="/topics/finops/">FinOps</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/finops-tagging-policy/">Cloud Tagging Policy Template: The Foundation FinOps Actually Requires</a></h3>
     <p class="card-desc">A tagging policy that nobody enforces is worse than no tagging policy. Here&#39;s how to design a tagging taxonomy that survives contact with real engineering teams — with enforcement mechanisms, exceptions handling, and the tags that actually drive cost allocation decisions.</p>
     <div class="card-meta"><time datetime="2026-06-12">12 Jun 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|FinOps|Cost Optimisation|Cloud Architecture|" data-search="reserved instance rationalisation: how to commit to the right resources committed use discounts (reserved instances, savings plans, cuds) are one of the highest-return finops actions — but committing to the wrong shape or term locks in waste. here&#39;s the analysis process for getting it right. finops cost optimisation cloud architecture" data-topic="FinOps" href="/insights/reserved-instance-rationalization/">
+</article>
+<article class="card" data-card data-topics="|FinOps|Cost Optimisation|Cloud Architecture|" data-search="reserved instance rationalisation: how to commit to the right resources committed use discounts (reserved instances, savings plans, cuds) are one of the highest-return finops actions — but committing to the wrong shape or term locks in waste. here&#39;s the analysis process for getting it right. finops cost optimisation cloud architecture" data-topic="FinOps">
   <div class="card-art"><img data-article-art="reserved-instance-rationalization" src="/assets/covers/reserved-instance-rationalization.svg?v=7ff18fb5d675" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">FinOps</span>
-    <h3 class="card-title">Reserved Instance Rationalisation: How to Commit to the Right Resources</h3>
+    <a class="chip" href="/topics/finops/">FinOps</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/reserved-instance-rationalization/">Reserved Instance Rationalisation: How to Commit to the Right Resources</a></h3>
     <p class="card-desc">Committed use discounts (Reserved Instances, Savings Plans, CUDs) are one of the highest-return FinOps actions — but committing to the wrong shape or term locks in waste. Here&#39;s the analysis process for getting it right.</p>
     <div class="card-meta"><time datetime="2025-11-20">20 Nov 2025</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|FinOps|Cost Optimisation|Engineering Leadership|" data-search="from showback to chargeback: building a cloud cost ownership model that sticks showback tells teams what they spend. chargeback makes them accountable for it. the gap between the two is cultural as much as technical — here&#39;s how to bridge it without creating finance theater. finops cost optimisation engineering leadership" data-topic="FinOps" href="/insights/finops-chargeback-maturity/">
+</article>
+<article class="card" data-card data-topics="|FinOps|Cost Optimisation|Engineering Leadership|" data-search="from showback to chargeback: building a cloud cost ownership model that sticks showback tells teams what they spend. chargeback makes them accountable for it. the gap between the two is cultural as much as technical — here&#39;s how to bridge it without creating finance theater. finops cost optimisation engineering leadership" data-topic="FinOps">
   <div class="card-art"><img data-article-art="finops-chargeback-maturity" src="/assets/covers/finops-chargeback-maturity.svg?v=74e3b9e6aa7a" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">FinOps</span>
-    <h3 class="card-title">From Showback to Chargeback: Building a Cloud Cost Ownership Model That Sticks</h3>
+    <a class="chip" href="/topics/finops/">FinOps</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/finops-chargeback-maturity/">From Showback to Chargeback: Building a Cloud Cost Ownership Model That Sticks</a></h3>
     <p class="card-desc">Showback tells teams what they spend. Chargeback makes them accountable for it. The gap between the two is cultural as much as technical — here&#39;s how to bridge it without creating finance theater.</p>
     <div class="card-meta"><time datetime="2026-10-23">23 Oct 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
   </div>
-</a></div>
+</article></div>
     </div>
   </section>
 
@@ -344,6 +371,7 @@ ORDER BY variance DESC;
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/follow/">Follow new writing</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
           <li><a href="/notes/">Personal notes</a></li>
@@ -364,7 +392,7 @@ ORDER BY variance DESC;
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=a8e7c95a" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=a8e7c95a"></script>
+<script src="/assets/js/site.js?v=bd74be96" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=bd74be96"></script>
 </body>
 </html>

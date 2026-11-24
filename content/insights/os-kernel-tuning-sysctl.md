@@ -40,18 +40,17 @@ sysctl --system -a --deprecate 2>&1 | grep vm.swappiness
 
 ## Virtual Memory Tuning
 
+Use the [kernel virtual memory sysctl reference](https://docs.kernel.org/admin-guide/sysctl/vm.html#swappiness) and verify the running host’s values before proposing a change.
+
 ```bash
 ## /etc/sysctl.d/99-vm.conf
 
 ## ── vm.swappiness ──
-## How aggressively the kernel moves anonymous memory to swap
-## 0 = swap only when RAM is completely full (not literally 0)
-## 60 = default (swap when ~40% of RAM is free)
-## 100 = very aggressive swap use
-## For a database server or in-memory cache: set to 1-10
-## For a general application server: 10-20
-## For a desktop: 10-30
-vm.swappiness = 10
+## Relative I/O cost of swapping versus filesystem paging (0–200).
+## 60 is a common upstream default. This is not a RAM percentage.
+## Zero changes when swap is considered. It does not disable it.
+## Preserve the host setting until the workload has been tested.
+## vm.swappiness = 60
 
 ## ── vm.dirty_ratio and vm.dirty_background_ratio ──
 ## dirty_ratio: total dirty page threshold — kernel blocks writes at this point

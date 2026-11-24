@@ -50,7 +50,7 @@ AWS SageMaker is broader — it encompasses everything from data labelling to mo
 
 **Training jobs.** SageMaker's managed training infrastructure handles distributed training well. The spot instance integration for training jobs is genuinely useful for cost — training jobs that can tolerate interruption are significantly cheaper.
 
-**Model Monitor.** The built-in monitoring capability detects data drift and model quality degradation. It runs as a scheduled job, compares current inference data against a baseline, and generates reports. Not perfect, but a reasonable starting point for production monitoring.
+**Model Monitor.** AWS documents that SageMaker Model Monitor is no longer open to new customers and remains available to existing users. Feature-distribution checks and model-quality checks answer different questions. Quality monitoring requires ground truth joined to inference outputs. Verify equivalent capabilities in the monitoring pipeline you can actually use.
 
 **Batch Transform.** For offline batch inference on large datasets, SageMaker's batch transform is simpler than running your own batch processing infrastructure.
 

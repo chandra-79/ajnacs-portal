@@ -33,8 +33,9 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=a8e7c95a">
-<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<link rel="stylesheet" href="/assets/css/site.css?v=bd74be96">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
+<link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
    never flashes the wrong ground or resets someone's text size mid-read. */
@@ -105,6 +106,7 @@ d.setAttribute('data-theme',t);
 </nav></div>
     <div class="article-copy">
       <div class="prose">
+<p class="article-opening">A framework review should end with named decisions and evidence someone can reproduce next quarter.</p>
 <p>Microsoft&#39;s Well-Architected Framework (WAF) is organized around five pillars: reliability, security, cost optimization, operational excellence, and performance efficiency. Every major cloud provider has a similar framework (AWS has the Well-Architected Framework, GCP has the Architecture Framework). The pillars are similar across all three — which reflects that the underlying engineering trade-offs are universal.</p>
 <p>What varies is the implementation: Azure&#39;s specific services, defaults, and constraints. This article focuses on what each pillar means when building on Azure specifically.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
@@ -138,15 +140,40 @@ d.setAttribute('data-theme',t);
 <p><em>Reviewing an Azure architecture against the WAF pillars or preparing for an enterprise cloud assessment? <a href="/contact/">Happy to compare notes on the high-impact areas.</a></em></p>
 
       </div>
+<section class="field-worksheet worked-example" aria-labelledby="worked-example">
+    <h2 id="worked-example">Worked example</h2>
+    <p class="case-notice">This scenario and its results are illustrative.</p>
+    
+    <p>Evaluate one application against its agreed reliability, security, cost, operational and performance objectives. Prioritise findings with a named owner and a verification step.</p>
+    <figure class="delivery-flow">
+    <figcaption>Execution sequence</figcaption>
+    <ol><li>Set review scope</li><li>Map evidence to objectives</li><li>Prioritise fixes</li><li>Verify ownership</li></ol>
+  </figure>
+    <figure class="field-chart case-chart">
+    <figcaption>Example comparison <span>Simulated figures</span></figcaption>
+    <ul class="case-metrics"><li class="case-metric">
+      <h3>High-priority review findings with accepted evidence <small>%</small></h3>
+      <ul class="chart-rows"><li><span>Initial review</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:45%"></i></span>
+        <strong>45% <small>(9/20)</small></strong></li><li><span>After owners verify remediation</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:85%"></i></span>
+        <strong>85% <small>(17/20)</small></strong></li></ul>
+    </li></ul>
+  </figure>
+    <h3>Method and limits</h3>
+    <p>Use the same 20 fictional review findings and keep unresolved risks visible. The result does not certify overall architecture quality.</p>
+    <a href="/field-guides/worked-examples.csv" download>Download the worked figures (CSV)</a>
+  </section>
 
 
 <aside class="refs" aria-labelledby="refs-h">
   <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
-  <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
+  <p class="refs-note">Primary documentation, standards and research for the methods discussed here.</p>
   <ul>
-    <li><a href="https://developer.hashicorp.com/terraform/docs" rel="noopener nofollow" target="_blank">Terraform documentation</a><span>Language and provider reference.</span></li>
-    <li><a href="https://redis.io/docs/latest/" rel="noopener nofollow" target="_blank">Redis documentation</a><span>Data types, persistence and eviction.</span></li>
-    <li><a href="https://aws.amazon.com/architecture/well-architected/" rel="noopener nofollow" target="_blank">AWS Well-Architected Framework</a><span>Pillars and review process.</span></li>
+    <li><a href="https://learn.microsoft.com/en-us/azure/well-architected/" rel="noopener" target="_blank">Microsoft Azure Well-Architected Framework</a><span>Workload design pillars and review guidance.</span></li>
+    <li><a href="https://developer.hashicorp.com/terraform/docs" rel="noopener" target="_blank">Terraform documentation</a><span>Language and provider reference.</span></li>
+    <li><a href="https://redis.io/docs/latest/" rel="noopener" target="_blank">Redis documentation</a><span>Data types, persistence and eviction.</span></li>
+    <li><a href="https://aws.amazon.com/architecture/well-architected/" rel="noopener" target="_blank">AWS Well-Architected Framework</a><span>Pillars and review process.</span></li>
   </ul>
 </aside>
 
@@ -154,7 +181,7 @@ d.setAttribute('data-theme',t);
 
       <footer class="article-foot">
         <div class="row" style="gap:.4rem">
-          <a class="chip chip-plain" href="/topics/cloud-architecture/">Cloud Architecture</a><a class="chip chip-plain" href="/topics/architecture/">Architecture</a>
+          <a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a><a class="chip" href="/topics/architecture/">Architecture</a>
         </div>
         <nav class="prevnext" aria-label="More articles">
           <a href="/insights/enterprise-caching-architecture/"><span>Previous</span><strong>Speed at Scale: Enterprise Caching for OLTP and OLAP Workloads</strong></a>
@@ -168,12 +195,12 @@ d.setAttribute('data-theme',t);
     <section class="promo-card promo-techknowen" aria-label="TechKnowen">
       <p class="promo-name">TechKnowen</p>
       <p>Practical reading on software, architecture, and engineering.</p>
-      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+      <a class="card-destination" href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
     </section>
     <section class="promo-card promo-ziggle" aria-label="Ziggle">
       <p class="promo-name">Ziggle</p>
       <p>A new place to play brain teasers.</p>
-      <p class="promo-status">Coming soon</p>
+      <a class="card-destination" href="/projects/ziggle/">Ziggle preview</a> <span class="promo-status">Coming soon</span>
     </section>
   </div>
 </aside>
@@ -182,33 +209,33 @@ d.setAttribute('data-theme',t);
   <section class="section surface hair" style="margin-top:4rem">
     <div class="wrap">
       <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|Programming|Architecture|Cloud Architecture|" data-search="api design for enterprise systems: the decisions that age well an api that&#39;s easy to build against is easy to build wrong. the decisions around versioning, error models, pagination, idempotency, and authentication compound over time — here&#39;s how to make the ones that don&#39;t cause regret. programming architecture cloud architecture" data-topic="Programming" href="/insights/api-design-enterprise/">
+      <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|Programming|Architecture|Cloud Architecture|" data-search="api design for enterprise systems: the decisions that age well an api that&#39;s easy to build against is easy to build wrong. the decisions around versioning, error models, pagination, idempotency, and authentication compound over time — here&#39;s how to make the ones that don&#39;t cause regret. programming architecture cloud architecture" data-topic="Programming">
   <div class="card-art"><img data-article-art="api-design-enterprise" src="/assets/covers/api-design-enterprise.svg?v=d197ddfe2b3d" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Programming</span>
-    <h3 class="card-title">API Design for Enterprise Systems: The Decisions That Age Well</h3>
+    <a class="chip" href="/topics/programming/">Programming</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/api-design-enterprise/">API Design for Enterprise Systems: The Decisions That Age Well</a></h3>
     <p class="card-desc">An API that&#39;s easy to build against is easy to build wrong. The decisions around versioning, error models, pagination, idempotency, and authentication compound over time — here&#39;s how to make the ones that don&#39;t cause regret.</p>
     <div class="card-meta"><time datetime="2026-11-06">6 Nov 2026</time><span class="dot"></span><span>5 min read</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|Programming|Architecture|Cloud Architecture|" data-search="system design patterns every backend engineer should know cqrs, event sourcing, saga pattern, outbox pattern — the patterns that solve specific distributed systems problems, what trade-offs they introduce, and when the simpler option is actually the right one. programming architecture cloud architecture" data-topic="Programming" href="/insights/system-design-patterns-backend/">
+</article>
+<article class="card" data-card data-topics="|Programming|Architecture|Cloud Architecture|" data-search="system design patterns every backend engineer should know cqrs, event sourcing, saga pattern, outbox pattern — the patterns that solve specific distributed systems problems, what trade-offs they introduce, and when the simpler option is actually the right one. programming architecture cloud architecture" data-topic="Programming">
   <div class="card-art"><img data-article-art="system-design-patterns-backend" src="/assets/covers/system-design-patterns-backend.svg?v=1cc422a8deab" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Programming</span>
-    <h3 class="card-title">System Design Patterns Every Backend Engineer Should Know</h3>
+    <a class="chip" href="/topics/programming/">Programming</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/system-design-patterns-backend/">System Design Patterns Every Backend Engineer Should Know</a></h3>
     <p class="card-desc">CQRS, event sourcing, saga pattern, outbox pattern — the patterns that solve specific distributed systems problems, what trade-offs they introduce, and when the simpler option is actually the right one.</p>
     <div class="card-meta"><time datetime="2026-10-28">28 Oct 2026</time><span class="dot"></span><span>5 min read</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|Cloud Architecture|Architecture|Reliability|Disaster Recovery|Distributed Systems|" data-search="multi-region architecture patterns: what you&#39;re actually buying at each tier active-passive, pilot light, active-active, and the data problem underneath them all. a tiered framework for multi-region design that matches architecture to actual availability requirements — and prices the tiers honestly. cloud architecture architecture reliability disaster recovery distributed systems" data-topic="Cloud Architecture" href="/insights/multi-region-architecture-patterns/">
+</article>
+<article class="card" data-card data-topics="|Cloud Architecture|Architecture|Reliability|Disaster Recovery|Distributed Systems|" data-search="multi-region architecture patterns: what you&#39;re actually buying at each tier active-passive, pilot light, active-active, and the data problem underneath them all. a tiered framework for multi-region design that matches architecture to actual availability requirements — and prices the tiers honestly. cloud architecture architecture reliability disaster recovery distributed systems" data-topic="Cloud Architecture">
   <div class="card-art"><img data-article-art="multi-region-architecture-patterns" src="/assets/covers/multi-region-architecture-patterns.svg?v=2d4e43cac29c" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Cloud Architecture</span>
-    <h3 class="card-title">Multi-Region Architecture Patterns: What You&#39;re Actually Buying at Each Tier</h3>
+    <a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/multi-region-architecture-patterns/">Multi-Region Architecture Patterns: What You&#39;re Actually Buying at Each Tier</a></h3>
     <p class="card-desc">Active-passive, pilot light, active-active, and the data problem underneath them all. A tiered framework for multi-region design that matches architecture to actual availability requirements — and prices the tiers honestly.</p>
     <div class="card-meta"><time datetime="2026-02-12">12 Feb 2026</time><span class="dot"></span><span>5 min read</span></div>
   </div>
-</a></div>
+</article></div>
     </div>
   </section>
 
@@ -288,6 +315,7 @@ d.setAttribute('data-theme',t);
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/follow/">Follow new writing</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
           <li><a href="/notes/">Personal notes</a></li>
@@ -308,7 +336,7 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=a8e7c95a" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=a8e7c95a"></script>
+<script src="/assets/js/site.js?v=bd74be96" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=bd74be96"></script>
 </body>
 </html>

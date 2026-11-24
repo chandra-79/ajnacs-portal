@@ -6,9 +6,9 @@ tags: ["Cloud Architecture", "OCI", "Certifications"]
 format: article
 ---
 
-The OCI Architect Associate exam (1Z0-1072) tests Oracle Cloud Infrastructure-specific architecture knowledge. If you're coming from AWS or Azure, most of the concepts are familiar — compute, storage, networking, IAM — but Oracle's naming, structure, and defaults differ enough that familiarity with cloud fundamentals doesn't mean you'll pass without OCI-specific preparation.
+Use the [Oracle University Architect Associate learning path](https://learn.oracle.com/ols/learning-path/become-an-oci-architect-associate/163512/162234) to find the current exam code and blueprint before booking. AWS or Azure experience helps with the baseline concepts. Focus your labs on OCI resource identity, routing, storage and recovery.
 
-Here's what the exam emphasises, organised by weight.
+The sections below are a practice sequence. Use Oracle’s current blueprint for official topic coverage and the registration page for timing.
 
 ## What to measure
 
@@ -31,7 +31,7 @@ Verbs matter: `inspect` (list), `read` (inspect + get), `use` (read + update ope
 
 **Federation** with identity providers (IDCS, Microsoft Entra ID, Okta) is frequently tested. Know how to set up a federation, understand the difference between IDCS (Oracle's native identity service) and external providers, and understand group mappings.
 
-## Compute and networking: the exam's heaviest section
+## Compute and networking
 
 **Compute shapes** come in four families: Standard (general purpose), Optimised (high CPU frequency), GPU, and Dense I/O (NVMe-attached storage). The Flex shapes (VM.Standard.E4.Flex, VM.Standard3.Flex) let you specify OCPUs and memory independently — know how these work and the ratio limits.
 
@@ -63,7 +63,7 @@ OCI's database offerings are distinct from other clouds because of the Autonomou
 
 ## High availability and disaster recovery
 
-OCI's physical structure: **Region** → **Availability Domains (ADs)** → **Fault Domains (FDs)**. Most OCI regions have 3 ADs (some have 1 AD). Each AD has 3 Fault Domains.
+OCI's physical structure: **Region** → **Availability Domains (ADs)** → **Fault Domains (FDs)**. The available number of availability domains varies by region. Each availability domain has three fault domains. Check region availability before settling on an HA design.
 
 The key architectural pattern: distribute resources across multiple ADs for region-level HA, distribute within an AD across multiple FDs for AD-level HA. For a 3-AD region, running a 3-node cluster with one node per AD gives you protection against AD failure.
 
@@ -78,6 +78,6 @@ For engineers already certified on AWS or Azure:
 3. **Practice exams** — Oracle provides sample questions; third-party practice exams (Whizlabs, ExamTopics) are useful for pattern recognition.
 4. **Hands-on**: OCI Free Tier provides access to most services needed for the exam. Build the architectures — a VCN with subnets, a compute instance, a load balancer, Object Storage policies.
 
-The exam is 60 questions, 90 minutes. The question style is scenario-based: given an architecture requirement, which OCI services and configuration meets it?
+When reviewing practice questions, explain which architecture meets the constraints and why the other options fail. Verify question count and duration with Oracle for your specific booked exam.
 
 *Preparing for OCI certification alongside other cloud certs? [Happy to share what's worked.](/contact/)*

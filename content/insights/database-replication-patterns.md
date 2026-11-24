@@ -56,15 +56,15 @@ Systems like Vitess (MySQL sharding), CockroachDB, and Cassandra are designed fo
 
 Cloud-managed databases abstract much of the replication complexity:
 
-**AWS RDS Multi-AZ**: synchronous replication to a standby in a different availability zone. Automatic failover in 30-60 seconds. Zero data loss on failover. Higher cost (you pay for the standby even though it serves no read traffic).
+**Amazon RDS Multi-AZ** comes in different configurations. A Multi-AZ DB instance deployment has a standby that serves failover. A Multi-AZ DB cluster exposes readable instances. Check your engine configuration and test application recovery, including reconnection and in-flight requests.
 
-**AWS Aurora**: six-way replication across three availability zones, with up to 15 read replicas. Failover in under 30 seconds (typically 10-15 seconds). The storage layer is multi-AZ by default; what fails over is the writer endpoint, not storage.
+**Amazon Aurora** stores copies across Availability Zones. In a typical Aurora MySQL cluster with an eligible replica, AWS documents failover within about 30 seconds. Time restoration from the application’s first verified operation and check how clients rediscover the current writer.
 
-**Azure Database for PostgreSQL — Flexible Server** with high availability: standby server in the same or a different availability zone. 120-second failover SLA with zone-redundant HA.
+**Azure Database for PostgreSQL Flexible Server** offers HA with a standby in the same or a different availability zone, depending on configuration. Use the selected configuration’s documented recovery characteristics and time a representative failover.
 
 **GCP Cloud SQL**: similar primary-standby configuration with automatic failover within a region.
 
-For most production workloads, cloud-managed replication is the right choice: it removes the operational complexity of managing replication manually and provides well-defined RPO/RTO guarantees.
+Managed replication can remove some operating work. Establish RPO and RTO for your workload and failure boundaries, including impaired dependency zones. Read [AWS’s Aurora MySQL recovery guidance](https://docs.aws.amazon.com/whitepapers/latest/amazon-aurora-mysql-db-admin-handbook/designing-for-fault-tolerance-and-quick-recovery.html) and treat component failover and application recovery as separate measurements.
 
 ## Choosing the right configuration
 

@@ -33,8 +33,9 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=a8e7c95a">
-<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<link rel="stylesheet" href="/assets/css/site.css?v=bd74be96">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
+<link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
    never flashes the wrong ground or resets someone's text size mid-read. */
@@ -105,6 +106,7 @@ d.setAttribute('data-theme',t);
 </nav></div>
     <div class="article-copy">
       <div class="prose">
+<p class="article-opening">A billing recommendation should reconcile to service usage before changing commitments or architecture.</p>
 <p>GCP cost management has a different character than AWS or Azure FinOps. GCP&#39;s pricing model (particularly Sustained Use Discounts and Committed Use Discounts) is less visible than AWS Reserved Instances but often results in lower effective compute prices for workloads with consistent usage. The tooling — Recommender API, Active Assist, billing export to BigQuery — is sophisticated once you know where to find it.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
 <p><strong>BigQuery bytes and cost per workload.</strong> If a representative query drops from 4 TB to 0.5 TB scanned, the scan reduction is 87.5%. Translate that to billed cost only if the pricing model charges for the billed bytes. Record slot time separately for capacity-based pricing.</p>
@@ -175,13 +177,38 @@ cost-centre: engineering | data-science
 <p><em>Managing GCP costs at scale or building a FinOps practice across GCP projects? <a href="/contact/">Happy to compare approaches for your specific usage patterns.</a></em></p>
 
       </div>
+<section class="field-worksheet worked-example" aria-labelledby="worked-example">
+    <h2 id="worked-example">Worked example</h2>
+    <p class="case-notice">This scenario and its results are illustrative.</p>
+    
+    <p>Group cost by service and workload owner, reconcile credits, and model what happens when the steady compute floor shrinks. Track usage eligible for the commitment separately from total GCP spend.</p>
+    <figure class="delivery-flow">
+    <figcaption>Execution sequence</figcaption>
+    <ol><li>Load export</li><li>Reconcile credits</li><li>Model usage floor</li><li>Review migration risk</li></ol>
+  </figure>
+    <figure class="field-chart case-chart">
+    <figcaption>Example comparison <span>Simulated figures</span></figcaption>
+    <ul class="case-metrics"><li class="case-metric">
+      <h3>Projected eligible cloud cost <small>USD/month</small></h3>
+      <ul class="chart-rows"><li><span>On-demand fixture</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:100%"></i></span>
+        <strong>8,400</strong></li><li><span>Sized commitment fixture</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:86.9047619047619%"></i></span>
+        <strong>7,300</strong></li></ul>
+    </li></ul>
+  </figure>
+    <h3>Method and limits</h3>
+    <p>This is a synthetic bill comparison with a fixed usage trace and fictional rates. Recheck SKU eligibility and avoid applying discount twice.</p>
+    <a href="/field-guides/worked-examples.csv" download>Download the worked figures (CSV)</a>
+  </section>
 
 
 <aside class="refs" aria-labelledby="refs-h">
   <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
-  <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
+  <p class="refs-note">Primary documentation, standards and research for the methods discussed here.</p>
   <ul>
-    <li><a href="https://www.finops.org/" rel="noopener nofollow" target="_blank">FinOps Foundation</a><span>Framework, capabilities and terminology.</span></li>
+    <li><a href="https://docs.cloud.google.com/docs/cuds" rel="noopener" target="_blank">Google Cloud · Committed Use Discounts</a><span>Resource and spend commitments have different eligibility and scope.</span></li>
+    <li><a href="https://www.finops.org/" rel="noopener" target="_blank">FinOps Foundation</a><span>Framework, capabilities and terminology.</span></li>
   </ul>
 </aside>
 
@@ -189,7 +216,7 @@ cost-centre: engineering | data-science
 
       <footer class="article-foot">
         <div class="row" style="gap:.4rem">
-          <a class="chip chip-plain" href="/topics/finops/">FinOps</a><a class="chip chip-plain" href="/topics/cloud-architecture/">Cloud Architecture</a>
+          <a class="chip" href="/topics/finops/">FinOps</a><a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a>
         </div>
         <nav class="prevnext" aria-label="More articles">
           <a href="/insights/supply-chain-security-sbom/"><span>Previous</span><strong>Software Supply Chain Security: SBOM, Dependency Auditing, and What Actually Reduces Risk</strong></a>
@@ -203,12 +230,12 @@ cost-centre: engineering | data-science
     <section class="promo-card promo-techknowen" aria-label="TechKnowen">
       <p class="promo-name">TechKnowen</p>
       <p>Practical reading on software, architecture, and engineering.</p>
-      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+      <a class="card-destination" href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
     </section>
     <section class="promo-card promo-ziggle" aria-label="Ziggle">
       <p class="promo-name">Ziggle</p>
       <p>A new place to play brain teasers.</p>
-      <p class="promo-status">Coming soon</p>
+      <a class="card-destination" href="/projects/ziggle/">Ziggle preview</a> <span class="promo-status">Coming soon</span>
     </section>
   </div>
 </aside>
@@ -217,33 +244,33 @@ cost-centre: engineering | data-science
   <section class="section surface hair" style="margin-top:4rem">
     <div class="wrap">
       <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|Cloud Architecture|Reliability|FinOps|Engineering Leadership|" data-search="capacity planning in the cloud era: headroom as an engineered property elastic infrastructure didn&#39;t kill capacity planning — it changed what gets planned. demand modeling, the utilization-vs-headroom trade, quota and constraint archaeology, and the quarterly loop that replaces both waste and 3 am scrambles. cloud architecture reliability finops engineering leadership" data-topic="Cloud Architecture" href="/insights/capacity-planning-engineering/">
+      <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|Cloud Architecture|Reliability|FinOps|Engineering Leadership|" data-search="capacity planning in the cloud era: headroom as an engineered property elastic infrastructure didn&#39;t kill capacity planning — it changed what gets planned. demand modeling, the utilization-vs-headroom trade, quota and constraint archaeology, and the quarterly loop that replaces both waste and 3 am scrambles. cloud architecture reliability finops engineering leadership" data-topic="Cloud Architecture">
   <div class="card-art"><img data-article-art="capacity-planning-engineering" src="/assets/covers/capacity-planning-engineering.svg?v=2ff332e2bf38" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Cloud Architecture</span>
-    <h3 class="card-title">Capacity Planning in the Cloud Era: Headroom as an Engineered Property</h3>
+    <a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/capacity-planning-engineering/">Capacity Planning in the Cloud Era: Headroom as an Engineered Property</a></h3>
     <p class="card-desc">Elastic infrastructure didn&#39;t kill capacity planning — it changed what gets planned. Demand modeling, the utilization-vs-headroom trade, quota and constraint archaeology, and the quarterly loop that replaces both waste and 3 AM scrambles.</p>
     <div class="card-meta"><time datetime="2026-11-09">9 Nov 2026</time><span class="dot"></span><span>5 min read</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|Performance|Programming|Cloud Architecture|Data Engineering|FinOps|" data-search="compression in production: choosing between gzip, zstd, lz4, and brotli like it matters compression is a three-way trade — ratio, speed, and cpu — that most systems set once by default and never revisit. the algorithm landscape, placement decisions across web, storage, and streaming, dictionary compression&#39;s quiet superpower, and the measurement discipline. performance programming cloud architecture data engineering finops" data-topic="Performance" href="/insights/compression-selection-guide/">
+</article>
+<article class="card" data-card data-topics="|Performance|Programming|Cloud Architecture|Data Engineering|FinOps|" data-search="compression in production: choosing between gzip, zstd, lz4, and brotli like it matters compression is a three-way trade — ratio, speed, and cpu — that most systems set once by default and never revisit. the algorithm landscape, placement decisions across web, storage, and streaming, dictionary compression&#39;s quiet superpower, and the measurement discipline. performance programming cloud architecture data engineering finops" data-topic="Performance">
   <div class="card-art"><img data-article-art="compression-selection-guide" src="/assets/covers/compression-selection-guide.svg?v=841ffbacef2b" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Performance</span>
-    <h3 class="card-title">Compression in Production: Choosing Between gzip, zstd, lz4, and Brotli Like It Matters</h3>
+    <a class="chip" href="/topics/performance/">Performance</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/compression-selection-guide/">Compression in Production: Choosing Between gzip, zstd, lz4, and Brotli Like It Matters</a></h3>
     <p class="card-desc">Compression is a three-way trade — ratio, speed, and CPU — that most systems set once by default and never revisit. The algorithm landscape, placement decisions across web, storage, and streaming, dictionary compression&#39;s quiet superpower, and the measurement discipline.</p>
     <div class="card-meta"><time datetime="2026-10-12">12 Oct 2026</time><span class="dot"></span><span>5 min read</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|FinOps|Cost Optimisation|Cloud Architecture|" data-search="cloud cost anomaly detection: catching runaway spend before it becomes a bill cloud cost overruns that show up in the monthly invoice are already weeks old. here&#39;s how to set up anomaly detection that catches cost spikes in hours, with enough context to diagnose the cause quickly. finops cost optimisation cloud architecture" data-topic="FinOps" href="/insights/finops-anomaly-detection/">
+</article>
+<article class="card" data-card data-topics="|FinOps|Cost Optimisation|Cloud Architecture|" data-search="cloud cost anomaly detection: catching runaway spend before it becomes a bill cloud cost overruns that show up in the monthly invoice are already weeks old. here&#39;s how to set up anomaly detection that catches cost spikes in hours, with enough context to diagnose the cause quickly. finops cost optimisation cloud architecture" data-topic="FinOps">
   <div class="card-art"><img data-article-art="finops-anomaly-detection" src="/assets/covers/finops-anomaly-detection.svg?v=47a96d09bef2" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">FinOps</span>
-    <h3 class="card-title">Cloud Cost Anomaly Detection: Catching Runaway Spend Before It Becomes a Bill</h3>
+    <a class="chip" href="/topics/finops/">FinOps</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/finops-anomaly-detection/">Cloud Cost Anomaly Detection: Catching Runaway Spend Before It Becomes a Bill</a></h3>
     <p class="card-desc">Cloud cost overruns that show up in the monthly invoice are already weeks old. Here&#39;s how to set up anomaly detection that catches cost spikes in hours, with enough context to diagnose the cause quickly.</p>
     <div class="card-meta"><time datetime="2026-07-06">6 Jul 2026</time><span class="dot"></span><span>5 min read</span><span class="dot"></span><span>Series</span></div>
   </div>
-</a></div>
+</article></div>
     </div>
   </section>
 
@@ -323,6 +350,7 @@ cost-centre: engineering | data-science
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/follow/">Follow new writing</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
           <li><a href="/notes/">Personal notes</a></li>
@@ -343,7 +371,7 @@ cost-centre: engineering | data-science
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=a8e7c95a" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=a8e7c95a"></script>
+<script src="/assets/js/site.js?v=bd74be96" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=bd74be96"></script>
 </body>
 </html>

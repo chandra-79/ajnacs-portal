@@ -6,7 +6,7 @@ tags: ["Engineering Leadership", "Observability", "DevSecOps"]
 format: article
 ---
 
-MTTR (Mean Time to Recover or Mean Time to Resolve, depending on who you ask) measures how long it takes your organization to recover from an incident. It's one of the four DORA metrics for software delivery performance, and it's the one most directly connected to user impact.
+Define MTTR for the population you actually intend to measure. This playbook uses elapsed time from incident declaration to verified restoration of the affected service. DORA’s five delivery metrics include failed deployment recovery time, scoped to deployments that require immediate intervention. Keep those measurements separate.
 
 Reducing MTTR is deceptively hard to target directly. You can't improve MTTR by trying harder during incidents — you improve it by investing in capabilities before incidents happen. This playbook focuses on those leading investments.
 
@@ -83,7 +83,7 @@ Chaos engineering (Chaos Monkey, Gremlin, AWS Fault Injection Simulator) automat
 
 ## Architecture changes that reduce remediation time
 
-**Deployment rollback speed**: if a bad deployment requires 20 minutes to roll back, your MTTR has a floor of 20 minutes for deployment-caused incidents. Blue/green deployments and canary releases allow instant cutover back to the known-good version. This alone reduces median MTTR significantly for deployment-related incidents.
+**Deployment rollback speed**: rehearse the time from deciding to revert until the application verifies recovery. Blue-green or canary routing can shorten traffic rollback when the last good capacity is ready. Check connection draining, in-flight operations and data compatibility before relying on a revert.
 
 **Feature flags**: the ability to disable a problematic feature in production without a deployment means some incidents resolve in minutes (disable the flag) rather than the full deployment cycle.
 

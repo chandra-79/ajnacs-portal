@@ -38,7 +38,7 @@ The defenses, in order of leverage:
 
 ## Structured concurrency: TaskGroups changed the idiom
 
-Historical asyncio encouraged fire-and-forget: `asyncio.create_task()` calls whose failures vanished (swallowed exceptions, tasks garbage-collected mid-flight) unless every callsite remembered to hold references and check results. Modern Python (3.11+) fixed the idiom with **`asyncio.TaskGroup`**: tasks spawned inside an `async with` block are guaranteed awaited; any child failure cancels siblings and propagates as an ExceptionGroup. The fan-out call — hit three services, all-or-nothing, bounded by a deadline — becomes a dozen honest lines with correct cancellation for free.
+Python 3.11’s [`asyncio.TaskGroup`](https://docs.python.org/3.11/library/asyncio-task.html#task-groups) waits for its child tasks. The first child exception other than `CancelledError` cancels siblings and normally raises applicable failures in a group after they settle. `KeyboardInterrupt` and `SystemExit` are re-raised directly. Test how the actual work stops on cancellation, especially when a blocking operation runs in a worker thread.
 
 Adopt these as house style: TaskGroups (or the equivalent nurseries in AnyIO/Trio) over bare `create_task`; **`asyncio.timeout()`** context managers around anything with a deadline (per-call timeouts, not one prayer at the top); and **explicit concurrency bounds** — `asyncio.Semaphore` around outbound fan-out — because an async service can trivially open 10,000 simultaneous connections to a downstream sized for 200. Async removes your accidental concurrency governor (the thread pool) exactly like virtual threads do in Java; backpressure becomes your explicit job.
 

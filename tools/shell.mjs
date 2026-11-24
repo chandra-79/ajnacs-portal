@@ -31,7 +31,7 @@ export function page({
   ogImage ||= siteImagePath(urlPath,title,metaShort,topic);
   const imagePath=ogImage.split(/[?#]/)[0];
   const frame = type === "article" ? "article-frame" :
-    /^(?:\/insights|\/notes|\/series|\/topics|\/field-guides)\//.test(urlPath) ? "publication-frame" : "";
+    /^(?:\/insights|\/notes|\/series|\/topics|\/field-guides|\/case-studies)\//.test(urlPath) ? "publication-frame" : "";
   const primaryCurrent = href => urlPath === href ? ' aria-current="page"' :
     urlPath.startsWith(href) ? ' aria-current="location"' : "";
   const imageType = /\.png$/i.test(imagePath) ? "image/png" : /\.svg$/i.test(imagePath) ? "image/svg+xml" : /\.webp$/i.test(imagePath) ? "image/webp" : "image/jpeg";
@@ -72,7 +72,8 @@ ${modified ? `<meta property="article:modified_time" content="${modified}">` : '
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
 <link rel="stylesheet" href="/assets/css/site.css?v=${SITE_V}">
-<link rel="alternate" type="application/rss+xml" title="${esc(SITE.name)} — Insights" href="/feed.xml">
+<link rel="alternate" type="application/rss+xml" title="${esc(SITE.name)} — New Insights" href="/feed.xml">
+<link rel="alternate" type="application/atom+xml" title="${esc(SITE.name)} — Engineering updates" href="/updates.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
    never flashes the wrong ground or resets someone's text size mid-read. */
@@ -145,6 +146,7 @@ ${body}
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/follow/">Follow new writing</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
           <li><a href="/notes/">Personal notes</a></li>

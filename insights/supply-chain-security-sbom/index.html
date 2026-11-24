@@ -33,8 +33,9 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=a8e7c95a">
-<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<link rel="stylesheet" href="/assets/css/site.css?v=bd74be96">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
+<link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
    never flashes the wrong ground or resets someone's text size mid-read. */
@@ -105,6 +106,7 @@ d.setAttribute('data-theme',t);
 </nav></div>
     <div class="article-copy">
       <div class="prose">
+<p class="article-opening">An SBOM is an input to review. Release risk changes when evidence follows the artifact through build and promotion.</p>
 <p>The SolarWinds and Log4Shell incidents changed how the industry thinks about software supply chain risk. Both showed the same vulnerability: organizations had extensive perimeter controls and almost no visibility into what software they were actually running and whether it contained known vulnerabilities.</p>
 <p>Software Bill of Materials (SBOM) and supply chain security practices exist to address this. The challenge is that the tooling is maturing, the standards are still evolving, and the gap between &quot;we generate an SBOM&quot; and &quot;we have meaningful supply chain security&quot; is significant.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
@@ -177,15 +179,40 @@ cosign verify --key cosign.pub my-registry/my-app:v1.2.3
 <p><em>Building out a supply chain security program or integrating SBOM generation into an existing CI/CD pipeline? <a href="/contact/">Happy to share what the implementation looks like at scale.</a></em></p>
 
       </div>
+<section class="field-worksheet worked-example" aria-labelledby="worked-example">
+    <h2 id="worked-example">Worked example</h2>
+    <p class="case-notice">This scenario and its results are illustrative.</p>
+    
+    <p>Choose one service, produce a component inventory for the exact image digest and require a vulnerability review with an expiry for exceptions. Validate rebuilds and their metadata in a controlled pipeline.</p>
+    <figure class="delivery-flow">
+    <figcaption>Execution sequence</figcaption>
+    <ol><li>Build artifact</li><li>Record inventory</li><li>Review with owner</li><li>Verify promotion</li></ol>
+  </figure>
+    <figure class="field-chart case-chart">
+    <figcaption>Example comparison <span>Simulated figures</span></figcaption>
+    <ul class="case-metrics"><li class="case-metric">
+      <h3>Candidate artifacts linked to inventory and review <small>%</small></h3>
+      <ul class="chart-rows"><li><span>Manually recorded</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:45%"></i></span>
+        <strong>45% <small>(9/20)</small></strong></li><li><span>Digest-bound pipeline</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:100%"></i></span>
+        <strong>100% <small>(20/20)</small></strong></li></ul>
+    </li></ul>
+  </figure>
+    <h3>Method and limits</h3>
+    <p>Use the same 20 illustrative releases. A complete inventory and review record do not establish absence of vulnerabilities.</p>
+    <a href="/field-guides/worked-examples.csv" download>Download the worked figures (CSV)</a>
+  </section>
 
 
 <aside class="refs" aria-labelledby="refs-h">
   <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
-  <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
+  <p class="refs-note">Primary documentation, standards and research for the methods discussed here.</p>
   <ul>
-    <li><a href="https://owasp.org/" rel="noopener nofollow" target="_blank">OWASP</a><span>Application security guidance and the Top 10.</span></li>
-    <li><a href="https://slsa.dev/" rel="noopener nofollow" target="_blank">SLSA</a><span>Supply-chain levels for software artifacts.</span></li>
-    <li><a href="https://www.sigstore.dev/" rel="noopener nofollow" target="_blank">Sigstore</a><span>Signing and verification for artifacts.</span></li>
+    <li><a href="https://slsa.dev/spec/" rel="noopener" target="_blank">SLSA specification</a><span>Build provenance and assurance levels.</span></li>
+    <li><a href="https://owasp.org/" rel="noopener" target="_blank">OWASP</a><span>Application security guidance and the Top 10.</span></li>
+    <li><a href="https://slsa.dev/" rel="noopener" target="_blank">SLSA</a><span>Supply-chain levels for software artifacts.</span></li>
+    <li><a href="https://www.sigstore.dev/" rel="noopener" target="_blank">Sigstore</a><span>Signing and verification for artifacts.</span></li>
   </ul>
 </aside>
 
@@ -193,7 +220,7 @@ cosign verify --key cosign.pub my-registry/my-app:v1.2.3
 
       <footer class="article-foot">
         <div class="row" style="gap:.4rem">
-          <a class="chip chip-plain" href="/topics/devsecops/">DevSecOps</a><a class="chip chip-plain" href="/topics/architecture/">Architecture</a>
+          <a class="chip" href="/topics/devsecops/">DevSecOps</a><a class="chip" href="/topics/architecture/">Architecture</a>
         </div>
         <nav class="prevnext" aria-label="More articles">
           <a href="/insights/cloud-unit-economics/"><span>Previous</span><strong>Cloud Cost per Unit: Calculate What It Costs to Deliver an Order</strong></a>
@@ -207,12 +234,12 @@ cosign verify --key cosign.pub my-registry/my-app:v1.2.3
     <section class="promo-card promo-techknowen" aria-label="TechKnowen">
       <p class="promo-name">TechKnowen</p>
       <p>Practical reading on software, architecture, and engineering.</p>
-      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+      <a class="card-destination" href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
     </section>
     <section class="promo-card promo-ziggle" aria-label="Ziggle">
       <p class="promo-name">Ziggle</p>
       <p>A new place to play brain teasers.</p>
-      <p class="promo-status">Coming soon</p>
+      <a class="card-destination" href="/projects/ziggle/">Ziggle preview</a> <span class="promo-status">Coming soon</span>
     </section>
   </div>
 </aside>
@@ -221,33 +248,33 @@ cosign verify --key cosign.pub my-registry/my-app:v1.2.3
   <section class="section surface hair" style="margin-top:4rem">
     <div class="wrap">
       <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|DevSecOps|Architecture|Fundamentals|" data-search="platform observability: building the visibility layer every application team gets automatically how platform teams build and operate the metrics, logging, and tracing infrastructure that application teams consume without configuring — and what good platform observability coverage actually looks like. devsecops architecture fundamentals" data-topic="DevSecOps" href="/insights/platform-eng-observability/">
+      <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|DevSecOps|Architecture|Fundamentals|" data-search="platform observability: building the visibility layer every application team gets automatically how platform teams build and operate the metrics, logging, and tracing infrastructure that application teams consume without configuring — and what good platform observability coverage actually looks like. devsecops architecture fundamentals" data-topic="DevSecOps">
   <div class="card-art"><img data-article-art="platform-eng-observability" src="/assets/covers/platform-eng-observability.svg?v=5ca4babc5cf8" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">DevSecOps</span>
-    <h3 class="card-title">Platform Observability: Building the Visibility Layer Every Application Team Gets Automatically</h3>
+    <a class="chip" href="/topics/devsecops/">DevSecOps</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/platform-eng-observability/">Platform Observability: Building the Visibility Layer Every Application Team Gets Automatically</a></h3>
     <p class="card-desc">How platform teams build and operate the metrics, logging, and tracing infrastructure that application teams consume without configuring — and what good platform observability coverage actually looks like.</p>
     <div class="card-meta"><time datetime="2026-09-16">16 Sept 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|DevSecOps|Cloud Architecture|Engineering Leadership|" data-search="platform onboarding: measure the path to a first deployment pilot a self-service path, measure time to a first qualifying deployment, and track completion, controls, and support effort. devsecops cloud architecture engineering leadership" data-topic="DevSecOps" href="/insights/platform-engineering-idp-2026/">
+</article>
+<article class="card" data-card data-topics="|DevSecOps|Cloud Architecture|Engineering Leadership|" data-search="platform onboarding: measure the path to a first deployment pilot a self-service path, measure time to a first qualifying deployment, and track completion, controls, and support effort. devsecops cloud architecture engineering leadership" data-topic="DevSecOps">
   <div class="card-art"><img data-article-art="platform-engineering-idp-2026" src="/assets/covers/photos/platform-engineering-idp-2026.jpg?v=e89682005513" srcset="/assets/covers/photos/platform-engineering-idp-2026-640.jpg?v=e89682005513 640w, /assets/covers/photos/platform-engineering-idp-2026.jpg?v=e89682005513 1280w" sizes="(min-width: 800px) 420px, 100vw" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">DevSecOps</span>
-    <h3 class="card-title">Platform Onboarding: Measure the Path to a First Deployment</h3>
+    <a class="chip" href="/topics/devsecops/">DevSecOps</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/platform-engineering-idp-2026/">Platform Onboarding: Measure the Path to a First Deployment</a></h3>
     <p class="card-desc">Pilot a self-service path, measure time to a first qualifying deployment, and track completion, controls, and support effort.</p>
     <div class="card-meta"><time datetime="2026-11-20">20 Nov 2026</time><span class="dot"></span><span>2 min read</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|Cloud Architecture|DevSecOps|Infrastructure|" data-search="serverless vs containers: an honest comparison for 2026 neither is universally better. the answer depends on your workload profile, your team&#39;s operational maturity, and — honestly — your tolerance for cold starts. cloud architecture devsecops infrastructure" data-topic="Cloud Architecture" href="/insights/serverless-vs-containers-2026/">
+</article>
+<article class="card" data-card data-topics="|Cloud Architecture|DevSecOps|Infrastructure|" data-search="serverless vs containers: an honest comparison for 2026 neither is universally better. the answer depends on your workload profile, your team&#39;s operational maturity, and — honestly — your tolerance for cold starts. cloud architecture devsecops infrastructure" data-topic="Cloud Architecture">
   <div class="card-art"><img data-article-art="serverless-vs-containers-2026" src="/assets/covers/photos/serverless-vs-containers-2026.jpg?v=773805cd32f5" srcset="/assets/covers/photos/serverless-vs-containers-2026-640.jpg?v=773805cd32f5 640w, /assets/covers/photos/serverless-vs-containers-2026.jpg?v=773805cd32f5 1280w" sizes="(min-width: 800px) 420px, 100vw" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Cloud Architecture</span>
-    <h3 class="card-title">Serverless vs Containers: An Honest Comparison for 2026</h3>
+    <a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/serverless-vs-containers-2026/">Serverless vs Containers: An Honest Comparison for 2026</a></h3>
     <p class="card-desc">Neither is universally better. The answer depends on your workload profile, your team&#39;s operational maturity, and — honestly — your tolerance for cold starts.</p>
     <div class="card-meta"><time datetime="2026-11-13">13 Nov 2026</time><span class="dot"></span><span>4 min read</span></div>
   </div>
-</a></div>
+</article></div>
     </div>
   </section>
 
@@ -327,6 +354,7 @@ cosign verify --key cosign.pub my-registry/my-app:v1.2.3
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/follow/">Follow new writing</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
           <li><a href="/notes/">Personal notes</a></li>
@@ -347,7 +375,7 @@ cosign verify --key cosign.pub my-registry/my-app:v1.2.3
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=a8e7c95a" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=a8e7c95a"></script>
+<script src="/assets/js/site.js?v=bd74be96" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=bd74be96"></script>
 </body>
 </html>

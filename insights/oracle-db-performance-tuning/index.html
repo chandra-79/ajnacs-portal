@@ -33,8 +33,9 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=a8e7c95a">
-<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<link rel="stylesheet" href="/assets/css/site.css?v=bd74be96">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
+<link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
    never flashes the wrong ground or resets someone's text size mid-read. */
@@ -105,6 +106,7 @@ d.setAttribute('data-theme',t);
 </nav></div>
     <div class="article-copy">
       <div class="prose">
+<p class="article-opening">Tuning an Oracle workload starts with the high-cost statement under the specific request mix.</p>
 <p>Oracle DB performance tuning has a reputation for being arcane — and parts of it are. But in my experience, the improvements that actually move the needle on production workloads come from a small set of decisions that are well-established, repeatable, and don&#39;t require deep specialisation to implement.</p>
 <p>Twenty years and a significant number of production Oracle databases later, here are the ten things I keep coming back to.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
@@ -161,15 +163,45 @@ ORDER BY time_waited DESC;
 <p><em>Working on Oracle DB performance challenges or planning a migration? <a href="/contact/">Happy to discuss.</a></em></p>
 
       </div>
+<section class="field-worksheet worked-example" aria-labelledby="worked-example">
+    <h2 id="worked-example">Worked example</h2>
+    <p class="case-notice">This scenario and its results are illustrative.</p>
+    
+    <p>Rank SQL by accumulated elapsed time for an approved observation window. Replay representative binds in a licensed test setup and measure the query alongside workload-level waits and throughput.</p>
+    <figure class="delivery-flow">
+    <figcaption>Execution sequence</figcaption>
+    <ol><li>Identify costly statements</li><li>Audit plan and binds</li><li>Replay</li><li>Verify impact on other queries</li></ol>
+  </figure>
+    <figure class="field-chart case-chart">
+    <figcaption>Example comparison <span>Simulated figures</span></figcaption>
+    <ul class="case-metrics"><li class="case-metric">
+      <h3>p95 report completion time <small>seconds</small></h3>
+      <ul class="chart-rows"><li><span>Baseline query plan</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:100%"></i></span>
+        <strong>44</strong></li><li><span>Candidate plan</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:34.09090909090909%"></i></span>
+        <strong>15</strong></li></ul>
+    </li></ul>
+  </figure>
+    <h3>Method and limits</h3>
+    <p>Use identical test data and report mix in two runs. A plan that helps one bound value may hurt another. Assess licensed tools with the owner first.</p>
+    <a href="/field-guides/worked-examples.csv" download>Download the worked figures (CSV)</a>
+  </section>
 
 
-
+<aside class="refs" aria-labelledby="refs-h">
+  <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
+  <p class="refs-note">Primary documentation, standards and research for the methods discussed here.</p>
+  <ul>
+    <li><a href="https://docs.oracle.com/en/database/oracle/oracle-database/23/tgdba/" rel="noopener" target="_blank">Oracle Database Performance Tuning Guide</a><span>Tuning processes and instrumentation.</span></li>
+  </ul>
+</aside>
 
 
 
       <footer class="article-foot">
         <div class="row" style="gap:.4rem">
-          <a class="chip chip-plain" href="/topics/data-engineering/">Data Engineering</a><a class="chip chip-plain" href="/insights/?topic=Oracle">Oracle</a><a class="chip chip-plain" href="/topics/performance/">Performance</a>
+          <a class="chip" href="/topics/data-engineering/">Data Engineering</a><a class="chip" href="/topics/oracle/">Oracle</a><a class="chip" href="/topics/performance/">Performance</a>
         </div>
         <nav class="prevnext" aria-label="More articles">
           <a href="/insights/ai-training-cluster-networking/"><span>Previous</span><strong>AI Training Cluster Networking: Architecture for Large-Scale Model Training</strong></a>
@@ -183,12 +215,12 @@ ORDER BY time_waited DESC;
     <section class="promo-card promo-techknowen" aria-label="TechKnowen">
       <p class="promo-name">TechKnowen</p>
       <p>Practical reading on software, architecture, and engineering.</p>
-      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+      <a class="card-destination" href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
     </section>
     <section class="promo-card promo-ziggle" aria-label="Ziggle">
       <p class="promo-name">Ziggle</p>
       <p>A new place to play brain teasers.</p>
-      <p class="promo-status">Coming soon</p>
+      <a class="card-destination" href="/projects/ziggle/">Ziggle preview</a> <span class="promo-status">Coming soon</span>
     </section>
   </div>
 </aside>
@@ -197,33 +229,33 @@ ORDER BY time_waited DESC;
   <section class="section surface hair" style="margin-top:4rem">
     <div class="wrap">
       <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|Performance|Programming|Cloud Architecture|Data Engineering|FinOps|" data-search="compression in production: choosing between gzip, zstd, lz4, and brotli like it matters compression is a three-way trade — ratio, speed, and cpu — that most systems set once by default and never revisit. the algorithm landscape, placement decisions across web, storage, and streaming, dictionary compression&#39;s quiet superpower, and the measurement discipline. performance programming cloud architecture data engineering finops" data-topic="Performance" href="/insights/compression-selection-guide/">
+      <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|Performance|Programming|Cloud Architecture|Data Engineering|FinOps|" data-search="compression in production: choosing between gzip, zstd, lz4, and brotli like it matters compression is a three-way trade — ratio, speed, and cpu — that most systems set once by default and never revisit. the algorithm landscape, placement decisions across web, storage, and streaming, dictionary compression&#39;s quiet superpower, and the measurement discipline. performance programming cloud architecture data engineering finops" data-topic="Performance">
   <div class="card-art"><img data-article-art="compression-selection-guide" src="/assets/covers/compression-selection-guide.svg?v=841ffbacef2b" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Performance</span>
-    <h3 class="card-title">Compression in Production: Choosing Between gzip, zstd, lz4, and Brotli Like It Matters</h3>
+    <a class="chip" href="/topics/performance/">Performance</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/compression-selection-guide/">Compression in Production: Choosing Between gzip, zstd, lz4, and Brotli Like It Matters</a></h3>
     <p class="card-desc">Compression is a three-way trade — ratio, speed, and CPU — that most systems set once by default and never revisit. The algorithm landscape, placement decisions across web, storage, and streaming, dictionary compression&#39;s quiet superpower, and the measurement discipline.</p>
     <div class="card-meta"><time datetime="2026-10-12">12 Oct 2026</time><span class="dot"></span><span>5 min read</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|Data Engineering|Architecture|Performance|Infrastructure|" data-search="speed at scale: enterprise caching for oltp and olap workloads a practical guide to multi-tier caching architecture — how to design caching layers that absorb the majority of read load, handle traffic spikes without crashing, and maintain the cache hit ratios that separate resilient systems from fragile ones. data engineering architecture performance infrastructure" data-topic="Data Engineering" href="/insights/enterprise-caching-architecture/">
+</article>
+<article class="card" data-card data-topics="|Data Engineering|Architecture|Performance|Infrastructure|" data-search="speed at scale: enterprise caching for oltp and olap workloads a practical guide to multi-tier caching architecture — how to design caching layers that absorb the majority of read load, handle traffic spikes without crashing, and maintain the cache hit ratios that separate resilient systems from fragile ones. data engineering architecture performance infrastructure" data-topic="Data Engineering">
   <div class="card-art"><img data-article-art="enterprise-caching-architecture" src="/assets/covers/enterprise-caching-architecture.svg?v=ce29fdecfcca" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Data Engineering</span>
-    <h3 class="card-title">Speed at Scale: Enterprise Caching for OLTP and OLAP Workloads</h3>
+    <a class="chip" href="/topics/data-engineering/">Data Engineering</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/enterprise-caching-architecture/">Speed at Scale: Enterprise Caching for OLTP and OLAP Workloads</a></h3>
     <p class="card-desc">A practical guide to multi-tier caching architecture — how to design caching layers that absorb the majority of read load, handle traffic spikes without crashing, and maintain the cache hit ratios that separate resilient systems from fragile ones.</p>
     <div class="card-meta"><time datetime="2024-11-01">1 Nov 2024</time><span class="dot"></span><span>5 min read</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|Java|JVM|GraalVM|Cloud Architecture|Performance|" data-search="graalvm native image for enterprise java: when compiling ahead of time pays native image turns java applications into instant-starting, memory-lean executables — at the cost of a closed-world assumption that fights two decades of java dynamism. where native compilation genuinely wins, what breaks, and a decision framework. java jvm graalvm cloud architecture performance" data-topic="Cloud Architecture" href="/insights/java-graalvm-native-image/">
+</article>
+<article class="card" data-card data-topics="|Java|JVM|GraalVM|Cloud Architecture|Performance|" data-search="graalvm native image for enterprise java: when compiling ahead of time pays native image turns java applications into instant-starting, memory-lean executables — at the cost of a closed-world assumption that fights two decades of java dynamism. where native compilation genuinely wins, what breaks, and a decision framework. java jvm graalvm cloud architecture performance" data-topic="Cloud Architecture">
   <div class="card-art"><img data-article-art="java-graalvm-native-image" src="/assets/covers/java-graalvm-native-image.svg?v=19aa5f526e76" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Cloud Architecture</span>
-    <h3 class="card-title">GraalVM Native Image for Enterprise Java: When Compiling Ahead of Time Pays</h3>
+    <a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/java-graalvm-native-image/">GraalVM Native Image for Enterprise Java: When Compiling Ahead of Time Pays</a></h3>
     <p class="card-desc">Native Image turns Java applications into instant-starting, memory-lean executables — at the cost of a closed-world assumption that fights two decades of Java dynamism. Where native compilation genuinely wins, what breaks, and a decision framework.</p>
     <div class="card-meta"><time datetime="2026-10-26">26 Oct 2026</time><span class="dot"></span><span>5 min read</span></div>
   </div>
-</a></div>
+</article></div>
     </div>
   </section>
 
@@ -303,6 +335,7 @@ ORDER BY time_waited DESC;
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/follow/">Follow new writing</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
           <li><a href="/notes/">Personal notes</a></li>
@@ -323,7 +356,7 @@ ORDER BY time_waited DESC;
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=a8e7c95a" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=a8e7c95a"></script>
+<script src="/assets/js/site.js?v=bd74be96" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=bd74be96"></script>
 </body>
 </html>

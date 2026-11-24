@@ -14,7 +14,7 @@ A cloud bill can rise while the cost of delivering each order falls. To tell whi
 
 For an order pipeline, use unique completed orders. Count a retry as part of the cost of delivering the order. Deduplicate by a stable order identifier and decide how to handle cancellations, refunds and late completions. For another service, choose a meaningful output that stays interpretable over time, such as settled transfers or successfully processed gigabytes. Document the exact event and cutoff.
 
-Add directly attributable effective cost to the allocated share of common services. Use the same currency and cost basis in both periods. Reconcile to the billing export after accounting for excluded costs. Document treatments of credits, taxes, commitments and amortisation. Effective cost is a defined cost basis in FOCUS. The mapping still depends on the billing export and the cost scope you choose.
+Add directly attributable effective cost to the allocated share of common services. Use the same currency and cost basis in both periods. Reconcile allocations, unallocated amounts and exclusions to the same scoped EffectiveCost total. Bridge invoice-level BilledCost separately. Commitment amortisation and invoice timing can cause the two totals to differ over a short period. Document treatments of credits, taxes, commitments and amortisation. Effective cost is a defined cost basis in FOCUS. The mapping still depends on the billing export and the cost scope you choose.
 
 ## Build a traceable cost model
 

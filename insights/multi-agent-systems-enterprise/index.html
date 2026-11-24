@@ -33,8 +33,9 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=a8e7c95a">
-<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<link rel="stylesheet" href="/assets/css/site.css?v=bd74be96">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
+<link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
    never flashes the wrong ground or resets someone's text size mid-read. */
@@ -105,6 +106,7 @@ d.setAttribute('data-theme',t);
 </nav></div>
     <div class="article-copy">
       <div class="prose">
+<p class="article-opening">A multi-agent design needs to earn the extra coordination, latency and failure paths against a simpler baseline.</p>
 <p>Multi-agent systems are compelling in demos. A coordinator agent breaks down a task, specialist agents handle their parts, results are assembled, and the system produces an output that no single LLM call could have achieved.</p>
 <p>In production, multi-agent architectures are harder to operate than single-model pipelines, more difficult to debug when they fail, and rarely necessary for the tasks most enterprise applications actually need. The question worth asking before building one: what specifically requires multiple agents rather than a well-designed single prompt or pipeline?</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
@@ -118,7 +120,7 @@ d.setAttribute('data-theme',t);
 <p><strong>Long-horizon tasks</strong>: multi-step workflows where intermediate results inform subsequent decisions. An agent that searches for information, evaluates what it found, decides whether to search further, and synthesizes when it has enough.</p>
 <p>These are legitimate benefits. They come with real costs.</p>
 <h2 id="the-costs"><a class="h-anchor" href="#the-costs" aria-hidden="true" tabindex="-1">#</a>The costs</h2>
-<p><strong>Reliability compounds downward.</strong> A three-agent pipeline where each agent has 90% reliability has roughly 73% end-to-end reliability (0.9 × 0.9 × 0.9). Each additional agent in a chain reduces overall reliability. For a pipeline that needs to be reliable enough for production use, every agent is a risk factor.</p>
+<p><strong>Reliability compounds downward.</strong> If all three stages must pass and each has a 90% conditional probability of passing after every earlier stage passed, the overall pass probability is 72.9%. Separate marginal pass rates are insufficient if failures are correlated. Fallbacks or review also change the outcome. Compare paired task results, latency, cost and handoff failures.</p>
 <p><strong>Failure modes are harder to debug.</strong> When a single LLM call fails or produces a bad output, the failure is localized and inspectable. When a multi-agent system produces a wrong answer, tracing why requires understanding which agent&#39;s output was wrong, whether it was a tool call, a hallucination, a bad decision in the orchestration logic, or a context window issue in the coordinator. This is significantly harder to debug than a monolithic pipeline.</p>
 <p><strong>Latency accumulates.</strong> Sequential agent calls add latency. An agentic loop that makes 5 sequential LLM calls at 2-3 seconds each takes 10-15 seconds before it reaches an answer. For user-facing applications, this is often unacceptable.</p>
 <p><strong>Cost scales with calls.</strong> Each agent invocation is a billable API call. A workflow that makes 10 LLM calls to accomplish something that one careful prompt could achieve is 10x the API cost (plus orchestration overhead).</p>
@@ -154,13 +156,39 @@ else:
 <p><em>Building a production AI pipeline and evaluating whether multi-agent architecture fits your use case? The design decision has significant operational implications downstream. <a href="/contact/">Happy to think through the specific requirements.</a></em></p>
 
       </div>
+<section class="field-worksheet worked-example" aria-labelledby="worked-example">
+    <h2 id="worked-example">Worked example</h2>
+    <p class="case-notice">This scenario and its results are illustrative.</p>
+    
+    <p>Compare a single workflow and a specialist-based workflow on the same set of document triage tasks. Require authorised tools, visible escalation and independent outcome review.</p>
+    <figure class="delivery-flow">
+    <figcaption>Execution sequence</figcaption>
+    <ol><li>Define task and authority</li><li>Run both designs</li><li>Review decisions</li><li>Compare added cost</li></ol>
+  </figure>
+    <figure class="field-chart case-chart">
+    <figcaption>Example comparison <span>Simulated figures</span></figcaption>
+    <ul class="case-metrics"><li class="case-metric">
+      <h3>Correctly routed and accepted cases <small>%</small></h3>
+      <ul class="chart-rows"><li><span>Single workflow</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:74%"></i></span>
+        <strong>74% <small>(74/100)</small></strong></li><li><span>Specialist routing workflow</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:81%"></i></span>
+        <strong>81% <small>(81/100)</small></strong></li></ul>
+    </li></ul>
+  </figure>
+    <h3>Method and limits</h3>
+    <p>Use the same 100 synthetic cases with a fixed review rubric. Inspect where handoffs failed and weigh the gain against cost, latency and review effort.</p>
+    <a href="/field-guides/worked-examples.csv" download>Download the worked figures (CSV)</a>
+  </section>
 
 
 <aside class="refs" aria-labelledby="refs-h">
   <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
-  <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
+  <p class="refs-note">Primary documentation, standards and research for the methods discussed here.</p>
   <ul>
-    <li><a href="https://opentelemetry.io/docs/" rel="noopener nofollow" target="_blank">OpenTelemetry</a><span>Specification and language SDKs.</span></li>
+    <li><a href="https://doi.org/10.6028/NIST.AI.600-1" rel="noopener" target="_blank">NIST AI 600-1 · Generative AI Profile</a><span>Lifecycle evaluation, governance and operational controls.</span></li>
+    <li><a href="https://arxiv.org/abs/2503.13657" rel="noopener" target="_blank">Cemri et al. · Why Do Multi-Agent LLM Systems Fail?</a><span>Failure taxonomy and examples of coordination, verification and termination issues.</span></li>
+    <li><a href="https://opentelemetry.io/docs/" rel="noopener" target="_blank">OpenTelemetry</a><span>Specification and language SDKs.</span></li>
   </ul>
 </aside>
 
@@ -168,7 +196,7 @@ else:
 
       <footer class="article-foot">
         <div class="row" style="gap:.4rem">
-          <a class="chip chip-plain" href="/topics/ai-mlops/">AI &amp; MLOps</a><a class="chip chip-plain" href="/topics/enterprise-ai/">Enterprise AI</a><a class="chip chip-plain" href="/topics/architecture/">Architecture</a>
+          <a class="chip" href="/topics/ai-mlops/">AI &amp; MLOps</a><a class="chip" href="/topics/enterprise-ai/">Enterprise AI</a><a class="chip" href="/topics/architecture/">Architecture</a>
         </div>
         <nav class="prevnext" aria-label="More articles">
           <a href="/insights/os-storage-management/"><span>Previous</span><strong>Linux Storage Management: Disks, Partitions, LVM, Filesystems, and Mounting</strong></a>
@@ -182,12 +210,12 @@ else:
     <section class="promo-card promo-techknowen" aria-label="TechKnowen">
       <p class="promo-name">TechKnowen</p>
       <p>Practical reading on software, architecture, and engineering.</p>
-      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+      <a class="card-destination" href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
     </section>
     <section class="promo-card promo-ziggle" aria-label="Ziggle">
       <p class="promo-name">Ziggle</p>
       <p>A new place to play brain teasers.</p>
-      <p class="promo-status">Coming soon</p>
+      <a class="card-destination" href="/projects/ziggle/">Ziggle preview</a> <span class="promo-status">Coming soon</span>
     </section>
   </div>
 </aside>
@@ -196,33 +224,33 @@ else:
   <section class="section surface hair" style="margin-top:4rem">
     <div class="wrap">
       <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|AI &amp; MLOps|Programming|Enterprise AI|" data-search="prompt engineering for production systems: beyond the demo prompt engineering for a demo is different from prompt engineering for a system that runs reliably at scale. here&#39;s how to design prompts for consistency, build evaluation frameworks, and manage the failure modes that appear in production but not in testing. ai &amp; mlops programming enterprise ai" data-topic="AI &amp; MLOps" href="/insights/prompt-engineering-production/">
+      <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|AI &amp; MLOps|Programming|Enterprise AI|" data-search="prompt engineering for production systems: beyond the demo prompt engineering for a demo is different from prompt engineering for a system that runs reliably at scale. here&#39;s how to design prompts for consistency, build evaluation frameworks, and manage the failure modes that appear in production but not in testing. ai &amp; mlops programming enterprise ai" data-topic="AI &amp; MLOps">
   <div class="card-art"><img data-article-art="prompt-engineering-production" src="/assets/covers/prompt-engineering-production.svg?v=86dd56c177b3" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">AI &amp; MLOps</span>
-    <h3 class="card-title">Prompt Engineering for Production Systems: Beyond the Demo</h3>
+    <a class="chip" href="/topics/ai-mlops/">AI &amp; MLOps</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/prompt-engineering-production/">Prompt Engineering for Production Systems: Beyond the Demo</a></h3>
     <p class="card-desc">Prompt engineering for a demo is different from prompt engineering for a system that runs reliably at scale. Here&#39;s how to design prompts for consistency, build evaluation frameworks, and manage the failure modes that appear in production but not in testing.</p>
     <div class="card-meta"><time datetime="2026-11-04">4 Nov 2026</time><span class="dot"></span><span>4 min read</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|AI &amp; MLOps|Enterprise AI|Fundamentals|" data-search="large language models: what they are, how they are built, and what they cannot do transformers, attention, pretraining, fine-tuning, rlhf — the architecture and training pipeline behind gpt, claude, llama, and every other modern llm, explained for engineers who need to use and evaluate these systems. ai &amp; mlops enterprise ai fundamentals" data-topic="AI &amp; MLOps" href="/insights/aiml-llms-explained/">
-  <div class="card-art"><img data-article-art="aiml-llms-explained" src="/assets/covers/aiml-llms-explained.svg?v=467f0ba2a14e" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+</article>
+<article class="card" data-card data-topics="|AI &amp; MLOps|Enterprise AI|Fundamentals|" data-search="large language models: what they are, how they are built, and what they cannot do transformers, attention, pretraining, fine-tuning, rlhf — the architecture and training pipeline behind gpt, claude, llama, and every other modern llm, explained for engineers who need to use and evaluate these systems. ai &amp; mlops enterprise ai fundamentals" data-topic="AI &amp; MLOps">
+  <div class="card-art"><img data-article-art="aiml-llms-explained" src="/assets/covers/aiml-llms-explained.svg?v=587a8ac6e06f" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">AI &amp; MLOps</span>
-    <h3 class="card-title">Large Language Models: What They Are, How They Are Built, and What They Cannot Do</h3>
+    <a class="chip" href="/topics/ai-mlops/">AI &amp; MLOps</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/aiml-llms-explained/">Large Language Models: What They Are, How They Are Built, and What They Cannot Do</a></h3>
     <p class="card-desc">Transformers, attention, pretraining, fine-tuning, RLHF — the architecture and training pipeline behind GPT, Claude, Llama, and every other modern LLM, explained for engineers who need to use and evaluate these systems.</p>
     <div class="card-meta"><time datetime="2026-10-21">21 Oct 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|AI &amp; MLOps|Enterprise AI|Fundamentals|" data-search="rag, prompting, and building applications on llms: the practitioner&#39;s guide retrieval-augmented generation, system prompts, few-shot examples, chain-of-thought, structured output, and the engineering patterns that make llm applications reliable in production. ai &amp; mlops enterprise ai fundamentals" data-topic="AI &amp; MLOps" href="/insights/aiml-rag-and-prompting/">
+</article>
+<article class="card" data-card data-topics="|AI &amp; MLOps|Enterprise AI|Fundamentals|" data-search="rag, prompting, and building applications on llms: the practitioner&#39;s guide retrieval-augmented generation, system prompts, few-shot examples, chain-of-thought, structured output, and the engineering patterns that make llm applications reliable in production. ai &amp; mlops enterprise ai fundamentals" data-topic="AI &amp; MLOps">
   <div class="card-art"><img data-article-art="aiml-rag-and-prompting" src="/assets/covers/aiml-rag-and-prompting.svg?v=8b3b55690283" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">AI &amp; MLOps</span>
-    <h3 class="card-title">RAG, Prompting, and Building Applications on LLMs: The Practitioner&#39;s Guide</h3>
+    <a class="chip" href="/topics/ai-mlops/">AI &amp; MLOps</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/aiml-rag-and-prompting/">RAG, Prompting, and Building Applications on LLMs: The Practitioner&#39;s Guide</a></h3>
     <p class="card-desc">Retrieval-augmented generation, system prompts, few-shot examples, chain-of-thought, structured output, and the engineering patterns that make LLM applications reliable in production.</p>
     <div class="card-meta"><time datetime="2026-08-25">25 Aug 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
   </div>
-</a></div>
+</article></div>
     </div>
   </section>
 
@@ -302,6 +330,7 @@ else:
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/follow/">Follow new writing</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
           <li><a href="/notes/">Personal notes</a></li>
@@ -322,7 +351,7 @@ else:
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=a8e7c95a" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=a8e7c95a"></script>
+<script src="/assets/js/site.js?v=bd74be96" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=bd74be96"></script>
 </body>
 </html>

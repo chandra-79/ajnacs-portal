@@ -40,7 +40,7 @@ For OLTP: `work_mem = 16MB`. For analytical queries (manually or via session-lev
 
 **`max_wal_size`**: controls how large the WAL can grow between checkpoints. Default is 1GB. For write-heavy workloads, increasing this reduces checkpoint frequency: `max_wal_size = 4GB`.
 
-**`synchronous_commit`**: whether transactions wait for WAL to be durably written to disk before returning. Default `on` provides maximum durability. `synchronous_commit = off` improves write throughput significantly by making commits asynchronous — with the trade-off that up to `wal_writer_delay` (200ms by default) of committed transactions can be lost in a crash. Acceptable for some workloads (logging, analytics); never acceptable for financial or critical data.
+**`synchronous_commit`** controls how a commit waits for local or configured replication durability. With `off`, PostgreSQL can report success before the WAL is flushed. The documented risk window can be up to three times `wal_writer_delay`, or up to 600 ms at 200 ms. Change this setting only for transactions whose owners explicitly accept losing acknowledged writes. See [PostgreSQL asynchronous commit](https://www.postgresql.org/docs/current/wal-async-commit.html).
 
 ## Connection management: don't skip PgBouncer
 

@@ -33,8 +33,9 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=a8e7c95a">
-<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<link rel="stylesheet" href="/assets/css/site.css?v=bd74be96">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
+<link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
    never flashes the wrong ground or resets someone's text size mid-read. */
@@ -105,6 +106,7 @@ d.setAttribute('data-theme',t);
 </nav></div>
     <div class="article-copy">
       <div class="prose">
+<p class="article-opening">Reproducibility means an agreed input set resolves into a compatible artifact in a clean environment.</p>
 <p>For twenty years, &quot;how do I manage Python dependencies&quot; had a dozen answers, all partially wrong: setup.py, requirements.txt, pip-tools, pipenv, poetry, conda, and a folklore layer of &quot;well, what we actually do is…&quot; The result was the most common failure mode in enterprise Python — <em>it works on my machine, fails in CI, and does something third in production</em>, because those three environments resolved dependencies at different times and got different trees.</p>
 <p>That era is genuinely ending. The standards consolidated, and the tooling caught up. Here&#39;s what current-day Python dependency management looks like, and how to get an existing estate there.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
@@ -136,15 +138,45 @@ d.setAttribute('data-theme',t);
 <p>The one-page policy worth adopting verbatim: <em>pyproject.toml for intentions, committed lockfile for state, CI installs frozen with hashes from the internal proxy, automated refresh PRs on a cadence, and no pip install anywhere outside those rails.</em> Python packaging spent two decades as a running joke; it&#39;s now — quietly, finally — a solved problem for teams willing to adopt the solution.</p>
 
       </div>
+<section class="field-worksheet worked-example" aria-labelledby="worked-example">
+    <h2 id="worked-example">Worked example</h2>
+    <p class="case-notice">This scenario and its results are illustrative.</p>
+    
+    <p>Lock dependencies for a defined Python version and target platform. Rebuild in clean runners with and without the lock. Verify provenance and distinguish wheel differences from changes to resolved package versions.</p>
+    <figure class="delivery-flow">
+    <figcaption>Execution sequence</figcaption>
+    <ol><li>Set Python target</li><li>Lock inputs</li><li>Rebuild in clean runner</li><li>Verify metadata</li></ol>
+  </figure>
+    <figure class="field-chart case-chart">
+    <figcaption>Example comparison <span>Simulated figures</span></figcaption>
+    <ul class="case-metrics"><li class="case-metric">
+      <h3>Builds with identical resolved version set <small>%</small></h3>
+      <ul class="chart-rows"><li><span>Unpinned resolver inputs</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:58.33333333333334%"></i></span>
+        <strong>58.333333% <small>(7/12)</small></strong></li><li><span>Checked-in lock and platform</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:100%"></i></span>
+        <strong>100% <small>(12/12)</small></strong></li></ul>
+    </li></ul>
+  </figure>
+    <h3>Method and limits</h3>
+    <p>Run 12 synthetic rebuilds under the same defined target. This count checks dependency versions, not byte-for-byte reproducibility of the artifact.</p>
+    <a href="/field-guides/worked-examples.csv" download>Download the worked figures (CSV)</a>
+  </section>
 
 
-
+<aside class="refs" aria-labelledby="refs-h">
+  <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
+  <p class="refs-note">Primary documentation, standards and research for the methods discussed here.</p>
+  <ul>
+    <li><a href="https://docs.astral.sh/uv/concepts/projects/sync/" rel="noopener" target="_blank">uv · Locking and syncing</a><span>Locked resolution versus frozen reads of the lockfile.</span></li>
+  </ul>
+</aside>
 
 
 
       <footer class="article-foot">
         <div class="row" style="gap:.4rem">
-          <a class="chip chip-plain" href="/insights/?topic=Python">Python</a><a class="chip chip-plain" href="/topics/platform-engineering/">Platform Engineering</a><a class="chip chip-plain" href="/topics/engineering-practice/">Engineering Practice</a><a class="chip chip-plain" href="/insights/?topic=Supply%20Chain%20Security">Supply Chain Security</a><a class="chip chip-plain" href="/insights/?topic=Developer%20Experience">Developer Experience</a>
+          <a class="chip" href="/topics/python/">Python</a><a class="chip" href="/topics/platform-engineering/">Platform Engineering</a><a class="chip" href="/topics/engineering-practice/">Engineering Practice</a><a class="chip" href="/topics/supply-chain-security/">Supply Chain Security</a><a class="chip" href="/topics/developer-experience/">Developer Experience</a>
         </div>
         <nav class="prevnext" aria-label="More articles">
           <a href="/insights/platform-engineering-idp-2026/"><span>Previous</span><strong>Platform Onboarding: Measure the Path to a First Deployment</strong></a>
@@ -158,12 +190,12 @@ d.setAttribute('data-theme',t);
     <section class="promo-card promo-techknowen" aria-label="TechKnowen">
       <p class="promo-name">TechKnowen</p>
       <p>Practical reading on software, architecture, and engineering.</p>
-      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+      <a class="card-destination" href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
     </section>
     <section class="promo-card promo-ziggle" aria-label="Ziggle">
       <p class="promo-name">Ziggle</p>
       <p>A new place to play brain teasers.</p>
-      <p class="promo-status">Coming soon</p>
+      <a class="card-destination" href="/projects/ziggle/">Ziggle preview</a> <span class="promo-status">Coming soon</span>
     </section>
   </div>
 </aside>
@@ -172,33 +204,33 @@ d.setAttribute('data-theme',t);
   <section class="section surface hair" style="margin-top:4rem">
     <div class="wrap">
       <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|Deployment|Platform Engineering|Engineering Practice|Containers|Reliability|" data-search="deployment strategies compared: rolling, blue-green, canary, and when each actually fits rolling updates, blue-green switches, canary releases, and shadow traffic — what each strategy really costs, what each protects against, and the database problem that constrains all of them. deployment platform engineering engineering practice containers reliability" data-topic="Platform Engineering" href="/insights/deployment-strategies-blue-green-canary/">
+      <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|Deployment|Platform Engineering|Engineering Practice|Containers|Reliability|" data-search="deployment strategies compared: rolling, blue-green, canary, and when each actually fits rolling updates, blue-green switches, canary releases, and shadow traffic — what each strategy really costs, what each protects against, and the database problem that constrains all of them. deployment platform engineering engineering practice containers reliability" data-topic="Platform Engineering">
   <div class="card-art"><img data-article-art="deployment-strategies-blue-green-canary" src="/assets/covers/deployment-strategies-blue-green-canary.svg?v=cd0c09adb697" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Platform Engineering</span>
-    <h3 class="card-title">Deployment Strategies Compared: Rolling, Blue-Green, Canary, and When Each Actually Fits</h3>
+    <a class="chip" href="/topics/platform-engineering/">Platform Engineering</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/deployment-strategies-blue-green-canary/">Deployment Strategies Compared: Rolling, Blue-Green, Canary, and When Each Actually Fits</a></h3>
     <p class="card-desc">Rolling updates, blue-green switches, canary releases, and shadow traffic — what each strategy really costs, what each protects against, and the database problem that constrains all of them.</p>
     <div class="card-meta"><time datetime="2026-03-20">20 Mar 2026</time><span class="dot"></span><span>5 min read</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|Programming|Python|Cloud Architecture|DevSecOps|" data-search="python for cloud engineers: the parts that actually matter you don&#39;t need to be a data scientist to get serious value from python as a cloud practitioner. here&#39;s what actually matters — and what you can safely skip. programming python cloud architecture devsecops" data-topic="Programming" href="/insights/python-for-cloud-engineers/">
+</article>
+<article class="card" data-card data-topics="|Programming|Python|Cloud Architecture|DevSecOps|" data-search="python for cloud engineers: the parts that actually matter you don&#39;t need to be a data scientist to get serious value from python as a cloud practitioner. here&#39;s what actually matters — and what you can safely skip. programming python cloud architecture devsecops" data-topic="Programming">
   <div class="card-art"><img data-article-art="python-for-cloud-engineers" src="/assets/covers/python-for-cloud-engineers.svg?v=502ce38f18c9" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Programming</span>
-    <h3 class="card-title">Python for Cloud Engineers: The Parts That Actually Matter</h3>
+    <a class="chip" href="/topics/programming/">Programming</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/python-for-cloud-engineers/">Python for Cloud Engineers: The Parts That Actually Matter</a></h3>
     <p class="card-desc">You don&#39;t need to be a data scientist to get serious value from Python as a cloud practitioner. Here&#39;s what actually matters — and what you can safely skip.</p>
     <div class="card-meta"><time datetime="2026-10-19">19 Oct 2026</time><span class="dot"></span><span>3 min read</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|Python|Async|Performance|Programming|Cloud Architecture|" data-search="async python in production: what asyncio buys you, and what it costs a practitioner&#39;s guide to running asyncio-based services in production — when async actually helps, the blocking-call trap, structured concurrency with taskgroups, and the operational habits that keep event loops healthy. python async performance programming cloud architecture" data-topic="Performance" href="/insights/python-async-production/">
+</article>
+<article class="card" data-card data-topics="|Python|Async|Performance|Programming|Cloud Architecture|" data-search="async python in production: what asyncio buys you, and what it costs a practitioner&#39;s guide to running asyncio-based services in production — when async actually helps, the blocking-call trap, structured concurrency with taskgroups, and the operational habits that keep event loops healthy. python async performance programming cloud architecture" data-topic="Performance">
   <div class="card-art"><img data-article-art="python-async-production" src="/assets/covers/python-async-production.svg?v=f514d7ccf250" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Performance</span>
-    <h3 class="card-title">Async Python in Production: What asyncio Buys You, and What It Costs</h3>
+    <a class="chip" href="/topics/performance/">Performance</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/python-async-production/">Async Python in Production: What asyncio Buys You, and What It Costs</a></h3>
     <p class="card-desc">A practitioner&#39;s guide to running asyncio-based services in production — when async actually helps, the blocking-call trap, structured concurrency with TaskGroups, and the operational habits that keep event loops healthy.</p>
     <div class="card-meta"><time datetime="2026-10-07">7 Oct 2026</time><span class="dot"></span><span>5 min read</span></div>
   </div>
-</a></div>
+</article></div>
     </div>
   </section>
 
@@ -278,6 +310,7 @@ d.setAttribute('data-theme',t);
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/follow/">Follow new writing</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
           <li><a href="/notes/">Personal notes</a></li>
@@ -298,7 +331,7 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=a8e7c95a" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=a8e7c95a"></script>
+<script src="/assets/js/site.js?v=bd74be96" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=bd74be96"></script>
 </body>
 </html>

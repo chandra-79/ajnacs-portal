@@ -33,8 +33,9 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=a8e7c95a">
-<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<link rel="stylesheet" href="/assets/css/site.css?v=bd74be96">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
+<link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
    never flashes the wrong ground or resets someone's text size mid-read. */
@@ -101,70 +102,70 @@ d.setAttribute('data-theme',t);
     <div class="article-hero" data-topic="AI &amp; MLOps"><img data-article-art="roce-vs-iwarp-networking" src="/assets/covers/roce-vs-iwarp-networking.svg?v=a8e2c3a18738" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
-  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#roce-high-performance-demanding-network">RoCE: high performance, demanding network</a></li><li><a href="#iwarp-tcp-based-tolerant-of-lossy-networks">iWARP: TCP-based, tolerant of lossy networks</a></li><li><a href="#decision-criteria-summary">Decision criteria summary</a></li><li><a href="#nvidiainfiniband-as-an-alternative">NVIDIA/InfiniBand as an alternative</a></li></ol>
+  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#roce">RoCE</a></li><li><a href="#iwarp">iWARP</a></li><li><a href="#decision">Decision</a></li><li><a href="#sources">Sources</a></li></ol>
 </nav></div>
     <div class="article-copy">
       <div class="prose">
-<p>RDMA (Remote Direct Memory Access) bypasses the operating system kernel and CPU for network data transfers, allowing applications to directly read and write remote memory. For workloads where inter-node latency and CPU overhead matter — AI training collectives, high-performance storage, financial trading infrastructure — RDMA provides advantages that conventional TCP/IP networking can&#39;t match.</p>
-<p>Two RDMA-over-Ethernet technologies dominate: RoCE (RDMA over Converged Ethernet) and iWARP (Internet Wide Area RDMA Protocol). They solve the same problem differently and have meaningfully different operational requirements.</p>
+<p class="article-opening">Select an RDMA setup by validating application support and fabric behaviour under congestion.</p>
+<p>Compare RDMA implementations against a working application, supported NICs, and the network behaviour your team can monitor. RDMA changes how applications move data and interact with the host networking stack. It cannot eliminate contention or buffer limits.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
-<p><strong>Application goodput and congestion impact.</strong> Compare transfer time, p99 completion latency and host CPU at the same message size and offered load. A 10 Gb/s link should not be described as delivering 10 Gb/s to the application without measuring protocol and congestion overhead.</p>
-<p><em>Illustrative measurement. Any numbers in this example are hypothetical.</em></p>
-<h2 id="roce-high-performance-demanding-network"><a class="h-anchor" href="#roce-high-performance-demanding-network" aria-hidden="true" tabindex="-1">#</a>RoCE: high performance, demanding network</h2>
-<p>RoCE maps InfiniBand transport directly to Ethernet. There are two versions:</p>
-<p><strong>RoCEv1</strong> operates at Layer 2 — it requires hosts to be in the same Ethernet broadcast domain. Not suitable for routed networks.</p>
-<p><strong>RoCEv2</strong> operates at Layer 3 — it adds UDP/IP encapsulation, enabling routing across subnets. Most modern RoCE deployments use RoCEv2.</p>
-<h3 id="performance-characteristics"><a class="h-anchor" href="#performance-characteristics" aria-hidden="true" tabindex="-1">#</a>Performance characteristics</h3>
-<p>RoCE offers latency and throughput close to native InfiniBand. For all-reduce operations in distributed AI training, RoCE with 400GbE NICs (ConnectX-7 or similar) delivers throughput that approaches the theoretical maximum of the link.</p>
-<h3 id="the-lossless-ethernet-requirement"><a class="h-anchor" href="#the-lossless-ethernet-requirement" aria-hidden="true" tabindex="-1">#</a>The lossless Ethernet requirement</h3>
-<p>RoCE&#39;s critical operational requirement: <strong>it requires a lossless Ethernet fabric</strong>. RoCE transport does not have TCP&#39;s retransmission and congestion control mechanisms — if a packet is dropped, the RDMA operation fails.</p>
-<p>Lossless Ethernet is achieved with Priority Flow Control (PFC), which enables hardware-level flow control per priority class. When a switch&#39;s ingress buffer approaches full for a given priority, it sends a PAUSE frame to the upstream device, which stops transmitting that priority class. This prevents drops.</p>
-<p>PFC operates correctly only when configured consistently across the entire fabric:</p>
+<p>Replay comparable transfers with equal endpoints, payload distribution, queue depths and offered load. Measure p99 completion time under a controlled incast and report timeouts, retransmissions, CPU overhead and application impact. <strong>Illustrative measurement.</strong> The fictional profiles below produce 128 µs and 102 µs under one defined stress pattern.</p>
+<h2 id="roce"><a class="h-anchor" href="#roce" aria-hidden="true" tabindex="-1">#</a>RoCE</h2>
+<p>RoCEv2 transports RDMA packets over UDP/IP. Reliable-connected RoCE supports retransmission. A common design uses Priority Flow Control for a lossless priority and ECN with a congestion-control algorithm such as DCQCN. These perform different jobs. PFC pauses a priority, while congestion control reacts to congestion feedback. Some hardware and configurations support lossy RoCE operation. Check the supported mode and the experience of the team operating it.</p>
+<p>Test congestion in both the port and the receiver, including what happens after one busy flow interrupts others. Review pause duration, congestion markings and NIC retry counters under incast.</p>
+<h2 id="iwarp"><a class="h-anchor" href="#iwarp" aria-hidden="true" tabindex="-1">#</a>iWARP</h2>
+<p>The iWARP RDMAP stack commonly uses TCP via its lower-layer mapping. TCP implements retransmission and congestion mechanisms. Offload can put much of that work on an RDMA-capable NIC. Check host, adapter and application support before selecting it. Test its response to loss and delay on the actual path.</p>
+<h2 id="decision"><a class="h-anchor" href="#decision" aria-hidden="true" tabindex="-1">#</a>Decision</h2>
+<p>Compare approved hardware, workload latency, network features, driver support, telemetry and failover. An existing Ethernet fabric can affect rollout cost. A dedicated InfiniBand option deserves the same application test and recovery exercise if it is a viable candidate.</p>
+<h2 id="sources"><a class="h-anchor" href="#sources" aria-hidden="true" tabindex="-1">#</a>Sources</h2>
 <ul>
-<li>All switches need PFC enabled on the RDMA priority</li>
-<li>QoS marking must be consistent end-to-end</li>
-<li>Buffer configurations need to be tuned for the link speed and cable distance</li>
+<li><a href="https://www.rfc-editor.org/rfc/rfc5040" rel="noopener" target="_blank">IETF RFC 5040, RDMAP</a></li>
+<li><a href="https://www.microsoft.com/en-us/research/publication/congestion-control-large-scale-rdma-deployments/" rel="noopener" target="_blank">Zhu et al., Congestion Control for Large-Scale RDMA Deployments, SIGCOMM</a></li>
+<li><a href="https://arxiv.org/abs/1806.08159" rel="noopener" target="_blank">Mittal et al., Revisiting Network Support for RDMA, SIGCOMM</a></li>
+<li><a href="https://docs.nvidia.com/networking-ethernet-software/cumulus-linux-519/Layer-1-and-Switch-Ports/Quality-of-Service/RDMA-over-Converged-Ethernet-RoCE/" rel="noopener" target="_blank">NVIDIA Cumulus Linux, RoCE modes</a></li>
 </ul>
-<p>PFC misconfiguration causes PFC storms — a feedback loop where pause frames propagate across the fabric and cause cascading congestion. This is not a theoretical risk; PFC storms are a known failure mode in poorly configured RoCE networks. DCQCN (Data Center Quantized Congestion Notification) mitigates this by adding explicit congestion feedback, but it requires additional configuration.</p>
-<h3 id="when-roce-is-the-right-choice"><a class="h-anchor" href="#when-roce-is-the-right-choice" aria-hidden="true" tabindex="-1">#</a>When RoCE is the right choice</h3>
-<ul>
-<li>Collocated clusters where you control the full network fabric</li>
-<li>Environments already using Mellanox/NVIDIA NICs (native RoCE support)</li>
-<li>AI training clusters where maximising collective throughput is the priority</li>
-<li>Environments willing to invest in the operational discipline to maintain lossless Ethernet</li>
-</ul>
-<h2 id="iwarp-tcp-based-tolerant-of-lossy-networks"><a class="h-anchor" href="#iwarp-tcp-based-tolerant-of-lossy-networks" aria-hidden="true" tabindex="-1">#</a>iWARP: TCP-based, tolerant of lossy networks</h2>
-<p>iWARP runs RDMA over standard TCP/IP. The operating system TCP stack handles retransmission and congestion control; iWARP adds RDMA semantics on top.</p>
-<h3 id="performance-characteristics-2"><a class="h-anchor" href="#performance-characteristics-2" aria-hidden="true" tabindex="-1">#</a>Performance characteristics</h3>
-<p>iWARP&#39;s reliance on TCP introduces overhead that RoCE avoids. Latency is higher than RoCE, particularly at small message sizes where TCP header processing is a larger proportion of the total work. Throughput at large message sizes approaches line rate, since TCP overhead is proportionally smaller.</p>
-<p>For CPU-to-CPU RDMA operations at low message sizes (common in storage and some HPC patterns), the latency difference between RoCE and iWARP is measurable and operationally relevant.</p>
-<h3 id="operational-simplicity"><a class="h-anchor" href="#operational-simplicity" aria-hidden="true" tabindex="-1">#</a>Operational simplicity</h3>
-<p>iWARP works on standard Ethernet infrastructure without PFC or special QoS configuration. You can deploy iWARP over a standard data center network without modifying the fabric. This is the significant operational advantage.</p>
-<p>Loss tolerance: iWARP handles packet loss through TCP retransmission. A packet drop degrades throughput (due to retransmission and congestion window reduction) but doesn&#39;t fail the operation. For WAN-extended storage workloads or environments with mixed traffic sharing the network, this matters.</p>
-<h3 id="when-iwarp-is-the-right-choice"><a class="h-anchor" href="#when-iwarp-is-the-right-choice" aria-hidden="true" tabindex="-1">#</a>When iWARP is the right choice</h3>
-<ul>
-<li>Environments where the network fabric isn&#39;t fully under your control</li>
-<li>Storage protocols over RDMA (NVMe-oF, iSER) where loss-tolerance is more valuable than peak latency</li>
-<li>Environments with mixed workloads sharing Ethernet where lossless configuration is impractical</li>
-<li>WAN deployments where lossless Ethernet isn&#39;t possible</li>
-</ul>
-<h2 id="decision-criteria-summary"><a class="h-anchor" href="#decision-criteria-summary" aria-hidden="true" tabindex="-1">#</a>Decision criteria summary</h2>
-<div class="table-wrap"><table><thead><tr><th>Criterion</th><th>RoCE</th><th>iWARP</th></tr></thead><tbody><tr><td>Latency (small messages)</td><td>Lower</td><td>Higher</td></tr><tr><td>Peak throughput</td><td>Higher</td><td>Similar for large messages</td></tr><tr><td>Network requirements</td><td>Lossless Ethernet (PFC)</td><td>Standard Ethernet</td></tr><tr><td>Loss tolerance</td><td>None without DCQCN</td><td>Yes (TCP)</td></tr><tr><td>Operational complexity</td><td>Higher</td><td>Lower</td></tr><tr><td>AI training (all-reduce)</td><td>Preferred</td><td>Viable</td></tr><tr><td>Storage over RDMA</td><td>Viable</td><td>Common</td></tr><tr><td>WAN deployment</td><td>Not suitable</td><td>Viable</td></tr></tbody></table></div>
-<h2 id="nvidiainfiniband-as-an-alternative"><a class="h-anchor" href="#nvidiainfiniband-as-an-alternative" aria-hidden="true" tabindex="-1">#</a>NVIDIA/InfiniBand as an alternative</h2>
-<p>For large-scale AI training clusters, InfiniBand (rather than either RoCE or iWARP) is often the preferred choice at the scale where collective performance is critical. InfiniBand is a purpose-built RDMA fabric that avoids the Ethernet compatibility complications entirely. HDR/NDR InfiniBand (200/400 Gb/s) with SHARP (in-network reduction) offloads all-reduce operations to the network switches, reducing both latency and CPU overhead compared to any Ethernet-based RDMA solution.</p>
-<p>For enterprises building AI training infrastructure on existing Ethernet networks, RoCE with proper PFC/DCQCN configuration is the pragmatic path to InfiniBand-comparable performance.</p>
-<p><em>Designing a networking fabric for AI training or HPC? The topology and technology choices compound on each other. <a href="/contact/">Happy to think through the trade-offs.</a></em></p>
 
       </div>
+<section class="field-worksheet worked-example" aria-labelledby="worked-example">
+    <h2 id="worked-example">Worked example</h2>
+    <p class="case-notice">This scenario and its results are illustrative.</p>
+    
+    <p>Use two isolated fixtures with matching hosts and link rates where supported. Test single-flow and incast scenarios, and check host CPU and tail latency alongside network policy.</p>
+    <figure class="delivery-flow">
+    <figcaption>Execution sequence</figcaption>
+    <ol><li>Check NIC and software support</li><li>Set fabric policy</li><li>Replay congestion</li><li>Review tails</li></ol>
+  </figure>
+    <figure class="field-chart case-chart">
+    <figcaption>Example comparison <span>Simulated figures</span></figcaption>
+    <ul class="case-metrics"><li class="case-metric">
+      <h3>p99 transfer completion <small>µs</small></h3>
+      <ul class="chart-rows"><li><span>RDMA profile A</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:100%"></i></span>
+        <strong>128</strong></li><li><span>RDMA profile B</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:79.6875%"></i></span>
+        <strong>102</strong></li></ul>
+    </li></ul>
+  </figure>
+    <h3>Method and limits</h3>
+    <p>Use the same payloads, queue depths and arrivals. The profiles stand in for deployment-specific settings rather than protocol-wide measurements.</p>
+    <a href="/field-guides/worked-examples.csv" download>Download the worked figures (CSV)</a>
+  </section>
 
 
-
+<aside class="refs" aria-labelledby="refs-h">
+  <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
+  <p class="refs-note">Primary documentation, standards and research for the methods discussed here.</p>
+  <ul>
+    <li><a href="https://www.microsoft.com/en-us/research/publication/congestion-control-large-scale-rdma-deployments/" rel="noopener" target="_blank">Zhu et al. · Congestion Control for Large-Scale RDMA Deployments, SIGCOMM</a><span>ECN-driven congestion control and Ethernet data-centre measurements.</span></li>
+    <li><a href="https://www.rfc-editor.org/rfc/rfc5040" rel="noopener" target="_blank">IETF RFC 5040 · Remote Direct Memory Access Protocol</a><span>iWARP remote memory operations.</span></li>
+  </ul>
+</aside>
 
 
 
       <footer class="article-foot">
         <div class="row" style="gap:.4rem">
-          <a class="chip chip-plain" href="/insights/?topic=Systems">Systems</a><a class="chip chip-plain" href="/insights/?topic=HPC">HPC</a><a class="chip chip-plain" href="/topics/ai-mlops/">AI &amp; MLOps</a>
+          <a class="chip" href="/topics/systems/">Systems</a><a class="chip" href="/topics/hpc/">HPC</a><a class="chip" href="/topics/ai-mlops/">AI &amp; MLOps</a>
         </div>
         <nav class="prevnext" aria-label="More articles">
           <a href="/insights/hpc-network-topology-patterns/"><span>Previous</span><strong>HPC Network Topology Patterns: Fat-Tree, Torus, and Dragonfly Explained</strong></a>
@@ -178,12 +179,12 @@ d.setAttribute('data-theme',t);
     <section class="promo-card promo-techknowen" aria-label="TechKnowen">
       <p class="promo-name">TechKnowen</p>
       <p>Practical reading on software, architecture, and engineering.</p>
-      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+      <a class="card-destination" href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
     </section>
     <section class="promo-card promo-ziggle" aria-label="Ziggle">
       <p class="promo-name">Ziggle</p>
       <p>A new place to play brain teasers.</p>
-      <p class="promo-status">Coming soon</p>
+      <a class="card-destination" href="/projects/ziggle/">Ziggle preview</a> <span class="promo-status">Coming soon</span>
     </section>
   </div>
 </aside>
@@ -192,33 +193,33 @@ d.setAttribute('data-theme',t);
   <section class="section surface hair" style="margin-top:4rem">
     <div class="wrap">
       <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|Systems|HPC|AI &amp; MLOps|" data-search="hpc network topology patterns: fat-tree, torus, and dragonfly explained the network topology of an hpc or ai training cluster determines its bandwidth, latency, cost, and how well it scales. here&#39;s how fat-tree, torus, and dragonfly topologies work, their trade-offs, and which workloads each suits best. systems hpc ai &amp; mlops" data-topic="AI &amp; MLOps" href="/insights/hpc-network-topology-patterns/">
-  <div class="card-art"><img data-article-art="hpc-network-topology-patterns" src="/assets/covers/hpc-network-topology-patterns.svg?v=b1a03a07d72a" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+      <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|Systems|HPC|AI &amp; MLOps|" data-search="hpc network topology patterns: fat-tree, torus, and dragonfly explained the network topology of an hpc or ai training cluster determines its bandwidth, latency, cost, and how well it scales. here&#39;s how fat-tree, torus, and dragonfly topologies work, their trade-offs, and which workloads each suits best. systems hpc ai &amp; mlops" data-topic="AI &amp; MLOps">
+  <div class="card-art"><img data-article-art="hpc-network-topology-patterns" src="/assets/covers/hpc-network-topology-patterns.svg?v=cff49d20b2b8" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">AI &amp; MLOps</span>
-    <h3 class="card-title">HPC Network Topology Patterns: Fat-Tree, Torus, and Dragonfly Explained</h3>
+    <a class="chip" href="/topics/ai-mlops/">AI &amp; MLOps</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/hpc-network-topology-patterns/">HPC Network Topology Patterns: Fat-Tree, Torus, and Dragonfly Explained</a></h3>
     <p class="card-desc">The network topology of an HPC or AI training cluster determines its bandwidth, latency, cost, and how well it scales. Here&#39;s how fat-tree, torus, and dragonfly topologies work, their trade-offs, and which workloads each suits best.</p>
     <div class="card-meta"><time datetime="2026-10-30">30 Oct 2026</time><span class="dot"></span><span>5 min read</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|Systems|AI &amp; MLOps|HPC|" data-search="ai training cluster networking: architecture for large-scale model training training large models at scale requires network architecture that most data centres aren&#39;t built for. here&#39;s how to think about the networking stack for ai training clusters — topology, bandwidth requirements, collective operations, and the trade-offs between infiniband and high-speed ethernet. systems ai &amp; mlops hpc" data-topic="AI &amp; MLOps" href="/insights/ai-training-cluster-networking/">
-  <div class="card-art"><img data-article-art="ai-training-cluster-networking" src="/assets/covers/ai-training-cluster-networking.svg?v=e467b8645f54" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+</article>
+<article class="card" data-card data-topics="|Systems|AI &amp; MLOps|HPC|" data-search="ai training cluster networking: architecture for large-scale model training training large models at scale requires network architecture that most data centres aren&#39;t built for. here&#39;s how to think about the networking stack for ai training clusters — topology, bandwidth requirements, collective operations, and the trade-offs between infiniband and high-speed ethernet. systems ai &amp; mlops hpc" data-topic="AI &amp; MLOps">
+  <div class="card-art"><img data-article-art="ai-training-cluster-networking" src="/assets/covers/ai-training-cluster-networking.svg?v=f43cfe5e7a5c" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">AI &amp; MLOps</span>
-    <h3 class="card-title">AI Training Cluster Networking: Architecture for Large-Scale Model Training</h3>
+    <a class="chip" href="/topics/ai-mlops/">AI &amp; MLOps</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/ai-training-cluster-networking/">AI Training Cluster Networking: Architecture for Large-Scale Model Training</a></h3>
     <p class="card-desc">Training large models at scale requires network architecture that most data centres aren&#39;t built for. Here&#39;s how to think about the networking stack for AI training clusters — topology, bandwidth requirements, collective operations, and the trade-offs between InfiniBand and high-speed Ethernet.</p>
     <div class="card-meta"><time datetime="2025-04-08">8 Apr 2025</time><span class="dot"></span><span>4 min read</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|Systems|Infrastructure|Enterprise AI|Cloud Architecture|HPC|" data-search="ethernet vs. infiniband: choosing the right network fabric in 2026 a practical breakdown of when to use ethernet and when infiniband makes sense — with key metrics, topology differences, and real-world guidance for cloud, hpc, and ai workloads. systems infrastructure enterprise ai cloud architecture hpc" data-topic="Infrastructure" href="/insights/ethernet-vs-infiniband-networking-2026/">
+</article>
+<article class="card" data-card data-topics="|Systems|Infrastructure|Enterprise AI|Cloud Architecture|HPC|" data-search="ethernet vs. infiniband: choosing the right network fabric in 2026 a practical breakdown of when to use ethernet and when infiniband makes sense — with key metrics, topology differences, and real-world guidance for cloud, hpc, and ai workloads. systems infrastructure enterprise ai cloud architecture hpc" data-topic="Infrastructure">
   <div class="card-art"><img data-article-art="ethernet-vs-infiniband-networking-2026" src="/assets/covers/ethernet-vs-infiniband-networking-2026.svg?v=99c68a23a181" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Infrastructure</span>
-    <h3 class="card-title">Ethernet vs. InfiniBand: Choosing the Right Network Fabric in 2026</h3>
+    <a class="chip" href="/topics/infrastructure/">Infrastructure</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/ethernet-vs-infiniband-networking-2026/">Ethernet vs. InfiniBand: Choosing the Right Network Fabric in 2026</a></h3>
     <p class="card-desc">A practical breakdown of when to use Ethernet and when InfiniBand makes sense — with key metrics, topology differences, and real-world guidance for cloud, HPC, and AI workloads.</p>
     <div class="card-meta"><time datetime="2026-10-02">2 Oct 2026</time><span class="dot"></span><span>5 min read</span></div>
   </div>
-</a></div>
+</article></div>
     </div>
   </section>
 
@@ -298,6 +299,7 @@ d.setAttribute('data-theme',t);
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/follow/">Follow new writing</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
           <li><a href="/notes/">Personal notes</a></li>
@@ -318,7 +320,7 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=a8e7c95a" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=a8e7c95a"></script>
+<script src="/assets/js/site.js?v=bd74be96" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=bd74be96"></script>
 </body>
 </html>

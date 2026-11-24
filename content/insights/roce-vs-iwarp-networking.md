@@ -6,88 +6,29 @@ tags: ["Systems", "HPC", "AI & MLOps"]
 format: article
 ---
 
-RDMA (Remote Direct Memory Access) bypasses the operating system kernel and CPU for network data transfers, allowing applications to directly read and write remote memory. For workloads where inter-node latency and CPU overhead matter — AI training collectives, high-performance storage, financial trading infrastructure — RDMA provides advantages that conventional TCP/IP networking can't match.
-
-Two RDMA-over-Ethernet technologies dominate: RoCE (RDMA over Converged Ethernet) and iWARP (Internet Wide Area RDMA Protocol). They solve the same problem differently and have meaningfully different operational requirements.
+Compare RDMA implementations against a working application, supported NICs, and the network behaviour your team can monitor. RDMA changes how applications move data and interact with the host networking stack. It cannot eliminate contention or buffer limits.
 
 ## What to measure
 
-**Application goodput and congestion impact.** Compare transfer time, p99 completion latency and host CPU at the same message size and offered load. A 10 Gb/s link should not be described as delivering 10 Gb/s to the application without measuring protocol and congestion overhead.
+Replay comparable transfers with equal endpoints, payload distribution, queue depths and offered load. Measure p99 completion time under a controlled incast and report timeouts, retransmissions, CPU overhead and application impact. **Illustrative measurement.** The fictional profiles below produce 128 µs and 102 µs under one defined stress pattern.
 
-*Illustrative measurement. Any numbers in this example are hypothetical.*
+## RoCE
 
-## RoCE: high performance, demanding network
+RoCEv2 transports RDMA packets over UDP/IP. Reliable-connected RoCE supports retransmission. A common design uses Priority Flow Control for a lossless priority and ECN with a congestion-control algorithm such as DCQCN. These perform different jobs. PFC pauses a priority, while congestion control reacts to congestion feedback. Some hardware and configurations support lossy RoCE operation. Check the supported mode and the experience of the team operating it.
 
-RoCE maps InfiniBand transport directly to Ethernet. There are two versions:
+Test congestion in both the port and the receiver, including what happens after one busy flow interrupts others. Review pause duration, congestion markings and NIC retry counters under incast.
 
-**RoCEv1** operates at Layer 2 — it requires hosts to be in the same Ethernet broadcast domain. Not suitable for routed networks.
+## iWARP
 
-**RoCEv2** operates at Layer 3 — it adds UDP/IP encapsulation, enabling routing across subnets. Most modern RoCE deployments use RoCEv2.
+The iWARP RDMAP stack commonly uses TCP via its lower-layer mapping. TCP implements retransmission and congestion mechanisms. Offload can put much of that work on an RDMA-capable NIC. Check host, adapter and application support before selecting it. Test its response to loss and delay on the actual path.
 
-### Performance characteristics
+## Decision
 
-RoCE offers latency and throughput close to native InfiniBand. For all-reduce operations in distributed AI training, RoCE with 400GbE NICs (ConnectX-7 or similar) delivers throughput that approaches the theoretical maximum of the link.
+Compare approved hardware, workload latency, network features, driver support, telemetry and failover. An existing Ethernet fabric can affect rollout cost. A dedicated InfiniBand option deserves the same application test and recovery exercise if it is a viable candidate.
 
-### The lossless Ethernet requirement
+## Sources
 
-RoCE's critical operational requirement: **it requires a lossless Ethernet fabric**. RoCE transport does not have TCP's retransmission and congestion control mechanisms — if a packet is dropped, the RDMA operation fails.
-
-Lossless Ethernet is achieved with Priority Flow Control (PFC), which enables hardware-level flow control per priority class. When a switch's ingress buffer approaches full for a given priority, it sends a PAUSE frame to the upstream device, which stops transmitting that priority class. This prevents drops.
-
-PFC operates correctly only when configured consistently across the entire fabric:
-- All switches need PFC enabled on the RDMA priority
-- QoS marking must be consistent end-to-end
-- Buffer configurations need to be tuned for the link speed and cable distance
-
-PFC misconfiguration causes PFC storms — a feedback loop where pause frames propagate across the fabric and cause cascading congestion. This is not a theoretical risk; PFC storms are a known failure mode in poorly configured RoCE networks. DCQCN (Data Center Quantized Congestion Notification) mitigates this by adding explicit congestion feedback, but it requires additional configuration.
-
-### When RoCE is the right choice
-
-- Collocated clusters where you control the full network fabric
-- Environments already using Mellanox/NVIDIA NICs (native RoCE support)
-- AI training clusters where maximising collective throughput is the priority
-- Environments willing to invest in the operational discipline to maintain lossless Ethernet
-
-## iWARP: TCP-based, tolerant of lossy networks
-
-iWARP runs RDMA over standard TCP/IP. The operating system TCP stack handles retransmission and congestion control; iWARP adds RDMA semantics on top.
-
-### Performance characteristics
-
-iWARP's reliance on TCP introduces overhead that RoCE avoids. Latency is higher than RoCE, particularly at small message sizes where TCP header processing is a larger proportion of the total work. Throughput at large message sizes approaches line rate, since TCP overhead is proportionally smaller.
-
-For CPU-to-CPU RDMA operations at low message sizes (common in storage and some HPC patterns), the latency difference between RoCE and iWARP is measurable and operationally relevant.
-
-### Operational simplicity
-
-iWARP works on standard Ethernet infrastructure without PFC or special QoS configuration. You can deploy iWARP over a standard data center network without modifying the fabric. This is the significant operational advantage.
-
-Loss tolerance: iWARP handles packet loss through TCP retransmission. A packet drop degrades throughput (due to retransmission and congestion window reduction) but doesn't fail the operation. For WAN-extended storage workloads or environments with mixed traffic sharing the network, this matters.
-
-### When iWARP is the right choice
-
-- Environments where the network fabric isn't fully under your control
-- Storage protocols over RDMA (NVMe-oF, iSER) where loss-tolerance is more valuable than peak latency
-- Environments with mixed workloads sharing Ethernet where lossless configuration is impractical
-- WAN deployments where lossless Ethernet isn't possible
-
-## Decision criteria summary
-
-| Criterion | RoCE | iWARP |
-|-----------|------|-------|
-| Latency (small messages) | Lower | Higher |
-| Peak throughput | Higher | Similar for large messages |
-| Network requirements | Lossless Ethernet (PFC) | Standard Ethernet |
-| Loss tolerance | None without DCQCN | Yes (TCP) |
-| Operational complexity | Higher | Lower |
-| AI training (all-reduce) | Preferred | Viable |
-| Storage over RDMA | Viable | Common |
-| WAN deployment | Not suitable | Viable |
-
-## NVIDIA/InfiniBand as an alternative
-
-For large-scale AI training clusters, InfiniBand (rather than either RoCE or iWARP) is often the preferred choice at the scale where collective performance is critical. InfiniBand is a purpose-built RDMA fabric that avoids the Ethernet compatibility complications entirely. HDR/NDR InfiniBand (200/400 Gb/s) with SHARP (in-network reduction) offloads all-reduce operations to the network switches, reducing both latency and CPU overhead compared to any Ethernet-based RDMA solution.
-
-For enterprises building AI training infrastructure on existing Ethernet networks, RoCE with proper PFC/DCQCN configuration is the pragmatic path to InfiniBand-comparable performance.
-
-*Designing a networking fabric for AI training or HPC? The topology and technology choices compound on each other. [Happy to think through the trade-offs.](/contact/)*
+- [IETF RFC 5040, RDMAP](https://www.rfc-editor.org/rfc/rfc5040)
+- [Zhu et al., Congestion Control for Large-Scale RDMA Deployments, SIGCOMM](https://www.microsoft.com/en-us/research/publication/congestion-control-large-scale-rdma-deployments/)
+- [Mittal et al., Revisiting Network Support for RDMA, SIGCOMM](https://arxiv.org/abs/1806.08159)
+- [NVIDIA Cumulus Linux, RoCE modes](https://docs.nvidia.com/networking-ethernet-software/cumulus-linux-519/Layer-1-and-Switch-Ports/Quality-of-Service/RDMA-over-Converged-Ethernet-RoCE/)

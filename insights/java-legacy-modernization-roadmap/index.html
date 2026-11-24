@@ -33,8 +33,9 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=a8e7c95a">
-<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<link rel="stylesheet" href="/assets/css/site.css?v=bd74be96">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
+<link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
    never flashes the wrong ground or resets someone's text size mid-read. */
@@ -105,6 +106,7 @@ d.setAttribute('data-theme',t);
 </nav></div>
     <div class="article-copy">
       <div class="prose">
+<p class="article-opening">Java upgrades become easier to reason about when runtime, dependencies and architecture change in separate steps.</p>
 <p>Somewhere in your organization, revenue is flowing through a Java 8 application built with Spring 4, packaged as a WAR, and deployed to an app server by a script whose author left in 2019. Industry surveys still put a stubborn double-digit share of production Java on version 8 — a platform from 2014.</p>
 <p>The gap between that and current Java (21 LTS, 25 LTS) is not cosmetic. It&#39;s a security posture gap, a hiring gap, a performance gap, and — increasingly — a dependency gap, because the library ecosystem has moved its baseline. Here&#39;s how to close it without a big-bang rewrite and without stopping feature delivery.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
@@ -131,15 +133,45 @@ d.setAttribute('data-theme',t);
 <p>The end state worth aiming at isn&#39;t &quot;we&#39;re on 21.&quot; It&#39;s <em>upgrade fluency</em>: a fleet on a managed BOM, CI that proves runtime compatibility continuously, and the organizational muscle to adopt 25 LTS as a routine quarter&#39;s chore rather than a named program with a steering committee. The first migration is expensive precisely because that muscle atrophied. Its lasting deliverable is making sure the next one is boring.</p>
 
       </div>
+<section class="field-worksheet worked-example" aria-labelledby="worked-example">
+    <h2 id="worked-example">Worked example</h2>
+    <p class="case-notice">This scenario and its results are illustrative.</p>
+    
+    <p>Capture the existing runtime and compatibility baseline. Start with one service that can build and deploy independently. Re-run identical contract tests after upgrading the runtime and again after changing application dependencies.</p>
+    <figure class="delivery-flow">
+    <figcaption>Execution sequence</figcaption>
+    <ol><li>Inventory runtime</li><li>Lock fixture</li><li>Upgrade one service</li><li>Decide what blocks rollout</li></ol>
+  </figure>
+    <figure class="field-chart case-chart">
+    <figcaption>Example comparison <span>Simulated figures</span></figcaption>
+    <ul class="case-metrics"><li class="case-metric">
+      <h3>Compatibility checks passing <small>%</small></h3>
+      <ul class="chart-rows"><li><span>First target-JDK run</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:82.72727272727273%"></i></span>
+        <strong>82.727273% <small>(91/110)</small></strong></li><li><span>After fixes</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:98.18181818181819%"></i></span>
+        <strong>98.181818% <small>(108/110)</small></strong></li></ul>
+    </li></ul>
+  </figure>
+    <h3>Method and limits</h3>
+    <p>Use the same 110 mandatory cases and record the two residual failures before rollout. The exercise does not claim compatibility for other modules.</p>
+    <a href="/field-guides/worked-examples.csv" download>Download the worked figures (CSV)</a>
+  </section>
 
 
-
+<aside class="refs" aria-labelledby="refs-h">
+  <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
+  <p class="refs-note">Primary documentation, standards and research for the methods discussed here.</p>
+  <ul>
+    <li><a href="https://docs.oracle.com/en/java/javase/21/migrate/" rel="noopener" target="_blank">Oracle JDK Migration Guide</a><span>Migration baselines, compatibility and removed components.</span></li>
+  </ul>
+</aside>
 
 
 
       <footer class="article-foot">
         <div class="row" style="gap:.4rem">
-          <a class="chip chip-plain" href="/insights/?topic=Java">Java</a><a class="chip chip-plain" href="/insights/?topic=Modernization">Modernization</a><a class="chip chip-plain" href="/insights/?topic=Technical%20Debt">Technical Debt</a><a class="chip chip-plain" href="/topics/architecture/">Architecture</a><a class="chip chip-plain" href="/topics/engineering-practice/">Engineering Practice</a>
+          <a class="chip" href="/topics/java/">Java</a><a class="chip" href="/topics/modernization/">Modernization</a><a class="chip" href="/topics/technical-debt/">Technical Debt</a><a class="chip" href="/topics/architecture/">Architecture</a><a class="chip" href="/topics/engineering-practice/">Engineering Practice</a>
         </div>
         <nav class="prevnext" aria-label="More articles">
           <a href="/insights/java-virtual-threads-enterprise/"><span>Previous</span><strong>Virtual Threads in the Enterprise: What Changes, What Doesn&#39;t, and What Breaks</strong></a>
@@ -153,12 +185,12 @@ d.setAttribute('data-theme',t);
     <section class="promo-card promo-techknowen" aria-label="TechKnowen">
       <p class="promo-name">TechKnowen</p>
       <p>Practical reading on software, architecture, and engineering.</p>
-      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+      <a class="card-destination" href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
     </section>
     <section class="promo-card promo-ziggle" aria-label="Ziggle">
       <p class="promo-name">Ziggle</p>
       <p>A new place to play brain teasers.</p>
-      <p class="promo-status">Coming soon</p>
+      <a class="card-destination" href="/projects/ziggle/">Ziggle preview</a> <span class="promo-status">Coming soon</span>
     </section>
   </div>
 </aside>
@@ -167,33 +199,33 @@ d.setAttribute('data-theme',t);
   <section class="section surface hair" style="margin-top:4rem">
     <div class="wrap">
       <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|Legacy Modernization|Architecture|Distributed Systems|Engineering Practice|Technical Debt|" data-search="the strangler fig in practice: incremental legacy replacement that actually finishes everyone cites the strangler pattern; few finish a strangulation. the facade and routing mechanics, the data-migration sequencing that makes or breaks it, the organizational funding model, and the anti-patterns that leave estates half-strangled forever. legacy modernization architecture distributed systems engineering practice technical debt" data-topic="Architecture" href="/insights/strangler-fig-legacy-migration/">
+      <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|Legacy Modernization|Architecture|Distributed Systems|Engineering Practice|Technical Debt|" data-search="the strangler fig in practice: incremental legacy replacement that actually finishes everyone cites the strangler pattern; few finish a strangulation. the facade and routing mechanics, the data-migration sequencing that makes or breaks it, the organizational funding model, and the anti-patterns that leave estates half-strangled forever. legacy modernization architecture distributed systems engineering practice technical debt" data-topic="Architecture">
   <div class="card-art"><img data-article-art="strangler-fig-legacy-migration" src="/assets/covers/strangler-fig-legacy-migration.svg?v=af67847ea207" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Architecture</span>
-    <h3 class="card-title">The Strangler Fig in Practice: Incremental Legacy Replacement That Actually Finishes</h3>
+    <a class="chip" href="/topics/architecture/">Architecture</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/strangler-fig-legacy-migration/">The Strangler Fig in Practice: Incremental Legacy Replacement That Actually Finishes</a></h3>
     <p class="card-desc">Everyone cites the strangler pattern; few finish a strangulation. The facade and routing mechanics, the data-migration sequencing that makes or breaks it, the organizational funding model, and the anti-patterns that leave estates half-strangled forever.</p>
     <div class="card-meta"><time datetime="2026-01-19">19 Jan 2026</time><span class="dot"></span><span>5 min read</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|Java|JVM|Concurrency|Performance|Architecture|" data-search="virtual threads in the enterprise: what changes, what doesn&#39;t, and what breaks java 21&#39;s virtual threads promise massive concurrency without reactive complexity. here&#39;s what actually changes in enterprise services — thread pool math, pinning pitfalls, connection pools as the new bottleneck, and when reactive still wins. java jvm concurrency performance architecture" data-topic="Performance" href="/insights/java-virtual-threads-enterprise/">
+</article>
+<article class="card" data-card data-topics="|Java|JVM|Concurrency|Performance|Architecture|" data-search="virtual threads in the enterprise: what changes, what doesn&#39;t, and what breaks java 21&#39;s virtual threads promise massive concurrency without reactive complexity. here&#39;s what actually changes in enterprise services — thread pool math, pinning pitfalls, connection pools as the new bottleneck, and when reactive still wins. java jvm concurrency performance architecture" data-topic="Performance">
   <div class="card-art"><img data-article-art="java-virtual-threads-enterprise" src="/assets/covers/java-virtual-threads-enterprise.svg?v=4020d4af4506" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Performance</span>
-    <h3 class="card-title">Virtual Threads in the Enterprise: What Changes, What Doesn&#39;t, and What Breaks</h3>
+    <a class="chip" href="/topics/performance/">Performance</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/java-virtual-threads-enterprise/">Virtual Threads in the Enterprise: What Changes, What Doesn&#39;t, and What Breaks</a></h3>
     <p class="card-desc">Java 21&#39;s virtual threads promise massive concurrency without reactive complexity. Here&#39;s what actually changes in enterprise services — thread pool math, pinning pitfalls, connection pools as the new bottleneck, and when reactive still wins.</p>
     <div class="card-meta"><time datetime="2026-02-24">24 Feb 2026</time><span class="dot"></span><span>5 min read</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|Java|WebLogic|Middleware|Architecture|" data-search="weblogic domains, clusters, and managed servers: the architecture explained admin servers, managed servers, clusters, machines, and node manager — the weblogic domain model explained for people who have to run it, not just pass the exam. what each piece does, how they fit together, and where production deployments go wrong. java weblogic middleware architecture" data-topic="Architecture" href="/insights/weblogic-domains-clusters-explained/">
+</article>
+<article class="card" data-card data-topics="|Java|WebLogic|Middleware|Architecture|" data-search="weblogic domains, clusters, and managed servers: the architecture explained admin servers, managed servers, clusters, machines, and node manager — the weblogic domain model explained for people who have to run it, not just pass the exam. what each piece does, how they fit together, and where production deployments go wrong. java weblogic middleware architecture" data-topic="Architecture">
   <div class="card-art"><img data-article-art="weblogic-domains-clusters-explained" src="/assets/covers/weblogic-domains-clusters-explained.svg?v=985cb16a8800" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Architecture</span>
-    <h3 class="card-title">WebLogic Domains, Clusters, and Managed Servers: The Architecture Explained</h3>
+    <a class="chip" href="/topics/architecture/">Architecture</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/weblogic-domains-clusters-explained/">WebLogic Domains, Clusters, and Managed Servers: The Architecture Explained</a></h3>
     <p class="card-desc">Admin servers, managed servers, clusters, machines, and Node Manager — the WebLogic domain model explained for people who have to run it, not just pass the exam. What each piece does, how they fit together, and where production deployments go wrong.</p>
     <div class="card-meta"><time datetime="2025-09-09">9 Sept 2025</time><span class="dot"></span><span>7 min read</span></div>
   </div>
-</a></div>
+</article></div>
     </div>
   </section>
 
@@ -273,6 +305,7 @@ d.setAttribute('data-theme',t);
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/follow/">Follow new writing</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
           <li><a href="/notes/">Personal notes</a></li>
@@ -293,7 +326,7 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=a8e7c95a" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=a8e7c95a"></script>
+<script src="/assets/js/site.js?v=bd74be96" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=bd74be96"></script>
 </body>
 </html>

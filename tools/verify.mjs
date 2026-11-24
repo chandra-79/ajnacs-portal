@@ -8,6 +8,8 @@ import { seriesSlug } from "./lib.mjs";
 import { publicationDate } from "./publication.mjs";
 import { fieldGuides, worksheetCsv } from "./field-guides.mjs";
 import { models } from "../assets/js/field-math.mjs";
+import { caseCategories } from "./case-library.mjs";
+import { topicPath } from "./discovery.mjs";
 
 let failures = 0;
 const fail = (m) => { console.error("  ✗ " + m); failures++; };
@@ -85,6 +87,42 @@ console.log("\nField guides");
     }
   }
   if (!failures) ok("worksheets, methodology, worked results and CSVs checked");
+}
+
+console.log("\nCase studies and article discovery");
+{
+  let count = 0;
+  for (const { id } of caseCategories) {
+    const folder = `case-studies/${id}`;
+    const routes = (await readdir(folder, { withFileTypes: true })).filter(entry => entry.isDirectory());
+    if (routes.length < 8 || routes.length > 10) fail(`${id} must publish 8–10 case studies`);
+    const categoryHtml = await readFile(`${folder}/index.html`, "utf8");
+    for (const route of routes) {
+      const path = `${folder}/${route.name}`;
+      const html = await readFile(`${path}/index.html`, "utf8");
+      const csv = await readFile(`${path}.csv`, "utf8");
+      if (!html.includes("Hypothetical engagement") || !html.includes("Simulated figures") ||
+          !html.includes('class="delivery-flow"') || !csv.includes('"synthetic"') ||
+          !categoryHtml.includes(`href="/${path}/"`)) fail(`case study or supporting evidence missing: ${path}`);
+      count++;
+    }
+  }
+  const tags = new Set(live.flatMap(article => article.tags));
+  const paths = new Set([...tags].map(tag => topicPath(tag, tags)));
+  if (tags.size !== paths.size) fail("Tag pages collide after URL normalisation");
+  for (const route of paths) {
+    const html = await readFile(`.${route}index.html`, "utf8");
+    if (!html.includes("Start with ") || !html.includes('class="card-destination"')) fail(`Topic page has no detailed article links: ${route}`);
+  }
+  const fieldSlugs = new Set(fieldGuides.map(guide => guide.slug));
+  const revised = live.filter(article => article.date <= "2026-11-23");
+  for (const article of revised) {
+    const html = await readFile(`${article.section}/${article.slug}/index.html`, "utf8");
+    if (!fieldSlugs.has(article.slug) && !html.includes('id="worked-example"')) fail(`Worked example missing: ${article.slug}`);
+    if (article.section === "insights" && !html.includes('class="refs-title"')) fail(`References missing: ${article.slug}`);
+    if (article.tags.some(tag => !html.includes(`href="${topicPath(tag, tags)}"`))) fail(`Topic links missing: ${article.slug}`);
+  }
+  if (!failures) ok(`${count} case studies, ${revised.length} archive revisions and ${tags.size} topic paths verified`);
 }
 
 console.log("\nQuality");
@@ -170,7 +208,7 @@ for (const [file, placement] of promotionPlacements) {
   const article = placement === "article-rail";
   if (slots.length !== 1 || slot[1] !== placement ||
       !slot[2].includes('href="https://www.techknowen.com/"') ||
-      !slot[2].includes("Coming soon") || slot[2].match(/<a\b/g)?.length !== 1 ||
+      !slot[2].includes("Coming soon") || !slot[2].includes('href="/projects/ziggle/"') || slot[2].match(/<a\b/g)?.length !== 2 ||
       (article && (!html.includes('class="reading-layout"') || slot.index < html.indexOf('class="article-copy"')))) {
     fail(`${file}: invalid publication layout or house promotion`);
     promotionErrors++;

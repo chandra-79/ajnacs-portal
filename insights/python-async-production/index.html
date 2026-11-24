@@ -33,8 +33,9 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=a8e7c95a">
-<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<link rel="stylesheet" href="/assets/css/site.css?v=bd74be96">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
+<link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
    never flashes the wrong ground or resets someone's text size mid-read. */
@@ -105,6 +106,7 @@ d.setAttribute('data-theme',t);
 </nav></div>
     <div class="article-copy">
       <div class="prose">
+<p class="article-opening">An asynchronous service gains little when synchronous work occupies the same event loop.</p>
 <p>Async Python has crossed from &quot;interesting&quot; to &quot;default&quot; for a huge slice of new backend work — FastAPI is now the assumed starting point the way Flask once was, and every modern Python HTTP client, database driver, and queue library ships an async variant. What hasn&#39;t kept pace is operational understanding: teams adopt the syntax in a week and then spend a year discovering what the event loop actually demands of them.</p>
 <p>This is the production guide: where async genuinely pays, where it quietly hurts, and the habits that separate healthy asyncio services from mysterious ones.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
@@ -121,7 +123,7 @@ d.setAttribute('data-theme',t);
 <p><strong>Quarantine what must block:</strong> <code>await asyncio.to_thread(legacy_call, ...)</code> moves sync calls to a worker thread; <code>run_in_executor</code> with a <code>ProcessPoolExecutor</code> handles CPU-heavy work. The rule of thumb worth writing on the wall: <em>anything that might take more than ~10 ms of CPU, or that does I/O without <code>await</code>, doesn&#39;t belong on the loop.</em></p>
 <p><strong>Monitor loop lag in production</strong> — schedule a heartbeat task that sleeps 100 ms and measures overshoot; export it as a metric. Loop lag is the async service&#39;s load average: when it climbs, everything else you observe becomes explainable.</p>
 <h2 id="structured-concurrency-taskgroups-changed-the-idiom"><a class="h-anchor" href="#structured-concurrency-taskgroups-changed-the-idiom" aria-hidden="true" tabindex="-1">#</a>Structured concurrency: TaskGroups changed the idiom</h2>
-<p>Historical asyncio encouraged fire-and-forget: <code>asyncio.create_task()</code> calls whose failures vanished (swallowed exceptions, tasks garbage-collected mid-flight) unless every callsite remembered to hold references and check results. Modern Python (3.11+) fixed the idiom with <strong><code>asyncio.TaskGroup</code></strong>: tasks spawned inside an <code>async with</code> block are guaranteed awaited; any child failure cancels siblings and propagates as an ExceptionGroup. The fan-out call — hit three services, all-or-nothing, bounded by a deadline — becomes a dozen honest lines with correct cancellation for free.</p>
+<p>Python 3.11’s <a href="https://docs.python.org/3.11/library/asyncio-task.html#task-groups" rel="noopener" target="_blank"><code>asyncio.TaskGroup</code></a> waits for its child tasks. The first child exception other than <code>CancelledError</code> cancels siblings and normally raises applicable failures in a group after they settle. <code>KeyboardInterrupt</code> and <code>SystemExit</code> are re-raised directly. Test how the actual work stops on cancellation, especially when a blocking operation runs in a worker thread.</p>
 <p>Adopt these as house style: TaskGroups (or the equivalent nurseries in AnyIO/Trio) over bare <code>create_task</code>; <strong><code>asyncio.timeout()</code></strong> context managers around anything with a deadline (per-call timeouts, not one prayer at the top); and <strong>explicit concurrency bounds</strong> — <code>asyncio.Semaphore</code> around outbound fan-out — because an async service can trivially open 10,000 simultaneous connections to a downstream sized for 200. Async removes your accidental concurrency governor (the thread pool) exactly like virtual threads do in Java; backpressure becomes your explicit job.</p>
 <p>Cancellation deserves one paragraph of respect: in asyncio, cancellation is delivered <em>at await points</em> as an exception. Code holding a resource across an <code>await</code> without <code>try/finally</code> (or <code>async with</code>) leaks it when cancelled — and TaskGroups cancel liberally by design. Every acquire/release pair in an async codebase belongs inside a context manager. This single review rule prevents the connection-pool-slowly-drains class of incident.</p>
 <h2 id="the-operational-layer"><a class="h-anchor" href="#the-operational-layer" aria-hidden="true" tabindex="-1">#</a>The operational layer</h2>
@@ -134,14 +136,39 @@ d.setAttribute('data-theme',t);
 <p>The teams that run it well aren&#39;t the ones with the cleverest coroutines. They&#39;re the ones with loop-lag on the dashboard, timeouts on every call, semaphores on every fan-out, context managers on every resource, and a lint rule that keeps <code>requests</code> out of the imports. Do that, and async Python is boring in production — which is the highest compliment infrastructure software can earn.</p>
 
       </div>
+<section class="field-worksheet worked-example" aria-labelledby="worked-example">
+    <h2 id="worked-example">Worked example</h2>
+    <p class="case-notice">This scenario and its results are illustrative.</p>
+    
+    <p>Replay a fixture of concurrent I/O calls before and after moving a blocking library call out of the loop. Bound downstream concurrency and test timeout cancellation while the worker is busy.</p>
+    <figure class="delivery-flow">
+    <figcaption>Execution sequence</figcaption>
+    <ol><li>Spot blocking call</li><li>Isolate boundary</li><li>Apply concurrency cap</li><li>Replay</li></ol>
+  </figure>
+    <figure class="field-chart case-chart">
+    <figcaption>Example comparison <span>Simulated figures</span></figcaption>
+    <ul class="case-metrics"><li class="case-metric">
+      <h3>p95 event-loop scheduling delay <small>ms</small></h3>
+      <ul class="chart-rows"><li><span>Blocking call in coroutine</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:100%"></i></span>
+        <strong>190</strong></li><li><span>Managed executor for blocking call</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:8.947368421052632%"></i></span>
+        <strong>17</strong></li></ul>
+    </li></ul>
+  </figure>
+    <h3>Method and limits</h3>
+    <p>Use the same 2,000 arrivals and measure a periodic diagnostic task&#39;s scheduling delay. Capture worker queue wait and cancellation behaviour before rollout.</p>
+    <a href="/field-guides/worked-examples.csv" download>Download the worked figures (CSV)</a>
+  </section>
 
 
 <aside class="refs" aria-labelledby="refs-h">
   <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
-  <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
+  <p class="refs-note">Primary documentation, standards and research for the methods discussed here.</p>
   <ul>
-    <li><a href="https://opentelemetry.io/docs/" rel="noopener nofollow" target="_blank">OpenTelemetry</a><span>Specification and language SDKs.</span></li>
-    <li><a href="https://redis.io/docs/latest/" rel="noopener nofollow" target="_blank">Redis documentation</a><span>Data types, persistence and eviction.</span></li>
+    <li><a href="https://docs.python.org/3/library/asyncio-task.html" rel="noopener" target="_blank">Python · asyncio tasks and cancellation</a><span>Task lifecycles, cancellation and timeouts.</span></li>
+    <li><a href="https://opentelemetry.io/docs/" rel="noopener" target="_blank">OpenTelemetry</a><span>Specification and language SDKs.</span></li>
+    <li><a href="https://redis.io/docs/latest/" rel="noopener" target="_blank">Redis documentation</a><span>Data types, persistence and eviction.</span></li>
   </ul>
 </aside>
 
@@ -149,7 +176,7 @@ d.setAttribute('data-theme',t);
 
       <footer class="article-foot">
         <div class="row" style="gap:.4rem">
-          <a class="chip chip-plain" href="/insights/?topic=Python">Python</a><a class="chip chip-plain" href="/insights/?topic=Async">Async</a><a class="chip chip-plain" href="/topics/performance/">Performance</a><a class="chip chip-plain" href="/topics/programming/">Programming</a><a class="chip chip-plain" href="/topics/cloud-architecture/">Cloud Architecture</a>
+          <a class="chip" href="/topics/python/">Python</a><a class="chip" href="/topics/async/">Async</a><a class="chip" href="/topics/performance/">Performance</a><a class="chip" href="/topics/programming/">Programming</a><a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a>
         </div>
         <nav class="prevnext" aria-label="More articles">
           <a href="/insights/data-lakehouse-architecture/"><span>Previous</span><strong>The Data Lakehouse: Why It Won, and How to Architect One That Works</strong></a>
@@ -163,12 +190,12 @@ d.setAttribute('data-theme',t);
     <section class="promo-card promo-techknowen" aria-label="TechKnowen">
       <p class="promo-name">TechKnowen</p>
       <p>Practical reading on software, architecture, and engineering.</p>
-      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+      <a class="card-destination" href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
     </section>
     <section class="promo-card promo-ziggle" aria-label="Ziggle">
       <p class="promo-name">Ziggle</p>
       <p>A new place to play brain teasers.</p>
-      <p class="promo-status">Coming soon</p>
+      <a class="card-destination" href="/projects/ziggle/">Ziggle preview</a> <span class="promo-status">Coming soon</span>
     </section>
   </div>
 </aside>
@@ -177,33 +204,33 @@ d.setAttribute('data-theme',t);
   <section class="section surface hair" style="margin-top:4rem">
     <div class="wrap">
       <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|Programming|Python|Cloud Architecture|DevSecOps|" data-search="python for cloud engineers: the parts that actually matter you don&#39;t need to be a data scientist to get serious value from python as a cloud practitioner. here&#39;s what actually matters — and what you can safely skip. programming python cloud architecture devsecops" data-topic="Programming" href="/insights/python-for-cloud-engineers/">
+      <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|Programming|Python|Cloud Architecture|DevSecOps|" data-search="python for cloud engineers: the parts that actually matter you don&#39;t need to be a data scientist to get serious value from python as a cloud practitioner. here&#39;s what actually matters — and what you can safely skip. programming python cloud architecture devsecops" data-topic="Programming">
   <div class="card-art"><img data-article-art="python-for-cloud-engineers" src="/assets/covers/python-for-cloud-engineers.svg?v=502ce38f18c9" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Programming</span>
-    <h3 class="card-title">Python for Cloud Engineers: The Parts That Actually Matter</h3>
+    <a class="chip" href="/topics/programming/">Programming</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/python-for-cloud-engineers/">Python for Cloud Engineers: The Parts That Actually Matter</a></h3>
     <p class="card-desc">You don&#39;t need to be a data scientist to get serious value from Python as a cloud practitioner. Here&#39;s what actually matters — and what you can safely skip.</p>
     <div class="card-meta"><time datetime="2026-10-19">19 Oct 2026</time><span class="dot"></span><span>3 min read</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|Performance|Programming|Cloud Architecture|Data Engineering|FinOps|" data-search="compression in production: choosing between gzip, zstd, lz4, and brotli like it matters compression is a three-way trade — ratio, speed, and cpu — that most systems set once by default and never revisit. the algorithm landscape, placement decisions across web, storage, and streaming, dictionary compression&#39;s quiet superpower, and the measurement discipline. performance programming cloud architecture data engineering finops" data-topic="Performance" href="/insights/compression-selection-guide/">
+</article>
+<article class="card" data-card data-topics="|Performance|Programming|Cloud Architecture|Data Engineering|FinOps|" data-search="compression in production: choosing between gzip, zstd, lz4, and brotli like it matters compression is a three-way trade — ratio, speed, and cpu — that most systems set once by default and never revisit. the algorithm landscape, placement decisions across web, storage, and streaming, dictionary compression&#39;s quiet superpower, and the measurement discipline. performance programming cloud architecture data engineering finops" data-topic="Performance">
   <div class="card-art"><img data-article-art="compression-selection-guide" src="/assets/covers/compression-selection-guide.svg?v=841ffbacef2b" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Performance</span>
-    <h3 class="card-title">Compression in Production: Choosing Between gzip, zstd, lz4, and Brotli Like It Matters</h3>
+    <a class="chip" href="/topics/performance/">Performance</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/compression-selection-guide/">Compression in Production: Choosing Between gzip, zstd, lz4, and Brotli Like It Matters</a></h3>
     <p class="card-desc">Compression is a three-way trade — ratio, speed, and CPU — that most systems set once by default and never revisit. The algorithm landscape, placement decisions across web, storage, and streaming, dictionary compression&#39;s quiet superpower, and the measurement discipline.</p>
     <div class="card-meta"><time datetime="2026-10-12">12 Oct 2026</time><span class="dot"></span><span>5 min read</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|Programming|Architecture|Cloud Architecture|" data-search="api design for enterprise systems: the decisions that age well an api that&#39;s easy to build against is easy to build wrong. the decisions around versioning, error models, pagination, idempotency, and authentication compound over time — here&#39;s how to make the ones that don&#39;t cause regret. programming architecture cloud architecture" data-topic="Programming" href="/insights/api-design-enterprise/">
+</article>
+<article class="card" data-card data-topics="|Programming|Architecture|Cloud Architecture|" data-search="api design for enterprise systems: the decisions that age well an api that&#39;s easy to build against is easy to build wrong. the decisions around versioning, error models, pagination, idempotency, and authentication compound over time — here&#39;s how to make the ones that don&#39;t cause regret. programming architecture cloud architecture" data-topic="Programming">
   <div class="card-art"><img data-article-art="api-design-enterprise" src="/assets/covers/api-design-enterprise.svg?v=d197ddfe2b3d" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Programming</span>
-    <h3 class="card-title">API Design for Enterprise Systems: The Decisions That Age Well</h3>
+    <a class="chip" href="/topics/programming/">Programming</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/api-design-enterprise/">API Design for Enterprise Systems: The Decisions That Age Well</a></h3>
     <p class="card-desc">An API that&#39;s easy to build against is easy to build wrong. The decisions around versioning, error models, pagination, idempotency, and authentication compound over time — here&#39;s how to make the ones that don&#39;t cause regret.</p>
     <div class="card-meta"><time datetime="2026-11-06">6 Nov 2026</time><span class="dot"></span><span>5 min read</span></div>
   </div>
-</a></div>
+</article></div>
     </div>
   </section>
 
@@ -283,6 +310,7 @@ d.setAttribute('data-theme',t);
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/follow/">Follow new writing</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
           <li><a href="/notes/">Personal notes</a></li>
@@ -303,7 +331,7 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=a8e7c95a" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=a8e7c95a"></script>
+<script src="/assets/js/site.js?v=bd74be96" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=bd74be96"></script>
 </body>
 </html>

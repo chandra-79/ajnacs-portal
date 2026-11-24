@@ -107,7 +107,7 @@ The escalation pattern is also useful: attempt with the cheaper model, check out
 
 ## Caching strategies
 
-**Prompt caching**: both OpenAI and Anthropic support caching the prefix of a prompt. If your system prompt is identical across requests (it should be), the first request pays full price and subsequent requests within the cache TTL pay a reduced rate. The requirement: the cached prefix must be at least 1,024 tokens (Anthropic) or 128 tokens (OpenAI). Structure your prompts so the static system prompt comes first.
+**Prompt caching**: providers have different eligibility, minimum prefix length, routing, lifetimes and billing. Keep reusable prefix material stable where appropriate. Check the exact model and connector instructions in the [OpenAI prompt caching guide](https://developers.openai.com/api/docs/guides/prompt-caching) and [Anthropic prompt caching guide](https://platform.claude.com/docs/en/build-with-claude/prompt-caching). Measure cache-read costs and hit rates from usage records.
 
 **Semantic caching**: for queries that are semantically similar but not identical, cache the response and return it for queries within a similarity threshold. GPTCache and Zep are common implementations. Effective for FAQ-style features where many users ask essentially the same question with different wording. Requires careful threshold tuning — too aggressive and you return incorrect responses for queries that seem similar but aren't.
 

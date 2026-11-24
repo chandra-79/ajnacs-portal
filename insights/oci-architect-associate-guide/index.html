@@ -33,8 +33,9 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=a8e7c95a">
-<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<link rel="stylesheet" href="/assets/css/site.css?v=bd74be96">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
+<link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
    never flashes the wrong ground or resets someone's text size mid-read. */
@@ -101,12 +102,13 @@ d.setAttribute('data-theme',t);
     <div class="article-hero" data-topic="Cloud Architecture"><img data-article-art="oci-architect-associate-guide" src="/assets/covers/oci-architect-associate-guide.svg?v=3998c2d25422" width="1280" height="720" alt="" decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
-  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#tenancy-and-iam-the-foundation-the-exam-builds-on">Tenancy and IAM: the foundation the exam builds on</a></li><li><a href="#compute-and-networking-the-exam39s-heaviest-section">Compute and networking: the exam&#39;s heaviest section</a></li><li><a href="#storage-the-types-and-their-use-cases">Storage: the types and their use cases</a></li><li><a href="#database-services">Database services</a></li><li><a href="#high-availability-and-disaster-recovery">High availability and disaster recovery</a></li><li><a href="#the-study-approach-for-engineers-with-cloud-experience">The study approach for engineers with cloud experience</a></li></ol>
+  <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#tenancy-and-iam-the-foundation-the-exam-builds-on">Tenancy and IAM: the foundation the exam builds on</a></li><li><a href="#compute-and-networking">Compute and networking</a></li><li><a href="#storage-the-types-and-their-use-cases">Storage: the types and their use cases</a></li><li><a href="#database-services">Database services</a></li><li><a href="#high-availability-and-disaster-recovery">High availability and disaster recovery</a></li><li><a href="#the-study-approach-for-engineers-with-cloud-experience">The study approach for engineers with cloud experience</a></li></ol>
 </nav></div>
     <div class="article-copy">
       <div class="prose">
-<p>The OCI Architect Associate exam (1Z0-1072) tests Oracle Cloud Infrastructure-specific architecture knowledge. If you&#39;re coming from AWS or Azure, most of the concepts are familiar — compute, storage, networking, IAM — but Oracle&#39;s naming, structure, and defaults differ enough that familiarity with cloud fundamentals doesn&#39;t mean you&#39;ll pass without OCI-specific preparation.</p>
-<p>Here&#39;s what the exam emphasises, organised by weight.</p>
+<p class="article-opening">Treat a certification guide as a lab plan and verify the live exam objectives before booking.</p>
+<p>Use the <a href="https://learn.oracle.com/ols/learning-path/become-an-oci-architect-associate/163512/162234" rel="noopener" target="_blank">Oracle University Architect Associate learning path</a> to find the current exam code and blueprint before booking. AWS or Azure experience helps with the baseline concepts. Focus your labs on OCI resource identity, routing, storage and recovery.</p>
+<p>The sections below are a practice sequence. Use Oracle’s current blueprint for official topic coverage and the registration page for timing.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
 <p><strong>Repeatable hands-on verification.</strong> Track whether you can finish a lab from a blank tenancy and explain each design choice without notes. For 12 labs with 9 completed unaided, unaided completion is 75%. Revisit failed domains and verify the current exam blueprint directly before booking.</p>
 <p><em>Illustrative measurement. Any numbers in this example are hypothetical.</em></p>
@@ -118,7 +120,7 @@ d.setAttribute('data-theme',t);
 <p>Verbs matter: <code>inspect</code> (list), <code>read</code> (inspect + get), <code>use</code> (read + update operations), <code>manage</code> (full control). The exam tests whether you know which verb allows which actions.</p>
 <p><strong>Dynamic Groups</strong> allow compute instances, functions, and other OCI resources to authenticate with IAM and call OCI APIs. This is the OCI equivalent of AWS IAM Roles for EC2 — essential for any architecture where a compute resource needs to access Object Storage, Secrets Manager, or other services without stored credentials.</p>
 <p><strong>Federation</strong> with identity providers (IDCS, Microsoft Entra ID, Okta) is frequently tested. Know how to set up a federation, understand the difference between IDCS (Oracle&#39;s native identity service) and external providers, and understand group mappings.</p>
-<h2 id="compute-and-networking-the-exam39s-heaviest-section"><a class="h-anchor" href="#compute-and-networking-the-exam39s-heaviest-section" aria-hidden="true" tabindex="-1">#</a>Compute and networking: the exam&#39;s heaviest section</h2>
+<h2 id="compute-and-networking"><a class="h-anchor" href="#compute-and-networking" aria-hidden="true" tabindex="-1">#</a>Compute and networking</h2>
 <p><strong>Compute shapes</strong> come in four families: Standard (general purpose), Optimised (high CPU frequency), GPU, and Dense I/O (NVMe-attached storage). The Flex shapes (VM.Standard.E4.Flex, VM.Standard3.Flex) let you specify OCPUs and memory independently — know how these work and the ratio limits.</p>
 <p><strong>Virtual Cloud Network (VCN)</strong> architecture: VCN → subnets (public or private) → security lists or network security groups. The difference between security lists and network security groups is tested — security lists are attached to subnets and apply to all resources in the subnet; NSGs are attached to individual VNICs and give per-resource control. NSGs are more flexible; new architectures should prefer them.</p>
 <p><strong>Route tables</strong> control traffic flow. Know the default route table, know how to add a route for internet-bound traffic (through an Internet Gateway), and know how Private IPs in different subnets route to each other. The exam includes routing scenarios.</p>
@@ -141,7 +143,7 @@ d.setAttribute('data-theme',t);
 <li><strong>MySQL HeatWave</strong>: managed MySQL with the HeatWave in-memory query accelerator for analytics on the transactional database without ETL.</li>
 </ul>
 <h2 id="high-availability-and-disaster-recovery"><a class="h-anchor" href="#high-availability-and-disaster-recovery" aria-hidden="true" tabindex="-1">#</a>High availability and disaster recovery</h2>
-<p>OCI&#39;s physical structure: <strong>Region</strong> → <strong>Availability Domains (ADs)</strong> → <strong>Fault Domains (FDs)</strong>. Most OCI regions have 3 ADs (some have 1 AD). Each AD has 3 Fault Domains.</p>
+<p>OCI&#39;s physical structure: <strong>Region</strong> → <strong>Availability Domains (ADs)</strong> → <strong>Fault Domains (FDs)</strong>. The available number of availability domains varies by region. Each availability domain has three fault domains. Check region availability before settling on an HA design.</p>
 <p>The key architectural pattern: distribute resources across multiple ADs for region-level HA, distribute within an AD across multiple FDs for AD-level HA. For a 3-AD region, running a 3-node cluster with one node per AD gives you protection against AD failure.</p>
 <p><strong>Remote Peering</strong> connects VCNs across regions. Know the use cases for intra-region peering (Local Peering Gateway) vs cross-region peering (Remote Peering Connection via DRG).</p>
 <h2 id="the-study-approach-for-engineers-with-cloud-experience"><a class="h-anchor" href="#the-study-approach-for-engineers-with-cloud-experience" aria-hidden="true" tabindex="-1">#</a>The study approach for engineers with cloud experience</h2>
@@ -152,19 +154,49 @@ d.setAttribute('data-theme',t);
 <li><strong>Practice exams</strong> — Oracle provides sample questions; third-party practice exams (Whizlabs, ExamTopics) are useful for pattern recognition.</li>
 <li><strong>Hands-on</strong>: OCI Free Tier provides access to most services needed for the exam. Build the architectures — a VCN with subnets, a compute instance, a load balancer, Object Storage policies.</li>
 </ol>
-<p>The exam is 60 questions, 90 minutes. The question style is scenario-based: given an architecture requirement, which OCI services and configuration meets it?</p>
+<p>When reviewing practice questions, explain which architecture meets the constraints and why the other options fail. Verify question count and duration with Oracle for your specific booked exam.</p>
 <p><em>Preparing for OCI certification alongside other cloud certs? <a href="/contact/">Happy to share what&#39;s worked.</a></em></p>
 
       </div>
+<section class="field-worksheet worked-example" aria-labelledby="worked-example">
+    <h2 id="worked-example">Worked example</h2>
+    <p class="case-notice">This scenario and its results are illustrative.</p>
+    
+    <p>Use the provider&#39;s current objectives to build a coverage checklist. Rehearse a private subnet route and an identity change in a lab, then assess an equivalent design without notes.</p>
+    <figure class="delivery-flow">
+    <figcaption>Execution sequence</figcaption>
+    <ol><li>Check official catalogue</li><li>Map objectives to labs</li><li>Practice deployment</li><li>Assess unaided</li></ol>
+  </figure>
+    <figure class="field-chart case-chart">
+    <figcaption>Example comparison <span>Simulated figures</span></figcaption>
+    <ul class="case-metrics"><li class="case-metric">
+      <h3>Practice objectives demonstrated unaided <small>%</small></h3>
+      <ul class="chart-rows"><li><span>Initial exercise</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:50%"></i></span>
+        <strong>50% <small>(7/14)</small></strong></li><li><span>After guided labs</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:85.71428571428571%"></i></span>
+        <strong>85.714286% <small>(12/14)</small></strong></li></ul>
+    </li></ul>
+  </figure>
+    <h3>Method and limits</h3>
+    <p>Use 14 training objectives chosen for this fictional practice set. They are independent of Oracle&#39;s scoring policy or current exam objective weights.</p>
+    <a href="/field-guides/worked-examples.csv" download>Download the worked figures (CSV)</a>
+  </section>
 
 
-
+<aside class="refs" aria-labelledby="refs-h">
+  <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
+  <p class="refs-note">Primary documentation, standards and research for the methods discussed here.</p>
+  <ul>
+    <li><a href="https://learn.oracle.com/ols/learning-path/become-an-oci-architect-associate/163512/162234" rel="noopener" target="_blank">Oracle University · OCI Architect Associate learning path</a><span>Current certification blueprint and official learning path.</span></li>
+  </ul>
+</aside>
 
 
 
       <footer class="article-foot">
         <div class="row" style="gap:.4rem">
-          <a class="chip chip-plain" href="/topics/cloud-architecture/">Cloud Architecture</a><a class="chip chip-plain" href="/insights/?topic=OCI">OCI</a><a class="chip chip-plain" href="/insights/?topic=Certifications">Certifications</a>
+          <a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a><a class="chip" href="/topics/oci/">OCI</a><a class="chip" href="/topics/certifications/">Certifications</a>
         </div>
         <nav class="prevnext" aria-label="More articles">
           <a href="/insights/service-mesh-istio-linkerd/"><span>Previous</span><strong>Service Mesh in Practice: When Istio or Linkerd Is Worth the Complexity</strong></a>
@@ -178,12 +210,12 @@ d.setAttribute('data-theme',t);
     <section class="promo-card promo-techknowen" aria-label="TechKnowen">
       <p class="promo-name">TechKnowen</p>
       <p>Practical reading on software, architecture, and engineering.</p>
-      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+      <a class="card-destination" href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
     </section>
     <section class="promo-card promo-ziggle" aria-label="Ziggle">
       <p class="promo-name">Ziggle</p>
       <p>A new place to play brain teasers.</p>
-      <p class="promo-status">Coming soon</p>
+      <a class="card-destination" href="/projects/ziggle/">Ziggle preview</a> <span class="promo-status">Coming soon</span>
     </section>
   </div>
 </aside>
@@ -192,33 +224,33 @@ d.setAttribute('data-theme',t);
   <section class="section surface hair" style="margin-top:4rem">
     <div class="wrap">
       <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|DevSecOps|Cloud Architecture|Engineering Leadership|" data-search="platform onboarding: measure the path to a first deployment pilot a self-service path, measure time to a first qualifying deployment, and track completion, controls, and support effort. devsecops cloud architecture engineering leadership" data-topic="DevSecOps" href="/insights/platform-engineering-idp-2026/">
+      <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|DevSecOps|Cloud Architecture|Engineering Leadership|" data-search="platform onboarding: measure the path to a first deployment pilot a self-service path, measure time to a first qualifying deployment, and track completion, controls, and support effort. devsecops cloud architecture engineering leadership" data-topic="DevSecOps">
   <div class="card-art"><img data-article-art="platform-engineering-idp-2026" src="/assets/covers/photos/platform-engineering-idp-2026.jpg?v=e89682005513" srcset="/assets/covers/photos/platform-engineering-idp-2026-640.jpg?v=e89682005513 640w, /assets/covers/photos/platform-engineering-idp-2026.jpg?v=e89682005513 1280w" sizes="(min-width: 800px) 420px, 100vw" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">DevSecOps</span>
-    <h3 class="card-title">Platform Onboarding: Measure the Path to a First Deployment</h3>
+    <a class="chip" href="/topics/devsecops/">DevSecOps</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/platform-engineering-idp-2026/">Platform Onboarding: Measure the Path to a First Deployment</a></h3>
     <p class="card-desc">Pilot a self-service path, measure time to a first qualifying deployment, and track completion, controls, and support effort.</p>
     <div class="card-meta"><time datetime="2026-11-20">20 Nov 2026</time><span class="dot"></span><span>2 min read</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|Cloud Architecture|DevSecOps|Infrastructure|" data-search="serverless vs containers: an honest comparison for 2026 neither is universally better. the answer depends on your workload profile, your team&#39;s operational maturity, and — honestly — your tolerance for cold starts. cloud architecture devsecops infrastructure" data-topic="Cloud Architecture" href="/insights/serverless-vs-containers-2026/">
+</article>
+<article class="card" data-card data-topics="|Cloud Architecture|DevSecOps|Infrastructure|" data-search="serverless vs containers: an honest comparison for 2026 neither is universally better. the answer depends on your workload profile, your team&#39;s operational maturity, and — honestly — your tolerance for cold starts. cloud architecture devsecops infrastructure" data-topic="Cloud Architecture">
   <div class="card-art"><img data-article-art="serverless-vs-containers-2026" src="/assets/covers/photos/serverless-vs-containers-2026.jpg?v=773805cd32f5" srcset="/assets/covers/photos/serverless-vs-containers-2026-640.jpg?v=773805cd32f5 640w, /assets/covers/photos/serverless-vs-containers-2026.jpg?v=773805cd32f5 1280w" sizes="(min-width: 800px) 420px, 100vw" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Cloud Architecture</span>
-    <h3 class="card-title">Serverless vs Containers: An Honest Comparison for 2026</h3>
+    <a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/serverless-vs-containers-2026/">Serverless vs Containers: An Honest Comparison for 2026</a></h3>
     <p class="card-desc">Neither is universally better. The answer depends on your workload profile, your team&#39;s operational maturity, and — honestly — your tolerance for cold starts.</p>
     <div class="card-meta"><time datetime="2026-11-13">13 Nov 2026</time><span class="dot"></span><span>4 min read</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|Cloud Architecture|DevSecOps|" data-search="chaos engineering: testing reliability before production tests it for you chaos engineering injects controlled failures to validate that systems actually behave as designed under real-world failure conditions. the gap between the architecture diagram and production behavior is where reliability lives. cloud architecture devsecops" data-topic="Cloud Architecture" href="/insights/chaos-engineering-practices/">
+</article>
+<article class="card" data-card data-topics="|Cloud Architecture|DevSecOps|" data-search="chaos engineering: testing reliability before production tests it for you chaos engineering injects controlled failures to validate that systems actually behave as designed under real-world failure conditions. the gap between the architecture diagram and production behavior is where reliability lives. cloud architecture devsecops" data-topic="Cloud Architecture">
   <div class="card-art"><img data-article-art="chaos-engineering-practices" src="/assets/covers/chaos-engineering-practices.svg?v=55858c5d23db" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Cloud Architecture</span>
-    <h3 class="card-title">Chaos Engineering: Testing Reliability Before Production Tests It For You</h3>
+    <a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/chaos-engineering-practices/">Chaos Engineering: Testing Reliability Before Production Tests It For You</a></h3>
     <p class="card-desc">Chaos engineering injects controlled failures to validate that systems actually behave as designed under real-world failure conditions. The gap between the architecture diagram and production behavior is where reliability lives.</p>
     <div class="card-meta"><time datetime="2026-11-11">11 Nov 2026</time><span class="dot"></span><span>4 min read</span></div>
   </div>
-</a></div>
+</article></div>
     </div>
   </section>
 
@@ -298,6 +330,7 @@ d.setAttribute('data-theme',t);
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/follow/">Follow new writing</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
           <li><a href="/notes/">Personal notes</a></li>
@@ -318,7 +351,7 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=a8e7c95a" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=a8e7c95a"></script>
+<script src="/assets/js/site.js?v=bd74be96" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=bd74be96"></script>
 </body>
 </html>

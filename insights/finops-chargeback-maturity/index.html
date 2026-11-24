@@ -33,8 +33,9 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=a8e7c95a">
-<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<link rel="stylesheet" href="/assets/css/site.css?v=bd74be96">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
+<link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
    never flashes the wrong ground or resets someone's text size mid-read. */
@@ -108,6 +109,7 @@ d.setAttribute('data-theme',t);
     </nav></div>
     <div class="article-copy">
       <div class="prose">
+<p class="article-opening">A chargeback rule should be explainable from reconciled inputs before it affects a team&#39;s budget.</p>
 <p>Most organizations start with showback — a monthly report that tells engineering teams what their cloud spend was. Most organizations stay at showback, because moving to chargeback requires engineering leaders and finance to agree on accounting boundaries that are genuinely hard to draw.</p>
 <p>The result is a FinOps program with visibility but no behavior change. Teams see the numbers, acknowledge them, and continue making infrastructure decisions the same way.</p>
 <p>Chargeback changes that. When a team&#39;s cloud costs appear in their cost center&#39;s P&amp;L, infrastructure decisions start to feel like budget decisions. The organizational dynamic shifts.</p>
@@ -154,14 +156,39 @@ d.setAttribute('data-theme',t);
 <p><em>Building a cost ownership model across a multi-team or multi-BU organization? The technical implementation is usually simpler than the organizational alignment. <a href="/contact/">Happy to compare approaches.</a></em></p>
 
       </div>
+<section class="field-worksheet worked-example" aria-labelledby="worked-example">
+    <h2 id="worked-example">Worked example</h2>
+    <p class="case-notice">This scenario and its results are illustrative.</p>
+    
+    <p>Reconcile one monthly export with direct, shared and unallocated buckets. Test tagging and a usage driver in showback, then let owners challenge classification before the chargeback decision.</p>
+    <figure class="delivery-flow">
+    <figcaption>Execution sequence</figcaption>
+    <ol><li>Collect bill</li><li>Map owners</li><li>Review shared driver</li><li>Reconcile remainder</li></ol>
+  </figure>
+    <figure class="field-chart case-chart">
+    <figcaption>Example comparison <span>Simulated figures</span></figcaption>
+    <ul class="case-metrics"><li class="case-metric">
+      <h3>Spend assigned to an accountable owner <small>%</small></h3>
+      <ul class="chart-rows"><li><span>Directly assigned start</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:78%"></i></span>
+        <strong>78% <small>(7800/10000)</small></strong></li><li><span>After reviewed rules</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:94%"></i></span>
+        <strong>94% <small>(9400/10000)</small></strong></li></ul>
+    </li></ul>
+  </figure>
+    <h3>Method and limits</h3>
+    <p>Use the same synthetic $10,000 pool, published assumptions and a separate visible remainder. Allocation coverage alone cannot establish fairness.</p>
+    <a href="/field-guides/worked-examples.csv" download>Download the worked figures (CSV)</a>
+  </section>
 
 
 <aside class="refs" aria-labelledby="refs-h">
   <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
-  <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
+  <p class="refs-note">Primary documentation, standards and research for the methods discussed here.</p>
   <ul>
-    <li><a href="https://kubernetes.io/docs/" rel="noopener nofollow" target="_blank">Kubernetes documentation</a><span>Primary reference for the concepts used here.</span></li>
-    <li><a href="https://www.finops.org/" rel="noopener nofollow" target="_blank">FinOps Foundation</a><span>Framework, capabilities and terminology.</span></li>
+    <li><a href="https://www.finops.org/framework/capabilities/allocation/" rel="noopener" target="_blank">FinOps Foundation · Cost Allocation</a><span>Direct, shared and unallocated spend.</span></li>
+    <li><a href="https://kubernetes.io/docs/" rel="noopener" target="_blank">Kubernetes documentation</a><span>Primary reference for the concepts used here.</span></li>
+    <li><a href="https://www.finops.org/" rel="noopener" target="_blank">FinOps Foundation</a><span>Framework, capabilities and terminology.</span></li>
   </ul>
 </aside>
 
@@ -169,7 +196,7 @@ d.setAttribute('data-theme',t);
 
       <footer class="article-foot">
         <div class="row" style="gap:.4rem">
-          <a class="chip chip-plain" href="/topics/finops/">FinOps</a><a class="chip chip-plain" href="/insights/?topic=Cost%20Optimisation">Cost Optimisation</a><a class="chip chip-plain" href="/topics/engineering-leadership/">Engineering Leadership</a>
+          <a class="chip" href="/topics/finops/">FinOps</a><a class="chip" href="/topics/cost-optimisation/">Cost Optimisation</a><a class="chip" href="/topics/engineering-leadership/">Engineering Leadership</a>
         </div>
         <nav class="prevnext" aria-label="More articles">
           <a href="/insights/aiml-llms-explained/"><span>Previous</span><strong>Large Language Models: What They Are, How They Are Built, and What They Cannot Do</strong></a>
@@ -183,12 +210,12 @@ d.setAttribute('data-theme',t);
     <section class="promo-card promo-techknowen" aria-label="TechKnowen">
       <p class="promo-name">TechKnowen</p>
       <p>Practical reading on software, architecture, and engineering.</p>
-      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+      <a class="card-destination" href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
     </section>
     <section class="promo-card promo-ziggle" aria-label="Ziggle">
       <p class="promo-name">Ziggle</p>
       <p>A new place to play brain teasers.</p>
-      <p class="promo-status">Coming soon</p>
+      <a class="card-destination" href="/projects/ziggle/">Ziggle preview</a> <span class="promo-status">Coming soon</span>
     </section>
   </div>
 </aside>
@@ -197,33 +224,33 @@ d.setAttribute('data-theme',t);
   <section class="section surface hair" style="margin-top:4rem">
     <div class="wrap">
       <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|FinOps|Cost Optimisation|Engineering Leadership|" data-search="cloud cost per unit: calculate what it costs to deliver an order reconcile effective cloud cost, allocate shared services, and compare spend per completed business unit using a repeatable worksheet. finops cost optimisation engineering leadership" data-topic="FinOps" href="/insights/cloud-unit-economics/">
+      <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|FinOps|Cost Optimisation|Engineering Leadership|" data-search="cloud cost per unit: calculate what it costs to deliver an order reconcile effective cloud cost, allocate shared services, and compare spend per completed business unit using a repeatable worksheet. finops cost optimisation engineering leadership" data-topic="FinOps">
   <div class="card-art"><img data-article-art="cloud-unit-economics" src="/assets/covers/photos/cloud-unit-economics.jpg?v=13f326efe010" srcset="/assets/covers/photos/cloud-unit-economics-640.jpg?v=13f326efe010 640w, /assets/covers/photos/cloud-unit-economics.jpg?v=13f326efe010 1280w" sizes="(min-width: 800px) 420px, 100vw" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">FinOps</span>
-    <h3 class="card-title">Cloud Cost per Unit: Calculate What It Costs to Deliver an Order</h3>
+    <a class="chip" href="/topics/finops/">FinOps</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/cloud-unit-economics/">Cloud Cost per Unit: Calculate What It Costs to Deliver an Order</a></h3>
     <p class="card-desc">Reconcile effective cloud cost, allocate shared services, and compare spend per completed business unit using a repeatable worksheet.</p>
     <div class="card-meta"><time datetime="2025-10-15">15 Oct 2025</time><span class="dot"></span><span>2 min read</span><span class="dot"></span><span>Series</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|FinOps|Cost Optimisation|Cloud Architecture|" data-search="cloud cost anomaly detection: catching runaway spend before it becomes a bill cloud cost overruns that show up in the monthly invoice are already weeks old. here&#39;s how to set up anomaly detection that catches cost spikes in hours, with enough context to diagnose the cause quickly. finops cost optimisation cloud architecture" data-topic="FinOps" href="/insights/finops-anomaly-detection/">
+</article>
+<article class="card" data-card data-topics="|FinOps|Cost Optimisation|Cloud Architecture|" data-search="cloud cost anomaly detection: catching runaway spend before it becomes a bill cloud cost overruns that show up in the monthly invoice are already weeks old. here&#39;s how to set up anomaly detection that catches cost spikes in hours, with enough context to diagnose the cause quickly. finops cost optimisation cloud architecture" data-topic="FinOps">
   <div class="card-art"><img data-article-art="finops-anomaly-detection" src="/assets/covers/finops-anomaly-detection.svg?v=47a96d09bef2" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">FinOps</span>
-    <h3 class="card-title">Cloud Cost Anomaly Detection: Catching Runaway Spend Before It Becomes a Bill</h3>
+    <a class="chip" href="/topics/finops/">FinOps</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/finops-anomaly-detection/">Cloud Cost Anomaly Detection: Catching Runaway Spend Before It Becomes a Bill</a></h3>
     <p class="card-desc">Cloud cost overruns that show up in the monthly invoice are already weeks old. Here&#39;s how to set up anomaly detection that catches cost spikes in hours, with enough context to diagnose the cause quickly.</p>
     <div class="card-meta"><time datetime="2026-07-06">6 Jul 2026</time><span class="dot"></span><span>5 min read</span><span class="dot"></span><span>Series</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|FinOps|Cloud Architecture|Cost Optimisation|" data-search="cloud tagging policy template: the foundation finops actually requires a tagging policy that nobody enforces is worse than no tagging policy. here&#39;s how to design a tagging taxonomy that survives contact with real engineering teams — with enforcement mechanisms, exceptions handling, and the tags that actually drive cost allocation decisions. finops cloud architecture cost optimisation" data-topic="FinOps" href="/insights/finops-tagging-policy/">
+</article>
+<article class="card" data-card data-topics="|FinOps|Cloud Architecture|Cost Optimisation|" data-search="cloud tagging policy template: the foundation finops actually requires a tagging policy that nobody enforces is worse than no tagging policy. here&#39;s how to design a tagging taxonomy that survives contact with real engineering teams — with enforcement mechanisms, exceptions handling, and the tags that actually drive cost allocation decisions. finops cloud architecture cost optimisation" data-topic="FinOps">
   <div class="card-art"><img data-article-art="finops-tagging-policy" src="/assets/covers/finops-tagging-policy.svg?v=020fea3d6ae8" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">FinOps</span>
-    <h3 class="card-title">Cloud Tagging Policy Template: The Foundation FinOps Actually Requires</h3>
+    <a class="chip" href="/topics/finops/">FinOps</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/finops-tagging-policy/">Cloud Tagging Policy Template: The Foundation FinOps Actually Requires</a></h3>
     <p class="card-desc">A tagging policy that nobody enforces is worse than no tagging policy. Here&#39;s how to design a tagging taxonomy that survives contact with real engineering teams — with enforcement mechanisms, exceptions handling, and the tags that actually drive cost allocation decisions.</p>
     <div class="card-meta"><time datetime="2026-06-12">12 Jun 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
   </div>
-</a></div>
+</article></div>
     </div>
   </section>
 
@@ -313,6 +340,7 @@ d.setAttribute('data-theme',t);
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/follow/">Follow new writing</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
           <li><a href="/notes/">Personal notes</a></li>
@@ -333,7 +361,7 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=a8e7c95a" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=a8e7c95a"></script>
+<script src="/assets/js/site.js?v=bd74be96" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=bd74be96"></script>
 </body>
 </html>

@@ -33,8 +33,9 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=a8e7c95a">
-<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<link rel="stylesheet" href="/assets/css/site.css?v=bd74be96">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
+<link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
    never flashes the wrong ground or resets someone's text size mid-read. */
@@ -105,13 +106,14 @@ d.setAttribute('data-theme',t);
 </nav></div>
     <div class="article-copy">
       <div class="prose">
+<p class="article-opening">Virtual threads can reduce the cost of concurrent blocking tasks while downstream pools still limit useful work.</p>
 <p>Virtual threads are the biggest change to Java&#39;s concurrency model since the language shipped, and they arrived with an unusual property for a big-ticket feature: the migration story is mostly <em>deleting</em> things. Thread pools, reactive adapters, callback chains — the machinery we built to work around expensive threads becomes optional.</p>
 <p>But &quot;mostly deleting things&quot; is not &quot;free.&quot; Two years into mainstream adoption, the patterns — and the failure modes — are clear. Here&#39;s the enterprise field guide.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
 <p><strong>Concurrency at the same downstream cap.</strong> Keep a 40-connection database pool fixed while increasing incoming concurrency. Track useful throughput, p99 latency and pool wait. If throughput stays flat while wait rises, additional threads are queueing work ahead of the same bottleneck.</p>
 <p><em>Illustrative measurement. Any numbers in this example are hypothetical.</em></p>
 <h2 id="the-core-idea-in-one-paragraph"><a class="h-anchor" href="#the-core-idea-in-one-paragraph" aria-hidden="true" tabindex="-1">#</a>The core idea in one paragraph</h2>
-<p>Platform threads map 1:1 to OS threads: expensive to create (~1 MB stack), capped in the low thousands per host. Virtual threads are JVM-managed: cheap (bytes of initial footprint), scheduled onto a small pool of OS carrier threads, and <em>unmounted</em> from the carrier whenever they block on I/O. A million virtual threads waiting on HTTP responses costs almost nothing; the carriers stay busy running whichever threads are actually runnable. The result: you write plain, blocking, debuggable code and get the concurrency scaling that previously required reactive frameworks.</p>
+<p>Java platform threads are typically mapped to OS threads. Virtual threads use a scheduler and platform carriers. Common blocking operations can unmount virtual threads so carriers can run other work. Memory and throughput still depend on live request state, native calls, thread-local data, and downstream capacity. Test the target JDK and workload.</p>
 <h2 id="what-changes-in-practice"><a class="h-anchor" href="#what-changes-in-practice" aria-hidden="true" tabindex="-1">#</a>What changes in practice</h2>
 <p><strong>Thread-per-request stops being a scalability ceiling.</strong> The classic sizing exercise — &quot;200 Tomcat threads, so 200 concurrent requests, so at 500 ms per downstream call we saturate at 400 req/s&quot; — evaporates. With virtual threads (one property in Spring Boot 3.2+: <code>spring.threads.virtual.enabled=true</code>; similar switches in Helidon, Quarkus, and modern Tomcat/Jetty), concurrent requests are bounded by memory and downstream capacity, not thread count.</p>
 <p><strong>Don&#39;t pool virtual threads.</strong> Pooling exists to amortize thread creation cost; virtual threads have none. <code>Executors.newVirtualThreadPerTaskExecutor()</code> and create one per task. Pools of virtual threads are a category error — and where you previously used a pool <em>as a concurrency limiter</em>, replace it with an explicit <code>Semaphore</code>, which says what it means.</p>
@@ -121,7 +123,7 @@ d.setAttribute('data-theme',t);
 <p><strong>CPU-bound work gains nothing.</strong> Virtual threads shine when threads <em>wait</em>. Image encoding, crypto, big serialization jobs still belong on a bounded platform-thread executor sized to cores.</p>
 <p><strong>Memory per request still matters.</strong> A million concurrent requests each holding a 2 MB object graph is still 2 TB. The thread stack stopped being the constraint; your allocations didn&#39;t.</p>
 <h2 id="the-failure-modes-to-design-against"><a class="h-anchor" href="#the-failure-modes-to-design-against" aria-hidden="true" tabindex="-1">#</a>The failure modes to design against</h2>
-<p><strong>Pinning.</strong> A virtual thread that blocks while it cannot unmount <em>pins</em> its carrier, and enough pinned carriers starve the whole scheduler. The historical big one — blocking inside a <code>synchronized</code> block — was fixed in <strong>JDK 24</strong> (synchronized no longer pins), but two sources remain relevant: blocking inside native/JNI calls, and older JDKs where the synchronized fix hasn&#39;t arrived; on JDK 21 LTS, pinning via synchronized-around-I/O is still the top production issue. Detect it with <code>-Djdk.tracePinnedThreads=full</code> or JFR&#39;s <code>jdk.VirtualThreadPinned</code> event; fix it by replacing synchronized-around-I/O with <code>ReentrantLock</code> or upgrading. Audit third-party libraries — connection pools and drivers were the usual offenders; current HikariCP, JDBC drivers, and Apache HttpClient are fine, but that ancient SOAP client in the corner of the estate may not be.</p>
+<p><strong>Pinning</strong> holds a carrier while a virtual thread blocks. On JDK 21–23, blocking while holding a Java monitor can pin. <a href="https://openjdk.org/jeps/491" rel="noopener" target="_blank">JEP 491</a> changed monitor behaviour in JDK 24. Native and foreign call boundaries can still pin in relevant cases. Use JFR’s <code>jdk.VirtualThreadPinned</code> event and check the guidance for your JDK. The older <code>jdk.tracePinnedThreads</code> property has no effect with JDK 24’s change.</p>
 <p><strong>ThreadLocal abuse.</strong> ThreadLocals <em>work</em> on virtual threads, but patterns that assume few, long-lived threads — caching a 50 KB buffer per thread, say — turn into a memory bomb across a million short-lived ones. The replacement is <strong>ScopedValues (final in JDK 25)</strong> for request context, or just passing context explicitly. Audit anything stashing expensive state in ThreadLocals, including frameworks doing it on your behalf.</p>
 <p><strong>Unbounded spawn.</strong> <code>virtualThreadPerTaskExecutor</code> will happily create ten million threads if your queue feeds it that many. Every ingress point needs an explicit concurrency bound — semaphore, rate limiter, or bounded queue — because the thread pool is no longer accidentally providing one.</p>
 <p><strong>Observability drift.</strong> Dashboards that counted platform threads, thread-pool utilization alerts, APM agents that assumed thread identity equals request identity — all need revisiting. JFR has first-class virtual thread events; make sure your APM version does too.</p>
@@ -135,13 +137,39 @@ d.setAttribute('data-theme',t);
 <p>The strategic summary for the architecture review: virtual threads let enterprises write the simple code again at the scale that used to require the complicated code. The catches are real but enumerable — pinning on older JDKs, missing backpressure, downstream systems meeting unthrottled concurrency. Handle those three, and this is the rare platform upgrade that reduces both latency <em>and</em> codebase complexity.</p>
 
       </div>
+<section class="field-worksheet worked-example" aria-labelledby="worked-example">
+    <h2 id="worked-example">Worked example</h2>
+    <p class="case-notice">This scenario and its results are illustrative.</p>
+    
+    <p>Run a blocking HTTP endpoint twice under the same database pool and latency distribution. Compare queue wait and p95 while watching CPU and pool saturation. Validate pinning and observability on the deployed JDK.</p>
+    <figure class="delivery-flow">
+    <figcaption>Execution sequence</figcaption>
+    <ol><li>Fixed dependency pool</li><li>Replay workload</li><li>Inspect wait locations</li><li>Limit downstream concurrency</li></ol>
+  </figure>
+    <figure class="field-chart case-chart">
+    <figcaption>Example comparison <span>Simulated figures</span></figcaption>
+    <ul class="case-metrics"><li class="case-metric">
+      <h3>p95 time waiting for request executor <small>ms</small></h3>
+      <ul class="chart-rows"><li><span>Bounded platform-thread executor</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:100%"></i></span>
+        <strong>115</strong></li><li><span>Virtual-thread-per-task executor</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:15.652173913043478%"></i></span>
+        <strong>18</strong></li></ul>
+    </li></ul>
+  </figure>
+    <h3>Method and limits</h3>
+    <p>Replay 10,000 fixture requests. A smaller executor queue can move waiting to the database pool. Check end-to-end time before raising concurrency.</p>
+    <a href="/field-guides/worked-examples.csv" download>Download the worked figures (CSV)</a>
+  </section>
 
 
 <aside class="refs" aria-labelledby="refs-h">
   <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
-  <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
+  <p class="refs-note">Primary documentation, standards and research for the methods discussed here.</p>
   <ul>
-    <li><a href="https://kafka.apache.org/documentation/" rel="noopener nofollow" target="_blank">Apache Kafka documentation</a><span>Partitioning, consumer groups and delivery semantics.</span></li>
+    <li><a href="https://openjdk.org/jeps/444" rel="noopener" target="_blank">OpenJDK JEP 444 and the virtual thread design</a><span>Scheduling, blocking and the JDK 21 design.</span></li>
+    <li><a href="https://openjdk.org/jeps/491" rel="noopener" target="_blank">OpenJDK JEP 491 · Synchronise Virtual Threads without Pinning</a><span>Monitor behaviour from JDK 24.</span></li>
+    <li><a href="https://kafka.apache.org/documentation/" rel="noopener" target="_blank">Apache Kafka documentation</a><span>Partitioning, consumer groups and delivery semantics.</span></li>
   </ul>
 </aside>
 
@@ -149,7 +177,7 @@ d.setAttribute('data-theme',t);
 
       <footer class="article-foot">
         <div class="row" style="gap:.4rem">
-          <a class="chip chip-plain" href="/insights/?topic=Java">Java</a><a class="chip chip-plain" href="/insights/?topic=JVM">JVM</a><a class="chip chip-plain" href="/insights/?topic=Concurrency">Concurrency</a><a class="chip chip-plain" href="/topics/performance/">Performance</a><a class="chip chip-plain" href="/topics/architecture/">Architecture</a>
+          <a class="chip" href="/topics/java/">Java</a><a class="chip" href="/topics/jvm/">JVM</a><a class="chip" href="/topics/concurrency/">Concurrency</a><a class="chip" href="/topics/performance/">Performance</a><a class="chip" href="/topics/architecture/">Architecture</a>
         </div>
         <nav class="prevnext" aria-label="More articles">
           <a href="/insights/multi-region-architecture-patterns/"><span>Previous</span><strong>Multi-Region Architecture Patterns: What You&#39;re Actually Buying at Each Tier</strong></a>
@@ -163,12 +191,12 @@ d.setAttribute('data-theme',t);
     <section class="promo-card promo-techknowen" aria-label="TechKnowen">
       <p class="promo-name">TechKnowen</p>
       <p>Practical reading on software, architecture, and engineering.</p>
-      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+      <a class="card-destination" href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
     </section>
     <section class="promo-card promo-ziggle" aria-label="Ziggle">
       <p class="promo-name">Ziggle</p>
       <p>A new place to play brain teasers.</p>
-      <p class="promo-status">Coming soon</p>
+      <a class="card-destination" href="/projects/ziggle/">Ziggle preview</a> <span class="promo-status">Coming soon</span>
     </section>
   </div>
 </aside>
@@ -177,33 +205,33 @@ d.setAttribute('data-theme',t);
   <section class="section surface hair" style="margin-top:4rem">
     <div class="wrap">
       <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|Java|JVM|GraalVM|Cloud Architecture|Performance|" data-search="graalvm native image for enterprise java: when compiling ahead of time pays native image turns java applications into instant-starting, memory-lean executables — at the cost of a closed-world assumption that fights two decades of java dynamism. where native compilation genuinely wins, what breaks, and a decision framework. java jvm graalvm cloud architecture performance" data-topic="Cloud Architecture" href="/insights/java-graalvm-native-image/">
+      <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|Java|JVM|GraalVM|Cloud Architecture|Performance|" data-search="graalvm native image for enterprise java: when compiling ahead of time pays native image turns java applications into instant-starting, memory-lean executables — at the cost of a closed-world assumption that fights two decades of java dynamism. where native compilation genuinely wins, what breaks, and a decision framework. java jvm graalvm cloud architecture performance" data-topic="Cloud Architecture">
   <div class="card-art"><img data-article-art="java-graalvm-native-image" src="/assets/covers/java-graalvm-native-image.svg?v=19aa5f526e76" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Cloud Architecture</span>
-    <h3 class="card-title">GraalVM Native Image for Enterprise Java: When Compiling Ahead of Time Pays</h3>
+    <a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/java-graalvm-native-image/">GraalVM Native Image for Enterprise Java: When Compiling Ahead of Time Pays</a></h3>
     <p class="card-desc">Native Image turns Java applications into instant-starting, memory-lean executables — at the cost of a closed-world assumption that fights two decades of Java dynamism. Where native compilation genuinely wins, what breaks, and a decision framework.</p>
     <div class="card-meta"><time datetime="2026-10-26">26 Oct 2026</time><span class="dot"></span><span>5 min read</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|Java|JVM|Performance|Cloud Architecture|" data-search="jvm tuning for production: heap, gc, and the flags worth setting in 2026 a practical guide to tuning the jvm for production services — heap sizing, choosing between g1, zgc, and shenandoah, container awareness, and the observability flags every deployment should carry. java jvm performance cloud architecture" data-topic="Performance" href="/insights/java-jvm-tuning-production/">
+</article>
+<article class="card" data-card data-topics="|Java|JVM|Performance|Cloud Architecture|" data-search="jvm tuning for production: heap, gc, and the flags worth setting in 2026 a practical guide to tuning the jvm for production services — heap sizing, choosing between g1, zgc, and shenandoah, container awareness, and the observability flags every deployment should carry. java jvm performance cloud architecture" data-topic="Performance">
   <div class="card-art"><img data-article-art="java-jvm-tuning-production" src="/assets/covers/java-jvm-tuning-production.svg?v=362da9c24bb1" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Performance</span>
-    <h3 class="card-title">JVM Tuning for Production: Heap, GC, and the Flags Worth Setting in 2026</h3>
+    <a class="chip" href="/topics/performance/">Performance</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/java-jvm-tuning-production/">JVM Tuning for Production: Heap, GC, and the Flags Worth Setting in 2026</a></h3>
     <p class="card-desc">A practical guide to tuning the JVM for production services — heap sizing, choosing between G1, ZGC, and Shenandoah, container awareness, and the observability flags every deployment should carry.</p>
     <div class="card-meta"><time datetime="2026-10-14">14 Oct 2026</time><span class="dot"></span><span>5 min read</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|Java|WebLogic|Middleware|Performance|Architecture|" data-search="weblogic performance tuning: work managers, connection pools, and the knobs that actually matter a field guide to tuning weblogic server in production — the self-tuning thread pool, work managers, jdbc connection pools, jvm settings, and the diagnostic tools that tell you which knob to turn. java weblogic middleware performance architecture" data-topic="Performance" href="/insights/weblogic-performance-tuning/">
+</article>
+<article class="card" data-card data-topics="|Java|WebLogic|Middleware|Performance|Architecture|" data-search="weblogic performance tuning: work managers, connection pools, and the knobs that actually matter a field guide to tuning weblogic server in production — the self-tuning thread pool, work managers, jdbc connection pools, jvm settings, and the diagnostic tools that tell you which knob to turn. java weblogic middleware performance architecture" data-topic="Performance">
   <div class="card-art"><img data-article-art="weblogic-performance-tuning" src="/assets/covers/weblogic-performance-tuning.svg?v=ceff0fa3231c" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Performance</span>
-    <h3 class="card-title">WebLogic Performance Tuning: Work Managers, Connection Pools, and the Knobs That Actually Matter</h3>
+    <a class="chip" href="/topics/performance/">Performance</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/weblogic-performance-tuning/">WebLogic Performance Tuning: Work Managers, Connection Pools, and the Knobs That Actually Matter</a></h3>
     <p class="card-desc">A field guide to tuning WebLogic Server in production — the self-tuning thread pool, work managers, JDBC connection pools, JVM settings, and the diagnostic tools that tell you which knob to turn.</p>
     <div class="card-meta"><time datetime="2025-08-19">19 Aug 2025</time><span class="dot"></span><span>6 min read</span></div>
   </div>
-</a></div>
+</article></div>
     </div>
   </section>
 
@@ -283,6 +311,7 @@ d.setAttribute('data-theme',t);
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/follow/">Follow new writing</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
           <li><a href="/notes/">Personal notes</a></li>
@@ -303,7 +332,7 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=a8e7c95a" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=a8e7c95a"></script>
+<script src="/assets/js/site.js?v=bd74be96" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=bd74be96"></script>
 </body>
 </html>

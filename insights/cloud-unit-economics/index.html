@@ -33,8 +33,9 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=a8e7c95a">
-<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<link rel="stylesheet" href="/assets/css/site.css?v=bd74be96">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
+<link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
    never flashes the wrong ground or resets someone's text size mid-read. */
@@ -108,10 +109,11 @@ d.setAttribute('data-theme',t);
     </nav></div>
     <div class="article-copy">
       <div class="prose">
+
 <p>A cloud bill can rise while the cost of delivering each order falls. To tell which happened, join an accounting numerator to a business denominator. The numerator answers what the service cost during a period. The denominator answers how many useful units it delivered during the same period. Decide both definitions before looking at the result.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
 <p>For an order pipeline, use unique completed orders. Count a retry as part of the cost of delivering the order. Deduplicate by a stable order identifier and decide how to handle cancellations, refunds and late completions. For another service, choose a meaningful output that stays interpretable over time, such as settled transfers or successfully processed gigabytes. Document the exact event and cutoff.</p>
-<p>Add directly attributable effective cost to the allocated share of common services. Use the same currency and cost basis in both periods. Reconcile to the billing export after accounting for excluded costs. Document treatments of credits, taxes, commitments and amortisation. Effective cost is a defined cost basis in FOCUS. The mapping still depends on the billing export and the cost scope you choose.</p>
+<p>Add directly attributable effective cost to the allocated share of common services. Use the same currency and cost basis in both periods. Reconcile allocations, unallocated amounts and exclusions to the same scoped EffectiveCost total. Bridge invoice-level BilledCost separately. Commitment amortisation and invoice timing can cause the two totals to differ over a short period. Document treatments of credits, taxes, commitments and amortisation. Effective cost is a defined cost basis in FOCUS. The mapping still depends on the billing export and the cost scope you choose.</p>
 <h2 id="build-a-traceable-cost-model"><a class="h-anchor" href="#build-a-traceable-cost-model" aria-hidden="true" tabindex="-1">#</a>Build a traceable cost model</h2>
 <ol>
 <li>Tag or otherwise map billing line items to a stable service owner and cost scope. Classify charges as direct, shared, or excluded. Track unmapped costs where reviewers can see them.</li>
@@ -154,11 +156,14 @@ d.setAttribute('data-theme',t);
 </section>
 <script type="module" src="/assets/js/field-worksheet.mjs"></script>
 
+
 <aside class="refs" aria-labelledby="refs-h">
   <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
-  <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
+  <p class="refs-note">Primary documentation, standards and research for the methods discussed here.</p>
   <ul>
-    <li><a href="https://www.finops.org/" rel="noopener nofollow" target="_blank">FinOps Foundation</a><span>Framework, capabilities and terminology.</span></li>
+    <li><a href="https://www.finops.org/framework/capabilities/allocation/" rel="noopener" target="_blank">FinOps Foundation · Cost Allocation</a><span>Direct, shared and unallocated spend.</span></li>
+    <li><a href="https://focus.finops.org/docs/specification/v1-4/features/cost-comparison/" rel="noopener" target="_blank">FOCUS · Cost Comparison</a><span>Effective and billed cost views.</span></li>
+    <li><a href="https://www.finops.org/" rel="noopener" target="_blank">FinOps Foundation</a><span>Framework, capabilities and terminology.</span></li>
   </ul>
 </aside>
 
@@ -166,7 +171,7 @@ d.setAttribute('data-theme',t);
 
       <footer class="article-foot">
         <div class="row" style="gap:.4rem">
-          <a class="chip chip-plain" href="/topics/finops/">FinOps</a><a class="chip chip-plain" href="/insights/?topic=Cost%20Optimisation">Cost Optimisation</a><a class="chip chip-plain" href="/topics/engineering-leadership/">Engineering Leadership</a>
+          <a class="chip" href="/topics/finops/">FinOps</a><a class="chip" href="/topics/cost-optimisation/">Cost Optimisation</a><a class="chip" href="/topics/engineering-leadership/">Engineering Leadership</a>
         </div>
         <nav class="prevnext" aria-label="More articles">
           <a href="/insights/structured-logging-practices/"><span>Previous</span><strong>Structured Logging That Pays for Itself: Schema, Context, and Cost Discipline</strong></a>
@@ -180,12 +185,12 @@ d.setAttribute('data-theme',t);
     <section class="promo-card promo-techknowen" aria-label="TechKnowen">
       <p class="promo-name">TechKnowen</p>
       <p>Practical reading on software, architecture, and engineering.</p>
-      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+      <a class="card-destination" href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
     </section>
     <section class="promo-card promo-ziggle" aria-label="Ziggle">
       <p class="promo-name">Ziggle</p>
       <p>A new place to play brain teasers.</p>
-      <p class="promo-status">Coming soon</p>
+      <a class="card-destination" href="/projects/ziggle/">Ziggle preview</a> <span class="promo-status">Coming soon</span>
     </section>
   </div>
 </aside>
@@ -194,33 +199,33 @@ d.setAttribute('data-theme',t);
   <section class="section surface hair" style="margin-top:4rem">
     <div class="wrap">
       <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|FinOps|Cost Optimisation|Engineering Leadership|" data-search="from showback to chargeback: building a cloud cost ownership model that sticks showback tells teams what they spend. chargeback makes them accountable for it. the gap between the two is cultural as much as technical — here&#39;s how to bridge it without creating finance theater. finops cost optimisation engineering leadership" data-topic="FinOps" href="/insights/finops-chargeback-maturity/">
+      <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|FinOps|Cost Optimisation|Engineering Leadership|" data-search="from showback to chargeback: building a cloud cost ownership model that sticks showback tells teams what they spend. chargeback makes them accountable for it. the gap between the two is cultural as much as technical — here&#39;s how to bridge it without creating finance theater. finops cost optimisation engineering leadership" data-topic="FinOps">
   <div class="card-art"><img data-article-art="finops-chargeback-maturity" src="/assets/covers/finops-chargeback-maturity.svg?v=74e3b9e6aa7a" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">FinOps</span>
-    <h3 class="card-title">From Showback to Chargeback: Building a Cloud Cost Ownership Model That Sticks</h3>
+    <a class="chip" href="/topics/finops/">FinOps</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/finops-chargeback-maturity/">From Showback to Chargeback: Building a Cloud Cost Ownership Model That Sticks</a></h3>
     <p class="card-desc">Showback tells teams what they spend. Chargeback makes them accountable for it. The gap between the two is cultural as much as technical — here&#39;s how to bridge it without creating finance theater.</p>
     <div class="card-meta"><time datetime="2026-10-23">23 Oct 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|FinOps|Cost Optimisation|Cloud Architecture|" data-search="cloud cost anomaly detection: catching runaway spend before it becomes a bill cloud cost overruns that show up in the monthly invoice are already weeks old. here&#39;s how to set up anomaly detection that catches cost spikes in hours, with enough context to diagnose the cause quickly. finops cost optimisation cloud architecture" data-topic="FinOps" href="/insights/finops-anomaly-detection/">
+</article>
+<article class="card" data-card data-topics="|FinOps|Cost Optimisation|Cloud Architecture|" data-search="cloud cost anomaly detection: catching runaway spend before it becomes a bill cloud cost overruns that show up in the monthly invoice are already weeks old. here&#39;s how to set up anomaly detection that catches cost spikes in hours, with enough context to diagnose the cause quickly. finops cost optimisation cloud architecture" data-topic="FinOps">
   <div class="card-art"><img data-article-art="finops-anomaly-detection" src="/assets/covers/finops-anomaly-detection.svg?v=47a96d09bef2" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">FinOps</span>
-    <h3 class="card-title">Cloud Cost Anomaly Detection: Catching Runaway Spend Before It Becomes a Bill</h3>
+    <a class="chip" href="/topics/finops/">FinOps</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/finops-anomaly-detection/">Cloud Cost Anomaly Detection: Catching Runaway Spend Before It Becomes a Bill</a></h3>
     <p class="card-desc">Cloud cost overruns that show up in the monthly invoice are already weeks old. Here&#39;s how to set up anomaly detection that catches cost spikes in hours, with enough context to diagnose the cause quickly.</p>
     <div class="card-meta"><time datetime="2026-07-06">6 Jul 2026</time><span class="dot"></span><span>5 min read</span><span class="dot"></span><span>Series</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|FinOps|Cloud Architecture|Cost Optimisation|" data-search="cloud tagging policy template: the foundation finops actually requires a tagging policy that nobody enforces is worse than no tagging policy. here&#39;s how to design a tagging taxonomy that survives contact with real engineering teams — with enforcement mechanisms, exceptions handling, and the tags that actually drive cost allocation decisions. finops cloud architecture cost optimisation" data-topic="FinOps" href="/insights/finops-tagging-policy/">
+</article>
+<article class="card" data-card data-topics="|FinOps|Cloud Architecture|Cost Optimisation|" data-search="cloud tagging policy template: the foundation finops actually requires a tagging policy that nobody enforces is worse than no tagging policy. here&#39;s how to design a tagging taxonomy that survives contact with real engineering teams — with enforcement mechanisms, exceptions handling, and the tags that actually drive cost allocation decisions. finops cloud architecture cost optimisation" data-topic="FinOps">
   <div class="card-art"><img data-article-art="finops-tagging-policy" src="/assets/covers/finops-tagging-policy.svg?v=020fea3d6ae8" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">FinOps</span>
-    <h3 class="card-title">Cloud Tagging Policy Template: The Foundation FinOps Actually Requires</h3>
+    <a class="chip" href="/topics/finops/">FinOps</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/finops-tagging-policy/">Cloud Tagging Policy Template: The Foundation FinOps Actually Requires</a></h3>
     <p class="card-desc">A tagging policy that nobody enforces is worse than no tagging policy. Here&#39;s how to design a tagging taxonomy that survives contact with real engineering teams — with enforcement mechanisms, exceptions handling, and the tags that actually drive cost allocation decisions.</p>
     <div class="card-meta"><time datetime="2026-06-12">12 Jun 2026</time><span class="dot"></span><span>4 min read</span><span class="dot"></span><span>Series</span></div>
   </div>
-</a></div>
+</article></div>
     </div>
   </section>
 
@@ -310,6 +315,7 @@ d.setAttribute('data-theme',t);
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/follow/">Follow new writing</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
           <li><a href="/notes/">Personal notes</a></li>
@@ -330,7 +336,7 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=a8e7c95a" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=a8e7c95a"></script>
+<script src="/assets/js/site.js?v=bd74be96" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=bd74be96"></script>
 </body>
 </html>

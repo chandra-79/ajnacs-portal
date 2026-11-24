@@ -33,8 +33,9 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=a8e7c95a">
-<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Insights" href="/feed.xml">
+<link rel="stylesheet" href="/assets/css/site.css?v=bd74be96">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
+<link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
 /* Theme and reading preferences are applied before first paint, so the page
    never flashes the wrong ground or resets someone's text size mid-read. */
@@ -105,6 +106,7 @@ d.setAttribute('data-theme',t);
 </nav></div>
     <div class="article-copy">
       <div class="prose">
+<p class="article-opening">A commitment comparison needs the same hourly demand and the exact services eligible for each option.</p>
 <p>AWS introduced Savings Plans in 2019 as a more flexible alternative to EC2 Reserved Instances. For most workloads, they are now the better choice. For some specific workloads, Reserved Instances still offer a price advantage. Understanding when each applies is the core FinOps decision for reducing AWS compute costs.</p>
 <h2 id="what-to-measure"><a class="h-anchor" href="#what-to-measure" aria-hidden="true" tabindex="-1">#</a>What to measure</h2>
 <p><strong>Coverage, utilisation and effective savings.</strong> Record eligible usage covered by commitments and the share of committed spend actually used. If $80 of a $100 hourly commitment is used, utilisation is 80%. Calculate effective savings against an equivalent on-demand workload after accounting for the unused commitment.</p>
@@ -116,12 +118,12 @@ d.setAttribute('data-theme',t);
 <p><strong>EC2 Instance Savings Plans</strong>: apply to EC2 in a specific instance family within a specific region (e.g., M5 in us-east-1). Higher discount than Compute Savings Plans (up to 72%) in exchange for the commitment to a specific instance family and region.</p>
 <p><strong>SageMaker Savings Plans</strong>: apply to SageMaker instance usage. Relevant if SageMaker is a significant cost driver.</p>
 <h2 id="how-reserved-instances-work"><a class="h-anchor" href="#how-reserved-instances-work" aria-hidden="true" tabindex="-1">#</a>How Reserved Instances work</h2>
-<p>Reserved Instances reserve capacity for a specific instance type in a specific region (or Availability Zone). Standard RIs offer up to 72% off on-demand; Convertible RIs offer up to 66% with the ability to change instance type within the RI term.</p>
+<p>Regional EC2 Reserved Instances provide a billing discount without reserving capacity. Zonal EC2 Reserved Instances reserve capacity in a specific Availability Zone. Standard and Convertible terms differ: inspect matching requirements, exchanges and the effective rate for your actual usage.</p>
 <p><strong>Where RIs still have an advantage</strong>:</p>
 <ul>
-<li><p><strong>Capacity reservation</strong>: Standard RIs in a specific AZ guarantee that capacity. Savings Plans and Compute RIs do not reserve capacity — they only discount it. For workloads that need guaranteed capacity on specific instance types (large ML training instances, specialized compute), Standard RIs with capacity reservation are the only option that guarantees you will be able to launch when needed.</p>
+<li><p><strong>Capacity reservation</strong>: Zonal Reserved Instances and <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-capacity-reservations.html" rel="noopener" target="_blank">EC2 On-Demand Capacity Reservations</a> are capacity mechanisms subject to their terms. A Savings Plan applies a billing discount. A matching Capacity Reservation can be considered separately.</p>
 </li>
-<li><p><strong>RDS, Redshift, ElastiCache, OpenSearch</strong>: Savings Plans do not cover these services. Reserved Instances for managed database services are the only commitment discount available.</p>
+<li><p><strong>RDS, Redshift, ElastiCache, OpenSearch</strong>: Savings Plans do not cover these services. Review each managed service’s current purchase options and eligibility separately.</p>
 </li>
 <li><p><strong>Specific instance family + region commitment with maximum discount</strong>: EC2 Instance Savings Plans and Standard RIs offer similar discounts for committed usage in a specific family/region, but RIs are slightly more flexible in instance size flexibility within the family.</p>
 </li>
@@ -149,13 +151,38 @@ d.setAttribute('data-theme',t);
 <p><em>Modeling Savings Plans or RI purchases for a significant AWS spend? The commitment analysis requires a solid understanding of your usage patterns over time. <a href="/contact/">Happy to walk through the approach.</a></em></p>
 
       </div>
+<section class="field-worksheet worked-example" aria-labelledby="worked-example">
+    <h2 id="worked-example">Worked example</h2>
+    <p class="case-notice">This scenario and its results are illustrative.</p>
+    
+    <p>Take an hourly synthetic usage export. Apply each purchase model only to eligible usage and rerun the budget under a fleet migration. Include unused commitment in the final bill model.</p>
+    <figure class="delivery-flow">
+    <figcaption>Execution sequence</figcaption>
+    <ol><li>Classify eligible hours</li><li>Model commitment</li><li>Stress migration</li><li>Compare effective spend</li></ol>
+  </figure>
+    <figure class="field-chart case-chart">
+    <figcaption>Example comparison <span>Simulated figures</span></figcaption>
+    <ul class="case-metrics"><li class="case-metric">
+      <h3>Projected monthly effective cost <small>USD</small></h3>
+      <ul class="chart-rows"><li><span>No commitment fixture</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:100%"></i></span>
+        <strong>12,000</strong></li><li><span>Bounded commitment fixture</span>
+        <span class="chart-bar" aria-hidden="true"><i style="--bar-width:86.66666666666667%"></i></span>
+        <strong>10,400</strong></li></ul>
+    </li></ul>
+  </figure>
+    <h3>Method and limits</h3>
+    <p>Illustrative rates are scenario inputs, independent of current AWS prices. Compare total eligible and ineligible usage with unused commitment included.</p>
+    <a href="/field-guides/worked-examples.csv" download>Download the worked figures (CSV)</a>
+  </section>
 
 
 <aside class="refs" aria-labelledby="refs-h">
   <h2 id="refs-h" class="refs-title">References &amp; further reading</h2>
-  <p class="refs-note">Primary sources for the tools and frameworks named above.</p>
+  <p class="refs-note">Primary documentation, standards and research for the methods discussed here.</p>
   <ul>
-    <li><a href="https://www.finops.org/" rel="noopener nofollow" target="_blank">FinOps Foundation</a><span>Framework, capabilities and terminology.</span></li>
+    <li><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-capacity-reservations.html" rel="noopener" target="_blank">AWS EC2 · Capacity Reservations</a><span>Reservation semantics separate from billing discounts.</span></li>
+    <li><a href="https://www.finops.org/" rel="noopener" target="_blank">FinOps Foundation</a><span>Framework, capabilities and terminology.</span></li>
   </ul>
 </aside>
 
@@ -163,7 +190,7 @@ d.setAttribute('data-theme',t);
 
       <footer class="article-foot">
         <div class="row" style="gap:.4rem">
-          <a class="chip chip-plain" href="/topics/finops/">FinOps</a><a class="chip chip-plain" href="/topics/cloud-architecture/">Cloud Architecture</a>
+          <a class="chip" href="/topics/finops/">FinOps</a><a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a>
         </div>
         <nav class="prevnext" aria-label="More articles">
           <a href="/insights/k8s-networking-cni/"><span>Previous</span><strong>Kubernetes Networking: CNI Plugins, Network Policies, and Why It Matters for Security</strong></a>
@@ -177,12 +204,12 @@ d.setAttribute('data-theme',t);
     <section class="promo-card promo-techknowen" aria-label="TechKnowen">
       <p class="promo-name">TechKnowen</p>
       <p>Practical reading on software, architecture, and engineering.</p>
-      <a href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
+      <a class="card-destination" href="https://www.techknowen.com/" rel="noopener">Explore TechKnowen</a>
     </section>
     <section class="promo-card promo-ziggle" aria-label="Ziggle">
       <p class="promo-name">Ziggle</p>
       <p>A new place to play brain teasers.</p>
-      <p class="promo-status">Coming soon</p>
+      <a class="card-destination" href="/projects/ziggle/">Ziggle preview</a> <span class="promo-status">Coming soon</span>
     </section>
   </div>
 </aside>
@@ -191,33 +218,33 @@ d.setAttribute('data-theme',t);
   <section class="section surface hair" style="margin-top:4rem">
     <div class="wrap">
       <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><a class="card" data-card data-topics="|Cloud Architecture|Reliability|FinOps|Engineering Leadership|" data-search="capacity planning in the cloud era: headroom as an engineered property elastic infrastructure didn&#39;t kill capacity planning — it changed what gets planned. demand modeling, the utilization-vs-headroom trade, quota and constraint archaeology, and the quarterly loop that replaces both waste and 3 am scrambles. cloud architecture reliability finops engineering leadership" data-topic="Cloud Architecture" href="/insights/capacity-planning-engineering/">
+      <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|Cloud Architecture|Reliability|FinOps|Engineering Leadership|" data-search="capacity planning in the cloud era: headroom as an engineered property elastic infrastructure didn&#39;t kill capacity planning — it changed what gets planned. demand modeling, the utilization-vs-headroom trade, quota and constraint archaeology, and the quarterly loop that replaces both waste and 3 am scrambles. cloud architecture reliability finops engineering leadership" data-topic="Cloud Architecture">
   <div class="card-art"><img data-article-art="capacity-planning-engineering" src="/assets/covers/capacity-planning-engineering.svg?v=2ff332e2bf38" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Cloud Architecture</span>
-    <h3 class="card-title">Capacity Planning in the Cloud Era: Headroom as an Engineered Property</h3>
+    <a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/capacity-planning-engineering/">Capacity Planning in the Cloud Era: Headroom as an Engineered Property</a></h3>
     <p class="card-desc">Elastic infrastructure didn&#39;t kill capacity planning — it changed what gets planned. Demand modeling, the utilization-vs-headroom trade, quota and constraint archaeology, and the quarterly loop that replaces both waste and 3 AM scrambles.</p>
     <div class="card-meta"><time datetime="2026-11-09">9 Nov 2026</time><span class="dot"></span><span>5 min read</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|Performance|Programming|Cloud Architecture|Data Engineering|FinOps|" data-search="compression in production: choosing between gzip, zstd, lz4, and brotli like it matters compression is a three-way trade — ratio, speed, and cpu — that most systems set once by default and never revisit. the algorithm landscape, placement decisions across web, storage, and streaming, dictionary compression&#39;s quiet superpower, and the measurement discipline. performance programming cloud architecture data engineering finops" data-topic="Performance" href="/insights/compression-selection-guide/">
+</article>
+<article class="card" data-card data-topics="|Performance|Programming|Cloud Architecture|Data Engineering|FinOps|" data-search="compression in production: choosing between gzip, zstd, lz4, and brotli like it matters compression is a three-way trade — ratio, speed, and cpu — that most systems set once by default and never revisit. the algorithm landscape, placement decisions across web, storage, and streaming, dictionary compression&#39;s quiet superpower, and the measurement discipline. performance programming cloud architecture data engineering finops" data-topic="Performance">
   <div class="card-art"><img data-article-art="compression-selection-guide" src="/assets/covers/compression-selection-guide.svg?v=841ffbacef2b" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">Performance</span>
-    <h3 class="card-title">Compression in Production: Choosing Between gzip, zstd, lz4, and Brotli Like It Matters</h3>
+    <a class="chip" href="/topics/performance/">Performance</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/compression-selection-guide/">Compression in Production: Choosing Between gzip, zstd, lz4, and Brotli Like It Matters</a></h3>
     <p class="card-desc">Compression is a three-way trade — ratio, speed, and CPU — that most systems set once by default and never revisit. The algorithm landscape, placement decisions across web, storage, and streaming, dictionary compression&#39;s quiet superpower, and the measurement discipline.</p>
     <div class="card-meta"><time datetime="2026-10-12">12 Oct 2026</time><span class="dot"></span><span>5 min read</span></div>
   </div>
-</a>
-<a class="card" data-card data-topics="|FinOps|Cost Optimisation|Cloud Architecture|" data-search="cloud cost anomaly detection: catching runaway spend before it becomes a bill cloud cost overruns that show up in the monthly invoice are already weeks old. here&#39;s how to set up anomaly detection that catches cost spikes in hours, with enough context to diagnose the cause quickly. finops cost optimisation cloud architecture" data-topic="FinOps" href="/insights/finops-anomaly-detection/">
+</article>
+<article class="card" data-card data-topics="|FinOps|Cost Optimisation|Cloud Architecture|" data-search="cloud cost anomaly detection: catching runaway spend before it becomes a bill cloud cost overruns that show up in the monthly invoice are already weeks old. here&#39;s how to set up anomaly detection that catches cost spikes in hours, with enough context to diagnose the cause quickly. finops cost optimisation cloud architecture" data-topic="FinOps">
   <div class="card-art"><img data-article-art="finops-anomaly-detection" src="/assets/covers/finops-anomaly-detection.svg?v=47a96d09bef2" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
-    <span class="chip">FinOps</span>
-    <h3 class="card-title">Cloud Cost Anomaly Detection: Catching Runaway Spend Before It Becomes a Bill</h3>
+    <a class="chip" href="/topics/finops/">FinOps</a>
+    <h3 class="card-title"><a class="card-destination" href="/insights/finops-anomaly-detection/">Cloud Cost Anomaly Detection: Catching Runaway Spend Before It Becomes a Bill</a></h3>
     <p class="card-desc">Cloud cost overruns that show up in the monthly invoice are already weeks old. Here&#39;s how to set up anomaly detection that catches cost spikes in hours, with enough context to diagnose the cause quickly.</p>
     <div class="card-meta"><time datetime="2026-07-06">6 Jul 2026</time><span class="dot"></span><span>5 min read</span><span class="dot"></span><span>Series</span></div>
   </div>
-</a></div>
+</article></div>
     </div>
   </section>
 
@@ -297,6 +324,7 @@ d.setAttribute('data-theme',t);
         <ul>
           <li><a href="/insights/">All articles</a></li>
           <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/follow/">Follow new writing</a></li>
           <li><a href="/series/">Series</a></li>
           <li><a href="/topics/">Topics</a></li>
           <li><a href="/notes/">Personal notes</a></li>
@@ -317,7 +345,7 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=a8e7c95a" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=a8e7c95a"></script>
+<script src="/assets/js/site.js?v=bd74be96" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=bd74be96"></script>
 </body>
 </html>

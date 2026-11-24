@@ -16,11 +16,11 @@ For a quantum memory experiment, compare logical error per cycle at stated code 
 
 ## What the milestones established
 
-**Google Sycamore, 2019.** Google reported running a random circuit sampling experiment on a 53-qubit processor in about 200 seconds. Its paper compared that run with a pre-publication estimate for classical simulation. The result concerns the stated sampling task and the classical comparison depends on the algorithms and hardware used.
+**Google Sycamore, 2019.** Google reported running a random circuit sampling experiment on a 53-qubit processor in about 200 seconds. Its paper compared that run with a pre-publication estimate for classical simulation. The result concerns the stated sampling task and the classical comparison depends on the algorithms and hardware used. A subsequent [classical simulation study](https://pubmed.ncbi.nlm.nih.gov/36083655/) produced samples and distinguished its actual run from a projection for a larger system.
 
 **IBM Heron, 2023.** IBM introduced a 133-qubit superconducting processor with tunable couplers. Couplers affect how qubits interact and are one piece of a system’s error budget. Compare error rates on the same operation and under a stated protocol before using those rates to compare processors.
 
-**Google Willow, published 2025.** Google reported that increasing surface-code distance reduced logical error per cycle in its quantum memory experiment, evidence of operation below threshold for that experiment. The measured object was an encoded memory. An application also requires a sequence of sufficiently reliable logical operations and a full accounting of overhead.
+**Google Willow, reported December 2024 in a 2025 Nature issue.** Google reported that increasing surface-code distance reduced logical error per cycle in its quantum memory experiment, evidence of operation below threshold for that experiment. The measured object was an encoded memory. An application also requires a sequence of sufficiently reliable logical operations and a full accounting of overhead.
 
 **Microsoft’s parity readout, 2025.** The Nature paper reported single-shot interferometric measurement of fermion parity in indium arsenide–aluminium devices. The reported measurements do not distinguish Majorana zero modes uniquely, so the paper establishes a readout result and leaves the topological qubit claim open.
 
