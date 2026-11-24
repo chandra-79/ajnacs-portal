@@ -33,7 +33,7 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=bd74be96">
+<link rel="stylesheet" href="/assets/css/site.css?v=821ac6ed">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
 <link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <script>
@@ -85,15 +85,16 @@ d.setAttribute('data-theme',t);
       <p class="lede field-intro">Rehearse a regional outage with a fenced write authority, tested client reconnects and reconciliation.</p>
       <p class="case-notice">Hypothetical engagement. The organisation, delivery events, and measurements are simulated.</p>
     </header>
-    <div class="article-hero case-schematic" data-topic="Cloud Architecture"><figure class="delivery-flow">
-    <figcaption>Technical workflow</figcaption>
-    <ol><li>Declare failure</li><li>Fence primary writes</li><li>Promote replica</li><li>Verify ledger and route</li></ol>
-  </figure></div>
+    <div class="article-hero" data-topic="Cloud Architecture"><img src="/assets/cases/regional-failover-fencing.png?v=78ebcea2f4e9" alt="Services are grouped by region to show the boundary crossed during failover." width="960" height="540" fetchpriority="high" decoding="async"></div>
     <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#situation-and-scope">Situation and scope</a></li><li><a href="#plan-and-execution">Plan and execution</a></li><li><a href="#rollout-and-handover">Rollout and handover</a></li><li><a href="#how-to-read-the-numbers">How to read the numbers</a></li></ol>
 </nav></div>
     <div class="article-copy">
+      <figure class="delivery-flow">
+    <figcaption>Technical workflow</figcaption>
+    <ol><li>Declare failure</li><li>Fence primary writes</li><li>Promote replica</li><li>Verify ledger and route</li></ol>
+  </figure>
       <div class="prose"><h2 id="situation-and-scope"><a class="h-anchor" href="#situation-and-scope" aria-hidden="true" tabindex="-1">#</a>Situation and scope</h2>
 <p>A regional inventory writer has an asynchronous replica. The rehearsal includes loss of routing to the primary while old clients might still reach it. The service target is less than 25 minutes to restore writes and a documented data loss boundary. An additional acceptance test verifies only one writer remains authorised.</p>
 <h2 id="plan-and-execution"><a class="h-anchor" href="#plan-and-execution" aria-hidden="true" tabindex="-1">#</a>Plan and execution</h2>
@@ -196,7 +197,7 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=bd74be96" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=bd74be96"></script>
+<script src="/assets/js/site.js?v=821ac6ed" defer></script>
+<script type="module" src="/assets/js/brand-motion.mjs?v=821ac6ed"></script>
 </body>
 </html>
