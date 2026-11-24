@@ -19,7 +19,7 @@ import { readResearchLinks, referencesFor, referencesBlock } from "./references.
 import { publicationDate } from "./publication.mjs";
 import { buildArticleImages } from "./article-images.mjs";
 import { buildPageImage } from "./site-images.mjs";
-import { coverDescription, coverFor, photoFor } from "./covers.mjs";
+import { coverDescription, coverFor, hasLocalCover, photoFor } from "./covers.mjs";
 import { fieldGuides, worksheet, worksheetCsv } from "./field-guides.mjs";
 import { relatedArticles, robotsPolicy, topicPath, featuredCollections } from "./discovery.mjs";
 import "./icons.mjs";
@@ -203,7 +203,7 @@ ${example && m.section === "insights" ? `<p class="article-opening">${esc(exampl
 ${html}
       </div>
 ${fieldGuide ? worksheet(fieldGuide) : example ? workedExample(example, m.section === "notes") : ""}
-${concept ? conceptDetails(concept) : ""}
+${concept ? conceptDetails(concept, { showFigure: hasLocalCover(m.slug) }) : ""}
 
 ${m.slug === "running-local-llm-lessons" ? localInference.html : ""}
 ${refsHtml}
