@@ -1,6 +1,7 @@
 import { readFile } from "node:fs/promises";
 import { SITE, esc } from "./lib.mjs";
 import { page } from "./shell.mjs";
+import { copyLinkControl, readerControls } from "./reader.mjs";
 import { headingAnchors, makeRenderer, tableOfContents } from "./render.mjs";
 import { csv, deliveryFlow, evidence, metricValue } from "./measurements.mjs";
 import { caseIllustration } from "./case-illustrations.mjs";
@@ -101,6 +102,7 @@ export async function caseLibrary(out, promotions, studyPaths) {
       <h1 class="h1">${esc(item.title)}</h1>
       <p class="lede field-intro">${esc(item.description)}</p>
       <p class="case-notice">${simulationNotice}</p>
+      ${copyLinkControl()}
     </header>
     <div class="article-hero" data-topic="${esc(category.topic)}">${image(item, false)}</div>
     <div class="reader-aside">${tableOfContents(headings)}</div>
@@ -115,6 +117,7 @@ export async function caseLibrary(out, promotions, studyPaths) {
     </div>
     ${promotions("case-study-rail")}
   </div>
+${readerControls()}
 </article>`,
         jsonld: [{
           "@context": "https://schema.org",

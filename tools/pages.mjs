@@ -63,20 +63,20 @@ const contactForm = (id, compact = false) => `
   <div class="grid g-2" style="gap:1.1rem">
     <div class="field">
       <label for="${id}-name">Name</label>
-      <input id="${id}-name" name="name" type="text" required autocomplete="name">
-      <p class="field-error" data-error-for="name"></p>
+      <input id="${id}-name" aria-describedby="${id}-name-error" name="name" type="text" required autocomplete="name">
+      <p class="field-error" id="${id}-name-error" data-error-for="name"></p>
     </div>
     <div class="field">
       <label for="${id}-email">Work email</label>
-      <input id="${id}-email" name="email" type="email" required autocomplete="email">
-      <p class="field-error" data-error-for="email"></p>
+      <input id="${id}-email" aria-describedby="${id}-email-error" name="email" type="email" required autocomplete="email">
+      <p class="field-error" id="${id}-email-error" data-error-for="email"></p>
     </div>
   </div>
   <div class="grid g-2" style="gap:1.1rem">
     <div class="field">
       <label for="${id}-org">Organisation <span class="muted">(optional)</span></label>
-      <input id="${id}-org" name="organisation" type="text" autocomplete="organization">
-      <p class="field-error" data-error-for="organisation"></p>
+      <input id="${id}-org" aria-describedby="${id}-org-error" name="organisation" type="text" autocomplete="organization">
+      <p class="field-error" id="${id}-org-error" data-error-for="organisation"></p>
     </div>
     <div class="field">
       <label for="${id}-interest">Engagement area</label>
@@ -92,8 +92,8 @@ const contactForm = (id, compact = false) => `
   </div>
   <div class="field">
     <label for="${id}-message">What are you working on?</label>
-    <textarea id="${id}-message" name="message" required placeholder="The system, the constraint, and what you need to be true in six months."></textarea>
-    <p class="field-error" data-error-for="message"></p>
+    <textarea id="${id}-message" aria-describedby="${id}-message-error" name="message" required placeholder="The system, the constraint, and what you need to be true in six months."></textarea>
+    <p class="field-error" id="${id}-message-error" data-error-for="message"></p>
   </div>
   <div class="row" style="justify-content:space-between">
     <button class="btn btn-lg" type="submit">Send enquiry ${icon.arrow}</button>
@@ -425,11 +425,11 @@ ${SERVICES.map(s => `<section class="section ${s.id === "ai" ? "surface hair" : 
     body: `
 <section class="section"><div class="wrap-narrow prose">
   <h1 class="h1">Privacy notice</h1>
-  <p class="muted">Last updated ${fmtDate(new Date().toISOString().slice(0, 10))}.</p>
+  <p class="muted">Last updated ${fmtDate("2026-11-23")}.</p>
 
   <h2>What this site collects</h2>
   <p>This website has no analytics, no advertising tags and no third-party trackers. It sets no cookies.</p>
-  <p>Your browser stores one preference locally — whether you chose light or dark mode. It never leaves your device and we cannot read it.</p>
+  <p>Your browser stores your reading preferences locally, including theme, text size, column width and typeface. The site uses those settings on later visits. It does not send them to us. Archive search terms and filters appear in the page URL so you can return to or share the same results.</p>
 
   <h2>When you contact us</h2>
   <p>The enquiry form collects your name, email address, optionally your organisation, the engagement area you select, and your message. Submissions are delivered to us through <a href="https://formspree.io/legal/privacy-policy/" rel="noopener">Formspree</a>, which processes the message in order to deliver it.</p>

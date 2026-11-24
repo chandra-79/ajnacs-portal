@@ -5,6 +5,7 @@ import { readFile, writeFile, mkdir, rm } from "node:fs/promises";
 import path from "node:path";
 import { SITE, esc, fmtDate, readingTime, seriesSlug, primaryTopic, PRIMARY_TOPICS, icon, parseFront } from "./lib.mjs";
 import { page } from "./shell.mjs";
+import { copyLinkControl, readerControls } from "./reader.mjs";
 import { artwork, colorFor } from "./visuals.mjs";
 import { makeRenderer, tableOfContents, headingAnchors } from "./render.mjs";
 import { staticPages } from "./pages.mjs";
@@ -150,40 +151,7 @@ for (const m of live) {
 
   /* Reading preferences are offered on every article; the chapter bar only
      where there is enough article to navigate. */
-  const readerChrome = `
-<div class="reader-tools">
-  <button class="icon-btn" id="readerBtn" type="button" aria-expanded="false" aria-controls="readerPanel" title="Reading settings" aria-label="Reading settings">${icon.sliders}</button>
-  <button class="icon-btn" id="focusBtn" type="button" aria-pressed="false" title="Focus mode" aria-label="Enter focus mode">${icon.expand}</button>
-</div>
-<div class="reader-panel" id="readerPanel" role="dialog" aria-label="Reading settings" hidden>
-  <fieldset><legend>Text size</legend>
-    <div class="seg" data-pref="rsize">
-      ${[["s","Small","s"],["m","Default",""],["l","Large","l"],["xl","Largest","l"]]
-        .map(([v,label,cls]) => `<button type="button" data-val="${v}" aria-pressed="false"><span class="sample ${cls}">Aa</span>${label}</button>`).join("")}
-    </div>
-  </fieldset>
-  <fieldset><legend>Ground</legend>
-    <div class="seg" data-pref="theme">
-      ${[["light","Light"],["sepia","Sepia"],["dark","Dark"]]
-        .map(([v,label]) => `<button type="button" data-val="${v}" aria-pressed="false"><span class="swatch ${v}"></span>${label}</button>`).join("")}
-    </div>
-  </fieldset>
-  <fieldset><legend>Column width</legend>
-    <div class="seg" data-pref="rwidth">
-      ${[["s","Narrow"],["m","Default"],["l","Wide"],["xl","Widest"]]
-        .map(([v,label]) => `<button type="button" data-val="${v}" aria-pressed="false">${label}</button>`).join("")}
-    </div>
-  </fieldset>
-  <fieldset><legend>Typeface</legend>
-    <div class="seg" data-pref="rface">
-      <button type="button" data-val="sans" aria-pressed="false"><span class="sample">Aa</span>Sans</button>
-      <button type="button" data-val="serif" aria-pressed="false"><span class="sample serif">Aa</span>Serif</button>
-    </div>
-  </fieldset>
-  <button class="reader-reset" id="readerReset" type="button">Reset to defaults</button>
-  <p class="reader-note">Saved in this browser only — these settings do not follow you to another device.</p>
-</div>
-<button class="focus-exit" id="focusExit" type="button">${icon.collapse} Exit focus</button>
+  const readerChrome = readerControls() + `
 ${longForm ? `<div class="chapter-bar" id="chapterBar">
   <div class="chapter-where">
     <b>${esc(m.title)}</b>
@@ -199,7 +167,6 @@ ${longForm ? `<div class="chapter-bar" id="chapterBar">
 </div>` : ""}`;
 
   const body_ = `
-<div class="read-bar" aria-hidden="true"><span id="readBar"></span></div>
 <article class="article">
   <div class="reading-layout">
     <header class="article-head">
@@ -215,7 +182,7 @@ ${longForm ? `<div class="chapter-bar" id="chapterBar">
         <span class="dot" aria-hidden="true"></span><time datetime="${m.date}">${fmtDate(m.date)}</time>
         ${m.modified ? `<span class="dot" aria-hidden="true"></span><span>Updated <time datetime="${m.modified}">${fmtDate(m.modified)}</time></span>` : ''}
         <span class="dot"></span><span>${readingTime(m.words)} min read</span>
-        <button class="btn btn-ghost btn-sm" id="copyLink" type="button" style="margin-left:auto">Copy link</button>
+        ${copyLinkControl()}
       </div>
     </header>
 
@@ -333,13 +300,14 @@ await out("insights", page({
     <div class="search-field">
       ${icon.search}
       <label class="sr-only" for="postSearch">Search articles</label>
-      <input type="search" id="postSearch" placeholder="Search the archive…" autocomplete="off">
+      <input type="search" id="postSearch" placeholder="Search the archive…" autocomplete="off" aria-controls="postList">
     </div>
     <label class="sr-only" for="postTopic">Filter by topic</label>
-    <select id="postTopic" class="topic-select" hidden>
+    <select id="postTopic" class="topic-select" aria-controls="postList" hidden>
       <option value="">All topics</option>
       ${filters.map(([t, n]) => `<option value="${esc(t)}">${esc(t)} (${n})</option>`).join('')}
     </select>
+    <button type="button" class="btn btn-ghost btn-sm" id="postClear" hidden>Clear filters</button>
     <p class="small muted" id="postCount" role="status" aria-live="polite"></p>
   </div>
 
@@ -351,7 +319,7 @@ await out("insights", page({
     ${insights.map(m => cardFor(m, "/insights")).join("\n")}
   </div>
   <p id="postEmpty" hidden class="center muted" style="padding:3rem 0">No articles match that. Try another topic or search term.</p>
-  <div class="center" style="margin-top:2.5rem"><button class="btn btn-ghost" id="postMore" type="button" hidden>Show more</button></div>
+  <div class="center" style="margin-top:2.5rem"><button class="btn btn-ghost" id="postMore" type="button" aria-controls="postList" hidden>Show more</button></div>
   </div>
   ${housePromotions("insights-rail")}
 </section>`,

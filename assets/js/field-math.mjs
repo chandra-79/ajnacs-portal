@@ -1,11 +1,16 @@
 function amount(raw, label, { minimum = 0, integer = false } = {}) {
   const value = String(raw ?? "").trim();
-  if (!/^\d+(?:\.\d+)?$/.test(value)) throw new Error(`Enter a valid number for ${label}.`);
+  if (!/^(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?$/.test(value)) throw new Error(`Enter a valid number for ${label}.`);
   const n = Number(value);
   if (!Number.isFinite(n) || n < minimum || (integer && !Number.isSafeInteger(n))) {
     throw new Error(`Check the value for ${label}.`);
   }
   return n;
+}
+
+function finiteResult(value) {
+  if (!Number.isFinite(value)) throw new Error("These values are too large to calculate reliably. Use smaller inputs.");
+  return value;
 }
 
 const show = (n, decimals = 2) => n.toLocaleString("en-US", { maximumFractionDigits: decimals });
@@ -19,11 +24,11 @@ export function toil(values) {
   const build = amount(values.build, "implementation hours");
   const after = manual + maintenance;
   if (before > capacity || after > capacity) throw new Error("Work recorded in either window must fit within its available hours.");
-  const saved = (before - after) / weeks;
-  const payback = saved > 0 ? build / saved : null;
+  const saved = finiteResult((before - after) / weeks);
+  const payback = saved > 0 ? finiteResult(build / saved) : null;
   return {
     chart: [before, after],
-    result: `Baseline ${show(100 * before / capacity, 1)}% of capacity. Follow-up ${show(100 * after / capacity, 1)}% including upkeep. ${show(saved)} net hours released per week. ${payback === null ? "No payback at this rate." : `Simple payback ${show(payback, 1)} weeks.`}`,
+    result: `Baseline ${show(before / capacity * 100, 1)}% of capacity. Follow-up ${show(after / capacity * 100, 1)}% including upkeep. ${show(saved)} net hours released per week. ${payback === null ? "No payback at this rate." : `Simple payback ${show(payback, 1)} weeks.`}`,
   };
 }
 
@@ -36,7 +41,7 @@ function cohort(raw, cutoff, label) {
   durations.sort((a, b) => a - b);
   const middle = Math.floor(durations.length / 2);
   const median = !durations.length ? null : durations.length % 2
-    ? durations[middle] : (durations[middle - 1] + durations[middle]) / 2;
+    ? durations[middle] : durations[middle - 1] + (durations[middle] - durations[middle - 1]) / 2;
   return { median, completed: durations.length, attempts: attempts.length };
 }
 
@@ -55,8 +60,8 @@ export function unitCost(values) {
   const directB = amount(values.directB, "period B direct cost");
   const sharedB = amount(values.sharedB, "period B shared cost");
   const completedB = amount(values.completedB, "period B completed orders", { integer: true });
-  const a = directA + sharedA;
-  const b = directB + sharedB;
+  const a = finiteResult(directA + sharedA);
+  const b = finiteResult(directB + sharedB);
   const first = completedA ? a / completedA : null;
   const second = completedB ? b / completedB : null;
   const unit = value => value === null ? "unit cost unavailable" : `$${show(value, 6)} per order`;

@@ -15,6 +15,12 @@ import { loadDeepDives } from "./deep-dives.mjs";
 let failures = 0;
 const fail = (m) => { console.error("  ✗ " + m); failures++; };
 const ok = (m) => console.log("  ✓ " + m);
+function checkReadingControls(html, route) {
+  for (const id of ["readerBtn", "readerPanel", "readerClose", "readerReset", "readBar", "focusBtn", "focusExit", "copyLink", "copyStatus", "copyFallback", "copyValue"]) {
+    if (html.split(`id="${id}"`).length !== 2) fail(`${route}: expected exactly one ${id}`);
+  }
+  if (!/id="copyStatus"[^>]*role="status"/.test(html) || !/id="copyFallback"[^>]*hidden/.test(html)) fail(`${route}: copy feedback is missing or exposed before use`);
+}
 
 const manifest = JSON.parse(await readFile("content/manifest.json", "utf8"));
 const TODAY = publicationDate();
@@ -102,6 +108,7 @@ console.log("\nCase studies and article discovery");
     for (const route of routes) {
       const path = `${folder}/${route.name}`;
       const html = await readFile(`${path}/index.html`, "utf8");
+      checkReadingControls(html, path);
       const csv = await readFile(`${path}.csv`, "utf8");
       const image = await readFile(`assets/cases/${route.name}.png`);
       const hash = createHash("sha256").update(image).digest("hex");
@@ -149,6 +156,7 @@ console.log("\nDeep dives");
     if (!hub.includes(`href="${track.path}"`) || !paths.includes(`href="/${track.start}/"`)) fail(`Study path entry missing: ${track.id}`);
     for (const [index, lesson] of track.lessons.entries()) {
       const html = await readFile(`.${lesson.path}index.html`, "utf8");
+      checkReadingControls(html, lesson.path);
       const data = await readFile(`.${lesson.path}chart.csv`, "utf8");
       const asset = `assets/deep-dives/${track.id}-${lesson.slug}.png`;
       const png = await readFile(asset);
@@ -280,6 +288,7 @@ console.log("\nBrand & reader");
   for (const m of live) {
     const dir = m.section === "notes" ? "notes" : "insights";
     let h; try { h = await readFile(`${dir}/${m.slug}/index.html`, "utf8"); } catch { continue; }
+    checkReadingControls(h, `${dir}/${m.slug}`);
     if (!/id="readerPanel"/.test(h)) noPanel++;
     const longForm = Boolean(m.series) || m.words > 1200;
     const hasBar = /id="chapterBar"/.test(h);
@@ -542,6 +551,9 @@ if (!/id="postCount"[^>]*aria-live="polite"/.test(insightsIdx))
   fail("insights index does not announce the filtered result count");
 if (!/data-form-status[^>]*aria-live="polite"/.test(contact))
   fail("contact form does not announce its send status");
+for (const field of contact.matchAll(/<(?:input|textarea)\b[^>]*aria-describedby="([^"]+)"[^>]*>/g)) {
+  if (!contact.includes(`id="${field[1]}"`)) fail(`Contact error description ${field[1]} has no target`);
+}
 
 // Icon-only controls must be labelled.
 for (const [id, where] of [["themeBtn", "theme toggle"], ["navToggle", "menu button"]]) {

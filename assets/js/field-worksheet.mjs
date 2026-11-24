@@ -11,6 +11,7 @@ for (const form of document.querySelectorAll("[data-field-worksheet]")) {
       result.value = error.message;
     }
   });
+  form.addEventListener("input", () => { result.value = ""; });
   form.addEventListener("reset", () => { result.value = ""; });
   form.hidden = false;
 }
