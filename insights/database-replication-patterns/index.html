@@ -14,18 +14,18 @@
 <meta property="og:title" content="Database Replication Patterns: Read Replicas, Multi-Primary, and When Each Applies">
 <meta property="og:description" content="Database replication serves two distinct goals — high availability (survive a primary failure) and read scaling (distribute read traffic). The configuratio…">
 <meta property="og:url" content="https://ajnacs.com/insights/database-replication-patterns/">
-<meta property="og:image" content="https://ajnacs.com/assets/og/articles/database-replication-patterns.png?v=05ea7760ffe9">
+<meta property="og:image" content="https://ajnacs.com/assets/og/articles/database-replication-patterns.png?v=ce77758190f6">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Conceptual illustration for Database Replication Patterns: Read Replicas, Multi-Primary, and When Each Applies: Replica, Quorum, Replication.">
+<meta property="og:image:alt" content="A committed write travels through replica receive, durable flush, and replay, with the outstanding positions exposing a promotion recovery gap.">
 <meta property="article:published_time" content="2025-08-04">
 <meta property="article:modified_time" content="2026-11-23">
 <meta property="og:image:type" content="image/png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Database Replication Patterns: Read Replicas, Multi-Primary, and When Each Applies">
 <meta name="twitter:description" content="Database replication serves two distinct goals — high availability (survive a primary failure) and read scaling (distribute read traffic). The configuratio…">
-<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/database-replication-patterns.png?v=05ea7760ffe9">
-<meta name="twitter:image:alt" content="Conceptual illustration for Database Replication Patterns: Read Replicas, Multi-Primary, and When Each Applies: Replica, Quorum, Replication.">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/database-replication-patterns.png?v=ce77758190f6">
+<meta name="twitter:image:alt" content="A committed write travels through replica receive, durable flush, and replay, with the outstanding positions exposing a promotion recovery gap.">
 
 <link rel="icon" href="/favicon.ico?v=8affdbd5" sizes="any">
 <link rel="icon" href="/images/ajna-mark.svg?v=8affdbd5" type="image/svg+xml">
@@ -51,7 +51,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Database Replication Patterns: Read Replicas, Multi-Primary, and When Each Applies","description":"Database replication serves two distinct goals — high availability (survive a primary failure) and read scaling (distribute read traffic). The configuration that optimizes for one is often wrong for the other.","datePublished":"2025-08-04","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/database-replication-patterns/","image":"https://ajnacs.com/assets/og/articles/database-replication-patterns.png?v=05ea7760ffe9","keywords":"Data Engineering, Cloud Architecture","articleSection":"Data Engineering","wordCount":1877}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Database Replication Patterns: Read Replicas, Multi-Primary, and When Each Applies","description":"Database replication serves two distinct goals — high availability (survive a primary failure) and read scaling (distribute read traffic). The configuration that optimizes for one is often wrong for the other.","datePublished":"2025-08-04","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/database-replication-patterns/","image":"https://ajnacs.com/assets/og/articles/database-replication-patterns.png?v=ce77758190f6","keywords":"Data Engineering, Cloud Architecture","articleSection":"Data Engineering","wordCount":1877}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Database Replication Patterns: Read Replicas, Multi-Primary, and When Each Applies"}]}</script>
 </head>
 <body class="article-frame" data-topic="Data Engineering">
@@ -107,7 +107,7 @@ d.setAttribute('data-theme',t);
       </div>
     </header>
 
-    <div class="article-hero" data-topic="Data Engineering"><img data-article-art="database-replication-patterns" src="/assets/covers/database-replication-patterns.svg?v=78066ae84ac8" width="1280" height="720" alt="Conceptual illustration for Database Replication Patterns: Read Replicas, Multi-Primary, and When Each Applies: Replica, Quorum, Replication." decoding="async" fetchpriority="high"></div>
+    <div class="article-hero" data-topic="Data Engineering"><img data-article-art="database-replication-patterns" src="/assets/covers/database-replication-patterns.svg?v=7f8f8834f1d4" width="1280" height="720" alt="A committed write travels through replica receive, durable flush, and replay, with the outstanding positions exposing a promotion recovery gap." decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#read-replicas-for-read-scaling">Read replicas for read scaling</a></li><li><a href="#synchronous-vs-asynchronous-replication">Synchronous vs. asynchronous replication</a></li><li><a href="#multi-primary-or-active-active-replication">Multi-primary (or active-active) replication</a></li><li><a href="#managed-database-replication-in-cloud">Managed database replication in cloud</a></li><li><a href="#choosing-the-right-configuration">Choosing the right configuration</a></li><li><a href="#follow-a-write-through-the-replication-pipeline">Follow a write through the replication pipeline</a></li><li><a href="#route-a-session-that-needs-its-own-update">Route a session that needs its own update</a></li><li><a href="#match-promotion-to-the-acknowledgement-policy">Match promotion to the acknowledgement policy</a></li><li><a href="#reconcile-acknowledged-work-after-a-promotion">Reconcile acknowledged work after a promotion</a></li></ol>
@@ -272,7 +272,7 @@ SELECT pg_reload_conf();
   </div>
 </article>
 <article class="card" data-card data-topics="|Data Engineering|Programming|Cloud Architecture|" data-search="postgresql performance tuning: the settings and patterns that actually matter postgresql&#39;s default configuration is conservative, designed for small deployments. for production workloads, the settings that control memory, parallelism, wal behavior, and connection handling need explicit tuning. here&#39;s where to start. data engineering programming cloud architecture" data-topic="Data Engineering">
-  <div class="card-art"><img data-article-art="postgresql-performance-tuning" src="/assets/covers/postgresql-performance-tuning.svg?v=0513939531f9" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-art"><img data-article-art="postgresql-performance-tuning" src="/assets/covers/postgresql-performance-tuning.svg?v=e5203fc1d300" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
     <a class="chip" href="/topics/data-engineering/">Data Engineering</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/postgresql-performance-tuning/">PostgreSQL Performance Tuning: The Settings and Patterns That Actually Matter</a></h3>

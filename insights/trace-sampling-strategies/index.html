@@ -14,18 +14,18 @@
 <meta property="og:title" content="Trace Sampling: Keeping the Traces That Matter When You Can&#39;t Keep Them All">
 <meta property="og:description" content="Distributed tracing at production volume is a sampling problem wearing an instrumentation costume — head vs tail sampling, the consistency rules that keep…">
 <meta property="og:url" content="https://ajnacs.com/insights/trace-sampling-strategies/">
-<meta property="og:image" content="https://ajnacs.com/assets/og/articles/trace-sampling-strategies.png?v=59af6d29fc34">
+<meta property="og:image" content="https://ajnacs.com/assets/og/articles/trace-sampling-strategies.png?v=2bcd80ea297c">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Conceptual illustration for Trace Sampling: Keeping the Traces That Matter When You Can&#39;t Keep Them All: Context, Logs, Metrics.">
+<meta property="og:image:alt" content="Head sampling decides when a trace starts, tail sampling waits for outcome evidence, and both preserve complete traces with a consistent trace-ID decision.">
 <meta property="article:published_time" content="2025-09-23">
 <meta property="article:modified_time" content="2026-11-23">
 <meta property="og:image:type" content="image/png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Trace Sampling: Keeping the Traces That Matter When You Can&#39;t Keep Them All">
 <meta name="twitter:description" content="Distributed tracing at production volume is a sampling problem wearing an instrumentation costume — head vs tail sampling, the consistency rules that keep…">
-<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/trace-sampling-strategies.png?v=59af6d29fc34">
-<meta name="twitter:image:alt" content="Conceptual illustration for Trace Sampling: Keeping the Traces That Matter When You Can&#39;t Keep Them All: Context, Logs, Metrics.">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/trace-sampling-strategies.png?v=2bcd80ea297c">
+<meta name="twitter:image:alt" content="Head sampling decides when a trace starts, tail sampling waits for outcome evidence, and both preserve complete traces with a consistent trace-ID decision.">
 
 <link rel="icon" href="/favicon.ico?v=8affdbd5" sizes="any">
 <link rel="icon" href="/images/ajna-mark.svg?v=8affdbd5" type="image/svg+xml">
@@ -51,7 +51,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Trace Sampling: Keeping the Traces That Matter When You Can't Keep Them All","description":"Distributed tracing at production volume is a sampling problem wearing an instrumentation costume — head vs tail sampling, the consistency rules that keep traces whole, error-and-latency-biased retention, and the cost architecture of an honest tracing pipeline.","datePublished":"2025-09-23","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/trace-sampling-strategies/","image":"https://ajnacs.com/assets/og/articles/trace-sampling-strategies.png?v=59af6d29fc34","keywords":"Observability, Distributed Systems, Reliability, Performance, Cloud Architecture","articleSection":"Observability","wordCount":1920}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Trace Sampling: Keeping the Traces That Matter When You Can't Keep Them All","description":"Distributed tracing at production volume is a sampling problem wearing an instrumentation costume — head vs tail sampling, the consistency rules that keep traces whole, error-and-latency-biased retention, and the cost architecture of an honest tracing pipeline.","datePublished":"2025-09-23","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/trace-sampling-strategies/","image":"https://ajnacs.com/assets/og/articles/trace-sampling-strategies.png?v=2bcd80ea297c","keywords":"Observability, Distributed Systems, Reliability, Performance, Cloud Architecture","articleSection":"Observability","wordCount":1920}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Trace Sampling: Keeping the Traces That Matter When You Can't Keep Them All"}]}</script>
 </head>
 <body class="article-frame" data-topic="Observability">
@@ -107,7 +107,7 @@ d.setAttribute('data-theme',t);
       </div>
     </header>
 
-    <div class="article-hero" data-topic="Observability"><img data-article-art="trace-sampling-strategies" src="/assets/covers/trace-sampling-strategies.svg?v=0997c5621ae0" width="1280" height="720" alt="Conceptual illustration for Trace Sampling: Keeping the Traces That Matter When You Can&#39;t Keep Them All: Context, Logs, Metrics." decoding="async" fetchpriority="high"></div>
+    <div class="article-hero" data-topic="Observability"><img data-article-art="trace-sampling-strategies" src="/assets/covers/trace-sampling-strategies.svg?v=7536d914939c" width="1280" height="720" alt="Head sampling decides when a trace starts, tail sampling waits for outcome evidence, and both preserve complete traces with a consistent trace-ID decision." decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#the-consistency-rule-that-everything-rests-on">The consistency rule that everything rests on</a></li><li><a href="#head-vs-tail-deciding-early-and-cheap-or-late-and-smart">Head vs tail: deciding early and cheap, or late and smart</a></li><li><a href="#the-operational-rim">The operational rim</a></li><li><a href="#decide-whether-operators-need-a-signal-or-a-particular-trace">Decide whether operators need a signal or a particular trace</a></li><li><a href="#budget-memory-for-held-spans-and-decisions">Budget memory for held spans and decisions</a></li><li><a href="#rehearse-overload-with-a-designed-retention-policy">Rehearse overload with a designed retention policy</a></li><li><a href="#verify-usable-evidence-after-a-collector-failure">Verify usable evidence after a collector failure</a></li></ol>
@@ -229,7 +229,7 @@ d.setAttribute('data-theme',t);
   </div>
 </article>
 <article class="card" data-card data-topics="|Performance|Capacity Planning|Reliability|Distributed Systems|Architecture|" data-search="queueing theory for engineers: how utilisation and variability shape waits little&#39;s law, the utilization-latency curve, and variability&#39;s tax — the three results that explain most capacity mysteries, from connection pools to on-call load. no calculus required, just the intuitions that make systems behavior predictable. performance capacity planning reliability distributed systems architecture" data-topic="Performance">
-  <div class="card-art"><img data-article-art="queueing-theory-for-engineers" src="/assets/covers/queueing-theory-for-engineers.svg?v=d84fb687ef65" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-art"><img data-article-art="queueing-theory-for-engineers" src="/assets/covers/queueing-theory-for-engineers.svg?v=179ca4ab2b0e" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
     <a class="chip" href="/topics/performance/">Performance</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/queueing-theory-for-engineers/">Queueing Theory for Engineers: How Utilisation and Variability Shape Waits</a></h3>
@@ -238,7 +238,7 @@ d.setAttribute('data-theme',t);
   </div>
 </article>
 <article class="card" data-card data-topics="|Observability|Programming|Platform Engineering|Reliability|Cloud Architecture|" data-search="structured logging that pays for itself: schema, context, and cost discipline logs are the most expensive telemetry most organizations run and the least designed. event schemas, correlation context, level discipline, sampling, and the cost engineering that keeps the logging bill from becoming the observability program&#39;s obituary. observability programming platform engineering reliability cloud architecture" data-topic="Observability">
-  <div class="card-art"><img data-article-art="structured-logging-practices" src="/assets/covers/structured-logging-practices.svg?v=8d951869e265" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-art"><img data-article-art="structured-logging-practices" src="/assets/covers/structured-logging-practices.svg?v=28b16f70cb93" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
     <a class="chip" href="/topics/observability/">Observability</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/structured-logging-practices/">Structured Logging That Pays for Itself: Schema, Context, and Cost Discipline</a></h3>

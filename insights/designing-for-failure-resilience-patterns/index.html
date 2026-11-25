@@ -14,18 +14,18 @@
 <meta property="og:title" content="Designing for Failure: Resilience Patterns That Actually Hold in Production">
 <meta property="og:description" content="Circuit breakers, bulkheads, retry logic, chaos engineering — the resilience patterns that genuinely reduce MTTR and the ones that look good on architectur…">
 <meta property="og:url" content="https://ajnacs.com/insights/designing-for-failure-resilience-patterns/">
-<meta property="og:image" content="https://ajnacs.com/assets/og/articles/designing-for-failure-resilience-patterns.png?v=4b64ae95845f">
+<meta property="og:image" content="https://ajnacs.com/assets/og/articles/designing-for-failure-resilience-patterns.png?v=dcf3a9ad614c">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Conceptual illustration for Designing for Failure: Resilience Patterns That Actually Hold in Production: Detect, Respond, Recover.">
+<meta property="og:image:alt" content="An end-to-end deadline and retry budget keep delayed dependency calls from amplifying load and leave room for a controlled fallback.">
 <meta property="article:published_time" content="2026-01-07">
 <meta property="article:modified_time" content="2026-11-23">
 <meta property="og:image:type" content="image/png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Designing for Failure: Resilience Patterns That Actually Hold in Production">
 <meta name="twitter:description" content="Circuit breakers, bulkheads, retry logic, chaos engineering — the resilience patterns that genuinely reduce MTTR and the ones that look good on architectur…">
-<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/designing-for-failure-resilience-patterns.png?v=4b64ae95845f">
-<meta name="twitter:image:alt" content="Conceptual illustration for Designing for Failure: Resilience Patterns That Actually Hold in Production: Detect, Respond, Recover.">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/designing-for-failure-resilience-patterns.png?v=dcf3a9ad614c">
+<meta name="twitter:image:alt" content="An end-to-end deadline and retry budget keep delayed dependency calls from amplifying load and leave room for a controlled fallback.">
 
 <link rel="icon" href="/favicon.ico?v=8affdbd5" sizes="any">
 <link rel="icon" href="/images/ajna-mark.svg?v=8affdbd5" type="image/svg+xml">
@@ -51,7 +51,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Designing for Failure: Resilience Patterns That Actually Hold in Production","description":"Circuit breakers, bulkheads, retry logic, chaos engineering — the resilience patterns that genuinely reduce MTTR and the ones that look good on architecture diagrams but fail when things get real.","datePublished":"2026-01-07","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/designing-for-failure-resilience-patterns/","image":"https://ajnacs.com/assets/og/articles/designing-for-failure-resilience-patterns.png?v=4b64ae95845f","keywords":"Cloud Architecture, Infrastructure, Observability","articleSection":"Cloud Architecture","wordCount":2617}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Designing for Failure: Resilience Patterns That Actually Hold in Production","description":"Circuit breakers, bulkheads, retry logic, chaos engineering — the resilience patterns that genuinely reduce MTTR and the ones that look good on architecture diagrams but fail when things get real.","datePublished":"2026-01-07","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/designing-for-failure-resilience-patterns/","image":"https://ajnacs.com/assets/og/articles/designing-for-failure-resilience-patterns.png?v=dcf3a9ad614c","keywords":"Cloud Architecture, Infrastructure, Observability","articleSection":"Cloud Architecture","wordCount":2617}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Designing for Failure: Resilience Patterns That Actually Hold in Production"}]}</script>
 </head>
 <body class="article-frame" data-topic="Cloud Architecture">
@@ -107,7 +107,7 @@ d.setAttribute('data-theme',t);
       </div>
     </header>
 
-    <div class="article-hero" data-topic="Cloud Architecture"><img data-article-art="designing-for-failure-resilience-patterns" src="/assets/covers/designing-for-failure-resilience-patterns.svg?v=b1a0be3f9b70" width="1280" height="720" alt="Conceptual illustration for Designing for Failure: Resilience Patterns That Actually Hold in Production: Detect, Respond, Recover." decoding="async" fetchpriority="high"></div>
+    <div class="article-hero" data-topic="Cloud Architecture"><img data-article-art="designing-for-failure-resilience-patterns" src="/assets/covers/designing-for-failure-resilience-patterns.svg?v=bbf092f40eec" width="1280" height="720" alt="An end-to-end deadline and retry budget keep delayed dependency calls from amplifying load and leave room for a controlled fallback." decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#the-circuit-breaker-useful-but-often-implemented-wrong">The circuit breaker — useful, but often implemented wrong</a></li><li><a href="#bulkheads-the-most-underused-pattern">Bulkheads — the most underused pattern</a></li><li><a href="#retry-logic-helpful-and-dangerous">Retry logic — helpful and dangerous</a></li><li><a href="#timeouts-the-most-basic-thing-that39s-most-often-misconfigur">Timeouts — the most basic thing that&#39;s most often misconfigured</a></li><li><a href="#graceful-degradation-the-gap-between-theory-and-practice">Graceful degradation — the gap between theory and practice</a></li><li><a href="#chaos-engineering-valuable-but-start-small">Chaos engineering — valuable, but start small</a></li><li><a href="#what-actually-moves-the-needle-on-mttr">What actually moves the needle on MTTR</a></li><li><a href="#allocate-the-end-to-end-deadline-before-adding-retries">Allocate the end-to-end deadline before adding retries</a></li><li><a href="#test-the-retry-budget-at-the-dependency-rather-than-one-clie">Test the retry budget at the dependency rather than one client</a></li><li><a href="#design-a-bulkhead-that-survives-a-shared-downstream-constrai">Design a bulkhead that survives a shared downstream constraint</a></li><li><a href="#rehearse-a-partial-fallback-as-a-real-customer-workflow">Rehearse a partial fallback as a real customer workflow</a></li></ol>
@@ -290,7 +290,7 @@ def retry_with_backoff(func, max_retries=3, base_delay=1.0):
   </div>
 </article>
 <article class="card" data-card data-topics="|Observability|Programming|Platform Engineering|Reliability|Cloud Architecture|" data-search="structured logging that pays for itself: schema, context, and cost discipline logs are the most expensive telemetry most organizations run and the least designed. event schemas, correlation context, level discipline, sampling, and the cost engineering that keeps the logging bill from becoming the observability program&#39;s obituary. observability programming platform engineering reliability cloud architecture" data-topic="Observability">
-  <div class="card-art"><img data-article-art="structured-logging-practices" src="/assets/covers/structured-logging-practices.svg?v=8d951869e265" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-art"><img data-article-art="structured-logging-practices" src="/assets/covers/structured-logging-practices.svg?v=28b16f70cb93" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
     <a class="chip" href="/topics/observability/">Observability</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/structured-logging-practices/">Structured Logging That Pays for Itself: Schema, Context, and Cost Discipline</a></h3>

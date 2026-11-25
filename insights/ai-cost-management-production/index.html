@@ -14,18 +14,18 @@
 <meta property="og:title" content="AI Cost Management in Production: Controlling Token Spend Without Degrading Quality">
 <meta property="og:description" content="LLM API costs scale with usage in ways that surprise teams used to fixed infrastructure pricing. Here&#39;s how to build cost visibility, set sensible ceilings…">
 <meta property="og:url" content="https://ajnacs.com/insights/ai-cost-management-production/">
-<meta property="og:image" content="https://ajnacs.com/assets/og/articles/ai-cost-management-production.png?v=e8e53dda391d">
+<meta property="og:image" content="https://ajnacs.com/assets/og/articles/ai-cost-management-production.png?v=6a8448736c69">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Conceptual illustration for AI Cost Management in Production: Controlling Token Spend Without Degrading Quality: Usage, Allocation, Cost.">
+<meta property="og:image:alt" content="Spending on inference, retrieval and retries is divided by outputs that pass acceptance, with the acceptance rate reported alongside the cost.">
 <meta property="article:published_time" content="2025-12-16">
 <meta property="article:modified_time" content="2026-11-23">
 <meta property="og:image:type" content="image/png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="AI Cost Management in Production: Controlling Token Spend Without Degrading Quality">
 <meta name="twitter:description" content="LLM API costs scale with usage in ways that surprise teams used to fixed infrastructure pricing. Here&#39;s how to build cost visibility, set sensible ceilings…">
-<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/ai-cost-management-production.png?v=e8e53dda391d">
-<meta name="twitter:image:alt" content="Conceptual illustration for AI Cost Management in Production: Controlling Token Spend Without Degrading Quality: Usage, Allocation, Cost.">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/ai-cost-management-production.png?v=6a8448736c69">
+<meta name="twitter:image:alt" content="Spending on inference, retrieval and retries is divided by outputs that pass acceptance, with the acceptance rate reported alongside the cost.">
 
 <link rel="icon" href="/favicon.ico?v=8affdbd5" sizes="any">
 <link rel="icon" href="/images/ajna-mark.svg?v=8affdbd5" type="image/svg+xml">
@@ -51,7 +51,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"AI Cost Management in Production: Controlling Token Spend Without Degrading Quality","description":"LLM API costs scale with usage in ways that surprise teams used to fixed infrastructure pricing. Here's how to build cost visibility, set sensible ceilings, and optimize prompt design without breaking the features that depend on it.","datePublished":"2025-12-16","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/ai-cost-management-production/","image":"https://ajnacs.com/assets/og/articles/ai-cost-management-production.png?v=e8e53dda391d","keywords":"AI & MLOps, FinOps, Enterprise AI","articleSection":"AI & MLOps","wordCount":2348}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"AI Cost Management in Production: Controlling Token Spend Without Degrading Quality","description":"LLM API costs scale with usage in ways that surprise teams used to fixed infrastructure pricing. Here's how to build cost visibility, set sensible ceilings, and optimize prompt design without breaking the features that depend on it.","datePublished":"2025-12-16","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/ai-cost-management-production/","image":"https://ajnacs.com/assets/og/articles/ai-cost-management-production.png?v=6a8448736c69","keywords":"AI & MLOps, FinOps, Enterprise AI","articleSection":"AI & MLOps","wordCount":2348}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"AI Cost Management in Production: Controlling Token Spend Without Degrading Quality"}]}</script>
 </head>
 <body class="article-frame" data-topic="AI &amp; MLOps">
@@ -107,7 +107,7 @@ d.setAttribute('data-theme',t);
       </div>
     </header>
 
-    <div class="article-hero" data-topic="AI &amp; MLOps"><img data-article-art="ai-cost-management-production" src="/assets/covers/ai-cost-management-production.svg?v=83f65fd51e31" width="1280" height="720" alt="Conceptual illustration for AI Cost Management in Production: Controlling Token Spend Without Degrading Quality: Usage, Allocation, Cost." decoding="async" fetchpriority="high"></div>
+    <div class="article-hero" data-topic="AI &amp; MLOps"><img data-article-art="ai-cost-management-production" src="/assets/covers/ai-cost-management-production.svg?v=5fe6110151eb" width="1280" height="720" alt="Spending on inference, retrieval and retries is divided by outputs that pass acceptance, with the acceptance rate reported alongside the cost." decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#why-llm-costs-are-different-from-infrastructure-costs">Why LLM costs are different from infrastructure costs</a></li><li><a href="#building-cost-visibility">Building cost visibility</a></li><li><a href="#prompt-optimization-for-cost">Prompt optimization for cost</a></li><li><a href="#model-routing">Model routing</a></li><li><a href="#caching-strategies">Caching strategies</a></li><li><a href="#setting-and-enforcing-cost-ceilings">Setting and enforcing cost ceilings</a></li><li><a href="#decide-which-completed-task-belongs-in-the-cost-denominator">Decide which completed task belongs in the cost denominator</a></li><li><a href="#normalize-usage-without-losing-provider-meaning">Normalize usage without losing provider meaning</a></li><li><a href="#test-routing-alongside-quality-and-workload-mix">Test routing alongside quality and workload mix</a></li><li><a href="#control-commitments-before-concurrent-calls-start">Control commitments before concurrent calls start</a></li><li><a href="#establish-boundaries-for-caching-and-cost-review">Establish boundaries for caching and cost review</a></li></ol>

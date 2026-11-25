@@ -14,18 +14,18 @@
 <meta property="og:title" content="PostgreSQL Performance Tuning: The Settings and Patterns That Actually Matter">
 <meta property="og:description" content="PostgreSQL&#39;s default configuration is conservative, designed for small deployments. For production workloads, the settings that control memory, parallelism…">
 <meta property="og:url" content="https://ajnacs.com/insights/postgresql-performance-tuning/">
-<meta property="og:image" content="https://ajnacs.com/assets/og/articles/postgresql-performance-tuning.png?v=f878c842b7e0">
+<meta property="og:image" content="https://ajnacs.com/assets/og/articles/postgresql-performance-tuning.png?v=6379779a921d">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Conceptual illustration for PostgreSQL Performance Tuning: The Settings and Patterns That Actually Matter: Query, Index, Planner.">
+<meta property="og:image:alt" content="Compare the same PostgreSQL query bindings before and after an index change using actual buffer reads, then validate the write and cache tradeoffs.">
 <meta property="article:published_time" content="2025-12-26">
 <meta property="article:modified_time" content="2026-11-23">
 <meta property="og:image:type" content="image/png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="PostgreSQL Performance Tuning: The Settings and Patterns That Actually Matter">
 <meta name="twitter:description" content="PostgreSQL&#39;s default configuration is conservative, designed for small deployments. For production workloads, the settings that control memory, parallelism…">
-<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/postgresql-performance-tuning.png?v=f878c842b7e0">
-<meta name="twitter:image:alt" content="Conceptual illustration for PostgreSQL Performance Tuning: The Settings and Patterns That Actually Matter: Query, Index, Planner.">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/postgresql-performance-tuning.png?v=6379779a921d">
+<meta name="twitter:image:alt" content="Compare the same PostgreSQL query bindings before and after an index change using actual buffer reads, then validate the write and cache tradeoffs.">
 
 <link rel="icon" href="/favicon.ico?v=8affdbd5" sizes="any">
 <link rel="icon" href="/images/ajna-mark.svg?v=8affdbd5" type="image/svg+xml">
@@ -51,7 +51,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"PostgreSQL Performance Tuning: The Settings and Patterns That Actually Matter","description":"PostgreSQL's default configuration is conservative, designed for small deployments. For production workloads, the settings that control memory, parallelism, WAL behavior, and connection handling need explicit tuning. Here's where to start.","datePublished":"2025-12-26","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/postgresql-performance-tuning/","image":"https://ajnacs.com/assets/og/articles/postgresql-performance-tuning.png?v=f878c842b7e0","keywords":"Data Engineering, Programming, Cloud Architecture","articleSection":"Data Engineering","wordCount":2135}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"PostgreSQL Performance Tuning: The Settings and Patterns That Actually Matter","description":"PostgreSQL's default configuration is conservative, designed for small deployments. For production workloads, the settings that control memory, parallelism, WAL behavior, and connection handling need explicit tuning. Here's where to start.","datePublished":"2025-12-26","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/postgresql-performance-tuning/","image":"https://ajnacs.com/assets/og/articles/postgresql-performance-tuning.png?v=6379779a921d","keywords":"Data Engineering, Programming, Cloud Architecture","articleSection":"Data Engineering","wordCount":2135}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"PostgreSQL Performance Tuning: The Settings and Patterns That Actually Matter"}]}</script>
 </head>
 <body class="article-frame" data-topic="Data Engineering">
@@ -107,7 +107,7 @@ d.setAttribute('data-theme',t);
       </div>
     </header>
 
-    <div class="article-hero" data-topic="Data Engineering"><img data-article-art="postgresql-performance-tuning" src="/assets/covers/postgresql-performance-tuning.svg?v=0513939531f9" width="1280" height="720" alt="Conceptual illustration for PostgreSQL Performance Tuning: The Settings and Patterns That Actually Matter: Query, Index, Planner." decoding="async" fetchpriority="high"></div>
+    <div class="article-hero" data-topic="Data Engineering"><img data-article-art="postgresql-performance-tuning" src="/assets/covers/postgresql-performance-tuning.svg?v=e5203fc1d300" width="1280" height="720" alt="Compare the same PostgreSQL query bindings before and after an index change using actual buffer reads, then validate the write and cache tradeoffs." decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#memory-settings-the-biggest-wins">Memory settings: the biggest wins</a></li><li><a href="#wal-and-checkpoint-tuning">WAL and checkpoint tuning</a></li><li><a href="#connection-management-don39t-skip-pgbouncer">Connection management: don&#39;t skip PgBouncer</a></li><li><a href="#indexing-the-most-common-performance-problems">Indexing: the most common performance problems</a></li><li><a href="#query-analysis-with-explain-analyze">Query analysis with EXPLAIN ANALYZE</a></li><li><a href="#establish-a-reproducible-baseline-before-changing-a-knob">Establish a reproducible baseline before changing a knob</a></li><li><a href="#read-actual-plans-as-execution-evidence">Read actual plans as execution evidence</a></li><li><a href="#estimate-connection-and-memory-costs-as-a-workload">Estimate connection and memory costs as a workload</a></li><li><a href="#verify-that-a-local-improvement-survives-a-release">Verify that a local improvement survives a release</a></li></ol>

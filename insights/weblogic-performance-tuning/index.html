@@ -14,18 +14,18 @@
 <meta property="og:title" content="WebLogic Performance Tuning: Work Managers, Connection Pools, and the Knobs That Actually Matter">
 <meta property="og:description" content="A field guide to tuning WebLogic Server in production — the self-tuning thread pool, work managers, JDBC connection pools, JVM settings, and the diagnostic…">
 <meta property="og:url" content="https://ajnacs.com/insights/weblogic-performance-tuning/">
-<meta property="og:image" content="https://ajnacs.com/assets/og/articles/weblogic-performance-tuning.png?v=140f2a6c6fb8">
+<meta property="og:image" content="https://ajnacs.com/assets/og/articles/weblogic-performance-tuning.png?v=862646f2866c">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Conceptual illustration for WebLogic Performance Tuning: Work Managers, Connection Pools, and the Knobs That Actually Matter: Signals, Diagnosis, Logs.">
+<meta property="og:image:alt" content="Track a WebLogic request through its Work Manager queue and JDBC connection wait to understand tail latency under fixed offered load.">
 <meta property="article:published_time" content="2025-08-19">
 <meta property="article:modified_time" content="2026-11-23">
 <meta property="og:image:type" content="image/png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="WebLogic Performance Tuning: Work Managers, Connection Pools, and the Knobs That Actually Matter">
 <meta name="twitter:description" content="A field guide to tuning WebLogic Server in production — the self-tuning thread pool, work managers, JDBC connection pools, JVM settings, and the diagnostic…">
-<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/weblogic-performance-tuning.png?v=140f2a6c6fb8">
-<meta name="twitter:image:alt" content="Conceptual illustration for WebLogic Performance Tuning: Work Managers, Connection Pools, and the Knobs That Actually Matter: Signals, Diagnosis, Logs.">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/weblogic-performance-tuning.png?v=862646f2866c">
+<meta name="twitter:image:alt" content="Track a WebLogic request through its Work Manager queue and JDBC connection wait to understand tail latency under fixed offered load.">
 
 <link rel="icon" href="/favicon.ico?v=8affdbd5" sizes="any">
 <link rel="icon" href="/images/ajna-mark.svg?v=8affdbd5" type="image/svg+xml">
@@ -51,7 +51,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"WebLogic Performance Tuning: Work Managers, Connection Pools, and the Knobs That Actually Matter","description":"A field guide to tuning WebLogic Server in production — the self-tuning thread pool, work managers, JDBC connection pools, JVM settings, and the diagnostic tools that tell you which knob to turn.","datePublished":"2025-08-19","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/weblogic-performance-tuning/","image":"https://ajnacs.com/assets/og/articles/weblogic-performance-tuning.png?v=140f2a6c6fb8","keywords":"Java, WebLogic, Middleware, Performance, Architecture","articleSection":"Performance","wordCount":2555}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"WebLogic Performance Tuning: Work Managers, Connection Pools, and the Knobs That Actually Matter","description":"A field guide to tuning WebLogic Server in production — the self-tuning thread pool, work managers, JDBC connection pools, JVM settings, and the diagnostic tools that tell you which knob to turn.","datePublished":"2025-08-19","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/weblogic-performance-tuning/","image":"https://ajnacs.com/assets/og/articles/weblogic-performance-tuning.png?v=862646f2866c","keywords":"Java, WebLogic, Middleware, Performance, Architecture","articleSection":"Performance","wordCount":2555}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"WebLogic Performance Tuning: Work Managers, Connection Pools, and the Knobs That Actually Matter"}]}</script>
 </head>
 <body class="article-frame" data-topic="Performance">
@@ -107,7 +107,7 @@ d.setAttribute('data-theme',t);
       </div>
     </header>
 
-    <div class="article-hero" data-topic="Performance"><img data-article-art="weblogic-performance-tuning" src="/assets/covers/weblogic-performance-tuning.svg?v=ac98342438b7" width="1280" height="720" alt="Conceptual illustration for WebLogic Performance Tuning: Work Managers, Connection Pools, and the Knobs That Actually Matter: Signals, Diagnosis, Logs." decoding="async" fetchpriority="high"></div>
+    <div class="article-hero" data-topic="Performance"><img data-article-art="weblogic-performance-tuning" src="/assets/covers/weblogic-performance-tuning.svg?v=50b03cdbbe6b" width="1280" height="720" alt="Track a WebLogic request through its Work Manager queue and JDBC connection wait to understand tail latency under fixed offered load." decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#first-principle-weblogic-manages-its-own-threads">First principle: WebLogic manages its own threads</a></li><li><a href="#work-managers-protecting-the-work-that-matters">Work managers: protecting the work that matters</a></li><li><a href="#jdbc-connection-pools-where-most-quotweblogicquot-problems-l">JDBC connection pools: where most &quot;WebLogic&quot; problems live</a></li><li><a href="#the-jvm-where-the-biggest-wins-hide">The JVM: where the biggest wins hide</a></li><li><a href="#server-level-settings-worth-checking-once">Server-level settings worth checking once</a></li><li><a href="#the-diagnostic-loop">The diagnostic loop</a></li><li><a href="#put-the-request-timeline-next-to-the-server-counters">Put the request timeline next to the server counters</a></li><li><a href="#cap-capacity-against-the-database-during-failover">Cap capacity against the database during failover</a></li><li><a href="#check-the-effective-scope-of-workload-isolation">Check the effective scope of workload isolation</a></li><li><a href="#use-arrivals-that-reveal-overload">Use arrivals that reveal overload</a></li><li><a href="#rehearse-rollback-under-the-same-load">Rehearse rollback under the same load</a></li></ol>
@@ -256,7 +256,7 @@ d.setAttribute('data-theme',t);
     <div class="wrap">
       <p class="eyebrow">Related</p>
       <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|Java|WebLogic|Middleware|Architecture|" data-search="weblogic domains, clusters, and managed servers: the architecture explained admin servers, managed servers, clusters, machines, and node manager — the weblogic domain model explained for people who have to run it, not just pass the exam. what each piece does, how they fit together, and where production deployments go wrong. java weblogic middleware architecture" data-topic="Architecture">
-  <div class="card-art"><img data-article-art="weblogic-domains-clusters-explained" src="/assets/covers/weblogic-domains-clusters-explained.svg?v=985cb16a8800" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-art"><img data-article-art="weblogic-domains-clusters-explained" src="/assets/covers/weblogic-domains-clusters-explained.svg?v=d41cefa2b872" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
     <a class="chip" href="/topics/architecture/">Architecture</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/weblogic-domains-clusters-explained/">WebLogic Domains, Clusters, and Managed Servers: The Architecture Explained</a></h3>
@@ -265,7 +265,7 @@ d.setAttribute('data-theme',t);
   </div>
 </article>
 <article class="card" data-card data-topics="|Java|WebLogic|Middleware|Messaging|Architecture|" data-search="weblogic jms in production: servers, stores, and the configuration that survives failover jms servers, persistent stores, distributed destinations, and connection factories — how weblogic messaging actually fits together, and the configuration decisions that determine whether your queues survive a server failure. java weblogic middleware messaging architecture" data-topic="Architecture">
-  <div class="card-art"><img data-article-art="weblogic-jms-production-configuration" src="/assets/covers/weblogic-jms-production-configuration.svg?v=8521f98eef0c" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-art"><img data-article-art="weblogic-jms-production-configuration" src="/assets/covers/weblogic-jms-production-configuration.svg?v=8defa0515998" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
     <a class="chip" href="/topics/architecture/">Architecture</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/weblogic-jms-production-configuration/">WebLogic JMS in Production: Servers, Stores, and the Configuration That Survives Failover</a></h3>
