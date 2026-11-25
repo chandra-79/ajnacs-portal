@@ -1,7 +1,7 @@
 ---
 title: "Platform Onboarding: Measure the Path to a First Deployment"
 description: "Pilot a self-service path, measure time to a first qualifying deployment, and track completion, controls, and support effort."
-date: 2027-08-16
+date: 2026-11-20
 tags: ["DevSecOps", "Cloud Architecture", "Engineering Leadership"]
 format: article
 ---

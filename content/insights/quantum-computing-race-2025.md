@@ -1,7 +1,7 @@
 ---
 title: "Quantum Computing Milestones, 2019–2025: What the Evidence Shows"
 description: "Distinguish demonstrations in random circuit sampling, quantum error correction, annealing, and experimental qubit architectures."
-date: 2027-07-21
+date: 2026-11-18
 tags: ["Quantum Computing", "Enterprise AI", "Emerging Technology"]
 format: article
 ---
