@@ -14,18 +14,18 @@
 <meta property="og:title" content="Turn an MTU into a payload budget">
 <meta property="og:description" content="Separate packet size from useful application bytes and account for the headers added at each layer.">
 <meta property="og:url" content="https://ajnacs.com/deep-dives/networks/mtu-payload-budget/">
-<meta property="og:image" content="https://ajnacs.com/assets/deep-dives/networks-mtu-payload-budget.png?v=acae7717894e">
-<meta property="og:image:width" content="1000">
-<meta property="og:image:height" content="370">
-<meta property="og:image:alt" content="Maximum TCP payload in the example (bytes). IPv4 with 1,500 MTU: 1,460; IPv6 with 1,500 MTU: 1,440; IPv4 with 1,450 MTU: 1,410.">
+<meta property="og:image" content="https://ajnacs.com/assets/deep-dives/networks-mtu-payload-budget-social.png?v=3277e9cff73d">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Start from the effective path MTU, subtract IP and TCP headers, then allow for framing when estimating how many application bytes can fit.">
 
 
 <meta property="og:image:type" content="image/png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Turn an MTU into a payload budget">
 <meta name="twitter:description" content="Separate packet size from useful application bytes and account for the headers added at each layer.">
-<meta name="twitter:image" content="https://ajnacs.com/assets/deep-dives/networks-mtu-payload-budget.png?v=acae7717894e">
-<meta name="twitter:image:alt" content="Maximum TCP payload in the example (bytes). IPv4 with 1,500 MTU: 1,460; IPv6 with 1,500 MTU: 1,440; IPv4 with 1,450 MTU: 1,410.">
+<meta name="twitter:image" content="https://ajnacs.com/assets/deep-dives/networks-mtu-payload-budget-social.png?v=3277e9cff73d">
+<meta name="twitter:image:alt" content="Start from the effective path MTU, subtract IP and TCP headers, then allow for framing when estimating how many application bytes can fit.">
 
 <link rel="icon" href="/favicon.ico?v=8affdbd5" sizes="any">
 <link rel="icon" href="/images/ajna-mark.svg?v=8affdbd5" type="image/svg+xml">
@@ -89,12 +89,13 @@ d.setAttribute('data-theme',t);
       <input id="copyValue" type="text" readonly>
       <span>Select and copy this link.</span>
     </label>
-  </div></header><div class="article-hero depth-chart"><img src="/assets/deep-dives/networks-mtu-payload-budget.png?v=acae7717894e" width="1000" height="370" alt="Maximum TCP payload in the example (bytes). IPv4 with 1,500 MTU: 1,460; IPv6 with 1,500 MTU: 1,440; IPv4 with 1,450 MTU: 1,410." fetchpriority="high" decoding="async"></div>
+  </div></header><div class="article-hero"><img src="/assets/deep-dives/networks-mtu-payload-budget-cover.svg?v=665f8edd3fae" width="1280" height="720" alt="Start from the effective path MTU, subtract IP and TCP headers, then allow for framing when estimating how many application bytes can fit." fetchpriority="high" decoding="async"></div>
           <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#budget-from-the-network-layer">Budget from the network layer</a></li><li><a href="#find-the-governing-interface">Find the governing interface</a></li><li><a href="#limits-of-the-example">Limits of the example</a></li></ol>
 </nav></div>
           <div class="article-copy"><p class="case-notice">The chart uses illustrative inputs. It is a worked example.</p>
+          <figure class="depth-chart"><img src="/assets/deep-dives/networks-mtu-payload-budget.png?v=acae7717894e" width="1000" height="370" alt="Maximum TCP payload in the example (bytes). IPv4 with 1,500 MTU: 1,460; IPv6 with 1,500 MTU: 1,440; IPv4 with 1,450 MTU: 1,410." loading="lazy" decoding="async"></figure>
           <details class="depth-chart-data"><summary>Chart values and units</summary><ul><li>IPv4 with 1,500 MTU · 1,460 bytes</li><li>IPv6 with 1,500 MTU · 1,440 bytes</li><li>IPv4 with 1,450 MTU · 1,410 bytes</li></ul>
           <a href="/deep-dives/networks/mtu-payload-budget/chart.csv" download>Download the chart data (CSV)</a></details>
           <div class="prose"><h2 id="budget-from-the-network-layer"><a class="h-anchor" href="#budget-from-the-network-layer" aria-hidden="true" tabindex="-1">#</a>Budget from the network layer</h2>

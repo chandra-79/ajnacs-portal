@@ -11,6 +11,7 @@ import { models } from "../assets/js/field-math.mjs";
 import { caseCategories } from "./case-library.mjs";
 import { topicPath } from "./discovery.mjs";
 import { loadDeepDives } from "./deep-dives.mjs";
+import { sectionCover } from "./section-art.mjs";
 import { conceptFor, conceptCsv, conceptSvg } from "./concept-figures.mjs";
 import { loadServiceLibrary, servicePath, servicePaths, serviceScenarioNotice } from "./service-library.mjs";
 
@@ -173,6 +174,7 @@ console.log("\nDeep dives");
   const { tracks } = await loadDeepDives();
   const indexed = await readFile("sitemap.xml", "utf8");
   const hub = await readFile("deep-dives/index.html", "utf8");
+  const socialHashes = new Set();
   const images = new Set();
   if (!indexed.includes("<loc>https://ajnacs.com/deep-dives/</loc>")) fail("Deep-dive hub missing from sitemap");
   for (const track of tracks) {
@@ -182,12 +184,23 @@ console.log("\nDeep dives");
       const html = await readFile(`.${lesson.path}index.html`, "utf8");
       checkReadingControls(html, lesson.path);
       const data = await readFile(`.${lesson.path}chart.csv`, "utf8");
-      const asset = `assets/deep-dives/${track.id}-${lesson.slug}.png`;
-      const png = await readFile(asset);
+      const stem = `assets/deep-dives/${track.id}-${lesson.slug}`;
+      const asset = `${stem}.png`;
+      const cover = sectionCover(`deep-${track.id}-${lesson.slug}`);
+      const [png, coverSvg, social] = await Promise.all([
+        readFile(asset), readFile(`${stem}-cover.svg`, "utf8"), readFile(`${stem}-social.png`),
+      ]);
+      const socialHash = createHash("sha256").update(social).digest("hex").slice(0, 12);
+      if (coverSvg !== cover.svg || !html.includes(`src="/${stem}-cover.svg?v=${cover.version}"`) ||
+          !html.includes(`content="${SITE.url}/${stem}-social.png?v=${socialHash}"`) ||
+          social.readUInt32BE(16) !== 1200 || social.readUInt32BE(20) !== 630 || socialHashes.has(socialHash)) {
+        fail(`Missing, invalid or reused lesson artwork: ${lesson.path}`);
+      }
+      socialHashes.add(socialHash);
       const hash = createHash("sha256").update(png).digest("hex");
       if (!indexed.includes(`<loc>https://ajnacs.com${lesson.path}</loc>`) ||
           !paths.includes(`href="${lesson.path}"`) || !html.includes(`Level ${lesson.level} ·`) ||
-          !html.includes(`href="${lesson.path}chart.csv"`) || !html.includes(`<div class="article-hero depth-chart"><img src="/${asset}?v=${hash.slice(0, 12)}"`) ||
+          !html.includes(`href="${lesson.path}chart.csv"`) || !html.includes(`<figure class="depth-chart"><img src="/${asset}?v=${hash.slice(0, 12)}"`) ||
           !html.includes("Limits of the example") || !html.includes("The chart uses illustrative inputs.") ||
           !html.includes(`href="${track.lessons[index - 1]?.path || "/" + track.start + "/"}"`) ||
           (track.lessons[index + 1] && !html.includes(`href="${track.lessons[index + 1].path}"`)) ||
@@ -223,14 +236,23 @@ console.log("\nService methodologies and industry scenarios");
       const route = servicePath(service.id, item?.id);
       const figure = item?.figure || service.figure;
       const stem = `/assets/services/${service.id}/${item?.id || "methodology"}`;
-      let html, svg, png;
+      const cover = sectionCover(figure.slug);
+      let html, svg, png, coverSvg;
       try {
-        [html, svg, png] = await Promise.all([readFile(`.${route}index.html`, "utf8"), readFile(`.${stem}.svg`, "utf8"), readFile(`.${stem}-social.png`)]);
+        [html, svg, png, coverSvg] = await Promise.all([
+          readFile(`.${route}index.html`, "utf8"), readFile(`.${stem}.svg`, "utf8"),
+          readFile(`.${stem}-social.png`), readFile(`.${stem}-cover.svg`, "utf8"),
+        ]);
       } catch (error) { fail(`${route}: missing page or illustration (${error.code})`); continue; }
       checkReadingControls(html, route);
       const svgHash = createHash("sha256").update(svg).digest("hex").slice(0, 12);
       const pngHash = createHash("sha256").update(png).digest("hex").slice(0, 12);
-      if (svg !== conceptSvg(figure)) fail(`${route}: hero differs from authored figure`);
+      if (svg !== conceptSvg(figure)) fail(`${route}: evidence differs from authored figure`);
+      const coverPath = `${stem}-cover.svg?v=${cover.version}`;
+      if (coverSvg !== cover.svg || !html.includes(`src="${coverPath}"`) ||
+          !(item ? parent : landing).includes(`src="${coverPath}"`)) {
+        fail(`${route}: missing cover on the page or its discovery card`);
+      }
       if (png.subarray(1, 4).toString() !== "PNG" || png.readUInt32BE(16) !== 1200 || png.readUInt32BE(20) !== 630 || socialImages.has(pngHash)) fail(`${route}: invalid or reused social image`);
       socialImages.add(pngHash);
       if (!html.includes(`src="${stem}.svg?v=${svgHash}"`) || !html.includes(`property="og:image" content="${SITE.url}${stem}-social.png?v=${pngHash}"`) || !html.includes('property="og:image:type" content="image/png"')) fail(`${route}: image version or metadata mismatch`);

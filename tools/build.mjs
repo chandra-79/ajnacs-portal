@@ -12,6 +12,7 @@ import { makeRenderer, tableOfContents, headingAnchors } from "./render.mjs";
 import { staticPages } from "./pages.mjs";
 import { caseLibrary } from "./case-library.mjs";
 import { loadServiceLibrary, publishServiceLibrary } from "./service-library.mjs";
+import { sectionCover } from "./section-art.mjs";
 import { loadDeepDives, depthLinks, depthAudit, publishDeepDives } from "./deep-dives.mjs";
 import { examplesCsv, readWorkedExamples, workedExample } from "./worked-examples.mjs";
 import { localInferenceNote } from "./local-inference-note.mjs";
@@ -36,7 +37,11 @@ const live = manifest
 const insights = live.filter(m => m.section === "insights");
 const notes = live.filter(m => m.section === "notes");
 const depthCatalog = await loadDeepDives();
-const services = await loadServiceLibrary();
+const services = (await loadServiceLibrary()).map(service => ({
+  ...service,
+  cover: sectionCover(service.figure.slug),
+  useCases: service.useCases.map(item => ({ ...item, cover: sectionCover(item.figure.slug) })),
+}));
 const examples = await readWorkedExamples();
 const researchLinks = await readResearchLinks();
 const localInference = await localInferenceNote();

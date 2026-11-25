@@ -154,15 +154,17 @@ export function servicePaths(services) {
 
 function imagePaths(service, item) {
   const stem = `/assets/services/${service.id}/${item ? item.id : "methodology"}`;
-  return { hero: `${stem}.svg`, social: `${stem}-social.png`, data: `${stem}.csv` };
+  return { hero: `${stem}.svg`, cover: `${stem}-cover.svg`, social: `${stem}-social.png`, data: `${stem}.csv` };
 }
 
-function illustration(service, item, { lazy = false } = {}) {
+function illustration(service, item, { lazy = false, evidence = false } = {}) {
   const figure = item?.figure || service.figure;
+  const cover = evidence ? null : (item || service).cover;
   const paths = imagePaths(service, item);
-  const version = hash(conceptSvg(figure));
-  const alt = `${item ? "Hypothetical scenario. " : ""}${figure.alt}`;
-  return `<img src="${paths.hero}?v=${version}" alt="${esc(alt)}" width="1280" height="720" ${lazy ? 'loading="lazy"' : 'fetchpriority="high"'} decoding="async">`;
+  const path = cover ? paths.cover : paths.hero;
+  const version = cover?.version || hash(conceptSvg(figure));
+  const alt = `${item ? "Hypothetical scenario. " : ""}${cover?.alt || figure.alt}`;
+  return `<img src="${path}?v=${version}" alt="${esc(alt)}" width="1280" height="720" ${lazy ? 'loading="lazy"' : 'fetchpriority="high"'} decoding="async">`;
 }
 
 /** A landing-page card; its destination is the detailed methodology. */
@@ -235,7 +237,11 @@ function renderDetail(service, item, services, promotions, socialVersion) {
   const images = imagePaths(service, item);
   const { marked, headings } = makeRenderer();
   const copy = headingAnchors(marked.parse(source));
-  const details = conceptDetails(figure).replace(`/field-guides/examples/${figure.slug}.csv`, images.data);
+  const cover = (item || service).cover;
+  const evidence = cover ? `<figure class="depth-chart">${illustration(service, item, { lazy: true, evidence: true })}</figure>` : "";
+  const details = conceptDetails(figure)
+    .replace(`/field-guides/examples/${figure.slug}.csv`, images.data)
+    .replace("</section>", `${evidence}</section>`);
   // Include non-Markdown sections in the same navigation and reading order.
   const toc = [...headings,
     { id: "concept-method-title", text: figure.kind === "flow" ? "How to use the diagram" : "Chart methodology and values" },
@@ -251,7 +257,7 @@ function renderDetail(service, item, services, promotions, socialVersion) {
     <p class="case-notice" data-scenario-disclosure="${item ? "hypothetical" : "methodology"}">${item ? serviceScenarioNotice : serviceMethodNotice}</p>
     <div class="article-meta"><span>${readingTime(wordCount(source))} min read</span><span class="dot" aria-hidden="true"></span><a href="/about/">Ajna Consulting Services</a>${copyLinkControl()}</div>
   </header>
-  <div class="article-hero depth-chart" data-topic="${esc(SERVICE_CATEGORIES[service.category].topic)}">${illustration(service, item)}</div>
+  <div class="article-hero${cover ? "" : " depth-chart"}" data-topic="${esc(SERVICE_CATEGORIES[service.category].topic)}">${illustration(service, item)}</div>
   <div class="reader-aside">${tableOfContents(toc)}</div>
   <div class="article-copy"><div class="prose">${copy}</div>
     ${details}${referenceList(service)}${item ? "" : scenarioCards(service)}${readNext(service, item, services)}
@@ -272,7 +278,7 @@ function renderDetail(service, item, services, promotions, socialVersion) {
     provider: { "@type": "Organization", "@id": SITE.url + "/#org", name: SITE.name, url: SITE.url } };
   return page({ title, description, path: route, body, type: "article", topic: SERVICE_CATEGORIES[service.category].topic,
     ogImage: `${images.social}?v=${socialVersion}`, imageWidth: 1200, imageHeight: 630,
-    imageAlt: `${item ? "Hypothetical scenario. " : ""}${figure.alt}`, jsonld: item ? [article] : [article, serviceEntity] });
+    imageAlt: `${item ? "Hypothetical scenario. " : ""}${cover?.alt || figure.alt}`, jsonld: item ? [article] : [article, serviceEntity] });
 }
 
 /** Render deterministically in memory; the caller controls when files publish. */
@@ -286,8 +292,10 @@ export function renderServiceLibrary(services, { promotions = () => "" } = {}) {
       const figure = item?.figure || service.figure;
       const paths = imagePaths(service, item);
       const svg = conceptSvg(figure);
-      const png = renderEditorialPng(conceptSvg(figure, 1200, 630));
+      const cover = (item || service).cover;
+      const png = renderEditorialPng(cover?.socialSvg || conceptSvg(figure, 1200, 630));
       const entries = [{ path: paths.hero, contents: svg }, { path: paths.social, contents: png }];
+      if (cover) entries.push({ path: paths.cover, contents: cover.svg });
       if (figure.kind !== "flow") entries.push({ path: paths.data, contents: conceptCsv(figure) });
       for (const asset of entries) {
         if (assetPaths.has(asset.path)) fail("Service library", `duplicate asset ${asset.path}`);

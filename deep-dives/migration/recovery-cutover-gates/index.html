@@ -14,18 +14,18 @@
 <meta property="og:title" content="Rehearse the point where rollback becomes recovery">
 <meta property="og:description" content="Define the stop conditions that separate a safe rollback from a forward recovery after writes move.">
 <meta property="og:url" content="https://ajnacs.com/deep-dives/migration/recovery-cutover-gates/">
-<meta property="og:image" content="https://ajnacs.com/assets/deep-dives/migration-recovery-cutover-gates.png?v=9a7faa3646e9">
-<meta property="og:image:width" content="1000">
-<meta property="og:image:height" content="370">
-<meta property="og:image:alt" content="Stages in a sample recovery rehearsal (minutes). Exposure until detection: 4; Stop and fence writes: 5; Reconcile and restore: 14; End-to-end recovery: 23.">
+<meta property="og:image" content="https://ajnacs.com/assets/deep-dives/migration-recovery-cutover-gates-social.png?v=c1b0da0d157e">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Before target writes, traffic can return to the authoritative source. After acknowledged target writes, fence writers and reconcile before recovery.">
 
 
 <meta property="og:image:type" content="image/png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Rehearse the point where rollback becomes recovery">
 <meta name="twitter:description" content="Define the stop conditions that separate a safe rollback from a forward recovery after writes move.">
-<meta name="twitter:image" content="https://ajnacs.com/assets/deep-dives/migration-recovery-cutover-gates.png?v=9a7faa3646e9">
-<meta name="twitter:image:alt" content="Stages in a sample recovery rehearsal (minutes). Exposure until detection: 4; Stop and fence writes: 5; Reconcile and restore: 14; End-to-end recovery: 23.">
+<meta name="twitter:image" content="https://ajnacs.com/assets/deep-dives/migration-recovery-cutover-gates-social.png?v=c1b0da0d157e">
+<meta name="twitter:image:alt" content="Before target writes, traffic can return to the authoritative source. After acknowledged target writes, fence writers and reconcile before recovery.">
 
 <link rel="icon" href="/favicon.ico?v=8affdbd5" sizes="any">
 <link rel="icon" href="/images/ajna-mark.svg?v=8affdbd5" type="image/svg+xml">
@@ -89,12 +89,13 @@ d.setAttribute('data-theme',t);
       <input id="copyValue" type="text" readonly>
       <span>Select and copy this link.</span>
     </label>
-  </div></header><div class="article-hero depth-chart"><img src="/assets/deep-dives/migration-recovery-cutover-gates.png?v=9a7faa3646e9" width="1000" height="370" alt="Stages in a sample recovery rehearsal (minutes). Exposure until detection: 4; Stop and fence writes: 5; Reconcile and restore: 14; End-to-end recovery: 23." fetchpriority="high" decoding="async"></div>
+  </div></header><div class="article-hero"><img src="/assets/deep-dives/migration-recovery-cutover-gates-cover.svg?v=3d0644a5bd4c" width="1280" height="720" alt="Before target writes, traffic can return to the authoritative source. After acknowledged target writes, fence writers and reconcile before recovery." fetchpriority="high" decoding="async"></div>
           <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#name-the-last-reversible-point">Name the last reversible point</a></li><li><a href="#run-the-clock">Run the clock</a></li><li><a href="#limits-of-the-example">Limits of the example</a></li></ol>
 </nav></div>
           <div class="article-copy"><p class="case-notice">The chart uses illustrative inputs. It is a worked example.</p>
+          <figure class="depth-chart"><img src="/assets/deep-dives/migration-recovery-cutover-gates.png?v=9a7faa3646e9" width="1000" height="370" alt="Stages in a sample recovery rehearsal (minutes). Exposure until detection: 4; Stop and fence writes: 5; Reconcile and restore: 14; End-to-end recovery: 23." loading="lazy" decoding="async"></figure>
           <details class="depth-chart-data"><summary>Chart values and units</summary><ul><li>Exposure until detection · 4 minutes</li><li>Stop and fence writes · 5 minutes</li><li>Reconcile and restore · 14 minutes</li><li>End-to-end recovery · 23 minutes</li></ul>
           <a href="/deep-dives/migration/recovery-cutover-gates/chart.csv" download>Download the chart data (CSV)</a></details>
           <div class="prose"><h2 id="name-the-last-reversible-point"><a class="h-anchor" href="#name-the-last-reversible-point" aria-hidden="true" tabindex="-1">#</a>Name the last reversible point</h2>
