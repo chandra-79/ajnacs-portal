@@ -84,17 +84,19 @@ test('the software engineering capability shows API/backend work rather than a s
 });
 
 test('every editorial content card and row carries a genuine subject thumbnail',()=>{
-  const pages=['index.html','insights/index.html','services/index.html','contact/index.html','case-studies/index.html','topics/index.html','series/index.html','notes/index.html'];
-  const selectors=['svc-card','feature','quote','topic-tile','card','case','note-row','feature-post'];
+  const pages=['index.html','insights/index.html','services/index.html','contact/index.html','case-studies/index.html','topics/index.html','topics/tags/index.html','series/index.html','notes/index.html'];
+  const selectors=['svc-card','feature','quote','topic-tile','card','case','note-row','feature-post','field-index-row','field-lane-tile'];
   let checked=0;
   for(const file of pages){
     const html=readFileSync(new URL('../'+file,import.meta.url),'utf8');
-    const starts=[...html.matchAll(/<(?:div|article|a|figure)\b[^>]*class="([^"]+)"[^>]*>/g)].filter(m=>m[1].split(' ').some(c=>selectors.includes(c)));
+    const starts=[...html.matchAll(/<(?:div|article|a|figure|li)\b[^>]*class="([^"]+)"[^>]*>/g)].filter(m=>m[1].split(' ').some(c=>selectors.includes(c)));
     for(const m of starts){
       const end=html.slice(m.index).search(/<(?:h[1-6]|strong|blockquote|time)\b/);
       const beforeHeading=html.slice(m.index,end>0?m.index+end:m.index+3000);
       const image=beforeHeading.match(/<img[^>]+src="(\/assets\/services\/[^"?]+)(?:\?[^"]*)?"[^>]+alt="([^"]+)"/);
-      if(image){
+      if(m[1].split(' ').includes('field-lane-tile')){
+        assert.match(beforeHeading,/data-lane-art="[a-z-]+"/,`${file}: topic tile needs its own schematic`);
+      }else if(image){
         const svg=readFileSync(new URL('..'+image[1],import.meta.url),'utf8');
         assert.match(svg,/data-article-art="service-[^"]+"/);
         assert.ok(image[2].length>=20,`${file}: service thumbnail needs meaningful alternative text`);

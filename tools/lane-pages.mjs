@@ -1,6 +1,7 @@
 import { esc, fmtDate, readingTime } from "./lib.mjs";
 import { lanes as portalLanes, lanePath } from "./lanes.mjs";
 import { laneArt } from "./lane-art.mjs";
+import { coverFor } from "./covers.mjs";
 
 const articlePath = article => "/" + article.section + "/" + article.slug + "/";
 
@@ -83,9 +84,12 @@ function laneRows(articles, directory, showLanes) {
     const tags = lane ? ["lane:" + lane.id, ...article.tags] : article.tags;
     const search = [article.title, article.description, article.series, lane?.title, ...tags].filter(Boolean).join(" ").toLowerCase();
     return `<li class="field-index-row" data-card data-topics="|${esc(tags.join("|"))}|" data-search="${esc(search)}">
-      <div class="field-index-title">
-        <h3 class="card-title"><a class="card-destination" href="${articlePath(article)}">${esc(article.title)}</a></h3>
-        ${article.description ? `<p>${esc(article.description)}</p>` : ""}
+      <div class="field-index-main">
+        <div class="field-index-thumb">${coverFor(article, {sizes: "(min-width: 768px) 112px, 80px"})}</div>
+        <div class="field-index-title">
+          <h3 class="card-title"><a class="card-destination" href="${articlePath(article)}">${esc(article.title)}</a></h3>
+          ${article.description ? `<p>${esc(article.description)}</p>` : ""}
+        </div>
       </div>
       <div class="field-index-meta">
       ${lane ? `<a class="field-index-lane" href="${lanePath(lane)}">${esc(lane.short || lane.title)}</a>` : ""}

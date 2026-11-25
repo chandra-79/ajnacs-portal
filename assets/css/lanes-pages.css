@@ -237,3 +237,27 @@
 @media (prefers-reduced-motion: reduce) {
   .field-lane-tile { transition: none; }
 }
+
+.field-index-main {
+  display:grid;
+  grid-template-columns:clamp(4.5rem,9vw,7rem) minmax(0,1fr);
+  gap:clamp(.65rem,1.5vw,1rem);
+  align-items:start;
+  min-inline-size:0;
+}
+.field-index-thumb {
+  aspect-ratio:16/9;
+  border:1px solid var(--line);
+  border-radius:var(--radius-sm);
+  background:var(--paper-2);
+  overflow:hidden;
+}
+.field-index-thumb img {
+  display:block;
+  inline-size:100%;
+  block-size:100%;
+  object-fit:contain;
+}
+@media(max-width:42rem) {
+  .field-index-meta { padding-inline-start:calc(4.5rem + .65rem); }
+}
