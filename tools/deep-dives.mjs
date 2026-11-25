@@ -2,6 +2,7 @@ import { readFile } from "node:fs/promises";
 import { createHash } from "node:crypto";
 import { Marked } from "marked";
 import { renderEditorialPng } from "./raster-art.mjs";
+import { sectionCover } from "./section-art.mjs";
 import { SITE, esc, parseFront } from "./lib.mjs";
 import { page } from "./shell.mjs";
 import { copyLinkControl, readerControls } from "./reader.mjs";
@@ -130,11 +131,17 @@ export async function publishDeepDives(out, catalog, existing) {
       <ol class="depth-list">${ordered}</ol></section>` }));
     urls.push(track.path);
     for (const [index, lesson] of track.lessons.entries()) {
-      const asset = `assets/deep-dives/${track.id}-${lesson.slug}.png`;
+      const stem = `assets/deep-dives/${track.id}-${lesson.slug}`;
+      const asset = `${stem}.png`;
+      const cover = sectionCover(`deep-${track.id}-${lesson.slug}`);
+      const social = renderEditorialPng(cover.socialSvg);
+      const socialVersion = createHash("sha256").update(social).digest("hex").slice(0, 12);
       const dataPath = lesson.path + "chart.csv";
       const plot = chart(lesson, track.color);
       const alt = `${lesson.metric} (${lesson.unit}). ${lesson.points.map(point => `${point.label}: ${number(point.number)}`).join("; ")}.`;
       await out(asset, plot.contents);
+      await out(`${stem}-cover.svg`, cover.svg);
+      await out(`${stem}-social.png`, social);
       await out(dataPath.slice(1), csv([["label", "chart_value", "unit", "example_input", "provenance"],
         ...lesson.points.map(point => [point.label, point.number, lesson.unit, point.raw, "illustrative worked example"])]));
       const { marked, headings } = makeRenderer();
@@ -142,13 +149,14 @@ export async function publishDeepDives(out, catalog, existing) {
       const prior = track.lessons[index - 1];
       const next = track.lessons[index + 1];
       await out(lesson.path.slice(1), page({ title: lesson.title, description: lesson.description, path: lesson.path,
-        type: "article", topic: track.topic, ogImage: `/${asset}?v=${plot.version}`, imageWidth: plot.width, imageHeight: plot.height, imageAlt: alt,
+        type: "article", topic: track.topic, ogImage: `/${stem}-social.png?v=${socialVersion}`, imageWidth: 1200, imageHeight: 630, imageAlt: cover.alt,
         body: `<article class="article"><div class="reading-layout"><header class="article-head">
           <nav class="crumbs" aria-label="Breadcrumb"><a href="${base}">Deep dives</a><span aria-hidden="true">/</span><a href="${track.path}">${esc(track.title)}</a></nav>
           <p class="eyebrow">Level ${lesson.level} · ${levelNames[index]}</p><h1 class="h1">${esc(lesson.title)}</h1><p class="lede field-intro">${esc(lesson.description)}</p>
-          ${copyLinkControl()}</header><div class="article-hero depth-chart"><img src="/${asset}?v=${plot.version}" width="${plot.width}" height="${plot.height}" alt="${esc(alt)}" fetchpriority="high" decoding="async"></div>
+          ${copyLinkControl()}</header><div class="article-hero"><img src="/${stem}-cover.svg?v=${cover.version}" width="1280" height="720" alt="${esc(cover.alt)}" fetchpriority="high" decoding="async"></div>
           <div class="reader-aside">${tableOfContents(headings)}</div>
           <div class="article-copy"><p class="case-notice">The chart uses illustrative inputs. It is a worked example.</p>
+          <figure class="depth-chart"><img src="/${asset}?v=${plot.version}" width="${plot.width}" height="${plot.height}" alt="${esc(alt)}" loading="lazy" decoding="async"></figure>
           <details class="depth-chart-data"><summary>Chart values and units</summary><ul>${lesson.points.map(point => `<li>${esc(point.label)} · ${number(point.number)} ${esc(lesson.unit)}</li>`).join("")}</ul>
           <a href="${dataPath}" download>Download the chart data (CSV)</a></details>
           <div class="prose">${copy}<h2>Sources</h2><ul>${lesson.references.map(([name, url]) => `<li><a href="${esc(url)}">${esc(name)}</a></li>`).join("")}</ul></div>
