@@ -14,18 +14,18 @@
 <meta property="og:title" content="Varnish Cache Configuration: A Practical Guide to VCL and Caching Strategy">
 <meta property="og:description" content="Varnish is a powerful HTTP accelerator, but the configuration language (VCL) has a steep learning curve. Here&#39;s how to configure Varnish for real workloads…">
 <meta property="og:url" content="https://ajnacs.com/insights/varnish-cache-configuration/">
-<meta property="og:image" content="https://ajnacs.com/assets/og/articles/varnish-cache-configuration.png?v=5795269faaaa">
+<meta property="og:image" content="https://ajnacs.com/assets/og/articles/varnish-cache-configuration.png?v=af759c54a5e4">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Conceptual illustration for Varnish Cache Configuration: A Practical Guide to VCL and Caching Strategy: Cache, Origin, TTL.">
+<meta property="og:image:alt" content="Varnish request policy separates private pass-through traffic from cache lookups and applies freshness rules to expired objects.">
 <meta property="article:published_time" content="2025-03-04">
 <meta property="article:modified_time" content="2026-11-23">
 <meta property="og:image:type" content="image/png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Varnish Cache Configuration: A Practical Guide to VCL and Caching Strategy">
 <meta name="twitter:description" content="Varnish is a powerful HTTP accelerator, but the configuration language (VCL) has a steep learning curve. Here&#39;s how to configure Varnish for real workloads…">
-<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/varnish-cache-configuration.png?v=5795269faaaa">
-<meta name="twitter:image:alt" content="Conceptual illustration for Varnish Cache Configuration: A Practical Guide to VCL and Caching Strategy: Cache, Origin, TTL.">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/varnish-cache-configuration.png?v=af759c54a5e4">
+<meta name="twitter:image:alt" content="Varnish request policy separates private pass-through traffic from cache lookups and applies freshness rules to expired objects.">
 
 <link rel="icon" href="/favicon.ico?v=8affdbd5" sizes="any">
 <link rel="icon" href="/images/ajna-mark.svg?v=8affdbd5" type="image/svg+xml">
@@ -51,7 +51,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Varnish Cache Configuration: A Practical Guide to VCL and Caching Strategy","description":"Varnish is a powerful HTTP accelerator, but the configuration language (VCL) has a steep learning curve. Here's how to configure Varnish for real workloads — including cache key design, TTL strategy, authentication handling, and ESI for partial caching.","datePublished":"2025-03-04","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/varnish-cache-configuration/","image":"https://ajnacs.com/assets/og/articles/varnish-cache-configuration.png?v=5795269faaaa","keywords":"CDN & Caching, Infrastructure, Architecture","articleSection":"Infrastructure","wordCount":1875}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Varnish Cache Configuration: A Practical Guide to VCL and Caching Strategy","description":"Varnish is a powerful HTTP accelerator, but the configuration language (VCL) has a steep learning curve. Here's how to configure Varnish for real workloads — including cache key design, TTL strategy, authentication handling, and ESI for partial caching.","datePublished":"2025-03-04","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/varnish-cache-configuration/","image":"https://ajnacs.com/assets/og/articles/varnish-cache-configuration.png?v=af759c54a5e4","keywords":"CDN & Caching, Infrastructure, Architecture","articleSection":"Infrastructure","wordCount":1875}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Varnish Cache Configuration: A Practical Guide to VCL and Caching Strategy"}]}</script>
 </head>
 <body class="article-frame" data-topic="Infrastructure">
@@ -107,7 +107,7 @@ d.setAttribute('data-theme',t);
       </div>
     </header>
 
-    <div class="article-hero" data-topic="Infrastructure"><img data-article-art="varnish-cache-configuration" src="/assets/covers/varnish-cache-configuration.svg?v=0149e08cfcec" width="1280" height="720" alt="Conceptual illustration for Varnish Cache Configuration: A Practical Guide to VCL and Caching Strategy: Cache, Origin, TTL." decoding="async" fetchpriority="high"></div>
+    <div class="article-hero" data-topic="Infrastructure"><img data-article-art="varnish-cache-configuration" src="/assets/covers/varnish-cache-configuration.svg?v=60ba1c835c16" width="1280" height="720" alt="Varnish request policy separates private pass-through traffic from cache lookups and applies freshness rules to expired objects." decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#the-vcl-request-lifecycle">The VCL request lifecycle</a></li><li><a href="#the-minimum-config-that-makes-varnish-useful">The minimum config that makes Varnish useful</a></li><li><a href="#cache-key-design">Cache key design</a></li><li><a href="#ttl-strategy">TTL strategy</a></li><li><a href="#handling-authenticated-content">Handling authenticated content</a></li><li><a href="#purging-cached-content">Purging cached content</a></li><li><a href="#monitoring-what-varnish-is-doing">Monitoring what Varnish is doing</a></li><li><a href="#put-the-origin-and-vcl-under-the-same-cache-contract">Put the origin and VCL under the same cache contract</a></li><li><a href="#test-expiry-with-representative-timing">Test expiry with representative timing</a></li><li><a href="#keep-fragment-freshness-independently-testable">Keep fragment freshness independently testable</a></li><li><a href="#count-the-requests-that-actually-reach-the-origin">Count the requests that actually reach the origin</a></li></ol>
@@ -298,7 +298,7 @@ d.setAttribute('data-theme',t);
     <div class="wrap">
       <p class="eyebrow">Related</p>
       <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|CDN &amp; Caching|Cloud Architecture|Infrastructure|" data-search="cdn strategy: choosing the right approach for your architecture cdn selection is more than picking the fastest network. origin configuration, cache invalidation, edge compute capabilities, and the overlap between your cdn and your cloud provider&#39;s services all affect the right choice. here&#39;s how to think through it. cdn &amp; caching cloud architecture infrastructure" data-topic="Cloud Architecture">
-  <div class="card-art"><img data-article-art="cdn-strategy-decision-guide" src="/assets/covers/cdn-strategy-decision-guide.svg?v=7f0abe5fbe29" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-art"><img data-article-art="cdn-strategy-decision-guide" src="/assets/covers/cdn-strategy-decision-guide.svg?v=254b4f1ed1d1" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
     <a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/cdn-strategy-decision-guide/">CDN Strategy: Choosing the Right Approach for Your Architecture</a></h3>

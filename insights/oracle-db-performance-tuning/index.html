@@ -14,18 +14,18 @@
 <meta property="og:title" content="Oracle DB Performance Tuning: The 10 Things That Actually Move the Needle">
 <meta property="og:description" content="Twenty years of Oracle DB work distilled into the tuning decisions that produce real, measurable improvements — and the ones that look good on paper but do…">
 <meta property="og:url" content="https://ajnacs.com/insights/oracle-db-performance-tuning/">
-<meta property="og:image" content="https://ajnacs.com/assets/og/articles/oracle-db-performance-tuning.png?v=5830b4c3392c">
+<meta property="og:image" content="https://ajnacs.com/assets/og/articles/oracle-db-performance-tuning.png?v=d7b7be2d238a">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Conceptual illustration for Oracle DB Performance Tuning: The 10 Things That Actually Move the Needle: Context, Diagnosis, Metrics.">
+<meta property="og:image:alt" content="A tuning loop uses database time and top waits to identify a representative executed plan, then retests the same workload.">
 <meta property="article:published_time" content="2025-04-18">
 <meta property="article:modified_time" content="2026-11-23">
 <meta property="og:image:type" content="image/png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Oracle DB Performance Tuning: The 10 Things That Actually Move the Needle">
 <meta name="twitter:description" content="Twenty years of Oracle DB work distilled into the tuning decisions that produce real, measurable improvements — and the ones that look good on paper but do…">
-<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/oracle-db-performance-tuning.png?v=5830b4c3392c">
-<meta name="twitter:image:alt" content="Conceptual illustration for Oracle DB Performance Tuning: The 10 Things That Actually Move the Needle: Context, Diagnosis, Metrics.">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/oracle-db-performance-tuning.png?v=d7b7be2d238a">
+<meta name="twitter:image:alt" content="A tuning loop uses database time and top waits to identify a representative executed plan, then retests the same workload.">
 
 <link rel="icon" href="/favicon.ico?v=8affdbd5" sizes="any">
 <link rel="icon" href="/images/ajna-mark.svg?v=8affdbd5" type="image/svg+xml">
@@ -51,7 +51,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Oracle DB Performance Tuning: The 10 Things That Actually Move the Needle","description":"Twenty years of Oracle DB work distilled into the tuning decisions that produce real, measurable improvements — and the ones that look good on paper but don't.","datePublished":"2025-04-18","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/oracle-db-performance-tuning/","image":"https://ajnacs.com/assets/og/articles/oracle-db-performance-tuning.png?v=5830b4c3392c","keywords":"Data Engineering, Oracle, Performance","articleSection":"Data Engineering","wordCount":1940}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Oracle DB Performance Tuning: The 10 Things That Actually Move the Needle","description":"Twenty years of Oracle DB work distilled into the tuning decisions that produce real, measurable improvements — and the ones that look good on paper but don't.","datePublished":"2025-04-18","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/oracle-db-performance-tuning/","image":"https://ajnacs.com/assets/og/articles/oracle-db-performance-tuning.png?v=d7b7be2d238a","keywords":"Data Engineering, Oracle, Performance","articleSection":"Data Engineering","wordCount":1940}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Oracle DB Performance Tuning: The 10 Things That Actually Move the Needle"}]}</script>
 </head>
 <body class="article-frame" data-topic="Data Engineering">
@@ -107,7 +107,7 @@ d.setAttribute('data-theme',t);
       </div>
     </header>
 
-    <div class="article-hero" data-topic="Data Engineering"><img data-article-art="oracle-db-performance-tuning" src="/assets/covers/oracle-db-performance-tuning.svg?v=04c8094d86c8" width="1280" height="720" alt="Conceptual illustration for Oracle DB Performance Tuning: The 10 Things That Actually Move the Needle: Context, Diagnosis, Metrics." decoding="async" fetchpriority="high"></div>
+    <div class="article-hero" data-topic="Data Engineering"><img data-article-art="oracle-db-performance-tuning" src="/assets/covers/oracle-db-performance-tuning.svg?v=f2db0209822c" width="1280" height="720" alt="A tuning loop uses database time and top waits to identify a representative executed plan, then retests the same workload." decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#1-identify-the-top-sql-statements-by-resource-consumption-fi">1. Identify the Top SQL Statements by Resource Consumption First</a></li><li><a href="#2-use-dbmsxplandisplaycursor-not-explain-plan">2. Use DBMS_XPLAN.DISPLAY_CURSOR, Not EXPLAIN PLAN</a></li><li><a href="#3-index-design-is-query-specific-not-table-specific">3. Index Design Is Query-Specific, Not Table-Specific</a></li><li><a href="#4-statistics-matter-more-than-most-people-realise">4. Statistics Matter More Than Most People Realise</a></li><li><a href="#5-bind-variables-for-everything-that-runs-more-than-once">5. Bind Variables for Everything That Runs More Than Once</a></li><li><a href="#6-sga-sizing-memory-is-not-the-first-answer">6. SGA Sizing: Memory Is Not the First Answer</a></li><li><a href="#7-redo-log-sizing-for-write-heavy-workloads">7. Redo Log Sizing for Write-Heavy Workloads</a></li><li><a href="#8-partitioning-for-large-tables-with-range-based-queries">8. Partitioning for Large Tables with Range-Based Queries</a></li><li><a href="#9-retain-historical-telemetry-for-the-incident-window">9. Retain Historical Telemetry for the Incident Window</a></li><li><a href="#10-wait-event-analysis-what-is-the-database-actually-waiting">10. Wait Event Analysis: What Is the Database Actually Waiting For?</a></li><li><a href="#reconcile-the-service-symptom-with-database-time">Reconcile the service symptom with database time</a></li><li><a href="#compare-work-in-the-same-interval">Compare work in the same interval</a></li><li><a href="#inspect-representative-executed-plans">Inspect representative executed plans</a></li><li><a href="#build-a-diagnosis-path-that-matches-the-environment">Build a diagnosis path that matches the environment</a></li><li><a href="#verify-that-the-workload-improves-beyond-the-test-query">Verify that the workload improves beyond the test query</a></li></ol>

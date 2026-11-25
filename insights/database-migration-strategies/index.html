@@ -14,18 +14,18 @@
 <meta property="og:title" content="Database Migration Strategies: Moving Production Data Without Downtime">
 <meta property="og:description" content="Zero-downtime database migrations are possible but require discipline — dual-write patterns, schema compatibility phases, and a rollback plan that you&#39;ve a…">
 <meta property="og:url" content="https://ajnacs.com/insights/database-migration-strategies/">
-<meta property="og:image" content="https://ajnacs.com/assets/og/articles/database-migration-strategies.png?v=3def89a936da">
+<meta property="og:image" content="https://ajnacs.com/assets/og/articles/database-migration-strategies.png?v=9c536e8fe36b">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Conceptual illustration for Database Migration Strategies: Moving Production Data Without Downtime: Current, Transition, Target.">
+<meta property="og:image:alt" content="The target database is backfilled and caught up, checked against the source at the same logical cut, and made authoritative only after a reversible write switch is rehearsed.">
 <meta property="article:published_time" content="2025-07-01">
 <meta property="article:modified_time" content="2026-11-23">
 <meta property="og:image:type" content="image/png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Database Migration Strategies: Moving Production Data Without Downtime">
 <meta name="twitter:description" content="Zero-downtime database migrations are possible but require discipline — dual-write patterns, schema compatibility phases, and a rollback plan that you&#39;ve a…">
-<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/database-migration-strategies.png?v=3def89a936da">
-<meta name="twitter:image:alt" content="Conceptual illustration for Database Migration Strategies: Moving Production Data Without Downtime: Current, Transition, Target.">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/database-migration-strategies.png?v=9c536e8fe36b">
+<meta name="twitter:image:alt" content="The target database is backfilled and caught up, checked against the source at the same logical cut, and made authoritative only after a reversible write switch is rehearsed.">
 
 <link rel="icon" href="/favicon.ico?v=8affdbd5" sizes="any">
 <link rel="icon" href="/images/ajna-mark.svg?v=8affdbd5" type="image/svg+xml">
@@ -51,7 +51,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Database Migration Strategies: Moving Production Data Without Downtime","description":"Zero-downtime database migrations are possible but require discipline — dual-write patterns, schema compatibility phases, and a rollback plan that you've actually tested. Here's what works at production scale.","datePublished":"2025-07-01","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/database-migration-strategies/","image":"https://ajnacs.com/assets/og/articles/database-migration-strategies.png?v=3def89a936da","keywords":"Data Engineering, Cloud Architecture, Engineering Leadership","articleSection":"Data Engineering","wordCount":2202}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Database Migration Strategies: Moving Production Data Without Downtime","description":"Zero-downtime database migrations are possible but require discipline — dual-write patterns, schema compatibility phases, and a rollback plan that you've actually tested. Here's what works at production scale.","datePublished":"2025-07-01","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/database-migration-strategies/","image":"https://ajnacs.com/assets/og/articles/database-migration-strategies.png?v=9c536e8fe36b","keywords":"Data Engineering, Cloud Architecture, Engineering Leadership","articleSection":"Data Engineering","wordCount":2202}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Database Migration Strategies: Moving Production Data Without Downtime"}]}</script>
 </head>
 <body class="article-frame" data-topic="Data Engineering">
@@ -107,7 +107,7 @@ d.setAttribute('data-theme',t);
       </div>
     </header>
 
-    <div class="article-hero" data-topic="Data Engineering"><img data-article-art="database-migration-strategies" src="/assets/covers/database-migration-strategies.svg?v=d18cfe3cae5f" width="1280" height="720" alt="Conceptual illustration for Database Migration Strategies: Moving Production Data Without Downtime: Current, Transition, Target." decoding="async" fetchpriority="high"></div>
+    <div class="article-hero" data-topic="Data Engineering"><img data-article-art="database-migration-strategies" src="/assets/covers/database-migration-strategies.svg?v=4df3acd5e245" width="1280" height="720" alt="The target database is backfilled and caught up, checked against the source at the same logical cut, and made authoritative only after a reversible write switch is rehearsed." decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#the-core-principle-schema-changes-must-be-backward-compatibl">The core principle: schema changes must be backward compatible</a></li><li><a href="#the-expandcontract-pattern">The expand/contract pattern</a></li><li><a href="#backfill-strategy-for-large-tables">Backfill strategy for large tables</a></li><li><a href="#online-schema-change-tools">Online schema change tools</a></li><li><a href="#cross-database-migrations">Cross-database migrations</a></li><li><a href="#testing-the-rollback">Testing the rollback</a></li><li><a href="#define-a-migration-unit-that-can-be-reconciled">Define a migration unit that can be reconciled</a></li><li><a href="#commit-each-batch-and-establish-a-stop-rule">Commit each batch and establish a stop rule</a></li><li><a href="#treat-the-write-switch-as-a-sequence-of-durable-milestones">Treat the write switch as a sequence of durable milestones</a></li><li><a href="#separate-reversing-traffic-from-reversing-storage-effects">Separate reversing traffic from reversing storage effects</a></li></ol>
