@@ -14,18 +14,18 @@
 <meta property="og:title" content="RoCE vs iWARP: Choosing the Right RDMA Technology for Your Workload">
 <meta property="og:description" content="Both RoCE and iWARP provide RDMA over Ethernet, but they have different network requirements, loss behavior, and operational characteristics. Here&#39;s how to…">
 <meta property="og:url" content="https://ajnacs.com/insights/roce-vs-iwarp-networking/">
-<meta property="og:image" content="https://ajnacs.com/assets/og/articles/roce-vs-iwarp-networking.png?v=44620572cb2e">
+<meta property="og:image" content="https://ajnacs.com/assets/og/articles/roce-vs-iwarp-networking.png?v=addd2134e7ad">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Conceptual illustration for RoCE vs iWARP: Choosing the Right RDMA Technology for Your Workload: Ethernet, InfiniBand, RDMA.">
+<meta property="og:image:alt" content="Two RDMA paths have matched sender load. RoCEv2 illustrates ECN marking and receiver feedback, while iWARP illustrates a lost TCP packet and retransmission.">
 <meta property="article:published_time" content="2026-11-02">
 <meta property="article:modified_time" content="2026-11-23">
 <meta property="og:image:type" content="image/png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="RoCE vs iWARP: Choosing the Right RDMA Technology for Your Workload">
 <meta name="twitter:description" content="Both RoCE and iWARP provide RDMA over Ethernet, but they have different network requirements, loss behavior, and operational characteristics. Here&#39;s how to…">
-<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/roce-vs-iwarp-networking.png?v=44620572cb2e">
-<meta name="twitter:image:alt" content="Conceptual illustration for RoCE vs iWARP: Choosing the Right RDMA Technology for Your Workload: Ethernet, InfiniBand, RDMA.">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/roce-vs-iwarp-networking.png?v=addd2134e7ad">
+<meta name="twitter:image:alt" content="Two RDMA paths have matched sender load. RoCEv2 illustrates ECN marking and receiver feedback, while iWARP illustrates a lost TCP packet and retransmission.">
 
 <link rel="icon" href="/favicon.ico?v=8affdbd5" sizes="any">
 <link rel="icon" href="/images/ajna-mark.svg?v=8affdbd5" type="image/svg+xml">
@@ -51,7 +51,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"RoCE vs iWARP: Choosing the Right RDMA Technology for Your Workload","description":"Both RoCE and iWARP provide RDMA over Ethernet, but they have different network requirements, loss behavior, and operational characteristics. Here's how to choose between them for AI training, HPC, and storage workloads.","datePublished":"2026-11-02","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/roce-vs-iwarp-networking/","image":"https://ajnacs.com/assets/og/articles/roce-vs-iwarp-networking.png?v=44620572cb2e","keywords":"Systems, HPC, AI & MLOps","articleSection":"AI & MLOps","wordCount":661}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"RoCE vs iWARP: Choosing the Right RDMA Technology for Your Workload","description":"Both RoCE and iWARP provide RDMA over Ethernet, but they have different network requirements, loss behavior, and operational characteristics. Here's how to choose between them for AI training, HPC, and storage workloads.","datePublished":"2026-11-02","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/roce-vs-iwarp-networking/","image":"https://ajnacs.com/assets/og/articles/roce-vs-iwarp-networking.png?v=addd2134e7ad","keywords":"Systems, HPC, AI & MLOps","articleSection":"AI & MLOps","wordCount":661}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"RoCE vs iWARP: Choosing the Right RDMA Technology for Your Workload"}]}</script>
 </head>
 <body class="article-frame" data-topic="AI &amp; MLOps">
@@ -107,7 +107,7 @@ d.setAttribute('data-theme',t);
       </div>
     </header>
 
-    <div class="article-hero" data-topic="AI &amp; MLOps"><img data-article-art="roce-vs-iwarp-networking" src="/assets/covers/roce-vs-iwarp-networking.svg?v=a8e2c3a18738" width="1280" height="720" alt="Conceptual illustration for RoCE vs iWARP: Choosing the Right RDMA Technology for Your Workload: Ethernet, InfiniBand, RDMA." decoding="async" fetchpriority="high"></div>
+    <div class="article-hero" data-topic="AI &amp; MLOps"><img data-article-art="roce-vs-iwarp-networking" src="/assets/covers/roce-vs-iwarp-networking.svg?v=f6d94872b25a" width="1280" height="720" alt="Two RDMA paths have matched sender load. RoCEv2 illustrates ECN marking and receiver feedback, while iWARP illustrates a lost TCP packet and retransmission." decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#roce">RoCE</a></li><li><a href="#iwarp">iWARP</a></li><li><a href="#decision">Decision</a></li><li><a href="#make-congestion-the-subject-of-the-comparison">Make congestion the subject of the comparison</a></li><li><a href="#save-counters-that-explain-the-tail">Save counters that explain the tail</a></li><li><a href="#sources">Sources</a></li></ol>
