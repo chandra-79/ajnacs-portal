@@ -1,7 +1,7 @@
 ---
 title: "Python Packaging and Dependency Management in 2026: From requirements.txt Chaos to Reproducible Builds"
 description: "The Python packaging story finally consolidated — pyproject.toml, lockfiles, and uv. What a modern, reproducible Python dependency setup looks like for teams, and how to migrate an estate of requirements.txt files without drama."
-date: 2028-09-11
+date: 2026-11-23
 tags: ["Python", "Platform Engineering", "Engineering Practice", "Supply Chain Security", "Developer Experience"]
 format: article
 ---
