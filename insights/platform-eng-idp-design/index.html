@@ -14,18 +14,18 @@
 <meta property="og:title" content="Designing an Internal Developer Platform: Abstraction Layers, Golden Paths, and the Governance Balance">
 <meta property="og:description" content="How to design the abstraction layer between your platform and your application teams — what to hide, what to expose, and how to build the golden paths that…">
 <meta property="og:url" content="https://ajnacs.com/insights/platform-eng-idp-design/">
-<meta property="og:image" content="https://ajnacs.com/assets/og/articles/platform-eng-idp-design.png?v=0f98901e595c">
+<meta property="og:image" content="https://ajnacs.com/assets/og/articles/platform-eng-idp-design.png?v=903347af8a6c">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Conceptual illustration for Designing an Internal Developer Platform: Abstraction Layers, Golden Paths, and the Governance Balance: Developer, Platform, Feedback.">
+<meta property="og:image:alt" content="An internal platform routes ordinary requests to supported compliant defaults and records who owns the scope and verification of an explicit exception.">
 <meta property="article:published_time" content="2026-05-19">
 <meta property="article:modified_time" content="2026-11-23">
 <meta property="og:image:type" content="image/png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Designing an Internal Developer Platform: Abstraction Layers, Golden Paths, and the Governance Balance">
 <meta name="twitter:description" content="How to design the abstraction layer between your platform and your application teams — what to hide, what to expose, and how to build the golden paths that…">
-<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/platform-eng-idp-design.png?v=0f98901e595c">
-<meta name="twitter:image:alt" content="Conceptual illustration for Designing an Internal Developer Platform: Abstraction Layers, Golden Paths, and the Governance Balance: Developer, Platform, Feedback.">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/platform-eng-idp-design.png?v=903347af8a6c">
+<meta name="twitter:image:alt" content="An internal platform routes ordinary requests to supported compliant defaults and records who owns the scope and verification of an explicit exception.">
 
 <link rel="icon" href="/favicon.ico?v=8affdbd5" sizes="any">
 <link rel="icon" href="/images/ajna-mark.svg?v=8affdbd5" type="image/svg+xml">
@@ -51,7 +51,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Designing an Internal Developer Platform: Abstraction Layers, Golden Paths, and the Governance Balance","description":"How to design the abstraction layer between your platform and your application teams — what to hide, what to expose, and how to build the golden paths that make good practices the easy practices.","datePublished":"2026-05-19","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/platform-eng-idp-design/","image":"https://ajnacs.com/assets/og/articles/platform-eng-idp-design.png?v=0f98901e595c","keywords":"Engineering Leadership, Architecture, Fundamentals","articleSection":"Engineering Leadership","wordCount":1803}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Designing an Internal Developer Platform: Abstraction Layers, Golden Paths, and the Governance Balance","description":"How to design the abstraction layer between your platform and your application teams — what to hide, what to expose, and how to build the golden paths that make good practices the easy practices.","datePublished":"2026-05-19","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/platform-eng-idp-design/","image":"https://ajnacs.com/assets/og/articles/platform-eng-idp-design.png?v=903347af8a6c","keywords":"Engineering Leadership, Architecture, Fundamentals","articleSection":"Engineering Leadership","wordCount":1803}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Designing an Internal Developer Platform: Abstraction Layers, Golden Paths, and the Governance Balance"}]}</script>
 </head>
 <body class="article-frame" data-topic="Engineering Leadership">
@@ -107,7 +107,7 @@ d.setAttribute('data-theme',t);
       </div>
     </header>
 
-    <div class="article-hero" data-topic="Engineering Leadership"><img data-article-art="platform-eng-idp-design" src="/assets/covers/platform-eng-idp-design.svg?v=0d6bb92b85a7" width="1280" height="720" alt="Conceptual illustration for Designing an Internal Developer Platform: Abstraction Layers, Golden Paths, and the Governance Balance: Developer, Platform, Feedback." decoding="async" fetchpriority="high"></div>
+    <div class="article-hero" data-topic="Engineering Leadership"><img data-article-art="platform-eng-idp-design" src="/assets/covers/platform-eng-idp-design.svg?v=97440353fe8a" width="1280" height="720" alt="An internal platform routes ordinary requests to supported compliant defaults and records who owns the scope and verification of an explicit exception." decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#the-golden-path-concept">The Golden Path Concept</a></li><li><a href="#what-to-abstract-vs-what-to-expose">What to Abstract vs What to Expose</a></li><li><a href="#the-escape-hatch-design-decision">The Escape Hatch Design Decision</a></li><li><a href="#service-catalogues-making-the-platform-discoverable">Service Catalogues: Making the Platform Discoverable</a></li><li><a href="#policy-as-code-governance-without-bureaucracy">Policy as Code: Governance Without Bureaucracy</a></li><li><a href="#define-who-owns-the-service-after-scaffolding">Define who owns the service after scaffolding</a></li><li><a href="#decide-whether-each-feature-is-generated-or-maintained">Decide whether each feature is generated or maintained</a></li><li><a href="#keep-the-escape-path-measurable-and-reversible">Keep the escape path measurable and reversible</a></li><li><a href="#turn-a-path-document-into-a-release-checklist">Turn a path document into a release checklist</a></li></ol>
@@ -317,7 +317,7 @@ spec:
   </div>
 </article>
 <article class="card" data-card data-topics="|Engineering Leadership|Architecture|Fundamentals|" data-search="measuring platform engineering success: the metrics that actually matter dora metrics, developer experience scores, cognitive load measures, and the platform health indicators that tell you whether your internal platform is creating value or creating another bottleneck. engineering leadership architecture fundamentals" data-topic="Engineering Leadership">
-  <div class="card-art"><img data-article-art="platform-eng-measuring-success" src="/assets/covers/platform-eng-measuring-success.svg?v=3643cd3b48e6" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-art"><img data-article-art="platform-eng-measuring-success" src="/assets/covers/platform-eng-measuring-success.svg?v=a0eb18c722ca" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
     <a class="chip" href="/topics/engineering-leadership/">Engineering Leadership</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/platform-eng-measuring-success/">Measuring Platform Engineering Success: The Metrics That Actually Matter</a></h3>

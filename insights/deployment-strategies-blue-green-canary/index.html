@@ -14,18 +14,18 @@
 <meta property="og:title" content="Deployment Strategies Compared: Rolling, Blue-Green, Canary, and When Each Actually Fits">
 <meta property="og:description" content="Rolling updates, blue-green switches, canary releases, and shadow traffic — what each strategy really costs, what each protects against, and the database p…">
 <meta property="og:url" content="https://ajnacs.com/insights/deployment-strategies-blue-green-canary/">
-<meta property="og:image" content="https://ajnacs.com/assets/og/articles/deployment-strategies-blue-green-canary.png?v=9be807bdeff3">
+<meta property="og:image" content="https://ajnacs.com/assets/og/articles/deployment-strategies-blue-green-canary.png?v=e89a20b756e7">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Conceptual illustration for Deployment Strategies Compared: Rolling, Blue-Green, Canary, and When Each Actually Fits: Source, Delivery, Operation.">
+<meta property="og:image:alt" content="Rolling deployment replaces replicas in waves, blue-green switches between two environments, and canaries move only a measured share of traffic.">
 <meta property="article:published_time" content="2026-03-20">
 <meta property="article:modified_time" content="2026-11-23">
 <meta property="og:image:type" content="image/png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Deployment Strategies Compared: Rolling, Blue-Green, Canary, and When Each Actually Fits">
 <meta name="twitter:description" content="Rolling updates, blue-green switches, canary releases, and shadow traffic — what each strategy really costs, what each protects against, and the database p…">
-<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/deployment-strategies-blue-green-canary.png?v=9be807bdeff3">
-<meta name="twitter:image:alt" content="Conceptual illustration for Deployment Strategies Compared: Rolling, Blue-Green, Canary, and When Each Actually Fits: Source, Delivery, Operation.">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/deployment-strategies-blue-green-canary.png?v=e89a20b756e7">
+<meta name="twitter:image:alt" content="Rolling deployment replaces replicas in waves, blue-green switches between two environments, and canaries move only a measured share of traffic.">
 
 <link rel="icon" href="/favicon.ico?v=8affdbd5" sizes="any">
 <link rel="icon" href="/images/ajna-mark.svg?v=8affdbd5" type="image/svg+xml">
@@ -51,7 +51,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Deployment Strategies Compared: Rolling, Blue-Green, Canary, and When Each Actually Fits","description":"Rolling updates, blue-green switches, canary releases, and shadow traffic — what each strategy really costs, what each protects against, and the database problem that constrains all of them.","datePublished":"2026-03-20","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/deployment-strategies-blue-green-canary/","image":"https://ajnacs.com/assets/og/articles/deployment-strategies-blue-green-canary.png?v=9be807bdeff3","keywords":"Deployment, Platform Engineering, Engineering Practice, Containers, Reliability","articleSection":"Platform Engineering","wordCount":2161}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Deployment Strategies Compared: Rolling, Blue-Green, Canary, and When Each Actually Fits","description":"Rolling updates, blue-green switches, canary releases, and shadow traffic — what each strategy really costs, what each protects against, and the database problem that constrains all of them.","datePublished":"2026-03-20","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/deployment-strategies-blue-green-canary/","image":"https://ajnacs.com/assets/og/articles/deployment-strategies-blue-green-canary.png?v=e89a20b756e7","keywords":"Deployment, Platform Engineering, Engineering Practice, Containers, Reliability","articleSection":"Platform Engineering","wordCount":2161}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Deployment Strategies Compared: Rolling, Blue-Green, Canary, and When Each Actually Fits"}]}</script>
 </head>
 <body class="article-frame" data-topic="Platform Engineering">
@@ -107,7 +107,7 @@ d.setAttribute('data-theme',t);
       </div>
     </header>
 
-    <div class="article-hero" data-topic="Platform Engineering"><img data-article-art="deployment-strategies-blue-green-canary" src="/assets/covers/deployment-strategies-blue-green-canary.svg?v=1a4c32872955" width="1280" height="720" alt="Conceptual illustration for Deployment Strategies Compared: Rolling, Blue-Green, Canary, and When Each Actually Fits: Source, Delivery, Operation." decoding="async" fetchpriority="high"></div>
+    <div class="article-hero" data-topic="Platform Engineering"><img data-article-art="deployment-strategies-blue-green-canary" src="/assets/covers/deployment-strategies-blue-green-canary.svg?v=a7bc633c84ce" width="1280" height="720" alt="Rolling deployment replaces replicas in waves, blue-green switches between two environments, and canaries move only a measured share of traffic." decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#the-baseline-rolling-updates">The baseline: rolling updates</a></li><li><a href="#blue-green-the-binary-switch">Blue-green: the binary switch</a></li><li><a href="#canary-measured-exposure">Canary: measured exposure</a></li><li><a href="#the-constraint-underneath-all-of-them-the-database">The constraint underneath all of them: the database</a></li><li><a href="#choosing-and-the-maturity-path">Choosing, and the maturity path</a></li><li><a href="#turn-the-rollout-into-a-decision-record">Turn the rollout into a decision record</a></li><li><a href="#calculate-time-at-risk">Calculate time at risk</a></li><li><a href="#make-the-controller-and-the-business-gate-agree">Make the controller and the business gate agree</a></li><li><a href="#rehearse-rollback-after-the-first-real-write">Rehearse rollback after the first real write</a></li><li><a href="#close-the-release-based-on-user-outcomes">Close the release based on user outcomes</a></li></ol>

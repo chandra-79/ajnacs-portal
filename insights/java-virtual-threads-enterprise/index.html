@@ -14,18 +14,18 @@
 <meta property="og:title" content="Virtual Threads in the Enterprise: What Changes, What Doesn&#39;t, and What Breaks">
 <meta property="og:description" content="Java 21&#39;s virtual threads promise massive concurrency without reactive complexity. Here&#39;s what actually changes in enterprise services — thread pool math…">
 <meta property="og:url" content="https://ajnacs.com/insights/java-virtual-threads-enterprise/">
-<meta property="og:image" content="https://ajnacs.com/assets/og/articles/java-virtual-threads-enterprise.png?v=eed82f99a4aa">
+<meta property="og:image" content="https://ajnacs.com/assets/og/articles/java-virtual-threads-enterprise.png?v=cb7828d38f89">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Conceptual illustration for Virtual Threads in the Enterprise: What Changes, What Doesn&#39;t, and What Breaks: Application, Runtime, System.">
+<meta property="og:image:alt" content="Virtual threads make waiting inexpensive, while the database connection pool still limits how many operations can execute at once.">
 <meta property="article:published_time" content="2026-02-24">
 <meta property="article:modified_time" content="2026-11-23">
 <meta property="og:image:type" content="image/png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Virtual Threads in the Enterprise: What Changes, What Doesn&#39;t, and What Breaks">
 <meta name="twitter:description" content="Java 21&#39;s virtual threads promise massive concurrency without reactive complexity. Here&#39;s what actually changes in enterprise services — thread pool math…">
-<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/java-virtual-threads-enterprise.png?v=eed82f99a4aa">
-<meta name="twitter:image:alt" content="Conceptual illustration for Virtual Threads in the Enterprise: What Changes, What Doesn&#39;t, and What Breaks: Application, Runtime, System.">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/java-virtual-threads-enterprise.png?v=cb7828d38f89">
+<meta name="twitter:image:alt" content="Virtual threads make waiting inexpensive, while the database connection pool still limits how many operations can execute at once.">
 
 <link rel="icon" href="/favicon.ico?v=8affdbd5" sizes="any">
 <link rel="icon" href="/images/ajna-mark.svg?v=8affdbd5" type="image/svg+xml">
@@ -51,7 +51,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Virtual Threads in the Enterprise: What Changes, What Doesn't, and What Breaks","description":"Java 21's virtual threads promise massive concurrency without reactive complexity. Here's what actually changes in enterprise services — thread pool math, pinning pitfalls, connection pools as the new bottleneck, and when reactive still wins.","datePublished":"2026-02-24","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/java-virtual-threads-enterprise/","image":"https://ajnacs.com/assets/og/articles/java-virtual-threads-enterprise.png?v=eed82f99a4aa","keywords":"Java, JVM, Concurrency, Performance, Architecture","articleSection":"Performance","wordCount":2120}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Virtual Threads in the Enterprise: What Changes, What Doesn't, and What Breaks","description":"Java 21's virtual threads promise massive concurrency without reactive complexity. Here's what actually changes in enterprise services — thread pool math, pinning pitfalls, connection pools as the new bottleneck, and when reactive still wins.","datePublished":"2026-02-24","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/java-virtual-threads-enterprise/","image":"https://ajnacs.com/assets/og/articles/java-virtual-threads-enterprise.png?v=cb7828d38f89","keywords":"Java, JVM, Concurrency, Performance, Architecture","articleSection":"Performance","wordCount":2120}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Virtual Threads in the Enterprise: What Changes, What Doesn't, and What Breaks"}]}</script>
 </head>
 <body class="article-frame" data-topic="Performance">
@@ -107,7 +107,7 @@ d.setAttribute('data-theme',t);
       </div>
     </header>
 
-    <div class="article-hero" data-topic="Performance"><img data-article-art="java-virtual-threads-enterprise" src="/assets/covers/java-virtual-threads-enterprise.svg?v=da172db5b184" width="1280" height="720" alt="Conceptual illustration for Virtual Threads in the Enterprise: What Changes, What Doesn&#39;t, and What Breaks: Application, Runtime, System." decoding="async" fetchpriority="high"></div>
+    <div class="article-hero" data-topic="Performance"><img data-article-art="java-virtual-threads-enterprise" src="/assets/covers/java-virtual-threads-enterprise.svg?v=d7aa02b1d353" width="1280" height="720" alt="Virtual threads make waiting inexpensive, while the database connection pool still limits how many operations can execute at once." decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#the-core-idea-in-one-paragraph">The core idea in one paragraph</a></li><li><a href="#what-changes-in-practice">What changes in practice</a></li><li><a href="#what-doesn39t-change">What doesn&#39;t change</a></li><li><a href="#the-failure-modes-to-design-against">The failure modes to design against</a></li><li><a href="#structured-concurrency-the-other-half">Structured concurrency: the other half</a></li><li><a href="#so-is-reactive-dead">So is reactive dead?</a></li><li><a href="#an-adoption-sequence-that-works">An adoption sequence that works</a></li><li><a href="#bound-concurrency-at-the-operation-that-consumes-capacity">Bound concurrency at the operation that consumes capacity</a></li><li><a href="#inspect-retained-work-even-when-the-thread-count-looks-healt">Inspect retained work even when the thread count looks healthy</a></li><li><a href="#treat-scheduling-language-features-and-telemetry-as-versione">Treat scheduling, language features, and telemetry as versioned inputs</a></li><li><a href="#prove-that-the-revised-limits-work-at-peak-and-during-failur">Prove that the revised limits work at peak and during failure</a></li></ol>

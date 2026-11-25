@@ -14,18 +14,18 @@
 <meta property="og:title" content="Cloud Cost Anomaly Detection: Catching Runaway Spend Before It Becomes a Bill">
 <meta property="og:description" content="Cloud cost overruns that show up in the monthly invoice are already weeks old. Here&#39;s how to set up anomaly detection that catches cost spikes in hours, wi…">
 <meta property="og:url" content="https://ajnacs.com/insights/finops-anomaly-detection/">
-<meta property="og:image" content="https://ajnacs.com/assets/og/articles/finops-anomaly-detection.png?v=8aea21cfe96e">
+<meta property="og:image" content="https://ajnacs.com/assets/og/articles/finops-anomaly-detection.png?v=20690dafcdd0">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Conceptual illustration for Cloud Cost Anomaly Detection: Catching Runaway Spend Before It Becomes a Bill: Usage, Allocation, Ownership.">
+<meta property="og:image:alt" content="An illustrative time line separates the four hours between usage and the billing export from the next twenty minutes until an alert.">
 <meta property="article:published_time" content="2026-07-06">
 <meta property="article:modified_time" content="2026-11-23">
 <meta property="og:image:type" content="image/png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Cloud Cost Anomaly Detection: Catching Runaway Spend Before It Becomes a Bill">
 <meta name="twitter:description" content="Cloud cost overruns that show up in the monthly invoice are already weeks old. Here&#39;s how to set up anomaly detection that catches cost spikes in hours, wi…">
-<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/finops-anomaly-detection.png?v=8aea21cfe96e">
-<meta name="twitter:image:alt" content="Conceptual illustration for Cloud Cost Anomaly Detection: Catching Runaway Spend Before It Becomes a Bill: Usage, Allocation, Ownership.">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/finops-anomaly-detection.png?v=20690dafcdd0">
+<meta name="twitter:image:alt" content="An illustrative time line separates the four hours between usage and the billing export from the next twenty minutes until an alert.">
 
 <link rel="icon" href="/favicon.ico?v=8affdbd5" sizes="any">
 <link rel="icon" href="/images/ajna-mark.svg?v=8affdbd5" type="image/svg+xml">
@@ -51,7 +51,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Cloud Cost Anomaly Detection: Catching Runaway Spend Before It Becomes a Bill","description":"Cloud cost overruns that show up in the monthly invoice are already weeks old. Here's how to set up anomaly detection that catches cost spikes in hours, with enough context to diagnose the cause quickly.","datePublished":"2026-07-06","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/finops-anomaly-detection/","image":"https://ajnacs.com/assets/og/articles/finops-anomaly-detection.png?v=8aea21cfe96e","keywords":"FinOps, Cost Optimisation, Cloud Architecture","articleSection":"FinOps","wordCount":2106}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Cloud Cost Anomaly Detection: Catching Runaway Spend Before It Becomes a Bill","description":"Cloud cost overruns that show up in the monthly invoice are already weeks old. Here's how to set up anomaly detection that catches cost spikes in hours, with enough context to diagnose the cause quickly.","datePublished":"2026-07-06","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/finops-anomaly-detection/","image":"https://ajnacs.com/assets/og/articles/finops-anomaly-detection.png?v=20690dafcdd0","keywords":"FinOps, Cost Optimisation, Cloud Architecture","articleSection":"FinOps","wordCount":2106}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Cloud Cost Anomaly Detection: Catching Runaway Spend Before It Becomes a Bill"}]}</script>
 </head>
 <body class="article-frame" data-topic="FinOps">
@@ -107,7 +107,7 @@ d.setAttribute('data-theme',t);
       </div>
     </header>
 
-    <div class="article-hero" data-topic="FinOps"><img data-article-art="finops-anomaly-detection" src="/assets/covers/finops-anomaly-detection.svg?v=47a96d09bef2" width="1280" height="720" alt="Conceptual illustration for Cloud Cost Anomaly Detection: Catching Runaway Spend Before It Becomes a Bill: Usage, Allocation, Ownership." decoding="async" fetchpriority="high"></div>
+    <div class="article-hero" data-topic="FinOps"><img data-article-art="finops-anomaly-detection" src="/assets/covers/finops-anomaly-detection.svg?v=4538a80d8ee1" width="1280" height="720" alt="An illustrative time line separates the four hours between usage and the billing export from the next twenty minutes until an alert." decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#the-detection-gap-why-monthly-bills-aren39t-enough">The detection gap: why monthly bills aren&#39;t enough</a></li><li><a href="#native-cloud-anomaly-detection">Native cloud anomaly detection</a></li><li><a href="#building-more-granular-alerting">Building more granular alerting</a></li><li><a href="#the-alert-that39s-actually-useful-vs-the-one-that-creates-no">The alert that&#39;s actually useful vs the one that creates noise</a></li><li><a href="#the-three-anomaly-causes-to-design-around">The three anomaly causes to design around</a></li><li><a href="#separate-billing-freshness-from-the-event-clock">Separate billing freshness from the event clock</a></li><li><a href="#rebuild-the-baseline-as-a-small-backtest">Rebuild the baseline as a small backtest</a></li><li><a href="#correct-a-common-analytic-query-mistake">Correct a common analytic-query mistake</a></li><li><a href="#give-the-responder-a-specific-follow-up-decision">Give the responder a specific follow-up decision</a></li><li><a href="#check-the-rule-after-the-first-month">Check the rule after the first month</a></li><li><a href="#test-the-end-of-an-incident">Test the end of an incident</a></li></ol>
@@ -293,7 +293,7 @@ ORDER BY variance DESC;
     <div class="wrap">
       <p class="eyebrow">Related</p>
       <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|FinOps|Cloud Architecture|Cost Optimisation|" data-search="cloud tagging policy template: the foundation finops actually requires a tagging policy that nobody enforces is worse than no tagging policy. here&#39;s how to design a tagging taxonomy that survives contact with real engineering teams — with enforcement mechanisms, exceptions handling, and the tags that actually drive cost allocation decisions. finops cloud architecture cost optimisation" data-topic="FinOps">
-  <div class="card-art"><img data-article-art="finops-tagging-policy" src="/assets/covers/finops-tagging-policy.svg?v=1564e538b8cc" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-art"><img data-article-art="finops-tagging-policy" src="/assets/covers/finops-tagging-policy.svg?v=4832382b3a37" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
     <a class="chip" href="/topics/finops/">FinOps</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/finops-tagging-policy/">Cloud Tagging Policy Template: The Foundation FinOps Actually Requires</a></h3>
