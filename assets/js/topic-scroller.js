@@ -92,7 +92,11 @@
     scroller.addEventListener("pointerleave", applyPending);
     scroller.addEventListener("focusin", event => {
       const anchor = event.target.closest("[data-scroller-list] a");
-      if (!anchor || !anchor.matches(":focus-visible")) return;
+      if (!anchor) return;
+      const bounds = viewport.getBoundingClientRect();
+      const item = anchor.getBoundingClientRect();
+      const visible = item.left >= bounds.left && item.right <= bounds.right;
+      if (visible && scroller.matches(":hover") && !anchor.matches(":focus-visible")) return;
       scroller.setAttribute("data-keyboard", "");
       const target = anchor.getBoundingClientRect();
       const port = viewport.getBoundingClientRect();
