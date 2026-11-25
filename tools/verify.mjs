@@ -10,6 +10,7 @@ import { fieldGuides, worksheetCsv } from "./field-guides.mjs";
 import { models } from "../assets/js/field-math.mjs";
 import { caseCategories } from "./case-library.mjs";
 import { topicPath } from "./discovery.mjs";
+import { authoredPageImagePath } from "./site-images.mjs";
 import { loadDeepDives } from "./deep-dives.mjs";
 import { sectionCover } from "./section-art.mjs";
 import { conceptFor, conceptCsv, conceptSvg } from "./concept-figures.mjs";
@@ -152,6 +153,19 @@ console.log("\nCase studies and article discovery");
   const tags = new Set(live.flatMap(article => article.tags));
   const paths = new Set([...tags].map(tag => topicPath(tag, tags)));
   if (tags.size !== paths.size) fail("Tag pages collide after URL normalisation");
+  const seriesRoutes = new Set(live.filter(article => article.series).map(article => `/series/${seriesSlug(article.series)}/`));
+  for (const [directory, routes] of [["topics", paths], ["series", seriesRoutes]]) {
+    const html = await readFile(`${directory}/index.html`, "utf8");
+    const cards = new Map([...html.matchAll(/<a\b[^>]*href="([^"]+)"[^>]*>\s*<div class="(?:content-thumbnail|card-art)">([^<]*<img[^>]*>)/g)]
+      .map(([, route, image]) => [route, image]));
+    for (const route of routes) {
+      const expected = authoredPageImagePath(route);
+      const card = cards.get(route);
+      if (!card || (expected && !card.includes(`src="${esc(expected)}"`))) {
+        fail(`Directory tile is missing its editorial cover: ${route}`);
+      }
+    }
+  }
   for (const route of paths) {
     const html = await readFile(`.${route}index.html`, "utf8");
     if (!html.includes("Start with ") || !html.includes('class="card-destination"')) fail(`Topic page has no detailed article links: ${route}`);
