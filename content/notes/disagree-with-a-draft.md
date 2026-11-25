@@ -1,7 +1,7 @@
 ---
 title: "Disagree with the draft while it is still cheap to change"
 description: "Why early, specific criticism can be kinder than late approval followed by a preventable failure."
-date: 2026-11-24
+date: 2026-02-13
 tags: ["Personal Practice", "Collaboration"]
 format: article
 ---

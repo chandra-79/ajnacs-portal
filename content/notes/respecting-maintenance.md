@@ -1,7 +1,7 @@
 ---
 title: "The work that keeps yesterday useful"
 description: "Maintenance deserves attention because the value of a thing depends on what happens after it is made."
-date: 2026-11-24
+date: 2026-10-11
 tags: ["Personal Practice", "Engineering Practice"]
 format: article
 ---

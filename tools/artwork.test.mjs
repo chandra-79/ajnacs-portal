@@ -209,7 +209,7 @@ test('each case study uses its own full-bleed composition', () => {
 test('The Notes refresh gives each original essay its own composition on the list and the article', () => {
   const index = readFileSync(new URL('../notes/index.html', import.meta.url), 'utf8');
   const drawings = new Set();
-  for (const { slug } of articles.filter(article => article.section === 'notes' && article.date <= '2026-11-23' && article.date <= publicationDate())) {
+  for (const { slug } of articles.filter(article => article.section === 'notes' && article.editorialRevision && article.date <= publicationDate())) {
     const cover = noteCover(slug, 1280, 720);
     assert.ok(cover?.alt, `missing custom essay cover: ${slug}`);
     const drawing = cover.svg.split('</title>')[1];

@@ -1,7 +1,7 @@
 ---
 title: "The question before the clever answer"
 description: "A useful question makes uncertainty smaller and leaves the other person room to answer honestly."
-date: 2026-11-24
+date: 2026-03-15
 tags: ["Personal Practice", "Learning"]
 format: article
 ---

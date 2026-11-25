@@ -1,7 +1,7 @@
 ---
 title: "Good work should not require a hero every Friday"
 description: "The difference between appreciating an extraordinary effort and designing the ordinary work around one."
-date: 2026-11-24
+date: 2026-10-25
 tags: ["Personal Practice", "Engineering Practice"]
 format: article
 ---

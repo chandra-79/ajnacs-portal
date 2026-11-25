@@ -1,7 +1,7 @@
 ---
 title: "Choose the question before choosing the number"
 description: "A measurement becomes useful when its denominator, purpose, and limits remain visible beside the result."
-date: 2026-11-24
+date: 2026-06-03
 tags: ["Reflection", "Measurement", "Professional Judgment"]
 format: article
 ---

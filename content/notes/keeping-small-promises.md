@@ -1,7 +1,7 @@
 ---
 title: "The small promises people build their work around"
 description: "Reliability in everyday collaboration begins with clear commitments, early updates, and honest capacity."
-date: 2026-11-24
+date: 2026-01-05
 tags: ["Personal Practice", "Collaboration"]
 format: article
 ---

@@ -1,7 +1,7 @@
 ---
 title: "Ask why the ordinary work went well"
 description: "A successful piece of work can reveal useful conditions that are easy to miss when attention goes only to failure."
-date: 2026-11-24
+date: 2026-02-22
 tags: ["Reflection", "Learning", "Teamwork"]
 format: article
 ---

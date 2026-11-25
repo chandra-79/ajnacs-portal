@@ -1,7 +1,7 @@
 ---
 title: "An introduction should make the next conversation easier"
 description: "Connecting two people is more useful when the purpose, consent, and expectations are clear."
-date: 2026-11-24
+date: 2026-07-16
 tags: ["Community", "Communication", "Professional Practice"]
 format: article
 ---

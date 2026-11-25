@@ -1,7 +1,7 @@
 ---
 title: "The meeting after the meeting"
 description: "When the real decisions happen in smaller conversations, ask what the larger conversation failed to make possible."
-date: 2026-11-24
+date: 2026-06-25
 tags: ["Personal Practice", "Collaboration"]
 format: article
 ---

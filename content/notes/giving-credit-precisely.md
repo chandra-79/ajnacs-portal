@@ -1,7 +1,7 @@
 ---
 title: "Give credit while the details are still visible"
 description: "Recognition becomes more useful when it names the work, preserves its context, and reaches the person who did it."
-date: 2026-11-24
+date: 2026-09-25
 tags: ["Reflection", "Collaboration", "Leadership"]
 format: article
 ---

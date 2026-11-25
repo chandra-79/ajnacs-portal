@@ -1,7 +1,7 @@
 ---
 title: "Let feedback arrive before deciding what it means"
 description: "Receiving a comment, evaluating it, and choosing a response are different tasks that need not happen in the same instant."
-date: 2026-11-24
+date: 2026-06-06
 tags: ["Feedback", "Reflection", "Professional Practice"]
 format: article
 ---

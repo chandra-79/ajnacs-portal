@@ -187,7 +187,7 @@ export async function depthAudit(catalog, live) {
     const absolute = proseLines.filter(line => /\b(?:guarantees?|always|never|impossible|everyone)\b/i.test(line)).length;
     rows.push([path, raw.trimEnd().split("\n").length, paragraphs.length, numeric, absolute, tracks.map(t => t.id).join(" | "), links.match?.lesson.path || "", links.match?.match.raw.trim().replace(/\s+/g, " ").slice(0, 140) || ""]);
   };
-  for (const article of live.filter(article => article.date <= "2026-11-23")) {
+  for (const article of live.filter(article => article.editorialRevision)) {
     const path = `content/${article.section}/${article.slug}.md`;
     const raw = await readFile(path, "utf8");
     record(path, parseFront(raw).body, raw, catalog.sources.get(article.slug));

@@ -1,7 +1,7 @@
 ---
 title: "Write the note that future you will actually understand"
 description: "Working notes are most useful when they preserve the missing context, not merely the words that were visible at the time."
-date: 2026-11-24
+date: 2026-11-08
 tags: ["Personal Practice", "Writing"]
 format: article
 ---

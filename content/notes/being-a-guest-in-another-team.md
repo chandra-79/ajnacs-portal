@@ -1,7 +1,7 @@
 ---
 title: "Be a good guest in another team"
 description: "Entering an unfamiliar team calls for curiosity about local constraints before confidence about the solution."
-date: 2026-11-24
+date: 2026-08-26
 tags: ["Collaboration", "Professional Judgment", "Community"]
 format: article
 ---

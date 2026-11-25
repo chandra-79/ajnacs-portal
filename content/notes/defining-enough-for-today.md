@@ -1,7 +1,7 @@
 ---
 title: "Decide what enough means before the day runs out"
 description: "A practical reflection on choosing a meaningful day without asking every unfinished task to become a personal failure."
-date: 2026-11-24
+date: 2026-11-15
 tags: ["Personal Practice", "Attention"]
 format: article
 ---

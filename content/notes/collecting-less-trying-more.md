@@ -1,7 +1,7 @@
 ---
 title: "A smaller reading list and a real experiment"
 description: "An alternative to accumulating resources faster than they can become usable knowledge."
-date: 2026-11-24
+date: 2026-04-24
 tags: ["Personal Practice", "Learning"]
 format: article
 ---

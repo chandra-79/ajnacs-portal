@@ -1,7 +1,7 @@
 ---
 title: "Pass on the judgment, not just the answer"
 description: "What an experienced person can make visible so that the next person learns how to choose, not only what was chosen."
-date: 2026-11-24
+date: 2026-01-30
 tags: ["Personal Practice", "Teaching"]
 format: article
 ---

@@ -1,7 +1,7 @@
 ---
 title: "Practice something that does not need to be published"
 description: "Private practice gives a skill room to be awkward before it has to become a useful result."
-date: 2026-11-24
+date: 2026-08-04
 tags: ["Learning", "Craft", "Reflection"]
 format: article
 ---

@@ -1,7 +1,7 @@
 ---
 title: "Teaching without grabbing the keyboard"
 description: "How to help someone through a difficult task while leaving them enough of the task to learn from it."
-date: 2026-11-24
+date: 2026-08-09
 tags: ["Personal Practice", "Teaching"]
 format: article
 ---

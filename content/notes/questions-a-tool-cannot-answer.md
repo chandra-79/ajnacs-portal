@@ -1,7 +1,7 @@
 ---
 title: "The questions a useful tool still leaves to you"
 description: "A tool can make an operation easier while leaving purpose, judgment, and responsibility unresolved."
-date: 2026-11-24
+date: 2026-05-05
 tags: ["Professional Judgment", "Tools", "Learning"]
 format: article
 ---

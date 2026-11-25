@@ -1,7 +1,7 @@
 ---
 title: "Notice what became normal"
 description: "A familiar workaround can be either sensible adaptation or a clue that the work has quietly accepted an avoidable burden."
-date: 2026-11-24
+date: 2026-11-22
 tags: ["Personal Practice", "Engineering Practice"]
 format: article
 ---

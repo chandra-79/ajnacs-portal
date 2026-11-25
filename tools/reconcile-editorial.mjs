@@ -34,13 +34,13 @@ for (const name of ['new-notes', 'additional-notes']) {
 for (const note of newNotes) {
   const path = `content/notes/${note.slug}.md`, raw = await readFile(path, 'utf8');
   const { fm, body } = parseFront(raw);
-  if (fm.date !== reviewDate || !fm.title || !fm.description || !Array.isArray(fm.tags) || !fm.tags.length || words(body) < 900 || !conceptFor(note.slug)) throw new Error(`New note is incomplete: ${note.slug}`);
-  const metadata = { slug: note.slug, section: 'notes', title: fm.title, description: fm.description, derived: false, date: fm.date, status: 'published', originalDate: fm.date, tags: fm.tags, series: null, seriesOrder: null, words: words(body), format: fm.format || 'article', queueRevision: reviewDate };
   const index = manifest.findIndex(article => article.slug === note.slug);
-  if (index >= 0) {
-    if (manifest[index].section !== 'notes' || manifest[index].date !== fm.date) throw new Error(`Existing article identity conflict: ${note.slug}`);
-    manifest[index] = metadata;
-  } else manifest.push(metadata);
+  const existing = manifest[index];
+  if (existing && existing.section !== 'notes') throw new Error(`Existing article identity conflict: ${note.slug}`);
+  if (fm.date !== (existing?.date ?? reviewDate) || !fm.title || !fm.description || !Array.isArray(fm.tags) || !fm.tags.length || words(body) < 900 || !conceptFor(note.slug)) throw new Error(`New note is incomplete: ${note.slug}`);
+  const metadata = { slug: note.slug, section: 'notes', title: fm.title, description: fm.description, derived: false, date: fm.date, status: 'published', originalDate: existing?.originalDate ?? fm.date, tags: fm.tags, series: null, seriesOrder: null, words: words(body), format: fm.format || 'article', queueRevision: reviewDate };
+  if (existing) manifest[index] = metadata;
+  else manifest.push(metadata);
 }
 await writeFile(manifestPath, JSON.stringify(manifest, null, 2) + '\n');
 console.log(`Refreshed ${changed} expanded drafts and ${newNotes.length} personal notes. Existing publication dates preserved.`);
