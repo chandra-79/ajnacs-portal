@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 1280 720" preserveAspectRatio="xMidYMid slice" role="img" aria-label="An initial order request and a retry use the same idempotency key. The initial request commits one order. The retry looks up the key and receives the stored result.">
+  <defs>
+    <marker id="first-arrow" markerWidth="14" markerHeight="14" refX="13" refY="7" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0 0L14 7 0 14Z" fill="#153129"/>
+    </marker>
+    <marker id="lookup-arrow" markerWidth="14" markerHeight="14" refX="13" refY="7" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0 0L14 7 0 14Z" fill="#13664E"/>
+    </marker>
+    <g id="request">
+      <rect width="326" height="144" rx="22" fill="#FFFFFF" stroke="#99B6AA" stroke-width="2.5"/>
+      <path d="M23 137H302" stroke="#DDEBDD" stroke-width="2.5" stroke-linecap="round"/>
+      <rect x="18" y="81" width="290" height="46" rx="10" fill="#E6F2E8"/>
+      <path d="M39 109a9 9 0 119-9v2h15v5h-5v5h-5v-5h-8a9 9 0 01-6 2Z" fill="none" stroke="#13664E" stroke-width="2.5" stroke-linejoin="round"/>
+      <circle cx="36.5" cy="100" r="2.2" fill="#13664E"/>
+    </g>
+  </defs>
+  <rect width="1280" height="720" fill="#F7F8F2"/>
+  <path d="M0 689H1280V720H0Z" fill="#DFEEE1"/>
+  <path d="M80 165H1200" stroke="#D1DFD2" stroke-width="2"/>
+  <g font-family="Arial, Helvetica, sans-serif">
+    <text x="76" y="121" font-size="70" font-weight="700" fill="#153129" letter-spacing="-2">Two requests. <tspan fill="#13664E">One order.</tspan></text>
+
+    <path d="M405 300H862" fill="none" stroke="#153129" stroke-width="5" marker-end="url(#first-arrow)"/>
+    <path d="M405 486H798Q812 486 812 472V409Q812 395 826 395H862" fill="none" stroke="#13664E" stroke-width="5" marker-end="url(#lookup-arrow)"/>
+    <path d="M864 547H406" fill="none" stroke="#13664E" stroke-width="4" stroke-dasharray="11 9" marker-end="url(#lookup-arrow)"/>
+
+    <text x="480" y="280" font-size="32" font-weight="700" fill="#153129">Commit order</text>
+    <text x="480" y="466" font-size="31" font-weight="700" fill="#13664E">Look up key</text>
+    <text x="478" y="590" font-size="30" font-weight="700" fill="#13664E">Replay saved response</text>
+
+    <text x="80" y="224" font-size="28" font-weight="700" fill="#153129">First request</text>
+    <use href="#request" x="80" y="244"/>
+    <text x="102" y="299" font-size="36" font-weight="700" fill="#153129">POST /orders</text>
+    <text x="154" y="355" font-size="26" font-weight="700" fill="#13664E">Key ac7f</text>
+
+    <text x="80" y="442" font-size="28" font-weight="700" fill="#153129">Retry after timeout</text>
+    <use href="#request" x="80" y="463"/>
+    <text x="102" y="518" font-size="36" font-weight="700" fill="#153129">POST /orders</text>
+    <text x="154" y="574" font-size="26" font-weight="700" fill="#13664E">Key ac7f</text>
+
+    <rect x="866" y="214" width="334" height="393" rx="30" fill="#174738"/>
+    <path d="M866 319H1200" stroke="#4D7866" stroke-width="2"/>
+    <g fill="none" stroke="#A8D7BD" stroke-width="4" stroke-linecap="round">
+      <ellipse cx="920" cy="259" rx="24" ry="10"/>
+      <path d="M896 259v26c0 14 48 14 48 0v-26m-48 13c0 13 48 13 48 0"/>
+    </g>
+    <text x="969" y="281" font-size="32" font-weight="700" fill="#FFFFFF">Order store</text>
+
+    <rect x="895" y="343" width="275" height="107" rx="17" fill="#F8D1A0"/>
+    <text x="918" y="417" font-size="65" font-weight="700" fill="#593918">1</text>
+    <text x="971" y="407" font-size="31" font-weight="700" fill="#593918">order created</text>
+
+    <path d="M923 476H1144" stroke="#648F7D" stroke-width="2"/>
+    <path d="M911 525l11 11 21-24" fill="none" stroke="#A8D7BD" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="960" y="534" font-size="26" font-weight="700" fill="#E6F2E8">Saved response</text>
+
+    <g fill="#F7F8F2" stroke-width="4">
+      <circle cx="406" cy="300" r="6" stroke="#153129"/>
+      <circle cx="406" cy="486" r="6" stroke="#13664E"/>
+      <circle cx="866" cy="300" r="6" stroke="#153129"/>
+      <circle cx="866" cy="395" r="6" stroke="#13664E"/>
+      <circle cx="866" cy="547" r="6" stroke="#13664E"/>
+    </g>
+  </g>
+</svg>
