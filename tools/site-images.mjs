@@ -32,6 +32,11 @@ export function pageImageAlt(urlPath, title) {
   return pageArt(urlPath)?.alt || title;
 }
 
+export function authoredPageImagePath(urlPath) {
+  const artwork = pageArt(urlPath);
+  return artwork ? siteImagePath(urlPath, artwork.alt) : null;
+}
+
 export function siteImagePath(urlPath,title='',description='',topic=null) {
   const key=imageKey(urlPath);
   const version=title?'?v='+createHash('sha256').update(pageImageSvg(urlPath,title,description,topic)).digest('hex').slice(0,12):'';

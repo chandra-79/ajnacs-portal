@@ -19,7 +19,7 @@ import { localInferenceNote } from "./local-inference-note.mjs";
 import { readResearchLinks, referencesFor, referencesBlock } from "./references.mjs";
 import { publicationDate } from "./publication.mjs";
 import { buildArticleImages } from "./article-images.mjs";
-import { buildPageImage } from "./site-images.mjs";
+import { authoredPageImagePath, buildPageImage } from "./site-images.mjs";
 import { coverDescription, coverFor, hasLocalCover, photoFor } from "./covers.mjs";
 import { fieldGuides, worksheet, worksheetCsv } from "./field-guides.mjs";
 import { relatedArticles, robotsPolicy, topicPath, featuredCollections } from "./discovery.mjs";
@@ -56,6 +56,13 @@ const filters = [...topicList, ...[...tagsInUse].filter(t => !PRIMARY_TOPICS.inc
 const hubTopics = new Set(live.flatMap(article => article.tags));
 const articleTopicPath = topic => topicPath(topic, hubTopics);
 const topicChip = topic => `<a class="chip" href="${articleTopicPath(topic)}">${esc(topic)}</a>`;
+
+function directoryCover(route, fallbackArticle) {
+  const src = authoredPageImagePath(route);
+  if (!src) return coverFor(fallbackArticle);
+  const id = route.slice(1, -1).replaceAll("/", "-");
+  return `<img data-article-art="${esc(id)}" src="${esc(src)}" alt="" width="1200" height="630" loading="lazy" decoding="async">`;
+}
 
 
 const out = async (rel, html) => {
@@ -433,8 +440,9 @@ await out("series", page({
   <div class="grid series-cards">
     ${[...seriesMap].map(([name, items]) => {
       const t = primaryTopic(items[0].tags);
-      return `<a class="card" data-topic="${esc(t)}" href="/series/${seriesSlug(name)}/">
-      <div class="card-art">${artwork(seriesSlug(name), items[0].tags, { title: name })}</div>
+      const route = `/series/${seriesSlug(name)}/`;
+      return `<a class="card" data-topic="${esc(t)}" href="${route}">
+      <div class="card-art">${directoryCover(route, items[0])}</div>
       <div class="card-body">
         <span class="muted series-length">${items.length} parts</span>
         <h2 class="card-title">${esc(name)}</h2>
@@ -460,9 +468,13 @@ await out("topics", page({
 </div></section>
 <section class="publication-wrap" style="padding-bottom:var(--section-y)">
   <div class="grid g-4">
-    ${[...hubTopics].sort((a,b) => a.localeCompare(b)).map(t => [t, live.filter(article => article.tags.includes(t)).length]).map(([t, n]) => `<a class="topic-tile" data-topic="${esc(t)}" href="${articleTopicPath(t)}">
-      <div class="content-thumbnail">${artwork('topic-'+t.toLowerCase().replace(/[^a-z0-9]+/g,'-'),[t],{title:t})}</div>
-      <strong>${esc(t)}</strong><span>${n} article${n === 1 ? "" : "s"}</span></a>`).join("\n    ")}
+    ${[...hubTopics].sort((a,b) => a.localeCompare(b)).map(topic => {
+      const articles = live.filter(article => article.tags.includes(topic));
+      const route = articleTopicPath(topic);
+      return `<a class="topic-tile" data-topic="${esc(topic)}" href="${route}">
+      <div class="content-thumbnail">${directoryCover(route, articles[0])}</div>
+      <strong>${esc(topic)}</strong><span>${articles.length} article${articles.length === 1 ? "" : "s"}</span></a>`;
+    }).join("\n    ")}
   </div>
 </section>`,
 }));
