@@ -1,7 +1,7 @@
 ---
 title: "Read outside your specialty without turning it into a project"
 description: "Unfamiliar subjects can widen the questions you ask without needing an immediate professional application."
-date: 2026-11-24
+date: 2026-09-11
 tags: ["Reading", "Curiosity", "Learning"]
 format: article
 ---

@@ -1,7 +1,7 @@
 ---
 title: "The value of an answer that takes a little longer"
 description: "Knowing when to respond immediately, when to investigate, and how to keep others informed while you think."
-date: 2026-11-24
+date: 2026-06-17
 tags: ["Personal Practice", "Judgment"]
 format: article
 ---

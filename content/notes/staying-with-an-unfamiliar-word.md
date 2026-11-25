@@ -1,7 +1,7 @@
 ---
 title: "Stay with the unfamiliar word for a little longer"
 description: "Technical language becomes useful when a definition connects to an example, a boundary, and a question you can answer."
-date: 2026-11-24
+date: 2026-05-10
 tags: ["Reading", "Learning", "Technical Communication"]
 format: article
 ---

@@ -1,7 +1,7 @@
 ---
 title: "Be reliable without becoming permanently available"
 description: "Clear commitments and response expectations can make collaboration dependable without making every moment interruptible."
-date: 2026-11-24
+date: 2026-04-07
 tags: ["Work", "Boundaries", "Collaboration"]
 format: article
 ---

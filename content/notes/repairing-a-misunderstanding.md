@@ -1,7 +1,7 @@
 ---
 title: "Repair the misunderstanding before defending the sentence"
 description: "When a conversation goes wrong, returning to the difference in meaning can be more useful than proving what was intended."
-date: 2026-11-24
+date: 2026-03-22
 tags: ["Communication", "Collaboration", "Reflection"]
 format: article
 ---

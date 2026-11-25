@@ -1,7 +1,7 @@
 ---
 title: "Attention has a budget, even when the calendar looks empty"
 description: "A fictional time-budget exercise for making room to understand, practise, and review rather than merely consume."
-date: 2026-11-24
+date: 2026-07-05
 tags: ["Personal Practice", "Attention"]
 format: article
 ---

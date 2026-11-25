@@ -171,7 +171,7 @@ console.log("\nCase studies and article discovery");
     if (!html.includes("Start with ") || !html.includes('class="card-destination"')) fail(`Topic page has no detailed article links: ${route}`);
   }
   const fieldSlugs = new Set(fieldGuides.map(guide => guide.slug));
-  const revised = live.filter(article => article.date <= "2026-11-23");
+  const revised = live.filter(article => article.editorialRevision);
   for (const article of revised) {
     const html = await readFile(`${article.section}/${article.slug}/index.html`, "utf8");
     if (!html.includes('aria-label="Study paths"')) fail(`Study path missing: ${article.slug}`);

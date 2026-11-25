@@ -1,7 +1,7 @@
 ---
 title: "Ask for help before the problem becomes a private project"
 description: "A useful request gives another person a way to enter the problem without making you prove that you struggled enough."
-date: 2026-11-24
+date: 2026-08-13
 tags: ["Personal Practice", "Learning"]
 format: article
 ---

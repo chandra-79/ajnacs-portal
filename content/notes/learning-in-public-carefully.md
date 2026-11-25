@@ -1,7 +1,7 @@
 ---
 title: "Learn in public without turning guesses into advice"
 description: "Sharing unfinished understanding can invite useful correction when the boundaries of the claim remain visible."
-date: 2026-11-24
+date: 2026-07-09
 tags: ["Personal Practice", "Writing"]
 format: article
 ---

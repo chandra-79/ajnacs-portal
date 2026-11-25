@@ -1,7 +1,7 @@
 ---
 title: "Ask what makes the work urgent"
 description: "A deadline becomes easier to handle when its consequence, source, and available choices are made explicit."
-date: 2026-11-24
+date: 2026-01-24
 tags: ["Work", "Priorities", "Communication"]
 format: article
 ---

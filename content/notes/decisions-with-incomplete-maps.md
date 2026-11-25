@@ -1,7 +1,7 @@
 ---
 title: "Make the decision without pretending the map is complete"
 description: "Good judgment can name uncertainty, choose a proportionate action, and preserve a way to learn what happens next."
-date: 2026-11-24
+date: 2026-09-02
 tags: ["Professional Judgment", "Decisions", "Reflection"]
 format: article
 ---

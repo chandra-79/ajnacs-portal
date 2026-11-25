@@ -1,7 +1,7 @@
 ---
 title: "You can have a question without having a position"
 description: "Some conversations become more useful when uncertainty is allowed to remain specific and unfinished."
-date: 2026-11-24
+date: 2026-10-29
 tags: ["Professional Judgment", "Reflection", "Learning"]
 format: article
 ---

@@ -123,7 +123,7 @@ for (const m of live) {
   const fieldGuide = guideBySlug.get(m.slug);
   const example = examples.get(m.slug);
   const concept = conceptFor(m.slug);
-  if (!fieldGuide && !example && m.date <= "2026-11-23") throw new Error(`Missing worked example: ${m.slug}`);
+  if (!fieldGuide && !example && m.editorialRevision) throw new Error(`Missing worked example: ${m.slug}`);
   const studyPaths = depthCatalog.sources.get(m.slug) || concept?.studyPaths?.map(id => {
     const track = depthCatalog.tracks.find(track => track.id === id);
     if (!track) throw new Error(`Unknown study path ${id} for ${m.slug}`);
@@ -138,7 +138,7 @@ for (const m of live) {
 
   const tocHtml = tableOfContents(headings);
   const curated = researchLinks.get(m.slug) || [];
-  if (m.section === "insights" && m.date <= "2026-11-23" && !curated.length) throw new Error(`Missing curated reference: ${m.slug}`);
+  if (m.section === "insights" && m.editorialRevision && !curated.length) throw new Error(`Missing curated reference: ${m.slug}`);
   const refsHtml = m.section === "insights" ? referencesBlock(referencesFor(body, { curated })) : "";
 
   /* Every article's subject-specific preview is prepared before publication. */

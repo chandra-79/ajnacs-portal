@@ -1,7 +1,7 @@
 ---
 title: "Translation is part of technical leadership"
 description: "How to carry a concern across disciplines without flattening the meaning or making yourself a permanent interpreter."
-date: 2026-11-24
+date: 2026-02-10
 tags: ["Personal Practice", "Collaboration"]
 format: article
 ---

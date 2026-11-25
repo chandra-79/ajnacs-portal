@@ -1,7 +1,7 @@
 ---
 title: "Leave the work where someone can find it"
 description: "Finishing a task includes making its result understandable, discoverable, and safe for the next person to use."
-date: 2026-11-24
+date: 2026-01-18
 tags: ["Personal Practice", "Writing"]
 format: article
 ---

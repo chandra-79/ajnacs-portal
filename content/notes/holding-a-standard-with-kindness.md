@@ -1,7 +1,7 @@
 ---
 title: "Hold the standard and explain the path to it"
 description: "Careful work and respectful treatment belong in the same conversation about quality."
-date: 2026-11-24
+date: 2026-03-07
 tags: ["Craft", "Leadership", "Feedback"]
 format: article
 ---

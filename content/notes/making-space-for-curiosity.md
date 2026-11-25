@@ -1,7 +1,7 @@
 ---
 title: "Curiosity needs a place that is not a deliverable"
 description: "How to explore an idea without requiring every interesting question to justify a project."
-date: 2026-11-24
+date: 2026-10-04
 tags: ["Personal Practice", "Curiosity"]
 format: article
 ---

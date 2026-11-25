@@ -1,7 +1,7 @@
 ---
 title: "Give the second version a different job"
 description: "Revision is more useful when it tests the purpose of a piece of work instead of merely polishing its surface."
-date: 2026-11-24
+date: 2026-05-17
 tags: ["Writing", "Craft", "Learning"]
 format: article
 ---

@@ -1,7 +1,7 @@
 ---
 title: "Carry the conditions with the good idea"
 description: "A useful practice travels better when its original constraints remain attached to the recommendation."
-date: 2026-11-24
+date: 2026-07-24
 tags: ["Learning", "Professional Judgment", "Collaboration"]
 format: article
 ---

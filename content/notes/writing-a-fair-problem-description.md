@@ -1,7 +1,7 @@
 ---
 title: "Describe the problem so someone else can help"
 description: "A fair problem statement separates the observed difficulty from blame, preferred solutions, and assumptions about intent."
-date: 2026-11-24
+date: 2026-09-14
 tags: ["Writing", "Communication", "Professional Judgment"]
 format: article
 ---

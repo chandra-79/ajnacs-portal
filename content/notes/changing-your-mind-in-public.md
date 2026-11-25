@@ -1,7 +1,7 @@
 ---
 title: "Changing your mind without rewriting the past"
 description: "How to revise a position clearly while preserving the reasoning that made the earlier choice understandable."
-date: 2026-11-24
+date: 2026-04-18
 tags: ["Personal Practice", "Judgment"]
 format: article
 ---

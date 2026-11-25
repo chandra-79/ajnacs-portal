@@ -1,7 +1,7 @@
 ---
 title: "Share the question before it becomes a proposal"
 description: "An unresolved question can invite useful collaboration when its context and boundaries are clear."
-date: 2026-11-24
+date: 2026-03-01
 tags: ["Collaboration", "Curiosity", "Writing"]
 format: article
 ---

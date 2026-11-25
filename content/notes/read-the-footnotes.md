@@ -1,7 +1,7 @@
 ---
 title: "Read the footnotes before repeating the headline"
 description: "A practical habit for separating a useful claim from the conditions that made it true."
-date: 2026-11-24
+date: 2026-05-26
 tags: ["Personal Practice", "Critical Reading"]
 format: article
 ---

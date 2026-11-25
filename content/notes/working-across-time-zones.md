@@ -1,7 +1,7 @@
 ---
 title: "A handover is a conversation with someone asleep"
 description: "Working across time zones means designing the exchange, not asking everyone to stretch the same day."
-date: 2026-11-24
+date: 2026-03-29
 tags: ["Personal Practice", "Collaboration"]
 format: article
 ---

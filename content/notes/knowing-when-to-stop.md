@@ -1,7 +1,7 @@
 ---
 title: "Stopping is part of finishing"
 description: "A practical way to distinguish useful refinement from the work that postpones letting something be done."
-date: 2026-11-24
+date: 2026-10-17
 tags: ["Personal Practice", "Judgment"]
 format: article
 ---
