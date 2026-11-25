@@ -14,18 +14,18 @@
 <meta property="og:title" content="Compression in Production: Choosing Between gzip, zstd, lz4, and Brotli Like It Matters">
 <meta property="og:description" content="Compression is a three-way trade — ratio, speed, and CPU — that most systems set once by default and never revisit. The algorithm landscape, placement deci…">
 <meta property="og:url" content="https://ajnacs.com/insights/compression-selection-guide/">
-<meta property="og:image" content="https://ajnacs.com/assets/og/articles/compression-selection-guide.png?v=39bd5cdfbb6a">
+<meta property="og:image" content="https://ajnacs.com/assets/og/articles/compression-selection-guide.png?v=885e17bc265e">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Conceptual illustration for Compression in Production: Choosing Between gzip, zstd, lz4, and Brotli Like It Matters: Application, Runtime, System.">
+<meta property="og:image:alt" content="The direct transfer of original bytes is compared with encoding, transferring fewer bytes, and decoding, whose added compute can erase the benefit on a fast link.">
 <meta property="article:published_time" content="2026-10-12">
 <meta property="article:modified_time" content="2026-11-23">
 <meta property="og:image:type" content="image/png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Compression in Production: Choosing Between gzip, zstd, lz4, and Brotli Like It Matters">
 <meta name="twitter:description" content="Compression is a three-way trade — ratio, speed, and CPU — that most systems set once by default and never revisit. The algorithm landscape, placement deci…">
-<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/compression-selection-guide.png?v=39bd5cdfbb6a">
-<meta name="twitter:image:alt" content="Conceptual illustration for Compression in Production: Choosing Between gzip, zstd, lz4, and Brotli Like It Matters: Application, Runtime, System.">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/compression-selection-guide.png?v=885e17bc265e">
+<meta name="twitter:image:alt" content="The direct transfer of original bytes is compared with encoding, transferring fewer bytes, and decoding, whose added compute can erase the benefit on a fast link.">
 
 <link rel="icon" href="/favicon.ico?v=8affdbd5" sizes="any">
 <link rel="icon" href="/images/ajna-mark.svg?v=8affdbd5" type="image/svg+xml">
@@ -51,7 +51,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Compression in Production: Choosing Between gzip, zstd, lz4, and Brotli Like It Matters","description":"Compression is a three-way trade — ratio, speed, and CPU — that most systems set once by default and never revisit. The algorithm landscape, placement decisions across web, storage, and streaming, dictionary compression's quiet superpower, and the measurement discipline.","datePublished":"2026-10-12","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/compression-selection-guide/","image":"https://ajnacs.com/assets/og/articles/compression-selection-guide.png?v=39bd5cdfbb6a","keywords":"Performance, Programming, Cloud Architecture, Data Engineering, FinOps","articleSection":"Performance","wordCount":2156}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Compression in Production: Choosing Between gzip, zstd, lz4, and Brotli Like It Matters","description":"Compression is a three-way trade — ratio, speed, and CPU — that most systems set once by default and never revisit. The algorithm landscape, placement decisions across web, storage, and streaming, dictionary compression's quiet superpower, and the measurement discipline.","datePublished":"2026-10-12","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/compression-selection-guide/","image":"https://ajnacs.com/assets/og/articles/compression-selection-guide.png?v=885e17bc265e","keywords":"Performance, Programming, Cloud Architecture, Data Engineering, FinOps","articleSection":"Performance","wordCount":2156}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Compression in Production: Choosing Between gzip, zstd, lz4, and Brotli Like It Matters"}]}</script>
 </head>
 <body class="article-frame" data-topic="Performance">
@@ -107,7 +107,7 @@ d.setAttribute('data-theme',t);
       </div>
     </header>
 
-    <div class="article-hero" data-topic="Performance"><img data-article-art="compression-selection-guide" src="/assets/covers/compression-selection-guide.svg?v=624c62a59726" width="1280" height="720" alt="Conceptual illustration for Compression in Production: Choosing Between gzip, zstd, lz4, and Brotli Like It Matters: Application, Runtime, System." decoding="async" fetchpriority="high"></div>
+    <div class="article-hero" data-topic="Performance"><img data-article-art="compression-selection-guide" src="/assets/covers/compression-selection-guide.svg?v=de96c7203069" width="1280" height="720" alt="The direct transfer of original bytes is compared with encoding, transferring fewer bytes, and decoding, whose added compute can erase the benefit on a fast link." decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#the-landscape-four-names-cover-almost-everything">The landscape: four names cover almost everything</a></li><li><a href="#placement-the-same-trade-five-different-answers">Placement: the same trade, five different answers</a></li><li><a href="#dictionary-compression-the-underused-multiplier">Dictionary compression: the underused multiplier</a></li><li><a href="#the-discipline-measure-in-your-units">The discipline: measure in your units</a></li><li><a href="#calculate-the-break-even-point-for-the-actual-transfer">Calculate the break-even point for the actual transfer</a></li><li><a href="#select-a-comparison-corpus-before-looking-at-ratios">Select a comparison corpus before looking at ratios</a></li><li><a href="#make-web-negotiation-part-of-the-correctness-test">Make web negotiation part of the correctness test</a></li><li><a href="#rehearse-dictionary-transitions-and-retirement">Rehearse dictionary transitions and retirement</a></li></ol>
@@ -225,7 +225,7 @@ d.setAttribute('data-theme',t);
     <div class="wrap">
       <p class="eyebrow">Related</p>
       <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|Python|Async|Performance|Programming|Cloud Architecture|" data-search="async python in production: what asyncio buys you, and what it costs a practitioner&#39;s guide to running asyncio-based services in production — when async actually helps, the blocking-call trap, structured concurrency with taskgroups, and the operational habits that keep event loops healthy. python async performance programming cloud architecture" data-topic="Performance">
-  <div class="card-art"><img data-article-art="python-async-production" src="/assets/covers/python-async-production.svg?v=f514d7ccf250" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-art"><img data-article-art="python-async-production" src="/assets/covers/python-async-production.svg?v=7406c0fad85a" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
     <a class="chip" href="/topics/performance/">Performance</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/python-async-production/">Async Python in Production: What asyncio Buys You, and What It Costs</a></h3>
