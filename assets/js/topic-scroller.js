@@ -27,6 +27,7 @@
     let pending = null;
     let loading = false;
     let paused = false;
+    let pointerLink = null;
     let timer;
 
     function replaceLinks(container, items, duplicate) {
@@ -90,9 +91,17 @@
     });
 
     scroller.addEventListener("pointerleave", applyPending);
+    scroller.addEventListener("pointerdown", event => {
+      pointerLink = event.target.closest("[data-scroller-list] a");
+    });
+    document.addEventListener("keydown", () => { pointerLink = null; }, true);
     scroller.addEventListener("focusin", event => {
       const anchor = event.target.closest("[data-scroller-list] a");
-      if (!anchor || !anchor.matches(":focus-visible")) return;
+      if (!anchor) return;
+      if (anchor === pointerLink) {
+        pointerLink = null;
+        return;
+      }
       scroller.setAttribute("data-keyboard", "");
       const target = anchor.getBoundingClientRect();
       const port = viewport.getBoundingClientRect();
