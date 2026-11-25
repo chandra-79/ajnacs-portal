@@ -1,7 +1,7 @@
 /* The page shell: head, header, footer. Everything renders through this. */
 import { SITE, esc, icon } from "./lib.mjs";
 import { mark, markFile } from "./mark.mjs";
-import { siteImagePath } from "./site-images.mjs";
+import { pageImageAlt, siteImagePath } from "./site-images.mjs";
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 
@@ -22,13 +22,14 @@ export function page({
   title, description, path: urlPath, body,
   ogImage = null, type = "website",
   jsonld = [], bodyClass = "", topic = null, canonical = null,
-  imageAlt = title, imageWidth = 1200, imageHeight = 630,
+  imageAlt, imageWidth = 1200, imageHeight = 630,
   published, modified, robots = "index, follow, max-image-preview:large",
 }) {
   const url = SITE.url + urlPath;
   const fullTitle = urlPath === "/" ? title : `${title} | ${SITE.short}`;
   const meta = String(description || "").replace(/\s+/g, " ").trim().slice(0, 300);
   const metaShort = meta.length > 158 ? meta.slice(0, 155).replace(/[\s,;:—-]+$/, "") + "…" : meta;
+  imageAlt ??= ogImage ? title : pageImageAlt(urlPath, title);
   ogImage ||= siteImagePath(urlPath,title,metaShort,topic);
   const imagePath=ogImage.split(/[?#]/)[0];
   const frame = type === "article" ? "article-frame" :
