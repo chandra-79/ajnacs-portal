@@ -14,18 +14,18 @@
 <meta property="og:title" content="Multi-Region Architecture Patterns: What You&#39;re Actually Buying at Each Tier">
 <meta property="og:description" content="Active-passive, pilot light, active-active, and the data problem underneath them all. A tiered framework for multi-region design that matches architecture…">
 <meta property="og:url" content="https://ajnacs.com/insights/multi-region-architecture-patterns/">
-<meta property="og:image" content="https://ajnacs.com/assets/og/articles/multi-region-architecture-patterns.png?v=b1a9959459ac">
+<meta property="og:image" content="https://ajnacs.com/assets/og/articles/multi-region-architecture-patterns.png?v=1ed26066e7c3">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Conceptual illustration for Multi-Region Architecture Patterns: What You&#39;re Actually Buying at Each Tier: Boundary, System, Team.">
+<meta property="og:image:alt" content="Pilot light, active-passive and active-active buy different recovery times and prepositioned capacity under a shared data-recovery constraint.">
 <meta property="article:published_time" content="2026-02-12">
 <meta property="article:modified_time" content="2026-11-23">
 <meta property="og:image:type" content="image/png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Multi-Region Architecture Patterns: What You&#39;re Actually Buying at Each Tier">
 <meta name="twitter:description" content="Active-passive, pilot light, active-active, and the data problem underneath them all. A tiered framework for multi-region design that matches architecture…">
-<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/multi-region-architecture-patterns.png?v=b1a9959459ac">
-<meta name="twitter:image:alt" content="Conceptual illustration for Multi-Region Architecture Patterns: What You&#39;re Actually Buying at Each Tier: Boundary, System, Team.">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/multi-region-architecture-patterns.png?v=1ed26066e7c3">
+<meta name="twitter:image:alt" content="Pilot light, active-passive and active-active buy different recovery times and prepositioned capacity under a shared data-recovery constraint.">
 
 <link rel="icon" href="/favicon.ico?v=8affdbd5" sizes="any">
 <link rel="icon" href="/images/ajna-mark.svg?v=8affdbd5" type="image/svg+xml">
@@ -51,7 +51,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Multi-Region Architecture Patterns: What You're Actually Buying at Each Tier","description":"Active-passive, pilot light, active-active, and the data problem underneath them all. A tiered framework for multi-region design that matches architecture to actual availability requirements — and prices the tiers honestly.","datePublished":"2026-02-12","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/multi-region-architecture-patterns/","image":"https://ajnacs.com/assets/og/articles/multi-region-architecture-patterns.png?v=b1a9959459ac","keywords":"Cloud Architecture, Architecture, Reliability, Disaster Recovery, Distributed Systems","articleSection":"Cloud Architecture","wordCount":2412}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Multi-Region Architecture Patterns: What You're Actually Buying at Each Tier","description":"Active-passive, pilot light, active-active, and the data problem underneath them all. A tiered framework for multi-region design that matches architecture to actual availability requirements — and prices the tiers honestly.","datePublished":"2026-02-12","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/multi-region-architecture-patterns/","image":"https://ajnacs.com/assets/og/articles/multi-region-architecture-patterns.png?v=1ed26066e7c3","keywords":"Cloud Architecture, Architecture, Reliability, Disaster Recovery, Distributed Systems","articleSection":"Cloud Architecture","wordCount":2412}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Multi-Region Architecture Patterns: What You're Actually Buying at Each Tier"}]}</script>
 </head>
 <body class="article-frame" data-topic="Cloud Architecture">
@@ -107,7 +107,7 @@ d.setAttribute('data-theme',t);
       </div>
     </header>
 
-    <div class="article-hero" data-topic="Cloud Architecture"><img data-article-art="multi-region-architecture-patterns" src="/assets/covers/multi-region-architecture-patterns.svg?v=4304af60d84e" width="1280" height="720" alt="Conceptual illustration for Multi-Region Architecture Patterns: What You&#39;re Actually Buying at Each Tier: Boundary, System, Team." decoding="async" fetchpriority="high"></div>
+    <div class="article-hero" data-topic="Cloud Architecture"><img data-article-art="multi-region-architecture-patterns" src="/assets/covers/multi-region-architecture-patterns.svg?v=983e36039fa8" width="1280" height="720" alt="Pilot light, active-passive and active-active buy different recovery times and prepositioned capacity under a shared data-recovery constraint." decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#first-the-two-numbers-that-decide-everything">First, the two numbers that decide everything</a></li><li><a href="#the-tiers-priced-honestly">The tiers, priced honestly</a></li><li><a href="#the-data-layer-is-the-architecture">The data layer is the architecture</a></li><li><a href="#failover-mechanics-the-details-that-decide-whether-it-works">Failover mechanics: the details that decide whether it works</a></li><li><a href="#the-test-is-the-architecture">The test is the architecture</a></li><li><a href="#allocate-the-recovery-clock-across-dependencies">Allocate the recovery clock across dependencies</a></li><li><a href="#describe-the-data-gap-in-terms-of-customer-outcomes">Describe the data gap in terms of customer outcomes</a></li><li><a href="#prove-that-enough-capacity-survives-the-transition">Prove that enough capacity survives the transition</a></li><li><a href="#verify-failure-isolation-before-expanding-regional-traffic">Verify failure isolation before expanding regional traffic</a></li></ol>

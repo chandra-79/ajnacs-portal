@@ -14,18 +14,18 @@
 <meta property="og:title" content="Container Networking: How Containers Talk to Each Other and to the Outside World">
 <meta property="og:description" content="Bridge networks, overlay networks, DNS-based service discovery, port publishing, and the iptables rules that make container networking work — and fail.">
 <meta property="og:url" content="https://ajnacs.com/insights/containers-networking/">
-<meta property="og:image" content="https://ajnacs.com/assets/og/articles/containers-networking.png?v=4ccc7d648bd7">
+<meta property="og:image" content="https://ajnacs.com/assets/og/articles/containers-networking.png?v=0fd88f9e140e">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Conceptual illustration for Container Networking: How Containers Talk to Each Other and to the Outside World: Workload, Host, Container.">
+<meta property="og:image:alt" content="A published host port forwards external traffic to a container on a local bridge, where peers can find named services through Docker DNS.">
 <meta property="article:published_time" content="2026-04-28">
 <meta property="article:modified_time" content="2026-11-23">
 <meta property="og:image:type" content="image/png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Container Networking: How Containers Talk to Each Other and to the Outside World">
 <meta name="twitter:description" content="Bridge networks, overlay networks, DNS-based service discovery, port publishing, and the iptables rules that make container networking work — and fail.">
-<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/containers-networking.png?v=4ccc7d648bd7">
-<meta name="twitter:image:alt" content="Conceptual illustration for Container Networking: How Containers Talk to Each Other and to the Outside World: Workload, Host, Container.">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/containers-networking.png?v=0fd88f9e140e">
+<meta name="twitter:image:alt" content="A published host port forwards external traffic to a container on a local bridge, where peers can find named services through Docker DNS.">
 
 <link rel="icon" href="/favicon.ico?v=8affdbd5" sizes="any">
 <link rel="icon" href="/images/ajna-mark.svg?v=8affdbd5" type="image/svg+xml">
@@ -51,7 +51,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Container Networking: How Containers Talk to Each Other and to the Outside World","description":"Bridge networks, overlay networks, DNS-based service discovery, port publishing, and the iptables rules that make container networking work — and fail.","datePublished":"2026-04-28","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/containers-networking/","image":"https://ajnacs.com/assets/og/articles/containers-networking.png?v=4ccc7d648bd7","keywords":"DevSecOps, Fundamentals","articleSection":"DevSecOps","wordCount":1782}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Container Networking: How Containers Talk to Each Other and to the Outside World","description":"Bridge networks, overlay networks, DNS-based service discovery, port publishing, and the iptables rules that make container networking work — and fail.","datePublished":"2026-04-28","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/containers-networking/","image":"https://ajnacs.com/assets/og/articles/containers-networking.png?v=0fd88f9e140e","keywords":"DevSecOps, Fundamentals","articleSection":"DevSecOps","wordCount":1782}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Container Networking: How Containers Talk to Each Other and to the Outside World"}]}</script>
 </head>
 <body class="article-frame" data-topic="DevSecOps">
@@ -107,7 +107,7 @@ d.setAttribute('data-theme',t);
       </div>
     </header>
 
-    <div class="article-hero" data-topic="DevSecOps"><img data-article-art="containers-networking" src="/assets/covers/containers-networking.svg?v=cd52ebab1883" width="1280" height="720" alt="Conceptual illustration for Container Networking: How Containers Talk to Each Other and to the Outside World: Workload, Host, Container." decoding="async" fetchpriority="high"></div>
+    <div class="article-hero" data-topic="DevSecOps"><img data-article-art="containers-networking" src="/assets/covers/containers-networking.svg?v=4cab4da152a2" width="1280" height="720" alt="A published host port forwards external traffic to a container on a local bridge, where peers can find named services through Docker DNS." decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#the-bridge-network-single-host-networking">The Bridge Network: Single-Host Networking</a></li><li><a href="#port-publishing-letting-traffic-in">Port Publishing: Letting Traffic In</a></li><li><a href="#dns-resolution-inside-containers">DNS Resolution Inside Containers</a></li><li><a href="#overlay-networks-multi-host-networking">Overlay Networks: Multi-Host Networking</a></li><li><a href="#diagnosing-container-network-issues">Diagnosing Container Network Issues</a></li><li><a href="#draw-the-path-from-the-caller39s-point-of-view">Draw the path from the caller&#39;s point of view</a></li><li><a href="#distinguish-a-successful-connection-from-a-healthy-request">Distinguish a successful connection from a healthy request</a></li><li><a href="#collect-a-small-matrix-before-changing-the-network">Collect a small matrix before changing the network</a></li><li><a href="#record-where-naming-ends-and-routing-starts">Record where naming ends and routing starts</a></li></ol>
@@ -322,7 +322,7 @@ sudo tcpdump -i docker0 -n host &lt;container-ip&gt;
   </div>
 </article>
 <article class="card" data-card data-topics="|DevSecOps|Fundamentals|" data-search="what containers actually are — not the marketing version containers are not lightweight vms. they are processes with resource constraints and namespace isolation. understanding the actual mechanism makes you a better user of docker, kubernetes, and every container runtime. devsecops fundamentals" data-topic="DevSecOps">
-  <div class="card-art"><img data-article-art="containers-what-they-actually-are" src="/assets/covers/containers-what-they-actually-are.svg?v=f9d398e0421b" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-art"><img data-article-art="containers-what-they-actually-are" src="/assets/covers/containers-what-they-actually-are.svg?v=d7e37097b00b" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
     <a class="chip" href="/topics/devsecops/">DevSecOps</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/containers-what-they-actually-are/">What Containers Actually Are — Not the Marketing Version</a></h3>
@@ -331,7 +331,7 @@ sudo tcpdump -i docker0 -n host &lt;container-ip&gt;
   </div>
 </article>
 <article class="card" data-card data-topics="|DevSecOps|Fundamentals|" data-search="writing production-grade dockerfiles: the decisions that actually matter multi-stage builds, minimal base images, layer caching, non-root users, build arguments, and the specific dockerfile patterns that separate a working image from a secure, efficient, maintainable one. devsecops fundamentals" data-topic="DevSecOps">
-  <div class="card-art"><img data-article-art="containers-production-dockerfiles" src="/assets/covers/containers-production-dockerfiles.svg?v=d3341ad17a87" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-art"><img data-article-art="containers-production-dockerfiles" src="/assets/covers/containers-production-dockerfiles.svg?v=121ca289ce3b" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
     <a class="chip" href="/topics/devsecops/">DevSecOps</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/containers-production-dockerfiles/">Writing Production-Grade Dockerfiles: The Decisions That Actually Matter</a></h3>

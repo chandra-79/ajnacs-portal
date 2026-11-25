@@ -14,18 +14,18 @@
 <meta property="og:title" content="Writing Production-Grade Dockerfiles: The Decisions That Actually Matter">
 <meta property="og:description" content="Multi-stage builds, minimal base images, layer caching, non-root users, build arguments, and the specific Dockerfile patterns that separate a working image…">
 <meta property="og:url" content="https://ajnacs.com/insights/containers-production-dockerfiles/">
-<meta property="og:image" content="https://ajnacs.com/assets/og/articles/containers-production-dockerfiles.png?v=4eee07db3839">
+<meta property="og:image" content="https://ajnacs.com/assets/og/articles/containers-production-dockerfiles.png?v=d51ec374431c">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Conceptual illustration for Writing Production-Grade Dockerfiles: The Decisions That Actually Matter: Runtime, Container, Pod.">
+<meta property="og:image:alt" content="A multi-stage container build leaves compilers and build inputs in the builder and copies only the runnable artifact and its production dependencies into the runtime image.">
 <meta property="article:published_time" content="2026-06-24">
 <meta property="article:modified_time" content="2026-11-23">
 <meta property="og:image:type" content="image/png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Writing Production-Grade Dockerfiles: The Decisions That Actually Matter">
 <meta name="twitter:description" content="Multi-stage builds, minimal base images, layer caching, non-root users, build arguments, and the specific Dockerfile patterns that separate a working image…">
-<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/containers-production-dockerfiles.png?v=4eee07db3839">
-<meta name="twitter:image:alt" content="Conceptual illustration for Writing Production-Grade Dockerfiles: The Decisions That Actually Matter: Runtime, Container, Pod.">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/containers-production-dockerfiles.png?v=d51ec374431c">
+<meta name="twitter:image:alt" content="A multi-stage container build leaves compilers and build inputs in the builder and copies only the runnable artifact and its production dependencies into the runtime image.">
 
 <link rel="icon" href="/favicon.ico?v=8affdbd5" sizes="any">
 <link rel="icon" href="/images/ajna-mark.svg?v=8affdbd5" type="image/svg+xml">
@@ -51,7 +51,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Writing Production-Grade Dockerfiles: The Decisions That Actually Matter","description":"Multi-stage builds, minimal base images, layer caching, non-root users, build arguments, and the specific Dockerfile patterns that separate a working image from a secure, efficient, maintainable one.","datePublished":"2026-06-24","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/containers-production-dockerfiles/","image":"https://ajnacs.com/assets/og/articles/containers-production-dockerfiles.png?v=4eee07db3839","keywords":"DevSecOps, Fundamentals","articleSection":"DevSecOps","wordCount":1533}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Writing Production-Grade Dockerfiles: The Decisions That Actually Matter","description":"Multi-stage builds, minimal base images, layer caching, non-root users, build arguments, and the specific Dockerfile patterns that separate a working image from a secure, efficient, maintainable one.","datePublished":"2026-06-24","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/containers-production-dockerfiles/","image":"https://ajnacs.com/assets/og/articles/containers-production-dockerfiles.png?v=d51ec374431c","keywords":"DevSecOps, Fundamentals","articleSection":"DevSecOps","wordCount":1533}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Writing Production-Grade Dockerfiles: The Decisions That Actually Matter"}]}</script>
 </head>
 <body class="article-frame" data-topic="DevSecOps">
@@ -107,7 +107,7 @@ d.setAttribute('data-theme',t);
       </div>
     </header>
 
-    <div class="article-hero" data-topic="DevSecOps"><img data-article-art="containers-production-dockerfiles" src="/assets/covers/containers-production-dockerfiles.svg?v=d3341ad17a87" width="1280" height="720" alt="Conceptual illustration for Writing Production-Grade Dockerfiles: The Decisions That Actually Matter: Runtime, Container, Pod." decoding="async" fetchpriority="high"></div>
+    <div class="article-hero" data-topic="DevSecOps"><img data-article-art="containers-production-dockerfiles" src="/assets/covers/containers-production-dockerfiles.svg?v=121ca289ce3b" width="1280" height="720" alt="A multi-stage container build leaves compilers and build inputs in the builder and copies only the runnable artifact and its production dependencies into the runtime image." decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#start-with-the-right-base-image">Start with the Right Base Image</a></li><li><a href="#multi-stage-builds-separate-build-from-runtime">Multi-Stage Builds: Separate Build from Runtime</a></li><li><a href="#layer-caching-order-instructions-by-change-frequency">Layer Caching: Order Instructions by Change Frequency</a></li><li><a href="#run-as-non-root">Run as Non-Root</a></li><li><a href="#use-dockerignore">Use .dockerignore</a></li><li><a href="#useful-image-analysis">Useful Image Analysis</a></li><li><a href="#start-with-the-runtime-contract">Start with the runtime contract</a></li><li><a href="#validate-reproducibility-rather-than-assuming-it">Validate reproducibility rather than assuming it</a></li><li><a href="#measure-cold-and-warm-behavior-independently">Measure cold and warm behavior independently</a></li><li><a href="#review-the-release-artifact-and-recovery-path">Review the release artifact and recovery path</a></li></ol>
@@ -345,7 +345,7 @@ docker run --rm -it \
   </div>
 </article>
 <article class="card" data-card data-topics="|DevSecOps|Fundamentals|" data-search="what containers actually are — not the marketing version containers are not lightweight vms. they are processes with resource constraints and namespace isolation. understanding the actual mechanism makes you a better user of docker, kubernetes, and every container runtime. devsecops fundamentals" data-topic="DevSecOps">
-  <div class="card-art"><img data-article-art="containers-what-they-actually-are" src="/assets/covers/containers-what-they-actually-are.svg?v=f9d398e0421b" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-art"><img data-article-art="containers-what-they-actually-are" src="/assets/covers/containers-what-they-actually-are.svg?v=d7e37097b00b" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
     <a class="chip" href="/topics/devsecops/">DevSecOps</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/containers-what-they-actually-are/">What Containers Actually Are — Not the Marketing Version</a></h3>
@@ -354,7 +354,7 @@ docker run --rm -it \
   </div>
 </article>
 <article class="card" data-card data-topics="|DevSecOps|Fundamentals|" data-search="container networking: how containers talk to each other and to the outside world bridge networks, overlay networks, dns-based service discovery, port publishing, and the iptables rules that make container networking work — and fail. devsecops fundamentals" data-topic="DevSecOps">
-  <div class="card-art"><img data-article-art="containers-networking" src="/assets/covers/containers-networking.svg?v=cd52ebab1883" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-art"><img data-article-art="containers-networking" src="/assets/covers/containers-networking.svg?v=4cab4da152a2" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
     <a class="chip" href="/topics/devsecops/">DevSecOps</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/containers-networking/">Container Networking: How Containers Talk to Each Other and to the Outside World</a></h3>

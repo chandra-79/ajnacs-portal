@@ -14,18 +14,18 @@
 <meta property="og:title" content="Kubernetes Security Hardening: The Controls That Actually Reduce Attack Surface">
 <meta property="og:description" content="Default Kubernetes configurations are not production-secure. Here are the specific hardening controls — RBAC, Pod Security Standards, network policies, ima…">
 <meta property="og:url" content="https://ajnacs.com/insights/kubernetes-security-hardening/">
-<meta property="og:image" content="https://ajnacs.com/assets/og/articles/kubernetes-security-hardening.png?v=4c9920fa24cd">
+<meta property="og:image" content="https://ajnacs.com/assets/og/articles/kubernetes-security-hardening.png?v=345ea7017b21">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Conceptual illustration for Kubernetes Security Hardening: The Controls That Actually Reduce Attack Surface: Boundary, Controls, Verification.">
+<meta property="og:image:alt" content="Identity, admission, network and secret controls restrict what a Kubernetes workload can do and reach.">
 <meta property="article:published_time" content="2026-04-13">
 <meta property="article:modified_time" content="2026-11-23">
 <meta property="og:image:type" content="image/png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Kubernetes Security Hardening: The Controls That Actually Reduce Attack Surface">
 <meta name="twitter:description" content="Default Kubernetes configurations are not production-secure. Here are the specific hardening controls — RBAC, Pod Security Standards, network policies, ima…">
-<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/kubernetes-security-hardening.png?v=4c9920fa24cd">
-<meta name="twitter:image:alt" content="Conceptual illustration for Kubernetes Security Hardening: The Controls That Actually Reduce Attack Surface: Boundary, Controls, Verification.">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/kubernetes-security-hardening.png?v=345ea7017b21">
+<meta name="twitter:image:alt" content="Identity, admission, network and secret controls restrict what a Kubernetes workload can do and reach.">
 
 <link rel="icon" href="/favicon.ico?v=8affdbd5" sizes="any">
 <link rel="icon" href="/images/ajna-mark.svg?v=8affdbd5" type="image/svg+xml">
@@ -51,7 +51,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Kubernetes Security Hardening: The Controls That Actually Reduce Attack Surface","description":"Default Kubernetes configurations are not production-secure. Here are the specific hardening controls — RBAC, Pod Security Standards, network policies, image policies, secrets management — that reduce attack surface and what each actually protects against.","datePublished":"2026-04-13","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/kubernetes-security-hardening/","image":"https://ajnacs.com/assets/og/articles/kubernetes-security-hardening.png?v=4c9920fa24cd","keywords":"DevSecOps, Containers, Security","articleSection":"DevSecOps","wordCount":2149}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Kubernetes Security Hardening: The Controls That Actually Reduce Attack Surface","description":"Default Kubernetes configurations are not production-secure. Here are the specific hardening controls — RBAC, Pod Security Standards, network policies, image policies, secrets management — that reduce attack surface and what each actually protects against.","datePublished":"2026-04-13","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/kubernetes-security-hardening/","image":"https://ajnacs.com/assets/og/articles/kubernetes-security-hardening.png?v=345ea7017b21","keywords":"DevSecOps, Containers, Security","articleSection":"DevSecOps","wordCount":2149}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Kubernetes Security Hardening: The Controls That Actually Reduce Attack Surface"}]}</script>
 </head>
 <body class="article-frame" data-topic="DevSecOps">
@@ -107,7 +107,7 @@ d.setAttribute('data-theme',t);
       </div>
     </header>
 
-    <div class="article-hero" data-topic="DevSecOps"><img data-article-art="kubernetes-security-hardening" src="/assets/covers/kubernetes-security-hardening.svg?v=f86a92f761dc" width="1280" height="720" alt="Conceptual illustration for Kubernetes Security Hardening: The Controls That Actually Reduce Attack Surface: Boundary, Controls, Verification." decoding="async" fetchpriority="high"></div>
+    <div class="article-hero" data-topic="DevSecOps"><img data-article-art="kubernetes-security-hardening" src="/assets/covers/kubernetes-security-hardening.svg?v=103d9d5f5ae1" width="1280" height="720" alt="Identity, admission, network and secret controls restrict what a Kubernetes workload can do and reach." decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#rbac-the-principle-of-least-privilege-for-cluster-access">RBAC: the principle of least privilege for cluster access</a></li><li><a href="#pod-security-standards-replacing-podsecuritypolicy">Pod Security Standards: replacing PodSecurityPolicy</a></li><li><a href="#network-policies-default-deny-allow-explicitly">Network policies: default-deny, allow explicitly</a></li><li><a href="#image-security-admission-control-and-signed-images">Image security: admission control and signed images</a></li><li><a href="#secrets-don39t-trust-etcd-at-rest-by-default">Secrets: don&#39;t trust etcd at rest by default</a></li><li><a href="#audit-logging">Audit logging</a></li><li><a href="#establish-who-can-change-the-security-boundary">Establish who can change the security boundary</a></li><li><a href="#separate-policy-rollout-from-application-rollout">Separate policy rollout from application rollout</a></li><li><a href="#verify-containment-from-a-workload-viewpoint">Verify containment from a workload viewpoint</a></li><li><a href="#separate-secret-storage-consumption-and-logging">Separate secret storage, consumption, and logging</a></li><li><a href="#make-hardening-measurable-after-the-rollout">Make hardening measurable after the rollout</a></li></ol>
