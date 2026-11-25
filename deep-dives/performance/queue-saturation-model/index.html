@@ -14,18 +14,18 @@
 <meta property="og:title" content="Calculate the cost of saturation with a queue model">
 <meta property="og:description" content="Use a simple queue to understand how waiting grows near capacity, and identify where the assumptions break.">
 <meta property="og:url" content="https://ajnacs.com/deep-dives/performance/queue-saturation-model/">
-<meta property="og:image" content="https://ajnacs.com/assets/deep-dives/performance-queue-saturation-model.png?v=5497e58a566d">
-<meta property="og:image:width" content="1000">
-<meta property="og:image:height" content="370">
-<meta property="og:image:alt" content="Expected response time at fixed capacity (ms). 50 requests/s: 20; 80 requests/s: 50; 90 requests/s: 100; 95 requests/s: 200.">
+<meta property="og:image" content="https://ajnacs.com/assets/deep-dives/performance-queue-saturation-model-social.png?v=a4cb63796ec7">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="In a one-server queue model, expected response time grows as arrivals approach service capacity. Test the shape with a controlled ramp.">
 
 
 <meta property="og:image:type" content="image/png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Calculate the cost of saturation with a queue model">
 <meta name="twitter:description" content="Use a simple queue to understand how waiting grows near capacity, and identify where the assumptions break.">
-<meta name="twitter:image" content="https://ajnacs.com/assets/deep-dives/performance-queue-saturation-model.png?v=5497e58a566d">
-<meta name="twitter:image:alt" content="Expected response time at fixed capacity (ms). 50 requests/s: 20; 80 requests/s: 50; 90 requests/s: 100; 95 requests/s: 200.">
+<meta name="twitter:image" content="https://ajnacs.com/assets/deep-dives/performance-queue-saturation-model-social.png?v=a4cb63796ec7">
+<meta name="twitter:image:alt" content="In a one-server queue model, expected response time grows as arrivals approach service capacity. Test the shape with a controlled ramp.">
 
 <link rel="icon" href="/favicon.ico?v=8affdbd5" sizes="any">
 <link rel="icon" href="/images/ajna-mark.svg?v=8affdbd5" type="image/svg+xml">
@@ -89,12 +89,13 @@ d.setAttribute('data-theme',t);
       <input id="copyValue" type="text" readonly>
       <span>Select and copy this link.</span>
     </label>
-  </div></header><div class="article-hero depth-chart"><img src="/assets/deep-dives/performance-queue-saturation-model.png?v=5497e58a566d" width="1000" height="370" alt="Expected response time at fixed capacity (ms). 50 requests/s: 20; 80 requests/s: 50; 90 requests/s: 100; 95 requests/s: 200." fetchpriority="high" decoding="async"></div>
+  </div></header><div class="article-hero"><img src="/assets/deep-dives/performance-queue-saturation-model-cover.svg?v=c35c0686b233" width="1280" height="720" alt="In a one-server queue model, expected response time grows as arrivals approach service capacity. Test the shape with a controlled ramp." fetchpriority="high" decoding="async"></div>
           <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#state-the-model">State the model</a></li><li><a href="#connect-it-to-a-measurement">Connect it to a measurement</a></li><li><a href="#limits-of-the-example">Limits of the example</a></li></ol>
 </nav></div>
           <div class="article-copy"><p class="case-notice">The chart uses illustrative inputs. It is a worked example.</p>
+          <figure class="depth-chart"><img src="/assets/deep-dives/performance-queue-saturation-model.png?v=5497e58a566d" width="1000" height="370" alt="Expected response time at fixed capacity (ms). 50 requests/s: 20; 80 requests/s: 50; 90 requests/s: 100; 95 requests/s: 200." loading="lazy" decoding="async"></figure>
           <details class="depth-chart-data"><summary>Chart values and units</summary><ul><li>50 requests/s · 20 ms</li><li>80 requests/s · 50 ms</li><li>90 requests/s · 100 ms</li><li>95 requests/s · 200 ms</li></ul>
           <a href="/deep-dives/performance/queue-saturation-model/chart.csv" download>Download the chart data (CSV)</a></details>
           <div class="prose"><h2 id="state-the-model"><a class="h-anchor" href="#state-the-model" aria-hidden="true" tabindex="-1">#</a>State the model</h2>
