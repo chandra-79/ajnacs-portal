@@ -14,18 +14,18 @@
 <meta property="og:title" content="Running LLMs Locally: What Six Months of Daily Use Actually Taught Me">
 <meta property="og:description" content="I started running local LLMs as a cost experiment. It became a privacy practice, a performance benchmark, and an education in what language models actually…">
 <meta property="og:url" content="https://ajnacs.com/insights/running-local-llm-lessons/">
-<meta property="og:image" content="https://ajnacs.com/assets/og/articles/running-local-llm-lessons.png?v=1281b9911fd6">
+<meta property="og:image" content="https://ajnacs.com/assets/og/articles/running-local-llm-lessons.png?v=bb9bf1ec5975">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Conceptual illustration for Running LLMs Locally: What Six Months of Daily Use Actually Taught Me: Data, Model, Evaluation.">
+<meta property="og:image:alt" content="A local inference profile separates prompt prefill, time to first token, decode speed, and peak working-set memory.">
 <meta property="article:published_time" content="2025-06-05">
 <meta property="article:modified_time" content="2026-11-23">
 <meta property="og:image:type" content="image/png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Running LLMs Locally: What Six Months of Daily Use Actually Taught Me">
 <meta name="twitter:description" content="I started running local LLMs as a cost experiment. It became a privacy practice, a performance benchmark, and an education in what language models actually…">
-<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/running-local-llm-lessons.png?v=1281b9911fd6">
-<meta name="twitter:image:alt" content="Conceptual illustration for Running LLMs Locally: What Six Months of Daily Use Actually Taught Me: Data, Model, Evaluation.">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/running-local-llm-lessons.png?v=bb9bf1ec5975">
+<meta name="twitter:image:alt" content="A local inference profile separates prompt prefill, time to first token, decode speed, and peak working-set memory.">
 
 <link rel="icon" href="/favicon.ico?v=8affdbd5" sizes="any">
 <link rel="icon" href="/images/ajna-mark.svg?v=8affdbd5" type="image/svg+xml">
@@ -51,7 +51,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Running LLMs Locally: What Six Months of Daily Use Actually Taught Me","description":"I started running local LLMs as a cost experiment. It became a privacy practice, a performance benchmark, and an education in what language models actually need to function well. Here's the honest version of what I found.","datePublished":"2025-06-05","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/running-local-llm-lessons/","image":"https://ajnacs.com/assets/og/articles/running-local-llm-lessons.png?v=1281b9911fd6","keywords":"Enterprise AI, Emerging Technology","articleSection":"Enterprise AI","wordCount":1806}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Running LLMs Locally: What Six Months of Daily Use Actually Taught Me","description":"I started running local LLMs as a cost experiment. It became a privacy practice, a performance benchmark, and an education in what language models actually need to function well. Here's the honest version of what I found.","datePublished":"2025-06-05","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/running-local-llm-lessons/","image":"https://ajnacs.com/assets/og/articles/running-local-llm-lessons.png?v=bb9bf1ec5975","keywords":"Enterprise AI, Emerging Technology","articleSection":"Enterprise AI","wordCount":1806}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Running LLMs Locally: What Six Months of Daily Use Actually Taught Me"}]}</script>
 </head>
 <body class="article-frame" data-topic="Enterprise AI">
@@ -107,7 +107,7 @@ d.setAttribute('data-theme',t);
       </div>
     </header>
 
-    <div class="article-hero" data-topic="Enterprise AI"><img data-article-art="running-local-llm-lessons" src="/assets/covers/running-local-llm-lessons.svg?v=bcdb3e093b8c" width="1280" height="720" alt="Conceptual illustration for Running LLMs Locally: What Six Months of Daily Use Actually Taught Me: Data, Model, Evaluation." decoding="async" fetchpriority="high"></div>
+    <div class="article-hero" data-topic="Enterprise AI"><img data-article-art="running-local-llm-lessons" src="/assets/covers/running-local-llm-lessons.svg?v=fd9c1fdaeea0" width="1280" height="720" alt="A local inference profile separates prompt prefill, time to first token, decode speed, and peak working-set memory." decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#the-tooling-that-actually-works">The Tooling That Actually Works</a></li><li><a href="#what-hardware-you-actually-need">What Hardware You Actually Need</a></li><li><a href="#the-models-worth-running-locally">The Models Worth Running Locally</a></li><li><a href="#the-enterprise-case-that39s-being-underweighted">The Enterprise Case That&#39;s Being Underweighted</a></li><li><a href="#what-local-llms-still-can39t-do-well">What Local LLMs Still Can&#39;t Do Well</a></li><li><a href="#describe-what-fills-memory-while-the-model-is-running">Describe what fills memory while the model is running</a></li><li><a href="#measure-an-interactive-request-in-stages">Measure an interactive request in stages</a></li><li><a href="#run-the-privacy-test-across-the-whole-path">Run the privacy test across the whole path</a></li><li><a href="#benchmark-the-result-your-team-needs">Benchmark the result your team needs</a></li></ol>

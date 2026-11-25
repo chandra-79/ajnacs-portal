@@ -14,18 +14,18 @@
 <meta property="og:title" content="Kubernetes Operators: When to Build One and When to Stop at CRDs">
 <meta property="og:description" content="Operators extend Kubernetes with custom domain logic. But writing an operator is a significant commitment — the control loop, the reconciliation logic, the…">
 <meta property="og:url" content="https://ajnacs.com/insights/kubernetes-operators-custom-resources/">
-<meta property="og:image" content="https://ajnacs.com/assets/og/articles/kubernetes-operators-custom-resources.png?v=38240c7b262f">
+<meta property="og:image" content="https://ajnacs.com/assets/og/articles/kubernetes-operators-custom-resources.png?v=382d463c281b">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Conceptual illustration for Kubernetes Operators: When to Build One and When to Stop at CRDs: Runtime, Container, Cluster.">
+<meta property="og:image:alt" content="A Kubernetes operator repeatedly compares declared and observed state and makes only the changes needed to converge.">
 <meta property="article:published_time" content="2025-02-05">
 <meta property="article:modified_time" content="2026-11-23">
 <meta property="og:image:type" content="image/png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Kubernetes Operators: When to Build One and When to Stop at CRDs">
 <meta name="twitter:description" content="Operators extend Kubernetes with custom domain logic. But writing an operator is a significant commitment — the control loop, the reconciliation logic, the…">
-<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/kubernetes-operators-custom-resources.png?v=38240c7b262f">
-<meta name="twitter:image:alt" content="Conceptual illustration for Kubernetes Operators: When to Build One and When to Stop at CRDs: Runtime, Container, Cluster.">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/kubernetes-operators-custom-resources.png?v=382d463c281b">
+<meta name="twitter:image:alt" content="A Kubernetes operator repeatedly compares declared and observed state and makes only the changes needed to converge.">
 
 <link rel="icon" href="/favicon.ico?v=8affdbd5" sizes="any">
 <link rel="icon" href="/images/ajna-mark.svg?v=8affdbd5" type="image/svg+xml">
@@ -51,7 +51,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Kubernetes Operators: When to Build One and When to Stop at CRDs","description":"Operators extend Kubernetes with custom domain logic. But writing an operator is a significant commitment — the control loop, the reconciliation logic, the RBAC, the upgrade path. Here's when operators solve real problems and when simpler alternatives are enough.","datePublished":"2025-02-05","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/kubernetes-operators-custom-resources/","image":"https://ajnacs.com/assets/og/articles/kubernetes-operators-custom-resources.png?v=38240c7b262f","keywords":"Cloud Architecture, Containers, Programming","articleSection":"Cloud Architecture","wordCount":1937}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Kubernetes Operators: When to Build One and When to Stop at CRDs","description":"Operators extend Kubernetes with custom domain logic. But writing an operator is a significant commitment — the control loop, the reconciliation logic, the RBAC, the upgrade path. Here's when operators solve real problems and when simpler alternatives are enough.","datePublished":"2025-02-05","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/kubernetes-operators-custom-resources/","image":"https://ajnacs.com/assets/og/articles/kubernetes-operators-custom-resources.png?v=382d463c281b","keywords":"Cloud Architecture, Containers, Programming","articleSection":"Cloud Architecture","wordCount":1937}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Kubernetes Operators: When to Build One and When to Stop at CRDs"}]}</script>
 </head>
 <body class="article-frame" data-topic="Cloud Architecture">
@@ -107,7 +107,7 @@ d.setAttribute('data-theme',t);
       </div>
     </header>
 
-    <div class="article-hero" data-topic="Cloud Architecture"><img data-article-art="kubernetes-operators-custom-resources" src="/assets/covers/kubernetes-operators-custom-resources.svg?v=ded0e7c0267c" width="1280" height="720" alt="Conceptual illustration for Kubernetes Operators: When to Build One and When to Stop at CRDs: Runtime, Container, Cluster." decoding="async" fetchpriority="high"></div>
+    <div class="article-hero" data-topic="Cloud Architecture"><img data-article-art="kubernetes-operators-custom-resources" src="/assets/covers/kubernetes-operators-custom-resources.svg?v=9820b245fd27" width="1280" height="720" alt="A Kubernetes operator repeatedly compares declared and observed state and makes only the changes needed to converge." decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#the-controller-pattern-that-operators-implement">The controller pattern that operators implement</a></li><li><a href="#when-an-operator-makes-sense">When an operator makes sense</a></li><li><a href="#when-an-operator-is-overkill">When an operator is overkill</a></li><li><a href="#the-scaffolding-kubebuilder-vs-operator-sdk">The scaffolding: Kubebuilder vs Operator SDK</a></li><li><a href="#the-crd-without-an-operator-validating-admission-webhooks">The CRD without an operator: validating admission webhooks</a></li><li><a href="#existing-operators-worth-knowing">Existing operators worth knowing</a></li><li><a href="#define-the-api-independently-from-the-controller">Define the API independently from the controller</a></li><li><a href="#reconcile-to-a-durable-outcome">Reconcile to a durable outcome</a></li><li><a href="#make-deletion-and-ownership-explicit">Make deletion and ownership explicit</a></li><li><a href="#test-failures-across-version-changes">Test failures across version changes</a></li></ol>
