@@ -1,0 +1,48 @@
+/* Field Guide entry points use the established type and theme tokens. */
+.portal-hero {
+  padding-block:clamp(2.8rem,6.4vw,5.9rem);
+}
+.portal-hero-layout {
+  display:grid;
+  grid-template-columns:minmax(0,1.23fr) minmax(0,.87fr);
+  align-items:center;
+  gap:clamp(1.4rem,4vw,4rem);
+}
+.portal-hero-copy,.portal-hero-art { min-inline-size:0; }
+.portal-hero-copy .h-display { max-inline-size:17ch; }
+.portal-hero-lead { max-inline-size:44ch;margin-block-start:1.15rem; }
+.portal-hero-actions { margin-block-start:1.65rem;gap:.7rem; }
+.portal-hero-art { inline-size:100%;max-inline-size:34rem;justify-self:end; }
+.portal-lanes { padding-block:clamp(2.35rem,5vw,4.8rem); }
+.portal-section-heading { align-items:baseline;gap:.8rem;margin-block-end:1.3rem; }
+.portal-section-heading>a { flex-shrink:0; }
+.portal-notes { padding-block:clamp(1.85rem,3.75vw,3.35rem); }
+.portal-notes-layout {
+  display:grid;
+  grid-template-columns:minmax(0,.78fr) minmax(0,1.22fr);
+  gap:clamp(.9rem,4vw,3.3rem);
+  align-items:center;
+}
+.portal-notes .lede { margin-block:.55rem .85rem; }
+.portal-note-list { list-style:none;margin:0;padding:0; }
+.portal-note-list li {
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  align-items:baseline;
+  gap:.7rem 1rem;
+  padding-block:.7rem;
+  border-block-end:1px solid var(--line);
+}
+.portal-note-list li:first-child { border-block-start:1px solid var(--line); }
+.portal-note-list a { font-weight:700;text-underline-offset:.22em; }
+.portal-note-list time { color:var(--text-3);font-size:.81rem;white-space:nowrap; }
+#article-search,#start-reading,#start-here { scroll-margin-block-start:calc(var(--nav-h) + 1rem); }
+@media (max-width:48rem) {
+  .portal-hero-layout,.portal-notes-layout { grid-template-columns:minmax(0,1fr); }
+  .portal-hero-art { max-inline-size:28rem;justify-self:start; }
+}
+@media (max-width:34rem) {
+  .portal-hero { padding-block:2.3rem; }
+  .portal-section-heading { flex-wrap:wrap; }
+  .portal-note-list li { grid-template-columns:minmax(0,1fr);gap:.2rem; }
+}

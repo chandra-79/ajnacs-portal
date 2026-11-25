@@ -10,6 +10,8 @@ import { fieldGuides, worksheetCsv } from "./field-guides.mjs";
 import { models } from "../assets/js/field-math.mjs";
 import { caseCategories } from "./case-library.mjs";
 import { topicPath } from "./discovery.mjs";
+import { lanes, lanePath, buildLaneDirectory } from "./lanes.mjs";
+import { scrollerItems } from "./topic-scroller.mjs";
 import { authoredPageImagePath } from "./site-images.mjs";
 import { loadDeepDives } from "./deep-dives.mjs";
 import { sectionCover } from "./section-art.mjs";
@@ -154,7 +156,7 @@ console.log("\nCase studies and article discovery");
   const paths = new Set([...tags].map(tag => topicPath(tag, tags)));
   if (tags.size !== paths.size) fail("Tag pages collide after URL normalisation");
   const seriesRoutes = new Set(live.filter(article => article.series).map(article => `/series/${seriesSlug(article.series)}/`));
-  for (const [directory, routes] of [["topics", paths], ["series", seriesRoutes]]) {
+  for (const [directory, routes] of [["topics/tags", paths], ["series", seriesRoutes]]) {
     const html = await readFile(`${directory}/index.html`, "utf8");
     const cards = new Map([...html.matchAll(/<a\b[^>]*href="([^"]+)"[^>]*>\s*<div class="(?:content-thumbnail|card-art)">([^<]*<img[^>]*>)/g)]
       .map(([, route, image]) => [route, image]));
@@ -683,6 +685,50 @@ console.log("\nAssets");
   if (!/const NOT_OURS = new Set\(/.test(ingest))
     fail("the third-party image blocklist is gone; a re-ingest will pull vendor press photos back in");
   else ok("third-party images stay stripped at ingest");
+}
+
+console.log("\nTopic portal, reading paths and scroller");
+{
+  const before = failures;
+  const directory = buildLaneDirectory(manifest, live);
+  const insights = live.filter(article => article.section === "insights");
+  const [home, topicIndex, archive, sitemap, scrollerFile, scrollerStyles] = await Promise.all(
+    ["index.html", "topics/index.html", "insights/index.html", "sitemap.xml", "updates/topic-scroller.json", "assets/css/topic-scroller.css"].map(file => readFile(file, "utf8"))
+  );
+  const expectedTicker = scrollerItems(lanes, insights);
+  if (JSON.stringify(JSON.parse(scrollerFile).items) !== JSON.stringify(expectedTicker) ||
+      !home.includes('data-topic-scroller') || !expectedTicker.every(({href}) => home.includes(`href="${href}"`)) ||
+      !scrollerStyles.includes(":focus-within") || !scrollerStyles.includes("prefers-reduced-motion")) {
+    fail("The homepage scroller must show current topic and article links and pause for keyboard use");
+  }
+  if (!home.includes('id="start-reading"') || home.indexOf('id="start-reading"') >= home.indexOf('id="portal-notes-title"')) {
+    fail("The homepage must put the topic lanes before Personal Notes");
+  }
+  if (!archive.includes('id="article-search"') || !archive.includes('class="field-index-list"')) fail("The compact article index is unavailable");
+  const indexed = new Set();
+  for (const lane of lanes) {
+    const route = lanePath(lane);
+    const hub = await readFile(`.${route}index.html`, "utf8");
+    if (![home, topicIndex].every(html => html.includes(`href="${route}"`)) ||
+        !sitemap.includes(`<loc>${SITE.url}${route}</loc>`) || !hub.includes(`rel="canonical" href="${SITE.url}${route}"`) ||
+        !hub.includes('id="start-here"') || !hub.includes('class="field-lane-hero-art"')) fail(`Incomplete topic hub: ${route}`);
+    for (const article of directory.liveByLane.get(lane.id)) {
+      if (indexed.has(article.slug) || !hub.includes(`href="/insights/${article.slug}/"`)) fail(`Invalid topic assignment for ${article.slug}`);
+      indexed.add(article.slug);
+    }
+  }
+  if (indexed.size !== insights.length) fail("The topic hubs must index every published Insight exactly once");
+  for (const article of insights) {
+    const lane = directory.laneBySlug.get(article.slug);
+    const html = await readFile(`insights/${article.slug}/index.html`, "utf8");
+    const { next, related } = directory.continuationFor(article);
+    if (!html.includes(`data-lane-continuation="${lane.id}"`) || html.includes('class="prevnext"') ||
+        (next && !html.includes(`data-lane-next href="/insights/${next.article.slug}/"`)) ||
+        related.some(({article: relatedArticle}) => !html.includes(`data-lane-related href="/insights/${relatedArticle.slug}/"`))) {
+      fail(`Topic reading links are inconsistent for ${article.slug}`);
+    }
+  }
+  if (failures === before) ok(`${lanes.length} topic hubs, ${indexed.size} reading paths and an updated homepage scroller verified`);
 }
 
 console.log("\nAccessibility");

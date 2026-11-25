@@ -1,0 +1,110 @@
+.topic-scroller {
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  align-items:center;
+  gap:.65rem;
+  padding-inline-end:clamp(.7rem,2.5vw,1.7rem);
+}
+.topic-scroller .marquee{
+  min-width:0;
+  overflow:hidden;
+}
+.topic-scroller .marquee-track{
+  gap:0;
+}
+.topic-scroller-list {
+  display:flex;
+  align-items:center;
+  flex:none;
+  gap:2.6rem;
+  margin:0;
+  padding:0 2.6rem 0 0;
+  list-style:none;
+}
+.topic-scroller-list a {
+  display:block;
+  padding:.2rem .18rem;
+  color:var(--text-2);
+  font-family:var(--font-display);
+  font-size:.84rem;
+  font-weight:700;
+  line-height:1.38;
+  text-decoration:none;
+  white-space:nowrap;
+}
+.topic-scroller-list a:hover,
+.topic-scroller-list a:focus-visible{
+  color:var(--accent-ink);
+  text-decoration:underline;
+  text-underline-offset:.19em;
+}
+.topic-scroller-pause{
+  border:1px solid var(--line);
+  border-radius:var(--radius-sm);
+  background:var(--paper);
+  color:var(--text-2);
+  padding:.3rem .55rem;
+  font-size:.8rem;
+  font-weight:700;
+}
+.topic-scroller-pause:hover,
+.topic-scroller-pause[aria-pressed="true"] {
+  color:var(--accent-ink);
+  background:var(--accent-soft);
+}
+.topic-scroller:hover .marquee-track,
+.topic-scroller:focus-within .marquee-track,
+.topic-scroller[data-paused] .marquee-track {
+  animation-play-state:paused;
+}
+.topic-scroller:not([data-ready]) .marquee,
+.topic-scroller[data-keyboard] .marquee{
+  mask-image:none;
+  -webkit-mask-image:none;
+  overflow-x:auto;
+}
+.topic-scroller:not([data-ready]) .marquee-track {
+  animation:none;
+  padding-inline:.65rem;
+}
+.topic-scroller[data-keyboard] .marquee-track{
+  transform:none!important;
+  padding-inline:.65rem;
+  width:100%;
+}
+.topic-scroller[data-keyboard] .topic-scroller-list{
+  flex:1 1 auto;
+  min-width:0;
+  flex-wrap:wrap;
+  gap:.32rem 1rem;
+  padding:0;
+}
+.topic-scroller[data-keyboard] .topic-scroller-list a{
+  white-space:normal;
+  overflow-wrap:anywhere;
+}
+.topic-scroller:not([data-ready]) [data-scroller-mirror],
+.topic-scroller[data-keyboard] [data-scroller-mirror] {
+  display:none;
+}
+@media (prefers-reduced-motion:reduce) {
+  .topic-scroller .marquee {
+    mask-image:none;
+    -webkit-mask-image:none;
+  }
+  .topic-scroller .marquee-track{
+    width:100%;
+    padding-inline:.65rem 0;
+  }
+  .topic-scroller-list{
+    flex:1 1 auto;
+    min-width:0;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:.32rem 1rem;
+    padding:0;
+  }
+  .topic-scroller-list a{white-space:normal;overflow-wrap:anywhere}
+  .topic-scroller [data-scroller-mirror],
+  .topic-scroller-pause{display:none}
+}

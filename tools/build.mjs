@@ -23,6 +23,10 @@ import { authoredPageImagePath, buildPageImage } from "./site-images.mjs";
 import { coverDescription, coverFor, hasLocalCover, photoFor } from "./covers.mjs";
 import { fieldGuides, worksheet, worksheetCsv } from "./field-guides.mjs";
 import { relatedArticles, robotsPolicy, topicPath, featuredCollections } from "./discovery.mjs";
+import { lanes, lanePath, buildLaneDirectory } from "./lanes.mjs";
+import { laneHub, topicDirectory, compactArticleIndex } from "./lane-pages.mjs";
+import { laneBreadcrumb, laneContinuation, laneChapterLinks } from "./lane-reader.mjs";
+import { scrollerItems } from "./topic-scroller.mjs";
 import "./icons.mjs";
 import "./diagrams.mjs";
 
@@ -36,6 +40,8 @@ const live = manifest
   .sort((a, b) => b.date.localeCompare(a.date));
 const insights = live.filter(m => m.section === "insights");
 const notes = live.filter(m => m.section === "notes");
+const laneDirectory = buildLaneDirectory(manifest, live);
+const tickerItems = scrollerItems(lanes, insights);
 const depthCatalog = await loadDeepDives();
 const services = (await loadServiceLibrary()).map(service => ({
   ...service,
@@ -155,8 +161,9 @@ for (const m of live) {
 
   const longForm = Boolean(m.series) || m.words > 1200;
   const base = m.section === "notes" ? "/notes" : "/insights";
-  const related = relatedArticles(m, idx);
-  const topicHref = m.section === "insights" ? articleTopicPath(topic) : "/notes/";
+  const lane = laneDirectory.laneBySlug.get(m.slug);
+  const continuation = lane ? laneDirectory.continuationFor(m) : null;
+  const related = lane ? [] : relatedArticles(m, idx);
   const authorHref = "/about/#chandra-lanka";
 
   /* A series is this site's version of a book: the chapter list belongs
@@ -176,14 +183,15 @@ for (const m of live) {
 ${longForm ? `<div class="chapter-bar" id="chapterBar">
   <div class="chapter-where">
     <b>${esc(m.title)}</b>
-    <span>${esc(m.series || topic)}</span>
+    <span>${esc(m.series || lane?.title || topic)}</span>
   </div>
   <span class="chapter-left" id="chapterLeft"></span>
   <nav class="chapter-step" aria-label="Article navigation">
+    ${lane ? laneChapterLinks(continuation) : `
     ${older ? `<a href="${base}/${older.slug}/" aria-label="Previous: ${esc(older.title)}">${icon.prev}</a>`
             : `<a aria-disabled="true" aria-label="No previous article">${icon.prev}</a>`}
     ${newer ? `<a href="${base}/${newer.slug}/" aria-label="Next: ${esc(newer.title)}">${icon.next}</a>`
-            : `<a aria-disabled="true" aria-label="No next article">${icon.next}</a>`}
+            : `<a aria-disabled="true" aria-label="No next article">${icon.next}</a>`}`}
   </nav>
 </div>` : ""}`;
 
@@ -191,11 +199,11 @@ ${longForm ? `<div class="chapter-bar" id="chapterBar">
 <article class="article">
   <div class="reading-layout">
     <header class="article-head">
-      <nav class="crumbs" aria-label="Breadcrumb">
+      ${lane ? laneBreadcrumb(lane) : `<nav class="crumbs" aria-label="Breadcrumb">
         <a href="/">Home</a> <span aria-hidden="true">/</span>
-        <a href="${base}/">${m.section === "notes" ? "Personal notes" : "Insights"}</a> <span aria-hidden="true">/</span>
-        <a href="${topicHref}">${esc(topic)}</a>
-      </nav>
+        <a href="/notes/">Personal notes</a> <span aria-hidden="true">/</span>
+        ${topicChip(topic)}
+      </nav>`}
       <h1 class="h1">${esc(m.title)}</h1>
       ${m.derived ? "" : `<p class="lede" style="margin-top:1rem">${esc(m.description)}</p>`}
       <div class="article-meta">
@@ -229,14 +237,15 @@ ${seriesItems.length > 1 && !chaptersHtml ? `<aside class="series-box" style="ma
         </ol>
       </aside>` : ""}
 
+      ${lane ? laneContinuation(m, lane, continuation) : ""}
       <footer class="article-foot">
         <div class="row" style="gap:.4rem">
           ${m.tags.map(topicChip).join("")}
         </div>
-        <nav class="prevnext" aria-label="More articles">
+        ${lane ? "" : `<nav class="prevnext" aria-label="More articles">
           ${older ? `<a href="${base}/${older.slug}/"><span>Previous</span><strong>${esc(older.title)}</strong></a>` : "<span></span>"}
           ${newer ? `<a href="${base}/${newer.slug}/" class="next"><span>Next</span><strong>${esc(newer.title)}</strong></a>` : "<span></span>"}
-        </nav>
+        </nav>`}
       </footer>
     </div>
     ${housePromotions("article-rail")}
@@ -285,14 +294,15 @@ ${readerChrome}`;
       mainEntityOfPage: SITE.url + base + "/" + m.slug + "/",
       image: SITE.url + ogPath,
       keywords: m.tags.join(", "),
-      articleSection: topic,
+      articleSection: lane?.title || topic,
       wordCount: m.words,
     }, {
       "@context": "https://schema.org", "@type": "BreadcrumbList",
       itemListElement: [
         { "@type": "ListItem", position: 1, name: "Home", item: SITE.url + "/" },
-        { "@type": "ListItem", position: 2, name: m.section === "notes" ? "Personal notes" : "Insights", item: SITE.url + base + "/" },
-        { "@type": "ListItem", position: 3, name: m.title },
+        { "@type": "ListItem", position: 2, name: lane ? "Topics" : "Personal notes", item: SITE.url + (lane ? "/topics/" : "/notes/") },
+        ...(lane ? [{ "@type": "ListItem", position: 3, name: lane.title, item: SITE.url + lanePath(lane) }] : []),
+        { "@type": "ListItem", position: lane ? 4 : 3, name: m.title },
       ],
     }],
   }));
@@ -316,33 +326,7 @@ await out("insights", page({
 
 <section class="publication-wrap archive-layout">
   <div class="archive-main">
-  <section class="archive-collections" aria-labelledby="archive-start"><h2 class="h3" id="archive-start">Start with a guide</h2><div class="grid g-3">
-    ${featuredCollections.filter(({slug}) => insights.some(m => m.slug === slug)).map(({slug,label,description}) => `<a class="guide-link" href="/insights/${slug}/"><strong>${esc(label)}</strong><span>${esc(description)}</span></a>`).join('')}
-  </div></section>
-  <div class="filter-bar">
-    <div class="search-field">
-      ${icon.search}
-      <label class="sr-only" for="postSearch">Search articles</label>
-      <input type="search" id="postSearch" placeholder="Search the archive…" autocomplete="off" aria-controls="postList">
-    </div>
-    <label class="sr-only" for="postTopic">Filter by topic</label>
-    <select id="postTopic" class="topic-select" aria-controls="postList" hidden>
-      <option value="">All topics</option>
-      ${filters.map(([t, n]) => `<option value="${esc(t)}">${esc(t)} (${n})</option>`).join('')}
-    </select>
-    <button type="button" class="btn btn-ghost btn-sm" id="postClear" hidden>Clear filters</button>
-    <p class="small muted" id="postCount" role="status" aria-live="polite"></p>
-  </div>
-
-  <div class="chip-row" role="group" aria-label="Filter by topic">
-    ${topicList.map(([t, n]) => `<button class="chip chip-plain" type="button" data-topic-filter="${esc(t)}" aria-pressed="false">${esc(t)} <span class="muted">${n}</span></button>`).join("\n    ")}
-  </div>
-
-  <div class="grid archive-cards" id="postList" style="margin-top:2rem">
-    ${insights.map(m => cardFor(m, "/insights")).join("\n")}
-  </div>
-  <p id="postEmpty" hidden class="center muted" style="padding:3rem 0">No articles match that. Try another topic or search term.</p>
-  <div class="center" style="margin-top:2.5rem"><button class="btn btn-ghost" id="postMore" type="button" aria-controls="postList" hidden>Show more</button></div>
+    ${compactArticleIndex(insights, { directory: laneDirectory, filters, title: "All articles", inputLabel: "Search articles", placeholder: "Try SRE toil, cloud cost, or Kubernetes" })}
   </div>
   ${housePromotions("insights-rail")}
 </section>`,
@@ -456,15 +440,34 @@ await out("series", page({
 </section>`,
 }));
 
-/* ---------- topics ---------- */
+/* ---------- learning lanes and topic tags ---------- */
 await out("topics", page({
   title: "Topics",
-  description: "Browse writing by topic — architecture, cloud, AI and MLOps, security, reliability, cost and leadership.",
+  description: "Choose an engineering topic and follow an ordered path through practical articles, exercises, and case studies.",
   path: "/topics/",
+  body: topicDirectory(lanes, laneDirectory),
+}));
+
+for (const lane of lanes) {
+  const route = lanePath(lane);
+  await out(route.slice(1, -1), page({
+    title: lane.title,
+    description: lane.description,
+    path: route,
+    topic: lane.title,
+    body: laneHub(lane, laneDirectory),
+  }));
+}
+await out("updates/topic-scroller.json", JSON.stringify({ items: tickerItems }, null, 2) + "\n");
+
+await out("topics/tags", page({
+  title: "Article tags",
+  description: "Browse specific technical subjects, tools, and themes across AjnaCS writing.",
+  path: "/topics/tags/",
   body: `
 <section class="section mesh"><div class="wrap">
-  <p class="eyebrow">Topics</p>
-  <h1 class="h-display" style="margin-top:.8rem;max-width:16ch">Browse by subject.</h1>
+  <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/topics/">Topics</a></nav>
+  <h1 class="h-display" style="margin-top:.8rem;max-width:16ch">Article tags</h1>
 </div></section>
 <section class="publication-wrap" style="padding-bottom:var(--section-y)">
   <div class="grid g-4">
@@ -536,7 +539,7 @@ for (const guide of publishedGuides) {
 }
 
 /* ---------- static pages ---------- */
-for (const [rel, html] of Object.entries(staticPages({ insights, notes, seriesMap, topicList, cardFor, topicChip, services }))) {
+for (const [rel, html] of Object.entries(staticPages({ notes, laneDirectory, tickerItems, services }))) {
   await out(rel, html);
 }
 
@@ -618,6 +621,8 @@ const urls = [
   ...['/', '/services/', '/insights/', '/series/', '/topics/', '/field-guides/', '/case-studies/', '/about/', '/contact/', '/notes/', '/privacy/', '/terms/', '/projects/ziggle/'].map(url => [url]),
   ...live.map(m => [`/${m.section}/${m.slug}/`, m.modified || m.date]),
   ...[...seriesMap.keys()].map(n => [`/series/${seriesSlug(n)}/`]),
+  ["/topics/tags/"],
+  ...lanes.map(lane => [lanePath(lane)]),
   ...[...hubTopics].map(topic => [articleTopicPath(topic)]),
 ];
 await out("sitemap.xml", `<?xml version="1.0" encoding="UTF-8"?>

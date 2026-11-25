@@ -1,0 +1,86 @@
+/* Fit the complete editorial art, including covers with technical labels. */
+.article .article-hero > img[data-article-art],
+:is(.card-art, .content-thumbnail, .feature-post .art) > img[data-article-art] {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+
+.lane-reading {
+  --reading-lane-accent: var(--accent);
+  display: grid;
+  gap: .9rem;
+  margin-block: clamp(2.25rem, 5vw, 3.6rem);
+  padding-block-start: 1.4rem;
+  border-block-start: 1px solid var(--line);
+  overflow-wrap: anywhere;
+}
+.lane-reading > h2 {
+  margin: 0;
+  font-family: var(--font-read-head);
+  font-size: calc(1.42rem * var(--art-scale));
+}
+.lane-reading-next {
+  display: grid;
+  min-width: 0;
+  gap: .42rem;
+  padding: clamp(1rem, 2.8vw, 1.45rem);
+  border: 1px solid var(--line);
+  border-inline-start: 4px solid var(--reading-lane-accent);
+  border-radius: var(--radius);
+  background: var(--paper-2);
+  color: var(--text);
+  text-decoration: none;
+}
+.lane-reading-next strong,
+.lane-reading-list strong {
+  display: block;
+  font-family: var(--font-read-head);
+  line-height: 1.32;
+}
+.lane-reading-next strong { font-size: calc(clamp(1.1rem, 2vw, 1.38rem) * var(--art-scale)); }
+.lane-reading a:is(:focus-visible, :hover) strong {
+  text-decoration: underline;
+  text-decoration-thickness: .07em;
+  text-underline-offset: .18em;
+}
+.lane-reading-reason,
+.lane-reading-meta {
+  display: block;
+  color: var(--text-2);
+  font-size: calc(.92rem * var(--art-scale));
+  line-height: 1.5;
+}
+.lane-reading-meta { font-size: .85rem; }
+.lane-reading-related h3 { margin: .3rem 0 .55rem; font-size: calc(1.05rem * var(--art-scale)); }
+.lane-reading-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .65rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.lane-reading-list a {
+  display: grid;
+  height: 100%;
+  gap: .25rem;
+  padding: .85rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--paper);
+  color: var(--text);
+  text-decoration: none;
+}
+.lane-reading-index {
+  justify-self: start;
+  padding-block: .5rem;
+  color: var(--accent-ink);
+  font-weight: 650;
+  text-underline-offset: .18em;
+}
+[data-focus="on"] .lane-reading { display: none; }
+@media (max-width: 640px) { .lane-reading-list { grid-template-columns: minmax(0, 1fr); } }
+@media print { .lane-reading { display: none !important; } }

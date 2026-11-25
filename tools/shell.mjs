@@ -7,15 +7,17 @@ import { readFileSync } from "node:fs";
 
 /* Short content hash of the mark itself. */
 const MARK_V = createHash("sha256").update(markFile(512)).digest("hex").slice(0, 8);
-const SITE_V = createHash("sha256").update(["../assets/css/site.css", "../assets/js/site.js", "../assets/js/brand-motion.mjs", "../assets/js/motion-spring.mjs"].map(path => readFileSync(new URL(path, import.meta.url), "utf8")).join("\n")).digest("hex").slice(0, 8);
+const PORTAL_STYLES = ["portal.css", "lanes-art.css", "lanes-pages.css", "lanes-reader.css", "topic-scroller.css"];
+const SITE_FILES = ["../assets/css/site.css", ...PORTAL_STYLES.map(name => `../assets/css/${name}`),
+  "../assets/js/site.js", "../assets/js/brand-motion.mjs", "../assets/js/motion-spring.mjs", "../assets/js/topic-scroller.js"];
+const SITE_V = createHash("sha256").update(SITE_FILES.map(path => readFileSync(new URL(path, import.meta.url), "utf8")).join("\n")).digest("hex").slice(0, 8);
 
 const NAV = [
-  ["/services/", "Services"],
-  ["/insights/", "Insights"],
-  ["/series/", "Series"],
-  ["/notes/", "Personal notes"],
+  ["/topics/", "Topics"],
   ["/case-studies/", "Case studies"],
-  ["/about/", "About"],
+  ["/services/", "Services"],
+  ["/notes/", "Personal Notes"],
+  ["/insights/#article-search", "Search"],
 ];
 
 export function page({
@@ -33,9 +35,9 @@ export function page({
   ogImage ||= siteImagePath(urlPath,title,metaShort,topic);
   const imagePath=ogImage.split(/[?#]/)[0];
   const frame = type === "article" ? "article-frame" :
-    /^(?:\/insights|\/notes|\/series|\/topics|\/field-guides|\/case-studies|\/deep-dives)\//.test(urlPath) ? "publication-frame" : "";
+    /^(?:\/insights|\/notes|\/series|\/topics|\/learn|\/field-guides|\/case-studies|\/deep-dives)\//.test(urlPath) ? "publication-frame" : "";
   const primaryCurrent = href => urlPath === href ? ' aria-current="page"' :
-    urlPath.startsWith(href) ? ' aria-current="location"' : "";
+    (urlPath.startsWith(href) || (href === "/topics/" && /^\/(?:learn|insights)\//.test(urlPath))) ? ' aria-current="location"' : "";
   const imageType = /\.png$/i.test(imagePath) ? "image/png" : /\.svg$/i.test(imagePath) ? "image/svg+xml" : /\.webp$/i.test(imagePath) ? "image/webp" : "image/jpeg";
 
   return `<!DOCTYPE html>
@@ -74,6 +76,7 @@ ${modified ? `<meta property="article:modified_time" content="${modified}">` : '
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
 <link rel="stylesheet" href="/assets/css/site.css?v=${SITE_V}">
+${PORTAL_STYLES.map(name => `<link rel="stylesheet" href="/assets/css/${name}?v=${SITE_V}">`).join("\n")}
 <link rel="alternate" type="application/rss+xml" title="${esc(SITE.name)} — New Insights" href="/feed.xml">
 <link rel="alternate" type="application/atom+xml" title="${esc(SITE.name)} — Engineering updates" href="/updates.xml">
 <link rel="alternate" type="application/rss+xml" title="${esc(SITE.name)} — Personal notes" href="/notes/feed.xml">
@@ -172,6 +175,7 @@ ${body}
   </div>
 </footer>
 <script src="/assets/js/site.js?v=${SITE_V}" defer></script>
+${urlPath === "/" ? `<script src="/assets/js/topic-scroller.js?v=${SITE_V}" defer></script>` : ""}
 <script type="module" src="/assets/js/brand-motion.mjs?v=${SITE_V}"></script>
 </body>
 </html>`;

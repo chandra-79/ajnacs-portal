@@ -1,8 +1,11 @@
 /* Static entry points. Detailed service copy lives in content/services. */
-import { SITE, esc, icon, fmtDate, readingTime, primaryTopic, seriesSlug } from "./lib.mjs";
+import { SITE, esc, icon, fmtDate } from "./lib.mjs";
 import { page } from "./shell.mjs";
 import { artwork } from "./visuals.mjs";
-import { coverFor } from "./covers.mjs";
+import { portalArt } from "./lane-art.mjs";
+import { lanes } from "./lanes.mjs";
+import { laneTiles } from "./lane-pages.mjs";
+import { topicScroller } from "./topic-scroller.mjs";
 import { caseCoverArt } from "./case-covers.mjs";
 import { caseCategories } from "./case-library.mjs";
 import { SERVICE_IDS, serviceCard, servicePath } from "./service-library.mjs";
@@ -32,10 +35,6 @@ const METHOD = [
   ["Automate & Govern", "CI/CD, MLOps and FinOps pipelines that keep operational excellence self-sustaining."],
   ["Educate & Empower", "Upskilling internal teams so the capability stays after we leave."],
 ];
-
-const OUTCOMES = ["Release lead time", "Recovery time", "Cost per workload", "Service availability"];
-
-const STACK = ["Kubernetes","Terraform","AWS","Azure","Google Cloud","Apache Kafka","OpenTelemetry","PostgreSQL","Snowflake","Apache Spark","PyTorch","WebLogic","Oracle FMW","Spring Boot","Docker","Ansible","Redis","Zero-Trust IAM"];
 
 const contactForm = (id, compact = false) => `
 <form ${compact ? "" : 'class="stack" style="--s:1.1rem"'} id="${id}" data-formspree novalidate action="${SITE.formspree}" method="POST"
@@ -84,11 +83,10 @@ const contactForm = (id, compact = false) => `
   <p class="form-note">We use what you send only to reply. No lists, no resale — see our <a href="/privacy/">privacy notice</a>.</p>
 </form>`;
 
-export function staticPages({ insights, notes, seriesMap, topicList, cardFor, topicChip, services }) {
+export function staticPages({ notes, laneDirectory, tickerItems, services }) {
   if (!Array.isArray(services) || services.length !== SERVICE_IDS.length || SERVICE_IDS.some(id => !services.some(service => service.id === id))) {
     throw new Error("Static service entry points require the complete service library");
   }
-  const featured = insights.slice(0, 7);
   const pages = {};
 
   /* ---------------- home ---------------- */
@@ -97,28 +95,44 @@ export function staticPages({ insights, notes, seriesMap, topicList, cardFor, to
     description: "Ajna Consulting Services is a specialised engineering partner for enterprise architecture, AI and MLOps, and corporate technical enablement.",
     path: "/",
     body: `
-<section class="hero band band-deep">
+<section class="hero band band-deep portal-hero">
   <div class="grid-bg" aria-hidden="true"></div>
-  <div class="wrap hero-inner">
-    <p class="eyebrow">Specialised engineering partner</p>
-    <h1 class="h-display">Architecture that survives<br>contact with production.</h1>
-    <p class="lede" style="max-width:58ch;margin-top:1.4rem">
-      We modernise legacy systems, put AI into production, and train the engineers who have to run it afterwards.
-      We work alongside your team in your codebase and production workflows.
-    </p>
-    <div class="row" style="margin-top:2rem;gap:.8rem">
-      <a class="btn btn-lg" href="/contact/">Engage engineering ${icon.arrow}</a>
-      <a class="btn btn-ghost btn-lg" href="/insights/">Read our writing</a>
+  <div class="wrap hero-inner portal-hero-layout">
+    <div class="portal-hero-copy">
+      <p class="eyebrow">Ajna Consulting Services</p>
+      <h1 class="h-display">Architecture that survives contact with production.</h1>
+      <p class="lede portal-hero-lead">Explore practical guides, worked examples, and case studies on building and running production systems.</p>
+      <div class="row portal-hero-actions">
+        <a class="btn btn-lg" href="#start-reading">Pick a topic</a>
+        <a class="btn btn-ghost btn-lg" href="/insights/#article-search">Search articles</a>
+      </div>
     </div>
-    <ul class="home-outcomes" aria-label="Engagement measures">${OUTCOMES.map(label => `<li>${label}</li>`).join('')}</ul>
+    <div class="portal-hero-art">${portalArt()}</div>
   </div>
 </section>
 
-<section class="marquee-wrap hair" aria-label="Technologies we work in">
-  <div class="marquee">
-    <div class="marquee-track">
-      ${[...STACK, ...STACK].map(s => `<span>${esc(s)}</span>`).join("")}
+${topicScroller(tickerItems)}
+
+<section class="section portal-lanes" id="start-reading" aria-labelledby="portal-lanes-title">
+  <div class="wrap">
+    <div class="between portal-section-heading">
+      <h2 class="h1" id="portal-lanes-title">Explore topics</h2>
+      <a class="link-arrow" href="/insights/">All articles</a>
     </div>
+    ${laneTiles(lanes, laneDirectory)}
+  </div>
+</section>
+
+<section class="section portal-notes band band-warm" aria-labelledby="portal-notes-title">
+  <div class="wrap portal-notes-layout">
+    <div>
+      <h2 class="h1" id="portal-notes-title">Personal Notes</h2>
+      <p class="lede">Chandra Lanka on learning, work, and judgment.</p>
+      <a class="link-arrow" href="/notes/">Browse Personal Notes</a>
+    </div>
+    <ul class="portal-note-list">
+      ${notes.slice(0, 3).map(note => `<li><a href="/notes/${note.slug}/">${esc(note.title)}</a><time datetime="${note.date}">${fmtDate(note.date)}</time></li>`).join("")}
+    </ul>
   </div>
 </section>
 
@@ -154,43 +168,6 @@ export function staticPages({ insights, notes, seriesMap, topicList, cardFor, to
   </div>
 </section>
 
-<section class="section">
-  <div class="wrap">
-    <div class="between" style="align-items:flex-end">
-      <div>
-        <p class="eyebrow">Insights</p>
-        <h2 class="h1" style="margin-top:.8rem;max-width:20ch">We write down what we learn.</h2>
-      </div>
-      <div class="row"><a class="btn" href="/field-guides/">Start with a field guide</a><a class="link-arrow" href="/insights/">All Insights ${icon.arrow}</a></div>
-    </div>
-    ${featured.length ? `<article class="feature-post" data-topic="${esc(primaryTopic(featured[0].tags))}" style="margin-top:2.6rem">
-      <span class="art">${coverFor(featured[0], { sizes: "(min-width: 800px) 640px, 100vw" })}</span>
-      <div class="body">
-        ${topicChip(primaryTopic(featured[0].tags))}
-        <h3><a class="card-destination" href="/insights/${featured[0].slug}/">${esc(featured[0].title)}</a></h3>
-        <p>${esc(featured[0].description)}</p>
-        <span class="link-arrow" aria-hidden="true">Read it ${icon.arrow}</span>
-      </div>
-    </article>` : ""}
-    <div class="grid g-3" style="margin-top:1.4rem">
-      ${featured.slice(1).map(m => cardFor(m, "/insights")).join("\n")}
-    </div>
-  </div>
-</section>
-
-${seriesMap.size ? `<section class="section band band-warm">
-  <div class="wrap">
-    <p class="eyebrow">Series</p>
-    <h2 class="h1" style="margin-top:.8rem;max-width:22ch">Longer arcs, in order.</h2>
-    <div class="grid g-3" style="margin-top:2.4rem">
-      ${[...seriesMap].slice(0, 3).map(([name, items]) => `<a class="card" data-topic="${esc(primaryTopic(items[0].tags))}" href="/series/${seriesSlug(name)}/">
-        <div class="card-art">${artwork(seriesSlug(name), items[0].tags, { title:name })}</div>
-        <div class="card-body"><span class="muted series-length">${items.length} parts</span>
-        <h3 class="card-title">${esc(name)}</h3></div></a>`).join("\n")}
-    </div>
-  </div>
-</section>` : ""}
-
 <section class="section band band-deep">
   <div class="wrap">
     <div class="between">
@@ -225,7 +202,7 @@ ${seriesMap.size ? `<section class="section band band-warm">
     }, {
       "@context": "https://schema.org", "@type": "WebSite",
       url: SITE.url, name: SITE.name,
-      potentialAction: { "@type": "SearchAction", target: SITE.url + "/insights/?topic={search_term_string}", "query-input": "required name=search_term_string" },
+      potentialAction: { "@type": "SearchAction", target: SITE.url + "/insights/?q={search_term_string}", "query-input": "required name=search_term_string" },
     }],
   });
 
