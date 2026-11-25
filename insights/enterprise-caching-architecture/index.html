@@ -14,18 +14,18 @@
 <meta property="og:title" content="Speed at Scale: Enterprise Caching for OLTP and OLAP Workloads">
 <meta property="og:description" content="A practical guide to multi-tier caching architecture — how to design caching layers that absorb the majority of read load, handle traffic spikes without cr…">
 <meta property="og:url" content="https://ajnacs.com/insights/enterprise-caching-architecture/">
-<meta property="og:image" content="https://ajnacs.com/assets/og/articles/enterprise-caching-architecture.png?v=8f142ed9c4f7">
+<meta property="og:image" content="https://ajnacs.com/assets/og/articles/enterprise-caching-architecture.png?v=5e9c74b6d6b3">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Conceptual illustration for Speed at Scale: Enterprise Caching for OLTP and OLAP Workloads: Cache, Origin, TTL.">
+<meta property="og:image:alt" content="A single-flight policy turns a burst of concurrent reads for one expired cache key into one origin fetch that supplies the waiting readers.">
 <meta property="article:published_time" content="2024-11-01">
 <meta property="article:modified_time" content="2026-11-23">
 <meta property="og:image:type" content="image/png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Speed at Scale: Enterprise Caching for OLTP and OLAP Workloads">
 <meta name="twitter:description" content="A practical guide to multi-tier caching architecture — how to design caching layers that absorb the majority of read load, handle traffic spikes without cr…">
-<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/enterprise-caching-architecture.png?v=8f142ed9c4f7">
-<meta name="twitter:image:alt" content="Conceptual illustration for Speed at Scale: Enterprise Caching for OLTP and OLAP Workloads: Cache, Origin, TTL.">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/enterprise-caching-architecture.png?v=5e9c74b6d6b3">
+<meta name="twitter:image:alt" content="A single-flight policy turns a burst of concurrent reads for one expired cache key into one origin fetch that supplies the waiting readers.">
 
 <link rel="icon" href="/favicon.ico?v=8affdbd5" sizes="any">
 <link rel="icon" href="/images/ajna-mark.svg?v=8affdbd5" type="image/svg+xml">
@@ -51,7 +51,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Speed at Scale: Enterprise Caching for OLTP and OLAP Workloads","description":"A practical guide to multi-tier caching architecture — how to design caching layers that absorb the majority of read load, handle traffic spikes without crashing, and maintain the cache hit ratios that separate resilient systems from fragile ones.","datePublished":"2024-11-01","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/enterprise-caching-architecture/","image":"https://ajnacs.com/assets/og/articles/enterprise-caching-architecture.png?v=8f142ed9c4f7","keywords":"Data Engineering, Architecture, Performance, Infrastructure","articleSection":"Data Engineering","wordCount":1985}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Speed at Scale: Enterprise Caching for OLTP and OLAP Workloads","description":"A practical guide to multi-tier caching architecture — how to design caching layers that absorb the majority of read load, handle traffic spikes without crashing, and maintain the cache hit ratios that separate resilient systems from fragile ones.","datePublished":"2024-11-01","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/enterprise-caching-architecture/","image":"https://ajnacs.com/assets/og/articles/enterprise-caching-architecture.png?v=5e9c74b6d6b3","keywords":"Data Engineering, Architecture, Performance, Infrastructure","articleSection":"Data Engineering","wordCount":1985}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Speed at Scale: Enterprise Caching for OLTP and OLAP Workloads"}]}</script>
 </head>
 <body class="article-frame" data-topic="Data Engineering">
@@ -107,7 +107,7 @@ d.setAttribute('data-theme',t);
       </div>
     </header>
 
-    <div class="article-hero" data-topic="Data Engineering"><img data-article-art="enterprise-caching-architecture" src="/assets/covers/enterprise-caching-architecture.svg?v=ce29fdecfcca" width="1280" height="720" alt="Conceptual illustration for Speed at Scale: Enterprise Caching for OLTP and OLAP Workloads: Cache, Origin, TTL." decoding="async" fetchpriority="high"></div>
+    <div class="article-hero" data-topic="Data Engineering"><img data-article-art="enterprise-caching-architecture" src="/assets/covers/enterprise-caching-architecture.svg?v=d75a7230ed93" width="1280" height="720" alt="A single-flight policy turns a burst of concurrent reads for one expired cache key into one origin fetch that supplies the waiting readers." decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#why-caching-matters-more-than-most-people-plan-for">Why caching matters more than most people plan for</a></li><li><a href="#the-multi-tier-caching-model">The multi-tier caching model</a></li><li><a href="#oltp-vs-olap-different-workloads-different-strategies">OLTP vs OLAP — different workloads, different strategies</a></li><li><a href="#the-thundering-herd-problem">The Thundering Herd problem</a></li><li><a href="#the-metric-that-matters-cache-hit-ratio">The metric that matters: Cache Hit Ratio</a></li><li><a href="#hot-data-and-the-pareto-principle">Hot data and the Pareto Principle</a></li><li><a href="#things-i39ve-learned-from-production-issues">Things I&#39;ve learned from production issues</a></li><li><a href="#allocate-freshness-across-the-entire-request-path">Allocate freshness across the entire request path</a></li><li><a href="#decide-whether-a-refresh-protects-the-hot-path">Decide whether a refresh protects the hot path</a></li><li><a href="#rehearse-the-race-between-an-update-and-an-old-fill">Rehearse the race between an update and an old fill</a></li><li><a href="#publish-the-capacity-and-correctness-envelope">Publish the capacity and correctness envelope</a></li></ol>
