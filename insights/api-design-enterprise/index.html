@@ -14,18 +14,18 @@
 <meta property="og:title" content="API Design for Enterprise Systems: The Decisions That Age Well">
 <meta property="og:description" content="An API that&#39;s easy to build against is easy to build wrong. The decisions around versioning, error models, pagination, idempotency, and authentication comp…">
 <meta property="og:url" content="https://ajnacs.com/insights/api-design-enterprise/">
-<meta property="og:image" content="https://ajnacs.com/assets/og/articles/api-design-enterprise.png?v=7b2aaada520c">
+<meta property="og:image" content="https://ajnacs.com/assets/og/articles/api-design-enterprise.png?v=23fe5d64df69">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Conceptual illustration for API Design for Enterprise Systems: The Decisions That Age Well: Client, Contract, Service.">
+<meta property="og:image:alt" content="Two order requests carry the same idempotency key. The first commits one order, and the retry looks up the key and gets the stored response.">
 <meta property="article:published_time" content="2026-11-06">
 <meta property="article:modified_time" content="2026-11-23">
 <meta property="og:image:type" content="image/png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="API Design for Enterprise Systems: The Decisions That Age Well">
 <meta name="twitter:description" content="An API that&#39;s easy to build against is easy to build wrong. The decisions around versioning, error models, pagination, idempotency, and authentication comp…">
-<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/api-design-enterprise.png?v=7b2aaada520c">
-<meta name="twitter:image:alt" content="Conceptual illustration for API Design for Enterprise Systems: The Decisions That Age Well: Client, Contract, Service.">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/api-design-enterprise.png?v=23fe5d64df69">
+<meta name="twitter:image:alt" content="Two order requests carry the same idempotency key. The first commits one order, and the retry looks up the key and gets the stored response.">
 
 <link rel="icon" href="/favicon.ico?v=8affdbd5" sizes="any">
 <link rel="icon" href="/images/ajna-mark.svg?v=8affdbd5" type="image/svg+xml">
@@ -51,7 +51,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"API Design for Enterprise Systems: The Decisions That Age Well","description":"An API that's easy to build against is easy to build wrong. The decisions around versioning, error models, pagination, idempotency, and authentication compound over time — here's how to make the ones that don't cause regret.","datePublished":"2026-11-06","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/api-design-enterprise/","image":"https://ajnacs.com/assets/og/articles/api-design-enterprise.png?v=7b2aaada520c","keywords":"Programming, Architecture, Cloud Architecture","articleSection":"Programming","wordCount":2225}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"API Design for Enterprise Systems: The Decisions That Age Well","description":"An API that's easy to build against is easy to build wrong. The decisions around versioning, error models, pagination, idempotency, and authentication compound over time — here's how to make the ones that don't cause regret.","datePublished":"2026-11-06","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/api-design-enterprise/","image":"https://ajnacs.com/assets/og/articles/api-design-enterprise.png?v=23fe5d64df69","keywords":"Programming, Architecture, Cloud Architecture","articleSection":"Programming","wordCount":2225}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"API Design for Enterprise Systems: The Decisions That Age Well"}]}</script>
 </head>
 <body class="article-frame" data-topic="Programming">
@@ -107,7 +107,7 @@ d.setAttribute('data-theme',t);
       </div>
     </header>
 
-    <div class="article-hero" data-topic="Programming"><img data-article-art="api-design-enterprise" src="/assets/covers/api-design-enterprise.svg?v=d197ddfe2b3d" width="1280" height="720" alt="Conceptual illustration for API Design for Enterprise Systems: The Decisions That Age Well: Client, Contract, Service." decoding="async" fetchpriority="high"></div>
+    <div class="article-hero" data-topic="Programming"><img data-article-art="api-design-enterprise" src="/assets/covers/api-design-enterprise.svg?v=b53a26980964" width="1280" height="720" alt="Two order requests carry the same idempotency key. The first commits one order, and the retry looks up the key and gets the stored response." decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#versioning-have-a-strategy-before-you-need-it">Versioning: have a strategy before you need it</a></li><li><a href="#error-models-structured-consistent-actionable">Error models: structured, consistent, actionable</a></li><li><a href="#idempotency-safe-retries-without-duplicate-operations">Idempotency: safe retries without duplicate operations</a></li><li><a href="#pagination-cursor-based-for-anything-that-changes">Pagination: cursor-based for anything that changes</a></li><li><a href="#authentication-one-pattern-per-api-type">Authentication: one pattern per API type</a></li><li><a href="#documentation-as-a-first-class-deliverable">Documentation as a first-class deliverable</a></li><li><a href="#test-compatibility-from-both-sides-of-the-contract">Test compatibility from both sides of the contract</a></li><li><a href="#make-a-retried-mutation-an-observable-state-machine">Make a retried mutation an observable state machine</a></li><li><a href="#write-the-cursor-contract-around-real-update-behaviour">Write the cursor contract around real update behaviour</a></li><li><a href="#make-failures-consistent-from-the-gateway-to-the-application">Make failures consistent from the gateway to the application</a></li><li><a href="#measure-use-after-shipping-the-contract">Measure use after shipping the contract</a></li></ol>
