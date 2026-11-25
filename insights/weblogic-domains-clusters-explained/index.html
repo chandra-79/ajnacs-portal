@@ -14,18 +14,18 @@
 <meta property="og:title" content="WebLogic Domains, Clusters, and Managed Servers: The Architecture Explained">
 <meta property="og:description" content="Admin servers, managed servers, clusters, machines, and Node Manager — the WebLogic domain model explained for people who have to run it, not just pass the…">
 <meta property="og:url" content="https://ajnacs.com/insights/weblogic-domains-clusters-explained/">
-<meta property="og:image" content="https://ajnacs.com/assets/og/articles/weblogic-domains-clusters-explained.png?v=4e32b84e7dd8">
+<meta property="og:image" content="https://ajnacs.com/assets/og/articles/weblogic-domains-clusters-explained.png?v=b9c4699656b2">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Conceptual illustration for WebLogic Domains, Clusters, and Managed Servers: The Architecture Explained: Boundary, System, Team.">
+<meta property="og:image:alt" content="The Admin Server holds domain configuration, the managed cluster serves application requests, and Node Manager handles server startup and recovery.">
 <meta property="article:published_time" content="2025-09-09">
 <meta property="article:modified_time" content="2026-11-23">
 <meta property="og:image:type" content="image/png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="WebLogic Domains, Clusters, and Managed Servers: The Architecture Explained">
 <meta name="twitter:description" content="Admin servers, managed servers, clusters, machines, and Node Manager — the WebLogic domain model explained for people who have to run it, not just pass the…">
-<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/weblogic-domains-clusters-explained.png?v=4e32b84e7dd8">
-<meta name="twitter:image:alt" content="Conceptual illustration for WebLogic Domains, Clusters, and Managed Servers: The Architecture Explained: Boundary, System, Team.">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/weblogic-domains-clusters-explained.png?v=b9c4699656b2">
+<meta name="twitter:image:alt" content="The Admin Server holds domain configuration, the managed cluster serves application requests, and Node Manager handles server startup and recovery.">
 
 <link rel="icon" href="/favicon.ico?v=8affdbd5" sizes="any">
 <link rel="icon" href="/images/ajna-mark.svg?v=8affdbd5" type="image/svg+xml">
@@ -51,7 +51,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"WebLogic Domains, Clusters, and Managed Servers: The Architecture Explained","description":"Admin servers, managed servers, clusters, machines, and Node Manager — the WebLogic domain model explained for people who have to run it, not just pass the exam. What each piece does, how they fit together, and where production deployments go wrong.","datePublished":"2025-09-09","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/weblogic-domains-clusters-explained/","image":"https://ajnacs.com/assets/og/articles/weblogic-domains-clusters-explained.png?v=4e32b84e7dd8","keywords":"Java, WebLogic, Middleware, Architecture","articleSection":"Architecture","wordCount":3063}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"WebLogic Domains, Clusters, and Managed Servers: The Architecture Explained","description":"Admin servers, managed servers, clusters, machines, and Node Manager — the WebLogic domain model explained for people who have to run it, not just pass the exam. What each piece does, how they fit together, and where production deployments go wrong.","datePublished":"2025-09-09","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/weblogic-domains-clusters-explained/","image":"https://ajnacs.com/assets/og/articles/weblogic-domains-clusters-explained.png?v=b9c4699656b2","keywords":"Java, WebLogic, Middleware, Architecture","articleSection":"Architecture","wordCount":3063}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"WebLogic Domains, Clusters, and Managed Servers: The Architecture Explained"}]}</script>
 </head>
 <body class="article-frame" data-topic="Architecture">
@@ -107,7 +107,7 @@ d.setAttribute('data-theme',t);
       </div>
     </header>
 
-    <div class="article-hero" data-topic="Architecture"><img data-article-art="weblogic-domains-clusters-explained" src="/assets/covers/weblogic-domains-clusters-explained.svg?v=985cb16a8800" width="1280" height="720" alt="Conceptual illustration for WebLogic Domains, Clusters, and Managed Servers: The Architecture Explained: Boundary, System, Team." decoding="async" fetchpriority="high"></div>
+    <div class="article-hero" data-topic="Architecture"><img data-article-art="weblogic-domains-clusters-explained" src="/assets/covers/weblogic-domains-clusters-explained.svg?v=d41cefa2b872" width="1280" height="720" alt="The Admin Server holds domain configuration, the managed cluster serves application requests, and Node Manager handles server startup and recovery." decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#the-domain-is-the-unit-of-administration">The domain is the unit of administration</a></li><li><a href="#admin-server-the-control-plane-not-the-data-plane">Admin server: the control plane, not the data plane</a></li><li><a href="#managed-servers-where-applications-actually-run">Managed servers: where applications actually run</a></li><li><a href="#clusters-replication-and-failover-not-just-load-balancing">Clusters: replication and failover, not just load balancing</a></li><li><a href="#machines-and-node-manager-process-supervision">Machines and Node Manager: process supervision</a></li><li><a href="#configuration-management-the-part-everyone-gets-wrong">Configuration management: the part everyone gets wrong</a></li><li><a href="#the-mental-model-that-makes-it-all-cohere">The mental model that makes it all cohere</a></li><li><a href="#build-an-inventory-around-a-request-that-matters">Build an inventory around a request that matters</a></li><li><a href="#separate-the-failure-experiments">Separate the failure experiments</a></li><li><a href="#plan-capacity-around-placement-and-the-slowest-dependency">Plan capacity around placement and the slowest dependency</a></li><li><a href="#test-session-state-and-transactions-independently">Test session state and transactions independently</a></li><li><a href="#put-recovery-evidence-next-to-the-domain-model">Put recovery evidence next to the domain model</a></li><li><a href="#use-a-decision-log-for-domain-boundaries">Use a decision log for domain boundaries</a></li></ol>
@@ -277,7 +277,7 @@ d.setAttribute('data-theme',t);
     <div class="wrap">
       <p class="eyebrow">Related</p>
       <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|Java|WebLogic|Middleware|Messaging|Architecture|" data-search="weblogic jms in production: servers, stores, and the configuration that survives failover jms servers, persistent stores, distributed destinations, and connection factories — how weblogic messaging actually fits together, and the configuration decisions that determine whether your queues survive a server failure. java weblogic middleware messaging architecture" data-topic="Architecture">
-  <div class="card-art"><img data-article-art="weblogic-jms-production-configuration" src="/assets/covers/weblogic-jms-production-configuration.svg?v=8521f98eef0c" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-art"><img data-article-art="weblogic-jms-production-configuration" src="/assets/covers/weblogic-jms-production-configuration.svg?v=8defa0515998" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
     <a class="chip" href="/topics/architecture/">Architecture</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/weblogic-jms-production-configuration/">WebLogic JMS in Production: Servers, Stores, and the Configuration That Survives Failover</a></h3>
@@ -286,7 +286,7 @@ d.setAttribute('data-theme',t);
   </div>
 </article>
 <article class="card" data-card data-topics="|Java|WebLogic|Middleware|Performance|Architecture|" data-search="weblogic performance tuning: work managers, connection pools, and the knobs that actually matter a field guide to tuning weblogic server in production — the self-tuning thread pool, work managers, jdbc connection pools, jvm settings, and the diagnostic tools that tell you which knob to turn. java weblogic middleware performance architecture" data-topic="Performance">
-  <div class="card-art"><img data-article-art="weblogic-performance-tuning" src="/assets/covers/weblogic-performance-tuning.svg?v=ac98342438b7" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-art"><img data-article-art="weblogic-performance-tuning" src="/assets/covers/weblogic-performance-tuning.svg?v=50b03cdbbe6b" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
     <a class="chip" href="/topics/performance/">Performance</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/weblogic-performance-tuning/">WebLogic Performance Tuning: Work Managers, Connection Pools, and the Knobs That Actually Matter</a></h3>

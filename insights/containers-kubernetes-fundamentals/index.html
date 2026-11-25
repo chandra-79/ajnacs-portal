@@ -14,18 +14,18 @@
 <meta property="og:title" content="Kubernetes Fundamentals: What It Is, What It Does, and When You Actually Need It">
 <meta property="og:description" content="Pods, Deployments, Services, ConfigMaps, and the control loop that keeps your containers running. The honest introduction to Kubernetes for engineers who w…">
 <meta property="og:url" content="https://ajnacs.com/insights/containers-kubernetes-fundamentals/">
-<meta property="og:image" content="https://ajnacs.com/assets/og/articles/containers-kubernetes-fundamentals.png?v=cf5766ca5fe3">
+<meta property="og:image" content="https://ajnacs.com/assets/og/articles/containers-kubernetes-fundamentals.png?v=eb5c9e703a31">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Conceptual illustration for Kubernetes Fundamentals: What It Is, What It Does, and When You Actually Need It: Workload, Runtime, Host.">
+<meta property="og:image:alt" content="Kubernetes controllers compare active pods with the declared Deployment, replace missing pods, and expose the pods marked ready through the Service.">
 <meta property="article:published_time" content="2025-12-02">
 <meta property="article:modified_time" content="2026-11-23">
 <meta property="og:image:type" content="image/png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Kubernetes Fundamentals: What It Is, What It Does, and When You Actually Need It">
 <meta name="twitter:description" content="Pods, Deployments, Services, ConfigMaps, and the control loop that keeps your containers running. The honest introduction to Kubernetes for engineers who w…">
-<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/containers-kubernetes-fundamentals.png?v=cf5766ca5fe3">
-<meta name="twitter:image:alt" content="Conceptual illustration for Kubernetes Fundamentals: What It Is, What It Does, and When You Actually Need It: Workload, Runtime, Host.">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/containers-kubernetes-fundamentals.png?v=eb5c9e703a31">
+<meta name="twitter:image:alt" content="Kubernetes controllers compare active pods with the declared Deployment, replace missing pods, and expose the pods marked ready through the Service.">
 
 <link rel="icon" href="/favicon.ico?v=8affdbd5" sizes="any">
 <link rel="icon" href="/images/ajna-mark.svg?v=8affdbd5" type="image/svg+xml">
@@ -51,7 +51,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Kubernetes Fundamentals: What It Is, What It Does, and When You Actually Need It","description":"Pods, Deployments, Services, ConfigMaps, and the control loop that keeps your containers running. The honest introduction to Kubernetes for engineers who want to understand it, not just use it.","datePublished":"2025-12-02","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/containers-kubernetes-fundamentals/","image":"https://ajnacs.com/assets/og/articles/containers-kubernetes-fundamentals.png?v=cf5766ca5fe3","keywords":"DevSecOps, Cloud Architecture, Fundamentals","articleSection":"DevSecOps","wordCount":1723}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Kubernetes Fundamentals: What It Is, What It Does, and When You Actually Need It","description":"Pods, Deployments, Services, ConfigMaps, and the control loop that keeps your containers running. The honest introduction to Kubernetes for engineers who want to understand it, not just use it.","datePublished":"2025-12-02","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/containers-kubernetes-fundamentals/","image":"https://ajnacs.com/assets/og/articles/containers-kubernetes-fundamentals.png?v=eb5c9e703a31","keywords":"DevSecOps, Cloud Architecture, Fundamentals","articleSection":"DevSecOps","wordCount":1723}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Kubernetes Fundamentals: What It Is, What It Does, and When You Actually Need It"}]}</script>
 </head>
 <body class="article-frame" data-topic="DevSecOps">
@@ -107,7 +107,7 @@ d.setAttribute('data-theme',t);
       </div>
     </header>
 
-    <div class="article-hero" data-topic="DevSecOps"><img data-article-art="containers-kubernetes-fundamentals" src="/assets/covers/containers-kubernetes-fundamentals.svg?v=865162ec2b36" width="1280" height="720" alt="Conceptual illustration for Kubernetes Fundamentals: What It Is, What It Does, and When You Actually Need It: Workload, Runtime, Host." decoding="async" fetchpriority="high"></div>
+    <div class="article-hero" data-topic="DevSecOps"><img data-article-art="containers-kubernetes-fundamentals" src="/assets/covers/containers-kubernetes-fundamentals.svg?v=167d6e5b8910" width="1280" height="720" alt="Kubernetes controllers compare active pods with the declared Deployment, replace missing pods, and expose the pods marked ready through the Service." decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#the-core-concept-desired-state-and-the-control-loop">The Core Concept: Desired State and the Control Loop</a></li><li><a href="#the-building-blocks">The Building Blocks</a></li><li><a href="#the-control-plane">The Control Plane</a></li><li><a href="#basic-operations">Basic Operations</a></li><li><a href="#when-you-actually-need-kubernetes">When You Actually Need Kubernetes</a></li><li><a href="#follow-one-deployment-through-its-owners">Follow one deployment through its owners</a></li><li><a href="#give-startup-readiness-and-liveness-different-jobs">Give startup, readiness, and liveness different jobs</a></li><li><a href="#budget-a-rollout-for-capacity-and-behavior">Budget a rollout for capacity and behavior</a></li><li><a href="#select-the-smallest-operating-model-your-team-can-rehearse">Select the smallest operating model your team can rehearse</a></li></ol>
