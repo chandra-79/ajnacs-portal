@@ -14,18 +14,18 @@
 <meta property="og:title" content="Prompt Engineering for Production Systems: Beyond the Demo">
 <meta property="og:description" content="Prompt engineering for a demo is different from prompt engineering for a system that runs reliably at scale. Here&#39;s how to design prompts for consistency…">
 <meta property="og:url" content="https://ajnacs.com/insights/prompt-engineering-production/">
-<meta property="og:image" content="https://ajnacs.com/assets/og/articles/prompt-engineering-production.png?v=fd6e1f94aaca">
+<meta property="og:image" content="https://ajnacs.com/assets/og/articles/prompt-engineering-production.png?v=ff3155ebe683">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Conceptual illustration for Prompt Engineering for Production Systems: Beyond the Demo: Data, Model, Evaluation.">
+<meta property="og:image:alt" content="A feedback loop ties a versioned prompt bundle to held-out evaluations, a reproducible release, and production failures that become regression tests.">
 <meta property="article:published_time" content="2026-11-04">
 <meta property="article:modified_time" content="2026-11-23">
 <meta property="og:image:type" content="image/png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Prompt Engineering for Production Systems: Beyond the Demo">
 <meta name="twitter:description" content="Prompt engineering for a demo is different from prompt engineering for a system that runs reliably at scale. Here&#39;s how to design prompts for consistency…">
-<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/prompt-engineering-production.png?v=fd6e1f94aaca">
-<meta name="twitter:image:alt" content="Conceptual illustration for Prompt Engineering for Production Systems: Beyond the Demo: Data, Model, Evaluation.">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/prompt-engineering-production.png?v=ff3155ebe683">
+<meta name="twitter:image:alt" content="A feedback loop ties a versioned prompt bundle to held-out evaluations, a reproducible release, and production failures that become regression tests.">
 
 <link rel="icon" href="/favicon.ico?v=8affdbd5" sizes="any">
 <link rel="icon" href="/images/ajna-mark.svg?v=8affdbd5" type="image/svg+xml">
@@ -51,7 +51,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Prompt Engineering for Production Systems: Beyond the Demo","description":"Prompt engineering for a demo is different from prompt engineering for a system that runs reliably at scale. Here's how to design prompts for consistency, build evaluation frameworks, and manage the failure modes that appear in production but not in testing.","datePublished":"2026-11-04","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/prompt-engineering-production/","image":"https://ajnacs.com/assets/og/articles/prompt-engineering-production.png?v=fd6e1f94aaca","keywords":"AI & MLOps, Programming, Enterprise AI","articleSection":"AI & MLOps","wordCount":1988}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Prompt Engineering for Production Systems: Beyond the Demo","description":"Prompt engineering for a demo is different from prompt engineering for a system that runs reliably at scale. Here's how to design prompts for consistency, build evaluation frameworks, and manage the failure modes that appear in production but not in testing.","datePublished":"2026-11-04","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/prompt-engineering-production/","image":"https://ajnacs.com/assets/og/articles/prompt-engineering-production.png?v=ff3155ebe683","keywords":"AI & MLOps, Programming, Enterprise AI","articleSection":"AI & MLOps","wordCount":1988}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Prompt Engineering for Production Systems: Beyond the Demo"}]}</script>
 </head>
 <body class="article-frame" data-topic="AI &amp; MLOps">
@@ -107,7 +107,7 @@ d.setAttribute('data-theme',t);
       </div>
     </header>
 
-    <div class="article-hero" data-topic="AI &amp; MLOps"><img data-article-art="prompt-engineering-production" src="/assets/covers/prompt-engineering-production.svg?v=86dd56c177b3" width="1280" height="720" alt="Conceptual illustration for Prompt Engineering for Production Systems: Beyond the Demo: Data, Model, Evaluation." decoding="async" fetchpriority="high"></div>
+    <div class="article-hero" data-topic="AI &amp; MLOps"><img data-article-art="prompt-engineering-production" src="/assets/covers/prompt-engineering-production.svg?v=3d5d5c012834" width="1280" height="720" alt="A feedback loop ties a versioned prompt bundle to held-out evaluations, a reproducible release, and production failures that become regression tests." decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#structure-your-prompts-like-code-not-conversation">Structure your prompts like code, not conversation</a></li><li><a href="#few-shot-examples-the-highest-return-prompt-technique">Few-shot examples: the highest-return prompt technique</a></li><li><a href="#give-reasoning-tasks-verifiable-acceptance-criteria">Give reasoning tasks verifiable acceptance criteria</a></li><li><a href="#evaluating-prompt-quality-systematically">Evaluating prompt quality systematically</a></li><li><a href="#monitoring-in-production">Monitoring in production</a></li><li><a href="#the-prompt-version-control-question">The prompt version control question</a></li><li><a href="#make-the-release-reproducible">Make the release reproducible</a></li><li><a href="#evaluate-the-cases-that-moved">Evaluate the cases that moved</a></li><li><a href="#define-the-application-checks-before-writing-the-prompt">Define the application checks before writing the prompt</a></li><li><a href="#roll-forward-or-back-as-a-complete-unit">Roll forward or back as a complete unit</a></li></ol>
@@ -273,7 +273,7 @@ Output JSON matching this schema:
   </div>
 </article>
 <article class="card" data-card data-topics="|AI &amp; MLOps|Enterprise AI|Fundamentals|" data-search="large language models: what they are, how they are built, and what they cannot do transformers, attention, pretraining, fine-tuning, rlhf — the architecture and training pipeline behind gpt, claude, llama, and every other modern llm, explained for engineers who need to use and evaluate these systems. ai &amp; mlops enterprise ai fundamentals" data-topic="AI &amp; MLOps">
-  <div class="card-art"><img data-article-art="aiml-llms-explained" src="/assets/covers/aiml-llms-explained.svg?v=587a8ac6e06f" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-art"><img data-article-art="aiml-llms-explained" src="/assets/covers/aiml-llms-explained.svg?v=4a3f4bec5b0b" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
     <a class="chip" href="/topics/ai-mlops/">AI &amp; MLOps</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/aiml-llms-explained/">Large Language Models: What They Are, How They Are Built, and What They Cannot Do</a></h3>

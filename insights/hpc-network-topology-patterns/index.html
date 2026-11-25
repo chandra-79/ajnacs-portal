@@ -14,18 +14,18 @@
 <meta property="og:title" content="HPC Network Topology Patterns: Fat-Tree, Torus, and Dragonfly Explained">
 <meta property="og:description" content="The network topology of an HPC or AI training cluster determines its bandwidth, latency, cost, and how well it scales. Here&#39;s how fat-tree, torus, and drag…">
 <meta property="og:url" content="https://ajnacs.com/insights/hpc-network-topology-patterns/">
-<meta property="og:image" content="https://ajnacs.com/assets/og/articles/hpc-network-topology-patterns.png?v=1f12ff39e024">
+<meta property="og:image" content="https://ajnacs.com/assets/og/articles/hpc-network-topology-patterns.png?v=58e45e1d946d">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Conceptual illustration for HPC Network Topology Patterns: Fat-Tree, Torus, and Dragonfly Explained: fabric, topology, What to measure.">
+<meta property="og:image:alt" content="Three fabric diagrams contrast the upper tiers of a fat-tree, wraparound links in a torus, and the links between dragonfly groups.">
 <meta property="article:published_time" content="2026-10-30">
 <meta property="article:modified_time" content="2026-11-23">
 <meta property="og:image:type" content="image/png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="HPC Network Topology Patterns: Fat-Tree, Torus, and Dragonfly Explained">
 <meta name="twitter:description" content="The network topology of an HPC or AI training cluster determines its bandwidth, latency, cost, and how well it scales. Here&#39;s how fat-tree, torus, and drag…">
-<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/hpc-network-topology-patterns.png?v=1f12ff39e024">
-<meta name="twitter:image:alt" content="Conceptual illustration for HPC Network Topology Patterns: Fat-Tree, Torus, and Dragonfly Explained: fabric, topology, What to measure.">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/hpc-network-topology-patterns.png?v=58e45e1d946d">
+<meta name="twitter:image:alt" content="Three fabric diagrams contrast the upper tiers of a fat-tree, wraparound links in a torus, and the links between dragonfly groups.">
 
 <link rel="icon" href="/favicon.ico?v=8affdbd5" sizes="any">
 <link rel="icon" href="/images/ajna-mark.svg?v=8affdbd5" type="image/svg+xml">
@@ -51,7 +51,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"HPC Network Topology Patterns: Fat-Tree, Torus, and Dragonfly Explained","description":"The network topology of an HPC or AI training cluster determines its bandwidth, latency, cost, and how well it scales. Here's how fat-tree, torus, and dragonfly topologies work, their trade-offs, and which workloads each suits best.","datePublished":"2026-10-30","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/hpc-network-topology-patterns/","image":"https://ajnacs.com/assets/og/articles/hpc-network-topology-patterns.png?v=1f12ff39e024","keywords":"Systems, HPC, AI & MLOps","articleSection":"AI & MLOps","wordCount":750}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"HPC Network Topology Patterns: Fat-Tree, Torus, and Dragonfly Explained","description":"The network topology of an HPC or AI training cluster determines its bandwidth, latency, cost, and how well it scales. Here's how fat-tree, torus, and dragonfly topologies work, their trade-offs, and which workloads each suits best.","datePublished":"2026-10-30","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/hpc-network-topology-patterns/","image":"https://ajnacs.com/assets/og/articles/hpc-network-topology-patterns.png?v=58e45e1d946d","keywords":"Systems, HPC, AI & MLOps","articleSection":"AI & MLOps","wordCount":750}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"HPC Network Topology Patterns: Fat-Tree, Torus, and Dragonfly Explained"}]}</script>
 </head>
 <body class="article-frame" data-topic="AI &amp; MLOps">
@@ -107,7 +107,7 @@ d.setAttribute('data-theme',t);
       </div>
     </header>
 
-    <div class="article-hero" data-topic="AI &amp; MLOps"><img data-article-art="hpc-network-topology-patterns" src="/assets/covers/hpc-network-topology-patterns.svg?v=cff49d20b2b8" width="1280" height="720" alt="Conceptual illustration for HPC Network Topology Patterns: Fat-Tree, Torus, and Dragonfly Explained: fabric, topology, What to measure." decoding="async" fetchpriority="high"></div>
+    <div class="article-hero" data-topic="AI &amp; MLOps"><img data-article-art="hpc-network-topology-patterns" src="/assets/covers/hpc-network-topology-patterns.svg?v=105203c1f175" width="1280" height="720" alt="Three fabric diagrams contrast the upper tiers of a fat-tree, wraparound links in a torus, and the links between dragonfly groups." decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#fat-tree">Fat-tree</a></li><li><a href="#torus">Torus</a></li><li><a href="#dragonfly">Dragonfly</a></li><li><a href="#rails-and-placement">Rails and placement</a></li><li><a href="#find-the-cut-that-the-job-actually-crosses">Find the cut that the job actually crosses</a></li><li><a href="#test-placement-with-a-fixed-communication-pattern">Test placement with a fixed communication pattern</a></li><li><a href="#document-the-consequence-of-losing-a-rail">Document the consequence of losing a rail</a></li><li><a href="#sources">Sources</a></li></ol>
@@ -234,7 +234,7 @@ d.setAttribute('data-theme',t);
   </div>
 </article>
 <article class="card" data-card data-topics="|Systems|Infrastructure|Enterprise AI|Cloud Architecture|HPC|" data-search="ethernet vs. infiniband: choosing the right network fabric in 2026 a practical breakdown of when to use ethernet and when infiniband makes sense — with key metrics, topology differences, and real-world guidance for cloud, hpc, and ai workloads. systems infrastructure enterprise ai cloud architecture hpc" data-topic="Infrastructure">
-  <div class="card-art"><img data-article-art="ethernet-vs-infiniband-networking-2026" src="/assets/covers/ethernet-vs-infiniband-networking-2026.svg?v=99c68a23a181" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-art"><img data-article-art="ethernet-vs-infiniband-networking-2026" src="/assets/covers/ethernet-vs-infiniband-networking-2026.svg?v=40d7afab4a83" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
     <a class="chip" href="/topics/infrastructure/">Infrastructure</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/ethernet-vs-infiniband-networking-2026/">Ethernet vs. InfiniBand: Choosing the Right Network Fabric in 2026</a></h3>

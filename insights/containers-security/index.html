@@ -14,18 +14,18 @@
 <meta property="og:title" content="Container Security: The Specific Misconfigurations That Open Production Systems to Attack">
 <meta property="og:description" content="Running containers as root, privileged mode, unrestricted capabilities, exposed Docker sockets — the container security mistakes that appear in breach repo…">
 <meta property="og:url" content="https://ajnacs.com/insights/containers-security/">
-<meta property="og:image" content="https://ajnacs.com/assets/og/articles/containers-security.png?v=a24581263820">
+<meta property="og:image" content="https://ajnacs.com/assets/og/articles/containers-security.png?v=b6a669e68dfd">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Conceptual illustration for Container Security: The Specific Misconfigurations That Open Production Systems to Attack: Boundary, Controls, Verification.">
+<meta property="og:image:alt" content="Four complementary controls limit the container’s reach by restricting identity, runtime capabilities, root filesystem writes, and access to the host control socket.">
 <meta property="article:published_time" content="2026-09-28">
 <meta property="article:modified_time" content="2026-11-23">
 <meta property="og:image:type" content="image/png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Container Security: The Specific Misconfigurations That Open Production Systems to Attack">
 <meta name="twitter:description" content="Running containers as root, privileged mode, unrestricted capabilities, exposed Docker sockets — the container security mistakes that appear in breach repo…">
-<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/containers-security.png?v=a24581263820">
-<meta name="twitter:image:alt" content="Conceptual illustration for Container Security: The Specific Misconfigurations That Open Production Systems to Attack: Boundary, Controls, Verification.">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/containers-security.png?v=b6a669e68dfd">
+<meta name="twitter:image:alt" content="Four complementary controls limit the container’s reach by restricting identity, runtime capabilities, root filesystem writes, and access to the host control socket.">
 
 <link rel="icon" href="/favicon.ico?v=8affdbd5" sizes="any">
 <link rel="icon" href="/images/ajna-mark.svg?v=8affdbd5" type="image/svg+xml">
@@ -51,7 +51,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Container Security: The Specific Misconfigurations That Open Production Systems to Attack","description":"Running containers as root, privileged mode, unrestricted capabilities, exposed Docker sockets — the container security mistakes that appear in breach reports and how to prevent them systematically.","datePublished":"2026-09-28","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/containers-security/","image":"https://ajnacs.com/assets/og/articles/containers-security.png?v=a24581263820","keywords":"DevSecOps, Fundamentals","articleSection":"DevSecOps","wordCount":1684}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Container Security: The Specific Misconfigurations That Open Production Systems to Attack","description":"Running containers as root, privileged mode, unrestricted capabilities, exposed Docker sockets — the container security mistakes that appear in breach reports and how to prevent them systematically.","datePublished":"2026-09-28","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/containers-security/","image":"https://ajnacs.com/assets/og/articles/containers-security.png?v=b6a669e68dfd","keywords":"DevSecOps, Fundamentals","articleSection":"DevSecOps","wordCount":1684}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Container Security: The Specific Misconfigurations That Open Production Systems to Attack"}]}</script>
 </head>
 <body class="article-frame" data-topic="DevSecOps">
@@ -107,7 +107,7 @@ d.setAttribute('data-theme',t);
       </div>
     </header>
 
-    <div class="article-hero" data-topic="DevSecOps"><img data-article-art="containers-security" src="/assets/covers/containers-security.svg?v=02d172d1e7a1" width="1280" height="720" alt="Conceptual illustration for Container Security: The Specific Misconfigurations That Open Production Systems to Attack: Boundary, Controls, Verification." decoding="async" fetchpriority="high"></div>
+    <div class="article-hero" data-topic="DevSecOps"><img data-article-art="containers-security" src="/assets/covers/containers-security.svg?v=63cfcfd228c2" width="1280" height="720" alt="Four complementary controls limit the container’s reach by restricting identity, runtime capabilities, root filesystem writes, and access to the host control socket." decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#the-threat-model">The Threat Model</a></li><li><a href="#never-run-containers-as-root">Never Run Containers as Root</a></li><li><a href="#drop-all-capabilities-by-default">Drop All Capabilities by Default</a></li><li><a href="#read-only-root-filesystem">Read-Only Root Filesystem</a></li><li><a href="#never-mount-the-docker-socket">Never Mount the Docker Socket</a></li><li><a href="#image-scanning-in-ci">Image Scanning in CI</a></li><li><a href="#network-policies-in-kubernetes">Network Policies in Kubernetes</a></li><li><a href="#the-security-checklist">The Security Checklist</a></li><li><a href="#separate-the-controls-you-can-verify">Separate the controls you can verify</a></li><li><a href="#rehearse-policy-changes-with-controlled-fixtures">Rehearse policy changes with controlled fixtures</a></li><li><a href="#quantify-what-the-baseline-covers">Quantify what the baseline covers</a></li><li><a href="#match-runtime-isolation-to-the-workload">Match runtime isolation to the workload</a></li></ol>

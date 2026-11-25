@@ -14,18 +14,18 @@
 <meta property="og:title" content="Kernel Tuning with sysctl: Memory, Networking, and I/O">
 <meta property="og:description" content="The sysctl parameters that actually matter in production — VM reclaim tuning, TCP stack optimisation, file descriptor limits, and the settings that separat…">
 <meta property="og:url" content="https://ajnacs.com/insights/os-kernel-tuning-sysctl/">
-<meta property="og:image" content="https://ajnacs.com/assets/og/articles/os-kernel-tuning-sysctl.png?v=e5f4bb39abb6">
+<meta property="og:image" content="https://ajnacs.com/assets/og/articles/os-kernel-tuning-sysctl.png?v=4616789036d6">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Conceptual illustration for Kernel Tuning with sysctl: Memory, Networking, and I/O: Application, Runtime, System.">
+<meta property="og:image:alt" content="A sysctl change is recorded and tested at runtime against a repeatable baseline before it is persisted or reverted.">
 <meta property="article:published_time" content="2026-09-30">
 <meta property="article:modified_time" content="2026-11-23">
 <meta property="og:image:type" content="image/png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Kernel Tuning with sysctl: Memory, Networking, and I/O">
 <meta name="twitter:description" content="The sysctl parameters that actually matter in production — VM reclaim tuning, TCP stack optimisation, file descriptor limits, and the settings that separat…">
-<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/os-kernel-tuning-sysctl.png?v=e5f4bb39abb6">
-<meta name="twitter:image:alt" content="Conceptual illustration for Kernel Tuning with sysctl: Memory, Networking, and I/O: Application, Runtime, System.">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/os-kernel-tuning-sysctl.png?v=4616789036d6">
+<meta name="twitter:image:alt" content="A sysctl change is recorded and tested at runtime against a repeatable baseline before it is persisted or reverted.">
 
 <link rel="icon" href="/favicon.ico?v=8affdbd5" sizes="any">
 <link rel="icon" href="/images/ajna-mark.svg?v=8affdbd5" type="image/svg+xml">
@@ -51,7 +51,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Kernel Tuning with sysctl: Memory, Networking, and I/O","description":"The sysctl parameters that actually matter in production — VM reclaim tuning, TCP stack optimisation, file descriptor limits, and the settings that separate a well-tuned server from a default install.","datePublished":"2026-09-30","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/os-kernel-tuning-sysctl/","image":"https://ajnacs.com/assets/og/articles/os-kernel-tuning-sysctl.png?v=e5f4bb39abb6","keywords":"Programming, Fundamentals","articleSection":"Programming","wordCount":2076}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Kernel Tuning with sysctl: Memory, Networking, and I/O","description":"The sysctl parameters that actually matter in production — VM reclaim tuning, TCP stack optimisation, file descriptor limits, and the settings that separate a well-tuned server from a default install.","datePublished":"2026-09-30","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/os-kernel-tuning-sysctl/","image":"https://ajnacs.com/assets/og/articles/os-kernel-tuning-sysctl.png?v=4616789036d6","keywords":"Programming, Fundamentals","articleSection":"Programming","wordCount":2076}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Kernel Tuning with sysctl: Memory, Networking, and I/O"}]}</script>
 </head>
 <body class="article-frame" data-topic="Programming">
@@ -107,7 +107,7 @@ d.setAttribute('data-theme',t);
       </div>
     </header>
 
-    <div class="article-hero" data-topic="Programming"><img data-article-art="os-kernel-tuning-sysctl" src="/assets/covers/os-kernel-tuning-sysctl.svg?v=dc0b16579115" width="1280" height="720" alt="Conceptual illustration for Kernel Tuning with sysctl: Memory, Networking, and I/O: Application, Runtime, System." decoding="async" fetchpriority="high"></div>
+    <div class="article-hero" data-topic="Programming"><img data-article-art="os-kernel-tuning-sysctl" src="/assets/covers/os-kernel-tuning-sysctl.svg?v=6b8389da7fc3" width="1280" height="720" alt="A sysctl change is recorded and tested at runtime against a repeatable baseline before it is persisted or reverted." decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#sysctl-basics">sysctl Basics</a></li><li><a href="#virtual-memory-tuning">Virtual Memory Tuning</a></li><li><a href="#transparent-huge-pages">Transparent Huge Pages</a></li><li><a href="#file-descriptor-and-process-limits">File Descriptor and Process Limits</a></li><li><a href="#network-stack-tuning">Network Stack Tuning</a></li><li><a href="#kernel-profiling-for-tuning-validation">Kernel Profiling for Tuning Validation</a></li><li><a href="#numa-awareness">NUMA Awareness</a></li><li><a href="#capture-both-the-active-value-and-its-source">Capture both the active value and its source</a></li><li><a href="#separate-reclaim-stalls-from-writeback-bursts">Separate reclaim stalls from writeback bursts</a></li><li><a href="#identify-the-tcp-queue-where-the-symptom-occurs">Identify the TCP queue where the symptom occurs</a></li><li><a href="#locate-limits-before-granting-more-headroom">Locate limits before granting more headroom</a></li><li><a href="#check-huge-page-policy-on-the-running-system">Check huge-page policy on the running system</a></li></ol>

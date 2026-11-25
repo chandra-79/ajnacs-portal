@@ -14,18 +14,18 @@
 <meta property="og:title" content="JVM Tuning for Production: Heap, GC, and the Flags Worth Setting in 2026">
 <meta property="og:description" content="A practical guide to tuning the JVM for production services — heap sizing, choosing between G1, ZGC, and Shenandoah, container awareness, and the observabi…">
 <meta property="og:url" content="https://ajnacs.com/insights/java-jvm-tuning-production/">
-<meta property="og:image" content="https://ajnacs.com/assets/og/articles/java-jvm-tuning-production.png?v=1bdeccfeef55">
+<meta property="og:image" content="https://ajnacs.com/assets/og/articles/java-jvm-tuning-production.png?v=a8744587c7de">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Conceptual illustration for JVM Tuning for Production: Heap, GC, and the Flags Worth Setting in 2026: Application, Runtime, Memory.">
+<meta property="og:image:alt" content="The Java process memory budget accounts for heap, native allocations and headroom under the container memory limit.">
 <meta property="article:published_time" content="2026-10-14">
 <meta property="article:modified_time" content="2026-11-23">
 <meta property="og:image:type" content="image/png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="JVM Tuning for Production: Heap, GC, and the Flags Worth Setting in 2026">
 <meta name="twitter:description" content="A practical guide to tuning the JVM for production services — heap sizing, choosing between G1, ZGC, and Shenandoah, container awareness, and the observabi…">
-<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/java-jvm-tuning-production.png?v=1bdeccfeef55">
-<meta name="twitter:image:alt" content="Conceptual illustration for JVM Tuning for Production: Heap, GC, and the Flags Worth Setting in 2026: Application, Runtime, Memory.">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/java-jvm-tuning-production.png?v=a8744587c7de">
+<meta name="twitter:image:alt" content="The Java process memory budget accounts for heap, native allocations and headroom under the container memory limit.">
 
 <link rel="icon" href="/favicon.ico?v=8affdbd5" sizes="any">
 <link rel="icon" href="/images/ajna-mark.svg?v=8affdbd5" type="image/svg+xml">
@@ -51,7 +51,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"JVM Tuning for Production: Heap, GC, and the Flags Worth Setting in 2026","description":"A practical guide to tuning the JVM for production services — heap sizing, choosing between G1, ZGC, and Shenandoah, container awareness, and the observability flags every deployment should carry.","datePublished":"2026-10-14","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/java-jvm-tuning-production/","image":"https://ajnacs.com/assets/og/articles/java-jvm-tuning-production.png?v=1bdeccfeef55","keywords":"Java, JVM, Performance, Cloud Architecture","articleSection":"Performance","wordCount":2297}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"JVM Tuning for Production: Heap, GC, and the Flags Worth Setting in 2026","description":"A practical guide to tuning the JVM for production services — heap sizing, choosing between G1, ZGC, and Shenandoah, container awareness, and the observability flags every deployment should carry.","datePublished":"2026-10-14","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/java-jvm-tuning-production/","image":"https://ajnacs.com/assets/og/articles/java-jvm-tuning-production.png?v=a8744587c7de","keywords":"Java, JVM, Performance, Cloud Architecture","articleSection":"Performance","wordCount":2297}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"JVM Tuning for Production: Heap, GC, and the Flags Worth Setting in 2026"}]}</script>
 </head>
 <body class="article-frame" data-topic="Performance">
@@ -107,7 +107,7 @@ d.setAttribute('data-theme',t);
       </div>
     </header>
 
-    <div class="article-hero" data-topic="Performance"><img data-article-art="java-jvm-tuning-production" src="/assets/covers/java-jvm-tuning-production.svg?v=1a07ad7188de" width="1280" height="720" alt="Conceptual illustration for JVM Tuning for Production: Heap, GC, and the Flags Worth Setting in 2026: Application, Runtime, Memory." decoding="async" fetchpriority="high"></div>
+    <div class="article-hero" data-topic="Performance"><img data-article-art="java-jvm-tuning-production" src="/assets/covers/java-jvm-tuning-production.svg?v=1e01a5dc63b7" width="1280" height="720" alt="The Java process memory budget accounts for heap, native allocations and headroom under the container memory limit." decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#heap-sizing-the-decision-that-drives-everything-else">Heap sizing: the decision that drives everything else</a></li><li><a href="#choosing-a-collector-an-actual-decision-tree">Choosing a collector: an actual decision tree</a></li><li><a href="#the-flags-every-production-jvm-should-carry">The flags every production JVM should carry</a></li><li><a href="#reading-the-signals-a-short-diagnostic-grammar">Reading the signals: a short diagnostic grammar</a></li><li><a href="#what-modern-java-changed">What modern Java changed</a></li><li><a href="#the-discipline">The discipline</a></li><li><a href="#establish-the-container-memory-budget-before-moving-the-heap">Establish the container memory budget before moving the heap</a></li><li><a href="#run-a-controlled-comparison-that-reveals-trade-offs">Run a controlled comparison that reveals trade-offs</a></li><li><a href="#separate-memory-growth-from-delayed-release">Separate memory growth from delayed release</a></li><li><a href="#make-rollback-part-of-the-result">Make rollback part of the result</a></li></ol>
@@ -243,7 +243,7 @@ d.setAttribute('data-theme',t);
     <div class="wrap">
       <p class="eyebrow">Related</p>
       <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|Java|JVM|GraalVM|Cloud Architecture|Performance|" data-search="graalvm native image for enterprise java: when compiling ahead of time pays native image turns java applications into instant-starting, memory-lean executables — at the cost of a closed-world assumption that fights two decades of java dynamism. where native compilation genuinely wins, what breaks, and a decision framework. java jvm graalvm cloud architecture performance" data-topic="Cloud Architecture">
-  <div class="card-art"><img data-article-art="java-graalvm-native-image" src="/assets/covers/java-graalvm-native-image.svg?v=19aa5f526e76" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-art"><img data-article-art="java-graalvm-native-image" src="/assets/covers/java-graalvm-native-image.svg?v=a95fa90fbc60" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
     <a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/java-graalvm-native-image/">GraalVM Native Image for Enterprise Java: When Compiling Ahead of Time Pays</a></h3>
@@ -261,7 +261,7 @@ d.setAttribute('data-theme',t);
   </div>
 </article>
 <article class="card" data-card data-topics="|Performance|Programming|Cloud Architecture|Data Engineering|FinOps|" data-search="compression in production: choosing between gzip, zstd, lz4, and brotli like it matters compression is a three-way trade — ratio, speed, and cpu — that most systems set once by default and never revisit. the algorithm landscape, placement decisions across web, storage, and streaming, dictionary compression&#39;s quiet superpower, and the measurement discipline. performance programming cloud architecture data engineering finops" data-topic="Performance">
-  <div class="card-art"><img data-article-art="compression-selection-guide" src="/assets/covers/compression-selection-guide.svg?v=624c62a59726" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-art"><img data-article-art="compression-selection-guide" src="/assets/covers/compression-selection-guide.svg?v=de96c7203069" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
     <a class="chip" href="/topics/performance/">Performance</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/compression-selection-guide/">Compression in Production: Choosing Between gzip, zstd, lz4, and Brotli Like It Matters</a></h3>
