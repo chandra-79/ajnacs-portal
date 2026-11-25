@@ -14,18 +14,18 @@
 <meta property="og:title" content="Observability with OpenTelemetry: Getting the Three Pillars Working Together">
 <meta property="og:description" content="Metrics, logs, and traces are only useful when they&#39;re correlated. OpenTelemetry provides the standard for instrumenting your services — here&#39;s how to impl…">
 <meta property="og:url" content="https://ajnacs.com/insights/observability-opentelemetry-2026/">
-<meta property="og:image" content="https://ajnacs.com/assets/og/articles/observability-opentelemetry-2026.png?v=bf8c0d99fcc3">
+<meta property="og:image" content="https://ajnacs.com/assets/og/articles/observability-opentelemetry-2026.png?v=9dee12df0507">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Conceptual illustration for Observability with OpenTelemetry: Getting the Three Pillars Working Together: Signals, Context, Diagnosis.">
+<meta property="og:image:alt" content="Related metrics, a trace, and correlated logs show the same incident from detection to an individual slow span and its context.">
 <meta property="article:published_time" content="2024-12-31">
 <meta property="article:modified_time" content="2026-11-23">
 <meta property="og:image:type" content="image/png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Observability with OpenTelemetry: Getting the Three Pillars Working Together">
 <meta name="twitter:description" content="Metrics, logs, and traces are only useful when they&#39;re correlated. OpenTelemetry provides the standard for instrumenting your services — here&#39;s how to impl…">
-<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/observability-opentelemetry-2026.png?v=bf8c0d99fcc3">
-<meta name="twitter:image:alt" content="Conceptual illustration for Observability with OpenTelemetry: Getting the Three Pillars Working Together: Signals, Context, Diagnosis.">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/observability-opentelemetry-2026.png?v=9dee12df0507">
+<meta name="twitter:image:alt" content="Related metrics, a trace, and correlated logs show the same incident from detection to an individual slow span and its context.">
 
 <link rel="icon" href="/favicon.ico?v=8affdbd5" sizes="any">
 <link rel="icon" href="/images/ajna-mark.svg?v=8affdbd5" type="image/svg+xml">
@@ -51,7 +51,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Observability with OpenTelemetry: Getting the Three Pillars Working Together","description":"Metrics, logs, and traces are only useful when they're correlated. OpenTelemetry provides the standard for instrumenting your services — here's how to implement it, connect the signals, and build the observability that actually reduces diagnosis time.","datePublished":"2024-12-31","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/observability-opentelemetry-2026/","image":"https://ajnacs.com/assets/og/articles/observability-opentelemetry-2026.png?v=bf8c0d99fcc3","keywords":"Observability, Cloud Architecture, DevSecOps","articleSection":"Observability","wordCount":2301}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Observability with OpenTelemetry: Getting the Three Pillars Working Together","description":"Metrics, logs, and traces are only useful when they're correlated. OpenTelemetry provides the standard for instrumenting your services — here's how to implement it, connect the signals, and build the observability that actually reduces diagnosis time.","datePublished":"2024-12-31","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/observability-opentelemetry-2026/","image":"https://ajnacs.com/assets/og/articles/observability-opentelemetry-2026.png?v=9dee12df0507","keywords":"Observability, Cloud Architecture, DevSecOps","articleSection":"Observability","wordCount":2301}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Observability with OpenTelemetry: Getting the Three Pillars Working Together"}]}</script>
 </head>
 <body class="article-frame" data-topic="Observability">
@@ -107,7 +107,7 @@ d.setAttribute('data-theme',t);
       </div>
     </header>
 
-    <div class="article-hero" data-topic="Observability"><img data-article-art="observability-opentelemetry-2026" src="/assets/covers/observability-opentelemetry-2026.svg?v=fc9ed92eedfa" width="1280" height="720" alt="Conceptual illustration for Observability with OpenTelemetry: Getting the Three Pillars Working Together: Signals, Context, Diagnosis." decoding="async" fetchpriority="high"></div>
+    <div class="article-hero" data-topic="Observability"><img data-article-art="observability-opentelemetry-2026" src="/assets/covers/observability-opentelemetry-2026.svg?v=c9c294b872ed" width="1280" height="720" alt="Related metrics, a trace, and correlated logs show the same incident from detection to an individual slow span and its context." decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#opentelemetry-what-it-is-and-what-it-isn39t">OpenTelemetry: what it is and what it isn&#39;t</a></li><li><a href="#traces-the-most-valuable-signal-for-distributed-systems">Traces: the most valuable signal for distributed systems</a></li><li><a href="#metrics-the-right-signals-to-alert-on">Metrics: the right signals to alert on</a></li><li><a href="#logs-structured-correlated-with-trace-ids">Logs: structured, correlated with trace IDs</a></li><li><a href="#the-otel-collector-centralise-your-pipeline">The OTel Collector: centralise your pipeline</a></li><li><a href="#the-grafana-stack-as-a-starting-point">The Grafana stack as a starting point</a></li><li><a href="#follow-one-known-request-across-all-three-signals">Follow one known request across all three signals</a></li><li><a href="#check-units-cardinality-and-sampling-before-dashboards">Check units, cardinality and sampling before dashboards</a></li><li><a href="#measure-buffering-and-loss-at-each-boundary">Measure buffering and loss at each boundary</a></li><li><a href="#treat-configuration-as-a-versioned-operating-artifact">Treat configuration as a versioned operating artifact</a></li><li><a href="#run-a-diagnosis-exercise-before-declaring-success">Run a diagnosis exercise before declaring success</a></li></ol>
