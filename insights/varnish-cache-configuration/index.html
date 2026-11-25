@@ -33,7 +33,12 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=f8d83e0e">
+<link rel="stylesheet" href="/assets/css/site.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/portal.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-art.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-pages.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-reader.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/topic-scroller.css?v=689adf6b">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
 <link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Personal notes" href="/notes/feed.xml">
@@ -51,8 +56,8 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Varnish Cache Configuration: A Practical Guide to VCL and Caching Strategy","description":"Varnish is a powerful HTTP accelerator, but the configuration language (VCL) has a steep learning curve. Here's how to configure Varnish for real workloads — including cache key design, TTL strategy, authentication handling, and ESI for partial caching.","datePublished":"2025-03-04","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/varnish-cache-configuration/","image":"https://ajnacs.com/assets/og/articles/varnish-cache-configuration.png?v=af759c54a5e4","keywords":"CDN & Caching, Infrastructure, Architecture","articleSection":"Infrastructure","wordCount":1875}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Varnish Cache Configuration: A Practical Guide to VCL and Caching Strategy"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Varnish Cache Configuration: A Practical Guide to VCL and Caching Strategy","description":"Varnish is a powerful HTTP accelerator, but the configuration language (VCL) has a steep learning curve. Here's how to configure Varnish for real workloads — including cache key design, TTL strategy, authentication handling, and ESI for partial caching.","datePublished":"2025-03-04","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/varnish-cache-configuration/","image":"https://ajnacs.com/assets/og/articles/varnish-cache-configuration.png?v=af759c54a5e4","keywords":"CDN & Caching, Infrastructure, Architecture","articleSection":"Systems Architecture","wordCount":1875}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Topics","item":"https://ajnacs.com/topics/"},{"@type":"ListItem","position":3,"name":"Systems Architecture","item":"https://ajnacs.com/learn/systems-architecture/"},{"@type":"ListItem","position":4,"name":"Varnish Cache Configuration: A Practical Guide to VCL and Caching Strategy"}]}</script>
 </head>
 <body class="article-frame" data-topic="Infrastructure">
 <a class="skip-link" href="#main">Skip to content</a>
@@ -64,12 +69,11 @@ d.setAttribute('data-theme',t);
       <a class="brand-home" href="/" aria-label="Ajna Consulting Services — home"><span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span></a>
     </div>
     <nav class="nav" id="nav" aria-label="Primary">
-      <a href="/services/">Services</a>
-      <a href="/insights/" aria-current="location">Insights</a>
-      <a href="/series/">Series</a>
-      <a href="/notes/">Personal notes</a>
+      <a href="/topics/" aria-current="location">Topics</a>
       <a href="/case-studies/">Case studies</a>
-      <a href="/about/">About</a>
+      <a href="/services/">Services</a>
+      <a href="/notes/">Personal Notes</a>
+      <a href="/insights/#article-search">Search</a>
       <a class="btn btn-sm" href="/contact/" style="margin-left:.4rem">Engage engineering</a>
     </nav>
     <div class="nav-actions">
@@ -84,11 +88,7 @@ d.setAttribute('data-theme',t);
 <article class="article">
   <div class="reading-layout">
     <header class="article-head">
-      <nav class="crumbs" aria-label="Breadcrumb">
-        <a href="/">Home</a> <span aria-hidden="true">/</span>
-        <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
-        <a href="/topics/infrastructure/">Infrastructure</a>
-      </nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">/</span> <a href="/topics/">Topics</a> <span aria-hidden="true">/</span> <a href="/learn/systems-architecture/">Systems Architecture</a></nav>
       <h1 class="h1">Varnish Cache Configuration: A Practical Guide to VCL and Caching Strategy</h1>
       <p class="lede" style="margin-top:1rem">Varnish is a powerful HTTP accelerator, but the configuration language (VCL) has a steep learning curve. Here&#39;s how to configure Varnish for real workloads — including cache key design, TTL strategy, authentication handling, and ESI for partial caching.</p>
       <div class="article-meta">
@@ -267,14 +267,12 @@ d.setAttribute('data-theme',t);
 
 
 
+      <section class="lane-reading" data-lane-continuation="systems-architecture" aria-labelledby="lane-reading-title" style="--reading-lane-accent:#5f56a1"><h2 id="lane-reading-title" class="h3">Continue in Systems Architecture</h2><a class="lane-reading-next" data-lane-next href="/insights/redis-production-patterns/"><strong>Redis in Production: Patterns That Work and Anti-patterns That Will Break You</strong><span class="lane-reading-reason">Explore another approach in Systems Architecture.</span><span class="lane-reading-meta">11 min read</span></a><div class="lane-reading-related"><h3 class="h3">Related reading</h3><ul class="lane-reading-list"><li><a data-lane-related href="/insights/cdn-strategy-decision-guide/"><strong>CDN Strategy: Choosing the Right Approach for Your Architecture</strong><span class="lane-reading-reason">Another perspective on cdn &amp; caching.</span></a></li><li><a data-lane-related href="/insights/quick-take-quantum-computing/"><strong>How to Read a Quantum Computing Milestone</strong><span class="lane-reading-reason">Separate component experiments, logical-qubit evidence, application advantage, and cryptographic migration work.</span></a></li></ul></div><a class="lane-reading-index" href="/learn/systems-architecture/">All Systems Architecture articles</a></section>
       <footer class="article-foot">
         <div class="row" style="gap:.4rem">
           <a class="chip" href="/topics/cdn-caching/">CDN &amp; Caching</a><a class="chip" href="/topics/infrastructure/">Infrastructure</a><a class="chip" href="/topics/architecture/">Architecture</a>
         </div>
-        <nav class="prevnext" aria-label="More articles">
-          <a href="/insights/kubernetes-cost-optimization/"><span>Previous</span><strong>Kubernetes Cost Visibility — The Gap That Kills FinOps Programs</strong></a>
-          <a href="/insights/cdn-strategy-decision-guide/" class="next"><span>Next</span><strong>CDN Strategy: Choosing the Right Approach for Your Architecture</strong></a>
-        </nav>
+        
       </footer>
     </div>
     <aside class="writing-promos" aria-label="Promotions" data-ad-slot="article-rail">
@@ -294,38 +292,7 @@ d.setAttribute('data-theme',t);
 </aside>
   </div>
 
-  <section class="section surface hair" style="margin-top:4rem">
-    <div class="wrap">
-      <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|CDN &amp; Caching|Cloud Architecture|Infrastructure|" data-search="cdn strategy: choosing the right approach for your architecture cdn selection is more than picking the fastest network. origin configuration, cache invalidation, edge compute capabilities, and the overlap between your cdn and your cloud provider&#39;s services all affect the right choice. here&#39;s how to think through it. cdn &amp; caching cloud architecture infrastructure" data-topic="Cloud Architecture">
-  <div class="card-art"><img data-article-art="cdn-strategy-decision-guide" src="/assets/covers/cdn-strategy-decision-guide.svg?v=254b4f1ed1d1" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
-  <div class="card-body">
-    <a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a>
-    <h3 class="card-title"><a class="card-destination" href="/insights/cdn-strategy-decision-guide/">CDN Strategy: Choosing the Right Approach for Your Architecture</a></h3>
-    <p class="card-desc">CDN selection is more than picking the fastest network. Origin configuration, cache invalidation, edge compute capabilities, and the overlap between your CDN and your cloud provider&#39;s services all affect the right choice. Here&#39;s how to think through it.</p>
-    <div class="card-meta"><time datetime="2025-03-13">13 Mar 2025</time><span class="dot"></span><span>9 min read</span></div>
-  </div>
-</article>
-<article class="card" data-card data-topics="|Data Engineering|Architecture|Performance|Infrastructure|" data-search="speed at scale: enterprise caching for oltp and olap workloads a practical guide to multi-tier caching architecture — how to design caching layers that absorb the majority of read load, handle traffic spikes without crashing, and maintain the cache hit ratios that separate resilient systems from fragile ones. data engineering architecture performance infrastructure" data-topic="Data Engineering">
-  <div class="card-art"><img data-article-art="enterprise-caching-architecture" src="/assets/covers/enterprise-caching-architecture.svg?v=d75a7230ed93" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
-  <div class="card-body">
-    <a class="chip" href="/topics/data-engineering/">Data Engineering</a>
-    <h3 class="card-title"><a class="card-destination" href="/insights/enterprise-caching-architecture/">Speed at Scale: Enterprise Caching for OLTP and OLAP Workloads</a></h3>
-    <p class="card-desc">A practical guide to multi-tier caching architecture — how to design caching layers that absorb the majority of read load, handle traffic spikes without crashing, and maintain the cache hit ratios that separate resilient systems from fragile ones.</p>
-    <div class="card-meta"><time datetime="2024-11-01">1 Nov 2024</time><span class="dot"></span><span>9 min read</span></div>
-  </div>
-</article>
-<article class="card" data-card data-topics="|Cloud Architecture|DevSecOps|Infrastructure|" data-search="serverless vs containers: an honest comparison for 2026 neither is universally better. the answer depends on your workload profile, your team&#39;s operational maturity, and — honestly — your tolerance for cold starts. cloud architecture devsecops infrastructure" data-topic="Cloud Architecture">
-  <div class="card-art"><img data-article-art="serverless-vs-containers-2026" src="/assets/covers/serverless-vs-containers-2026.svg?v=61a2cd68990c" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
-  <div class="card-body">
-    <a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a>
-    <h3 class="card-title"><a class="card-destination" href="/insights/serverless-vs-containers-2026/">Serverless vs Containers: An Honest Comparison for 2026</a></h3>
-    <p class="card-desc">Neither is universally better. The answer depends on your workload profile, your team&#39;s operational maturity, and — honestly — your tolerance for cold starts.</p>
-    <div class="card-meta"><time datetime="2026-11-13">13 Nov 2026</time><span class="dot"></span><span>9 min read</span></div>
-  </div>
-</article></div>
-    </div>
-  </section>
+  
 
   <section class="section">
     <div class="art-wrap"><div class="cta-panel">
@@ -375,12 +342,11 @@ d.setAttribute('data-theme',t);
 <div class="chapter-bar" id="chapterBar">
   <div class="chapter-where">
     <b>Varnish Cache Configuration: A Practical Guide to VCL and Caching Strategy</b>
-    <span>Infrastructure</span>
+    <span>Systems Architecture</span>
   </div>
   <span class="chapter-left" id="chapterLeft"></span>
   <nav class="chapter-step" aria-label="Article navigation">
-    <a href="/insights/kubernetes-cost-optimization/" aria-label="Previous: Kubernetes Cost Visibility — The Gap That Kills FinOps Programs"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a>
-    <a href="/insights/cdn-strategy-decision-guide/" aria-label="Next: CDN Strategy: Choosing the Right Approach for Your Architecture"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
+    <a href="/insights/cdn-strategy-decision-guide/" aria-label="Previous: CDN Strategy: Choosing the Right Approach for Your Architecture"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a><a href="/insights/redis-production-patterns/" aria-label="Next: Redis in Production: Patterns That Work and Anti-patterns That Will Break You"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
   </nav>
 </div>
 </main>
@@ -438,7 +404,8 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=f8d83e0e" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=f8d83e0e"></script>
+<script src="/assets/js/site.js?v=689adf6b" defer></script>
+
+<script type="module" src="/assets/js/brand-motion.mjs?v=689adf6b"></script>
 </body>
 </html>

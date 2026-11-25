@@ -33,7 +33,12 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=f8d83e0e">
+<link rel="stylesheet" href="/assets/css/site.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/portal.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-art.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-pages.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-reader.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/topic-scroller.css?v=689adf6b">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
 <link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Personal notes" href="/notes/feed.xml">
@@ -51,8 +56,8 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"RoCE vs iWARP: Choosing the Right RDMA Technology for Your Workload","description":"Both RoCE and iWARP provide RDMA over Ethernet, but they have different network requirements, loss behavior, and operational characteristics. Here's how to choose between them for AI training, HPC, and storage workloads.","datePublished":"2026-11-02","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/roce-vs-iwarp-networking/","image":"https://ajnacs.com/assets/og/articles/roce-vs-iwarp-networking.png?v=addd2134e7ad","keywords":"Systems, HPC, AI & MLOps","articleSection":"AI & MLOps","wordCount":661}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"RoCE vs iWARP: Choosing the Right RDMA Technology for Your Workload"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"RoCE vs iWARP: Choosing the Right RDMA Technology for Your Workload","description":"Both RoCE and iWARP provide RDMA over Ethernet, but they have different network requirements, loss behavior, and operational characteristics. Here's how to choose between them for AI training, HPC, and storage workloads.","datePublished":"2026-11-02","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/roce-vs-iwarp-networking/","image":"https://ajnacs.com/assets/og/articles/roce-vs-iwarp-networking.png?v=addd2134e7ad","keywords":"Systems, HPC, AI & MLOps","articleSection":"Systems Architecture","wordCount":661}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Topics","item":"https://ajnacs.com/topics/"},{"@type":"ListItem","position":3,"name":"Systems Architecture","item":"https://ajnacs.com/learn/systems-architecture/"},{"@type":"ListItem","position":4,"name":"RoCE vs iWARP: Choosing the Right RDMA Technology for Your Workload"}]}</script>
 </head>
 <body class="article-frame" data-topic="AI &amp; MLOps">
 <a class="skip-link" href="#main">Skip to content</a>
@@ -64,12 +69,11 @@ d.setAttribute('data-theme',t);
       <a class="brand-home" href="/" aria-label="Ajna Consulting Services — home"><span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span></a>
     </div>
     <nav class="nav" id="nav" aria-label="Primary">
-      <a href="/services/">Services</a>
-      <a href="/insights/" aria-current="location">Insights</a>
-      <a href="/series/">Series</a>
-      <a href="/notes/">Personal notes</a>
+      <a href="/topics/" aria-current="location">Topics</a>
       <a href="/case-studies/">Case studies</a>
-      <a href="/about/">About</a>
+      <a href="/services/">Services</a>
+      <a href="/notes/">Personal Notes</a>
+      <a href="/insights/#article-search">Search</a>
       <a class="btn btn-sm" href="/contact/" style="margin-left:.4rem">Engage engineering</a>
     </nav>
     <div class="nav-actions">
@@ -84,11 +88,7 @@ d.setAttribute('data-theme',t);
 <article class="article">
   <div class="reading-layout">
     <header class="article-head">
-      <nav class="crumbs" aria-label="Breadcrumb">
-        <a href="/">Home</a> <span aria-hidden="true">/</span>
-        <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
-        <a href="/topics/ai-mlops/">AI &amp; MLOps</a>
-      </nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">/</span> <a href="/topics/">Topics</a> <span aria-hidden="true">/</span> <a href="/learn/systems-architecture/">Systems Architecture</a></nav>
       <h1 class="h1">RoCE vs iWARP: Choosing the Right RDMA Technology for Your Workload</h1>
       <p class="lede" style="margin-top:1rem">Both RoCE and iWARP provide RDMA over Ethernet, but they have different network requirements, loss behavior, and operational characteristics. Here&#39;s how to choose between them for AI training, HPC, and storage workloads.</p>
       <div class="article-meta">
@@ -184,14 +184,12 @@ d.setAttribute('data-theme',t);
 
 
 
+      <section class="lane-reading" data-lane-continuation="systems-architecture" aria-labelledby="lane-reading-title" style="--reading-lane-accent:#5f56a1"><h2 id="lane-reading-title" class="h3">Continue in Systems Architecture</h2><a class="lane-reading-next" data-lane-next href="/insights/hpc-network-topology-patterns/"><strong>HPC Network Topology Patterns: Fat-Tree, Torus, and Dragonfly Explained</strong><span class="lane-reading-reason">Continue with hpc in another part of this topic.</span><span class="lane-reading-meta">3 min read</span></a><div class="lane-reading-related"><h3 class="h3">Related reading</h3><ul class="lane-reading-list"><li><a data-lane-related href="/insights/ethernet-vs-infiniband-networking-2026/"><strong>Ethernet vs. InfiniBand: Choosing the Right Network Fabric in 2026</strong><span class="lane-reading-reason">Another perspective on hpc.</span></a></li><li><a data-lane-related href="/insights/quick-take-quantum-computing/"><strong>How to Read a Quantum Computing Milestone</strong><span class="lane-reading-reason">Separate component experiments, logical-qubit evidence, application advantage, and cryptographic migration work.</span></a></li></ul></div><a class="lane-reading-index" href="/learn/systems-architecture/">All Systems Architecture articles</a></section>
       <footer class="article-foot">
         <div class="row" style="gap:.4rem">
           <a class="chip" href="/topics/systems/">Systems</a><a class="chip" href="/topics/hpc/">HPC</a><a class="chip" href="/topics/ai-mlops/">AI &amp; MLOps</a>
         </div>
-        <nav class="prevnext" aria-label="More articles">
-          <a href="/insights/hpc-network-topology-patterns/"><span>Previous</span><strong>HPC Network Topology Patterns: Fat-Tree, Torus, and Dragonfly Explained</strong></a>
-          <a href="/insights/prompt-engineering-production/" class="next"><span>Next</span><strong>Prompt Engineering for Production Systems: Beyond the Demo</strong></a>
-        </nav>
+        
       </footer>
     </div>
     <aside class="writing-promos" aria-label="Promotions" data-ad-slot="article-rail">
@@ -211,38 +209,7 @@ d.setAttribute('data-theme',t);
 </aside>
   </div>
 
-  <section class="section surface hair" style="margin-top:4rem">
-    <div class="wrap">
-      <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|Systems|HPC|AI &amp; MLOps|" data-search="hpc network topology patterns: fat-tree, torus, and dragonfly explained the network topology of an hpc or ai training cluster determines its bandwidth, latency, cost, and how well it scales. here&#39;s how fat-tree, torus, and dragonfly topologies work, their trade-offs, and which workloads each suits best. systems hpc ai &amp; mlops" data-topic="AI &amp; MLOps">
-  <div class="card-art"><img data-article-art="hpc-network-topology-patterns" src="/assets/covers/hpc-network-topology-patterns.svg?v=105203c1f175" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
-  <div class="card-body">
-    <a class="chip" href="/topics/ai-mlops/">AI &amp; MLOps</a>
-    <h3 class="card-title"><a class="card-destination" href="/insights/hpc-network-topology-patterns/">HPC Network Topology Patterns: Fat-Tree, Torus, and Dragonfly Explained</a></h3>
-    <p class="card-desc">The network topology of an HPC or AI training cluster determines its bandwidth, latency, cost, and how well it scales. Here&#39;s how fat-tree, torus, and dragonfly topologies work, their trade-offs, and which workloads each suits best.</p>
-    <div class="card-meta"><time datetime="2026-10-30">30 Oct 2026</time><span class="dot"></span><span>3 min read</span></div>
-  </div>
-</article>
-<article class="card" data-card data-topics="|Systems|AI &amp; MLOps|HPC|" data-search="ai training cluster networking: architecture for large-scale model training training large models at scale requires network architecture that most data centres aren&#39;t built for. here&#39;s how to think about the networking stack for ai training clusters — topology, bandwidth requirements, collective operations, and the trade-offs between infiniband and high-speed ethernet. systems ai &amp; mlops hpc" data-topic="AI &amp; MLOps">
-  <div class="card-art"><img data-article-art="ai-training-cluster-networking" src="/assets/covers/ai-training-cluster-networking.svg?v=ed375d51d101" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
-  <div class="card-body">
-    <a class="chip" href="/topics/ai-mlops/">AI &amp; MLOps</a>
-    <h3 class="card-title"><a class="card-destination" href="/insights/ai-training-cluster-networking/">AI Training Cluster Networking: Architecture for Large-Scale Model Training</a></h3>
-    <p class="card-desc">Training large models at scale requires network architecture that most data centres aren&#39;t built for. Here&#39;s how to think about the networking stack for AI training clusters — topology, bandwidth requirements, collective operations, and the trade-offs between InfiniBand and high-speed Ethernet.</p>
-    <div class="card-meta"><time datetime="2025-04-08">8 Apr 2025</time><span class="dot"></span><span>3 min read</span></div>
-  </div>
-</article>
-<article class="card" data-card data-topics="|Systems|Infrastructure|Enterprise AI|Cloud Architecture|HPC|" data-search="ethernet vs. infiniband: choosing the right network fabric in 2026 a practical breakdown of when to use ethernet and when infiniband makes sense — with key metrics, topology differences, and real-world guidance for cloud, hpc, and ai workloads. systems infrastructure enterprise ai cloud architecture hpc" data-topic="Infrastructure">
-  <div class="card-art"><img data-article-art="ethernet-vs-infiniband-networking-2026" src="/assets/covers/ethernet-vs-infiniband-networking-2026.svg?v=40d7afab4a83" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
-  <div class="card-body">
-    <a class="chip" href="/topics/infrastructure/">Infrastructure</a>
-    <h3 class="card-title"><a class="card-destination" href="/insights/ethernet-vs-infiniband-networking-2026/">Ethernet vs. InfiniBand: Choosing the Right Network Fabric in 2026</a></h3>
-    <p class="card-desc">A practical breakdown of when to use Ethernet and when InfiniBand makes sense — with key metrics, topology differences, and real-world guidance for cloud, HPC, and AI workloads.</p>
-    <div class="card-meta"><time datetime="2026-10-02">2 Oct 2026</time><span class="dot"></span><span>3 min read</span></div>
-  </div>
-</article></div>
-    </div>
-  </section>
+  
 
   <section class="section">
     <div class="art-wrap"><div class="cta-panel">
@@ -345,7 +312,8 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=f8d83e0e" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=f8d83e0e"></script>
+<script src="/assets/js/site.js?v=689adf6b" defer></script>
+
+<script type="module" src="/assets/js/brand-motion.mjs?v=689adf6b"></script>
 </body>
 </html>

@@ -33,7 +33,12 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=f8d83e0e">
+<link rel="stylesheet" href="/assets/css/site.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/portal.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-art.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-pages.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-reader.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/topic-scroller.css?v=689adf6b">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
 <link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Personal notes" href="/notes/feed.xml">
@@ -51,8 +56,8 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Oracle DB Performance Tuning: The 10 Things That Actually Move the Needle","description":"Twenty years of Oracle DB work distilled into the tuning decisions that produce real, measurable improvements — and the ones that look good on paper but don't.","datePublished":"2025-04-18","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/oracle-db-performance-tuning/","image":"https://ajnacs.com/assets/og/articles/oracle-db-performance-tuning.png?v=d7b7be2d238a","keywords":"Data Engineering, Oracle, Performance","articleSection":"Data Engineering","wordCount":1940}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Oracle DB Performance Tuning: The 10 Things That Actually Move the Needle"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Oracle DB Performance Tuning: The 10 Things That Actually Move the Needle","description":"Twenty years of Oracle DB work distilled into the tuning decisions that produce real, measurable improvements — and the ones that look good on paper but don't.","datePublished":"2025-04-18","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/oracle-db-performance-tuning/","image":"https://ajnacs.com/assets/og/articles/oracle-db-performance-tuning.png?v=d7b7be2d238a","keywords":"Data Engineering, Oracle, Performance","articleSection":"Systems Architecture","wordCount":1940}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Topics","item":"https://ajnacs.com/topics/"},{"@type":"ListItem","position":3,"name":"Systems Architecture","item":"https://ajnacs.com/learn/systems-architecture/"},{"@type":"ListItem","position":4,"name":"Oracle DB Performance Tuning: The 10 Things That Actually Move the Needle"}]}</script>
 </head>
 <body class="article-frame" data-topic="Data Engineering">
 <a class="skip-link" href="#main">Skip to content</a>
@@ -64,12 +69,11 @@ d.setAttribute('data-theme',t);
       <a class="brand-home" href="/" aria-label="Ajna Consulting Services — home"><span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span></a>
     </div>
     <nav class="nav" id="nav" aria-label="Primary">
-      <a href="/services/">Services</a>
-      <a href="/insights/" aria-current="location">Insights</a>
-      <a href="/series/">Series</a>
-      <a href="/notes/">Personal notes</a>
+      <a href="/topics/" aria-current="location">Topics</a>
       <a href="/case-studies/">Case studies</a>
-      <a href="/about/">About</a>
+      <a href="/services/">Services</a>
+      <a href="/notes/">Personal Notes</a>
+      <a href="/insights/#article-search">Search</a>
       <a class="btn btn-sm" href="/contact/" style="margin-left:.4rem">Engage engineering</a>
     </nav>
     <div class="nav-actions">
@@ -84,11 +88,7 @@ d.setAttribute('data-theme',t);
 <article class="article">
   <div class="reading-layout">
     <header class="article-head">
-      <nav class="crumbs" aria-label="Breadcrumb">
-        <a href="/">Home</a> <span aria-hidden="true">/</span>
-        <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
-        <a href="/topics/data-engineering/">Data Engineering</a>
-      </nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">/</span> <a href="/topics/">Topics</a> <span aria-hidden="true">/</span> <a href="/learn/systems-architecture/">Systems Architecture</a></nav>
       <h1 class="h1">Oracle DB Performance Tuning: The 10 Things That Actually Move the Needle</h1>
       <p class="lede" style="margin-top:1rem">Twenty years of Oracle DB work distilled into the tuning decisions that produce real, measurable improvements — and the ones that look good on paper but don&#39;t.</p>
       <div class="article-meta">
@@ -229,14 +229,12 @@ ORDER BY time_waited DESC;
 
 
 
+      <section class="lane-reading" data-lane-continuation="systems-architecture" aria-labelledby="lane-reading-title" style="--reading-lane-accent:#5f56a1"><h2 id="lane-reading-title" class="h3">Continue in Systems Architecture</h2><a class="lane-reading-next" data-lane-next href="/insights/redis-production-patterns/"><strong>Redis in Production: Patterns That Work and Anti-patterns That Will Break You</strong><span class="lane-reading-reason">Continue with data engineering in another part of this topic.</span><span class="lane-reading-meta">11 min read</span></a><div class="lane-reading-related"><h3 class="h3">Related reading</h3><ul class="lane-reading-list"><li><a data-lane-related href="/insights/postgresql-performance-tuning/"><strong>PostgreSQL Performance Tuning: The Settings and Patterns That Actually Matter</strong><span class="lane-reading-reason">Another perspective on data engineering.</span></a></li><li><a data-lane-related href="/insights/database-replication-patterns/"><strong>Database Replication Patterns: Read Replicas, Multi-Primary, and When Each Applies</strong><span class="lane-reading-reason">Another perspective on data engineering.</span></a></li></ul></div><a class="lane-reading-index" href="/learn/systems-architecture/">All Systems Architecture articles</a></section>
       <footer class="article-foot">
         <div class="row" style="gap:.4rem">
           <a class="chip" href="/topics/data-engineering/">Data Engineering</a><a class="chip" href="/topics/oracle/">Oracle</a><a class="chip" href="/topics/performance/">Performance</a>
         </div>
-        <nav class="prevnext" aria-label="More articles">
-          <a href="/insights/ai-training-cluster-networking/"><span>Previous</span><strong>AI Training Cluster Networking: Architecture for Large-Scale Model Training</strong></a>
-          <a href="/insights/os-disk-io-performance/" class="next"><span>Next</span><strong>Disk I/O Performance Analysis on Linux</strong></a>
-        </nav>
+        
       </footer>
     </div>
     <aside class="writing-promos" aria-label="Promotions" data-ad-slot="article-rail">
@@ -256,38 +254,7 @@ ORDER BY time_waited DESC;
 </aside>
   </div>
 
-  <section class="section surface hair" style="margin-top:4rem">
-    <div class="wrap">
-      <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|Performance|Programming|Cloud Architecture|Data Engineering|FinOps|" data-search="compression in production: choosing between gzip, zstd, lz4, and brotli like it matters compression is a three-way trade — ratio, speed, and cpu — that most systems set once by default and never revisit. the algorithm landscape, placement decisions across web, storage, and streaming, dictionary compression&#39;s quiet superpower, and the measurement discipline. performance programming cloud architecture data engineering finops" data-topic="Performance">
-  <div class="card-art"><img data-article-art="compression-selection-guide" src="/assets/covers/compression-selection-guide.svg?v=de96c7203069" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
-  <div class="card-body">
-    <a class="chip" href="/topics/performance/">Performance</a>
-    <h3 class="card-title"><a class="card-destination" href="/insights/compression-selection-guide/">Compression in Production: Choosing Between gzip, zstd, lz4, and Brotli Like It Matters</a></h3>
-    <p class="card-desc">Compression is a three-way trade — ratio, speed, and CPU — that most systems set once by default and never revisit. The algorithm landscape, placement decisions across web, storage, and streaming, dictionary compression&#39;s quiet superpower, and the measurement discipline.</p>
-    <div class="card-meta"><time datetime="2026-10-12">12 Oct 2026</time><span class="dot"></span><span>10 min read</span></div>
-  </div>
-</article>
-<article class="card" data-card data-topics="|Data Engineering|Architecture|Performance|Infrastructure|" data-search="speed at scale: enterprise caching for oltp and olap workloads a practical guide to multi-tier caching architecture — how to design caching layers that absorb the majority of read load, handle traffic spikes without crashing, and maintain the cache hit ratios that separate resilient systems from fragile ones. data engineering architecture performance infrastructure" data-topic="Data Engineering">
-  <div class="card-art"><img data-article-art="enterprise-caching-architecture" src="/assets/covers/enterprise-caching-architecture.svg?v=d75a7230ed93" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
-  <div class="card-body">
-    <a class="chip" href="/topics/data-engineering/">Data Engineering</a>
-    <h3 class="card-title"><a class="card-destination" href="/insights/enterprise-caching-architecture/">Speed at Scale: Enterprise Caching for OLTP and OLAP Workloads</a></h3>
-    <p class="card-desc">A practical guide to multi-tier caching architecture — how to design caching layers that absorb the majority of read load, handle traffic spikes without crashing, and maintain the cache hit ratios that separate resilient systems from fragile ones.</p>
-    <div class="card-meta"><time datetime="2024-11-01">1 Nov 2024</time><span class="dot"></span><span>9 min read</span></div>
-  </div>
-</article>
-<article class="card" data-card data-topics="|Java|JVM|GraalVM|Cloud Architecture|Performance|" data-search="graalvm native image for enterprise java: when compiling ahead of time pays native image turns java applications into instant-starting, memory-lean executables — at the cost of a closed-world assumption that fights two decades of java dynamism. where native compilation genuinely wins, what breaks, and a decision framework. java jvm graalvm cloud architecture performance" data-topic="Cloud Architecture">
-  <div class="card-art"><img data-article-art="java-graalvm-native-image" src="/assets/covers/java-graalvm-native-image.svg?v=a95fa90fbc60" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
-  <div class="card-body">
-    <a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a>
-    <h3 class="card-title"><a class="card-destination" href="/insights/java-graalvm-native-image/">GraalVM Native Image for Enterprise Java: When Compiling Ahead of Time Pays</a></h3>
-    <p class="card-desc">Native Image turns Java applications into instant-starting, memory-lean executables — at the cost of a closed-world assumption that fights two decades of Java dynamism. Where native compilation genuinely wins, what breaks, and a decision framework.</p>
-    <div class="card-meta"><time datetime="2026-10-26">26 Oct 2026</time><span class="dot"></span><span>10 min read</span></div>
-  </div>
-</article></div>
-    </div>
-  </section>
+  
 
   <section class="section">
     <div class="art-wrap"><div class="cta-panel">
@@ -337,12 +304,11 @@ ORDER BY time_waited DESC;
 <div class="chapter-bar" id="chapterBar">
   <div class="chapter-where">
     <b>Oracle DB Performance Tuning: The 10 Things That Actually Move the Needle</b>
-    <span>Data Engineering</span>
+    <span>Systems Architecture</span>
   </div>
   <span class="chapter-left" id="chapterLeft"></span>
   <nav class="chapter-step" aria-label="Article navigation">
-    <a href="/insights/ai-training-cluster-networking/" aria-label="Previous: AI Training Cluster Networking: Architecture for Large-Scale Model Training"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a>
-    <a href="/insights/os-disk-io-performance/" aria-label="Next: Disk I/O Performance Analysis on Linux"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
+    <a href="/insights/database-migration-strategies/" aria-label="Previous: Database Migration Strategies: Moving Production Data Without Downtime"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a><a href="/insights/redis-production-patterns/" aria-label="Next: Redis in Production: Patterns That Work and Anti-patterns That Will Break You"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
   </nav>
 </div>
 </main>
@@ -400,7 +366,8 @@ ORDER BY time_waited DESC;
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=f8d83e0e" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=f8d83e0e"></script>
+<script src="/assets/js/site.js?v=689adf6b" defer></script>
+
+<script type="module" src="/assets/js/brand-motion.mjs?v=689adf6b"></script>
 </body>
 </html>

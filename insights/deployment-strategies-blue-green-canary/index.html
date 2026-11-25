@@ -33,7 +33,12 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=f8d83e0e">
+<link rel="stylesheet" href="/assets/css/site.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/portal.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-art.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-pages.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-reader.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/topic-scroller.css?v=689adf6b">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
 <link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Personal notes" href="/notes/feed.xml">
@@ -51,8 +56,8 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Deployment Strategies Compared: Rolling, Blue-Green, Canary, and When Each Actually Fits","description":"Rolling updates, blue-green switches, canary releases, and shadow traffic — what each strategy really costs, what each protects against, and the database problem that constrains all of them.","datePublished":"2026-03-20","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/deployment-strategies-blue-green-canary/","image":"https://ajnacs.com/assets/og/articles/deployment-strategies-blue-green-canary.png?v=e89a20b756e7","keywords":"Deployment, Platform Engineering, Engineering Practice, Containers, Reliability","articleSection":"Platform Engineering","wordCount":2161}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Deployment Strategies Compared: Rolling, Blue-Green, Canary, and When Each Actually Fits"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Deployment Strategies Compared: Rolling, Blue-Green, Canary, and When Each Actually Fits","description":"Rolling updates, blue-green switches, canary releases, and shadow traffic — what each strategy really costs, what each protects against, and the database problem that constrains all of them.","datePublished":"2026-03-20","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/deployment-strategies-blue-green-canary/","image":"https://ajnacs.com/assets/og/articles/deployment-strategies-blue-green-canary.png?v=e89a20b756e7","keywords":"Deployment, Platform Engineering, Engineering Practice, Containers, Reliability","articleSection":"Platform & Delivery","wordCount":2161}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Topics","item":"https://ajnacs.com/topics/"},{"@type":"ListItem","position":3,"name":"Platform & Delivery","item":"https://ajnacs.com/learn/platform-delivery/"},{"@type":"ListItem","position":4,"name":"Deployment Strategies Compared: Rolling, Blue-Green, Canary, and When Each Actually Fits"}]}</script>
 </head>
 <body class="article-frame" data-topic="Platform Engineering">
 <a class="skip-link" href="#main">Skip to content</a>
@@ -64,12 +69,11 @@ d.setAttribute('data-theme',t);
       <a class="brand-home" href="/" aria-label="Ajna Consulting Services — home"><span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span></a>
     </div>
     <nav class="nav" id="nav" aria-label="Primary">
-      <a href="/services/">Services</a>
-      <a href="/insights/" aria-current="location">Insights</a>
-      <a href="/series/">Series</a>
-      <a href="/notes/">Personal notes</a>
+      <a href="/topics/" aria-current="location">Topics</a>
       <a href="/case-studies/">Case studies</a>
-      <a href="/about/">About</a>
+      <a href="/services/">Services</a>
+      <a href="/notes/">Personal Notes</a>
+      <a href="/insights/#article-search">Search</a>
       <a class="btn btn-sm" href="/contact/" style="margin-left:.4rem">Engage engineering</a>
     </nav>
     <div class="nav-actions">
@@ -84,11 +88,7 @@ d.setAttribute('data-theme',t);
 <article class="article">
   <div class="reading-layout">
     <header class="article-head">
-      <nav class="crumbs" aria-label="Breadcrumb">
-        <a href="/">Home</a> <span aria-hidden="true">/</span>
-        <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
-        <a href="/topics/platform-engineering/">Platform Engineering</a>
-      </nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">/</span> <a href="/topics/">Topics</a> <span aria-hidden="true">/</span> <a href="/learn/platform-delivery/">Platform &amp; Delivery</a></nav>
       <h1 class="h1">Deployment Strategies Compared: Rolling, Blue-Green, Canary, and When Each Actually Fits</h1>
       <p class="lede" style="margin-top:1rem">Rolling updates, blue-green switches, canary releases, and shadow traffic — what each strategy really costs, what each protects against, and the database problem that constrains all of them.</p>
       <div class="article-meta">
@@ -203,14 +203,12 @@ d.setAttribute('data-theme',t);
 
 
 
+      <section class="lane-reading" data-lane-continuation="platform-delivery" aria-labelledby="lane-reading-title" style="--reading-lane-accent:#237a75"><h2 id="lane-reading-title" class="h3">Continue in Platform &amp; Delivery</h2><a class="lane-reading-next" data-lane-next href="/insights/kubernetes-operators-custom-resources/"><strong>Kubernetes Operators: When to Build One and When to Stop at CRDs</strong><span class="lane-reading-reason">Continue with containers in another part of this topic.</span><span class="lane-reading-meta">9 min read</span></a><div class="lane-reading-related"><h3 class="h3">Related reading</h3><ul class="lane-reading-list"><li><a data-lane-related href="/insights/service-mesh-istio-linkerd/"><strong>Service Mesh in Practice: When Istio or Linkerd Is Worth the Complexity</strong><span class="lane-reading-reason">Another perspective on containers.</span></a></li><li><a data-lane-related href="/insights/platform-engineering-idp-2026/"><strong>Platform Onboarding: Measure the Path to a First Deployment</strong><span class="lane-reading-reason">Pilot a self-service path, measure time to a first qualifying deployment, and track completion, controls, and support effort.</span></a></li></ul></div><a class="lane-reading-index" href="/learn/platform-delivery/">All Platform &amp; Delivery articles</a></section>
       <footer class="article-foot">
         <div class="row" style="gap:.4rem">
           <a class="chip" href="/topics/deployment/">Deployment</a><a class="chip" href="/topics/platform-engineering/">Platform Engineering</a><a class="chip" href="/topics/engineering-practice/">Engineering Practice</a><a class="chip" href="/topics/containers/">Containers</a><a class="chip" href="/topics/reliability/">Reliability</a>
         </div>
-        <nav class="prevnext" aria-label="More articles">
-          <a href="/insights/java-legacy-modernization-roadmap/"><span>Previous</span><strong>Modernizing Legacy Java: A Roadmap from Java 8 to 21+ Without Stopping the Business</strong></a>
-          <a href="/insights/back-of-envelope-system-design/" class="next"><span>Next</span><strong>Back-of-Envelope Engineering: The Estimation Skill That Filters Bad Architectures in Minutes</strong></a>
-        </nav>
+        
       </footer>
     </div>
     <aside class="writing-promos" aria-label="Promotions" data-ad-slot="article-rail">
@@ -230,38 +228,7 @@ d.setAttribute('data-theme',t);
 </aside>
   </div>
 
-  <section class="section surface hair" style="margin-top:4rem">
-    <div class="wrap">
-      <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|Python|Platform Engineering|Engineering Practice|Supply Chain Security|Developer Experience|" data-search="python packaging and dependency management in 2026: from requirements.txt chaos to reproducible builds the python packaging story finally consolidated — pyproject.toml, lockfiles, and uv. what a modern, reproducible python dependency setup looks like for teams, and how to migrate an estate of requirements.txt files without drama. python platform engineering engineering practice supply chain security developer experience" data-topic="Platform Engineering">
-  <div class="card-art"><img data-article-art="python-packaging-dependency-management" src="/assets/covers/python-packaging-dependency-management.svg?v=9aa566a20a08" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
-  <div class="card-body">
-    <a class="chip" href="/topics/platform-engineering/">Platform Engineering</a>
-    <h3 class="card-title"><a class="card-destination" href="/insights/python-packaging-dependency-management/">Python Packaging and Dependency Management in 2026: From requirements.txt Chaos to Reproducible Builds</a></h3>
-    <p class="card-desc">The Python packaging story finally consolidated — pyproject.toml, lockfiles, and uv. What a modern, reproducible Python dependency setup looks like for teams, and how to migrate an estate of requirements.txt files without drama.</p>
-    <div class="card-meta"><time datetime="2026-11-23">23 Nov 2026</time><span class="dot"></span><span>9 min read</span></div>
-  </div>
-</article>
-<article class="card" data-card data-topics="|Observability|Programming|Platform Engineering|Reliability|Cloud Architecture|" data-search="structured logging that pays for itself: schema, context, and cost discipline logs are the most expensive telemetry most organizations run and the least designed. event schemas, correlation context, level discipline, sampling, and the cost engineering that keeps the logging bill from becoming the observability program&#39;s obituary. observability programming platform engineering reliability cloud architecture" data-topic="Observability">
-  <div class="card-art"><img data-article-art="structured-logging-practices" src="/assets/covers/structured-logging-practices.svg?v=28b16f70cb93" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
-  <div class="card-body">
-    <a class="chip" href="/topics/observability/">Observability</a>
-    <h3 class="card-title"><a class="card-destination" href="/insights/structured-logging-practices/">Structured Logging That Pays for Itself: Schema, Context, and Cost Discipline</a></h3>
-    <p class="card-desc">Logs are the most expensive telemetry most organizations run and the least designed. Event schemas, correlation context, level discipline, sampling, and the cost engineering that keeps the logging bill from becoming the observability program&#39;s obituary.</p>
-    <div class="card-meta"><time datetime="2025-10-03">3 Oct 2025</time><span class="dot"></span><span>9 min read</span></div>
-  </div>
-</article>
-<article class="card" data-card data-topics="|Cloud Architecture|Reliability|FinOps|Engineering Leadership|" data-search="capacity planning in the cloud era: headroom as an engineered property elastic infrastructure didn&#39;t kill capacity planning — it changed what gets planned. demand modeling, the utilization-vs-headroom trade, quota and constraint archaeology, and the quarterly loop that replaces both waste and 3 am scrambles. cloud architecture reliability finops engineering leadership" data-topic="Cloud Architecture">
-  <div class="card-art"><img data-article-art="capacity-planning-engineering" src="/assets/covers/capacity-planning-engineering.svg?v=56f6b8787f82" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
-  <div class="card-body">
-    <a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a>
-    <h3 class="card-title"><a class="card-destination" href="/insights/capacity-planning-engineering/">Capacity Planning in the Cloud Era: Headroom as an Engineered Property</a></h3>
-    <p class="card-desc">Elastic infrastructure didn&#39;t kill capacity planning — it changed what gets planned. Demand modeling, the utilization-vs-headroom trade, quota and constraint archaeology, and the quarterly loop that replaces both waste and 3 AM scrambles.</p>
-    <div class="card-meta"><time datetime="2026-11-09">9 Nov 2026</time><span class="dot"></span><span>10 min read</span></div>
-  </div>
-</article></div>
-    </div>
-  </section>
+  
 
   <section class="section">
     <div class="art-wrap"><div class="cta-panel">
@@ -311,12 +278,11 @@ d.setAttribute('data-theme',t);
 <div class="chapter-bar" id="chapterBar">
   <div class="chapter-where">
     <b>Deployment Strategies Compared: Rolling, Blue-Green, Canary, and When Each Actually Fits</b>
-    <span>Platform Engineering</span>
+    <span>Platform &amp; Delivery</span>
   </div>
   <span class="chapter-left" id="chapterLeft"></span>
   <nav class="chapter-step" aria-label="Article navigation">
-    <a href="/insights/java-legacy-modernization-roadmap/" aria-label="Previous: Modernizing Legacy Java: A Roadmap from Java 8 to 21+ Without Stopping the Business"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a>
-    <a href="/insights/back-of-envelope-system-design/" aria-label="Next: Back-of-Envelope Engineering: The Estimation Skill That Filters Bad Architectures in Minutes"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
+    <a href="/insights/containers-kubernetes-fundamentals/" aria-label="Previous: Kubernetes Fundamentals: What It Is, What It Does, and When You Actually Need It"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a><a href="/insights/kubernetes-operators-custom-resources/" aria-label="Next: Kubernetes Operators: When to Build One and When to Stop at CRDs"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
   </nav>
 </div>
 </main>
@@ -374,7 +340,8 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=f8d83e0e" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=f8d83e0e"></script>
+<script src="/assets/js/site.js?v=689adf6b" defer></script>
+
+<script type="module" src="/assets/js/brand-motion.mjs?v=689adf6b"></script>
 </body>
 </html>

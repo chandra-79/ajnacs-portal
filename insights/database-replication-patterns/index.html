@@ -33,7 +33,12 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=f8d83e0e">
+<link rel="stylesheet" href="/assets/css/site.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/portal.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-art.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-pages.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-reader.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/topic-scroller.css?v=689adf6b">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
 <link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Personal notes" href="/notes/feed.xml">
@@ -51,8 +56,8 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Database Replication Patterns: Read Replicas, Multi-Primary, and When Each Applies","description":"Database replication serves two distinct goals — high availability (survive a primary failure) and read scaling (distribute read traffic). The configuration that optimizes for one is often wrong for the other.","datePublished":"2025-08-04","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/database-replication-patterns/","image":"https://ajnacs.com/assets/og/articles/database-replication-patterns.png?v=ce77758190f6","keywords":"Data Engineering, Cloud Architecture","articleSection":"Data Engineering","wordCount":1877}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Database Replication Patterns: Read Replicas, Multi-Primary, and When Each Applies"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Database Replication Patterns: Read Replicas, Multi-Primary, and When Each Applies","description":"Database replication serves two distinct goals — high availability (survive a primary failure) and read scaling (distribute read traffic). The configuration that optimizes for one is often wrong for the other.","datePublished":"2025-08-04","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/database-replication-patterns/","image":"https://ajnacs.com/assets/og/articles/database-replication-patterns.png?v=ce77758190f6","keywords":"Data Engineering, Cloud Architecture","articleSection":"Systems Architecture","wordCount":1877}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Topics","item":"https://ajnacs.com/topics/"},{"@type":"ListItem","position":3,"name":"Systems Architecture","item":"https://ajnacs.com/learn/systems-architecture/"},{"@type":"ListItem","position":4,"name":"Database Replication Patterns: Read Replicas, Multi-Primary, and When Each Applies"}]}</script>
 </head>
 <body class="article-frame" data-topic="Data Engineering">
 <a class="skip-link" href="#main">Skip to content</a>
@@ -64,12 +69,11 @@ d.setAttribute('data-theme',t);
       <a class="brand-home" href="/" aria-label="Ajna Consulting Services — home"><span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span></a>
     </div>
     <nav class="nav" id="nav" aria-label="Primary">
-      <a href="/services/">Services</a>
-      <a href="/insights/" aria-current="location">Insights</a>
-      <a href="/series/">Series</a>
-      <a href="/notes/">Personal notes</a>
+      <a href="/topics/" aria-current="location">Topics</a>
       <a href="/case-studies/">Case studies</a>
-      <a href="/about/">About</a>
+      <a href="/services/">Services</a>
+      <a href="/notes/">Personal Notes</a>
+      <a href="/insights/#article-search">Search</a>
       <a class="btn btn-sm" href="/contact/" style="margin-left:.4rem">Engage engineering</a>
     </nav>
     <div class="nav-actions">
@@ -84,11 +88,7 @@ d.setAttribute('data-theme',t);
 <article class="article">
   <div class="reading-layout">
     <header class="article-head">
-      <nav class="crumbs" aria-label="Breadcrumb">
-        <a href="/">Home</a> <span aria-hidden="true">/</span>
-        <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
-        <a href="/topics/data-engineering/">Data Engineering</a>
-      </nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">/</span> <a href="/topics/">Topics</a> <span aria-hidden="true">/</span> <a href="/learn/systems-architecture/">Systems Architecture</a></nav>
       <h1 class="h1">Database Replication Patterns: Read Replicas, Multi-Primary, and When Each Applies</h1>
       <p class="lede" style="margin-top:1rem">Database replication serves two distinct goals — high availability (survive a primary failure) and read scaling (distribute read traffic). The configuration that optimizes for one is often wrong for the other.</p>
       <div class="article-meta">
@@ -223,14 +223,12 @@ SELECT pg_reload_conf();
 
 
 
+      <section class="lane-reading" data-lane-continuation="systems-architecture" aria-labelledby="lane-reading-title" style="--reading-lane-accent:#5f56a1"><h2 id="lane-reading-title" class="h3">Continue in Systems Architecture</h2><a class="lane-reading-next" data-lane-next href="/insights/postgresql-performance-tuning/"><strong>PostgreSQL Performance Tuning: The Settings and Patterns That Actually Matter</strong><span class="lane-reading-reason">Continue with data engineering in another part of this topic.</span><span class="lane-reading-meta">9 min read</span></a><div class="lane-reading-related"><h3 class="h3">Related reading</h3><ul class="lane-reading-list"><li><a data-lane-related href="/insights/database-migration-strategies/"><strong>Database Migration Strategies: Moving Production Data Without Downtime</strong><span class="lane-reading-reason">Another perspective on data engineering.</span></a></li><li><a data-lane-related href="/insights/oracle-db-performance-tuning/"><strong>Oracle DB Performance Tuning: The 10 Things That Actually Move the Needle</strong><span class="lane-reading-reason">Another perspective on data engineering.</span></a></li></ul></div><a class="lane-reading-index" href="/learn/systems-architecture/">All Systems Architecture articles</a></section>
       <footer class="article-foot">
         <div class="row" style="gap:.4rem">
           <a class="chip" href="/topics/data-engineering/">Data Engineering</a><a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a>
         </div>
-        <nav class="prevnext" aria-label="More articles">
-          <a href="/insights/aiml-what-is-machine-learning/"><span>Previous</span><strong>What Machine Learning Actually Is — Before the Hype and After the Buzzwords</strong></a>
-          <a href="/insights/weblogic-performance-tuning/" class="next"><span>Next</span><strong>WebLogic Performance Tuning: Work Managers, Connection Pools, and the Knobs That Actually Matter</strong></a>
-        </nav>
+        
       </footer>
     </div>
     <aside class="writing-promos" aria-label="Promotions" data-ad-slot="article-rail">
@@ -250,38 +248,7 @@ SELECT pg_reload_conf();
 </aside>
   </div>
 
-  <section class="section surface hair" style="margin-top:4rem">
-    <div class="wrap">
-      <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|Performance|Programming|Cloud Architecture|Data Engineering|FinOps|" data-search="compression in production: choosing between gzip, zstd, lz4, and brotli like it matters compression is a three-way trade — ratio, speed, and cpu — that most systems set once by default and never revisit. the algorithm landscape, placement decisions across web, storage, and streaming, dictionary compression&#39;s quiet superpower, and the measurement discipline. performance programming cloud architecture data engineering finops" data-topic="Performance">
-  <div class="card-art"><img data-article-art="compression-selection-guide" src="/assets/covers/compression-selection-guide.svg?v=de96c7203069" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
-  <div class="card-body">
-    <a class="chip" href="/topics/performance/">Performance</a>
-    <h3 class="card-title"><a class="card-destination" href="/insights/compression-selection-guide/">Compression in Production: Choosing Between gzip, zstd, lz4, and Brotli Like It Matters</a></h3>
-    <p class="card-desc">Compression is a three-way trade — ratio, speed, and CPU — that most systems set once by default and never revisit. The algorithm landscape, placement decisions across web, storage, and streaming, dictionary compression&#39;s quiet superpower, and the measurement discipline.</p>
-    <div class="card-meta"><time datetime="2026-10-12">12 Oct 2026</time><span class="dot"></span><span>10 min read</span></div>
-  </div>
-</article>
-<article class="card" data-card data-topics="|Data Engineering|Cloud Architecture|AI &amp; MLOps|" data-search="the data lakehouse: why it won, and how to architect one that works data warehouses couldn&#39;t handle unstructured data at scale. data lakes couldn&#39;t enforce schemas or serve bi queries efficiently. the lakehouse combines both — here&#39;s the architecture, the open table formats that make it work, and the practical design decisions. data engineering cloud architecture ai &amp; mlops" data-topic="Data Engineering">
-  <div class="card-art"><img data-article-art="data-lakehouse-architecture" src="/assets/covers/data-lakehouse-architecture.svg?v=64758121d061" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
-  <div class="card-body">
-    <a class="chip" href="/topics/data-engineering/">Data Engineering</a>
-    <h3 class="card-title"><a class="card-destination" href="/insights/data-lakehouse-architecture/">The Data Lakehouse: Why It Won, and How to Architect One That Works</a></h3>
-    <p class="card-desc">Data warehouses couldn&#39;t handle unstructured data at scale. Data lakes couldn&#39;t enforce schemas or serve BI queries efficiently. The lakehouse combines both — here&#39;s the architecture, the open table formats that make it work, and the practical design decisions.</p>
-    <div class="card-meta"><time datetime="2026-10-05">5 Oct 2026</time><span class="dot"></span><span>9 min read</span></div>
-  </div>
-</article>
-<article class="card" data-card data-topics="|Data Engineering|Programming|Cloud Architecture|" data-search="postgresql performance tuning: the settings and patterns that actually matter postgresql&#39;s default configuration is conservative, designed for small deployments. for production workloads, the settings that control memory, parallelism, wal behavior, and connection handling need explicit tuning. here&#39;s where to start. data engineering programming cloud architecture" data-topic="Data Engineering">
-  <div class="card-art"><img data-article-art="postgresql-performance-tuning" src="/assets/covers/postgresql-performance-tuning.svg?v=e5203fc1d300" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
-  <div class="card-body">
-    <a class="chip" href="/topics/data-engineering/">Data Engineering</a>
-    <h3 class="card-title"><a class="card-destination" href="/insights/postgresql-performance-tuning/">PostgreSQL Performance Tuning: The Settings and Patterns That Actually Matter</a></h3>
-    <p class="card-desc">PostgreSQL&#39;s default configuration is conservative, designed for small deployments. For production workloads, the settings that control memory, parallelism, WAL behavior, and connection handling need explicit tuning. Here&#39;s where to start.</p>
-    <div class="card-meta"><time datetime="2025-12-26">26 Dec 2025</time><span class="dot"></span><span>9 min read</span></div>
-  </div>
-</article></div>
-    </div>
-  </section>
+  
 
   <section class="section">
     <div class="art-wrap"><div class="cta-panel">
@@ -331,12 +298,11 @@ SELECT pg_reload_conf();
 <div class="chapter-bar" id="chapterBar">
   <div class="chapter-where">
     <b>Database Replication Patterns: Read Replicas, Multi-Primary, and When Each Applies</b>
-    <span>Data Engineering</span>
+    <span>Systems Architecture</span>
   </div>
   <span class="chapter-left" id="chapterLeft"></span>
   <nav class="chapter-step" aria-label="Article navigation">
-    <a href="/insights/aiml-what-is-machine-learning/" aria-label="Previous: What Machine Learning Actually Is — Before the Hype and After the Buzzwords"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a>
-    <a href="/insights/weblogic-performance-tuning/" aria-label="Next: WebLogic Performance Tuning: Work Managers, Connection Pools, and the Knobs That Actually Matter"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
+    <a href="/insights/back-of-envelope-system-design/" aria-label="Previous: Back-of-Envelope Engineering: The Estimation Skill That Filters Bad Architectures in Minutes"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a><a href="/insights/postgresql-performance-tuning/" aria-label="Next: PostgreSQL Performance Tuning: The Settings and Patterns That Actually Matter"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
   </nav>
 </div>
 </main>
@@ -394,7 +360,8 @@ SELECT pg_reload_conf();
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=f8d83e0e" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=f8d83e0e"></script>
+<script src="/assets/js/site.js?v=689adf6b" defer></script>
+
+<script type="module" src="/assets/js/brand-motion.mjs?v=689adf6b"></script>
 </body>
 </html>

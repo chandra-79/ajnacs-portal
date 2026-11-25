@@ -33,7 +33,12 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=f8d83e0e">
+<link rel="stylesheet" href="/assets/css/site.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/portal.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-art.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-pages.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-reader.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/topic-scroller.css?v=689adf6b">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
 <link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Personal notes" href="/notes/feed.xml">
@@ -51,8 +56,8 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Back-of-Envelope Engineering: The Estimation Skill That Filters Bad Architectures in Minutes","description":"Before the design review argues about frameworks, arithmetic should have eliminated half the options. The latency numbers worth memorizing, the estimation moves — traffic, storage, bandwidth, cost — and worked habits that turn guesses into engineering.","datePublished":"2026-04-01","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/back-of-envelope-system-design/","image":"https://ajnacs.com/assets/og/articles/back-of-envelope-system-design.png?v=5646c47481c0","keywords":"Architecture, Performance, Engineering Leadership, Capacity Planning","articleSection":"Architecture","wordCount":1912}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Back-of-Envelope Engineering: The Estimation Skill That Filters Bad Architectures in Minutes"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Back-of-Envelope Engineering: The Estimation Skill That Filters Bad Architectures in Minutes","description":"Before the design review argues about frameworks, arithmetic should have eliminated half the options. The latency numbers worth memorizing, the estimation moves — traffic, storage, bandwidth, cost — and worked habits that turn guesses into engineering.","datePublished":"2026-04-01","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/back-of-envelope-system-design/","image":"https://ajnacs.com/assets/og/articles/back-of-envelope-system-design.png?v=5646c47481c0","keywords":"Architecture, Performance, Engineering Leadership, Capacity Planning","articleSection":"Systems Architecture","wordCount":1912}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Topics","item":"https://ajnacs.com/topics/"},{"@type":"ListItem","position":3,"name":"Systems Architecture","item":"https://ajnacs.com/learn/systems-architecture/"},{"@type":"ListItem","position":4,"name":"Back-of-Envelope Engineering: The Estimation Skill That Filters Bad Architectures in Minutes"}]}</script>
 </head>
 <body class="article-frame" data-topic="Architecture">
 <a class="skip-link" href="#main">Skip to content</a>
@@ -64,12 +69,11 @@ d.setAttribute('data-theme',t);
       <a class="brand-home" href="/" aria-label="Ajna Consulting Services — home"><span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span></a>
     </div>
     <nav class="nav" id="nav" aria-label="Primary">
-      <a href="/services/">Services</a>
-      <a href="/insights/" aria-current="location">Insights</a>
-      <a href="/series/">Series</a>
-      <a href="/notes/">Personal notes</a>
+      <a href="/topics/" aria-current="location">Topics</a>
       <a href="/case-studies/">Case studies</a>
-      <a href="/about/">About</a>
+      <a href="/services/">Services</a>
+      <a href="/notes/">Personal Notes</a>
+      <a href="/insights/#article-search">Search</a>
       <a class="btn btn-sm" href="/contact/" style="margin-left:.4rem">Engage engineering</a>
     </nav>
     <div class="nav-actions">
@@ -84,11 +88,7 @@ d.setAttribute('data-theme',t);
 <article class="article">
   <div class="reading-layout">
     <header class="article-head">
-      <nav class="crumbs" aria-label="Breadcrumb">
-        <a href="/">Home</a> <span aria-hidden="true">/</span>
-        <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
-        <a href="/topics/architecture/">Architecture</a>
-      </nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">/</span> <a href="/topics/">Topics</a> <span aria-hidden="true">/</span> <a href="/learn/systems-architecture/">Systems Architecture</a></nav>
       <h1 class="h1">Back-of-Envelope Engineering: The Estimation Skill That Filters Bad Architectures in Minutes</h1>
       <p class="lede" style="margin-top:1rem">Before the design review argues about frameworks, arithmetic should have eliminated half the options. The latency numbers worth memorizing, the estimation moves — traffic, storage, bandwidth, cost — and worked habits that turn guesses into engineering.</p>
       <div class="article-meta">
@@ -190,14 +190,12 @@ d.setAttribute('data-theme',t);
 
 
 
+      <section class="lane-reading" data-lane-continuation="systems-architecture" aria-labelledby="lane-reading-title" style="--reading-lane-accent:#5f56a1"><h2 id="lane-reading-title" class="h3">Continue in Systems Architecture</h2><a class="lane-reading-next" data-lane-next href="/insights/database-replication-patterns/"><strong>Database Replication Patterns: Read Replicas, Multi-Primary, and When Each Applies</strong><span class="lane-reading-reason">Decide how the system copies state and what may become stale.</span><span class="lane-reading-meta">8 min read</span></a><div class="lane-reading-related"><h3 class="h3">Related reading</h3><ul class="lane-reading-list"><li><a data-lane-related href="/insights/quick-take-quantum-computing/"><strong>How to Read a Quantum Computing Milestone</strong><span class="lane-reading-reason">Separate component experiments, logical-qubit evidence, application advantage, and cryptographic migration work.</span></a></li><li><a data-lane-related href="/insights/quantum-computing-race-2025/"><strong>Quantum Computing Milestones, 2019–2025: What the Evidence Shows</strong><span class="lane-reading-reason">Distinguish demonstrations in random circuit sampling, quantum error correction, annealing, and experimental qubit architectures.</span></a></li></ul></div><a class="lane-reading-index" href="/learn/systems-architecture/">All Systems Architecture articles</a></section>
       <footer class="article-foot">
         <div class="row" style="gap:.4rem">
           <a class="chip" href="/topics/architecture/">Architecture</a><a class="chip" href="/topics/performance/">Performance</a><a class="chip" href="/topics/engineering-leadership/">Engineering Leadership</a><a class="chip" href="/topics/capacity-planning/">Capacity Planning</a>
         </div>
-        <nav class="prevnext" aria-label="More articles">
-          <a href="/insights/deployment-strategies-blue-green-canary/"><span>Previous</span><strong>Deployment Strategies Compared: Rolling, Blue-Green, Canary, and When Each Actually Fits</strong></a>
-          <a href="/insights/kubernetes-security-hardening/" class="next"><span>Next</span><strong>Kubernetes Security Hardening: The Controls That Actually Reduce Attack Surface</strong></a>
-        </nav>
+        
       </footer>
     </div>
     <aside class="writing-promos" aria-label="Promotions" data-ad-slot="article-rail">
@@ -217,38 +215,7 @@ d.setAttribute('data-theme',t);
 </aside>
   </div>
 
-  <section class="section surface hair" style="margin-top:4rem">
-    <div class="wrap">
-      <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|Performance|Capacity Planning|Reliability|Distributed Systems|Architecture|" data-search="queueing theory for engineers: how utilisation and variability shape waits little&#39;s law, the utilization-latency curve, and variability&#39;s tax — the three results that explain most capacity mysteries, from connection pools to on-call load. no calculus required, just the intuitions that make systems behavior predictable. performance capacity planning reliability distributed systems architecture" data-topic="Performance">
-  <div class="card-art"><img data-article-art="queueing-theory-for-engineers" src="/assets/covers/queueing-theory-for-engineers.svg?v=179ca4ab2b0e" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
-  <div class="card-body">
-    <a class="chip" href="/topics/performance/">Performance</a>
-    <h3 class="card-title"><a class="card-destination" href="/insights/queueing-theory-for-engineers/">Queueing Theory for Engineers: How Utilisation and Variability Shape Waits</a></h3>
-    <p class="card-desc">Little&#39;s Law, the utilization-latency curve, and variability&#39;s tax — the three results that explain most capacity mysteries, from connection pools to on-call load. No calculus required, just the intuitions that make systems behavior predictable.</p>
-    <div class="card-meta"><time datetime="2026-02-03">3 Feb 2026</time><span class="dot"></span><span>6 min read</span></div>
-  </div>
-</article>
-<article class="card" data-card data-topics="|Engineering Leadership|Architecture|Fundamentals|" data-search="platform engineering: what it is, why it emerged, and what makes it different from devops platform engineering is not rebranded devops. it is a specific organisational and technical discipline that treats internal infrastructure as a product. here is what that actually means. engineering leadership architecture fundamentals" data-topic="Engineering Leadership">
-  <div class="card-art"><img data-article-art="platform-eng-what-it-is" src="/assets/covers/platform-eng-what-it-is.svg?v=26cdd97126d1" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
-  <div class="card-body">
-    <a class="chip" href="/topics/engineering-leadership/">Engineering Leadership</a>
-    <h3 class="card-title"><a class="card-destination" href="/insights/platform-eng-what-it-is/">Platform Engineering: What It Is, Why It Emerged, and What Makes It Different from DevOps</a></h3>
-    <p class="card-desc">Platform engineering is not rebranded DevOps. It is a specific organisational and technical discipline that treats internal infrastructure as a product. Here is what that actually means.</p>
-    <div class="card-meta"><time datetime="2026-10-16">16 Oct 2026</time><span class="dot"></span><span>8 min read</span><span class="dot"></span><span>Series</span></div>
-  </div>
-</article>
-<article class="card" data-card data-topics="|Engineering Leadership|Architecture|Fundamentals|" data-search="measuring platform engineering success: the metrics that actually matter dora metrics, developer experience scores, cognitive load measures, and the platform health indicators that tell you whether your internal platform is creating value or creating another bottleneck. engineering leadership architecture fundamentals" data-topic="Engineering Leadership">
-  <div class="card-art"><img data-article-art="platform-eng-measuring-success" src="/assets/covers/platform-eng-measuring-success.svg?v=a0eb18c722ca" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
-  <div class="card-body">
-    <a class="chip" href="/topics/engineering-leadership/">Engineering Leadership</a>
-    <h3 class="card-title"><a class="card-destination" href="/insights/platform-eng-measuring-success/">Measuring Platform Engineering Success: The Metrics That Actually Matter</a></h3>
-    <p class="card-desc">DORA metrics, developer experience scores, cognitive load measures, and the platform health indicators that tell you whether your internal platform is creating value or creating another bottleneck.</p>
-    <div class="card-meta"><time datetime="2026-07-21">21 Jul 2026</time><span class="dot"></span><span>8 min read</span><span class="dot"></span><span>Series</span></div>
-  </div>
-</article></div>
-    </div>
-  </section>
+  
 
   <section class="section">
     <div class="art-wrap"><div class="cta-panel">
@@ -298,12 +265,11 @@ d.setAttribute('data-theme',t);
 <div class="chapter-bar" id="chapterBar">
   <div class="chapter-where">
     <b>Back-of-Envelope Engineering: The Estimation Skill That Filters Bad Architectures in Minutes</b>
-    <span>Architecture</span>
+    <span>Systems Architecture</span>
   </div>
   <span class="chapter-left" id="chapterLeft"></span>
   <nav class="chapter-step" aria-label="Article navigation">
-    <a href="/insights/deployment-strategies-blue-green-canary/" aria-label="Previous: Deployment Strategies Compared: Rolling, Blue-Green, Canary, and When Each Actually Fits"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a>
-    <a href="/insights/kubernetes-security-hardening/" aria-label="Next: Kubernetes Security Hardening: The Controls That Actually Reduce Attack Surface"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
+    <a href="/insights/system-design-patterns-backend/" aria-label="Previous: System Design Patterns Every Backend Engineer Should Know"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a><a href="/insights/database-replication-patterns/" aria-label="Next: Database Replication Patterns: Read Replicas, Multi-Primary, and When Each Applies"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
   </nav>
 </div>
 </main>
@@ -361,7 +327,8 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=f8d83e0e" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=f8d83e0e"></script>
+<script src="/assets/js/site.js?v=689adf6b" defer></script>
+
+<script type="module" src="/assets/js/brand-motion.mjs?v=689adf6b"></script>
 </body>
 </html>

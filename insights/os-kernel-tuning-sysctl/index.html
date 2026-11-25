@@ -33,7 +33,12 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=f8d83e0e">
+<link rel="stylesheet" href="/assets/css/site.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/portal.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-art.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-pages.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-reader.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/topic-scroller.css?v=689adf6b">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
 <link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Personal notes" href="/notes/feed.xml">
@@ -51,8 +56,8 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Kernel Tuning with sysctl: Memory, Networking, and I/O","description":"The sysctl parameters that actually matter in production — VM reclaim tuning, TCP stack optimisation, file descriptor limits, and the settings that separate a well-tuned server from a default install.","datePublished":"2026-09-30","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/os-kernel-tuning-sysctl/","image":"https://ajnacs.com/assets/og/articles/os-kernel-tuning-sysctl.png?v=4616789036d6","keywords":"Programming, Fundamentals","articleSection":"Programming","wordCount":2076}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Kernel Tuning with sysctl: Memory, Networking, and I/O"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Kernel Tuning with sysctl: Memory, Networking, and I/O","description":"The sysctl parameters that actually matter in production — VM reclaim tuning, TCP stack optimisation, file descriptor limits, and the settings that separate a well-tuned server from a default install.","datePublished":"2026-09-30","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/os-kernel-tuning-sysctl/","image":"https://ajnacs.com/assets/og/articles/os-kernel-tuning-sysctl.png?v=4616789036d6","keywords":"Programming, Fundamentals","articleSection":"Software Engineering","wordCount":2076}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Topics","item":"https://ajnacs.com/topics/"},{"@type":"ListItem","position":3,"name":"Software Engineering","item":"https://ajnacs.com/learn/software-engineering/"},{"@type":"ListItem","position":4,"name":"Kernel Tuning with sysctl: Memory, Networking, and I/O"}]}</script>
 </head>
 <body class="article-frame" data-topic="Programming">
 <a class="skip-link" href="#main">Skip to content</a>
@@ -64,12 +69,11 @@ d.setAttribute('data-theme',t);
       <a class="brand-home" href="/" aria-label="Ajna Consulting Services — home"><span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span></a>
     </div>
     <nav class="nav" id="nav" aria-label="Primary">
-      <a href="/services/">Services</a>
-      <a href="/insights/" aria-current="location">Insights</a>
-      <a href="/series/">Series</a>
-      <a href="/notes/">Personal notes</a>
+      <a href="/topics/" aria-current="location">Topics</a>
       <a href="/case-studies/">Case studies</a>
-      <a href="/about/">About</a>
+      <a href="/services/">Services</a>
+      <a href="/notes/">Personal Notes</a>
+      <a href="/insights/#article-search">Search</a>
       <a class="btn btn-sm" href="/contact/" style="margin-left:.4rem">Engage engineering</a>
     </nav>
     <div class="nav-actions">
@@ -84,11 +88,7 @@ d.setAttribute('data-theme',t);
 <article class="article">
   <div class="reading-layout">
     <header class="article-head">
-      <nav class="crumbs" aria-label="Breadcrumb">
-        <a href="/">Home</a> <span aria-hidden="true">/</span>
-        <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
-        <a href="/topics/programming/">Programming</a>
-      </nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">/</span> <a href="/topics/">Topics</a> <span aria-hidden="true">/</span> <a href="/learn/software-engineering/">Software Engineering</a></nav>
       <h1 class="h1">Kernel Tuning with sysctl: Memory, Networking, and I/O</h1>
       <p class="lede" style="margin-top:1rem">The sysctl parameters that actually matter in production — VM reclaim tuning, TCP stack optimisation, file descriptor limits, and the settings that separate a well-tuned server from a default install.</p>
       <div class="article-meta">
@@ -383,14 +383,12 @@ numactl --cpunodebind=0 --membind=0 myapp
 
 
 
+      <section class="lane-reading" data-lane-continuation="software-engineering" aria-labelledby="lane-reading-title" style="--reading-lane-accent:#50764b"><h2 id="lane-reading-title" class="h3">Next in this series</h2><a class="lane-reading-next" data-lane-next href="/insights/os-namespaces-cgroups/"><strong>Linux Namespaces and cgroups: The Foundation of Containers</strong><span class="lane-reading-reason">Continue with the next published chapter in this series.</span><span class="lane-reading-meta">10 min read</span></a><div class="lane-reading-related"><h3 class="h3">Related reading</h3><ul class="lane-reading-list"><li><a data-lane-related href="/insights/python-for-cloud-engineers/"><strong>Python for Cloud Engineers: The Parts That Actually Matter</strong><span class="lane-reading-reason">Another perspective on programming.</span></a></li><li><a data-lane-related href="/insights/compression-selection-guide/"><strong>Compression in Production: Choosing Between gzip, zstd, lz4, and Brotli Like It Matters</strong><span class="lane-reading-reason">Another perspective on programming.</span></a></li></ul></div><a class="lane-reading-index" href="/learn/software-engineering/">All Software Engineering articles</a></section>
       <footer class="article-foot">
         <div class="row" style="gap:.4rem">
           <a class="chip" href="/topics/programming/">Programming</a><a class="chip" href="/topics/fundamentals/">Fundamentals</a>
         </div>
-        <nav class="prevnext" aria-label="More articles">
-          <a href="/insights/containers-security/"><span>Previous</span><strong>Container Security: The Specific Misconfigurations That Open Production Systems to Attack</strong></a>
-          <a href="/insights/ethernet-vs-infiniband-networking-2026/" class="next"><span>Next</span><strong>Ethernet vs. InfiniBand: Choosing the Right Network Fabric in 2026</strong></a>
-        </nav>
+        
       </footer>
     </div>
     <aside class="writing-promos" aria-label="Promotions" data-ad-slot="article-rail">
@@ -410,38 +408,7 @@ numactl --cpunodebind=0 --membind=0 myapp
 </aside>
   </div>
 
-  <section class="section surface hair" style="margin-top:4rem">
-    <div class="wrap">
-      <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|Programming|Fundamentals|" data-search="linux namespaces and cgroups: the foundation of containers how linux namespaces isolate processes, filesystems, networks, and users — and how cgroups enforce resource limits. the primitives that docker, kubernetes, and every container runtime are built on. programming fundamentals" data-topic="Programming">
-  <div class="card-art"><img data-article-art="os-namespaces-cgroups" src="/assets/covers/os-namespaces-cgroups.svg?v=381e6b4d68a1" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
-  <div class="card-body">
-    <a class="chip" href="/topics/programming/">Programming</a>
-    <h3 class="card-title"><a class="card-destination" href="/insights/os-namespaces-cgroups/">Linux Namespaces and cgroups: The Foundation of Containers</a></h3>
-    <p class="card-desc">How Linux namespaces isolate processes, filesystems, networks, and users — and how cgroups enforce resource limits. The primitives that Docker, Kubernetes, and every container runtime are built on.</p>
-    <div class="card-meta"><time datetime="2026-06-02">2 Jun 2026</time><span class="dot"></span><span>10 min read</span><span class="dot"></span><span>Series</span></div>
-  </div>
-</article>
-<article class="card" data-card data-topics="|Programming|Fundamentals|" data-search="disk i/o performance analysis on linux using iostat, iotop, and fio to measure disk throughput, latency, and queue depth — and diagnosing the i/o bottlenecks that silently degrade production databases. programming fundamentals" data-topic="Programming">
-  <div class="card-art"><img data-article-art="os-disk-io-performance" src="/assets/covers/os-disk-io-performance.svg?v=2d6f53822d43" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
-  <div class="card-body">
-    <a class="chip" href="/topics/programming/">Programming</a>
-    <h3 class="card-title"><a class="card-destination" href="/insights/os-disk-io-performance/">Disk I/O Performance Analysis on Linux</a></h3>
-    <p class="card-desc">Using iostat, iotop, and fio to measure disk throughput, latency, and queue depth — and diagnosing the I/O bottlenecks that silently degrade production databases.</p>
-    <div class="card-meta"><time datetime="2025-04-30">30 Apr 2025</time><span class="dot"></span><span>10 min read</span><span class="dot"></span><span>Series</span></div>
-  </div>
-</article>
-<article class="card" data-card data-topics="|Programming|Fundamentals|" data-search="linux storage management: disks, partitions, lvm, filesystems, and mounting how linux storage works from physical disk to mounted filesystem — block devices, partition tables, lvm for flexible volume management, filesystem creation and tuning, and nfs for network storage. programming fundamentals" data-topic="Programming">
-  <div class="card-art"><img data-article-art="os-storage-management" src="/assets/covers/os-storage-management.svg?v=9ceda661fb47" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
-  <div class="card-body">
-    <a class="chip" href="/topics/programming/">Programming</a>
-    <h3 class="card-title"><a class="card-destination" href="/insights/os-storage-management/">Linux Storage Management: Disks, Partitions, LVM, Filesystems, and Mounting</a></h3>
-    <p class="card-desc">How Linux storage works from physical disk to mounted filesystem — block devices, partition tables, LVM for flexible volume management, filesystem creation and tuning, and NFS for network storage.</p>
-    <div class="card-meta"><time datetime="2024-10-08">8 Oct 2024</time><span class="dot"></span><span>11 min read</span><span class="dot"></span><span>Series</span></div>
-  </div>
-</article></div>
-    </div>
-  </section>
+  
 
   <section class="section">
     <div class="art-wrap"><div class="cta-panel">
@@ -495,8 +462,7 @@ numactl --cpunodebind=0 --membind=0 myapp
   </div>
   <span class="chapter-left" id="chapterLeft"></span>
   <nav class="chapter-step" aria-label="Article navigation">
-    <a href="/insights/containers-security/" aria-label="Previous: Container Security: The Specific Misconfigurations That Open Production Systems to Attack"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a>
-    <a href="/insights/ethernet-vs-infiniband-networking-2026/" aria-label="Next: Ethernet vs. InfiniBand: Choosing the Right Network Fabric in 2026"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
+    <a href="/insights/os-disk-io-performance/" aria-label="Previous: Disk I/O Performance Analysis on Linux"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a><a href="/insights/os-namespaces-cgroups/" aria-label="Next: Linux Namespaces and cgroups: The Foundation of Containers"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
   </nav>
 </div>
 </main>
@@ -554,7 +520,8 @@ numactl --cpunodebind=0 --membind=0 myapp
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=f8d83e0e" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=f8d83e0e"></script>
+<script src="/assets/js/site.js?v=689adf6b" defer></script>
+
+<script type="module" src="/assets/js/brand-motion.mjs?v=689adf6b"></script>
 </body>
 </html>

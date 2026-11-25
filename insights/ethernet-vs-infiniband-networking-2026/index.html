@@ -33,7 +33,12 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=f8d83e0e">
+<link rel="stylesheet" href="/assets/css/site.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/portal.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-art.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-pages.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-reader.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/topic-scroller.css?v=689adf6b">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
 <link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Personal notes" href="/notes/feed.xml">
@@ -51,8 +56,8 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Ethernet vs. InfiniBand: Choosing the Right Network Fabric in 2026","description":"A practical breakdown of when to use Ethernet and when InfiniBand makes sense — with key metrics, topology differences, and real-world guidance for cloud, HPC, and AI workloads.","datePublished":"2026-10-02","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/ethernet-vs-infiniband-networking-2026/","image":"https://ajnacs.com/assets/og/articles/ethernet-vs-infiniband-networking-2026.png?v=94b911701963","keywords":"Systems, Infrastructure, Enterprise AI, Cloud Architecture, HPC","articleSection":"Infrastructure","wordCount":763}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Ethernet vs. InfiniBand: Choosing the Right Network Fabric in 2026"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Ethernet vs. InfiniBand: Choosing the Right Network Fabric in 2026","description":"A practical breakdown of when to use Ethernet and when InfiniBand makes sense — with key metrics, topology differences, and real-world guidance for cloud, HPC, and AI workloads.","datePublished":"2026-10-02","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/ethernet-vs-infiniband-networking-2026/","image":"https://ajnacs.com/assets/og/articles/ethernet-vs-infiniband-networking-2026.png?v=94b911701963","keywords":"Systems, Infrastructure, Enterprise AI, Cloud Architecture, HPC","articleSection":"Systems Architecture","wordCount":763}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Topics","item":"https://ajnacs.com/topics/"},{"@type":"ListItem","position":3,"name":"Systems Architecture","item":"https://ajnacs.com/learn/systems-architecture/"},{"@type":"ListItem","position":4,"name":"Ethernet vs. InfiniBand: Choosing the Right Network Fabric in 2026"}]}</script>
 </head>
 <body class="article-frame" data-topic="Infrastructure">
 <a class="skip-link" href="#main">Skip to content</a>
@@ -64,12 +69,11 @@ d.setAttribute('data-theme',t);
       <a class="brand-home" href="/" aria-label="Ajna Consulting Services — home"><span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span></a>
     </div>
     <nav class="nav" id="nav" aria-label="Primary">
-      <a href="/services/">Services</a>
-      <a href="/insights/" aria-current="location">Insights</a>
-      <a href="/series/">Series</a>
-      <a href="/notes/">Personal notes</a>
+      <a href="/topics/" aria-current="location">Topics</a>
       <a href="/case-studies/">Case studies</a>
-      <a href="/about/">About</a>
+      <a href="/services/">Services</a>
+      <a href="/notes/">Personal Notes</a>
+      <a href="/insights/#article-search">Search</a>
       <a class="btn btn-sm" href="/contact/" style="margin-left:.4rem">Engage engineering</a>
     </nav>
     <div class="nav-actions">
@@ -84,11 +88,7 @@ d.setAttribute('data-theme',t);
 <article class="article">
   <div class="reading-layout">
     <header class="article-head">
-      <nav class="crumbs" aria-label="Breadcrumb">
-        <a href="/">Home</a> <span aria-hidden="true">/</span>
-        <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
-        <a href="/topics/infrastructure/">Infrastructure</a>
-      </nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">/</span> <a href="/topics/">Topics</a> <span aria-hidden="true">/</span> <a href="/learn/systems-architecture/">Systems Architecture</a></nav>
       <h1 class="h1">Ethernet vs. InfiniBand: Choosing the Right Network Fabric in 2026</h1>
       <p class="lede" style="margin-top:1rem">A practical breakdown of when to use Ethernet and when InfiniBand makes sense — with key metrics, topology differences, and real-world guidance for cloud, HPC, and AI workloads.</p>
       <div class="article-meta">
@@ -183,14 +183,12 @@ d.setAttribute('data-theme',t);
 
 
 
+      <section class="lane-reading" data-lane-continuation="systems-architecture" aria-labelledby="lane-reading-title" style="--reading-lane-accent:#5f56a1"><h2 id="lane-reading-title" class="h3">Continue in Systems Architecture</h2><a class="lane-reading-next" data-lane-next href="/insights/multi-region-architecture-patterns/"><strong>Multi-Region Architecture Patterns: What You&#39;re Actually Buying at Each Tier</strong><span class="lane-reading-reason">Explore another approach in Systems Architecture.</span><span class="lane-reading-meta">11 min read</span></a><div class="lane-reading-related"><h3 class="h3">Related reading</h3><ul class="lane-reading-list"><li><a data-lane-related href="/insights/quantum-computing-race-2025/"><strong>Quantum Computing Milestones, 2019–2025: What the Evidence Shows</strong><span class="lane-reading-reason">Another perspective on enterprise ai.</span></a></li><li><a data-lane-related href="/insights/roce-vs-iwarp-networking/"><strong>RoCE vs iWARP: Choosing the Right RDMA Technology for Your Workload</strong><span class="lane-reading-reason">Another perspective on hpc.</span></a></li></ul></div><a class="lane-reading-index" href="/learn/systems-architecture/">All Systems Architecture articles</a></section>
       <footer class="article-foot">
         <div class="row" style="gap:.4rem">
           <a class="chip" href="/topics/systems/">Systems</a><a class="chip" href="/topics/infrastructure/">Infrastructure</a><a class="chip" href="/topics/enterprise-ai/">Enterprise AI</a><a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a><a class="chip" href="/topics/hpc/">HPC</a>
         </div>
-        <nav class="prevnext" aria-label="More articles">
-          <a href="/insights/os-kernel-tuning-sysctl/"><span>Previous</span><strong>Kernel Tuning with sysctl: Memory, Networking, and I/O</strong></a>
-          <a href="/insights/data-lakehouse-architecture/" class="next"><span>Next</span><strong>The Data Lakehouse: Why It Won, and How to Architect One That Works</strong></a>
-        </nav>
+        
       </footer>
     </div>
     <aside class="writing-promos" aria-label="Promotions" data-ad-slot="article-rail">
@@ -210,38 +208,7 @@ d.setAttribute('data-theme',t);
 </aside>
   </div>
 
-  <section class="section surface hair" style="margin-top:4rem">
-    <div class="wrap">
-      <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|Systems|Enterprise AI|Infrastructure|" data-search="ethernet vs. infiniband for ai training: why the network fabric matters more than you think most ai infrastructure decisions focus on gpus and storage. network fabric is the variable that determines whether your training cluster runs at 90% efficiency or 40%. systems enterprise ai infrastructure" data-topic="Enterprise AI">
-  <div class="card-art"><img data-article-art="quick-take-ethernet-vs-infiniband" src="/assets/covers/quick-take-ethernet-vs-infiniband.svg?v=5b0756b0539a" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
-  <div class="card-body">
-    <a class="chip" href="/topics/enterprise-ai/">Enterprise AI</a>
-    <h3 class="card-title"><a class="card-destination" href="/insights/quick-take-ethernet-vs-infiniband/">Ethernet vs. InfiniBand for AI Training: Why the Network Fabric Matters More Than You Think</a></h3>
-    <p class="card-desc">Most AI infrastructure decisions focus on GPUs and storage. Network fabric is the variable that determines whether your training cluster runs at 90% efficiency or 40%.</p>
-    <div class="card-meta"><time datetime="2025-03-25">25 Mar 2025</time><span class="dot"></span><span>3 min read</span></div>
-  </div>
-</article>
-<article class="card" data-card data-topics="|Cloud Architecture|DevSecOps|Infrastructure|" data-search="serverless vs containers: an honest comparison for 2026 neither is universally better. the answer depends on your workload profile, your team&#39;s operational maturity, and — honestly — your tolerance for cold starts. cloud architecture devsecops infrastructure" data-topic="Cloud Architecture">
-  <div class="card-art"><img data-article-art="serverless-vs-containers-2026" src="/assets/covers/serverless-vs-containers-2026.svg?v=61a2cd68990c" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
-  <div class="card-body">
-    <a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a>
-    <h3 class="card-title"><a class="card-destination" href="/insights/serverless-vs-containers-2026/">Serverless vs Containers: An Honest Comparison for 2026</a></h3>
-    <p class="card-desc">Neither is universally better. The answer depends on your workload profile, your team&#39;s operational maturity, and — honestly — your tolerance for cold starts.</p>
-    <div class="card-meta"><time datetime="2026-11-13">13 Nov 2026</time><span class="dot"></span><span>9 min read</span></div>
-  </div>
-</article>
-<article class="card" data-card data-topics="|Systems|HPC|AI &amp; MLOps|" data-search="roce vs iwarp: choosing the right rdma technology for your workload both roce and iwarp provide rdma over ethernet, but they have different network requirements, loss behavior, and operational characteristics. here&#39;s how to choose between them for ai training, hpc, and storage workloads. systems hpc ai &amp; mlops" data-topic="AI &amp; MLOps">
-  <div class="card-art"><img data-article-art="roce-vs-iwarp-networking" src="/assets/covers/roce-vs-iwarp-networking.svg?v=f6d94872b25a" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
-  <div class="card-body">
-    <a class="chip" href="/topics/ai-mlops/">AI &amp; MLOps</a>
-    <h3 class="card-title"><a class="card-destination" href="/insights/roce-vs-iwarp-networking/">RoCE vs iWARP: Choosing the Right RDMA Technology for Your Workload</a></h3>
-    <p class="card-desc">Both RoCE and iWARP provide RDMA over Ethernet, but they have different network requirements, loss behavior, and operational characteristics. Here&#39;s how to choose between them for AI training, HPC, and storage workloads.</p>
-    <div class="card-meta"><time datetime="2026-11-02">2 Nov 2026</time><span class="dot"></span><span>3 min read</span></div>
-  </div>
-</article></div>
-    </div>
-  </section>
+  
 
   <section class="section">
     <div class="art-wrap"><div class="cta-panel">
@@ -344,7 +311,8 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=f8d83e0e" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=f8d83e0e"></script>
+<script src="/assets/js/site.js?v=689adf6b" defer></script>
+
+<script type="module" src="/assets/js/brand-motion.mjs?v=689adf6b"></script>
 </body>
 </html>

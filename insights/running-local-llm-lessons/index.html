@@ -33,7 +33,12 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=f8d83e0e">
+<link rel="stylesheet" href="/assets/css/site.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/portal.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-art.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-pages.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-reader.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/topic-scroller.css?v=689adf6b">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
 <link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Personal notes" href="/notes/feed.xml">
@@ -51,8 +56,8 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Running LLMs Locally: What Six Months of Daily Use Actually Taught Me","description":"I started running local LLMs as a cost experiment. It became a privacy practice, a performance benchmark, and an education in what language models actually need to function well. Here's the honest version of what I found.","datePublished":"2025-06-05","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/running-local-llm-lessons/","image":"https://ajnacs.com/assets/og/articles/running-local-llm-lessons.png?v=bb9bf1ec5975","keywords":"Enterprise AI, Emerging Technology","articleSection":"Enterprise AI","wordCount":1806}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Running LLMs Locally: What Six Months of Daily Use Actually Taught Me"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Running LLMs Locally: What Six Months of Daily Use Actually Taught Me","description":"I started running local LLMs as a cost experiment. It became a privacy practice, a performance benchmark, and an education in what language models actually need to function well. Here's the honest version of what I found.","datePublished":"2025-06-05","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/running-local-llm-lessons/","image":"https://ajnacs.com/assets/og/articles/running-local-llm-lessons.png?v=bb9bf1ec5975","keywords":"Enterprise AI, Emerging Technology","articleSection":"AI & Data Engineering","wordCount":1806}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Topics","item":"https://ajnacs.com/topics/"},{"@type":"ListItem","position":3,"name":"AI & Data Engineering","item":"https://ajnacs.com/learn/ai-data/"},{"@type":"ListItem","position":4,"name":"Running LLMs Locally: What Six Months of Daily Use Actually Taught Me"}]}</script>
 </head>
 <body class="article-frame" data-topic="Enterprise AI">
 <a class="skip-link" href="#main">Skip to content</a>
@@ -64,12 +69,11 @@ d.setAttribute('data-theme',t);
       <a class="brand-home" href="/" aria-label="Ajna Consulting Services — home"><span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span></a>
     </div>
     <nav class="nav" id="nav" aria-label="Primary">
-      <a href="/services/">Services</a>
-      <a href="/insights/" aria-current="location">Insights</a>
-      <a href="/series/">Series</a>
-      <a href="/notes/">Personal notes</a>
+      <a href="/topics/" aria-current="location">Topics</a>
       <a href="/case-studies/">Case studies</a>
-      <a href="/about/">About</a>
+      <a href="/services/">Services</a>
+      <a href="/notes/">Personal Notes</a>
+      <a href="/insights/#article-search">Search</a>
       <a class="btn btn-sm" href="/contact/" style="margin-left:.4rem">Engage engineering</a>
     </nav>
     <div class="nav-actions">
@@ -84,11 +88,7 @@ d.setAttribute('data-theme',t);
 <article class="article">
   <div class="reading-layout">
     <header class="article-head">
-      <nav class="crumbs" aria-label="Breadcrumb">
-        <a href="/">Home</a> <span aria-hidden="true">/</span>
-        <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
-        <a href="/topics/enterprise-ai/">Enterprise AI</a>
-      </nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">/</span> <a href="/topics/">Topics</a> <span aria-hidden="true">/</span> <a href="/learn/ai-data/">AI &amp; Data Engineering</a></nav>
       <h1 class="h1">Running LLMs Locally: What Six Months of Daily Use Actually Taught Me</h1>
       <p class="lede" style="margin-top:1rem">I started running local LLMs as a cost experiment. It became a privacy practice, a performance benchmark, and an education in what language models actually need to function well. Here&#39;s the honest version of what I found.</p>
       <div class="article-meta">
@@ -238,14 +238,12 @@ ollama run llama3.2
 
 
 
+      <section class="lane-reading" data-lane-continuation="ai-data" aria-labelledby="lane-reading-title" style="--reading-lane-accent:#21758c"><h2 id="lane-reading-title" class="h3">Continue in AI &amp; Data</h2><a class="lane-reading-next" data-lane-next href="/insights/quick-take-ethernet-vs-infiniband/"><strong>Ethernet vs. InfiniBand for AI Training: Why the Network Fabric Matters More Than You Think</strong><span class="lane-reading-reason">Continue with enterprise ai in another part of this topic.</span><span class="lane-reading-meta">3 min read</span></a><div class="lane-reading-related"><h3 class="h3">Related reading</h3><ul class="lane-reading-list"><li><a data-lane-related href="/insights/ai-coding-assistants-comparison-2026/"><strong>AI Coding Assistants in 2026: A Practical Comparison</strong><span class="lane-reading-reason">Another perspective on enterprise ai.</span></a></li><li><a data-lane-related href="/insights/prompt-engineering-production/"><strong>Prompt Engineering for Production Systems: Beyond the Demo</strong><span class="lane-reading-reason">Another perspective on enterprise ai.</span></a></li></ul></div><a class="lane-reading-index" href="/learn/ai-data/">All AI &amp; Data articles</a></section>
       <footer class="article-foot">
         <div class="row" style="gap:.4rem">
           <a class="chip" href="/topics/enterprise-ai/">Enterprise AI</a><a class="chip" href="/topics/emerging-technology/">Emerging Technology</a>
         </div>
-        <nav class="prevnext" aria-label="More articles">
-          <a href="/insights/aws-savings-plans/"><span>Previous</span><strong>AWS Savings Plans vs Reserved Instances: Making the Commitment Decision</strong></a>
-          <a href="/insights/mttr-reduction-playbook/" class="next"><span>Next</span><strong>The MTTR Reduction Playbook: Investments That Actually Move the Needle</strong></a>
-        </nav>
+        
       </footer>
     </div>
     <aside class="writing-promos" aria-label="Promotions" data-ad-slot="article-rail">
@@ -265,38 +263,7 @@ ollama run llama3.2
 </aside>
   </div>
 
-  <section class="section surface hair" style="margin-top:4rem">
-    <div class="wrap">
-      <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|Quantum Computing|Enterprise AI|Emerging Technology|" data-search="quantum computing milestones, 2019–2025: what the evidence shows distinguish demonstrations in random circuit sampling, quantum error correction, annealing, and experimental qubit architectures. quantum computing enterprise ai emerging technology" data-topic="Enterprise AI">
-  <div class="card-art"><img data-article-art="quantum-computing-race-2025" src="/assets/covers/quantum-computing-race-2025.svg?v=56cba330e9d8" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
-  <div class="card-body">
-    <a class="chip" href="/topics/enterprise-ai/">Enterprise AI</a>
-    <h3 class="card-title"><a class="card-destination" href="/insights/quantum-computing-race-2025/">Quantum Computing Milestones, 2019–2025: What the Evidence Shows</a></h3>
-    <p class="card-desc">Distinguish demonstrations in random circuit sampling, quantum error correction, annealing, and experimental qubit architectures.</p>
-    <div class="card-meta"><time datetime="2026-11-18">18 Nov 2026</time><span class="dot"></span><span>6 min read</span></div>
-  </div>
-</article>
-<article class="card" data-card data-topics="|Quantum Computing|Emerging Technology|" data-search="how to read a quantum computing milestone separate component experiments, logical-qubit evidence, application advantage, and cryptographic migration work. quantum computing emerging technology" data-topic="Quantum Computing">
-  <div class="card-art"><img data-article-art="quick-take-quantum-computing" src="/assets/covers/quick-take-quantum-computing.svg?v=b3917384bdb8" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
-  <div class="card-body">
-    <a class="chip" href="/topics/quantum-computing/">Quantum Computing</a>
-    <h3 class="card-title"><a class="card-destination" href="/insights/quick-take-quantum-computing/">How to Read a Quantum Computing Milestone</a></h3>
-    <p class="card-desc">Separate component experiments, logical-qubit evidence, application advantage, and cryptographic migration work.</p>
-    <div class="card-meta"><time datetime="2026-11-25">25 Nov 2026</time><span class="dot"></span><span>4 min read</span></div>
-  </div>
-</article>
-<article class="card" data-card data-topics="|Programming|Enterprise AI|Developer Tools|" data-search="ai coding assistants in 2026: a practical comparison compare ai coding assistants by workflow, review time, patch acceptance and access controls. includes a practical scoring method for an engineering-team pilot. programming enterprise ai developer tools" data-topic="Programming">
-  <div class="card-art"><img data-article-art="ai-coding-assistants-comparison-2026" src="/assets/covers/ai-coding-assistants-comparison-2026.svg?v=2f0bc4deeae3" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
-  <div class="card-body">
-    <a class="chip" href="/topics/programming/">Programming</a>
-    <h3 class="card-title"><a class="card-destination" href="/insights/ai-coding-assistants-comparison-2026/">AI Coding Assistants in 2026: A Practical Comparison</a></h3>
-    <p class="card-desc">Compare AI coding assistants by workflow, review time, patch acceptance and access controls. Includes a practical scoring method for an engineering-team pilot.</p>
-    <div class="card-meta"><time datetime="2026-11-16">16 Nov 2026</time><span class="dot"></span><span>4 min read</span></div>
-  </div>
-</article></div>
-    </div>
-  </section>
+  
 
   <section class="section">
     <div class="art-wrap"><div class="cta-panel">
@@ -346,12 +313,11 @@ ollama run llama3.2
 <div class="chapter-bar" id="chapterBar">
   <div class="chapter-where">
     <b>Running LLMs Locally: What Six Months of Daily Use Actually Taught Me</b>
-    <span>Enterprise AI</span>
+    <span>AI &amp; Data Engineering</span>
   </div>
   <span class="chapter-left" id="chapterLeft"></span>
   <nav class="chapter-step" aria-label="Article navigation">
-    <a href="/insights/aws-savings-plans/" aria-label="Previous: AWS Savings Plans vs Reserved Instances: Making the Commitment Decision"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a>
-    <a href="/insights/mttr-reduction-playbook/" aria-label="Next: The MTTR Reduction Playbook: Investments That Actually Move the Needle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
+    <a href="/insights/ai-cost-management-production/" aria-label="Previous: AI Cost Management in Production: Controlling Token Spend Without Degrading Quality"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a><a href="/insights/quick-take-ethernet-vs-infiniband/" aria-label="Next: Ethernet vs. InfiniBand for AI Training: Why the Network Fabric Matters More Than You Think"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
   </nav>
 </div>
 </main>
@@ -409,7 +375,8 @@ ollama run llama3.2
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=f8d83e0e" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=f8d83e0e"></script>
+<script src="/assets/js/site.js?v=689adf6b" defer></script>
+
+<script type="module" src="/assets/js/brand-motion.mjs?v=689adf6b"></script>
 </body>
 </html>

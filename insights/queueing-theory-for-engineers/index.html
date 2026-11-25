@@ -33,7 +33,12 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=f8d83e0e">
+<link rel="stylesheet" href="/assets/css/site.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/portal.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-art.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-pages.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-reader.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/topic-scroller.css?v=689adf6b">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
 <link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Personal notes" href="/notes/feed.xml">
@@ -51,8 +56,8 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Queueing Theory for Engineers: How Utilisation and Variability Shape Waits","description":"Little's Law, the utilization-latency curve, and variability's tax — the three results that explain most capacity mysteries, from connection pools to on-call load. No calculus required, just the intuitions that make systems behavior predictable.","datePublished":"2026-02-03","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/queueing-theory-for-engineers/","image":"https://ajnacs.com/assets/og/articles/queueing-theory-for-engineers.png?v=5923b114bff9","keywords":"Performance, Capacity Planning, Reliability, Distributed Systems, Architecture","articleSection":"Performance","wordCount":1298}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Queueing Theory for Engineers: How Utilisation and Variability Shape Waits"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Queueing Theory for Engineers: How Utilisation and Variability Shape Waits","description":"Little's Law, the utilization-latency curve, and variability's tax — the three results that explain most capacity mysteries, from connection pools to on-call load. No calculus required, just the intuitions that make systems behavior predictable.","datePublished":"2026-02-03","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/queueing-theory-for-engineers/","image":"https://ajnacs.com/assets/og/articles/queueing-theory-for-engineers.png?v=5923b114bff9","keywords":"Performance, Capacity Planning, Reliability, Distributed Systems, Architecture","articleSection":"Reliability & Observability","wordCount":1298}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Topics","item":"https://ajnacs.com/topics/"},{"@type":"ListItem","position":3,"name":"Reliability & Observability","item":"https://ajnacs.com/learn/reliability/"},{"@type":"ListItem","position":4,"name":"Queueing Theory for Engineers: How Utilisation and Variability Shape Waits"}]}</script>
 </head>
 <body class="article-frame" data-topic="Performance">
 <a class="skip-link" href="#main">Skip to content</a>
@@ -64,12 +69,11 @@ d.setAttribute('data-theme',t);
       <a class="brand-home" href="/" aria-label="Ajna Consulting Services — home"><span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span></a>
     </div>
     <nav class="nav" id="nav" aria-label="Primary">
-      <a href="/services/">Services</a>
-      <a href="/insights/" aria-current="location">Insights</a>
-      <a href="/series/">Series</a>
-      <a href="/notes/">Personal notes</a>
+      <a href="/topics/" aria-current="location">Topics</a>
       <a href="/case-studies/">Case studies</a>
-      <a href="/about/">About</a>
+      <a href="/services/">Services</a>
+      <a href="/notes/">Personal Notes</a>
+      <a href="/insights/#article-search">Search</a>
       <a class="btn btn-sm" href="/contact/" style="margin-left:.4rem">Engage engineering</a>
     </nav>
     <div class="nav-actions">
@@ -84,11 +88,7 @@ d.setAttribute('data-theme',t);
 <article class="article">
   <div class="reading-layout">
     <header class="article-head">
-      <nav class="crumbs" aria-label="Breadcrumb">
-        <a href="/">Home</a> <span aria-hidden="true">/</span>
-        <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
-        <a href="/topics/performance/">Performance</a>
-      </nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">/</span> <a href="/topics/">Topics</a> <span aria-hidden="true">/</span> <a href="/learn/reliability/">Reliability &amp; Observability</a></nav>
       <h1 class="h1">Queueing Theory for Engineers: How Utilisation and Variability Shape Waits</h1>
       <p class="lede" style="margin-top:1rem">Little&#39;s Law, the utilization-latency curve, and variability&#39;s tax — the three results that explain most capacity mysteries, from connection pools to on-call load. No calculus required, just the intuitions that make systems behavior predictable.</p>
       <div class="article-meta">
@@ -185,14 +185,12 @@ d.setAttribute('data-theme',t);
 
 
 
+      <section class="lane-reading" data-lane-continuation="reliability" aria-labelledby="lane-reading-title" style="--reading-lane-accent:#2f65aa"><h2 id="lane-reading-title" class="h3">Continue in Reliability</h2><a class="lane-reading-next" data-lane-next href="/insights/trace-sampling-strategies/"><strong>Trace Sampling: Keeping the Traces That Matter When You Can&#39;t Keep Them All</strong><span class="lane-reading-reason">Continue with reliability in another part of this topic.</span><span class="lane-reading-meta">9 min read</span></a><div class="lane-reading-related"><h3 class="h3">Related reading</h3><ul class="lane-reading-list"><li><a data-lane-related href="/insights/capacity-planning-engineering/"><strong>Capacity Planning in the Cloud Era: Headroom as an Engineered Property</strong><span class="lane-reading-reason">Another perspective on reliability.</span></a></li><li><a data-lane-related href="/insights/structured-logging-practices/"><strong>Structured Logging That Pays for Itself: Schema, Context, and Cost Discipline</strong><span class="lane-reading-reason">Another perspective on reliability.</span></a></li></ul></div><a class="lane-reading-index" href="/learn/reliability/">All Reliability articles</a></section>
       <footer class="article-foot">
         <div class="row" style="gap:.4rem">
           <a class="chip" href="/topics/performance/">Performance</a><a class="chip" href="/topics/capacity-planning/">Capacity Planning</a><a class="chip" href="/topics/reliability/">Reliability</a><a class="chip" href="/topics/distributed-systems/">Distributed Systems</a><a class="chip" href="/topics/architecture/">Architecture</a>
         </div>
-        <nav class="prevnext" aria-label="More articles">
-          <a href="/insights/strangler-fig-legacy-migration/"><span>Previous</span><strong>The Strangler Fig in Practice: Incremental Legacy Replacement That Actually Finishes</strong></a>
-          <a href="/insights/multi-region-architecture-patterns/" class="next"><span>Next</span><strong>Multi-Region Architecture Patterns: What You&#39;re Actually Buying at Each Tier</strong></a>
-        </nav>
+        
       </footer>
     </div>
     <aside class="writing-promos" aria-label="Promotions" data-ad-slot="article-rail">
@@ -212,38 +210,7 @@ d.setAttribute('data-theme',t);
 </aside>
   </div>
 
-  <section class="section surface hair" style="margin-top:4rem">
-    <div class="wrap">
-      <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|Architecture|Performance|Engineering Leadership|Capacity Planning|" data-search="back-of-envelope engineering: the estimation skill that filters bad architectures in minutes before the design review argues about frameworks, arithmetic should have eliminated half the options. the latency numbers worth memorizing, the estimation moves — traffic, storage, bandwidth, cost — and worked habits that turn guesses into engineering. architecture performance engineering leadership capacity planning" data-topic="Architecture">
-  <div class="card-art"><img data-article-art="back-of-envelope-system-design" src="/assets/covers/back-of-envelope-system-design.svg?v=b57861918a69" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
-  <div class="card-body">
-    <a class="chip" href="/topics/architecture/">Architecture</a>
-    <h3 class="card-title"><a class="card-destination" href="/insights/back-of-envelope-system-design/">Back-of-Envelope Engineering: The Estimation Skill That Filters Bad Architectures in Minutes</a></h3>
-    <p class="card-desc">Before the design review argues about frameworks, arithmetic should have eliminated half the options. The latency numbers worth memorizing, the estimation moves — traffic, storage, bandwidth, cost — and worked habits that turn guesses into engineering.</p>
-    <div class="card-meta"><time datetime="2026-04-01">1 Apr 2026</time><span class="dot"></span><span>8 min read</span></div>
-  </div>
-</article>
-<article class="card" data-card data-topics="|Cloud Architecture|Architecture|Reliability|Disaster Recovery|Distributed Systems|" data-search="multi-region architecture patterns: what you&#39;re actually buying at each tier active-passive, pilot light, active-active, and the data problem underneath them all. a tiered framework for multi-region design that matches architecture to actual availability requirements — and prices the tiers honestly. cloud architecture architecture reliability disaster recovery distributed systems" data-topic="Cloud Architecture">
-  <div class="card-art"><img data-article-art="multi-region-architecture-patterns" src="/assets/covers/multi-region-architecture-patterns.svg?v=983e36039fa8" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
-  <div class="card-body">
-    <a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a>
-    <h3 class="card-title"><a class="card-destination" href="/insights/multi-region-architecture-patterns/">Multi-Region Architecture Patterns: What You&#39;re Actually Buying at Each Tier</a></h3>
-    <p class="card-desc">Active-passive, pilot light, active-active, and the data problem underneath them all. A tiered framework for multi-region design that matches architecture to actual availability requirements — and prices the tiers honestly.</p>
-    <div class="card-meta"><time datetime="2026-02-12">12 Feb 2026</time><span class="dot"></span><span>11 min read</span></div>
-  </div>
-</article>
-<article class="card" data-card data-topics="|Observability|Distributed Systems|Reliability|Performance|Cloud Architecture|" data-search="trace sampling: keeping the traces that matter when you can&#39;t keep them all distributed tracing at production volume is a sampling problem wearing an instrumentation costume — head vs tail sampling, the consistency rules that keep traces whole, error-and-latency-biased retention, and the cost architecture of an honest tracing pipeline. observability distributed systems reliability performance cloud architecture" data-topic="Observability">
-  <div class="card-art"><img data-article-art="trace-sampling-strategies" src="/assets/covers/trace-sampling-strategies.svg?v=7536d914939c" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
-  <div class="card-body">
-    <a class="chip" href="/topics/observability/">Observability</a>
-    <h3 class="card-title"><a class="card-destination" href="/insights/trace-sampling-strategies/">Trace Sampling: Keeping the Traces That Matter When You Can&#39;t Keep Them All</a></h3>
-    <p class="card-desc">Distributed tracing at production volume is a sampling problem wearing an instrumentation costume — head vs tail sampling, the consistency rules that keep traces whole, error-and-latency-biased retention, and the cost architecture of an honest tracing pipeline.</p>
-    <div class="card-meta"><time datetime="2025-09-23">23 Sept 2025</time><span class="dot"></span><span>9 min read</span></div>
-  </div>
-</article></div>
-    </div>
-  </section>
+  
 
   <section class="section">
     <div class="art-wrap"><div class="cta-panel">
@@ -293,12 +260,11 @@ d.setAttribute('data-theme',t);
 <div class="chapter-bar" id="chapterBar">
   <div class="chapter-where">
     <b>Queueing Theory for Engineers: How Utilisation and Variability Shape Waits</b>
-    <span>Performance</span>
+    <span>Reliability &amp; Observability</span>
   </div>
   <span class="chapter-left" id="chapterLeft"></span>
   <nav class="chapter-step" aria-label="Article navigation">
-    <a href="/insights/strangler-fig-legacy-migration/" aria-label="Previous: The Strangler Fig in Practice: Incremental Legacy Replacement That Actually Finishes"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a>
-    <a href="/insights/multi-region-architecture-patterns/" aria-label="Next: Multi-Region Architecture Patterns: What You&#39;re Actually Buying at Each Tier"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
+    <a href="/insights/capacity-planning-engineering/" aria-label="Previous: Capacity Planning in the Cloud Era: Headroom as an Engineered Property"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a><a href="/insights/trace-sampling-strategies/" aria-label="Next: Trace Sampling: Keeping the Traces That Matter When You Can&#39;t Keep Them All"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
   </nav>
 </div>
 </main>
@@ -356,7 +322,8 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=f8d83e0e" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=f8d83e0e"></script>
+<script src="/assets/js/site.js?v=689adf6b" defer></script>
+
+<script type="module" src="/assets/js/brand-motion.mjs?v=689adf6b"></script>
 </body>
 </html>

@@ -33,7 +33,12 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=f8d83e0e">
+<link rel="stylesheet" href="/assets/css/site.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/portal.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-art.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-pages.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-reader.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/topic-scroller.css?v=689adf6b">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
 <link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Personal notes" href="/notes/feed.xml">
@@ -51,8 +56,8 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Virtual Threads in the Enterprise: What Changes, What Doesn't, and What Breaks","description":"Java 21's virtual threads promise massive concurrency without reactive complexity. Here's what actually changes in enterprise services — thread pool math, pinning pitfalls, connection pools as the new bottleneck, and when reactive still wins.","datePublished":"2026-02-24","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/java-virtual-threads-enterprise/","image":"https://ajnacs.com/assets/og/articles/java-virtual-threads-enterprise.png?v=cb7828d38f89","keywords":"Java, JVM, Concurrency, Performance, Architecture","articleSection":"Performance","wordCount":2120}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Virtual Threads in the Enterprise: What Changes, What Doesn't, and What Breaks"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Virtual Threads in the Enterprise: What Changes, What Doesn't, and What Breaks","description":"Java 21's virtual threads promise massive concurrency without reactive complexity. Here's what actually changes in enterprise services — thread pool math, pinning pitfalls, connection pools as the new bottleneck, and when reactive still wins.","datePublished":"2026-02-24","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/java-virtual-threads-enterprise/","image":"https://ajnacs.com/assets/og/articles/java-virtual-threads-enterprise.png?v=cb7828d38f89","keywords":"Java, JVM, Concurrency, Performance, Architecture","articleSection":"Software Engineering","wordCount":2120}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Topics","item":"https://ajnacs.com/topics/"},{"@type":"ListItem","position":3,"name":"Software Engineering","item":"https://ajnacs.com/learn/software-engineering/"},{"@type":"ListItem","position":4,"name":"Virtual Threads in the Enterprise: What Changes, What Doesn't, and What Breaks"}]}</script>
 </head>
 <body class="article-frame" data-topic="Performance">
 <a class="skip-link" href="#main">Skip to content</a>
@@ -64,12 +69,11 @@ d.setAttribute('data-theme',t);
       <a class="brand-home" href="/" aria-label="Ajna Consulting Services — home"><span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span></a>
     </div>
     <nav class="nav" id="nav" aria-label="Primary">
-      <a href="/services/">Services</a>
-      <a href="/insights/" aria-current="location">Insights</a>
-      <a href="/series/">Series</a>
-      <a href="/notes/">Personal notes</a>
+      <a href="/topics/" aria-current="location">Topics</a>
       <a href="/case-studies/">Case studies</a>
-      <a href="/about/">About</a>
+      <a href="/services/">Services</a>
+      <a href="/notes/">Personal Notes</a>
+      <a href="/insights/#article-search">Search</a>
       <a class="btn btn-sm" href="/contact/" style="margin-left:.4rem">Engage engineering</a>
     </nav>
     <div class="nav-actions">
@@ -84,11 +88,7 @@ d.setAttribute('data-theme',t);
 <article class="article">
   <div class="reading-layout">
     <header class="article-head">
-      <nav class="crumbs" aria-label="Breadcrumb">
-        <a href="/">Home</a> <span aria-hidden="true">/</span>
-        <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
-        <a href="/topics/performance/">Performance</a>
-      </nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">/</span> <a href="/topics/">Topics</a> <span aria-hidden="true">/</span> <a href="/learn/software-engineering/">Software Engineering</a></nav>
       <h1 class="h1">Virtual Threads in the Enterprise: What Changes, What Doesn&#39;t, and What Breaks</h1>
       <p class="lede" style="margin-top:1rem">Java 21&#39;s virtual threads promise massive concurrency without reactive complexity. Here&#39;s what actually changes in enterprise services — thread pool math, pinning pitfalls, connection pools as the new bottleneck, and when reactive still wins.</p>
       <div class="article-meta">
@@ -205,14 +205,12 @@ d.setAttribute('data-theme',t);
 
 
 
+      <section class="lane-reading" data-lane-continuation="software-engineering" aria-labelledby="lane-reading-title" style="--reading-lane-accent:#50764b"><h2 id="lane-reading-title" class="h3">Read more in Software Engineering</h2><a class="lane-reading-next" href="/learn/software-engineering/"><strong>Browse all Software Engineering articles</strong></a><div class="lane-reading-related"><h3 class="h3">Related reading</h3><ul class="lane-reading-list"><li><a data-lane-related href="/insights/java-graalvm-native-image/"><strong>GraalVM Native Image for Enterprise Java: When Compiling Ahead of Time Pays</strong><span class="lane-reading-reason">Another perspective on java.</span></a></li><li><a data-lane-related href="/insights/java-jvm-tuning-production/"><strong>JVM Tuning for Production: Heap, GC, and the Flags Worth Setting in 2026</strong><span class="lane-reading-reason">Another perspective on java.</span></a></li></ul></div></section>
       <footer class="article-foot">
         <div class="row" style="gap:.4rem">
           <a class="chip" href="/topics/java/">Java</a><a class="chip" href="/topics/jvm/">JVM</a><a class="chip" href="/topics/concurrency/">Concurrency</a><a class="chip" href="/topics/performance/">Performance</a><a class="chip" href="/topics/architecture/">Architecture</a>
         </div>
-        <nav class="prevnext" aria-label="More articles">
-          <a href="/insights/multi-region-architecture-patterns/"><span>Previous</span><strong>Multi-Region Architecture Patterns: What You&#39;re Actually Buying at Each Tier</strong></a>
-          <a href="/insights/java-legacy-modernization-roadmap/" class="next"><span>Next</span><strong>Modernizing Legacy Java: A Roadmap from Java 8 to 21+ Without Stopping the Business</strong></a>
-        </nav>
+        
       </footer>
     </div>
     <aside class="writing-promos" aria-label="Promotions" data-ad-slot="article-rail">
@@ -232,38 +230,7 @@ d.setAttribute('data-theme',t);
 </aside>
   </div>
 
-  <section class="section surface hair" style="margin-top:4rem">
-    <div class="wrap">
-      <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|Java|JVM|GraalVM|Cloud Architecture|Performance|" data-search="graalvm native image for enterprise java: when compiling ahead of time pays native image turns java applications into instant-starting, memory-lean executables — at the cost of a closed-world assumption that fights two decades of java dynamism. where native compilation genuinely wins, what breaks, and a decision framework. java jvm graalvm cloud architecture performance" data-topic="Cloud Architecture">
-  <div class="card-art"><img data-article-art="java-graalvm-native-image" src="/assets/covers/java-graalvm-native-image.svg?v=a95fa90fbc60" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
-  <div class="card-body">
-    <a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a>
-    <h3 class="card-title"><a class="card-destination" href="/insights/java-graalvm-native-image/">GraalVM Native Image for Enterprise Java: When Compiling Ahead of Time Pays</a></h3>
-    <p class="card-desc">Native Image turns Java applications into instant-starting, memory-lean executables — at the cost of a closed-world assumption that fights two decades of Java dynamism. Where native compilation genuinely wins, what breaks, and a decision framework.</p>
-    <div class="card-meta"><time datetime="2026-10-26">26 Oct 2026</time><span class="dot"></span><span>10 min read</span></div>
-  </div>
-</article>
-<article class="card" data-card data-topics="|Java|JVM|Performance|Cloud Architecture|" data-search="jvm tuning for production: heap, gc, and the flags worth setting in 2026 a practical guide to tuning the jvm for production services — heap sizing, choosing between g1, zgc, and shenandoah, container awareness, and the observability flags every deployment should carry. java jvm performance cloud architecture" data-topic="Performance">
-  <div class="card-art"><img data-article-art="java-jvm-tuning-production" src="/assets/covers/java-jvm-tuning-production.svg?v=1e01a5dc63b7" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
-  <div class="card-body">
-    <a class="chip" href="/topics/performance/">Performance</a>
-    <h3 class="card-title"><a class="card-destination" href="/insights/java-jvm-tuning-production/">JVM Tuning for Production: Heap, GC, and the Flags Worth Setting in 2026</a></h3>
-    <p class="card-desc">A practical guide to tuning the JVM for production services — heap sizing, choosing between G1, ZGC, and Shenandoah, container awareness, and the observability flags every deployment should carry.</p>
-    <div class="card-meta"><time datetime="2026-10-14">14 Oct 2026</time><span class="dot"></span><span>10 min read</span></div>
-  </div>
-</article>
-<article class="card" data-card data-topics="|Java|WebLogic|Middleware|Performance|Architecture|" data-search="weblogic performance tuning: work managers, connection pools, and the knobs that actually matter a field guide to tuning weblogic server in production — the self-tuning thread pool, work managers, jdbc connection pools, jvm settings, and the diagnostic tools that tell you which knob to turn. java weblogic middleware performance architecture" data-topic="Performance">
-  <div class="card-art"><img data-article-art="weblogic-performance-tuning" src="/assets/covers/weblogic-performance-tuning.svg?v=50b03cdbbe6b" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
-  <div class="card-body">
-    <a class="chip" href="/topics/performance/">Performance</a>
-    <h3 class="card-title"><a class="card-destination" href="/insights/weblogic-performance-tuning/">WebLogic Performance Tuning: Work Managers, Connection Pools, and the Knobs That Actually Matter</a></h3>
-    <p class="card-desc">A field guide to tuning WebLogic Server in production — the self-tuning thread pool, work managers, JDBC connection pools, JVM settings, and the diagnostic tools that tell you which knob to turn.</p>
-    <div class="card-meta"><time datetime="2025-08-19">19 Aug 2025</time><span class="dot"></span><span>11 min read</span></div>
-  </div>
-</article></div>
-    </div>
-  </section>
+  
 
   <section class="section">
     <div class="art-wrap"><div class="cta-panel">
@@ -313,12 +280,11 @@ d.setAttribute('data-theme',t);
 <div class="chapter-bar" id="chapterBar">
   <div class="chapter-where">
     <b>Virtual Threads in the Enterprise: What Changes, What Doesn&#39;t, and What Breaks</b>
-    <span>Performance</span>
+    <span>Software Engineering</span>
   </div>
   <span class="chapter-left" id="chapterLeft"></span>
   <nav class="chapter-step" aria-label="Article navigation">
-    <a href="/insights/multi-region-architecture-patterns/" aria-label="Previous: Multi-Region Architecture Patterns: What You&#39;re Actually Buying at Each Tier"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a>
-    <a href="/insights/java-legacy-modernization-roadmap/" aria-label="Next: Modernizing Legacy Java: A Roadmap from Java 8 to 21+ Without Stopping the Business"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
+    <a href="/insights/java-legacy-modernization-roadmap/" aria-label="Previous: Modernizing Legacy Java: A Roadmap from Java 8 to 21+ Without Stopping the Business"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a><a aria-disabled="true" aria-label="No next article"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
   </nav>
 </div>
 </main>
@@ -376,7 +342,8 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=f8d83e0e" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=f8d83e0e"></script>
+<script src="/assets/js/site.js?v=689adf6b" defer></script>
+
+<script type="module" src="/assets/js/brand-motion.mjs?v=689adf6b"></script>
 </body>
 </html>

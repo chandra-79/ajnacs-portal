@@ -33,7 +33,12 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=f8d83e0e">
+<link rel="stylesheet" href="/assets/css/site.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/portal.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-art.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-pages.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-reader.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/topic-scroller.css?v=689adf6b">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
 <link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Personal notes" href="/notes/feed.xml">
@@ -51,8 +56,8 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Trace Sampling: Keeping the Traces That Matter When You Can't Keep Them All","description":"Distributed tracing at production volume is a sampling problem wearing an instrumentation costume — head vs tail sampling, the consistency rules that keep traces whole, error-and-latency-biased retention, and the cost architecture of an honest tracing pipeline.","datePublished":"2025-09-23","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/trace-sampling-strategies/","image":"https://ajnacs.com/assets/og/articles/trace-sampling-strategies.png?v=2bcd80ea297c","keywords":"Observability, Distributed Systems, Reliability, Performance, Cloud Architecture","articleSection":"Observability","wordCount":1920}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Trace Sampling: Keeping the Traces That Matter When You Can't Keep Them All"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Trace Sampling: Keeping the Traces That Matter When You Can't Keep Them All","description":"Distributed tracing at production volume is a sampling problem wearing an instrumentation costume — head vs tail sampling, the consistency rules that keep traces whole, error-and-latency-biased retention, and the cost architecture of an honest tracing pipeline.","datePublished":"2025-09-23","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/trace-sampling-strategies/","image":"https://ajnacs.com/assets/og/articles/trace-sampling-strategies.png?v=2bcd80ea297c","keywords":"Observability, Distributed Systems, Reliability, Performance, Cloud Architecture","articleSection":"Reliability & Observability","wordCount":1920}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Topics","item":"https://ajnacs.com/topics/"},{"@type":"ListItem","position":3,"name":"Reliability & Observability","item":"https://ajnacs.com/learn/reliability/"},{"@type":"ListItem","position":4,"name":"Trace Sampling: Keeping the Traces That Matter When You Can't Keep Them All"}]}</script>
 </head>
 <body class="article-frame" data-topic="Observability">
 <a class="skip-link" href="#main">Skip to content</a>
@@ -64,12 +69,11 @@ d.setAttribute('data-theme',t);
       <a class="brand-home" href="/" aria-label="Ajna Consulting Services — home"><span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span></a>
     </div>
     <nav class="nav" id="nav" aria-label="Primary">
-      <a href="/services/">Services</a>
-      <a href="/insights/" aria-current="location">Insights</a>
-      <a href="/series/">Series</a>
-      <a href="/notes/">Personal notes</a>
+      <a href="/topics/" aria-current="location">Topics</a>
       <a href="/case-studies/">Case studies</a>
-      <a href="/about/">About</a>
+      <a href="/services/">Services</a>
+      <a href="/notes/">Personal Notes</a>
+      <a href="/insights/#article-search">Search</a>
       <a class="btn btn-sm" href="/contact/" style="margin-left:.4rem">Engage engineering</a>
     </nav>
     <div class="nav-actions">
@@ -84,11 +88,7 @@ d.setAttribute('data-theme',t);
 <article class="article">
   <div class="reading-layout">
     <header class="article-head">
-      <nav class="crumbs" aria-label="Breadcrumb">
-        <a href="/">Home</a> <span aria-hidden="true">/</span>
-        <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
-        <a href="/topics/observability/">Observability</a>
-      </nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">/</span> <a href="/topics/">Topics</a> <span aria-hidden="true">/</span> <a href="/learn/reliability/">Reliability &amp; Observability</a></nav>
       <h1 class="h1">Trace Sampling: Keeping the Traces That Matter When You Can&#39;t Keep Them All</h1>
       <p class="lede" style="margin-top:1rem">Distributed tracing at production volume is a sampling problem wearing an instrumentation costume — head vs tail sampling, the consistency rules that keep traces whole, error-and-latency-biased retention, and the cost architecture of an honest tracing pipeline.</p>
       <div class="article-meta">
@@ -189,14 +189,12 @@ d.setAttribute('data-theme',t);
 
 
 
+      <section class="lane-reading" data-lane-continuation="reliability" aria-labelledby="lane-reading-title" style="--reading-lane-accent:#2f65aa"><h2 id="lane-reading-title" class="h3">Continue in Reliability</h2><a class="lane-reading-next" data-lane-next href="/insights/observability-opentelemetry-2026/"><strong>Observability with OpenTelemetry: Getting the Three Pillars Working Together</strong><span class="lane-reading-reason">Continue with observability in another part of this topic.</span><span class="lane-reading-meta">10 min read</span></a><div class="lane-reading-related"><h3 class="h3">Related reading</h3><ul class="lane-reading-list"><li><a data-lane-related href="/insights/queueing-theory-for-engineers/"><strong>Queueing Theory for Engineers: How Utilisation and Variability Shape Waits</strong><span class="lane-reading-reason">Another perspective on distributed systems.</span></a></li><li><a data-lane-related href="/insights/structured-logging-practices/"><strong>Structured Logging That Pays for Itself: Schema, Context, and Cost Discipline</strong><span class="lane-reading-reason">Another perspective on observability.</span></a></li></ul></div><a class="lane-reading-index" href="/learn/reliability/">All Reliability articles</a></section>
       <footer class="article-foot">
         <div class="row" style="gap:.4rem">
           <a class="chip" href="/topics/observability/">Observability</a><a class="chip" href="/topics/distributed-systems/">Distributed Systems</a><a class="chip" href="/topics/reliability/">Reliability</a><a class="chip" href="/topics/performance/">Performance</a><a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a>
         </div>
-        <nav class="prevnext" aria-label="More articles">
-          <a href="/insights/weblogic-domains-clusters-explained/"><span>Previous</span><strong>WebLogic Domains, Clusters, and Managed Servers: The Architecture Explained</strong></a>
-          <a href="/insights/structured-logging-practices/" class="next"><span>Next</span><strong>Structured Logging That Pays for Itself: Schema, Context, and Cost Discipline</strong></a>
-        </nav>
+        
       </footer>
     </div>
     <aside class="writing-promos" aria-label="Promotions" data-ad-slot="article-rail">
@@ -216,38 +214,7 @@ d.setAttribute('data-theme',t);
 </aside>
   </div>
 
-  <section class="section surface hair" style="margin-top:4rem">
-    <div class="wrap">
-      <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|Cloud Architecture|Architecture|Reliability|Disaster Recovery|Distributed Systems|" data-search="multi-region architecture patterns: what you&#39;re actually buying at each tier active-passive, pilot light, active-active, and the data problem underneath them all. a tiered framework for multi-region design that matches architecture to actual availability requirements — and prices the tiers honestly. cloud architecture architecture reliability disaster recovery distributed systems" data-topic="Cloud Architecture">
-  <div class="card-art"><img data-article-art="multi-region-architecture-patterns" src="/assets/covers/multi-region-architecture-patterns.svg?v=983e36039fa8" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
-  <div class="card-body">
-    <a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a>
-    <h3 class="card-title"><a class="card-destination" href="/insights/multi-region-architecture-patterns/">Multi-Region Architecture Patterns: What You&#39;re Actually Buying at Each Tier</a></h3>
-    <p class="card-desc">Active-passive, pilot light, active-active, and the data problem underneath them all. A tiered framework for multi-region design that matches architecture to actual availability requirements — and prices the tiers honestly.</p>
-    <div class="card-meta"><time datetime="2026-02-12">12 Feb 2026</time><span class="dot"></span><span>11 min read</span></div>
-  </div>
-</article>
-<article class="card" data-card data-topics="|Performance|Capacity Planning|Reliability|Distributed Systems|Architecture|" data-search="queueing theory for engineers: how utilisation and variability shape waits little&#39;s law, the utilization-latency curve, and variability&#39;s tax — the three results that explain most capacity mysteries, from connection pools to on-call load. no calculus required, just the intuitions that make systems behavior predictable. performance capacity planning reliability distributed systems architecture" data-topic="Performance">
-  <div class="card-art"><img data-article-art="queueing-theory-for-engineers" src="/assets/covers/queueing-theory-for-engineers.svg?v=179ca4ab2b0e" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
-  <div class="card-body">
-    <a class="chip" href="/topics/performance/">Performance</a>
-    <h3 class="card-title"><a class="card-destination" href="/insights/queueing-theory-for-engineers/">Queueing Theory for Engineers: How Utilisation and Variability Shape Waits</a></h3>
-    <p class="card-desc">Little&#39;s Law, the utilization-latency curve, and variability&#39;s tax — the three results that explain most capacity mysteries, from connection pools to on-call load. No calculus required, just the intuitions that make systems behavior predictable.</p>
-    <div class="card-meta"><time datetime="2026-02-03">3 Feb 2026</time><span class="dot"></span><span>6 min read</span></div>
-  </div>
-</article>
-<article class="card" data-card data-topics="|Observability|Programming|Platform Engineering|Reliability|Cloud Architecture|" data-search="structured logging that pays for itself: schema, context, and cost discipline logs are the most expensive telemetry most organizations run and the least designed. event schemas, correlation context, level discipline, sampling, and the cost engineering that keeps the logging bill from becoming the observability program&#39;s obituary. observability programming platform engineering reliability cloud architecture" data-topic="Observability">
-  <div class="card-art"><img data-article-art="structured-logging-practices" src="/assets/covers/structured-logging-practices.svg?v=28b16f70cb93" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
-  <div class="card-body">
-    <a class="chip" href="/topics/observability/">Observability</a>
-    <h3 class="card-title"><a class="card-destination" href="/insights/structured-logging-practices/">Structured Logging That Pays for Itself: Schema, Context, and Cost Discipline</a></h3>
-    <p class="card-desc">Logs are the most expensive telemetry most organizations run and the least designed. Event schemas, correlation context, level discipline, sampling, and the cost engineering that keeps the logging bill from becoming the observability program&#39;s obituary.</p>
-    <div class="card-meta"><time datetime="2025-10-03">3 Oct 2025</time><span class="dot"></span><span>9 min read</span></div>
-  </div>
-</article></div>
-    </div>
-  </section>
+  
 
   <section class="section">
     <div class="art-wrap"><div class="cta-panel">
@@ -297,12 +264,11 @@ d.setAttribute('data-theme',t);
 <div class="chapter-bar" id="chapterBar">
   <div class="chapter-where">
     <b>Trace Sampling: Keeping the Traces That Matter When You Can&#39;t Keep Them All</b>
-    <span>Observability</span>
+    <span>Reliability &amp; Observability</span>
   </div>
   <span class="chapter-left" id="chapterLeft"></span>
   <nav class="chapter-step" aria-label="Article navigation">
-    <a href="/insights/weblogic-domains-clusters-explained/" aria-label="Previous: WebLogic Domains, Clusters, and Managed Servers: The Architecture Explained"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a>
-    <a href="/insights/structured-logging-practices/" aria-label="Next: Structured Logging That Pays for Itself: Schema, Context, and Cost Discipline"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
+    <a href="/insights/structured-logging-practices/" aria-label="Previous: Structured Logging That Pays for Itself: Schema, Context, and Cost Discipline"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a><a href="/insights/observability-opentelemetry-2026/" aria-label="Next: Observability with OpenTelemetry: Getting the Three Pillars Working Together"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
   </nav>
 </div>
 </main>
@@ -360,7 +326,8 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=f8d83e0e" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=f8d83e0e"></script>
+<script src="/assets/js/site.js?v=689adf6b" defer></script>
+
+<script type="module" src="/assets/js/brand-motion.mjs?v=689adf6b"></script>
 </body>
 </html>

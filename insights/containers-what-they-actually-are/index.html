@@ -33,7 +33,12 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=f8d83e0e">
+<link rel="stylesheet" href="/assets/css/site.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/portal.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-art.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-pages.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-reader.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/topic-scroller.css?v=689adf6b">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
 <link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Personal notes" href="/notes/feed.xml">
@@ -51,8 +56,8 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"What Containers Actually Are — Not the Marketing Version","description":"Containers are not lightweight VMs. They are processes with resource constraints and namespace isolation. Understanding the actual mechanism makes you a better user of Docker, Kubernetes, and every container runtime.","datePublished":"2026-07-30","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/containers-what-they-actually-are/","image":"https://ajnacs.com/assets/og/articles/containers-what-they-actually-are.png?v=0a3ba3a0c64c","keywords":"DevSecOps, Fundamentals","articleSection":"DevSecOps","wordCount":1690}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"What Containers Actually Are — Not the Marketing Version"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"What Containers Actually Are — Not the Marketing Version","description":"Containers are not lightweight VMs. They are processes with resource constraints and namespace isolation. Understanding the actual mechanism makes you a better user of Docker, Kubernetes, and every container runtime.","datePublished":"2026-07-30","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/containers-what-they-actually-are/","image":"https://ajnacs.com/assets/og/articles/containers-what-they-actually-are.png?v=0a3ba3a0c64c","keywords":"DevSecOps, Fundamentals","articleSection":"Platform & Delivery","wordCount":1690}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Topics","item":"https://ajnacs.com/topics/"},{"@type":"ListItem","position":3,"name":"Platform & Delivery","item":"https://ajnacs.com/learn/platform-delivery/"},{"@type":"ListItem","position":4,"name":"What Containers Actually Are — Not the Marketing Version"}]}</script>
 </head>
 <body class="article-frame" data-topic="DevSecOps">
 <a class="skip-link" href="#main">Skip to content</a>
@@ -64,12 +69,11 @@ d.setAttribute('data-theme',t);
       <a class="brand-home" href="/" aria-label="Ajna Consulting Services — home"><span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span></a>
     </div>
     <nav class="nav" id="nav" aria-label="Primary">
-      <a href="/services/">Services</a>
-      <a href="/insights/" aria-current="location">Insights</a>
-      <a href="/series/">Series</a>
-      <a href="/notes/">Personal notes</a>
+      <a href="/topics/" aria-current="location">Topics</a>
       <a href="/case-studies/">Case studies</a>
-      <a href="/about/">About</a>
+      <a href="/services/">Services</a>
+      <a href="/notes/">Personal Notes</a>
+      <a href="/insights/#article-search">Search</a>
       <a class="btn btn-sm" href="/contact/" style="margin-left:.4rem">Engage engineering</a>
     </nav>
     <div class="nav-actions">
@@ -84,11 +88,7 @@ d.setAttribute('data-theme',t);
 <article class="article">
   <div class="reading-layout">
     <header class="article-head">
-      <nav class="crumbs" aria-label="Breadcrumb">
-        <a href="/">Home</a> <span aria-hidden="true">/</span>
-        <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
-        <a href="/topics/devsecops/">DevSecOps</a>
-      </nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">/</span> <a href="/topics/">Topics</a> <span aria-hidden="true">/</span> <a href="/learn/platform-delivery/">Platform &amp; Delivery</a></nav>
       <h1 class="h1">What Containers Actually Are — Not the Marketing Version</h1>
       <p class="lede" style="margin-top:1rem">Containers are not lightweight VMs. They are processes with resource constraints and namespace isolation. Understanding the actual mechanism makes you a better user of Docker, Kubernetes, and every container runtime.</p>
       <div class="article-meta">
@@ -265,14 +265,12 @@ ls /proc/&lt;container-pid&gt;/ns/
 
 
 
+      <section class="lane-reading" data-lane-continuation="platform-delivery" aria-labelledby="lane-reading-title" style="--reading-lane-accent:#237a75"><h2 id="lane-reading-title" class="h3">Next in this series</h2><a class="lane-reading-next" data-lane-next href="/insights/containers-production-dockerfiles/"><strong>Writing Production-Grade Dockerfiles: The Decisions That Actually Matter</strong><span class="lane-reading-reason">Continue with the next published chapter in this series.</span><span class="lane-reading-meta">7 min read</span></a><div class="lane-reading-related"><h3 class="h3">Related reading</h3><ul class="lane-reading-list"><li><a data-lane-related href="/insights/platform-engineering-idp-2026/"><strong>Platform Onboarding: Measure the Path to a First Deployment</strong><span class="lane-reading-reason">Pilot a self-service path, measure time to a first qualifying deployment, and track completion, controls, and support effort.</span></a></li><li><a data-lane-related href="/insights/platform-eng-what-it-is/"><strong>Platform Engineering: What It Is, Why It Emerged, and What Makes It Different from DevOps</strong><span class="lane-reading-reason">Platform engineering is not rebranded DevOps. It is a specific organisational and technical discipline that treats internal infrastructure as a product. Here is what that actually means.</span></a></li></ul></div><a class="lane-reading-index" href="/learn/platform-delivery/">All Platform &amp; Delivery articles</a></section>
       <footer class="article-foot">
         <div class="row" style="gap:.4rem">
           <a class="chip" href="/topics/devsecops/">DevSecOps</a><a class="chip" href="/topics/fundamentals/">Fundamentals</a>
         </div>
-        <nav class="prevnext" aria-label="More articles">
-          <a href="/insights/platform-eng-measuring-success/"><span>Previous</span><strong>Measuring Platform Engineering Success: The Metrics That Actually Matter</strong></a>
-          <a href="/insights/aiml-production-ai/" class="next"><span>Next</span><strong>Putting AI in Production: What Enterprise AI Deployment Actually Requires</strong></a>
-        </nav>
+        
       </footer>
     </div>
     <aside class="writing-promos" aria-label="Promotions" data-ad-slot="article-rail">
@@ -292,38 +290,7 @@ ls /proc/&lt;container-pid&gt;/ns/
 </aside>
   </div>
 
-  <section class="section surface hair" style="margin-top:4rem">
-    <div class="wrap">
-      <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|DevSecOps|Fundamentals|" data-search="container security: the specific misconfigurations that open production systems to attack running containers as root, privileged mode, unrestricted capabilities, exposed docker sockets — the container security mistakes that appear in breach reports and how to prevent them systematically. devsecops fundamentals" data-topic="DevSecOps">
-  <div class="card-art"><img data-article-art="containers-security" src="/assets/covers/containers-security.svg?v=63cfcfd228c2" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
-  <div class="card-body">
-    <a class="chip" href="/topics/devsecops/">DevSecOps</a>
-    <h3 class="card-title"><a class="card-destination" href="/insights/containers-security/">Container Security: The Specific Misconfigurations That Open Production Systems to Attack</a></h3>
-    <p class="card-desc">Running containers as root, privileged mode, unrestricted capabilities, exposed Docker sockets — the container security mistakes that appear in breach reports and how to prevent them systematically.</p>
-    <div class="card-meta"><time datetime="2026-09-28">28 Sept 2026</time><span class="dot"></span><span>7 min read</span><span class="dot"></span><span>Series</span></div>
-  </div>
-</article>
-<article class="card" data-card data-topics="|DevSecOps|Fundamentals|" data-search="writing production-grade dockerfiles: the decisions that actually matter multi-stage builds, minimal base images, layer caching, non-root users, build arguments, and the specific dockerfile patterns that separate a working image from a secure, efficient, maintainable one. devsecops fundamentals" data-topic="DevSecOps">
-  <div class="card-art"><img data-article-art="containers-production-dockerfiles" src="/assets/covers/containers-production-dockerfiles.svg?v=121ca289ce3b" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
-  <div class="card-body">
-    <a class="chip" href="/topics/devsecops/">DevSecOps</a>
-    <h3 class="card-title"><a class="card-destination" href="/insights/containers-production-dockerfiles/">Writing Production-Grade Dockerfiles: The Decisions That Actually Matter</a></h3>
-    <p class="card-desc">Multi-stage builds, minimal base images, layer caching, non-root users, build arguments, and the specific Dockerfile patterns that separate a working image from a secure, efficient, maintainable one.</p>
-    <div class="card-meta"><time datetime="2026-06-24">24 Jun 2026</time><span class="dot"></span><span>7 min read</span><span class="dot"></span><span>Series</span></div>
-  </div>
-</article>
-<article class="card" data-card data-topics="|DevSecOps|Fundamentals|" data-search="container networking: how containers talk to each other and to the outside world bridge networks, overlay networks, dns-based service discovery, port publishing, and the iptables rules that make container networking work — and fail. devsecops fundamentals" data-topic="DevSecOps">
-  <div class="card-art"><img data-article-art="containers-networking" src="/assets/covers/containers-networking.svg?v=4cab4da152a2" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
-  <div class="card-body">
-    <a class="chip" href="/topics/devsecops/">DevSecOps</a>
-    <h3 class="card-title"><a class="card-destination" href="/insights/containers-networking/">Container Networking: How Containers Talk to Each Other and to the Outside World</a></h3>
-    <p class="card-desc">Bridge networks, overlay networks, DNS-based service discovery, port publishing, and the iptables rules that make container networking work — and fail.</p>
-    <div class="card-meta"><time datetime="2026-04-28">28 Apr 2026</time><span class="dot"></span><span>8 min read</span><span class="dot"></span><span>Series</span></div>
-  </div>
-</article></div>
-    </div>
-  </section>
+  
 
   <section class="section">
     <div class="art-wrap"><div class="cta-panel">
@@ -377,8 +344,7 @@ ls /proc/&lt;container-pid&gt;/ns/
   </div>
   <span class="chapter-left" id="chapterLeft"></span>
   <nav class="chapter-step" aria-label="Article navigation">
-    <a href="/insights/platform-eng-measuring-success/" aria-label="Previous: Measuring Platform Engineering Success: The Metrics That Actually Matter"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a>
-    <a href="/insights/aiml-production-ai/" aria-label="Next: Putting AI in Production: What Enterprise AI Deployment Actually Requires"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
+    <a href="/insights/platform-eng-measuring-success/" aria-label="Previous: Measuring Platform Engineering Success: The Metrics That Actually Matter"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a><a href="/insights/containers-production-dockerfiles/" aria-label="Next: Writing Production-Grade Dockerfiles: The Decisions That Actually Matter"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
   </nav>
 </div>
 </main>
@@ -436,7 +402,8 @@ ls /proc/&lt;container-pid&gt;/ns/
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=f8d83e0e" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=f8d83e0e"></script>
+<script src="/assets/js/site.js?v=689adf6b" defer></script>
+
+<script type="module" src="/assets/js/brand-motion.mjs?v=689adf6b"></script>
 </body>
 </html>

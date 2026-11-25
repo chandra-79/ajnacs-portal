@@ -33,7 +33,12 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=f8d83e0e">
+<link rel="stylesheet" href="/assets/css/site.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/portal.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-art.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-pages.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-reader.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/topic-scroller.css?v=689adf6b">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
 <link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Personal notes" href="/notes/feed.xml">
@@ -51,8 +56,8 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"OCI Architect Associate Study Guide: What the Exam Actually Tests","description":"A practitioner's guide to the Oracle Cloud Infrastructure Architect Associate exam — the topics that get the most questions, the OCI-specific concepts that differ from AWS/Azure, and a focused study path for engineers with prior cloud experience.","datePublished":"2025-01-24","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/oci-architect-associate-guide/","image":"https://ajnacs.com/assets/og/articles/oci-architect-associate-guide.png?v=53f842ed8527","keywords":"Cloud Architecture, OCI, Certifications","articleSection":"Cloud Architecture","wordCount":1987}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"OCI Architect Associate Study Guide: What the Exam Actually Tests"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"OCI Architect Associate Study Guide: What the Exam Actually Tests","description":"A practitioner's guide to the Oracle Cloud Infrastructure Architect Associate exam — the topics that get the most questions, the OCI-specific concepts that differ from AWS/Azure, and a focused study path for engineers with prior cloud experience.","datePublished":"2025-01-24","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/oci-architect-associate-guide/","image":"https://ajnacs.com/assets/og/articles/oci-architect-associate-guide.png?v=53f842ed8527","keywords":"Cloud Architecture, OCI, Certifications","articleSection":"Cloud & FinOps","wordCount":1987}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Topics","item":"https://ajnacs.com/topics/"},{"@type":"ListItem","position":3,"name":"Cloud & FinOps","item":"https://ajnacs.com/learn/cloud-finops/"},{"@type":"ListItem","position":4,"name":"OCI Architect Associate Study Guide: What the Exam Actually Tests"}]}</script>
 </head>
 <body class="article-frame" data-topic="Cloud Architecture">
 <a class="skip-link" href="#main">Skip to content</a>
@@ -64,12 +69,11 @@ d.setAttribute('data-theme',t);
       <a class="brand-home" href="/" aria-label="Ajna Consulting Services — home"><span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span></a>
     </div>
     <nav class="nav" id="nav" aria-label="Primary">
-      <a href="/services/">Services</a>
-      <a href="/insights/" aria-current="location">Insights</a>
-      <a href="/series/">Series</a>
-      <a href="/notes/">Personal notes</a>
+      <a href="/topics/" aria-current="location">Topics</a>
       <a href="/case-studies/">Case studies</a>
-      <a href="/about/">About</a>
+      <a href="/services/">Services</a>
+      <a href="/notes/">Personal Notes</a>
+      <a href="/insights/#article-search">Search</a>
       <a class="btn btn-sm" href="/contact/" style="margin-left:.4rem">Engage engineering</a>
     </nav>
     <div class="nav-actions">
@@ -84,11 +88,7 @@ d.setAttribute('data-theme',t);
 <article class="article">
   <div class="reading-layout">
     <header class="article-head">
-      <nav class="crumbs" aria-label="Breadcrumb">
-        <a href="/">Home</a> <span aria-hidden="true">/</span>
-        <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
-        <a href="/topics/cloud-architecture/">Cloud Architecture</a>
-      </nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">/</span> <a href="/topics/">Topics</a> <span aria-hidden="true">/</span> <a href="/learn/cloud-finops/">Cloud &amp; FinOps</a></nav>
       <h1 class="h1">OCI Architect Associate Study Guide: What the Exam Actually Tests</h1>
       <p class="lede" style="margin-top:1rem">A practitioner&#39;s guide to the Oracle Cloud Infrastructure Architect Associate exam — the topics that get the most questions, the OCI-specific concepts that differ from AWS/Azure, and a focused study path for engineers with prior cloud experience.</p>
       <div class="article-meta">
@@ -222,14 +222,12 @@ d.setAttribute('data-theme',t);
 
 
 
+      <section class="lane-reading" data-lane-continuation="cloud-finops" aria-labelledby="lane-reading-title" style="--reading-lane-accent:#976229"><h2 id="lane-reading-title" class="h3">Continue in Cloud &amp; FinOps</h2><a class="lane-reading-next" data-lane-next href="/insights/azure-well-architected-framework/"><strong>Applying the Azure Well-Architected Framework: What the Pillars Look Like in Practice</strong><span class="lane-reading-reason">Explore another approach in Cloud &amp; FinOps.</span><span class="lane-reading-meta">9 min read</span></a><div class="lane-reading-related"><h3 class="h3">Related reading</h3><ul class="lane-reading-list"><li><a data-lane-related href="/insights/serverless-vs-containers-2026/"><strong>Serverless vs Containers: An Honest Comparison for 2026</strong><span class="lane-reading-reason">Neither is universally better. The answer depends on your workload profile, your team&#39;s operational maturity, and — honestly — your tolerance for cold starts.</span></a></li><li><a data-lane-related href="/insights/finops-chargeback-maturity/"><strong>From Showback to Chargeback: Building a Cloud Cost Ownership Model That Sticks</strong><span class="lane-reading-reason">Showback tells teams what they spend. Chargeback makes them accountable for it. The gap between the two is cultural as much as technical — here&#39;s how to bridge it without creating finance theater.</span></a></li></ul></div><a class="lane-reading-index" href="/learn/cloud-finops/">All Cloud &amp; FinOps articles</a></section>
       <footer class="article-foot">
         <div class="row" style="gap:.4rem">
           <a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a><a class="chip" href="/topics/oci/">OCI</a><a class="chip" href="/topics/certifications/">Certifications</a>
         </div>
-        <nav class="prevnext" aria-label="More articles">
-          <a href="/insights/service-mesh-istio-linkerd/"><span>Previous</span><strong>Service Mesh in Practice: When Istio or Linkerd Is Worth the Complexity</strong></a>
-          <a href="/insights/kubernetes-operators-custom-resources/" class="next"><span>Next</span><strong>Kubernetes Operators: When to Build One and When to Stop at CRDs</strong></a>
-        </nav>
+        
       </footer>
     </div>
     <aside class="writing-promos" aria-label="Promotions" data-ad-slot="article-rail">
@@ -249,38 +247,7 @@ d.setAttribute('data-theme',t);
 </aside>
   </div>
 
-  <section class="section surface hair" style="margin-top:4rem">
-    <div class="wrap">
-      <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|DevSecOps|Cloud Architecture|Engineering Leadership|" data-search="platform onboarding: measure the path to a first deployment pilot a self-service path, measure time to a first qualifying deployment, and track completion, controls, and support effort. devsecops cloud architecture engineering leadership" data-topic="DevSecOps">
-  <div class="card-art"><img data-article-art="platform-engineering-idp-2026" src="/assets/covers/platform-engineering-idp-2026.svg?v=751f22d2d783" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
-  <div class="card-body">
-    <a class="chip" href="/topics/devsecops/">DevSecOps</a>
-    <h3 class="card-title"><a class="card-destination" href="/insights/platform-engineering-idp-2026/">Platform Onboarding: Measure the Path to a First Deployment</a></h3>
-    <p class="card-desc">Pilot a self-service path, measure time to a first qualifying deployment, and track completion, controls, and support effort.</p>
-    <div class="card-meta"><time datetime="2026-11-20">20 Nov 2026</time><span class="dot"></span><span>4 min read</span></div>
-  </div>
-</article>
-<article class="card" data-card data-topics="|Cloud Architecture|DevSecOps|Infrastructure|" data-search="serverless vs containers: an honest comparison for 2026 neither is universally better. the answer depends on your workload profile, your team&#39;s operational maturity, and — honestly — your tolerance for cold starts. cloud architecture devsecops infrastructure" data-topic="Cloud Architecture">
-  <div class="card-art"><img data-article-art="serverless-vs-containers-2026" src="/assets/covers/serverless-vs-containers-2026.svg?v=61a2cd68990c" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
-  <div class="card-body">
-    <a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a>
-    <h3 class="card-title"><a class="card-destination" href="/insights/serverless-vs-containers-2026/">Serverless vs Containers: An Honest Comparison for 2026</a></h3>
-    <p class="card-desc">Neither is universally better. The answer depends on your workload profile, your team&#39;s operational maturity, and — honestly — your tolerance for cold starts.</p>
-    <div class="card-meta"><time datetime="2026-11-13">13 Nov 2026</time><span class="dot"></span><span>9 min read</span></div>
-  </div>
-</article>
-<article class="card" data-card data-topics="|Cloud Architecture|DevSecOps|" data-search="chaos engineering: testing reliability before production tests it for you chaos engineering injects controlled failures to validate that systems actually behave as designed under real-world failure conditions. the gap between the architecture diagram and production behavior is where reliability lives. cloud architecture devsecops" data-topic="Cloud Architecture">
-  <div class="card-art"><img data-article-art="chaos-engineering-practices" src="/assets/covers/chaos-engineering-practices.svg?v=bde178877e92" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
-  <div class="card-body">
-    <a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a>
-    <h3 class="card-title"><a class="card-destination" href="/insights/chaos-engineering-practices/">Chaos Engineering: Testing Reliability Before Production Tests It For You</a></h3>
-    <p class="card-desc">Chaos engineering injects controlled failures to validate that systems actually behave as designed under real-world failure conditions. The gap between the architecture diagram and production behavior is where reliability lives.</p>
-    <div class="card-meta"><time datetime="2026-11-11">11 Nov 2026</time><span class="dot"></span><span>7 min read</span></div>
-  </div>
-</article></div>
-    </div>
-  </section>
+  
 
   <section class="section">
     <div class="art-wrap"><div class="cta-panel">
@@ -330,12 +297,11 @@ d.setAttribute('data-theme',t);
 <div class="chapter-bar" id="chapterBar">
   <div class="chapter-where">
     <b>OCI Architect Associate Study Guide: What the Exam Actually Tests</b>
-    <span>Cloud Architecture</span>
+    <span>Cloud &amp; FinOps</span>
   </div>
   <span class="chapter-left" id="chapterLeft"></span>
   <nav class="chapter-step" aria-label="Article navigation">
-    <a href="/insights/service-mesh-istio-linkerd/" aria-label="Previous: Service Mesh in Practice: When Istio or Linkerd Is Worth the Complexity"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a>
-    <a href="/insights/kubernetes-operators-custom-resources/" aria-label="Next: Kubernetes Operators: When to Build One and When to Stop at CRDs"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
+    <a href="/insights/kubernetes-cost-optimization/" aria-label="Previous: Kubernetes Cost Visibility — The Gap That Kills FinOps Programs"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a><a href="/insights/azure-well-architected-framework/" aria-label="Next: Applying the Azure Well-Architected Framework: What the Pillars Look Like in Practice"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
   </nav>
 </div>
 </main>
@@ -393,7 +359,8 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=f8d83e0e" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=f8d83e0e"></script>
+<script src="/assets/js/site.js?v=689adf6b" defer></script>
+
+<script type="module" src="/assets/js/brand-motion.mjs?v=689adf6b"></script>
 </body>
 </html>

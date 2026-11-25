@@ -33,7 +33,12 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=f8d83e0e">
+<link rel="stylesheet" href="/assets/css/site.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/portal.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-art.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-pages.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-reader.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/topic-scroller.css?v=689adf6b">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
 <link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Personal notes" href="/notes/feed.xml">
@@ -51,8 +56,8 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Multi-Region Architecture Patterns: What You're Actually Buying at Each Tier","description":"Active-passive, pilot light, active-active, and the data problem underneath them all. A tiered framework for multi-region design that matches architecture to actual availability requirements — and prices the tiers honestly.","datePublished":"2026-02-12","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/multi-region-architecture-patterns/","image":"https://ajnacs.com/assets/og/articles/multi-region-architecture-patterns.png?v=1ed26066e7c3","keywords":"Cloud Architecture, Architecture, Reliability, Disaster Recovery, Distributed Systems","articleSection":"Cloud Architecture","wordCount":2412}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Multi-Region Architecture Patterns: What You're Actually Buying at Each Tier"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Multi-Region Architecture Patterns: What You're Actually Buying at Each Tier","description":"Active-passive, pilot light, active-active, and the data problem underneath them all. A tiered framework for multi-region design that matches architecture to actual availability requirements — and prices the tiers honestly.","datePublished":"2026-02-12","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/multi-region-architecture-patterns/","image":"https://ajnacs.com/assets/og/articles/multi-region-architecture-patterns.png?v=1ed26066e7c3","keywords":"Cloud Architecture, Architecture, Reliability, Disaster Recovery, Distributed Systems","articleSection":"Systems Architecture","wordCount":2412}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Topics","item":"https://ajnacs.com/topics/"},{"@type":"ListItem","position":3,"name":"Systems Architecture","item":"https://ajnacs.com/learn/systems-architecture/"},{"@type":"ListItem","position":4,"name":"Multi-Region Architecture Patterns: What You're Actually Buying at Each Tier"}]}</script>
 </head>
 <body class="article-frame" data-topic="Cloud Architecture">
 <a class="skip-link" href="#main">Skip to content</a>
@@ -64,12 +69,11 @@ d.setAttribute('data-theme',t);
       <a class="brand-home" href="/" aria-label="Ajna Consulting Services — home"><span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span></a>
     </div>
     <nav class="nav" id="nav" aria-label="Primary">
-      <a href="/services/">Services</a>
-      <a href="/insights/" aria-current="location">Insights</a>
-      <a href="/series/">Series</a>
-      <a href="/notes/">Personal notes</a>
+      <a href="/topics/" aria-current="location">Topics</a>
       <a href="/case-studies/">Case studies</a>
-      <a href="/about/">About</a>
+      <a href="/services/">Services</a>
+      <a href="/notes/">Personal Notes</a>
+      <a href="/insights/#article-search">Search</a>
       <a class="btn btn-sm" href="/contact/" style="margin-left:.4rem">Engage engineering</a>
     </nav>
     <div class="nav-actions">
@@ -84,11 +88,7 @@ d.setAttribute('data-theme',t);
 <article class="article">
   <div class="reading-layout">
     <header class="article-head">
-      <nav class="crumbs" aria-label="Breadcrumb">
-        <a href="/">Home</a> <span aria-hidden="true">/</span>
-        <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
-        <a href="/topics/cloud-architecture/">Cloud Architecture</a>
-      </nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">/</span> <a href="/topics/">Topics</a> <span aria-hidden="true">/</span> <a href="/learn/systems-architecture/">Systems Architecture</a></nav>
       <h1 class="h1">Multi-Region Architecture Patterns: What You&#39;re Actually Buying at Each Tier</h1>
       <p class="lede" style="margin-top:1rem">Active-passive, pilot light, active-active, and the data problem underneath them all. A tiered framework for multi-region design that matches architecture to actual availability requirements — and prices the tiers honestly.</p>
       <div class="article-meta">
@@ -204,14 +204,12 @@ d.setAttribute('data-theme',t);
 
 
 
+      <section class="lane-reading" data-lane-continuation="systems-architecture" aria-labelledby="lane-reading-title" style="--reading-lane-accent:#5f56a1"><h2 id="lane-reading-title" class="h3">Continue in Systems Architecture</h2><a class="lane-reading-next" data-lane-next href="/insights/strangler-fig-legacy-migration/"><strong>The Strangler Fig in Practice: Incremental Legacy Replacement That Actually Finishes</strong><span class="lane-reading-reason">Continue with distributed systems in another part of this topic.</span><span class="lane-reading-meta">10 min read</span></a><div class="lane-reading-related"><h3 class="h3">Related reading</h3><ul class="lane-reading-list"><li><a data-lane-related href="/insights/quick-take-quantum-computing/"><strong>How to Read a Quantum Computing Milestone</strong><span class="lane-reading-reason">Separate component experiments, logical-qubit evidence, application advantage, and cryptographic migration work.</span></a></li><li><a data-lane-related href="/insights/quantum-computing-race-2025/"><strong>Quantum Computing Milestones, 2019–2025: What the Evidence Shows</strong><span class="lane-reading-reason">Distinguish demonstrations in random circuit sampling, quantum error correction, annealing, and experimental qubit architectures.</span></a></li></ul></div><a class="lane-reading-index" href="/learn/systems-architecture/">All Systems Architecture articles</a></section>
       <footer class="article-foot">
         <div class="row" style="gap:.4rem">
           <a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a><a class="chip" href="/topics/architecture/">Architecture</a><a class="chip" href="/topics/reliability/">Reliability</a><a class="chip" href="/topics/disaster-recovery/">Disaster Recovery</a><a class="chip" href="/topics/distributed-systems/">Distributed Systems</a>
         </div>
-        <nav class="prevnext" aria-label="More articles">
-          <a href="/insights/queueing-theory-for-engineers/"><span>Previous</span><strong>Queueing Theory for Engineers: How Utilisation and Variability Shape Waits</strong></a>
-          <a href="/insights/java-virtual-threads-enterprise/" class="next"><span>Next</span><strong>Virtual Threads in the Enterprise: What Changes, What Doesn&#39;t, and What Breaks</strong></a>
-        </nav>
+        
       </footer>
     </div>
     <aside class="writing-promos" aria-label="Promotions" data-ad-slot="article-rail">
@@ -231,38 +229,7 @@ d.setAttribute('data-theme',t);
 </aside>
   </div>
 
-  <section class="section surface hair" style="margin-top:4rem">
-    <div class="wrap">
-      <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|Performance|Capacity Planning|Reliability|Distributed Systems|Architecture|" data-search="queueing theory for engineers: how utilisation and variability shape waits little&#39;s law, the utilization-latency curve, and variability&#39;s tax — the three results that explain most capacity mysteries, from connection pools to on-call load. no calculus required, just the intuitions that make systems behavior predictable. performance capacity planning reliability distributed systems architecture" data-topic="Performance">
-  <div class="card-art"><img data-article-art="queueing-theory-for-engineers" src="/assets/covers/queueing-theory-for-engineers.svg?v=179ca4ab2b0e" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
-  <div class="card-body">
-    <a class="chip" href="/topics/performance/">Performance</a>
-    <h3 class="card-title"><a class="card-destination" href="/insights/queueing-theory-for-engineers/">Queueing Theory for Engineers: How Utilisation and Variability Shape Waits</a></h3>
-    <p class="card-desc">Little&#39;s Law, the utilization-latency curve, and variability&#39;s tax — the three results that explain most capacity mysteries, from connection pools to on-call load. No calculus required, just the intuitions that make systems behavior predictable.</p>
-    <div class="card-meta"><time datetime="2026-02-03">3 Feb 2026</time><span class="dot"></span><span>6 min read</span></div>
-  </div>
-</article>
-<article class="card" data-card data-topics="|Observability|Distributed Systems|Reliability|Performance|Cloud Architecture|" data-search="trace sampling: keeping the traces that matter when you can&#39;t keep them all distributed tracing at production volume is a sampling problem wearing an instrumentation costume — head vs tail sampling, the consistency rules that keep traces whole, error-and-latency-biased retention, and the cost architecture of an honest tracing pipeline. observability distributed systems reliability performance cloud architecture" data-topic="Observability">
-  <div class="card-art"><img data-article-art="trace-sampling-strategies" src="/assets/covers/trace-sampling-strategies.svg?v=7536d914939c" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
-  <div class="card-body">
-    <a class="chip" href="/topics/observability/">Observability</a>
-    <h3 class="card-title"><a class="card-destination" href="/insights/trace-sampling-strategies/">Trace Sampling: Keeping the Traces That Matter When You Can&#39;t Keep Them All</a></h3>
-    <p class="card-desc">Distributed tracing at production volume is a sampling problem wearing an instrumentation costume — head vs tail sampling, the consistency rules that keep traces whole, error-and-latency-biased retention, and the cost architecture of an honest tracing pipeline.</p>
-    <div class="card-meta"><time datetime="2025-09-23">23 Sept 2025</time><span class="dot"></span><span>9 min read</span></div>
-  </div>
-</article>
-<article class="card" data-card data-topics="|Cloud Architecture|Reliability|FinOps|Engineering Leadership|" data-search="capacity planning in the cloud era: headroom as an engineered property elastic infrastructure didn&#39;t kill capacity planning — it changed what gets planned. demand modeling, the utilization-vs-headroom trade, quota and constraint archaeology, and the quarterly loop that replaces both waste and 3 am scrambles. cloud architecture reliability finops engineering leadership" data-topic="Cloud Architecture">
-  <div class="card-art"><img data-article-art="capacity-planning-engineering" src="/assets/covers/capacity-planning-engineering.svg?v=56f6b8787f82" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
-  <div class="card-body">
-    <a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a>
-    <h3 class="card-title"><a class="card-destination" href="/insights/capacity-planning-engineering/">Capacity Planning in the Cloud Era: Headroom as an Engineered Property</a></h3>
-    <p class="card-desc">Elastic infrastructure didn&#39;t kill capacity planning — it changed what gets planned. Demand modeling, the utilization-vs-headroom trade, quota and constraint archaeology, and the quarterly loop that replaces both waste and 3 AM scrambles.</p>
-    <div class="card-meta"><time datetime="2026-11-09">9 Nov 2026</time><span class="dot"></span><span>10 min read</span></div>
-  </div>
-</article></div>
-    </div>
-  </section>
+  
 
   <section class="section">
     <div class="art-wrap"><div class="cta-panel">
@@ -312,12 +279,11 @@ d.setAttribute('data-theme',t);
 <div class="chapter-bar" id="chapterBar">
   <div class="chapter-where">
     <b>Multi-Region Architecture Patterns: What You&#39;re Actually Buying at Each Tier</b>
-    <span>Cloud Architecture</span>
+    <span>Systems Architecture</span>
   </div>
   <span class="chapter-left" id="chapterLeft"></span>
   <nav class="chapter-step" aria-label="Article navigation">
-    <a href="/insights/queueing-theory-for-engineers/" aria-label="Previous: Queueing Theory for Engineers: How Utilisation and Variability Shape Waits"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a>
-    <a href="/insights/java-virtual-threads-enterprise/" aria-label="Next: Virtual Threads in the Enterprise: What Changes, What Doesn&#39;t, and What Breaks"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
+    <a href="/insights/ethernet-vs-infiniband-networking-2026/" aria-label="Previous: Ethernet vs. InfiniBand: Choosing the Right Network Fabric in 2026"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a><a href="/insights/strangler-fig-legacy-migration/" aria-label="Next: The Strangler Fig in Practice: Incremental Legacy Replacement That Actually Finishes"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
   </nav>
 </div>
 </main>
@@ -375,7 +341,8 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=f8d83e0e" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=f8d83e0e"></script>
+<script src="/assets/js/site.js?v=689adf6b" defer></script>
+
+<script type="module" src="/assets/js/brand-motion.mjs?v=689adf6b"></script>
 </body>
 </html>

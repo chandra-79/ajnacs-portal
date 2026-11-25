@@ -33,7 +33,12 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=f8d83e0e">
+<link rel="stylesheet" href="/assets/css/site.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/portal.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-art.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-pages.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-reader.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/topic-scroller.css?v=689adf6b">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
 <link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Personal notes" href="/notes/feed.xml">
@@ -51,8 +56,8 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"The MTTR Reduction Playbook: Investments That Actually Move the Needle","description":"Mean Time to Recover is a lagging indicator — improving it requires leading investments in observability, runbooks, team practice, and architecture. Here's how to structure those investments and measure whether they're working.","datePublished":"2025-06-17","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/mttr-reduction-playbook/","image":"https://ajnacs.com/assets/og/articles/mttr-reduction-playbook.png?v=e7f779ab36ef","keywords":"Engineering Leadership, Observability, DevSecOps","articleSection":"Engineering Leadership","wordCount":2289}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"The MTTR Reduction Playbook: Investments That Actually Move the Needle"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"The MTTR Reduction Playbook: Investments That Actually Move the Needle","description":"Mean Time to Recover is a lagging indicator — improving it requires leading investments in observability, runbooks, team practice, and architecture. Here's how to structure those investments and measure whether they're working.","datePublished":"2025-06-17","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/mttr-reduction-playbook/","image":"https://ajnacs.com/assets/og/articles/mttr-reduction-playbook.png?v=e7f779ab36ef","keywords":"Engineering Leadership, Observability, DevSecOps","articleSection":"Reliability & Observability","wordCount":2289}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Topics","item":"https://ajnacs.com/topics/"},{"@type":"ListItem","position":3,"name":"Reliability & Observability","item":"https://ajnacs.com/learn/reliability/"},{"@type":"ListItem","position":4,"name":"The MTTR Reduction Playbook: Investments That Actually Move the Needle"}]}</script>
 </head>
 <body class="article-frame" data-topic="Engineering Leadership">
 <a class="skip-link" href="#main">Skip to content</a>
@@ -64,12 +69,11 @@ d.setAttribute('data-theme',t);
       <a class="brand-home" href="/" aria-label="Ajna Consulting Services — home"><span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span></a>
     </div>
     <nav class="nav" id="nav" aria-label="Primary">
-      <a href="/services/">Services</a>
-      <a href="/insights/" aria-current="location">Insights</a>
-      <a href="/series/">Series</a>
-      <a href="/notes/">Personal notes</a>
+      <a href="/topics/" aria-current="location">Topics</a>
       <a href="/case-studies/">Case studies</a>
-      <a href="/about/">About</a>
+      <a href="/services/">Services</a>
+      <a href="/notes/">Personal Notes</a>
+      <a href="/insights/#article-search">Search</a>
       <a class="btn btn-sm" href="/contact/" style="margin-left:.4rem">Engage engineering</a>
     </nav>
     <div class="nav-actions">
@@ -84,11 +88,7 @@ d.setAttribute('data-theme',t);
 <article class="article">
   <div class="reading-layout">
     <header class="article-head">
-      <nav class="crumbs" aria-label="Breadcrumb">
-        <a href="/">Home</a> <span aria-hidden="true">/</span>
-        <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
-        <a href="/topics/engineering-leadership/">Engineering Leadership</a>
-      </nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">/</span> <a href="/topics/">Topics</a> <span aria-hidden="true">/</span> <a href="/learn/reliability/">Reliability &amp; Observability</a></nav>
       <h1 class="h1">The MTTR Reduction Playbook: Investments That Actually Move the Needle</h1>
       <p class="lede" style="margin-top:1rem">Mean Time to Recover is a lagging indicator — improving it requires leading investments in observability, runbooks, team practice, and architecture. Here&#39;s how to structure those investments and measure whether they&#39;re working.</p>
       <div class="article-meta">
@@ -241,14 +241,12 @@ d.setAttribute('data-theme',t);
 
 
 
+      <section class="lane-reading" data-lane-continuation="reliability" aria-labelledby="lane-reading-title" style="--reading-lane-accent:#2f65aa"><h2 id="lane-reading-title" class="h3">Continue in Reliability</h2><a class="lane-reading-next" data-lane-next href="/insights/chaos-engineering-practices/"><strong>Chaos Engineering: Testing Reliability Before Production Tests It For You</strong><span class="lane-reading-reason">Test a reliability assumption before an incident does.</span><span class="lane-reading-meta">7 min read</span></a><div class="lane-reading-related"><h3 class="h3">Related reading</h3><ul class="lane-reading-list"><li><a data-lane-related href="/insights/designing-for-failure-resilience-patterns/"><strong>Designing for Failure: Resilience Patterns That Actually Hold in Production</strong><span class="lane-reading-reason">Another perspective on observability.</span></a></li><li><a data-lane-related href="/insights/structured-logging-practices/"><strong>Structured Logging That Pays for Itself: Schema, Context, and Cost Discipline</strong><span class="lane-reading-reason">Another perspective on observability.</span></a></li></ul></div><a class="lane-reading-index" href="/learn/reliability/">All Reliability articles</a></section>
       <footer class="article-foot">
         <div class="row" style="gap:.4rem">
           <a class="chip" href="/topics/engineering-leadership/">Engineering Leadership</a><a class="chip" href="/topics/observability/">Observability</a><a class="chip" href="/topics/devsecops/">DevSecOps</a>
         </div>
-        <nav class="prevnext" aria-label="More articles">
-          <a href="/insights/running-local-llm-lessons/"><span>Previous</span><strong>Running LLMs Locally: What Six Months of Daily Use Actually Taught Me</strong></a>
-          <a href="/insights/database-migration-strategies/" class="next"><span>Next</span><strong>Database Migration Strategies: Moving Production Data Without Downtime</strong></a>
-        </nav>
+        
       </footer>
     </div>
     <aside class="writing-promos" aria-label="Promotions" data-ad-slot="article-rail">
@@ -268,38 +266,7 @@ d.setAttribute('data-theme',t);
 </aside>
   </div>
 
-  <section class="section surface hair" style="margin-top:4rem">
-    <div class="wrap">
-      <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|DevSecOps|Cloud Architecture|Engineering Leadership|" data-search="platform onboarding: measure the path to a first deployment pilot a self-service path, measure time to a first qualifying deployment, and track completion, controls, and support effort. devsecops cloud architecture engineering leadership" data-topic="DevSecOps">
-  <div class="card-art"><img data-article-art="platform-engineering-idp-2026" src="/assets/covers/platform-engineering-idp-2026.svg?v=751f22d2d783" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
-  <div class="card-body">
-    <a class="chip" href="/topics/devsecops/">DevSecOps</a>
-    <h3 class="card-title"><a class="card-destination" href="/insights/platform-engineering-idp-2026/">Platform Onboarding: Measure the Path to a First Deployment</a></h3>
-    <p class="card-desc">Pilot a self-service path, measure time to a first qualifying deployment, and track completion, controls, and support effort.</p>
-    <div class="card-meta"><time datetime="2026-11-20">20 Nov 2026</time><span class="dot"></span><span>4 min read</span></div>
-  </div>
-</article>
-<article class="card" data-card data-topics="|Engineering Leadership|DevSecOps|Cloud Architecture|" data-search="sre toil: how to measure it and decide what to automate build a toil baseline, calculate automation payback, and check that the work actually went away. engineering leadership devsecops cloud architecture" data-topic="Engineering Leadership">
-  <div class="card-art"><img data-article-art="sre-toil-reduction" src="/assets/covers/sre-toil-reduction.svg?v=f9f4d2d8937b" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
-  <div class="card-body">
-    <a class="chip" href="/topics/engineering-leadership/">Engineering Leadership</a>
-    <h3 class="card-title"><a class="card-destination" href="/insights/sre-toil-reduction/">SRE Toil: How to Measure It and Decide What to Automate</a></h3>
-    <p class="card-desc">Build a toil baseline, calculate automation payback, and check that the work actually went away.</p>
-    <div class="card-meta"><time datetime="2026-10-09">9 Oct 2026</time><span class="dot"></span><span>4 min read</span></div>
-  </div>
-</article>
-<article class="card" data-card data-topics="|Engineering Leadership|DevSecOps|Fundamentals|" data-search="self-service infrastructure: how to build it without losing operational control scaffolding tools, infrastructure templates, self-service portals, and the approval workflows that give developers autonomy without turning the platform into a liability. engineering leadership devsecops fundamentals" data-topic="Engineering Leadership">
-  <div class="card-art"><img data-article-art="platform-eng-self-service" src="/assets/covers/platform-eng-self-service.svg?v=4a68ba9cd6a8" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
-  <div class="card-body">
-    <a class="chip" href="/topics/engineering-leadership/">Engineering Leadership</a>
-    <h3 class="card-title"><a class="card-destination" href="/insights/platform-eng-self-service/">Self-Service Infrastructure: How to Build It Without Losing Operational Control</a></h3>
-    <p class="card-desc">Scaffolding tools, infrastructure templates, self-service portals, and the approval workflows that give developers autonomy without turning the platform into a liability.</p>
-    <div class="card-meta"><time datetime="2026-05-07">7 May 2026</time><span class="dot"></span><span>7 min read</span><span class="dot"></span><span>Series</span></div>
-  </div>
-</article></div>
-    </div>
-  </section>
+  
 
   <section class="section">
     <div class="art-wrap"><div class="cta-panel">
@@ -349,12 +316,11 @@ d.setAttribute('data-theme',t);
 <div class="chapter-bar" id="chapterBar">
   <div class="chapter-where">
     <b>The MTTR Reduction Playbook: Investments That Actually Move the Needle</b>
-    <span>Engineering Leadership</span>
+    <span>Reliability &amp; Observability</span>
   </div>
   <span class="chapter-left" id="chapterLeft"></span>
   <nav class="chapter-step" aria-label="Article navigation">
-    <a href="/insights/running-local-llm-lessons/" aria-label="Previous: Running LLMs Locally: What Six Months of Daily Use Actually Taught Me"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a>
-    <a href="/insights/database-migration-strategies/" aria-label="Next: Database Migration Strategies: Moving Production Data Without Downtime"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
+    <a href="/insights/sre-toil-reduction/" aria-label="Previous: SRE Toil: How to Measure It and Decide What to Automate"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a><a href="/insights/chaos-engineering-practices/" aria-label="Next: Chaos Engineering: Testing Reliability Before Production Tests It For You"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
   </nav>
 </div>
 </main>
@@ -412,7 +378,8 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=f8d83e0e" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=f8d83e0e"></script>
+<script src="/assets/js/site.js?v=689adf6b" defer></script>
+
+<script type="module" src="/assets/js/brand-motion.mjs?v=689adf6b"></script>
 </body>
 </html>

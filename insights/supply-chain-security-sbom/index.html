@@ -33,7 +33,12 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=f8d83e0e">
+<link rel="stylesheet" href="/assets/css/site.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/portal.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-art.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-pages.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-reader.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/topic-scroller.css?v=689adf6b">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
 <link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Personal notes" href="/notes/feed.xml">
@@ -51,8 +56,8 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Software Supply Chain Security: SBOM, Dependency Auditing, and What Actually Reduces Risk","description":"The software supply chain attack surface is large and growing. SBOMs, dependency scanning, and provenance verification are the practical measures that reduce real risk — here's what each covers and where the gaps are.","datePublished":"2025-10-27","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/supply-chain-security-sbom/","image":"https://ajnacs.com/assets/og/articles/supply-chain-security-sbom.png?v=66d184333bea","keywords":"DevSecOps, Architecture","articleSection":"DevSecOps","wordCount":1679}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Software Supply Chain Security: SBOM, Dependency Auditing, and What Actually Reduces Risk"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Software Supply Chain Security: SBOM, Dependency Auditing, and What Actually Reduces Risk","description":"The software supply chain attack surface is large and growing. SBOMs, dependency scanning, and provenance verification are the practical measures that reduce real risk — here's what each covers and where the gaps are.","datePublished":"2025-10-27","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/supply-chain-security-sbom/","image":"https://ajnacs.com/assets/og/articles/supply-chain-security-sbom.png?v=66d184333bea","keywords":"DevSecOps, Architecture","articleSection":"Security & Identity","wordCount":1679}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Topics","item":"https://ajnacs.com/topics/"},{"@type":"ListItem","position":3,"name":"Security & Identity","item":"https://ajnacs.com/learn/security-identity/"},{"@type":"ListItem","position":4,"name":"Software Supply Chain Security: SBOM, Dependency Auditing, and What Actually Reduces Risk"}]}</script>
 </head>
 <body class="article-frame" data-topic="DevSecOps">
 <a class="skip-link" href="#main">Skip to content</a>
@@ -64,12 +69,11 @@ d.setAttribute('data-theme',t);
       <a class="brand-home" href="/" aria-label="Ajna Consulting Services — home"><span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span></a>
     </div>
     <nav class="nav" id="nav" aria-label="Primary">
-      <a href="/services/">Services</a>
-      <a href="/insights/" aria-current="location">Insights</a>
-      <a href="/series/">Series</a>
-      <a href="/notes/">Personal notes</a>
+      <a href="/topics/" aria-current="location">Topics</a>
       <a href="/case-studies/">Case studies</a>
-      <a href="/about/">About</a>
+      <a href="/services/">Services</a>
+      <a href="/notes/">Personal Notes</a>
+      <a href="/insights/#article-search">Search</a>
       <a class="btn btn-sm" href="/contact/" style="margin-left:.4rem">Engage engineering</a>
     </nav>
     <div class="nav-actions">
@@ -84,11 +88,7 @@ d.setAttribute('data-theme',t);
 <article class="article">
   <div class="reading-layout">
     <header class="article-head">
-      <nav class="crumbs" aria-label="Breadcrumb">
-        <a href="/">Home</a> <span aria-hidden="true">/</span>
-        <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
-        <a href="/topics/devsecops/">DevSecOps</a>
-      </nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">/</span> <a href="/topics/">Topics</a> <span aria-hidden="true">/</span> <a href="/learn/security-identity/">Security &amp; Identity</a></nav>
       <h1 class="h1">Software Supply Chain Security: SBOM, Dependency Auditing, and What Actually Reduces Risk</h1>
       <p class="lede" style="margin-top:1rem">The software supply chain attack surface is large and growing. SBOMs, dependency scanning, and provenance verification are the practical measures that reduce real risk — here&#39;s what each covers and where the gaps are.</p>
       <div class="article-meta">
@@ -244,14 +244,12 @@ cosign verify --key cosign.pub my-registry/my-app:v1.2.3
 
 
 
+      <section class="lane-reading" data-lane-continuation="security-identity" aria-labelledby="lane-reading-title" style="--reading-lane-accent:#a64946"><h2 id="lane-reading-title" class="h3">Continue in Security &amp; Identity</h2><a class="lane-reading-next" data-lane-next href="/insights/k8s-networking-cni/"><strong>Kubernetes Networking: CNI Plugins, Network Policies, and Why It Matters for Security</strong><span class="lane-reading-reason">Explore another approach in Security &amp; Identity.</span><span class="lane-reading-meta">7 min read</span></a><div class="lane-reading-related"><h3 class="h3">Related reading</h3><ul class="lane-reading-list"><li><a data-lane-related href="/insights/containers-security/"><strong>Container Security: The Specific Misconfigurations That Open Production Systems to Attack</strong><span class="lane-reading-reason">Running containers as root, privileged mode, unrestricted capabilities, exposed Docker sockets — the container security mistakes that appear in breach reports and how to prevent them systematically.</span></a></li><li><a data-lane-related href="/insights/kubernetes-security-hardening/"><strong>Kubernetes Security Hardening: The Controls That Actually Reduce Attack Surface</strong><span class="lane-reading-reason">Default Kubernetes configurations are not production-secure. Here are the specific hardening controls — RBAC, Pod Security Standards, network policies, image policies, secrets management — that reduce attack surface and what each actually protects against.</span></a></li></ul></div><a class="lane-reading-index" href="/learn/security-identity/">All Security &amp; Identity articles</a></section>
       <footer class="article-foot">
         <div class="row" style="gap:.4rem">
           <a class="chip" href="/topics/devsecops/">DevSecOps</a><a class="chip" href="/topics/architecture/">Architecture</a>
         </div>
-        <nav class="prevnext" aria-label="More articles">
-          <a href="/insights/cloud-unit-economics/"><span>Previous</span><strong>Cloud Cost per Unit: Calculate What It Costs to Deliver an Order</strong></a>
-          <a href="/insights/gcp-cost-management/" class="next"><span>Next</span><strong>GCP Cost Management: Committed Use Discounts, Recommenders, and What Cloud Billing Doesn&#39;t Show You</strong></a>
-        </nav>
+        
       </footer>
     </div>
     <aside class="writing-promos" aria-label="Promotions" data-ad-slot="article-rail">
@@ -271,38 +269,7 @@ cosign verify --key cosign.pub my-registry/my-app:v1.2.3
 </aside>
   </div>
 
-  <section class="section surface hair" style="margin-top:4rem">
-    <div class="wrap">
-      <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|DevSecOps|Architecture|Fundamentals|" data-search="platform observability: building the visibility layer every application team gets automatically how platform teams build and operate the metrics, logging, and tracing infrastructure that application teams consume without configuring — and what good platform observability coverage actually looks like. devsecops architecture fundamentals" data-topic="DevSecOps">
-  <div class="card-art"><img data-article-art="platform-eng-observability" src="/assets/covers/platform-eng-observability.svg?v=aa2033af7550" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
-  <div class="card-body">
-    <a class="chip" href="/topics/devsecops/">DevSecOps</a>
-    <h3 class="card-title"><a class="card-destination" href="/insights/platform-eng-observability/">Platform Observability: Building the Visibility Layer Every Application Team Gets Automatically</a></h3>
-    <p class="card-desc">How platform teams build and operate the metrics, logging, and tracing infrastructure that application teams consume without configuring — and what good platform observability coverage actually looks like.</p>
-    <div class="card-meta"><time datetime="2026-09-16">16 Sept 2026</time><span class="dot"></span><span>7 min read</span><span class="dot"></span><span>Series</span></div>
-  </div>
-</article>
-<article class="card" data-card data-topics="|DevSecOps|Cloud Architecture|Engineering Leadership|" data-search="platform onboarding: measure the path to a first deployment pilot a self-service path, measure time to a first qualifying deployment, and track completion, controls, and support effort. devsecops cloud architecture engineering leadership" data-topic="DevSecOps">
-  <div class="card-art"><img data-article-art="platform-engineering-idp-2026" src="/assets/covers/platform-engineering-idp-2026.svg?v=751f22d2d783" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
-  <div class="card-body">
-    <a class="chip" href="/topics/devsecops/">DevSecOps</a>
-    <h3 class="card-title"><a class="card-destination" href="/insights/platform-engineering-idp-2026/">Platform Onboarding: Measure the Path to a First Deployment</a></h3>
-    <p class="card-desc">Pilot a self-service path, measure time to a first qualifying deployment, and track completion, controls, and support effort.</p>
-    <div class="card-meta"><time datetime="2026-11-20">20 Nov 2026</time><span class="dot"></span><span>4 min read</span></div>
-  </div>
-</article>
-<article class="card" data-card data-topics="|Cloud Architecture|DevSecOps|Infrastructure|" data-search="serverless vs containers: an honest comparison for 2026 neither is universally better. the answer depends on your workload profile, your team&#39;s operational maturity, and — honestly — your tolerance for cold starts. cloud architecture devsecops infrastructure" data-topic="Cloud Architecture">
-  <div class="card-art"><img data-article-art="serverless-vs-containers-2026" src="/assets/covers/serverless-vs-containers-2026.svg?v=61a2cd68990c" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
-  <div class="card-body">
-    <a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a>
-    <h3 class="card-title"><a class="card-destination" href="/insights/serverless-vs-containers-2026/">Serverless vs Containers: An Honest Comparison for 2026</a></h3>
-    <p class="card-desc">Neither is universally better. The answer depends on your workload profile, your team&#39;s operational maturity, and — honestly — your tolerance for cold starts.</p>
-    <div class="card-meta"><time datetime="2026-11-13">13 Nov 2026</time><span class="dot"></span><span>9 min read</span></div>
-  </div>
-</article></div>
-    </div>
-  </section>
+  
 
   <section class="section">
     <div class="art-wrap"><div class="cta-panel">
@@ -352,12 +319,11 @@ cosign verify --key cosign.pub my-registry/my-app:v1.2.3
 <div class="chapter-bar" id="chapterBar">
   <div class="chapter-where">
     <b>Software Supply Chain Security: SBOM, Dependency Auditing, and What Actually Reduces Risk</b>
-    <span>DevSecOps</span>
+    <span>Security &amp; Identity</span>
   </div>
   <span class="chapter-left" id="chapterLeft"></span>
   <nav class="chapter-step" aria-label="Article navigation">
-    <a href="/insights/cloud-unit-economics/" aria-label="Previous: Cloud Cost per Unit: Calculate What It Costs to Deliver an Order"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a>
-    <a href="/insights/gcp-cost-management/" aria-label="Next: GCP Cost Management: Committed Use Discounts, Recommenders, and What Cloud Billing Doesn&#39;t Show You"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
+    <a href="/insights/containers-security/" aria-label="Previous: Container Security: The Specific Misconfigurations That Open Production Systems to Attack"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a><a href="/insights/k8s-networking-cni/" aria-label="Next: Kubernetes Networking: CNI Plugins, Network Policies, and Why It Matters for Security"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
   </nav>
 </div>
 </main>
@@ -415,7 +381,8 @@ cosign verify --key cosign.pub my-registry/my-app:v1.2.3
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=f8d83e0e" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=f8d83e0e"></script>
+<script src="/assets/js/site.js?v=689adf6b" defer></script>
+
+<script type="module" src="/assets/js/brand-motion.mjs?v=689adf6b"></script>
 </body>
 </html>

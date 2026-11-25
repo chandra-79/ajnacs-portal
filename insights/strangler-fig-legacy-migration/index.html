@@ -33,7 +33,12 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=f8d83e0e">
+<link rel="stylesheet" href="/assets/css/site.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/portal.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-art.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-pages.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-reader.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/topic-scroller.css?v=689adf6b">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
 <link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Personal notes" href="/notes/feed.xml">
@@ -51,8 +56,8 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"The Strangler Fig in Practice: Incremental Legacy Replacement That Actually Finishes","description":"Everyone cites the strangler pattern; few finish a strangulation. The facade and routing mechanics, the data-migration sequencing that makes or breaks it, the organizational funding model, and the anti-patterns that leave estates half-strangled forever.","datePublished":"2026-01-19","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/strangler-fig-legacy-migration/","image":"https://ajnacs.com/assets/og/articles/strangler-fig-legacy-migration.png?v=82d636a9db99","keywords":"Legacy Modernization, Architecture, Distributed Systems, Engineering Practice, Technical Debt","articleSection":"Architecture","wordCount":2187}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"The Strangler Fig in Practice: Incremental Legacy Replacement That Actually Finishes"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"The Strangler Fig in Practice: Incremental Legacy Replacement That Actually Finishes","description":"Everyone cites the strangler pattern; few finish a strangulation. The facade and routing mechanics, the data-migration sequencing that makes or breaks it, the organizational funding model, and the anti-patterns that leave estates half-strangled forever.","datePublished":"2026-01-19","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/strangler-fig-legacy-migration/","image":"https://ajnacs.com/assets/og/articles/strangler-fig-legacy-migration.png?v=82d636a9db99","keywords":"Legacy Modernization, Architecture, Distributed Systems, Engineering Practice, Technical Debt","articleSection":"Systems Architecture","wordCount":2187}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Topics","item":"https://ajnacs.com/topics/"},{"@type":"ListItem","position":3,"name":"Systems Architecture","item":"https://ajnacs.com/learn/systems-architecture/"},{"@type":"ListItem","position":4,"name":"The Strangler Fig in Practice: Incremental Legacy Replacement That Actually Finishes"}]}</script>
 </head>
 <body class="article-frame" data-topic="Architecture">
 <a class="skip-link" href="#main">Skip to content</a>
@@ -64,12 +69,11 @@ d.setAttribute('data-theme',t);
       <a class="brand-home" href="/" aria-label="Ajna Consulting Services — home"><span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span></a>
     </div>
     <nav class="nav" id="nav" aria-label="Primary">
-      <a href="/services/">Services</a>
-      <a href="/insights/" aria-current="location">Insights</a>
-      <a href="/series/">Series</a>
-      <a href="/notes/">Personal notes</a>
+      <a href="/topics/" aria-current="location">Topics</a>
       <a href="/case-studies/">Case studies</a>
-      <a href="/about/">About</a>
+      <a href="/services/">Services</a>
+      <a href="/notes/">Personal Notes</a>
+      <a href="/insights/#article-search">Search</a>
       <a class="btn btn-sm" href="/contact/" style="margin-left:.4rem">Engage engineering</a>
     </nav>
     <div class="nav-actions">
@@ -84,11 +88,7 @@ d.setAttribute('data-theme',t);
 <article class="article">
   <div class="reading-layout">
     <header class="article-head">
-      <nav class="crumbs" aria-label="Breadcrumb">
-        <a href="/">Home</a> <span aria-hidden="true">/</span>
-        <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
-        <a href="/topics/architecture/">Architecture</a>
-      </nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">/</span> <a href="/topics/">Topics</a> <span aria-hidden="true">/</span> <a href="/learn/systems-architecture/">Systems Architecture</a></nav>
       <h1 class="h1">The Strangler Fig in Practice: Incremental Legacy Replacement That Actually Finishes</h1>
       <p class="lede" style="margin-top:1rem">Everyone cites the strangler pattern; few finish a strangulation. The facade and routing mechanics, the data-migration sequencing that makes or breaks it, the organizational funding model, and the anti-patterns that leave estates half-strangled forever.</p>
       <div class="article-meta">
@@ -196,14 +196,12 @@ d.setAttribute('data-theme',t);
 
 
 
+      <section class="lane-reading" data-lane-continuation="systems-architecture" aria-labelledby="lane-reading-title" style="--reading-lane-accent:#5f56a1"><h2 id="lane-reading-title" class="h3">Continue in Systems Architecture</h2><a class="lane-reading-next" data-lane-next href="/insights/postgresql-performance-tuning/"><strong>PostgreSQL Performance Tuning: The Settings and Patterns That Actually Matter</strong><span class="lane-reading-reason">Explore another approach in Systems Architecture.</span><span class="lane-reading-meta">9 min read</span></a><div class="lane-reading-related"><h3 class="h3">Related reading</h3><ul class="lane-reading-list"><li><a data-lane-related href="/insights/multi-region-architecture-patterns/"><strong>Multi-Region Architecture Patterns: What You&#39;re Actually Buying at Each Tier</strong><span class="lane-reading-reason">Another perspective on distributed systems.</span></a></li><li><a data-lane-related href="/insights/quick-take-quantum-computing/"><strong>How to Read a Quantum Computing Milestone</strong><span class="lane-reading-reason">Separate component experiments, logical-qubit evidence, application advantage, and cryptographic migration work.</span></a></li></ul></div><a class="lane-reading-index" href="/learn/systems-architecture/">All Systems Architecture articles</a></section>
       <footer class="article-foot">
         <div class="row" style="gap:.4rem">
           <a class="chip" href="/topics/legacy-modernization/">Legacy Modernization</a><a class="chip" href="/topics/architecture/">Architecture</a><a class="chip" href="/topics/distributed-systems/">Distributed Systems</a><a class="chip" href="/topics/engineering-practice/">Engineering Practice</a><a class="chip" href="/topics/technical-debt/">Technical Debt</a>
         </div>
-        <nav class="prevnext" aria-label="More articles">
-          <a href="/insights/designing-for-failure-resilience-patterns/"><span>Previous</span><strong>Designing for Failure: Resilience Patterns That Actually Hold in Production</strong></a>
-          <a href="/insights/queueing-theory-for-engineers/" class="next"><span>Next</span><strong>Queueing Theory for Engineers: How Utilisation and Variability Shape Waits</strong></a>
-        </nav>
+        
       </footer>
     </div>
     <aside class="writing-promos" aria-label="Promotions" data-ad-slot="article-rail">
@@ -223,38 +221,7 @@ d.setAttribute('data-theme',t);
 </aside>
   </div>
 
-  <section class="section surface hair" style="margin-top:4rem">
-    <div class="wrap">
-      <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|Java|Modernization|Technical Debt|Architecture|Engineering Practice|" data-search="modernizing legacy java: a roadmap from java 8 to 21+ without stopping the business most enterprise java still runs on versions the ecosystem has left behind. a staged roadmap for moving java 8 estates to 21+ — what breaks, what to automate, how to sequence framework upgrades, and how to sell the work to the business. java modernization technical debt architecture engineering practice" data-topic="Architecture">
-  <div class="card-art"><img data-article-art="java-legacy-modernization-roadmap" src="/assets/covers/java-legacy-modernization-roadmap.svg?v=6e20dff86496" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
-  <div class="card-body">
-    <a class="chip" href="/topics/architecture/">Architecture</a>
-    <h3 class="card-title"><a class="card-destination" href="/insights/java-legacy-modernization-roadmap/">Modernizing Legacy Java: A Roadmap from Java 8 to 21+ Without Stopping the Business</a></h3>
-    <p class="card-desc">Most enterprise Java still runs on versions the ecosystem has left behind. A staged roadmap for moving Java 8 estates to 21+ — what breaks, what to automate, how to sequence framework upgrades, and how to sell the work to the business.</p>
-    <div class="card-meta"><time datetime="2026-03-10">10 Mar 2026</time><span class="dot"></span><span>10 min read</span></div>
-  </div>
-</article>
-<article class="card" data-card data-topics="|Cloud Architecture|Architecture|Reliability|Disaster Recovery|Distributed Systems|" data-search="multi-region architecture patterns: what you&#39;re actually buying at each tier active-passive, pilot light, active-active, and the data problem underneath them all. a tiered framework for multi-region design that matches architecture to actual availability requirements — and prices the tiers honestly. cloud architecture architecture reliability disaster recovery distributed systems" data-topic="Cloud Architecture">
-  <div class="card-art"><img data-article-art="multi-region-architecture-patterns" src="/assets/covers/multi-region-architecture-patterns.svg?v=983e36039fa8" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
-  <div class="card-body">
-    <a class="chip" href="/topics/cloud-architecture/">Cloud Architecture</a>
-    <h3 class="card-title"><a class="card-destination" href="/insights/multi-region-architecture-patterns/">Multi-Region Architecture Patterns: What You&#39;re Actually Buying at Each Tier</a></h3>
-    <p class="card-desc">Active-passive, pilot light, active-active, and the data problem underneath them all. A tiered framework for multi-region design that matches architecture to actual availability requirements — and prices the tiers honestly.</p>
-    <div class="card-meta"><time datetime="2026-02-12">12 Feb 2026</time><span class="dot"></span><span>11 min read</span></div>
-  </div>
-</article>
-<article class="card" data-card data-topics="|Performance|Capacity Planning|Reliability|Distributed Systems|Architecture|" data-search="queueing theory for engineers: how utilisation and variability shape waits little&#39;s law, the utilization-latency curve, and variability&#39;s tax — the three results that explain most capacity mysteries, from connection pools to on-call load. no calculus required, just the intuitions that make systems behavior predictable. performance capacity planning reliability distributed systems architecture" data-topic="Performance">
-  <div class="card-art"><img data-article-art="queueing-theory-for-engineers" src="/assets/covers/queueing-theory-for-engineers.svg?v=179ca4ab2b0e" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
-  <div class="card-body">
-    <a class="chip" href="/topics/performance/">Performance</a>
-    <h3 class="card-title"><a class="card-destination" href="/insights/queueing-theory-for-engineers/">Queueing Theory for Engineers: How Utilisation and Variability Shape Waits</a></h3>
-    <p class="card-desc">Little&#39;s Law, the utilization-latency curve, and variability&#39;s tax — the three results that explain most capacity mysteries, from connection pools to on-call load. No calculus required, just the intuitions that make systems behavior predictable.</p>
-    <div class="card-meta"><time datetime="2026-02-03">3 Feb 2026</time><span class="dot"></span><span>6 min read</span></div>
-  </div>
-</article></div>
-    </div>
-  </section>
+  
 
   <section class="section">
     <div class="art-wrap"><div class="cta-panel">
@@ -304,12 +271,11 @@ d.setAttribute('data-theme',t);
 <div class="chapter-bar" id="chapterBar">
   <div class="chapter-where">
     <b>The Strangler Fig in Practice: Incremental Legacy Replacement That Actually Finishes</b>
-    <span>Architecture</span>
+    <span>Systems Architecture</span>
   </div>
   <span class="chapter-left" id="chapterLeft"></span>
   <nav class="chapter-step" aria-label="Article navigation">
-    <a href="/insights/designing-for-failure-resilience-patterns/" aria-label="Previous: Designing for Failure: Resilience Patterns That Actually Hold in Production"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a>
-    <a href="/insights/queueing-theory-for-engineers/" aria-label="Next: Queueing Theory for Engineers: How Utilisation and Variability Shape Waits"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
+    <a href="/insights/multi-region-architecture-patterns/" aria-label="Previous: Multi-Region Architecture Patterns: What You&#39;re Actually Buying at Each Tier"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a><a href="/insights/postgresql-performance-tuning/" aria-label="Next: PostgreSQL Performance Tuning: The Settings and Patterns That Actually Matter"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
   </nav>
 </div>
 </main>
@@ -367,7 +333,8 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=f8d83e0e" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=f8d83e0e"></script>
+<script src="/assets/js/site.js?v=689adf6b" defer></script>
+
+<script type="module" src="/assets/js/brand-motion.mjs?v=689adf6b"></script>
 </body>
 </html>

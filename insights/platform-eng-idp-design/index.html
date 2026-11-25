@@ -33,7 +33,12 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=f8d83e0e">
+<link rel="stylesheet" href="/assets/css/site.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/portal.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-art.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-pages.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-reader.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/topic-scroller.css?v=689adf6b">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
 <link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Personal notes" href="/notes/feed.xml">
@@ -51,8 +56,8 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Designing an Internal Developer Platform: Abstraction Layers, Golden Paths, and the Governance Balance","description":"How to design the abstraction layer between your platform and your application teams — what to hide, what to expose, and how to build the golden paths that make good practices the easy practices.","datePublished":"2026-05-19","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/platform-eng-idp-design/","image":"https://ajnacs.com/assets/og/articles/platform-eng-idp-design.png?v=903347af8a6c","keywords":"Engineering Leadership, Architecture, Fundamentals","articleSection":"Engineering Leadership","wordCount":1803}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Designing an Internal Developer Platform: Abstraction Layers, Golden Paths, and the Governance Balance"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Designing an Internal Developer Platform: Abstraction Layers, Golden Paths, and the Governance Balance","description":"How to design the abstraction layer between your platform and your application teams — what to hide, what to expose, and how to build the golden paths that make good practices the easy practices.","datePublished":"2026-05-19","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/platform-eng-idp-design/","image":"https://ajnacs.com/assets/og/articles/platform-eng-idp-design.png?v=903347af8a6c","keywords":"Engineering Leadership, Architecture, Fundamentals","articleSection":"Platform & Delivery","wordCount":1803}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Topics","item":"https://ajnacs.com/topics/"},{"@type":"ListItem","position":3,"name":"Platform & Delivery","item":"https://ajnacs.com/learn/platform-delivery/"},{"@type":"ListItem","position":4,"name":"Designing an Internal Developer Platform: Abstraction Layers, Golden Paths, and the Governance Balance"}]}</script>
 </head>
 <body class="article-frame" data-topic="Engineering Leadership">
 <a class="skip-link" href="#main">Skip to content</a>
@@ -64,12 +69,11 @@ d.setAttribute('data-theme',t);
       <a class="brand-home" href="/" aria-label="Ajna Consulting Services — home"><span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span></a>
     </div>
     <nav class="nav" id="nav" aria-label="Primary">
-      <a href="/services/">Services</a>
-      <a href="/insights/" aria-current="location">Insights</a>
-      <a href="/series/">Series</a>
-      <a href="/notes/">Personal notes</a>
+      <a href="/topics/" aria-current="location">Topics</a>
       <a href="/case-studies/">Case studies</a>
-      <a href="/about/">About</a>
+      <a href="/services/">Services</a>
+      <a href="/notes/">Personal Notes</a>
+      <a href="/insights/#article-search">Search</a>
       <a class="btn btn-sm" href="/contact/" style="margin-left:.4rem">Engage engineering</a>
     </nav>
     <div class="nav-actions">
@@ -84,11 +88,7 @@ d.setAttribute('data-theme',t);
 <article class="article">
   <div class="reading-layout">
     <header class="article-head">
-      <nav class="crumbs" aria-label="Breadcrumb">
-        <a href="/">Home</a> <span aria-hidden="true">/</span>
-        <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
-        <a href="/topics/engineering-leadership/">Engineering Leadership</a>
-      </nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">/</span> <a href="/topics/">Topics</a> <span aria-hidden="true">/</span> <a href="/learn/platform-delivery/">Platform &amp; Delivery</a></nav>
       <h1 class="h1">Designing an Internal Developer Platform: Abstraction Layers, Golden Paths, and the Governance Balance</h1>
       <p class="lede" style="margin-top:1rem">How to design the abstraction layer between your platform and your application teams — what to hide, what to expose, and how to build the golden paths that make good practices the easy practices.</p>
       <div class="article-meta">
@@ -277,14 +277,12 @@ spec:
 
 
 
+      <section class="lane-reading" data-lane-continuation="platform-delivery" aria-labelledby="lane-reading-title" style="--reading-lane-accent:#237a75"><h2 id="lane-reading-title" class="h3">Next in this series</h2><a class="lane-reading-next" data-lane-next href="/insights/platform-eng-self-service/"><strong>Self-Service Infrastructure: How to Build It Without Losing Operational Control</strong><span class="lane-reading-reason">Give teams self-service capabilities with operational limits.</span><span class="lane-reading-meta">7 min read</span></a><div class="lane-reading-related"><h3 class="h3">Related reading</h3><ul class="lane-reading-list"><li><a data-lane-related href="/insights/platform-engineering-idp-2026/"><strong>Platform Onboarding: Measure the Path to a First Deployment</strong><span class="lane-reading-reason">Pilot a self-service path, measure time to a first qualifying deployment, and track completion, controls, and support effort.</span></a></li><li><a data-lane-related href="/insights/platform-eng-what-it-is/"><strong>Platform Engineering: What It Is, Why It Emerged, and What Makes It Different from DevOps</strong><span class="lane-reading-reason">Platform engineering is not rebranded DevOps. It is a specific organisational and technical discipline that treats internal infrastructure as a product. Here is what that actually means.</span></a></li></ul></div><a class="lane-reading-index" href="/learn/platform-delivery/">All Platform &amp; Delivery articles</a></section>
       <footer class="article-foot">
         <div class="row" style="gap:.4rem">
           <a class="chip" href="/topics/engineering-leadership/">Engineering Leadership</a><a class="chip" href="/topics/architecture/">Architecture</a><a class="chip" href="/topics/fundamentals/">Fundamentals</a>
         </div>
-        <nav class="prevnext" aria-label="More articles">
-          <a href="/insights/platform-eng-self-service/"><span>Previous</span><strong>Self-Service Infrastructure: How to Build It Without Losing Operational Control</strong></a>
-          <a href="/insights/os-namespaces-cgroups/" class="next"><span>Next</span><strong>Linux Namespaces and cgroups: The Foundation of Containers</strong></a>
-        </nav>
+        
       </footer>
     </div>
     <aside class="writing-promos" aria-label="Promotions" data-ad-slot="article-rail">
@@ -304,38 +302,7 @@ spec:
 </aside>
   </div>
 
-  <section class="section surface hair" style="margin-top:4rem">
-    <div class="wrap">
-      <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|Engineering Leadership|Architecture|Fundamentals|" data-search="platform engineering: what it is, why it emerged, and what makes it different from devops platform engineering is not rebranded devops. it is a specific organisational and technical discipline that treats internal infrastructure as a product. here is what that actually means. engineering leadership architecture fundamentals" data-topic="Engineering Leadership">
-  <div class="card-art"><img data-article-art="platform-eng-what-it-is" src="/assets/covers/platform-eng-what-it-is.svg?v=26cdd97126d1" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
-  <div class="card-body">
-    <a class="chip" href="/topics/engineering-leadership/">Engineering Leadership</a>
-    <h3 class="card-title"><a class="card-destination" href="/insights/platform-eng-what-it-is/">Platform Engineering: What It Is, Why It Emerged, and What Makes It Different from DevOps</a></h3>
-    <p class="card-desc">Platform engineering is not rebranded DevOps. It is a specific organisational and technical discipline that treats internal infrastructure as a product. Here is what that actually means.</p>
-    <div class="card-meta"><time datetime="2026-10-16">16 Oct 2026</time><span class="dot"></span><span>8 min read</span><span class="dot"></span><span>Series</span></div>
-  </div>
-</article>
-<article class="card" data-card data-topics="|Engineering Leadership|Architecture|Fundamentals|" data-search="measuring platform engineering success: the metrics that actually matter dora metrics, developer experience scores, cognitive load measures, and the platform health indicators that tell you whether your internal platform is creating value or creating another bottleneck. engineering leadership architecture fundamentals" data-topic="Engineering Leadership">
-  <div class="card-art"><img data-article-art="platform-eng-measuring-success" src="/assets/covers/platform-eng-measuring-success.svg?v=a0eb18c722ca" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
-  <div class="card-body">
-    <a class="chip" href="/topics/engineering-leadership/">Engineering Leadership</a>
-    <h3 class="card-title"><a class="card-destination" href="/insights/platform-eng-measuring-success/">Measuring Platform Engineering Success: The Metrics That Actually Matter</a></h3>
-    <p class="card-desc">DORA metrics, developer experience scores, cognitive load measures, and the platform health indicators that tell you whether your internal platform is creating value or creating another bottleneck.</p>
-    <div class="card-meta"><time datetime="2026-07-21">21 Jul 2026</time><span class="dot"></span><span>8 min read</span><span class="dot"></span><span>Series</span></div>
-  </div>
-</article>
-<article class="card" data-card data-topics="|DevSecOps|Architecture|Fundamentals|" data-search="platform observability: building the visibility layer every application team gets automatically how platform teams build and operate the metrics, logging, and tracing infrastructure that application teams consume without configuring — and what good platform observability coverage actually looks like. devsecops architecture fundamentals" data-topic="DevSecOps">
-  <div class="card-art"><img data-article-art="platform-eng-observability" src="/assets/covers/platform-eng-observability.svg?v=aa2033af7550" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
-  <div class="card-body">
-    <a class="chip" href="/topics/devsecops/">DevSecOps</a>
-    <h3 class="card-title"><a class="card-destination" href="/insights/platform-eng-observability/">Platform Observability: Building the Visibility Layer Every Application Team Gets Automatically</a></h3>
-    <p class="card-desc">How platform teams build and operate the metrics, logging, and tracing infrastructure that application teams consume without configuring — and what good platform observability coverage actually looks like.</p>
-    <div class="card-meta"><time datetime="2026-09-16">16 Sept 2026</time><span class="dot"></span><span>7 min read</span><span class="dot"></span><span>Series</span></div>
-  </div>
-</article></div>
-    </div>
-  </section>
+  
 
   <section class="section">
     <div class="art-wrap"><div class="cta-panel">
@@ -389,8 +356,7 @@ spec:
   </div>
   <span class="chapter-left" id="chapterLeft"></span>
   <nav class="chapter-step" aria-label="Article navigation">
-    <a href="/insights/platform-eng-self-service/" aria-label="Previous: Self-Service Infrastructure: How to Build It Without Losing Operational Control"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a>
-    <a href="/insights/os-namespaces-cgroups/" aria-label="Next: Linux Namespaces and cgroups: The Foundation of Containers"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
+    <a href="/insights/platform-eng-what-it-is/" aria-label="Previous: Platform Engineering: What It Is, Why It Emerged, and What Makes It Different from DevOps"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a><a href="/insights/platform-eng-self-service/" aria-label="Next: Self-Service Infrastructure: How to Build It Without Losing Operational Control"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
   </nav>
 </div>
 </main>
@@ -448,7 +414,8 @@ spec:
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=f8d83e0e" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=f8d83e0e"></script>
+<script src="/assets/js/site.js?v=689adf6b" defer></script>
+
+<script type="module" src="/assets/js/brand-motion.mjs?v=689adf6b"></script>
 </body>
 </html>

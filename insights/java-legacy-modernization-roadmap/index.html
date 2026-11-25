@@ -33,7 +33,12 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=f8d83e0e">
+<link rel="stylesheet" href="/assets/css/site.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/portal.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-art.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-pages.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-reader.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/topic-scroller.css?v=689adf6b">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
 <link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Personal notes" href="/notes/feed.xml">
@@ -51,8 +56,8 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Modernizing Legacy Java: A Roadmap from Java 8 to 21+ Without Stopping the Business","description":"Most enterprise Java still runs on versions the ecosystem has left behind. A staged roadmap for moving Java 8 estates to 21+ — what breaks, what to automate, how to sequence framework upgrades, and how to sell the work to the business.","datePublished":"2026-03-10","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/java-legacy-modernization-roadmap/","image":"https://ajnacs.com/assets/og/articles/java-legacy-modernization-roadmap.png?v=5a81e3dc0341","keywords":"Java, Modernization, Technical Debt, Architecture, Engineering Practice","articleSection":"Architecture","wordCount":2171}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Modernizing Legacy Java: A Roadmap from Java 8 to 21+ Without Stopping the Business"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Modernizing Legacy Java: A Roadmap from Java 8 to 21+ Without Stopping the Business","description":"Most enterprise Java still runs on versions the ecosystem has left behind. A staged roadmap for moving Java 8 estates to 21+ — what breaks, what to automate, how to sequence framework upgrades, and how to sell the work to the business.","datePublished":"2026-03-10","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/java-legacy-modernization-roadmap/","image":"https://ajnacs.com/assets/og/articles/java-legacy-modernization-roadmap.png?v=5a81e3dc0341","keywords":"Java, Modernization, Technical Debt, Architecture, Engineering Practice","articleSection":"Software Engineering","wordCount":2171}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Topics","item":"https://ajnacs.com/topics/"},{"@type":"ListItem","position":3,"name":"Software Engineering","item":"https://ajnacs.com/learn/software-engineering/"},{"@type":"ListItem","position":4,"name":"Modernizing Legacy Java: A Roadmap from Java 8 to 21+ Without Stopping the Business"}]}</script>
 </head>
 <body class="article-frame" data-topic="Architecture">
 <a class="skip-link" href="#main">Skip to content</a>
@@ -64,12 +69,11 @@ d.setAttribute('data-theme',t);
       <a class="brand-home" href="/" aria-label="Ajna Consulting Services — home"><span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span></a>
     </div>
     <nav class="nav" id="nav" aria-label="Primary">
-      <a href="/services/">Services</a>
-      <a href="/insights/" aria-current="location">Insights</a>
-      <a href="/series/">Series</a>
-      <a href="/notes/">Personal notes</a>
+      <a href="/topics/" aria-current="location">Topics</a>
       <a href="/case-studies/">Case studies</a>
-      <a href="/about/">About</a>
+      <a href="/services/">Services</a>
+      <a href="/notes/">Personal Notes</a>
+      <a href="/insights/#article-search">Search</a>
       <a class="btn btn-sm" href="/contact/" style="margin-left:.4rem">Engage engineering</a>
     </nav>
     <div class="nav-actions">
@@ -84,11 +88,7 @@ d.setAttribute('data-theme',t);
 <article class="article">
   <div class="reading-layout">
     <header class="article-head">
-      <nav class="crumbs" aria-label="Breadcrumb">
-        <a href="/">Home</a> <span aria-hidden="true">/</span>
-        <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
-        <a href="/topics/architecture/">Architecture</a>
-      </nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">/</span> <a href="/topics/">Topics</a> <span aria-hidden="true">/</span> <a href="/learn/software-engineering/">Software Engineering</a></nav>
       <h1 class="h1">Modernizing Legacy Java: A Roadmap from Java 8 to 21+ Without Stopping the Business</h1>
       <p class="lede" style="margin-top:1rem">Most enterprise Java still runs on versions the ecosystem has left behind. A staged roadmap for moving Java 8 estates to 21+ — what breaks, what to automate, how to sequence framework upgrades, and how to sell the work to the business.</p>
       <div class="article-meta">
@@ -199,14 +199,12 @@ d.setAttribute('data-theme',t);
 
 
 
+      <section class="lane-reading" data-lane-continuation="software-engineering" aria-labelledby="lane-reading-title" style="--reading-lane-accent:#50764b"><h2 id="lane-reading-title" class="h3">Continue in Software Engineering</h2><a class="lane-reading-next" data-lane-next href="/insights/java-virtual-threads-enterprise/"><strong>Virtual Threads in the Enterprise: What Changes, What Doesn&#39;t, and What Breaks</strong><span class="lane-reading-reason">Continue with java in another part of this topic.</span><span class="lane-reading-meta">9 min read</span></a><div class="lane-reading-related"><h3 class="h3">Related reading</h3><ul class="lane-reading-list"><li><a data-lane-related href="/insights/python-packaging-dependency-management/"><strong>Python Packaging and Dependency Management in 2026: From requirements.txt Chaos to Reproducible Builds</strong><span class="lane-reading-reason">Another perspective on engineering practice.</span></a></li><li><a data-lane-related href="/insights/java-graalvm-native-image/"><strong>GraalVM Native Image for Enterprise Java: When Compiling Ahead of Time Pays</strong><span class="lane-reading-reason">Another perspective on java.</span></a></li></ul></div><a class="lane-reading-index" href="/learn/software-engineering/">All Software Engineering articles</a></section>
       <footer class="article-foot">
         <div class="row" style="gap:.4rem">
           <a class="chip" href="/topics/java/">Java</a><a class="chip" href="/topics/modernization/">Modernization</a><a class="chip" href="/topics/technical-debt/">Technical Debt</a><a class="chip" href="/topics/architecture/">Architecture</a><a class="chip" href="/topics/engineering-practice/">Engineering Practice</a>
         </div>
-        <nav class="prevnext" aria-label="More articles">
-          <a href="/insights/java-virtual-threads-enterprise/"><span>Previous</span><strong>Virtual Threads in the Enterprise: What Changes, What Doesn&#39;t, and What Breaks</strong></a>
-          <a href="/insights/deployment-strategies-blue-green-canary/" class="next"><span>Next</span><strong>Deployment Strategies Compared: Rolling, Blue-Green, Canary, and When Each Actually Fits</strong></a>
-        </nav>
+        
       </footer>
     </div>
     <aside class="writing-promos" aria-label="Promotions" data-ad-slot="article-rail">
@@ -226,38 +224,7 @@ d.setAttribute('data-theme',t);
 </aside>
   </div>
 
-  <section class="section surface hair" style="margin-top:4rem">
-    <div class="wrap">
-      <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|Legacy Modernization|Architecture|Distributed Systems|Engineering Practice|Technical Debt|" data-search="the strangler fig in practice: incremental legacy replacement that actually finishes everyone cites the strangler pattern; few finish a strangulation. the facade and routing mechanics, the data-migration sequencing that makes or breaks it, the organizational funding model, and the anti-patterns that leave estates half-strangled forever. legacy modernization architecture distributed systems engineering practice technical debt" data-topic="Architecture">
-  <div class="card-art"><img data-article-art="strangler-fig-legacy-migration" src="/assets/covers/strangler-fig-legacy-migration.svg?v=33a987ef5476" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
-  <div class="card-body">
-    <a class="chip" href="/topics/architecture/">Architecture</a>
-    <h3 class="card-title"><a class="card-destination" href="/insights/strangler-fig-legacy-migration/">The Strangler Fig in Practice: Incremental Legacy Replacement That Actually Finishes</a></h3>
-    <p class="card-desc">Everyone cites the strangler pattern; few finish a strangulation. The facade and routing mechanics, the data-migration sequencing that makes or breaks it, the organizational funding model, and the anti-patterns that leave estates half-strangled forever.</p>
-    <div class="card-meta"><time datetime="2026-01-19">19 Jan 2026</time><span class="dot"></span><span>10 min read</span></div>
-  </div>
-</article>
-<article class="card" data-card data-topics="|Java|JVM|Concurrency|Performance|Architecture|" data-search="virtual threads in the enterprise: what changes, what doesn&#39;t, and what breaks java 21&#39;s virtual threads promise massive concurrency without reactive complexity. here&#39;s what actually changes in enterprise services — thread pool math, pinning pitfalls, connection pools as the new bottleneck, and when reactive still wins. java jvm concurrency performance architecture" data-topic="Performance">
-  <div class="card-art"><img data-article-art="java-virtual-threads-enterprise" src="/assets/covers/java-virtual-threads-enterprise.svg?v=d7aa02b1d353" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
-  <div class="card-body">
-    <a class="chip" href="/topics/performance/">Performance</a>
-    <h3 class="card-title"><a class="card-destination" href="/insights/java-virtual-threads-enterprise/">Virtual Threads in the Enterprise: What Changes, What Doesn&#39;t, and What Breaks</a></h3>
-    <p class="card-desc">Java 21&#39;s virtual threads promise massive concurrency without reactive complexity. Here&#39;s what actually changes in enterprise services — thread pool math, pinning pitfalls, connection pools as the new bottleneck, and when reactive still wins.</p>
-    <div class="card-meta"><time datetime="2026-02-24">24 Feb 2026</time><span class="dot"></span><span>9 min read</span></div>
-  </div>
-</article>
-<article class="card" data-card data-topics="|Java|WebLogic|Middleware|Architecture|" data-search="weblogic domains, clusters, and managed servers: the architecture explained admin servers, managed servers, clusters, machines, and node manager — the weblogic domain model explained for people who have to run it, not just pass the exam. what each piece does, how they fit together, and where production deployments go wrong. java weblogic middleware architecture" data-topic="Architecture">
-  <div class="card-art"><img data-article-art="weblogic-domains-clusters-explained" src="/assets/covers/weblogic-domains-clusters-explained.svg?v=d41cefa2b872" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
-  <div class="card-body">
-    <a class="chip" href="/topics/architecture/">Architecture</a>
-    <h3 class="card-title"><a class="card-destination" href="/insights/weblogic-domains-clusters-explained/">WebLogic Domains, Clusters, and Managed Servers: The Architecture Explained</a></h3>
-    <p class="card-desc">Admin servers, managed servers, clusters, machines, and Node Manager — the WebLogic domain model explained for people who have to run it, not just pass the exam. What each piece does, how they fit together, and where production deployments go wrong.</p>
-    <div class="card-meta"><time datetime="2025-09-09">9 Sept 2025</time><span class="dot"></span><span>14 min read</span></div>
-  </div>
-</article></div>
-    </div>
-  </section>
+  
 
   <section class="section">
     <div class="art-wrap"><div class="cta-panel">
@@ -307,12 +274,11 @@ d.setAttribute('data-theme',t);
 <div class="chapter-bar" id="chapterBar">
   <div class="chapter-where">
     <b>Modernizing Legacy Java: A Roadmap from Java 8 to 21+ Without Stopping the Business</b>
-    <span>Architecture</span>
+    <span>Software Engineering</span>
   </div>
   <span class="chapter-left" id="chapterLeft"></span>
   <nav class="chapter-step" aria-label="Article navigation">
-    <a href="/insights/java-virtual-threads-enterprise/" aria-label="Previous: Virtual Threads in the Enterprise: What Changes, What Doesn&#39;t, and What Breaks"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a>
-    <a href="/insights/deployment-strategies-blue-green-canary/" aria-label="Next: Deployment Strategies Compared: Rolling, Blue-Green, Canary, and When Each Actually Fits"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
+    <a href="/insights/os-namespaces-cgroups/" aria-label="Previous: Linux Namespaces and cgroups: The Foundation of Containers"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></a><a href="/insights/java-virtual-threads-enterprise/" aria-label="Next: Virtual Threads in the Enterprise: What Changes, What Doesn&#39;t, and What Breaks"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
   </nav>
 </div>
 </main>
@@ -370,7 +336,8 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=f8d83e0e" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=f8d83e0e"></script>
+<script src="/assets/js/site.js?v=689adf6b" defer></script>
+
+<script type="module" src="/assets/js/brand-motion.mjs?v=689adf6b"></script>
 </body>
 </html>

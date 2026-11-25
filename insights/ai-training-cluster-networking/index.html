@@ -33,7 +33,12 @@
 <meta name="theme-color" content="#0a1020">
 
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css?v=f8d83e0e">
+<link rel="stylesheet" href="/assets/css/site.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/portal.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-art.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-pages.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-reader.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/topic-scroller.css?v=689adf6b">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
 <link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
 <link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Personal notes" href="/notes/feed.xml">
@@ -51,8 +56,8 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"AI Training Cluster Networking: Architecture for Large-Scale Model Training","description":"Training large models at scale requires network architecture that most data centres aren't built for. Here's how to think about the networking stack for AI training clusters — topology, bandwidth requirements, collective operations, and the trade-offs between InfiniBand and high-speed Ethernet.","datePublished":"2025-04-08","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/ai-training-cluster-networking/","image":"https://ajnacs.com/assets/og/articles/ai-training-cluster-networking.png?v=8029ba285b06","keywords":"Systems, AI & MLOps, HPC","articleSection":"AI & MLOps","wordCount":786}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"AI Training Cluster Networking: Architecture for Large-Scale Model Training"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"AI Training Cluster Networking: Architecture for Large-Scale Model Training","description":"Training large models at scale requires network architecture that most data centres aren't built for. Here's how to think about the networking stack for AI training clusters — topology, bandwidth requirements, collective operations, and the trade-offs between InfiniBand and high-speed Ethernet.","datePublished":"2025-04-08","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/ai-training-cluster-networking/","image":"https://ajnacs.com/assets/og/articles/ai-training-cluster-networking.png?v=8029ba285b06","keywords":"Systems, AI & MLOps, HPC","articleSection":"AI & Data Engineering","wordCount":786}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Topics","item":"https://ajnacs.com/topics/"},{"@type":"ListItem","position":3,"name":"AI & Data Engineering","item":"https://ajnacs.com/learn/ai-data/"},{"@type":"ListItem","position":4,"name":"AI Training Cluster Networking: Architecture for Large-Scale Model Training"}]}</script>
 </head>
 <body class="article-frame" data-topic="AI &amp; MLOps">
 <a class="skip-link" href="#main">Skip to content</a>
@@ -64,12 +69,11 @@ d.setAttribute('data-theme',t);
       <a class="brand-home" href="/" aria-label="Ajna Consulting Services — home"><span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span></a>
     </div>
     <nav class="nav" id="nav" aria-label="Primary">
-      <a href="/services/">Services</a>
-      <a href="/insights/" aria-current="location">Insights</a>
-      <a href="/series/">Series</a>
-      <a href="/notes/">Personal notes</a>
+      <a href="/topics/" aria-current="location">Topics</a>
       <a href="/case-studies/">Case studies</a>
-      <a href="/about/">About</a>
+      <a href="/services/">Services</a>
+      <a href="/notes/">Personal Notes</a>
+      <a href="/insights/#article-search">Search</a>
       <a class="btn btn-sm" href="/contact/" style="margin-left:.4rem">Engage engineering</a>
     </nav>
     <div class="nav-actions">
@@ -84,11 +88,7 @@ d.setAttribute('data-theme',t);
 <article class="article">
   <div class="reading-layout">
     <header class="article-head">
-      <nav class="crumbs" aria-label="Breadcrumb">
-        <a href="/">Home</a> <span aria-hidden="true">/</span>
-        <a href="/insights/">Insights</a> <span aria-hidden="true">/</span>
-        <a href="/topics/ai-mlops/">AI &amp; MLOps</a>
-      </nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">/</span> <a href="/topics/">Topics</a> <span aria-hidden="true">/</span> <a href="/learn/ai-data/">AI &amp; Data Engineering</a></nav>
       <h1 class="h1">AI Training Cluster Networking: Architecture for Large-Scale Model Training</h1>
       <p class="lede" style="margin-top:1rem">Training large models at scale requires network architecture that most data centres aren&#39;t built for. Here&#39;s how to think about the networking stack for AI training clusters — topology, bandwidth requirements, collective operations, and the trade-offs between InfiniBand and high-speed Ethernet.</p>
       <div class="article-meta">
@@ -189,14 +189,12 @@ d.setAttribute('data-theme',t);
 
 
 
+      <section class="lane-reading" data-lane-continuation="ai-data" aria-labelledby="lane-reading-title" style="--reading-lane-accent:#21758c"><h2 id="lane-reading-title" class="h3">Continue in AI &amp; Data</h2><a class="lane-reading-next" data-lane-next href="/insights/multi-agent-systems-enterprise/"><strong>Multi-Agent AI Systems: When They Add Value and When They Add Complexity</strong><span class="lane-reading-reason">Continue with ai &amp; mlops in another part of this topic.</span><span class="lane-reading-meta">9 min read</span></a><div class="lane-reading-related"><h3 class="h3">Related reading</h3><ul class="lane-reading-list"><li><a data-lane-related href="/insights/prompt-engineering-production/"><strong>Prompt Engineering for Production Systems: Beyond the Demo</strong><span class="lane-reading-reason">Another perspective on ai &amp; mlops.</span></a></li><li><a data-lane-related href="/insights/aiml-llms-explained/"><strong>Large Language Models: What They Are, How They Are Built, and What They Cannot Do</strong><span class="lane-reading-reason">Another perspective on ai &amp; mlops.</span></a></li></ul></div><a class="lane-reading-index" href="/learn/ai-data/">All AI &amp; Data articles</a></section>
       <footer class="article-foot">
         <div class="row" style="gap:.4rem">
           <a class="chip" href="/topics/systems/">Systems</a><a class="chip" href="/topics/ai-mlops/">AI &amp; MLOps</a><a class="chip" href="/topics/hpc/">HPC</a>
         </div>
-        <nav class="prevnext" aria-label="More articles">
-          <a href="/insights/quick-take-ethernet-vs-infiniband/"><span>Previous</span><strong>Ethernet vs. InfiniBand for AI Training: Why the Network Fabric Matters More Than You Think</strong></a>
-          <a href="/insights/oracle-db-performance-tuning/" class="next"><span>Next</span><strong>Oracle DB Performance Tuning: The 10 Things That Actually Move the Needle</strong></a>
-        </nav>
+        
       </footer>
     </div>
     <aside class="writing-promos" aria-label="Promotions" data-ad-slot="article-rail">
@@ -216,38 +214,7 @@ d.setAttribute('data-theme',t);
 </aside>
   </div>
 
-  <section class="section surface hair" style="margin-top:4rem">
-    <div class="wrap">
-      <p class="eyebrow">Related</p>
-      <div class="grid g-3" style="margin-top:1.4rem"><article class="card" data-card data-topics="|Systems|HPC|AI &amp; MLOps|" data-search="roce vs iwarp: choosing the right rdma technology for your workload both roce and iwarp provide rdma over ethernet, but they have different network requirements, loss behavior, and operational characteristics. here&#39;s how to choose between them for ai training, hpc, and storage workloads. systems hpc ai &amp; mlops" data-topic="AI &amp; MLOps">
-  <div class="card-art"><img data-article-art="roce-vs-iwarp-networking" src="/assets/covers/roce-vs-iwarp-networking.svg?v=f6d94872b25a" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
-  <div class="card-body">
-    <a class="chip" href="/topics/ai-mlops/">AI &amp; MLOps</a>
-    <h3 class="card-title"><a class="card-destination" href="/insights/roce-vs-iwarp-networking/">RoCE vs iWARP: Choosing the Right RDMA Technology for Your Workload</a></h3>
-    <p class="card-desc">Both RoCE and iWARP provide RDMA over Ethernet, but they have different network requirements, loss behavior, and operational characteristics. Here&#39;s how to choose between them for AI training, HPC, and storage workloads.</p>
-    <div class="card-meta"><time datetime="2026-11-02">2 Nov 2026</time><span class="dot"></span><span>3 min read</span></div>
-  </div>
-</article>
-<article class="card" data-card data-topics="|Systems|HPC|AI &amp; MLOps|" data-search="hpc network topology patterns: fat-tree, torus, and dragonfly explained the network topology of an hpc or ai training cluster determines its bandwidth, latency, cost, and how well it scales. here&#39;s how fat-tree, torus, and dragonfly topologies work, their trade-offs, and which workloads each suits best. systems hpc ai &amp; mlops" data-topic="AI &amp; MLOps">
-  <div class="card-art"><img data-article-art="hpc-network-topology-patterns" src="/assets/covers/hpc-network-topology-patterns.svg?v=105203c1f175" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
-  <div class="card-body">
-    <a class="chip" href="/topics/ai-mlops/">AI &amp; MLOps</a>
-    <h3 class="card-title"><a class="card-destination" href="/insights/hpc-network-topology-patterns/">HPC Network Topology Patterns: Fat-Tree, Torus, and Dragonfly Explained</a></h3>
-    <p class="card-desc">The network topology of an HPC or AI training cluster determines its bandwidth, latency, cost, and how well it scales. Here&#39;s how fat-tree, torus, and dragonfly topologies work, their trade-offs, and which workloads each suits best.</p>
-    <div class="card-meta"><time datetime="2026-10-30">30 Oct 2026</time><span class="dot"></span><span>3 min read</span></div>
-  </div>
-</article>
-<article class="card" data-card data-topics="|Systems|Infrastructure|Enterprise AI|Cloud Architecture|HPC|" data-search="ethernet vs. infiniband: choosing the right network fabric in 2026 a practical breakdown of when to use ethernet and when infiniband makes sense — with key metrics, topology differences, and real-world guidance for cloud, hpc, and ai workloads. systems infrastructure enterprise ai cloud architecture hpc" data-topic="Infrastructure">
-  <div class="card-art"><img data-article-art="ethernet-vs-infiniband-networking-2026" src="/assets/covers/ethernet-vs-infiniband-networking-2026.svg?v=40d7afab4a83" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
-  <div class="card-body">
-    <a class="chip" href="/topics/infrastructure/">Infrastructure</a>
-    <h3 class="card-title"><a class="card-destination" href="/insights/ethernet-vs-infiniband-networking-2026/">Ethernet vs. InfiniBand: Choosing the Right Network Fabric in 2026</a></h3>
-    <p class="card-desc">A practical breakdown of when to use Ethernet and when InfiniBand makes sense — with key metrics, topology differences, and real-world guidance for cloud, HPC, and AI workloads.</p>
-    <div class="card-meta"><time datetime="2026-10-02">2 Oct 2026</time><span class="dot"></span><span>3 min read</span></div>
-  </div>
-</article></div>
-    </div>
-  </section>
+  
 
   <section class="section">
     <div class="art-wrap"><div class="cta-panel">
@@ -350,7 +317,8 @@ d.setAttribute('data-theme',t);
     </div>
   </div>
 </footer>
-<script src="/assets/js/site.js?v=f8d83e0e" defer></script>
-<script type="module" src="/assets/js/brand-motion.mjs?v=f8d83e0e"></script>
+<script src="/assets/js/site.js?v=689adf6b" defer></script>
+
+<script type="module" src="/assets/js/brand-motion.mjs?v=689adf6b"></script>
 </body>
 </html>

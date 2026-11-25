@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Platform &amp; Delivery | Ajna CS</title>
+<meta name="description" content="Build a paved road from a team&#39;s first deployment to steady production releases.">
+<meta name="author" content="Chandra Lanka">
+<link rel="canonical" href="https://ajnacs.com/learn/platform-delivery/">
+<meta name="robots" content="index, follow, max-image-preview:large">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Ajna Consulting Services">
+<meta property="og:title" content="Platform &amp; Delivery">
+<meta property="og:description" content="Build a paved road from a team&#39;s first deployment to steady production releases.">
+<meta property="og:url" content="https://ajnacs.com/learn/platform-delivery/">
+<meta property="og:image" content="https://ajnacs.com/assets/og/pages/learn-platform-delivery.png?v=7050bdb980f9">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Platform &amp; Delivery">
+
+
+<meta property="og:image:type" content="image/png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Platform &amp; Delivery">
+<meta name="twitter:description" content="Build a paved road from a team&#39;s first deployment to steady production releases.">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/pages/learn-platform-delivery.png?v=7050bdb980f9">
+<meta name="twitter:image:alt" content="Platform &amp; Delivery">
+
+<link rel="icon" href="/favicon.ico?v=8affdbd5" sizes="any">
+<link rel="icon" href="/images/ajna-mark.svg?v=8affdbd5" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png?v=8affdbd5">
+<meta name="theme-color" content="#0a1020">
+
+<link rel="stylesheet" href="/assets/fonts/fonts.css">
+<link rel="stylesheet" href="/assets/css/site.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/portal.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-art.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-pages.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/lanes-reader.css?v=689adf6b">
+<link rel="stylesheet" href="/assets/css/topic-scroller.css?v=689adf6b">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — New Insights" href="/feed.xml">
+<link rel="alternate" type="application/atom+xml" title="Ajna Consulting Services — Engineering updates" href="/updates.xml">
+<link rel="alternate" type="application/rss+xml" title="Ajna Consulting Services — Personal notes" href="/notes/feed.xml">
+<script>
+/* Theme and reading preferences are applied before first paint, so the page
+   never flashes the wrong ground or resets someone's text size mid-read. */
+(function(){try{
+var d=document.documentElement,t=localStorage.getItem('acs-theme');
+if(t!=='dark'&&t!=='light'&&t!=='sepia')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+d.setAttribute('data-theme',t);
+['rsize','rwidth','rface'].forEach(function(k){
+  var v=localStorage.getItem('acs-'+k);
+  if(v&&/^[a-z]{1,5}$/.test(v))d.setAttribute('data-'+k,v);
+});
+
+}catch(e){}})();
+</script>
+
+</head>
+<body class="publication-frame" data-topic="Platform &amp; Delivery">
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header" id="siteHeader">
+  <div class="shell-inner header-inner">
+    <div class="brand">
+      <button class="brand-motion" type="button" data-ajna-motion data-arrival aria-label="Open Ajna logo" aria-pressed="false"><svg class="ajna-mark" viewBox="0 0 100 100" width="56" height="56" fill="none" aria-hidden="true" focusable="false"><defs><path id="t-hdr" d="M 50 4 L 96 50 L 50 50 Z"/><path id="e-hdr" d="M 50 4 L 96 50"/><path id="k-hdr" d="M 50 4 L 50 50 L 96 50"/><linearGradient id="bev-hdr" gradientUnits="userSpaceOnUse" x1="50" y1="50" x2="73" y2="27"><stop offset="0" stop-color="#000" stop-opacity=".13"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity=".2"/></linearGradient><radialGradient id="core-hdr" cx=".34" cy=".3" r=".85"><stop offset="0" stop-color="#fff" stop-opacity=".42"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".45"/></radialGradient><path id="ll-hdr" d="M 50 50 C 34 30.26, 40.08 9.579999999999998, 50 3 C 59.92 9.579999999999998, 66 30.26, 50 50 Z"/><path id="ls-hdr" d="M 50 50 C 36 33.620000000000005, 41.32 16.46, 50 11 C 58.68 16.46, 64 33.620000000000005, 50 50 Z"/><clipPath id="clip-ll-hdr"><use href="#ll-hdr"/></clipPath><clipPath id="clip-ls-hdr"><use href="#ls-hdr"/></clipPath></defs><g class="am-leaf" opacity="0" transform="translate(50 50) rotate(0) scale(.38 .02) translate(-50 -50)"><use href="#ll-hdr" fill="#D95547"/><path d="M50 0 H100 V100 H50Z" fill="#000" fill-opacity=".13" clip-path="url(#clip-ll-hdr)"/><path d="M50 50 L50 3" stroke="#fff" stroke-opacity=".2" stroke-width=".7"/></g><g class="am-leaf" opacity="0" transform="translate(50 50) rotate(45) scale(.38 .02) translate(-50 -50)"><use href="#ls-hdr" fill="#D95547"/><path d="M50 0 H100 V100 H50Z" fill="#000" fill-opacity=".13" clip-path="url(#clip-ls-hdr)"/><path d="M50 50 L50 11" stroke="#fff" stroke-opacity=".2" stroke-width=".7"/></g><g class="am-leaf" opacity="0" transform="translate(50 50) rotate(90) scale(.38 .02) translate(-50 -50)"><use href="#ll-hdr" fill="#E8A347"/><path d="M50 0 H100 V100 H50Z" fill="#000" fill-opacity=".13" clip-path="url(#clip-ll-hdr)"/><path d="M50 50 L50 3" stroke="#fff" stroke-opacity=".2" stroke-width=".7"/></g><g class="am-leaf" opacity="0" transform="translate(50 50) rotate(135) scale(.38 .02) translate(-50 -50)"><use href="#ls-hdr" fill="#E8A347"/><path d="M50 0 H100 V100 H50Z" fill="#000" fill-opacity=".13" clip-path="url(#clip-ls-hdr)"/><path d="M50 50 L50 11" stroke="#fff" stroke-opacity=".2" stroke-width=".7"/></g><g class="am-leaf" opacity="0" transform="translate(50 50) rotate(180) scale(.38 .02) translate(-50 -50)"><use href="#ll-hdr" fill="#348C72"/><path d="M50 0 H100 V100 H50Z" fill="#000" fill-opacity=".13" clip-path="url(#clip-ll-hdr)"/><path d="M50 50 L50 3" stroke="#fff" stroke-opacity=".2" stroke-width=".7"/></g><g class="am-leaf" opacity="0" transform="translate(50 50) rotate(225) scale(.38 .02) translate(-50 -50)"><use href="#ls-hdr" fill="#348C72"/><path d="M50 0 H100 V100 H50Z" fill="#000" fill-opacity=".13" clip-path="url(#clip-ls-hdr)"/><path d="M50 50 L50 11" stroke="#fff" stroke-opacity=".2" stroke-width=".7"/></g><g class="am-leaf" opacity="0" transform="translate(50 50) rotate(270) scale(.38 .02) translate(-50 -50)"><use href="#ll-hdr" fill="#3B69C4"/><path d="M50 0 H100 V100 H50Z" fill="#000" fill-opacity=".13" clip-path="url(#clip-ll-hdr)"/><path d="M50 50 L50 3" stroke="#fff" stroke-opacity=".2" stroke-width=".7"/></g><g class="am-leaf" opacity="0" transform="translate(50 50) rotate(315) scale(.38 .02) translate(-50 -50)"><use href="#ls-hdr" fill="#3B69C4"/><path d="M50 0 H100 V100 H50Z" fill="#000" fill-opacity=".13" clip-path="url(#clip-ls-hdr)"/><path d="M50 50 L50 11" stroke="#fff" stroke-opacity=".2" stroke-width=".7"/></g><g class="am-bud"><g class="am-petal" style="--a:0deg"><use href="#t-hdr" fill="#D95547"/><use href="#t-hdr" fill="url(#bev-hdr)"/><use href="#t-hdr" fill="#fff" opacity="0.07"/><use href="#e-hdr" stroke="#fff" stroke-opacity="0.27" stroke-width="1.6" stroke-linecap="round"/><use href="#k-hdr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g class="am-petal" style="--a:90deg"><use href="#t-hdr" fill="#E8A347"/><use href="#t-hdr" fill="url(#bev-hdr)"/><use href="#t-hdr" fill="#000" opacity="0.12"/><use href="#e-hdr" stroke="#000" stroke-opacity="0.16" stroke-width="1.6" stroke-linecap="round"/><use href="#k-hdr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g class="am-petal" style="--a:180deg"><use href="#t-hdr" fill="#348C72"/><use href="#t-hdr" fill="url(#bev-hdr)"/><use href="#t-hdr" fill="#000" opacity="0.05"/><use href="#e-hdr" stroke="#000" stroke-opacity="0.1" stroke-width="1.6" stroke-linecap="round"/><use href="#k-hdr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g class="am-petal" style="--a:270deg"><use href="#t-hdr" fill="#3B69C4"/><use href="#t-hdr" fill="url(#bev-hdr)"/><use href="#t-hdr" fill="#fff" opacity="0.30"/><use href="#e-hdr" stroke="#fff" stroke-opacity="0.37" stroke-width="1.6" stroke-linecap="round"/><use href="#k-hdr" stroke="#000" stroke-width=".9" opacity=".2"/></g></g><g class="am-core"><circle cx="50" cy="50" r="6" fill="currentColor"/><circle cx="50" cy="50" r="6" fill="url(#core-hdr)"/></g></svg></button>
+      <a class="brand-home" href="/" aria-label="Ajna Consulting Services — home"><span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span></a>
+    </div>
+    <nav class="nav" id="nav" aria-label="Primary">
+      <a href="/topics/" aria-current="location">Topics</a>
+      <a href="/case-studies/">Case studies</a>
+      <a href="/services/">Services</a>
+      <a href="/notes/">Personal Notes</a>
+      <a href="/insights/#article-search">Search</a>
+      <a class="btn btn-sm" href="/contact/" style="margin-left:.4rem">Engage engineering</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn" id="themeBtn" type="button" aria-label="Switch to dark mode" aria-pressed="false"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg></button>
+      <button class="icon-btn nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+<div class="publication-wrap field-lane-hub" style="--field-lane-accent:#237a75">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/topics/">Topics</a><span aria-hidden="true">/</span><span aria-current="page">Platform &amp; Delivery</span></nav>
+    <section class="field-lane-hero" aria-labelledby="field-lane-title">
+      <div class="field-lane-hero-copy">
+        <h1 class="h-display" id="field-lane-title">Platform &amp; Delivery</h1>
+        <p class="lede">Build a paved road from a team&#39;s first deployment to steady production releases.</p>
+        <ul class="field-lane-subtopics" aria-label="Subtopics"><li>Platform engineering</li><li>Developer experience</li><li>CI/CD</li><li>Containers and Kubernetes</li></ul>
+        <div class="field-lane-actions">
+          <a class="btn" href="#start-here">Start reading</a>
+          <a class="btn btn-ghost" href="#article-search">Browse 13 articles</a>
+        </div>
+      </div>
+      <div class="field-lane-hero-art"><div class="lane-art lane-art--hero" data-lane-art="platform" aria-hidden="true"><span class="lane-art__stage"><span class="lane-art__part lane-art__pipeline-bed" style="--x:2%;--y:29%;--w:96%;--h:48%"></span><span class="lane-art__part lane-art__rail" style="--x:15%;--y:48%;--w:69%;--h:3%"></span><span class="lane-art__part lane-art__delivery-step" style="--x:7%;--y:32%;--w:19%;--h:35%"></span><span class="lane-art__part lane-art__delivery-step" style="--x:40%;--y:32%;--w:19%;--h:35%"></span><span class="lane-art__part lane-art__stage-verified" style="--x:73%;--y:32%;--w:19%;--h:35%"></span><span class="lane-art__part lane-art__arrow" style="--x:30%;--y:44%;--w:6%;--h:10%"></span><span class="lane-art__part lane-art__arrow" style="--x:63%;--y:44%;--w:6%;--h:10%"></span><span class="lane-art__part lane-art__milestone" style="--x:14%;--y:15%;--w:5%;--h:5%"></span><span class="lane-art__part lane-art__milestone" style="--x:47%;--y:15%;--w:5%;--h:5%"></span><span class="lane-art__part lane-art__milestone-live" style="--x:80%;--y:15%;--w:5%;--h:5%"></span></span></div></div>
+    </section>
+    <div class="field-lane-curriculum"><section class="field-lane-path" id="start-here" aria-labelledby="field-start-title">
+    <h2 class="h2" id="field-start-title">Start here</h2>
+    <p class="muted field-path-title">Design a path to production</p>
+    <ol class="field-path-steps">
+      <li>
+        <a class="field-path-step" href="/insights/platform-engineering-idp-2026/">
+          <strong>Platform Onboarding: Measure the Path to a First Deployment</strong>
+          <p>Measure the onboarding path to a qualifying first deployment.</p>
+          <span>4 min read</span>
+        </a>
+      </li>
+      <li>
+        <a class="field-path-step" href="/insights/platform-eng-idp-design/">
+          <strong>Designing an Internal Developer Platform: Abstraction Layers, Golden Paths, and the Governance Balance</strong>
+          <p>Translate the bottlenecks into platform capabilities and golden paths.</p>
+          <span>8 min read</span>
+        </a>
+      </li>
+      <li>
+        <a class="field-path-step" href="/insights/platform-eng-self-service/">
+          <strong>Self-Service Infrastructure: How to Build It Without Losing Operational Control</strong>
+          <p>Give teams self-service capabilities with operational limits.</p>
+          <span>7 min read</span>
+        </a>
+      </li>
+      <li>
+        <a class="field-path-step" href="/insights/platform-eng-observability/">
+          <strong>Platform Observability: Building the Visibility Layer Every Application Team Gets Automatically</strong>
+          <p>Make visibility a default property of every team’s deployments.</p>
+          <span>7 min read</span>
+        </a>
+      </li>
+      <li>
+        <a class="field-path-step" href="/insights/platform-eng-measuring-success/">
+          <strong>Measuring Platform Engineering Success: The Metrics That Actually Matter</strong>
+          <p>Check whether your platform changes the engineering outcomes you care about.</p>
+          <span>8 min read</span>
+        </a>
+      </li>
+    </ol>
+  </section><aside class="field-lane-resources" aria-labelledby="field-resource-title">
+    <h2 class="h3" id="field-resource-title">Try it in practice</h2>
+    <ul>
+      <li>
+        <a class="field-lane-resource" href="/insights/platform-engineering-idp-2026/#measurement-worksheet">
+          <span class="field-resource-kind">Worksheet</span>
+          <strong>Measure platform onboarding</strong>
+          <p>Track the wait states on the path to a qualifying first deployment.</p>
+        </a>
+      </li>
+      <li>
+        <a class="field-lane-resource" href="/deep-dives/platform/first-deploy-cohorts/">
+          <span class="field-resource-kind">Deep dive</span>
+          <strong>Compare first deployment cohorts</strong>
+          <p>Decide which signals show whether a new path is working for different groups.</p>
+        </a>
+      </li>
+      <li>
+        <a class="field-lane-resource" href="/case-studies/team-enablement/delivery-pipeline-lab/">
+          <span class="field-resource-kind">Case study</span>
+          <strong>Design a delivery pipeline lab</strong>
+          <p>See how a team practiced pipeline execution and recovery before a release.</p>
+        </a>
+      </li>
+    </ul>
+  </aside></div>
+    <section class="field-article-index" id="article-search" aria-labelledby="field-index-title">
+    <h2 class="h2" id="field-index-title">All articles in this topic</h2>
+    <div class="field-index-controls">
+      <label class="field-index-query">Search this topic
+        <input type="search" id="postSearch" placeholder="Search by title, topic or keyword" autocomplete="off" aria-controls="postList">
+      </label>
+      <div class="field-index-filter">
+        <select id="postTopic" class="topic-select" aria-label="Filter articles by topic" aria-controls="postList" hidden>
+          <option value="">All topics</option>
+          
+          <optgroup label="Tags"><option value="Fundamentals">Fundamentals (9)</option><option value="DevSecOps">DevSecOps (7)</option><option value="Engineering Leadership">Engineering Leadership (5)</option><option value="Architecture">Architecture (4)</option><option value="Cloud Architecture">Cloud Architecture (4)</option><option value="Containers">Containers (3)</option><option value="Deployment">Deployment (1)</option><option value="Engineering Practice">Engineering Practice (1)</option><option value="Platform Engineering">Platform Engineering (1)</option><option value="Programming">Programming (1)</option><option value="Reliability">Reliability (1)</option><option value="Systems">Systems (1)</option></optgroup>
+        </select>
+      </div>
+      <button type="button" class="btn btn-ghost btn-sm" id="postClear" hidden>Clear filters</button>
+    </div>
+    <p class="small muted field-index-count" id="postCount" role="status" aria-live="polite">13 articles</p>
+    <ul class="field-index-list" id="postList">
+      <li class="field-index-row" data-card data-topics="|DevSecOps|Cloud Architecture|Engineering Leadership|" data-search="platform onboarding: measure the path to a first deployment pilot a self-service path, measure time to a first qualifying deployment, and track completion, controls, and support effort. devsecops cloud architecture engineering leadership">
+      <div class="field-index-main">
+        <div class="field-index-thumb"><img data-article-art="platform-engineering-idp-2026" src="/assets/covers/platform-engineering-idp-2026.svg?v=751f22d2d783" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+        <div class="field-index-title">
+          <h3 class="card-title"><a class="card-destination" href="/insights/platform-engineering-idp-2026/">Platform Onboarding: Measure the Path to a First Deployment</a></h3>
+          <p>Pilot a self-service path, measure time to a first qualifying deployment, and track completion, controls, and support effort.</p>
+        </div>
+      </div>
+      <div class="field-index-meta">
+      
+      <time datetime="2026-11-20">20 Nov 2026</time>
+      <span>4 min</span>
+      </div>
+    </li>
+    <li class="field-index-row" data-card data-topics="|Engineering Leadership|Architecture|Fundamentals|" data-search="platform engineering: what it is, why it emerged, and what makes it different from devops platform engineering is not rebranded devops. it is a specific organisational and technical discipline that treats internal infrastructure as a product. here is what that actually means. platform engineering: from concept to internal developer platform engineering leadership architecture fundamentals">
+      <div class="field-index-main">
+        <div class="field-index-thumb"><img data-article-art="platform-eng-what-it-is" src="/assets/covers/platform-eng-what-it-is.svg?v=26cdd97126d1" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+        <div class="field-index-title">
+          <h3 class="card-title"><a class="card-destination" href="/insights/platform-eng-what-it-is/">Platform Engineering: What It Is, Why It Emerged, and What Makes It Different from DevOps</a></h3>
+          <p>Platform engineering is not rebranded DevOps. It is a specific organisational and technical discipline that treats internal infrastructure as a product. Here is what that actually means.</p>
+        </div>
+      </div>
+      <div class="field-index-meta">
+      
+      <time datetime="2026-10-16">16 Oct 2026</time>
+      <span>8 min</span>
+      </div>
+    </li>
+    <li class="field-index-row" data-card data-topics="|DevSecOps|Architecture|Fundamentals|" data-search="platform observability: building the visibility layer every application team gets automatically how platform teams build and operate the metrics, logging, and tracing infrastructure that application teams consume without configuring — and what good platform observability coverage actually looks like. platform engineering: from concept to internal developer platform devsecops architecture fundamentals">
+      <div class="field-index-main">
+        <div class="field-index-thumb"><img data-article-art="platform-eng-observability" src="/assets/covers/platform-eng-observability.svg?v=aa2033af7550" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+        <div class="field-index-title">
+          <h3 class="card-title"><a class="card-destination" href="/insights/platform-eng-observability/">Platform Observability: Building the Visibility Layer Every Application Team Gets Automatically</a></h3>
+          <p>How platform teams build and operate the metrics, logging, and tracing infrastructure that application teams consume without configuring — and what good platform observability coverage actually looks like.</p>
+        </div>
+      </div>
+      <div class="field-index-meta">
+      
+      <time datetime="2026-09-16">16 Sept 2026</time>
+      <span>7 min</span>
+      </div>
+    </li>
+    <li class="field-index-row" data-card data-topics="|DevSecOps|Fundamentals|" data-search="what containers actually are — not the marketing version containers are not lightweight vms. they are processes with resource constraints and namespace isolation. understanding the actual mechanism makes you a better user of docker, kubernetes, and every container runtime. containerization from the ground up devsecops fundamentals">
+      <div class="field-index-main">
+        <div class="field-index-thumb"><img data-article-art="containers-what-they-actually-are" src="/assets/covers/containers-what-they-actually-are.svg?v=d7e37097b00b" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+        <div class="field-index-title">
+          <h3 class="card-title"><a class="card-destination" href="/insights/containers-what-they-actually-are/">What Containers Actually Are — Not the Marketing Version</a></h3>
+          <p>Containers are not lightweight VMs. They are processes with resource constraints and namespace isolation. Understanding the actual mechanism makes you a better user of Docker, Kubernetes, and every container runtime.</p>
+        </div>
+      </div>
+      <div class="field-index-meta">
+      
+      <time datetime="2026-07-30">30 Jul 2026</time>
+      <span>8 min</span>
+      </div>
+    </li>
+    <li class="field-index-row" data-card data-topics="|Engineering Leadership|Architecture|Fundamentals|" data-search="measuring platform engineering success: the metrics that actually matter dora metrics, developer experience scores, cognitive load measures, and the platform health indicators that tell you whether your internal platform is creating value or creating another bottleneck. platform engineering: from concept to internal developer platform engineering leadership architecture fundamentals">
+      <div class="field-index-main">
+        <div class="field-index-thumb"><img data-article-art="platform-eng-measuring-success" src="/assets/covers/platform-eng-measuring-success.svg?v=a0eb18c722ca" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+        <div class="field-index-title">
+          <h3 class="card-title"><a class="card-destination" href="/insights/platform-eng-measuring-success/">Measuring Platform Engineering Success: The Metrics That Actually Matter</a></h3>
+          <p>DORA metrics, developer experience scores, cognitive load measures, and the platform health indicators that tell you whether your internal platform is creating value or creating another bottleneck.</p>
+        </div>
+      </div>
+      <div class="field-index-meta">
+      
+      <time datetime="2026-07-21">21 Jul 2026</time>
+      <span>8 min</span>
+      </div>
+    </li>
+    <li class="field-index-row" data-card data-topics="|DevSecOps|Fundamentals|" data-search="writing production-grade dockerfiles: the decisions that actually matter multi-stage builds, minimal base images, layer caching, non-root users, build arguments, and the specific dockerfile patterns that separate a working image from a secure, efficient, maintainable one. containerization from the ground up devsecops fundamentals">
+      <div class="field-index-main">
+        <div class="field-index-thumb"><img data-article-art="containers-production-dockerfiles" src="/assets/covers/containers-production-dockerfiles.svg?v=121ca289ce3b" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+        <div class="field-index-title">
+          <h3 class="card-title"><a class="card-destination" href="/insights/containers-production-dockerfiles/">Writing Production-Grade Dockerfiles: The Decisions That Actually Matter</a></h3>
+          <p>Multi-stage builds, minimal base images, layer caching, non-root users, build arguments, and the specific Dockerfile patterns that separate a working image from a secure, efficient, maintainable one.</p>
+        </div>
+      </div>
+      <div class="field-index-meta">
+      
+      <time datetime="2026-06-24">24 Jun 2026</time>
+      <span>7 min</span>
+      </div>
+    </li>
+    <li class="field-index-row" data-card data-topics="|Engineering Leadership|Architecture|Fundamentals|" data-search="designing an internal developer platform: abstraction layers, golden paths, and the governance balance how to design the abstraction layer between your platform and your application teams — what to hide, what to expose, and how to build the golden paths that make good practices the easy practices. platform engineering: from concept to internal developer platform engineering leadership architecture fundamentals">
+      <div class="field-index-main">
+        <div class="field-index-thumb"><img data-article-art="platform-eng-idp-design" src="/assets/covers/platform-eng-idp-design.svg?v=97440353fe8a" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+        <div class="field-index-title">
+          <h3 class="card-title"><a class="card-destination" href="/insights/platform-eng-idp-design/">Designing an Internal Developer Platform: Abstraction Layers, Golden Paths, and the Governance Balance</a></h3>
+          <p>How to design the abstraction layer between your platform and your application teams — what to hide, what to expose, and how to build the golden paths that make good practices the easy practices.</p>
+        </div>
+      </div>
+      <div class="field-index-meta">
+      
+      <time datetime="2026-05-19">19 May 2026</time>
+      <span>8 min</span>
+      </div>
+    </li>
+    <li class="field-index-row" data-card data-topics="|Engineering Leadership|DevSecOps|Fundamentals|" data-search="self-service infrastructure: how to build it without losing operational control scaffolding tools, infrastructure templates, self-service portals, and the approval workflows that give developers autonomy without turning the platform into a liability. platform engineering: from concept to internal developer platform engineering leadership devsecops fundamentals">
+      <div class="field-index-main">
+        <div class="field-index-thumb"><img data-article-art="platform-eng-self-service" src="/assets/covers/platform-eng-self-service.svg?v=4a68ba9cd6a8" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+        <div class="field-index-title">
+          <h3 class="card-title"><a class="card-destination" href="/insights/platform-eng-self-service/">Self-Service Infrastructure: How to Build It Without Losing Operational Control</a></h3>
+          <p>Scaffolding tools, infrastructure templates, self-service portals, and the approval workflows that give developers autonomy without turning the platform into a liability.</p>
+        </div>
+      </div>
+      <div class="field-index-meta">
+      
+      <time datetime="2026-05-07">7 May 2026</time>
+      <span>7 min</span>
+      </div>
+    </li>
+    <li class="field-index-row" data-card data-topics="|DevSecOps|Fundamentals|" data-search="container networking: how containers talk to each other and to the outside world bridge networks, overlay networks, dns-based service discovery, port publishing, and the iptables rules that make container networking work — and fail. containerization from the ground up devsecops fundamentals">
+      <div class="field-index-main">
+        <div class="field-index-thumb"><img data-article-art="containers-networking" src="/assets/covers/containers-networking.svg?v=4cab4da152a2" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+        <div class="field-index-title">
+          <h3 class="card-title"><a class="card-destination" href="/insights/containers-networking/">Container Networking: How Containers Talk to Each Other and to the Outside World</a></h3>
+          <p>Bridge networks, overlay networks, DNS-based service discovery, port publishing, and the iptables rules that make container networking work — and fail.</p>
+        </div>
+      </div>
+      <div class="field-index-meta">
+      
+      <time datetime="2026-04-28">28 Apr 2026</time>
+      <span>8 min</span>
+      </div>
+    </li>
+    <li class="field-index-row" data-card data-topics="|Deployment|Platform Engineering|Engineering Practice|Containers|Reliability|" data-search="deployment strategies compared: rolling, blue-green, canary, and when each actually fits rolling updates, blue-green switches, canary releases, and shadow traffic — what each strategy really costs, what each protects against, and the database problem that constrains all of them. deployment platform engineering engineering practice containers reliability">
+      <div class="field-index-main">
+        <div class="field-index-thumb"><img data-article-art="deployment-strategies-blue-green-canary" src="/assets/covers/deployment-strategies-blue-green-canary.svg?v=a7bc633c84ce" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+        <div class="field-index-title">
+          <h3 class="card-title"><a class="card-destination" href="/insights/deployment-strategies-blue-green-canary/">Deployment Strategies Compared: Rolling, Blue-Green, Canary, and When Each Actually Fits</a></h3>
+          <p>Rolling updates, blue-green switches, canary releases, and shadow traffic — what each strategy really costs, what each protects against, and the database problem that constrains all of them.</p>
+        </div>
+      </div>
+      <div class="field-index-meta">
+      
+      <time datetime="2026-03-20">20 Mar 2026</time>
+      <span>10 min</span>
+      </div>
+    </li>
+    <li class="field-index-row" data-card data-topics="|DevSecOps|Cloud Architecture|Fundamentals|" data-search="kubernetes fundamentals: what it is, what it does, and when you actually need it pods, deployments, services, configmaps, and the control loop that keeps your containers running. the honest introduction to kubernetes for engineers who want to understand it, not just use it. containerization from the ground up devsecops cloud architecture fundamentals">
+      <div class="field-index-main">
+        <div class="field-index-thumb"><img data-article-art="containers-kubernetes-fundamentals" src="/assets/covers/containers-kubernetes-fundamentals.svg?v=167d6e5b8910" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+        <div class="field-index-title">
+          <h3 class="card-title"><a class="card-destination" href="/insights/containers-kubernetes-fundamentals/">Kubernetes Fundamentals: What It Is, What It Does, and When You Actually Need It</a></h3>
+          <p>Pods, Deployments, Services, ConfigMaps, and the control loop that keeps your containers running. The honest introduction to Kubernetes for engineers who want to understand it, not just use it.</p>
+        </div>
+      </div>
+      <div class="field-index-meta">
+      
+      <time datetime="2025-12-02">2 Dec 2025</time>
+      <span>8 min</span>
+      </div>
+    </li>
+    <li class="field-index-row" data-card data-topics="|Cloud Architecture|Containers|Programming|" data-search="kubernetes operators: when to build one and when to stop at crds operators extend kubernetes with custom domain logic. but writing an operator is a significant commitment — the control loop, the reconciliation logic, the rbac, the upgrade path. here&#39;s when operators solve real problems and when simpler alternatives are enough. cloud architecture containers programming">
+      <div class="field-index-main">
+        <div class="field-index-thumb"><img data-article-art="kubernetes-operators-custom-resources" src="/assets/covers/kubernetes-operators-custom-resources.svg?v=9820b245fd27" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+        <div class="field-index-title">
+          <h3 class="card-title"><a class="card-destination" href="/insights/kubernetes-operators-custom-resources/">Kubernetes Operators: When to Build One and When to Stop at CRDs</a></h3>
+          <p>Operators extend Kubernetes with custom domain logic. But writing an operator is a significant commitment — the control loop, the reconciliation logic, the RBAC, the upgrade path. Here&#39;s when operators solve real problems and when simpler alternatives are enough.</p>
+        </div>
+      </div>
+      <div class="field-index-meta">
+      
+      <time datetime="2025-02-05">5 Feb 2025</time>
+      <span>9 min</span>
+      </div>
+    </li>
+    <li class="field-index-row" data-card data-topics="|Cloud Architecture|Containers|Systems|" data-search="service mesh in practice: when istio or linkerd is worth the complexity service meshes promise mtls, traffic management, and observability without code changes. they deliver, but the operational overhead is real. here&#39;s how to decide if a service mesh belongs in your architecture — and which one if so. cloud architecture containers systems">
+      <div class="field-index-main">
+        <div class="field-index-thumb"><img data-article-art="service-mesh-istio-linkerd" src="/assets/covers/service-mesh-istio-linkerd.svg?v=725ece435cdd" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+        <div class="field-index-title">
+          <h3 class="card-title"><a class="card-destination" href="/insights/service-mesh-istio-linkerd/">Service Mesh in Practice: When Istio or Linkerd Is Worth the Complexity</a></h3>
+          <p>Service meshes promise mTLS, traffic management, and observability without code changes. They deliver, but the operational overhead is real. Here&#39;s how to decide if a service mesh belongs in your architecture — and which one if so.</p>
+        </div>
+      </div>
+      <div class="field-index-meta">
+      
+      <time datetime="2025-01-14">14 Jan 2025</time>
+      <span>8 min</span>
+      </div>
+    </li>
+    </ul>
+    <p id="postEmpty" hidden class="muted field-index-empty">No articles match. Try a different topic or search term.</p>
+    <button class="btn btn-ghost" id="postMore" type="button" aria-controls="postList" hidden>Show more</button>
+  </section>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="shell-inner">
+    <div class="grid g-4" style="gap:2rem">
+      <div>
+        <a class="brand" href="/" style="color:#fff;margin-bottom:.9rem" aria-label="Ajna Consulting Services — home">
+          <svg class="ajna-mark is-still" viewBox="0 0 100 100" width="52" height="52" fill="none" aria-hidden="true" focusable="false"><defs><path id="t-ftr" d="M 50 4 L 96 50 L 50 50 Z"/><path id="e-ftr" d="M 50 4 L 96 50"/><path id="k-ftr" d="M 50 4 L 50 50 L 96 50"/><linearGradient id="bev-ftr" gradientUnits="userSpaceOnUse" x1="50" y1="50" x2="73" y2="27"><stop offset="0" stop-color="#000" stop-opacity=".13"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity=".2"/></linearGradient><radialGradient id="core-ftr" cx=".34" cy=".3" r=".85"><stop offset="0" stop-color="#fff" stop-opacity=".42"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".45"/></radialGradient></defs><g class="am-bud"><g transform="rotate(0 50 50)"><use href="#t-ftr" fill="#D95547"/><use href="#t-ftr" fill="url(#bev-ftr)"/><use href="#t-ftr" fill="#fff" opacity="0.07"/><use href="#e-ftr" stroke="#fff" stroke-opacity="0.27" stroke-width="1.6" stroke-linecap="round"/><use href="#k-ftr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g transform="rotate(90 50 50)"><use href="#t-ftr" fill="#E8A347"/><use href="#t-ftr" fill="url(#bev-ftr)"/><use href="#t-ftr" fill="#000" opacity="0.12"/><use href="#e-ftr" stroke="#000" stroke-opacity="0.16" stroke-width="1.6" stroke-linecap="round"/><use href="#k-ftr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g transform="rotate(180 50 50)"><use href="#t-ftr" fill="#348C72"/><use href="#t-ftr" fill="url(#bev-ftr)"/><use href="#t-ftr" fill="#000" opacity="0.05"/><use href="#e-ftr" stroke="#000" stroke-opacity="0.1" stroke-width="1.6" stroke-linecap="round"/><use href="#k-ftr" stroke="#000" stroke-width=".9" opacity=".2"/></g><g transform="rotate(270 50 50)"><use href="#t-ftr" fill="#3B69C4"/><use href="#t-ftr" fill="url(#bev-ftr)"/><use href="#t-ftr" fill="#fff" opacity="0.30"/><use href="#e-ftr" stroke="#fff" stroke-opacity="0.37" stroke-width="1.6" stroke-linecap="round"/><use href="#k-ftr" stroke="#000" stroke-width=".9" opacity=".2"/></g></g><g class="am-core"><circle cx="50" cy="50" r="6" fill="currentColor"/><circle cx="50" cy="50" r="6" fill="url(#core-ftr)"/></g></svg>
+          <span class="brand-name"><em>Ajna</em><b>Consulting Services</b></span>
+        </a>
+        <p style="font-size:.88rem;line-height:1.65;color:#9fb0d0;max-width:30ch">
+          Specialised engineering partner for enterprise architecture, AI &amp; MLOps, and technical enablement.
+        </p>
+        <div class="social" style="margin-top:1.1rem">
+          <a href="https://www.youtube.com/@TechKnowen" rel="noopener" aria-label="YouTube"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 12s0-3.8-.5-5.6a2.9 2.9 0 0 0-2-2C18.7 4 12 4 12 4s-6.7 0-8.5.4a2.9 2.9 0 0 0-2 2C1 8.2 1 12 1 12s0 3.8.5 5.6a2.9 2.9 0 0 0 2 2C5.3 20 12 20 12 20s6.7 0 8.5-.4a2.9 2.9 0 0 0 2-2C23 15.8 23 12 23 12zM9.8 15.4V8.6l5.9 3.4z"/></svg></a>
+          <a href="https://techknowen.com" rel="noopener" aria-label="TechKnowen blog"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 3h16v3H4zm0 5h16v13l-8-4-8 4z"/></svg></a>
+          <a href="/feed.xml" aria-label="RSS feed"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="6.2" cy="17.8" r="2.2"/><path d="M4 10.2v3a6.6 6.6 0 0 1 6.6 6.6h3A9.6 9.6 0 0 0 4 10.2zM4 4v3c7.2 0 13 5.8 13 13h3C20 11.2 12.8 4 4 4z"/></svg></a>
+        </div>
+      </div>
+      <div>
+        <h2 class="foot-title">Services</h2>
+        <ul>
+          <li><a href="/services/#architecture">Enterprise architecture</a></li>
+          <li><a href="/services/#ai">AI &amp; MLOps</a></li>
+          <li><a href="/services/#training">Technical enablement</a></li>
+          <li><a href="/case-studies/">Case studies</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2 class="foot-title">Insights</h2>
+        <ul>
+          <li><a href="/insights/">All articles</a></li>
+          <li><a href="/field-guides/">Field guides</a></li>
+          <li><a href="/deep-dives/">Deep dives</a></li>
+          <li><a href="/follow/">Follow new writing</a></li>
+          <li><a href="/series/">Series</a></li>
+          <li><a href="/topics/">Topics</a></li>
+          <li><a href="/notes/">Personal notes</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2 class="foot-title">Contact</h2>
+        <ul>
+          <li><a href="mailto:info@ajnacs.com">info@ajnacs.com</a></li>
+          <li><a href="/contact/">Start an engagement</a></li>
+          <li><a href="/about/">About</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span id="yr">2026</span> Ajna Consulting Services. All rights reserved.</span>
+      <span style="display:flex;gap:1.2rem"><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a></span>
+    </div>
+  </div>
+</footer>
+<script src="/assets/js/site.js?v=689adf6b" defer></script>
+
+<script type="module" src="/assets/js/brand-motion.mjs?v=689adf6b"></script>
+</body>
+</html>
