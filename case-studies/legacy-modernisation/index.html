@@ -87,56 +87,56 @@ d.setAttribute('data-theme',t);
 </div></section>
 <section class="publication-wrap case-library" aria-label="Scenarios">
   <div class="grid g-2 capability-grid"><article class="card case-card">
-    <div class="card-art"><img src="/assets/cases/order-status-strangler.png?v=0769158367a7" alt="A migration illustration shows a gradual move from the legacy route to a new one." width="960" height="540" loading="lazy" decoding="async"></div>
+    <div class="card-art"><img src="/assets/cases/order-status-strangler.png?v=e12988b5eac1" alt="Status requests use a stable cohort key to move to the new reader after shadow comparison, while the legacy order system retains write authority and provides a fallback." width="960" height="540" loading="lazy" decoding="async"></div>
     <div class="card-body">
       <h2 class="card-title"><a class="card-destination" href="/case-studies/legacy-modernisation/order-status-strangler/">Extract the order-status endpoint a cohort at a time</a></h2>
       <p class="card-desc">Route one read use case to a new service while the order system retains write authority.</p>
     </div>
   </article>
 <article class="card case-card">
-    <div class="card-art"><img src="/assets/cases/committed-order-events.png?v=9807cc53d68f" alt="An event log connects stored changes to downstream processing." width="960" height="540" loading="lazy" decoding="async"></div>
+    <div class="card-art"><img src="/assets/cases/committed-order-events.png?v=3a237f3f6755" alt="The order transaction commits the order and its outbox row together, then the publisher forwards the event for consumer deduplication by event ID." width="960" height="540" loading="lazy" decoding="async"></div>
     <div class="card-body">
       <h2 class="card-title"><a class="card-destination" href="/case-studies/legacy-modernisation/committed-order-events/">Deliver domain events from a committed outbox</a></h2>
       <p class="card-desc">Replace separate database and broker writes with a transactional outbox and verified consumer deduplication.</p>
     </div>
   </article>
 <article class="card case-card">
-    <div class="card-art"><img src="/assets/cases/parallel-ledger-reconciliation.png?v=db054de418d5" alt="A row-version illustration makes different revisions of records visible for comparison." width="960" height="540" loading="lazy" decoding="async"></div>
+    <div class="card-art"><img src="/assets/cases/parallel-ledger-reconciliation.png?v=d64bd2918655" alt="The authoritative legacy ledger and the shadow ledger use the same inputs and reconcile at the posting level, including the account and currency." width="960" height="540" loading="lazy" decoding="async"></div>
     <div class="card-body">
       <h2 class="card-title"><a class="card-destination" href="/case-studies/legacy-modernisation/parallel-ledger-reconciliation/">Reconcile the new ledger alongside the legacy one</a></h2>
       <p class="card-desc">Shadow calculations without creating a second book of record and require an explainable reconciliation.</p>
     </div>
   </article>
 <article class="card case-card">
-    <div class="card-art"><img src="/assets/cases/blue-green-rollback-gate.png?v=07a8b1bf954d" alt="A switch routes traffic between blue and green releases." width="960" height="540" loading="lazy" decoding="async"></div>
+    <div class="card-art"><img src="/assets/cases/blue-green-rollback-gate.png?v=319d669950ca" alt="Blue stays ready while a green canary tests shared schema compatibility, so traffic can return to blue and in-flight writes can be checked after rollback." width="960" height="540" loading="lazy" decoding="async"></div>
     <div class="card-body">
       <h2 class="card-title"><a class="card-destination" href="/case-studies/legacy-modernisation/blue-green-rollback-gate/">Rehearse blue-green rollback before changing live traffic</a></h2>
       <p class="card-desc">Stage a compatible release in a separate environment and test rollback with live-shaped load.</p>
     </div>
   </article>
 <article class="card case-card">
-    <div class="card-art"><img src="/assets/cases/api-contract-retirement.png?v=848a95913e67" alt="Versioned clients and contracts illustrate a period when old and new routes coexist." width="960" height="540" loading="lazy" decoding="async"></div>
+    <div class="card-art"><img src="/assets/cases/api-contract-retirement.png?v=0a94cac8c83d" alt="Retirement starts with named callers and versioned contract tests, then waits for evidence that legacy traffic has cleared across the relevant business cycles." width="960" height="540" loading="lazy" decoding="async"></div>
     <div class="card-body">
       <h2 class="card-title"><a class="card-destination" href="/case-studies/legacy-modernisation/api-contract-retirement/">Retire a legacy API version without losing callers</a></h2>
       <p class="card-desc">Preserve compatibility, migrate consumers with evidence, and use traffic logs to decide when retirement is safe.</p>
     </div>
   </article>
 <article class="card case-card">
-    <div class="card-art"><img src="/assets/cases/regional-failover-fencing.png?v=92732ff7f024" alt="Services are grouped by region to show the boundary crossed during failover." width="960" height="540" loading="lazy" decoding="async"></div>
+    <div class="card-art"><img src="/assets/cases/regional-failover-fencing.png?v=b64ed62a1133" alt="The storage path rejects writes from a fenced prior epoch and accepts the promoted writer, while an independent ledger reconciles acknowledged records." width="960" height="540" loading="lazy" decoding="async"></div>
     <div class="card-body">
       <h2 class="card-title"><a class="card-destination" href="/case-studies/legacy-modernisation/regional-failover-fencing/">Fail over a single-writer service without accepting two writers</a></h2>
       <p class="card-desc">Rehearse a regional outage with a fenced write authority, tested client reconnects and reconciliation.</p>
     </div>
   </article>
 <article class="card case-card">
-    <div class="card-art"><img src="/assets/cases/nightly-batch-watermark.png?v=b8d4161b184f" alt="A stream of records moves from an input source through processing to an output." width="960" height="540" loading="lazy" decoding="async"></div>
+    <div class="card-art"><img src="/assets/cases/nightly-batch-watermark.png?v=58d8508cc87f" alt="A snapshot anchors the historical backfill, a source cursor defines later inputs for replay, and validation precedes publication of the affected business-date partitions." width="960" height="540" loading="lazy" decoding="async"></div>
     <div class="card-body">
       <h2 class="card-title"><a class="card-destination" href="/case-studies/legacy-modernisation/nightly-batch-watermark/">Move the nightly batch with a watermark and a replay plan</a></h2>
       <p class="card-desc">Backfill historical reports, reconcile by business date, and cut over only after catch-up.</p>
     </div>
   </article>
 <article class="card case-card">
-    <div class="card-art"><img src="/assets/cases/self-service-provisioning-pilot.png?v=33e38cb2d074" alt="A platform sits between a service developer and the deployment infrastructure." width="960" height="540" loading="lazy" decoding="async"></div>
+    <div class="card-art"><img src="/assets/cases/self-service-provisioning-pilot.png?v=6206dffdbe79" alt="The pilot tracks accepted requests through a versioned template and distinguishes time to healthy deployment from completion, which includes unfinished attempts in the denominator." width="960" height="540" loading="lazy" decoding="async"></div>
     <div class="card-body">
       <h2 class="card-title"><a class="card-destination" href="/case-studies/legacy-modernisation/self-service-provisioning-pilot/">Move service provisioning from tickets to a supported path</a></h2>
       <p class="card-desc">Give a service team a versioned route from accepted request to policy-compliant deployment.</p>
