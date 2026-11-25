@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" viewBox="0 0 1280 720" role="img" aria-labelledby="cover-title cover-desc">
+  <title id="cover-title">Same incast. Different signals.</title>
+  <desc id="cover-desc">Three senders converge on a receiver in two illustrative RDMA configurations. The RoCEv2 example shows ECN congestion marks eliciting receiver feedback. The iWARP example shows a TCP sender retransmitting a lost packet.</desc>
+  <defs>
+    <linearGradient id="rdma-field" x1="0" y1="0" x2="1" y2="1" gradientUnits="objectBoundingBox">
+      <stop stop-color="#0B253E"/>
+      <stop offset="1" stop-color="#091625"/>
+    </linearGradient>
+    <marker id="rdma-data" markerWidth="15" markerHeight="13" refX="12" refY="6.5" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0 0l13 6.5L0 13Z" fill="#ADC4D4"/>
+    </marker>
+    <marker id="rdma-feedback" markerWidth="15" markerHeight="13" refX="12" refY="6.5" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0 0l13 6.5L0 13Z" fill="#71DFED"/>
+    </marker>
+    <marker id="rdma-retry" markerWidth="15" markerHeight="13" refX="12" refY="6.5" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0 0l13 6.5L0 13Z" fill="#FFC77D"/>
+    </marker>
+    <g id="rdma-senders">
+      <g fill="none" stroke="#ADC4D4" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M65 12h49q12 0 12 12v45m-61 0h61m-61 57h49q12 0 12-12V69h58"/>
+      </g>
+      <g fill="#27415A" stroke="#ADC4D4" stroke-width="2.6">
+        <rect width="65" height="24" rx="6"/>
+        <rect y="57" width="65" height="24" rx="6"/>
+        <rect y="114" width="65" height="24" rx="6"/>
+      </g>
+      <g fill="#ADC4D4">
+        <circle cx="13" cy="12" r="3.8"/><circle cx="13" cy="69" r="3.8"/><circle cx="13" cy="126" r="3.8"/>
+        <path d="M24 10h25v4H24zm0 57h25v4H24zm0 57h25v4H24z"/>
+      </g>
+    </g>
+    <g id="rdma-receiver">
+      <rect width="67" height="78" rx="10" fill="#27415A" stroke="#ADC4D4" stroke-width="3"/>
+      <path d="M15 24h36M15 39h36M15 54h36" stroke="#ADC4D4" stroke-width="3.8" stroke-linecap="round"/>
+    </g>
+  </defs>
+  <rect width="1280" height="720" fill="url(#rdma-field)"/>
+  <g font-family="Arial, Helvetica, sans-serif">
+    <text x="57" y="104" font-size="66" font-weight="700" fill="#F7FBFF" letter-spacing="-1.9">Same incast. <tspan fill="#71DFED">Different signals.</tspan></text>
+    <text x="61" y="150" font-size="27" font-weight="700" fill="#B7C9D8">RDMA over Ethernet · matched sender load</text>
+
+    <rect x="58" y="184" width="1164" height="230" rx="22" fill="#132B43" stroke="#3E5D74" stroke-width="2.5"/>
+    <path d="M294 185v228" stroke="#3E5D74" stroke-width="2.5"/>
+    <text x="88" y="275" font-size="49" font-weight="700" fill="#71DFED">RoCEv2</text>
+    <text x="91" y="315" font-size="32" font-weight="700" fill="#BDD4E1">UDP/IP</text>
+    <use href="#rdma-senders" x="329" y="211"/>
+    <path d="M510 280H1122" stroke="#ADC4D4" stroke-width="4.5" fill="none" marker-end="url(#rdma-data)"/>
+    <use href="#rdma-receiver" x="1123" y="241"/>
+    <g>
+      <rect x="620" y="262" width="46" height="36" rx="6" fill="#27415A" stroke="#ADC4D4" stroke-width="2.5"/>
+      <rect x="677" y="262" width="46" height="36" rx="6" fill="#27415A" stroke="#ADC4D4" stroke-width="2.5"/>
+      <rect x="734" y="262" width="46" height="36" rx="6" fill="#71DFED"/>
+      <path d="m746 279 7 7 15-13" fill="none" stroke="#09304A" stroke-width="3.3" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+    <text x="758" y="246" text-anchor="middle" font-size="31" font-weight="700" fill="#71DFED">ECN mark</text>
+    <path d="M1156 320v37q0 10-10 10H524q-10 0-10-10v-58" fill="none" stroke="#71DFED" stroke-width="4.5" stroke-dasharray="11 8" marker-end="url(#rdma-feedback)"/>
+    <rect x="676" y="348" width="322" height="40" rx="6" fill="#132B43"/>
+    <text x="837" y="377" text-anchor="middle" font-size="30" font-weight="700" fill="#71DFED">Receiver sends feedback</text>
+
+    <rect x="58" y="433" width="1164" height="231" rx="22" fill="#172B3F" stroke="#3E5D74" stroke-width="2.5"/>
+    <path d="M294 434v229" stroke="#3E5D74" stroke-width="2.5"/>
+    <text x="88" y="523" font-size="49" font-weight="700" fill="#FFC77D">iWARP</text>
+    <text x="91" y="563" font-size="32" font-weight="700" fill="#BDD4E1">TCP</text>
+    <use href="#rdma-senders" x="329" y="460"/>
+    <path d="M510 529H743m35 0h344" stroke="#ADC4D4" stroke-width="4.5" fill="none" marker-end="url(#rdma-data)"/>
+    <rect x="677" y="511" width="46" height="36" rx="6" fill="#27415A" stroke="#ADC4D4" stroke-width="2.5"/>
+    <rect x="738" y="511" width="46" height="36" rx="6" fill="#172B3F" stroke="#FFC77D" stroke-width="3.5" stroke-dasharray="6 4"/>
+    <path d="m754 522 14 14m0-14-14 14" fill="none" stroke="#FFC77D" stroke-width="3.5" stroke-linecap="round"/>
+    <text x="758" y="496" text-anchor="middle" font-size="31" font-weight="700" fill="#FFC77D">Packet loss</text>
+    <use href="#rdma-receiver" x="1123" y="490"/>
+    <path d="M514 530v72q0 14 14 14h615q13 0 13-13v-34" fill="none" stroke="#FFC77D" stroke-width="4.5" stroke-dasharray="11 8" marker-end="url(#rdma-retry)"/>
+    <rect x="693" y="598" width="288" height="40" rx="6" fill="#172B3F"/>
+    <text x="837" y="627" text-anchor="middle" font-size="31" font-weight="700" fill="#FFC77D">TCP retransmits</text>
+  </g>
+</svg>
