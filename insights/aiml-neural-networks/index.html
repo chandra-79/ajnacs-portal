@@ -14,18 +14,18 @@
 <meta property="og:title" content="Neural Networks Explained: What They Are, How They Learn, and Why They Work">
 <meta property="og:description" content="Neurons, layers, weights, activation functions, backpropagation, and gradient descent — the actual mechanics of how a neural network learns from data, expl…">
 <meta property="og:url" content="https://ajnacs.com/insights/aiml-neural-networks/">
-<meta property="og:image" content="https://ajnacs.com/assets/og/articles/aiml-neural-networks.png?v=be65147de464">
+<meta property="og:image" content="https://ajnacs.com/assets/og/articles/aiml-neural-networks.png?v=980202e6b3b2">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Conceptual illustration for Neural Networks Explained: What They Are, How They Learn, and Why They Work: Data, Model, Evaluation.">
+<meta property="og:image:alt" content="One training update makes a prediction, compares it to its target, propagates gradients backward, and updates weights before repeating.">
 <meta property="article:published_time" content="2026-09-04">
 <meta property="article:modified_time" content="2026-11-23">
 <meta property="og:image:type" content="image/png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Neural Networks Explained: What They Are, How They Learn, and Why They Work">
 <meta name="twitter:description" content="Neurons, layers, weights, activation functions, backpropagation, and gradient descent — the actual mechanics of how a neural network learns from data, expl…">
-<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/aiml-neural-networks.png?v=be65147de464">
-<meta name="twitter:image:alt" content="Conceptual illustration for Neural Networks Explained: What They Are, How They Learn, and Why They Work: Data, Model, Evaluation.">
+<meta name="twitter:image" content="https://ajnacs.com/assets/og/articles/aiml-neural-networks.png?v=980202e6b3b2">
+<meta name="twitter:image:alt" content="One training update makes a prediction, compares it to its target, propagates gradients backward, and updates weights before repeating.">
 
 <link rel="icon" href="/favicon.ico?v=8affdbd5" sizes="any">
 <link rel="icon" href="/images/ajna-mark.svg?v=8affdbd5" type="image/svg+xml">
@@ -51,7 +51,7 @@ d.setAttribute('data-theme',t);
 
 }catch(e){}})();
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Neural Networks Explained: What They Are, How They Learn, and Why They Work","description":"Neurons, layers, weights, activation functions, backpropagation, and gradient descent — the actual mechanics of how a neural network learns from data, explained without the mathematics becoming the obstacle.","datePublished":"2026-09-04","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/aiml-neural-networks/","image":"https://ajnacs.com/assets/og/articles/aiml-neural-networks.png?v=be65147de464","keywords":"AI & MLOps, Fundamentals","articleSection":"AI & MLOps","wordCount":1598}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Neural Networks Explained: What They Are, How They Learn, and Why They Work","description":"Neurons, layers, weights, activation functions, backpropagation, and gradient descent — the actual mechanics of how a neural network learns from data, explained without the mathematics becoming the obstacle.","datePublished":"2026-09-04","dateModified":"2026-11-23","author":{"@type":"Person","name":"Chandra Lanka","url":"https://ajnacs.com/about/#chandra-lanka"},"publisher":{"@type":"Organization","name":"Ajna Consulting Services","url":"https://ajnacs.com"},"mainEntityOfPage":"https://ajnacs.com/insights/aiml-neural-networks/","image":"https://ajnacs.com/assets/og/articles/aiml-neural-networks.png?v=980202e6b3b2","keywords":"AI & MLOps, Fundamentals","articleSection":"AI & MLOps","wordCount":1598}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ajnacs.com/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ajnacs.com/insights/"},{"@type":"ListItem","position":3,"name":"Neural Networks Explained: What They Are, How They Learn, and Why They Work"}]}</script>
 </head>
 <body class="article-frame" data-topic="AI &amp; MLOps">
@@ -107,7 +107,7 @@ d.setAttribute('data-theme',t);
       </div>
     </header>
 
-    <div class="article-hero" data-topic="AI &amp; MLOps"><img data-article-art="aiml-neural-networks" src="/assets/covers/aiml-neural-networks.svg?v=9f839aedd752" width="1280" height="720" alt="Conceptual illustration for Neural Networks Explained: What They Are, How They Learn, and Why They Work: Data, Model, Evaluation." decoding="async" fetchpriority="high"></div>
+    <div class="article-hero" data-topic="AI &amp; MLOps"><img data-article-art="aiml-neural-networks" src="/assets/covers/aiml-neural-networks.svg?v=cb42b6d2053d" width="1280" height="720" alt="One training update makes a prediction, compares it to its target, propagates gradients backward, and updates weights before repeating." decoding="async" fetchpriority="high"></div>
 <div class="reader-aside"><nav class="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol><li><a href="#what-to-measure">What to measure</a></li><li><a href="#the-basic-unit-the-artificial-neuron">The Basic Unit: The Artificial Neuron</a></li><li><a href="#why-activation-functions-matter">Why Activation Functions Matter</a></li><li><a href="#layers-organising-neurons-into-networks">Layers: Organising Neurons into Networks</a></li><li><a href="#how-learning-works-loss-gradient-descent-backpropagation">How Learning Works: Loss, Gradient Descent, Backpropagation</a></li><li><a href="#what-quottrainingquot-looks-like-operationally">What &quot;Training&quot; Looks Like Operationally</a></li><li><a href="#why-neural-networks-generalise">Why Neural Networks Generalise</a></li><li><a href="#follow-one-training-update-all-the-way-through">Follow one training update all the way through</a></li><li><a href="#match-the-output-head-to-the-target">Match the output head to the target</a></li><li><a href="#check-that-the-implementation-can-learn-before-tuning-it">Check that the implementation can learn before tuning it</a></li><li><a href="#use-error-inspection-to-decide-what-to-change">Use error inspection to decide what to change</a></li></ol>
@@ -304,7 +304,7 @@ for epoch in range(num_epochs):
   </div>
 </article>
 <article class="card" data-card data-topics="|AI &amp; MLOps|Enterprise AI|Fundamentals|" data-search="rag, prompting, and building applications on llms: the practitioner&#39;s guide retrieval-augmented generation, system prompts, few-shot examples, chain-of-thought, structured output, and the engineering patterns that make llm applications reliable in production. ai &amp; mlops enterprise ai fundamentals" data-topic="AI &amp; MLOps">
-  <div class="card-art"><img data-article-art="aiml-rag-and-prompting" src="/assets/covers/aiml-rag-and-prompting.svg?v=8b3b55690283" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-art"><img data-article-art="aiml-rag-and-prompting" src="/assets/covers/aiml-rag-and-prompting.svg?v=7ba2affad5e0" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
     <a class="chip" href="/topics/ai-mlops/">AI &amp; MLOps</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/aiml-rag-and-prompting/">RAG, Prompting, and Building Applications on LLMs: The Practitioner&#39;s Guide</a></h3>
@@ -313,7 +313,7 @@ for epoch in range(num_epochs):
   </div>
 </article>
 <article class="card" data-card data-topics="|AI &amp; MLOps|Enterprise AI|Fundamentals|" data-search="putting ai in production: what enterprise ai deployment actually requires model serving, latency, cost, monitoring, governance, and the operational discipline that separates a proof of concept from an ai system that runs reliably at enterprise scale. ai &amp; mlops enterprise ai fundamentals" data-topic="AI &amp; MLOps">
-  <div class="card-art"><img data-article-art="aiml-production-ai" src="/assets/covers/aiml-production-ai.svg?v=72c04f2f1ef6" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
+  <div class="card-art"><img data-article-art="aiml-production-ai" src="/assets/covers/aiml-production-ai.svg?v=e2ff133e5adc" width="1280" height="720" alt="" decoding="async" loading="lazy"></div>
   <div class="card-body">
     <a class="chip" href="/topics/ai-mlops/">AI &amp; MLOps</a>
     <h3 class="card-title"><a class="card-destination" href="/insights/aiml-production-ai/">Putting AI in Production: What Enterprise AI Deployment Actually Requires</a></h3>
